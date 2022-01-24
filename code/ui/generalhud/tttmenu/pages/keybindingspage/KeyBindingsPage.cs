@@ -37,6 +37,7 @@ namespace TTT.UI.Menu
             Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_ACTIONS"), "h1");
             CreateBinding(this, "MENU_KEYBINDINGS_USE", new() { InputButton.Use });
             CreateBinding(this, "MENU_KEYBINDINGS_FLASHLIGHT", new() { InputButton.Flashlight });
+            CreateBinding(this, "MENU_KEYBINDINGS_DISGUISER", new() { InputButton.Grenade });
             Add.Label("");
 
             Add.TranslationLabel(new TranslationData("MENU_KEYBINDINGS_COMMUNICATION"), "h1");
@@ -64,6 +65,7 @@ namespace TTT.UI.Menu
             {
                 var image = wrapper.Add.Image();
                 image.Texture = Input.GetGlyph(bindings[i]);
+                wrapper.Add.Label($" (+iv_{bindings[i].ToString().ToLower()}) ");
 
                 // Don't show a + if it's the last binding in the list.
                 if (i != bindings.Count - 1)
