@@ -1,6 +1,6 @@
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     /// <summary>
     /// Implement this interface to let UI components know they need to be

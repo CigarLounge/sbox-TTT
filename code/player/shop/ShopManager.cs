@@ -4,11 +4,11 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Items;
-using TTTReborn.Roles;
+using TTT.Globals;
+using TTT.Items;
+using TTT.Roles;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class ShopManager
     {

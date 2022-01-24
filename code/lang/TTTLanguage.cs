@@ -5,10 +5,10 @@ using System.Text.Json.Serialization;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.UI;
+using TTT.Events;
+using TTT.UI;
 
-namespace TTTReborn.Settings
+namespace TTT.Settings
 {
     public partial class Settings
     {
@@ -47,7 +47,7 @@ namespace TTTReborn.Settings
     }
 }
 
-namespace TTTReborn.Globalization
+namespace TTT.Globalization
 {
     public static class TTTLanguage
     {
@@ -121,7 +121,7 @@ namespace TTTReborn.Globalization
     }
 }
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     using Globalization;
 

@@ -2,10 +2,10 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Settings;
+using TTT.Events;
+using TTT.Settings;
 
-namespace TTTReborn.Settings
+namespace TTT.Settings
 {
     public partial class ServerSettings
     {
@@ -23,7 +23,7 @@ namespace TTTReborn.Settings
     }
 }
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class DefaultWalkController : WalkController
     {

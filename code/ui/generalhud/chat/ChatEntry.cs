@@ -1,7 +1,7 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class ChatEntry : Panel
     {

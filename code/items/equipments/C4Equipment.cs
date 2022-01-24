@@ -1,8 +1,8 @@
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     /// <summary>
     /// C4 equipment definition, for the physical entity, see items/equipments/entities/C4Entity.cs

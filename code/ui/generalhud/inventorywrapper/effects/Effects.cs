@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Items;
-using TTTReborn.Player;
+using TTT.Items;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class Effects : Panel
     {

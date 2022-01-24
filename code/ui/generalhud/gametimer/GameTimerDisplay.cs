@@ -1,10 +1,10 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Gamemode;
-using TTTReborn.Globalization;
+using TTT.Gamemode;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class GameTimerDisplay : Panel
     {

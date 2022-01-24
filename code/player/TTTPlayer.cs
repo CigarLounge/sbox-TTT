@@ -2,12 +2,12 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Items;
-using TTTReborn.Player.Camera;
-using TTTReborn.Roles;
+using TTT.Events;
+using TTT.Items;
+using TTT.Player.Camera;
+using TTT.Roles;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer : SWB_Base.PlayerBase
     {
@@ -74,7 +74,7 @@ namespace TTTReborn.Player
 
         // Important: Server-side only
         // TODO: Convert to a player.RPC, event based system found inside of...
-        // TODO: https://github.com/TTTReborn/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
+        // TODO: https://github.com/TTT/ttt-reborn/commit/1776803a4b26d6614eba13b363bbc8a4a4c14a2e#diff-d451f87d88459b7f181b1aa4bbd7846a4202c5650bd699912b88ff2906cacf37R30
         public override void Respawn()
         {
             SetModel("models/citizen/citizen.vmdl");

@@ -1,7 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class ChatBoxTextEntry : TextEntry
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Text.Json;
 
-using TTTReborn.VisualProgramming;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public partial class Window
     {

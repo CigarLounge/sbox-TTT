@@ -1,9 +1,9 @@
 using Sandbox;
 
-using TTTReborn.Player.Camera;
-using TTTReborn.UI;
+using TTT.Player.Camera;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

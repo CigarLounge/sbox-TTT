@@ -1,4 +1,4 @@
-namespace TTTReborn.VisualProgramming
+namespace TTT.VisualProgramming
 {
     [StackNode("main")]
     public partial class AllPlayersStackNode : StackNode

@@ -1,6 +1,6 @@
 using System;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class PrecachedAttribute : Attribute

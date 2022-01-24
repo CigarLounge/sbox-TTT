@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public class NodeConnectionStartPoint : NodeConnectionPoint
     {

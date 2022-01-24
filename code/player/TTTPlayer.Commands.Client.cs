@@ -3,7 +3,7 @@ using System.Linq;
 
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

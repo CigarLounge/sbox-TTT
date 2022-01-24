@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Hammer.Skip]
     public abstract class TTTCountdownPerk : TTTPerk

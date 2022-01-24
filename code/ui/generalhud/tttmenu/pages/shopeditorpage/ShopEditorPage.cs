@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Items;
-using TTTReborn.Roles;
+using TTT.Globalization;
+using TTT.Items;
+using TTT.Roles;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     [UseTemplate]
     public partial class ShopEditorPage : Panel

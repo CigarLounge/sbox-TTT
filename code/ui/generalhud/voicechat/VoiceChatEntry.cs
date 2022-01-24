@@ -6,10 +6,10 @@ using Sandbox.UI.Construct;
 
 using Steamworks;
 
-using TTTReborn.Player;
-using TTTReborn.Roles;
+using TTT.Player;
+using TTT.Roles;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class VoiceChatEntry : Panel
     {

@@ -4,12 +4,12 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Events;
-using TTTReborn.Globalization;
-using TTTReborn.Items;
-using TTTReborn.Player;
+using TTT.Events;
+using TTT.Globalization;
+using TTT.Items;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class QuickShop : Panel
     {
@@ -194,7 +194,7 @@ namespace TTTReborn.UI
     }
 }
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     using UI;
 

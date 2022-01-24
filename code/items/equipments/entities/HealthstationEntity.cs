@@ -2,11 +2,11 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
-using TTTReborn.Player;
-using TTTReborn.UI;
+using TTT.Globalization;
+using TTT.Player;
+using TTT.UI;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("entity_healthstation")]
     [Precached("models/entities/healthstation.vmdl")]

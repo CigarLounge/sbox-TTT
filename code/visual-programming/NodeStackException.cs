@@ -1,6 +1,6 @@
 using System;
 
-namespace TTTReborn.VisualProgramming
+namespace TTT.VisualProgramming
 {
     public class NodeStackException : Exception
     {

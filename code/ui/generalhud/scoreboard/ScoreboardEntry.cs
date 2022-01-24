@@ -2,10 +2,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
-using TTTReborn.Roles;
+using TTT.Player;
+using TTT.Roles;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class ScoreboardEntry : Panel
     {

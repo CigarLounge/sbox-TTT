@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("perk_bodyarmor")]
     [Buyable(Price = 100)]

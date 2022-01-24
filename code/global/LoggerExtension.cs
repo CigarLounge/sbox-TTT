@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Globals
+namespace TTT.Globals
 {
     public static class LoggerExtension
     {

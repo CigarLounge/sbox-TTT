@@ -1,4 +1,4 @@
-namespace TTTReborn.Settings
+namespace TTT.Settings
 {
     public partial class ServerSettings
     {

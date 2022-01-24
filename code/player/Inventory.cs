@@ -4,9 +4,9 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Items;
+using TTT.Items;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class Inventory : BaseInventory
     {
@@ -77,11 +77,11 @@ namespace TTTReborn.Player
         }
 
         /// <summary>
-        /// Tries to add an `TTTReborn.Items.IItem` to the inventory.
+        /// Tries to add an `TTT.Items.IItem` to the inventory.
         /// </summary>
-        /// <param name="item">`TTTReborn.Items.IItem` that will be added to the inventory if conditions are met.</param>
-        /// <param name="deleteIfFails">Delete `TTTReborn.Items.IItem` if it fails to add to inventory.</param>
-        /// <param name="makeActive">Make `TTTReborn.Items.IItem` the active item in the inventory.</param>
+        /// <param name="item">`TTT.Items.IItem` that will be added to the inventory if conditions are met.</param>
+        /// <param name="deleteIfFails">Delete `TTT.Items.IItem` if it fails to add to inventory.</param>
+        /// <param name="makeActive">Make `TTT.Items.IItem` the active item in the inventory.</param>
         /// <returns></returns>
         public bool TryAdd(IItem item, bool deleteIfFails = false, bool makeActive = false)
         {

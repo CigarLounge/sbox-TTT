@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Teams;
+using TTT.Events;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Teams;
 
-namespace TTTReborn.Roles
+namespace TTT.Roles
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class RoleAttribute : LibraryAttribute

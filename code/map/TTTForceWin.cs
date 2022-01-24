@@ -1,11 +1,11 @@
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Rounds;
-using TTTReborn.Teams;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Rounds;
+using TTT.Teams;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     [Library("ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input.")]
     public partial class TTTForceWin : Entity

@@ -1,6 +1,6 @@
 using Sandbox.UI;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class Crosshair : Panel
     {

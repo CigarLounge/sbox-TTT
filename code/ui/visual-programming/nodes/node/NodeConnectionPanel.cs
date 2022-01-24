@@ -1,6 +1,6 @@
 using Sandbox.UI;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public class NodeConnectionPanel<T> : Panel where T : NodeConnectionPoint, new()
     {

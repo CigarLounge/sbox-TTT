@@ -1,6 +1,6 @@
 using System;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     public enum SlotType
     {

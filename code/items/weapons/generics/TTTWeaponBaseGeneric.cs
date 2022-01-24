@@ -2,10 +2,10 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
-using TTTReborn.Player;
+using TTT.Globalization;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class WeaponAttribute : CarriableAttribute

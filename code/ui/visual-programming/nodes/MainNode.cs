@@ -1,6 +1,6 @@
-using TTTReborn.VisualProgramming;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [Node("main")]
     public class MainNode : Node

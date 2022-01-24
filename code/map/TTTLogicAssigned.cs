@@ -1,11 +1,11 @@
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Rounds;
-using TTTReborn.Teams;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Rounds;
+using TTT.Teams;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     [Library("ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator.")]
     public partial class TTTLogicAssigned : Entity

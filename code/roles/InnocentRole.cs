@@ -1,6 +1,6 @@
-using TTTReborn.Teams;
+using TTT.Teams;
 
-namespace TTTReborn.Roles
+namespace TTT.Roles
 {
     [Role("innocent")]
     public class InnocentRole : TTTRole

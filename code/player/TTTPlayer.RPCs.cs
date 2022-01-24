@@ -1,11 +1,11 @@
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globals;
-using TTTReborn.Items;
-using TTTReborn.UI;
+using TTT.Events;
+using TTT.Globals;
+using TTT.Items;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

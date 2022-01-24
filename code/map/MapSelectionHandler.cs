@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     public partial class MapSelectionHandler : BaseNetworkable
     {

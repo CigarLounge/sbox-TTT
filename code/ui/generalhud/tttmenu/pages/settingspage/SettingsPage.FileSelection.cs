@@ -2,10 +2,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Settings;
+using TTT.Globalization;
+using TTT.Settings;
 
-namespace TTTReborn.UI.Menu
+namespace TTT.UI.Menu
 {
     public partial class SettingsPage : Panel
     {
@@ -156,10 +156,10 @@ namespace TTTReborn.UI.Menu
     }
 }
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
-    using TTTReborn.Settings;
-    using TTTReborn.UI.Menu;
+    using TTT.Settings;
+    using TTT.UI.Menu;
 
     public partial class TTTPlayer
     {

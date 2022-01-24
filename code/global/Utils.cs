@@ -6,9 +6,9 @@ using System.Reflection;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Globals
+namespace TTT.Globals
 {
     public static partial class Utils
     {

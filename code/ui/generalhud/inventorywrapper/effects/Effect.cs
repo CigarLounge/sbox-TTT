@@ -2,10 +2,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Items;
+using TTT.Globalization;
+using TTT.Items;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class Effect : Panel
     {

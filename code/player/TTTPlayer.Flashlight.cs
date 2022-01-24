@@ -2,7 +2,7 @@ using Sandbox;
 
 // TODO Fix flickering on close-range walls (with fast rotation)
 // TODO Add physics (avoid collision with walls or the playermodel)
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

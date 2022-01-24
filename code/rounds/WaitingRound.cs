@@ -2,9 +2,9 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Rounds
+namespace TTT.Rounds
 {
     public class WaitingRound : BaseRound
     {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
-using TTTReborn.Globalization;
+using TTT.Events;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class TranslationLabel : Label, ITranslatable
     {
@@ -67,7 +67,7 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
-    using TTTReborn.UI;
+    using TTT.UI;
 
     public static class TranslationLabelConstructor
     {

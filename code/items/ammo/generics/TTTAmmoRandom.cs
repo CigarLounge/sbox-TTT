@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("entity_ammo_random")]
     public class TTTAmmoRandom : Entity

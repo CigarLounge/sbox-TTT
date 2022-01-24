@@ -1,10 +1,10 @@
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Teams;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Teams;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     [Library("ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate.")]
     public partial class TTTLogicButton : Entity

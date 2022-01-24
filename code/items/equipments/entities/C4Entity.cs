@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.UI;
+using TTT.Globalization;
+using TTT.Globals;
+using TTT.Player;
+using TTT.UI;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("entity_c4")]
     [Precached("models/entities/c4.vmdl", "particles/explosion_fireball.vpcf")]

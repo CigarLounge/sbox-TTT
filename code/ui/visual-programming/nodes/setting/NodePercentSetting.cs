@@ -2,7 +2,7 @@ using System;
 
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [NodeSetting("percent")]
     public class NodePercentSetting : NodeSetting

@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Roles;
-using TTTReborn.Rounds;
-using TTTReborn.Teams;
+using TTT.Globals;
+using TTT.Roles;
+using TTT.Rounds;
+using TTT.Teams;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

@@ -6,10 +6,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Settings;
+using TTT.Globalization;
+using TTT.Settings;
 
-namespace TTTReborn.UI.Menu
+namespace TTT.UI.Menu
 {
     [UseTemplate]
     public partial class SettingsPage : Panel

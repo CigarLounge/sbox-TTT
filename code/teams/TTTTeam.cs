@@ -4,10 +4,10 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
+using TTT.Globals;
+using TTT.Player;
 
-namespace TTTReborn.Teams
+namespace TTT.Teams
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class TeamAttribute : LibraryAttribute

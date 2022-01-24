@@ -2,11 +2,11 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globals;
-using TTTReborn.Items;
+using TTT.Events;
+using TTT.Globals;
+using TTT.Items;
 
-namespace TTTReborn.Gamemode
+namespace TTT.Gamemode
 {
     public partial class Game
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

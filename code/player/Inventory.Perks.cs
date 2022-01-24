@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Items;
+using TTT.Items;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class PerksInventory
     {

@@ -1,5 +1,5 @@
 
-@BaseClass = BaseProperties_tttreborn
+@BaseClass = BaseProperties_TTT
 [
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	parentAttachmentName(parentAttachment) [ group="Hierarchy" ] : "Parent Model Bone/Attachment Name" : : "The name of the bone or attachment to attach to on the entity's parent in the movement hierarchy. Use !bonemerge to use bone-merge style attachment."
@@ -14,9 +14,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTChangeCredits
+// TTT.Map.TTTChangeCredits
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
+@PointClass base(BaseProperties_TTT) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
 [
 	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
 
@@ -27,9 +27,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTFeedEntry
+// TTT.Map.TTTFeedEntry
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+@PointClass base(BaseProperties_TTT) = ttt_feed_entry : "Add text entry to the game feed when input fired."
 [
 	message(string) : "Message" : "" : ""
 	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
@@ -47,9 +47,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTForceWin
+// TTT.Map.TTTForceWin
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+@PointClass base(BaseProperties_TTT) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
 [
 	team(string) : "Team" :  : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams."
 	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
@@ -60,9 +60,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicAssigned
+// TTT.Map.TTTLogicAssigned
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
+@PointClass base(BaseProperties_TTT) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`."
 
@@ -73,9 +73,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTMapSettings
+// TTT.Map.TTTMapSettings
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_map_settings : ""
+@PointClass base(BaseProperties_TTT) = ttt_map_settings : ""
 [
 
 	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
@@ -85,9 +85,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicButton
+// TTT.Map.TTTLogicButton
 //
-@PointClass base(BaseProperties_tttreborn) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
+@PointClass base(BaseProperties_TTT) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team."
 	description(string) : "Description" :  : "On screen tooltip shown on button"
@@ -105,9 +105,9 @@
 ]
 
 //
-// TTTReborn.Items.BuckshotAmmo
+// TTT.Items.BuckshotAmmo
 //
-@PointClass base(BaseProperties_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_buckshot : ""
+@PointClass base(BaseProperties_TTT) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_buckshot : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -134,9 +134,9 @@
 ]
 
 //
-// TTTReborn.Items.PistolAmmo
+// TTT.Items.PistolAmmo
 //
-@PointClass base(BaseProperties_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
+@PointClass base(BaseProperties_TTT) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -163,9 +163,9 @@
 ]
 
 //
-// TTTReborn.Items.SMGAmmo
+// TTT.Items.SMGAmmo
 //
-@PointClass base(BaseProperties_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
+@PointClass base(BaseProperties_TTT) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -192,26 +192,16 @@
 ]
 
 //
-// TTTReborn.Items.TTTAmmoRandom
+// TTT.Items.TTTAmmoRandom
 //
-@PointClass base(BaseProperties_tttreborn) = entity_ammo_random : ""
+@PointClass base(BaseProperties_TTT) = entity_ammo_random : ""
 [
 ]
 
 //
-// TTTReborn.Items.Knife
+// TTT.Items.Knife
 //
-@PointClass base(BaseProperties_tttreborn) editormodel( "weapons/rust_boneknife/rust_boneknife.vmdl" ) = weapon_knife : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTTReborn.Items.NewtonLauncher
-//
-@PointClass base(BaseProperties_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_newtonlauncher : ""
+@PointClass base(BaseProperties_TTT) editormodel( "weapons/rust_boneknife/rust_boneknife.vmdl" ) = weapon_knife : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -219,9 +209,9 @@
 ]
 
 //
-// TTTReborn.Items.Pistol
+// TTT.Items.NewtonLauncher
 //
-@PointClass base(BaseProperties_tttreborn) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_pistol : ""
+@PointClass base(BaseProperties_TTT) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_newtonlauncher : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -229,9 +219,9 @@
 ]
 
 //
-// TTTReborn.Items.Shotgun
+// TTT.Items.Pistol
 //
-@PointClass base(BaseProperties_tttreborn) editormodel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" ) = weapon_shotgun : ""
+@PointClass base(BaseProperties_TTT) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = weapon_pistol : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -239,9 +229,9 @@
 ]
 
 //
-// TTTReborn.Items.SMG
+// TTT.Items.Shotgun
 //
-@PointClass base(BaseProperties_tttreborn) editormodel( "weapons/rust_smg/rust_smg.vmdl" ) = weapon_smg : ""
+@PointClass base(BaseProperties_TTT) editormodel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" ) = weapon_shotgun : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -249,17 +239,27 @@
 ]
 
 //
-// TTTReborn.Items.TTTWeaponRandom
+// TTT.Items.SMG
 //
-@PointClass base(BaseProperties_tttreborn) = entity_weapon_random : ""
+@PointClass base(BaseProperties_TTT) editormodel( "weapons/rust_smg/rust_smg.vmdl" ) = weapon_smg : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.TTTWeaponRandom
+//
+@PointClass base(BaseProperties_TTT) = entity_weapon_random : ""
 [
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]
 
 //
-// TTTReborn.Items.HealthstationEntity
+// TTT.Items.HealthstationEntity
 //
-@PointClass base(BaseProperties_tttreborn) tags( Physics ) model() = entity_healthstation : ""
+@PointClass base(BaseProperties_TTT) tags( Physics ) model() = entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

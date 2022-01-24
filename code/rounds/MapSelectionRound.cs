@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Map;
-using TTTReborn.Player;
-using TTTReborn.Settings;
+using TTT.Globals;
+using TTT.Map;
+using TTT.Player;
+using TTT.Settings;
 
-namespace TTTReborn.Rounds
+namespace TTT.Rounds
 {
     public class MapSelectionRound : BaseRound
     {

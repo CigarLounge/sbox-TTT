@@ -4,9 +4,9 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.VisualProgramming;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeAttribute : LibraryAttribute

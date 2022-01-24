@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox.UI;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public struct PanelContentData
     {

@@ -1,4 +1,4 @@
-namespace TTTReborn.Player.Camera
+namespace TTT.Player.Camera
 {
     public interface IObservationCamera
     {

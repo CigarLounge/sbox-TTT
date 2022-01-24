@@ -1,9 +1,9 @@
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Rounds;
+using TTT.Events;
+using TTT.Rounds;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     [Library("ttt_map_settings")]
     public partial class TTTMapSettings : Entity

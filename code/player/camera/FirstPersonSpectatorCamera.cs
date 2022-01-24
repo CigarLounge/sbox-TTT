@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player.Camera
+namespace TTT.Player.Camera
 {
     public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
     {

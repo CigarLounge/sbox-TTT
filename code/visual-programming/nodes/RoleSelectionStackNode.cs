@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Player;
-using TTTReborn.Roles;
+using TTT.Player;
+using TTT.Roles;
 
-namespace TTTReborn.VisualProgramming
+namespace TTT.VisualProgramming
 {
     [StackNode("role_selection")]
     public partial class RoleSelectionStackNode : StackNode

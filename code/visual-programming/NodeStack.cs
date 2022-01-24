@@ -4,7 +4,7 @@ using System.Text.Json;
 
 using Sandbox;
 
-namespace TTTReborn.VisualProgramming
+namespace TTT.VisualProgramming
 {
     public partial class NodeStack
     {

@@ -2,9 +2,9 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.VisualProgramming;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.Menu
+namespace TTT.UI.Menu
 {
     [UseTemplate]
     public partial class HomePage : Panel

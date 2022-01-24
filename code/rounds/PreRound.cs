@@ -4,12 +4,12 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Items;
-using TTTReborn.Player;
-using TTTReborn.Roles;
-using TTTReborn.Settings;
+using TTT.Items;
+using TTT.Player;
+using TTT.Roles;
+using TTT.Settings;
 
-namespace TTTReborn.Rounds
+namespace TTT.Rounds
 {
     public class PreRound : BaseRound
     {

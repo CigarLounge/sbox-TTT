@@ -2,12 +2,12 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
-using TTTReborn.Globals;
-using TTTReborn.Items;
-using TTTReborn.UI;
+using TTT.Globalization;
+using TTT.Globals;
+using TTT.Items;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class PlayerCorpse : ModelEntity, IEntityHint
     {

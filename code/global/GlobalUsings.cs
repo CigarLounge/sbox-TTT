@@ -1,1 +1,1 @@
-global using TTTReborn.Globals;
+global using TTT.Globals;

@@ -1,13 +1,13 @@
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Items;
-using TTTReborn.Player;
-using TTTReborn.Roles;
-using TTTReborn.Teams;
-using TTTReborn.UI;
+using TTT.Events;
+using TTT.Items;
+using TTT.Player;
+using TTT.Roles;
+using TTT.Teams;
+using TTT.UI;
 
-namespace TTTReborn.Globals
+namespace TTT.Globals
 {
     public partial class RPCs
     {
@@ -55,7 +55,7 @@ namespace TTTReborn.Globals
         /// Must be called on the server, updates TTTPlayer's `Role`.
         /// </summary>
         /// <param name="player">The player whose `Role` is to be updated</param>
-        /// <param name="roleName">Same as the `TTTReborn.Roles.TTTRole`'s `TTTReborn.Roles.RoleAttribute`'s name</param>
+        /// <param name="roleName">Same as the `TTT.Roles.TTTRole`'s `TTT.Roles.RoleAttribute`'s name</param>
         /// <param name="teamName">The name of the team</param>
         [ClientRpc]
         public static void ClientSetRole(TTTPlayer player, string roleName, string teamName = null)

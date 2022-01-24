@@ -1,6 +1,6 @@
 using Sandbox.UI;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class LineBreak : Panel
     {
@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
-    using TTTReborn.UI;
+    using TTT.UI;
 
     public static class LineBreakConstructor
     {

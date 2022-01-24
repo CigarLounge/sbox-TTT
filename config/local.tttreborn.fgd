@@ -1,5 +1,5 @@
 
-@BaseClass = BaseProperties_local_tttreborn
+@BaseClass = BaseProperties_local_TTT
 [
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	parentAttachmentName(parentAttachment) [ group="Hierarchy" ] : "Parent Model Bone/Attachment Name" : : "The name of the bone or attachment to attach to on the entity's parent in the movement hierarchy. Use !bonemerge to use bone-merge style attachment."
@@ -14,9 +14,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTChangeCredits
+// TTT.Map.TTTChangeCredits
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
+@PointClass base(BaseProperties_local_TTT) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
 [
 	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
 
@@ -27,9 +27,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTFeedEntry
+// TTT.Map.TTTFeedEntry
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+@PointClass base(BaseProperties_local_TTT) = ttt_feed_entry : "Add text entry to the game feed when input fired."
 [
 	message(string) : "Message" : "" : ""
 	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
@@ -47,9 +47,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTForceWin
+// TTT.Map.TTTForceWin
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+@PointClass base(BaseProperties_local_TTT) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
 [
 	team(string) : "Team" :  : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams."
 	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
@@ -60,9 +60,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicAssigned
+// TTT.Map.TTTLogicAssigned
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
+@PointClass base(BaseProperties_local_TTT) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`."
 
@@ -73,9 +73,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTMapSettings
+// TTT.Map.TTTMapSettings
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_map_settings : ""
+@PointClass base(BaseProperties_local_TTT) = ttt_map_settings : ""
 [
 
 	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
@@ -85,9 +85,9 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicButton
+// TTT.Map.TTTLogicButton
 //
-@PointClass base(BaseProperties_local_tttreborn) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
+@PointClass base(BaseProperties_local_TTT) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
 	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team."
 	description(string) : "Description" :  : "On screen tooltip shown on button"
@@ -105,9 +105,9 @@
 ]
 
 //
-// TTTReborn.Items.PistolAmmo
+// TTT.Items.PistolAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -134,9 +134,9 @@
 ]
 
 //
-// TTTReborn.Items.RevolverAmmo
+// TTT.Items.RevolverAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_revolver : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_revolver : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -163,9 +163,9 @@
 ]
 
 //
-// TTTReborn.Items.RifleAmmo
+// TTT.Items.RifleAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_rifle : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_rifle : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -192,9 +192,9 @@
 ]
 
 //
-// TTTReborn.Items.RPGAmmo
+// TTT.Items.RPGAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl" ) model() = ammo_rpg : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl" ) model() = ammo_rpg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -221,9 +221,9 @@
 ]
 
 //
-// TTTReborn.Items.ShotgunAmmo
+// TTT.Items.ShotgunAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_shotgun : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_shotgun : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -250,9 +250,9 @@
 ]
 
 //
-// TTTReborn.Items.SMGAmmo
+// TTT.Items.SMGAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -279,9 +279,9 @@
 ]
 
 //
-// TTTReborn.Items.SniperAmmo
+// TTT.Items.SniperAmmo
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_sniper : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_sniper : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -308,9 +308,9 @@
 ]
 
 //
-// TTTReborn.Items.Deagle
+// TTT.Items.Deagle
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = weapon_deagle : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = weapon_deagle : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -318,9 +318,9 @@
 ]
 
 //
-// TTTReborn.Items.FAL
+// TTT.Items.FAL
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/rifles/fal/w_fal.vmdl" ) = weapon_fal : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/rifles/fal/w_fal.vmdl" ) = weapon_fal : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -328,9 +328,9 @@
 ]
 
 //
-// TTTReborn.Items.Knife
+// TTT.Items.Knife
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = weapon_knife : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = weapon_knife : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -338,9 +338,9 @@
 ]
 
 //
-// TTTReborn.Items.L96A1
+// TTT.Items.L96A1
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" ) = weapon_l96a1 : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" ) = weapon_l96a1 : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -348,9 +348,9 @@
 ]
 
 //
-// TTTReborn.Items.RPG
+// TTT.Items.RPG
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = weapon_rpg : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = weapon_rpg : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -358,9 +358,9 @@
 ]
 
 //
-// TTTReborn.Items.SPAS12
+// TTT.Items.SPAS12
 //
-@PointClass base(BaseProperties_local_tttreborn) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = weapon_spas12 : ""
+@PointClass base(BaseProperties_local_TTT) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = weapon_spas12 : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -368,16 +368,16 @@
 ]
 
 //
-// TTTReborn.Items.TTTAmmoRandom
+// TTT.Items.TTTAmmoRandom
 //
-@PointClass base(BaseProperties_local_tttreborn) = entity_ammo_random : ""
+@PointClass base(BaseProperties_local_TTT) = entity_ammo_random : ""
 [
 ]
 
 //
-// TTTReborn.Items.HealthstationEntity
+// TTT.Items.HealthstationEntity
 //
-@PointClass base(BaseProperties_local_tttreborn) tags( Physics ) model() = entity_healthstation : ""
+@PointClass base(BaseProperties_local_TTT) tags( Physics ) model() = entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -403,9 +403,9 @@
 ]
 
 //
-// TTTReborn.Items.TTTWeaponRandom
+// TTT.Items.TTTWeaponRandom
 //
-@PointClass base(BaseProperties_local_tttreborn) = entity_weapon_random : ""
+@PointClass base(BaseProperties_local_TTT) = entity_weapon_random : ""
 [
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]

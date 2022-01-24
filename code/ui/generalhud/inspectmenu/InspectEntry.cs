@@ -2,9 +2,9 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class InspectEntry : Panel
     {

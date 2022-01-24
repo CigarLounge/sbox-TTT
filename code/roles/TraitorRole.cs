@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Teams;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Teams;
 
-namespace TTTReborn.Roles
+namespace TTT.Roles
 {
     [Role("traitor")]
     public class TraitorRole : TTTRole

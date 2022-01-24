@@ -1,6 +1,6 @@
-using TTTReborn.UI;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer : IEntityHint
     {

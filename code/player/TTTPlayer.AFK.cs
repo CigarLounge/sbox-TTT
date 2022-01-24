@@ -4,9 +4,9 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Settings;
+using TTT.Settings;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

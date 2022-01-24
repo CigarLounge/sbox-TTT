@@ -1,4 +1,4 @@
-namespace TTTReborn.Events
+namespace TTT.Events
 {
     public static partial class TTTEvent
     {
@@ -8,7 +8,7 @@ namespace TTTReborn.Events
             /// Occurs when the UI was reloaded.
             /// <para>No data is passed to this event.</para>
             /// </summary>
-            public const string Reloaded = "tttreborn.ui.reloaded";
+            public const string Reloaded = "TTT.ui.reloaded";
         }
     }
 }

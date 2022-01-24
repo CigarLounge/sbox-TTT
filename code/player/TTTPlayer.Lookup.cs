@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     partial class TTTPlayer
     {

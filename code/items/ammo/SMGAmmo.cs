@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("ammo_smg")]
     [Spawnable]

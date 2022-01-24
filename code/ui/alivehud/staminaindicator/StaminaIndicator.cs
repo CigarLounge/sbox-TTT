@@ -2,9 +2,9 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class StaminaIndicator : Panel
     {

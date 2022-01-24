@@ -1,6 +1,6 @@
-<h1><img src="assets/ttt-logo.png" alt="TTTReborn logo" height="200"/></h1>
+<h1><img src="assets/ttt-logo.png" alt="TTT logo" height="200"/></h1>
 
-## Contributing to TTTReborn
+## Contributing to TTT
 
 ## Table of contents
 
@@ -11,7 +11,7 @@
 
 ## Creating Issues
 
-Before creating an issue, check [open issues](https://github.com/TTTReborn/ttt-reborn/issues?q=is%3Aissue+is%3Aopen) to see if someone has already reported it. If that's the case, feel free to add additional information to it. You can also use GitHub's 'subscribe' feature to get notified on updates.
+Before creating an issue, check [open issues](https://github.com/TTT/ttt-reborn/issues?q=is%3Aissue+is%3Aopen) to see if someone has already reported it. If that's the case, feel free to add additional information to it. You can also use GitHub's 'subscribe' feature to get notified on updates.
 
 If you have found a new issue we'd like to hear about it! Make sure to use the provided issue template to provide us with the necessary information so we can reproduce the issue.
 
@@ -25,11 +25,11 @@ Please keep in mind that we need to understand your changes before we can merge 
 
 If you are familiar with coding and contributing on GitHub you can skip to [Adhere to Codestyle](#adhere-to-codestyle) otherwise please read on.
 
-If you are only planning on working on a 'small' thing e.g. only changing something in a single file, you don't need to setup everything below. Simply go to the file you want to edit on GitHub and click the pencil icon in the top right. After you edited the file how you wanted simply open a new [pull request](https://github.com/TTTReborn/ttt-reborn/compare) with your changes.
+If you are only planning on working on a 'small' thing e.g. only changing something in a single file, you don't need to setup everything below. Simply go to the file you want to edit on GitHub and click the pencil icon in the top right. After you edited the file how you wanted simply open a new [pull request](https://github.com/TTT/ttt-reborn/compare) with your changes.
 
 ### Setup your workspace
 
-TTTReborn being a gamemode for S&Box means it is a .NET application. Therefore you need to install the .NET SDK and a code editor / IDE of your choice.
+TTT being a gamemode for S&Box means it is a .NET application. Therefore you need to install the .NET SDK and a code editor / IDE of your choice.
 
 Please refer to the [.NET Installation Instructions](https://docs.microsoft.com/en-us/dotnet/core/install/) on how to install the SDK on your operating system.
 
@@ -73,4 +73,4 @@ Refer to [Adhere to Codestyle](#adhere-to-codestyle) for more information.
 
 If you want to chat with us and the community, join the [discord](https://discord.gg/Npcbb4W).
 
-If you want to discuss something in more depth, feel free to [open a discussion](https://github.com/TTTReborn/ttt-reborn/discussions/new).
+If you want to discuss something in more depth, feel free to [open a discussion](https://github.com/TTT/ttt-reborn/discussions/new).

@@ -3,13 +3,13 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globals;
-using TTTReborn.Map;
-using TTTReborn.Roles;
-using TTTReborn.UI;
+using TTT.Events;
+using TTT.Globals;
+using TTT.Map;
+using TTT.Roles;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

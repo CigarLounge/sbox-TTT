@@ -3,7 +3,7 @@ using System.Text.Json;
 
 using Sandbox.UI;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public partial class Window : UI.Window
     {

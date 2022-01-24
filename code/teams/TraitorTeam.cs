@@ -1,4 +1,4 @@
-namespace TTTReborn.Teams
+namespace TTT.Teams
 {
     [Team("traitors")]
     public class TraitorTeam : TTTTeam

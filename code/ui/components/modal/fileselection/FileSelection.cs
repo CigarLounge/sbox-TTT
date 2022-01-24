@@ -6,7 +6,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class FileSelection : DialogBox
     {
@@ -203,7 +203,7 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
-    using TTTReborn.UI;
+    using TTT.UI;
 
     public static class FileSelectionConstructor
     {

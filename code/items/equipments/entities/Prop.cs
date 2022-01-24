@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     /// <summary>
 	/// A prop that physically simulates as a single rigid body. It can be constrained to other physics objects using hinges

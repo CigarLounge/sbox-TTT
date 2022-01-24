@@ -1,9 +1,9 @@
 using Sandbox;
 using Sandbox.Joints;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     public class GrabbableCorpse : IGrabbable
     {

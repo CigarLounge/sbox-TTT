@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Teams;
+using TTT.Events;
+using TTT.Teams;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

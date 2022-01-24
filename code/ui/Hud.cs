@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Events;
-using TTTReborn.Player;
+using TTT.Events;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class Hud : HudEntity<RootPanel>
     {

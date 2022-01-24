@@ -3,14 +3,14 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Items;
-using TTTReborn.Map;
-using TTTReborn.Player;
-using TTTReborn.Settings;
-using TTTReborn.Teams;
+using TTT.Events;
+using TTT.Items;
+using TTT.Map;
+using TTT.Player;
+using TTT.Settings;
+using TTT.Teams;
 
-namespace TTTReborn.Rounds
+namespace TTT.Rounds
 {
     public partial class InProgressRound : BaseRound
     {

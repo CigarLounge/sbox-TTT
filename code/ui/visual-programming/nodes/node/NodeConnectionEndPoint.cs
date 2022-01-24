@@ -1,4 +1,4 @@
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public class NodeConnectionEndPoint : NodeConnectionPoint
     {

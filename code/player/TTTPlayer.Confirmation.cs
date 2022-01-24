@@ -1,9 +1,9 @@
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.UI;
+using TTT.Globals;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public struct ConfirmationData
     {

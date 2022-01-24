@@ -1,9 +1,9 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class Hint : EntityHintPanel
     {

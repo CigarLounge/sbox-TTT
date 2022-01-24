@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("entity_decoy")]
     [Precached("models/entities/decoy.vmdl")]

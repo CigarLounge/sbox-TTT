@@ -2,10 +2,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Items;
-using TTTReborn.Player;
+using TTT.Items;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class RadarPoint : Panel
     {

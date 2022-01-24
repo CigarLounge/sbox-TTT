@@ -14,7 +14,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTChangeCredits
+// TTT.Map.TTTChangeCredits
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
 [
@@ -27,7 +27,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTFeedEntry
+// TTT.Map.TTTFeedEntry
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_feed_entry : "Add text entry to the game feed when input fired."
 [
@@ -47,7 +47,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTForceWin
+// TTT.Map.TTTForceWin
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
 [
@@ -60,7 +60,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicAssigned
+// TTT.Map.TTTLogicAssigned
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
 [
@@ -73,7 +73,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTMapSettings
+// TTT.Map.TTTMapSettings
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_map_settings : ""
 [
@@ -85,7 +85,7 @@
 ]
 
 //
-// TTTReborn.Map.TTTLogicButton
+// TTT.Map.TTTLogicButton
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
@@ -105,7 +105,7 @@
 ]
 
 //
-// TTTReborn.Items.PistolAmmo
+// TTT.Items.PistolAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_pistol : ""
 [
@@ -134,7 +134,7 @@
 ]
 
 //
-// TTTReborn.Items.RevolverAmmo
+// TTT.Items.RevolverAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_9mm.vmdl" ) model() = ammo_revolver : ""
 [
@@ -163,7 +163,7 @@
 ]
 
 //
-// TTTReborn.Items.RifleAmmo
+// TTT.Items.RifleAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_rifle : ""
 [
@@ -192,7 +192,7 @@
 ]
 
 //
-// TTTReborn.Items.RPGAmmo
+// TTT.Items.RPGAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl" ) model() = ammo_rpg : ""
 [
@@ -221,7 +221,7 @@
 ]
 
 //
-// TTTReborn.Items.ShotgunAmmo
+// TTT.Items.ShotgunAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_buckshot.vmdl" ) model() = ammo_shotgun : ""
 [
@@ -250,7 +250,7 @@
 ]
 
 //
-// TTTReborn.Items.SMGAmmo
+// TTT.Items.SMGAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_smg : ""
 [
@@ -279,7 +279,7 @@
 ]
 
 //
-// TTTReborn.Items.SniperAmmo
+// TTT.Items.SniperAmmo
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) editormodel( "models/ammo/ammo_smg.vmdl" ) model() = ammo_sniper : ""
 [
@@ -308,7 +308,7 @@
 ]
 
 //
-// TTTReborn.Items.Deagle
+// TTT.Items.Deagle
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = weapon_deagle : ""
 [
@@ -318,7 +318,7 @@
 ]
 
 //
-// TTTReborn.Items.FAL
+// TTT.Items.FAL
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/rifles/fal/w_fal.vmdl" ) = weapon_fal : ""
 [
@@ -328,7 +328,7 @@
 ]
 
 //
-// TTTReborn.Items.Knife
+// TTT.Items.Knife
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = weapon_knife : ""
 [
@@ -338,7 +338,7 @@
 ]
 
 //
-// TTTReborn.Items.L96A1
+// TTT.Items.L96A1
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" ) = weapon_l96a1 : ""
 [
@@ -348,7 +348,7 @@
 ]
 
 //
-// TTTReborn.Items.RPG
+// TTT.Items.RPG
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = weapon_rpg : ""
 [
@@ -358,7 +358,7 @@
 ]
 
 //
-// TTTReborn.Items.SPAS12
+// TTT.Items.SPAS12
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = weapon_spas12 : ""
 [
@@ -368,14 +368,14 @@
 ]
 
 //
-// TTTReborn.Items.TTTAmmoRandom
+// TTT.Items.TTTAmmoRandom
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = entity_ammo_random : ""
 [
 ]
 
 //
-// TTTReborn.Items.HealthstationEntity
+// TTT.Items.HealthstationEntity
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) tags( Physics ) model() = entity_healthstation : ""
 [
@@ -403,7 +403,7 @@
 ]
 
 //
-// TTTReborn.Items.TTTWeaponRandom
+// TTT.Items.TTTWeaponRandom
 //
 @PointClass base(BaseProperties_matt_sbox_ttt) = entity_weapon_random : ""
 [

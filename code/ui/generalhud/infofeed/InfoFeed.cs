@@ -1,10 +1,10 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
-using TTTReborn.Roles;
+using TTT.Player;
+using TTT.Roles;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class InfoFeed : Panel
     {

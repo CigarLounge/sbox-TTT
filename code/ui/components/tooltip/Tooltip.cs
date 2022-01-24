@@ -3,7 +3,7 @@ using System;
 using Sandbox;
 using Sandbox.UI;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class Tooltip : TranslationLabel
     {
@@ -63,8 +63,8 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
-    using TTTReborn.Globalization;
-    using TTTReborn.UI;
+    using TTT.Globalization;
+    using TTT.UI;
 
     public static class TooltipConstructor
     {

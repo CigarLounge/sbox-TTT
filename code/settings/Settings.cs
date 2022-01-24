@@ -3,10 +3,10 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.UI.Menu;
+using TTT.Events;
+using TTT.UI.Menu;
 
-namespace TTTReborn.Settings
+namespace TTT.Settings
 {
     public abstract partial class Settings
     {

@@ -4,7 +4,7 @@ using Sandbox.UI;
 
 // TODO use M4x4 transform
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class Drop : DragDrop
     {

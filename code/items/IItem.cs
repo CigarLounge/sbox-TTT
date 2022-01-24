@@ -2,9 +2,9 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class ItemAttribute : Attribute

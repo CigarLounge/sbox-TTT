@@ -4,7 +4,7 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public partial class Window
     {
@@ -96,9 +96,9 @@ namespace TTTReborn.UI.VisualProgramming
     }
 }
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
-    using TTTReborn.UI.VisualProgramming;
+    using TTT.UI.VisualProgramming;
 
     public partial class TTTPlayer
     {

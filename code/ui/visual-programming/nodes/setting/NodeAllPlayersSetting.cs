@@ -1,6 +1,6 @@
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [NodeSetting("all_players")]
     public class NodeAllPlayersSetting : NodeSetting

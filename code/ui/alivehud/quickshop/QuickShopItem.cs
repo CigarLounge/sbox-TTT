@@ -2,11 +2,11 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Items;
-using TTTReborn.Player;
+using TTT.Globalization;
+using TTT.Items;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class QuickShopItem : Panel
     {

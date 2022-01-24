@@ -4,10 +4,10 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Map;
-using TTTReborn.Player;
+using TTT.Map;
+using TTT.Player;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class LogicButtonPoint : Panel
     {

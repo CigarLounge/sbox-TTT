@@ -2,11 +2,11 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.UI;
+using TTT.Globals;
+using TTT.Player;
+using TTT.UI;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class PerkAttribute : ItemAttribute

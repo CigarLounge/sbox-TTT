@@ -3,9 +3,9 @@ using System;
 using Sandbox.Html;
 using Sandbox.UI;
 
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class TranslationDropdown : DropDown, ITranslatable
     {
@@ -120,7 +120,7 @@ namespace TTTReborn.UI
 
 namespace Sandbox.UI.Construct
 {
-    using TTTReborn.UI;
+    using TTT.UI;
 
     public static class TranslationDropdownConstructor
     {

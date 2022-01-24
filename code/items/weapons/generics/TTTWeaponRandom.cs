@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
+using TTT.Globals;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("entity_weapon_random")]
     public class TTTWeaponRandom : Entity

@@ -1,7 +1,7 @@
-using TTTReborn.Globalization;
-using TTTReborn.VisualProgramming;
+using TTT.Globalization;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     public partial class Window
     {

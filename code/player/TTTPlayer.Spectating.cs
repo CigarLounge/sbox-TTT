@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globals;
-using TTTReborn.Player.Camera;
+using TTT.Events;
+using TTT.Globals;
+using TTT.Player.Camera;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public partial class TTTPlayer
     {

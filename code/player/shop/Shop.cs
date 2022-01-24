@@ -4,12 +4,12 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Items;
-using TTTReborn.Roles;
-using TTTReborn.Rounds;
+using TTT.Globals;
+using TTT.Items;
+using TTT.Roles;
+using TTT.Rounds;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public enum BuyError
     {

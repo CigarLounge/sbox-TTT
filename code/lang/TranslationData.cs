@@ -1,6 +1,6 @@
 using System;
 
-namespace TTTReborn.Globalization
+namespace TTT.Globalization
 {
     public class TranslationData
     {

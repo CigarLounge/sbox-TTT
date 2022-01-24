@@ -1,8 +1,8 @@
 using Sandbox.UI;
 
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public abstract class EntityHintPanel : Panel
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 
-namespace TTTReborn.Globalization
+namespace TTT.Globalization
 {
     public struct LanguageData
     {

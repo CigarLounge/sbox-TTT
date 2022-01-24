@@ -2,11 +2,11 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
-using TTTReborn.Settings;
+using TTT.Globals;
+using TTT.Player;
+using TTT.Settings;
 
-namespace TTTReborn.Rounds
+namespace TTT.Rounds
 {
     public class PostRound : BaseRound
     {

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Text.Json;
 
-using TTTReborn.VisualProgramming;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [Spawnable]
     [Node("percentage_selection")]

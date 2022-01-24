@@ -2,18 +2,18 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Events;
-using TTTReborn.Globalization;
-using TTTReborn.Map;
-using TTTReborn.Player;
-using TTTReborn.Rounds;
-using TTTReborn.Settings;
-using TTTReborn.VisualProgramming;
+using TTT.Events;
+using TTT.Globalization;
+using TTT.Map;
+using TTT.Player;
+using TTT.Rounds;
+using TTT.Settings;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.Gamemode
+namespace TTT.Gamemode
 {
     [Hammer.Skip]
-    [Library("tttreborn", Title = "Trouble in Terry's Town")]
+    [Library("ttt", Title = "TTT")]
     public partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Player;
-using TTTReborn.Teams;
+using TTT.Player;
+using TTT.Teams;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class ChatBox : Panel
     {

@@ -4,9 +4,9 @@ using System.Text.Json;
 
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.VisualProgramming
+namespace TTT.VisualProgramming
 {
     [StackNode("percentage_selection")]
     public partial class PercentageSelectionStackNode : StackNode

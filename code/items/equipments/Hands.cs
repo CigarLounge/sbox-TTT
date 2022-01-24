@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Player;
+using TTT.Globals;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     public interface IGrabbable
     {

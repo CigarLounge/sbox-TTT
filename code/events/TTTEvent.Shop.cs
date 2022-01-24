@@ -1,4 +1,4 @@
-namespace TTTReborn.Events
+namespace TTT.Events
 {
     public static partial class TTTEvent
     {
@@ -8,7 +8,7 @@ namespace TTTReborn.Events
             /// Occurs when the shop is changed.
             /// <para>No data is passed to this event.</para>
             /// </summary>
-            public const string Change = "tttreborn.shop.change";
+            public const string Change = "TTT.shop.change";
         }
     }
 }

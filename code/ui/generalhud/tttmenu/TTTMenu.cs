@@ -1,9 +1,9 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.UI.Menu;
+using TTT.UI.Menu;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     [UseTemplate]
     public class TTTMenu : Panel

@@ -4,9 +4,9 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
+using TTT.Globalization;
 
-namespace TTTReborn.UI.Menu
+namespace TTT.UI.Menu
 {
     public partial class KeyBindingsPage : Panel
     {

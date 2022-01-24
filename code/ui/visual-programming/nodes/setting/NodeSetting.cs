@@ -3,7 +3,7 @@ using System;
 using Sandbox;
 using Sandbox.UI;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class NodeSettingAttribute : LibraryAttribute

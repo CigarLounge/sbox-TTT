@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 
-using TTTReborn.Roles;
-using TTTReborn.VisualProgramming;
+using TTT.Roles;
+using TTT.VisualProgramming;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [Spawnable]
     [Node("role_selection")]

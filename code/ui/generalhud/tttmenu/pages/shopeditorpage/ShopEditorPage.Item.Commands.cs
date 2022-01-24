@@ -4,13 +4,13 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Globalization;
-using TTTReborn.Items;
-using TTTReborn.Player;
-using TTTReborn.Roles;
-using TTTReborn.UI.Menu;
+using TTT.Globalization;
+using TTT.Items;
+using TTT.Player;
+using TTT.Roles;
+using TTT.UI.Menu;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public partial class ShopEditorPage : Panel
     {

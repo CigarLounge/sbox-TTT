@@ -1,7 +1,7 @@
-using TTTReborn.Globalization;
-using TTTReborn.UI;
+using TTT.Globalization;
+using TTT.UI;
 
-namespace TTTReborn.Player
+namespace TTT.Player
 {
     public interface IEntityHint
     {

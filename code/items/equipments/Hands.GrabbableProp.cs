@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     public class GrabbableProp : IGrabbable
     {

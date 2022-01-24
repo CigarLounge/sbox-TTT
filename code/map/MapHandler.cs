@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTTReborn.Globals;
-using TTTReborn.Items;
+using TTT.Globals;
+using TTT.Items;
 
-namespace TTTReborn.Map
+namespace TTT.Map
 {
     public partial class MapHandler
     {

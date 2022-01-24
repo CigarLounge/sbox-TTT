@@ -1,9 +1,9 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTTReborn.Settings;
+using TTT.Settings;
 
-namespace TTTReborn.UI.Menu
+namespace TTT.UI.Menu
 {
     [UseTemplate]
     public partial class ServerSettingsPage : Panel

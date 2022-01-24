@@ -1,7 +1,7 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTTReborn.UI
+namespace TTT.UI
 {
     public class WIPDisclaimer : Panel
     {
@@ -21,7 +21,7 @@ namespace TTTReborn.UI
 
             wrapper.Add.Label("TTT Reborn is work-in-progress!");
             wrapper.Add.Label("Everything you see is subject to change or is actively being worked on!");
-            wrapper.Add.Label("Our project is open source, consider contributing at github.com/TTTReborn");
+            wrapper.Add.Label("Our project is open source, consider contributing at github.com/TTT");
 
             AddClass("fullscreen");
         }

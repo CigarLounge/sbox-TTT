@@ -1,8 +1,8 @@
 using Sandbox;
 
-using TTTReborn.Player;
+using TTT.Player;
 
-namespace TTTReborn.Gamemode
+namespace TTT.Gamemode
 {
     public partial class KarmaSystem : BaseNetworkable
     {

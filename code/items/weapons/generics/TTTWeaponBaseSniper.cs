@@ -2,11 +2,11 @@ using System;
 
 using Sandbox;
 
-using TTTReborn.Globalization;
-using TTTReborn.Player;
-using TTTReborn.UI;
+using TTT.Globalization;
+using TTT.Player;
+using TTT.UI;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Hammer.Skip]
     public partial class TTTWeaponBaseSniper : SWB_Base.WeaponBaseSniper, ICarriableItem, IEntityHint

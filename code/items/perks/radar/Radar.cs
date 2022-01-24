@@ -3,11 +3,11 @@ using System.Linq;
 
 using Sandbox;
 
-using TTTReborn.Player;
-using TTTReborn.Teams;
-using TTTReborn.UI;
+using TTT.Player;
+using TTT.Teams;
+using TTT.UI;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("perk_radar")]
     [Buyable(Price = 100)]

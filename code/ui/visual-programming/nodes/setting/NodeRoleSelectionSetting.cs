@@ -2,10 +2,10 @@ using System;
 
 using Sandbox.UI.Construct;
 
-using TTTReborn.Globalization;
-using TTTReborn.Roles;
+using TTT.Globalization;
+using TTT.Roles;
 
-namespace TTTReborn.UI.VisualProgramming
+namespace TTT.UI.VisualProgramming
 {
     [NodeSetting("role_selection")]
     public class NodeRoleSelectionSetting : NodeSetting

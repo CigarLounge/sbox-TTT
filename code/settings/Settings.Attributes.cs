@@ -1,6 +1,6 @@
 using System;
 
-namespace TTTReborn.Settings
+namespace TTT.Settings
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class SettingAttribute : Attribute

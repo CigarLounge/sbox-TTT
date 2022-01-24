@@ -5,7 +5,7 @@ using Sandbox;
 
 using SWB_Base;
 
-namespace TTTReborn.Items
+namespace TTT.Items
 {
     [Library("weapon_rpg")]
     [Weapon(SlotType = SlotType.Primary)]
