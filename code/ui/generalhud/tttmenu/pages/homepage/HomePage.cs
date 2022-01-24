@@ -1,15 +1,11 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
-
-using TTT.VisualProgramming;
 
 namespace TTT.UI.Menu
 {
     [UseTemplate]
     public partial class HomePage : Panel
     {
-        private TranslationButton RoleSelectionEditorButton { get; set; }
         private TranslationButton ShopEditorButton { get; set; }
 
         public void GoToSettingsPage()
@@ -31,11 +27,6 @@ namespace TTT.UI.Menu
 
         public HomePage()
         {
-            if (Local.Client.HasPermission("visualprogramming"))
-            {
-                RoleSelectionEditorButton.RemoveClass("inactive");
-            }
-
             if (Local.Client.HasPermission("shopeditor"))
             {
                 ShopEditorButton.RemoveClass("inactive");
@@ -45,12 +36,6 @@ namespace TTT.UI.Menu
         public void GoToComponentTesting()
         {
             TTTMenu.Instance.AddPage(new ComponentTestingPage());
-        }
-
-        public void GoToRoleSelectionEditor()
-        {
-            // Ends up launching a new panel on the GeneralHud layer.
-            NodeStack.ServerRequestStack();
         }
     }
 }

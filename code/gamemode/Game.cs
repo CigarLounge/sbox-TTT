@@ -8,7 +8,6 @@ using TTT.Map;
 using TTT.Player;
 using TTT.Rounds;
 using TTT.Settings;
-using TTT.VisualProgramming;
 
 namespace TTT.Gamemode
 {
@@ -47,7 +46,6 @@ namespace TTT.Gamemode
             if (IsServer)
             {
                 ShopManager.Load();
-                NodeStack.Load();
             }
         }
 
