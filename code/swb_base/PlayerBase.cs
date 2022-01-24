@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 
 using Sandbox;
 
@@ -12,7 +12,6 @@ namespace SWB_Base
 
         public PlayerBase(IBaseInventory inventory = null)
         {
-            // Reborn override
             // if (inventory != null)
             // {
             //     Inventory = inventory;
@@ -25,7 +24,6 @@ namespace SWB_Base
 
         public override void Respawn()
         {
-            // Reborn override
             // SetModel("models/citizen/citizen.vmdl");
             // //SetModel( "playermodels/css_playermodels/css_t_arctic.vmdl" );
 
@@ -48,7 +46,6 @@ namespace SWB_Base
         {
             base.OnKilled();
 
-            // Reborn override
             // Inventory.DropActive();
             // Inventory.DeleteContents();
 
@@ -206,7 +203,7 @@ namespace SWB_Base
         public void TookDamage(Vector3 pos)
         {
             //DebugOverlay.Sphere( pos, 5.0f, Color.Red, false, 50.0f );
-            // TODO: Potentially use.
+
             // DamageIndicator.Current?.OnHit(pos);
         }
 

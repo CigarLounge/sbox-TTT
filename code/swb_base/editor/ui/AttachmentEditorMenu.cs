@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
-
 using Sandbox;
 using Sandbox.UI;
 

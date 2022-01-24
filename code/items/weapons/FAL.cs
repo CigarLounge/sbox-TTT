@@ -88,37 +88,6 @@ namespace TTT.Items
                 Angle = new Angles(-2.25f, 51.84f, 0f),
                 Pos = new Vector3(11.22f, -4.96f, 1.078f)
             };
-
-            // Attachments //
-            AttachmentCategories = new List<AttachmentCategory>()
-            {
-                new AttachmentCategory
-                {
-                    Name = AttachmentCategoryName.Muzzle,
-                    BoneOrAttachment = "muzzle",
-                    Attachments = new List<AttachmentBase>()
-                    {
-                        new RifleSilencer
-                        {
-                            Enabled = false,
-                            MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
-                            ShootSound = "swb_rifle.silenced.fire",
-                            ViewParentBone = "fal",
-                            ViewTransform = new Transform {
-                                Position = new Vector3(0.019f, 3.65f, 38.057f),
-                                Rotation = Rotation.From(new Angles(-90f, 0f, 90f)),
-                                Scale = 15f
-                            },
-                            WorldParentBone = "fal",
-                            WorldTransform = new Transform {
-                                Position = new Vector3(0.019f, 1.8f, 38.057f),
-                                Rotation = Rotation.From(new Angles(-90f, 0f, 90f)),
-                                Scale = 15f
-                            },
-                        }
-                    }
-                }
-            };
         }
     }
 }

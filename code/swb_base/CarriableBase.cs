@@ -1,7 +1,6 @@
-using System;
-
-using Sandbox;
+﻿using Sandbox;
 using Sandbox.UI;
+using System;
 
 namespace SWB_Base
 {

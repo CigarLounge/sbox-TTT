@@ -1,9 +1,8 @@
-/* 
+﻿/* 
  * Weapon base for weapons using shell based reloading 
 */
 
 using System.Threading.Tasks;
-
 using Sandbox;
 
 namespace SWB_Base

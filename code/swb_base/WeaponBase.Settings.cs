@@ -1,5 +1,4 @@
-using System;
-
+﻿using System;
 using Sandbox;
 
 /* 
@@ -42,7 +41,7 @@ namespace SWB_Base
                 value = (success && number > 0).ToString();
             }
 
-            return (T) Convert.ChangeType(value, typeof(T));
+            return (T)Convert.ChangeType(value, typeof(T));
         }
     }
 }

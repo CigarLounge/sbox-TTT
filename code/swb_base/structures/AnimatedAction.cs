@@ -1,7 +1,6 @@
+﻿using Sandbox;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using Sandbox;
 
 namespace SWB_Base
 {

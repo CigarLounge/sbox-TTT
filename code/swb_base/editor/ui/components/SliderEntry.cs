@@ -1,8 +1,7 @@
+﻿using Sandbox.UI;
+using Sandbox.UI.Construct;
 using System;
 using System.Linq;
-
-using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace SWB_Base
 {

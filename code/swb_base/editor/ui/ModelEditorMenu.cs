@@ -1,9 +1,7 @@
-using System;
-
+﻿using System;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-
 using SWB_Base;
 
 namespace SWB_Base

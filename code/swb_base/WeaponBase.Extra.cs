@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 
 /* 
  * Weapon base for weapons using magazine based reloading 

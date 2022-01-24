@@ -83,7 +83,7 @@ namespace TTT.Items
                     BoneOrAttachment = "muzzle",
                     Attachments = new List<AttachmentBase>()
                     {
-                        new PistolSilencer
+                        new SWB_Base.Attachments.PistolSilencer
                         {
                             Enabled = true,
                             MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
@@ -100,25 +100,6 @@ namespace TTT.Items
                                 Position = new Vector3(1f, 4.4f, 16.5f),
                                 Rotation = Rotation.From(new Angles(-90f, 0f, 0f)),
                                 Scale = 9f
-                            },
-                        },
-                        new TestSilencer
-                        {
-                            Enabled = false,
-                            MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
-                            ShootSound = "swb_heavy.silenced.fire",
-                            ViewParentBone = "talon",
-                            ViewTransform = new Transform
-                            {
-                                Position = new Vector3(0f, 2.6f, 14.8f),
-                                Rotation = Rotation.From(new Angles(-90f, 0f, 90f)),
-                                Scale = 20f
-                            },
-                            WorldParentBone = "talon",
-                            WorldTransform = new Transform {
-                                Position = new Vector3(1f, 4.4f, 16.5f),
-                                Rotation = Rotation.From(new Angles(-90f, 0f, 0f)),
-                                Scale = 20f
                             },
                         }
                     }

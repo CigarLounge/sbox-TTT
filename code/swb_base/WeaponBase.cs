@@ -1,5 +1,4 @@
-using System;
-
+﻿using System;
 using Sandbox;
 using Sandbox.UI;
 
@@ -159,11 +158,10 @@ namespace SWB_Base
                 OnReloadFinish();
             }
 
-            // Reborn override
-            // if (IsClient)
-            // {
-            //     UISimulate(player);
-            // }
+            if (IsClient)
+            {
+                UISimulate(player);
+            }
         }
 
         public virtual void ResetBurstFireCount(ClipInfo clipInfo, InputButton inputButton)
@@ -438,7 +436,7 @@ namespace SWB_Base
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", (int) HoldType);
+            anim.SetParam("holdtype", (int)HoldType);
             anim.SetParam("aimat_weight", 1.0f);
         }
 
