@@ -28,11 +28,11 @@ namespace TTTReborn.UI
 
             _serverNameLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverNameLabel.AddClass("server-name-label");
-            _serverNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD_GAMEMODE", "Trouble in Terry's Town"));
+            _serverNameLabel.UpdateTranslation(new TranslationData("SCOREBOARD_GAMEMODE", "TTT"));
 
             _serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel(new TranslationData());
             _serverDescriptionLabel.AddClass("server-description-label");
-            _serverDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD_CREATEDBY", "Neoxult"));
+            _serverDescriptionLabel.UpdateTranslation(new TranslationData("SCOREBOARD_CREATEDBY", "mzegar"));
 
             _serverDataPanel = new(this);
             _serverDataPanel.AddClass("server-data-panel");
