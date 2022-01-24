@@ -92,7 +92,7 @@ namespace TTT.Settings
 
                 if (Instance.LoadingError != SettingsLoadingError.NotExist)
                 {
-                    Log.Warning("Your TTT Reborn settings were overwritten (reset) due to an error in the file!");
+                    Log.Warning("Your TTT settings were overwritten (reset) due to an error in the file!");
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 # sbox TTT
 
-TTT Reborn is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
+TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
 
 ## CONTRIBUTING
 
