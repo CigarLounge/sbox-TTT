@@ -1,7 +1,5 @@
 # sbox TTT
 
-## MOTIVATION
-
 TTT Reborn is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). Our first goal is to perfect the vanilla TTT experience.
 
 ## CONTRIBUTING
