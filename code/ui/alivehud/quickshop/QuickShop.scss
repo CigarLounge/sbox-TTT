@@ -96,4 +96,10 @@ QuickShopItem {
         font-weight: bold;
         font-size: 20px;
     }
+
+    &.cannot-purchase {
+        opacity: 0.35;
+        transform: scale(1);
+        cursor: none;
+    }
 }
