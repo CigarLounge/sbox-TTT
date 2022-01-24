@@ -3,7 +3,7 @@
   "Title": "sbox-ttt",
   "Type": "game",
   "Org": "matt",
-  "Ident": "sbox-ttt",
+  "Ident": "ttt",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
