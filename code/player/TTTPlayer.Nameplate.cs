@@ -4,7 +4,7 @@ namespace TTT.Player
 {
     public partial class TTTPlayer : IEntityHint
     {
-        public float HintDistance => 400f;
+        public float HintDistance => 20480f;
 
         public bool ShowGlow => false;
 
