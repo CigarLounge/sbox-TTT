@@ -12,7 +12,7 @@ using TTT.Settings;
 namespace TTT.Gamemode
 {
     [Hammer.Skip]
-    [Library("ttt", Title = "TTT")]
+    [Library("sbox_ttt", Title = "TTT")]
     public partial class Game : Sandbox.Game
     {
         public static Game Instance { get; private set; }
