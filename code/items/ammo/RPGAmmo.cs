@@ -3,7 +3,6 @@ using Sandbox;
 namespace TTT.Items
 {
     [Library("ammo_rpg")]
-    [Spawnable]
     [Hammer.EditorModel("weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl")]
     partial class RPGAmmo : TTTAmmo
     {
