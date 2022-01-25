@@ -18,7 +18,7 @@ namespace TTT.Items
     }
 
     [Hammer.Skip]
-    public abstract class TTTPerk : BaseNetworkable, IItem
+    public abstract class TTTPerk : IItem
     {
         public string LibraryName { get; }
         public Entity Owner { get; private set; }

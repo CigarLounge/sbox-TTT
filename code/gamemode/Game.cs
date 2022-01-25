@@ -39,9 +39,11 @@ namespace TTT.Gamemode
                 PrecacheFiles();
             }
 
+            Log.Info("CALLED");
+
             TTTLanguage.Load();
             SettingsManager.Load();
-            MapSelection.Load();
+            _ = MapSelection.Load();
 
             if (IsServer)
             {
