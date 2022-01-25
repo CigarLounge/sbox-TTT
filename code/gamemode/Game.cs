@@ -39,8 +39,6 @@ namespace TTT.Gamemode
                 PrecacheFiles();
             }
 
-            Log.Info("CALLED");
-
             TTTLanguage.Load();
             SettingsManager.Load();
             _ = MapSelection.Load();
