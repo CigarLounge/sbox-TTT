@@ -9,7 +9,6 @@ namespace TTT.Items
 {
     [Library("weapon_silenceddeagle")]
     [Weapon(SlotType = SlotType.Secondary)]
-    [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl")]
     [Hammer.EditorModel("weapons/swb/pistols/deagle/w_deagle.vmdl")]

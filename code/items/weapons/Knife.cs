@@ -6,7 +6,6 @@ namespace TTT.Items
 {
     [Library("weapon_knife")]
     [Weapon(SlotType = SlotType.Melee)]
-    [Spawnable]
     [Buyable(Price = 100)]
     [Precached("weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl")]
     [Hammer.EditorModel("weapons/swb/melee/bayonet/w_bayonet.vmdl")]
