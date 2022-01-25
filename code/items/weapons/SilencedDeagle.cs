@@ -85,7 +85,6 @@ namespace TTT.Items
                     {
                         new SWB_Base.Attachments.PistolSilencer
                         {
-                            Enabled = true,
                             MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
                             ShootSound = "swb_heavy.silenced.fire",
                             ViewParentBone = "talon",

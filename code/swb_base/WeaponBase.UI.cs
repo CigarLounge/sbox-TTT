@@ -70,6 +70,7 @@ namespace SWB_Base
 
         public void UISimulate(Client player)
         {
+            return;
             // Cutomization menu
             if (Input.Pressed(InputButton.Menu) && AttachmentCategories != null)
             {
