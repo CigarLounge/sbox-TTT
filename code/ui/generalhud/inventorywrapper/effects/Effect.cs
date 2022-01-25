@@ -20,21 +20,17 @@ namespace TTT.UI
                 _item = value;
 
                 _nameLabel.UpdateTranslation(new TranslationData(_item?.LibraryName.ToUpper() ?? ""));
-                _effectImage.Texture = (_item != null ? Texture.Load(FileSystem.Mounted, $"/ui/weapons/{_item.LibraryName}.png", false) : null);
+                _effectImage.Texture = _item != null ? Texture.Load(FileSystem.Mounted, $"/ui/weapons/{_item.LibraryName}.png", false) : null;
 
                 if (_effectImage.Texture == null)
                 {
                     _effectImage.Texture = Texture.Load(FileSystem.Mounted, $"/ui/none.png");
                 }
 
-                if (_item is TTTCountdownPerk)
-                {
-                    ActivateCountdown();
-                }
-                else
-                {
-                    _countdownLabel?.Delete();
-                }
+                _label = _effectIconPanel.Add.Label();
+                _label.AddClass("countdown");
+                _label.AddClass("centered");
+                _label.AddClass("text-shadow");
             }
         }
 
@@ -42,7 +38,7 @@ namespace TTT.UI
         private readonly TranslationLabel _nameLabel;
         private readonly Panel _effectIconPanel;
         private readonly Image _effectImage;
-        private Label _countdownLabel;
+        private Label _label;
 
         public Effect(Panel parent, IItem effect) : base(parent)
         {
@@ -62,31 +58,30 @@ namespace TTT.UI
             Item = effect;
         }
 
-        private void ActivateCountdown()
-        {
-            _countdownLabel = _effectIconPanel.Add.Label();
-            _countdownLabel.AddClass("countdown");
-            _countdownLabel.AddClass("centered");
-            _countdownLabel.AddClass("text-shadow");
-        }
-
         public override void Tick()
         {
             base.Tick();
 
-            if (_countdownLabel != null && Item is TTTCountdownPerk countdownPerk)
+            if (_label != null)
             {
-                int currentCountdown = (countdownPerk.Countdown - countdownPerk.LastCountdown).CeilToInt();
+                if (Item is TTTCountdownPerk countdownPerk)
+                {
+                    int currentCountdown = (countdownPerk.Countdown - countdownPerk.LastCountdown).CeilToInt();
 
-                if (currentCountdown == countdownPerk.Countdown.CeilToInt() || currentCountdown == 0)
-                {
-                    _effectImage.SetClass("cooldown", false);
-                    _countdownLabel.Text = "";
+                    if (currentCountdown == countdownPerk.Countdown.CeilToInt() || currentCountdown == 0)
+                    {
+                        _effectImage.SetClass("cooldown", false);
+                        _label.Text = "";
+                    }
+                    else
+                    {
+                        _effectImage.SetClass("cooldown", true);
+                        _label.Text = $"{currentCountdown:n0}";
+                    }
                 }
-                else
+                else if (Item is TTTBoolPerk boolPerk)
                 {
-                    _effectImage.SetClass("cooldown", true);
-                    _countdownLabel.Text = $"{currentCountdown:n0}";
+                    _label.Text = boolPerk.IsEnabled ? "ON" : "OFF";
                 }
             }
         }

@@ -9,14 +9,19 @@ namespace TTT.Items
     [Library("perk_disguiser")]
     [Buyable(Price = 100)]
     [Hammer.Skip]
-    public partial class Disguiser : TTTPerk
+    public partial class Disguiser : TTTBoolPerk
     {
+        public override bool IsEnabled { get; set; } = false;
+
         private readonly float _lockOutSeconds = 1f;
         private bool _isLocked = false;
 
         public Disguiser() : base()
         {
-
+            if (Owner is TTTPlayer player)
+            {
+                IsEnabled = player.IsDisguised;
+            }
         }
 
         public override void OnRemove()
@@ -41,6 +46,9 @@ namespace TTT.Items
                     player.IsDisguised = !player.IsDisguised;
                     _isLocked = true;
                 }
+
+                IsEnabled = player.IsDisguised;
+
                 _ = DisguiserLockout();
             }
         }
