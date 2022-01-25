@@ -1,3 +1,5 @@
+using Sandbox;
+
 using TTT.Items;
 using TTT.UI;
 
@@ -11,7 +13,7 @@ namespace TTT.Player
 
         public bool CanHint(TTTPlayer player)
         {
-            return true;
+            return !IsDisguised;
         }
 
         public EntityHintPanel DisplayHint(TTTPlayer player)

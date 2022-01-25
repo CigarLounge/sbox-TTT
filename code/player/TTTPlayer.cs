@@ -19,6 +19,9 @@ namespace TTT.Player
         [Net]
         public bool IsForcedSpectator { get; set; } = false;
 
+        [Net]
+        public bool IsDisguised { get; set; } = false;
+
         public bool IsInitialSpawning { get; set; } = false;
 
         public new Inventory Inventory
