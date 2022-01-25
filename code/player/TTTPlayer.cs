@@ -19,6 +19,7 @@ namespace TTT.Player
         [Net]
         public bool IsForcedSpectator { get; set; } = false;
 
+        // Handled by Disguiser.cs perk.
         [Net]
         public bool IsDisguised { get; set; } = false;
 
