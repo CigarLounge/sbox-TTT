@@ -4,11 +4,11 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-    [Library("equipment_healthstation")]
+    [Library("equipment_deathstation")]
     [Equipment(SlotType = SlotType.UtilityEquipment)]
     [Buyable(Price = 100)]
     [Hammer.Skip]
-    public partial class HealthStation : TTTEquipment
+    public partial class DeathStation : TTTEquipment
     {
         public override string ViewModelPath => "";
 
@@ -30,7 +30,7 @@ namespace TTT.Items
             {
                 if (Input.Pressed(InputButton.Attack1))
                 {
-                    owner.Inventory.DropEntity(this, typeof(HealthstationEntity));
+                    owner.Inventory.DropEntity(this, typeof(DeathstationEntity));
                 }
             }
         }
