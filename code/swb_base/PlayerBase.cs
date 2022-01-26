@@ -212,8 +212,8 @@ namespace SWB_Base
         {
             // Hitmarker.Current?.Create(isKill);
 
-            if (playSound)
-                PlaySound("swb_hitmarker");
+            // if (playSound)
+            //     PlaySound("swb_hitmarker");
         }
     }
 }

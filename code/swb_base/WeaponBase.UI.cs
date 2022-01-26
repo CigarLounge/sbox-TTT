@@ -18,8 +18,8 @@ namespace SWB_Base
 
         public override void CreateHudElements()
         {
+            // TTT OVERRIDE
             return;
-
             var showHUDCL = GetSetting<bool>("swb_cl_showhud", true);
             var showHUDSV = GetSetting<bool>("swb_sv_showhud", true);
 
@@ -70,6 +70,7 @@ namespace SWB_Base
 
         public void UISimulate(Client player)
         {
+            // TTT OVERRIDE
             return;
             // Cutomization menu
             if (Input.Pressed(InputButton.Menu) && AttachmentCategories != null)

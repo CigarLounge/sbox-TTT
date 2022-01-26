@@ -68,7 +68,7 @@ namespace TTT.Items
                 BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.normal
+                InfiniteAmmo = 0
             };
 
             ZoomAnimData = new AngPos
