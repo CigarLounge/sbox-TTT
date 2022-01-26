@@ -84,7 +84,7 @@ namespace TTT.Items
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_large.vpcf",
                 BulletTracerParticle = "particles/swb/tracer/tracer_large.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.normal
+                InfiniteAmmo = 0
             };
 
             ZoomAnimData = new AngPos

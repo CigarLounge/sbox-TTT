@@ -24,7 +24,7 @@ namespace TTT.Items
 
         public static void Simulate(Client owner, Type AmmoType, SWB_Base.ClipInfo clip)
         {
-            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && clip.Ammo > 0 && clip.InfiniteAmmo == SWB_Base.InfiniteAmmoType.normal)
+            if (Input.Pressed(InputButton.Drop) && Input.Down(InputButton.Run) && clip.Ammo > 0 && clip.InfiniteAmmo == 0)
             {
                 if (Host.IsServer && AmmoType != null)
                 {

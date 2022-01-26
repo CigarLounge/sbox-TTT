@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Sandbox;
 using Sandbox.UI;
 
@@ -33,9 +32,6 @@ namespace SWB_Base
             TimeSinceDeployed = 0;
             IsReloading = false;
             InstanceID++;
-
-            // Attachments
-            HandleAttachments(true);
 
             // Draw animation
             if (IsLocalPawn)
@@ -78,6 +74,9 @@ namespace SWB_Base
                     RPM = Primary.RPM,
                 };
             }
+
+            // Attachments
+            HandleAttachments(true);
         }
 
         public override void ActiveEnd(Entity ent, bool dropped)
@@ -159,10 +158,10 @@ namespace SWB_Base
                 OnReloadFinish();
             }
 
-            // if (IsClient)
-            // {
-            //     UISimulate(player);
-            // }
+            if (IsClient)
+            {
+                UISimulate(player);
+            }
         }
 
         public virtual void ResetBurstFireCount(ClipInfo clipInfo, InputButton inputButton)
@@ -437,7 +436,7 @@ namespace SWB_Base
 
         public override void SimulateAnimator(PawnAnimator anim)
         {
-            anim.SetParam("holdtype", (int) HoldType);
+            anim.SetParam("holdtype", (int)HoldType);
             anim.SetParam("aimat_weight", 1.0f);
         }
 

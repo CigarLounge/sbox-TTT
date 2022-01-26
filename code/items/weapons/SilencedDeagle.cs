@@ -52,7 +52,7 @@ namespace TTT.Items
                 BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
                 MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.normal
+                InfiniteAmmo = 0
             };
 
             ZoomAnimData = new AngPos
@@ -84,6 +84,7 @@ namespace TTT.Items
                     {
                         new SWB_Base.Attachments.PistolSilencer
                         {
+                            Enabled = true,
                             MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
                             ShootSound = "swb_heavy.silenced.fire",
                             ViewParentBone = "talon",

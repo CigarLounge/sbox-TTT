@@ -255,7 +255,7 @@ namespace TTT.UI
 
         private static string FormatAmmo(SWB_Base.WeaponBase weapon, int ammoCount)
         {
-            if (weapon.Primary.InfiniteAmmo != SWB_Base.InfiniteAmmoType.normal)
+            if (weapon.Primary.InfiniteAmmo != 0)
             {
                 return $"{weapon.Primary.AmmoType} + ∞";
             }

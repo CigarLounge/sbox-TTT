@@ -75,7 +75,7 @@ namespace TTT.Items
 
                 MuzzleFlashParticle = "particles/swb/smoke/swb_smokepuff_1.vpcf",
 
-                InfiniteAmmo = InfiniteAmmoType.normal
+                InfiniteAmmo = 0
             };
 
             ZoomAnimData = new AngPos
