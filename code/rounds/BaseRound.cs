@@ -8,22 +8,23 @@ namespace TTT.Rounds
 {
     public abstract partial class BaseRound : BaseNetworkable
     {
+        [Net] public TimeUntil TimeUntilRoundEnds { get; set; }
         public virtual int RoundDuration => 0;
         public virtual string RoundName => "";
 
-        public float RoundEndTime { get; set; }
-
-        public float TimeLeft => RoundEndTime - Time.Now;
-
-        [Net]
-        public string TimeLeftFormatted { get; set; }
+        public string TimeLeftFormatted
+        {
+            get
+            {
+                return Globals.Utils.TimerString(TimeUntilRoundEnds.Relative);
+            }
+        }
 
         public void Start()
         {
             if (Host.IsServer && RoundDuration > 0)
             {
-                RoundEndTime = Time.Now + RoundDuration;
-                TimeLeftFormatted = Globals.Utils.TimerString(TimeLeft);
+                TimeUntilRoundEnds = RoundDuration;
             }
 
             OnStart();
@@ -33,7 +34,7 @@ namespace TTT.Rounds
         {
             if (Host.IsServer)
             {
-                RoundEndTime = 0f;
+                TimeUntilRoundEnds = 0f;
             }
 
             OnFinish();
@@ -69,15 +70,9 @@ namespace TTT.Rounds
         {
             if (Host.IsServer)
             {
-                if (RoundEndTime > 0 && Time.Now >= RoundEndTime)
+                if (TimeUntilRoundEnds)
                 {
-                    RoundEndTime = 0f;
-
                     OnTimeUp();
-                }
-                else
-                {
-                    TimeLeftFormatted = TimeSpan.FromSeconds(TimeLeft).ToString(@"mm\:ss");
                 }
             }
         }
