@@ -1,16 +1,16 @@
 <link rel="stylesheet" href="HomePage.scss">
 
 <div class="root">
-    <TranslationButton icon="keyboard" key="MENU_SUBMENU_KEYBINDINGS" onclick="GoToKeyBindingsPage()" />
+    <Button icon="keyboard" key="MENU_SUBMENU_KEYBINDINGS" onclick="GoToKeyBindingsPage()" />
     <br />
 
-    <TranslationButton icon="settings" key="MENU_SUBMENU_SETTINGS" onclick="GoToSettingsPage()" />
+    <Button icon="settings" key="MENU_SUBMENU_SETTINGS" onclick="GoToSettingsPage()" />
     <br />
 
-    <TranslationButton @ref="ShopEditorButton" class="inactive" icon="shopping_cart" key="MENU_SUBMENU_SHOPEDITOR"
+    <Button @ref="ShopEditorButton" class="inactive" icon="shopping_cart" key="MENU_SUBMENU_SHOPEDITOR"
         onclick="GoToShopEditor()" />
     <br />
 
-    <TranslationButton icon="science" key="MENU_SUBMENU_TESTING" onclick="GoToComponentTesting()" />
+    <Button icon="science" key="MENU_SUBMENU_TESTING" onclick="GoToComponentTesting()" />
     <br />
 </div>

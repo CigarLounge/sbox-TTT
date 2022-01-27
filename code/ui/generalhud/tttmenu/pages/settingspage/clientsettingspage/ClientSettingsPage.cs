@@ -8,7 +8,7 @@ namespace TTT.UI.Menu
 	[UseTemplate]
 	public partial class ClientSettingsPage : Panel
 	{
-		private TranslationTabContainer TabContainer { get; set; }
+		private TabContainer TabContainer { get; set; }
 		private Panel Buttons { get; set; }
 		private readonly FileSelection _currentFileSelection;
 

@@ -1,15 +1,13 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class Hint : EntityHintPanel
 	{
-		private readonly TranslationLabel _label;
+		private readonly Label _label;
 
-		public Hint( TranslationData translationData )
+		public Hint( string text )
 		{
 			AddClass( "centered-vertical-75" );
 			AddClass( "background-color-primary" );
@@ -17,15 +15,15 @@ namespace TTT.UI
 			AddClass( "text-color-info" );
 			AddClass( "text-shadow" );
 
-			_label = Add.TranslationLabel( translationData );
+			_label = Add.Label( text );
 			_label.Style.Padding = 10;
 
 			this.Enabled( false );
 		}
 
-		public override void UpdateHintPanel( TranslationData translationData )
+		public override void UpdateHintPanel( string text )
 		{
-			_label.UpdateTranslation( translationData );
+			_label.Text = text;
 		}
 	}
 }

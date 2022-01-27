@@ -3,15 +3,13 @@ using System;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public partial class PanelHeader : Panel
 	{
 		public Action<PanelHeader> OnClose { get; set; }
 
-		private TranslationLabel _title;
+		private Label _title;
 
 		public PanelHeader( Panel parent = null ) : base( parent )
 		{
@@ -24,7 +22,7 @@ namespace TTT.UI
 		{
 			DeleteChildren( true );
 
-			_title = Add.TranslationLabel( new TranslationData(), "title" );
+			_title = Add.Label( "", "title" );
 
 			OnCreateHeader();
 
@@ -37,11 +35,6 @@ namespace TTT.UI
 		public void SetTitle( string text )
 		{
 			_title.Text = text;
-		}
-
-		public void SetTranslationTitle( TranslationData translationdata )
-		{
-			_title.UpdateTranslation( translationdata );
 		}
 
 		public virtual void OnCreateHeader()

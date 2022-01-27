@@ -1,4 +1,4 @@
-.translationtab {
+tab {
     &.button
     {
         border: none;
@@ -42,7 +42,7 @@
     }
 }
 
-TranslationTabContainer, .tabcontainer
+tabcontainer
 {
     flex-grow: 1;
     flex-direction: column;

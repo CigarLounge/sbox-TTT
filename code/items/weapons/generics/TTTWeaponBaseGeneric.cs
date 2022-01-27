@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTT.Globalization;
 using TTT.Player;
 
 namespace TTT.Items
@@ -40,9 +39,9 @@ namespace TTT.Items
 			}
 		}
 
-		public static TranslationData PickupText( string LibraryName )
+		public static string PickupText( string LibraryName )
 		{
-			return new( "GENERIC_PICKUP", Input.GetKeyWithBinding( "+iv_use" ).ToUpper(), new TranslationData( LibraryName.ToUpper() ) );
+			return $"Press {Input.GetButtonOrigin( InputButton.Use )} to pickup {LibraryName}";
 		}
 
 		public static void Tick( TTTPlayer player, ICarriableItem item )

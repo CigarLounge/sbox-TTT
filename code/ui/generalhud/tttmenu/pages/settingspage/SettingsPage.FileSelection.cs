@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Settings;
 
 namespace TTT.UI.Menu
@@ -13,7 +12,7 @@ namespace TTT.UI.Menu
 		{
 			Panel wrapper = new();
 
-			wrapper.Add.TranslationButton( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE" ), "save", null, () =>
+			wrapper.Add.Button( "MENU_SETTINGS_BUTTONS_SAVE", "save", () =>
 			   {
 				   currentFileSelection?.Close();
 
@@ -29,7 +28,7 @@ namespace TTT.UI.Menu
 
 			wrapper.Add.HorizontalLineBreak();
 
-			wrapper.Add.TranslationButton( new TranslationData( "MENU_SETTINGS_BUTTONS_LOAD" ), "upload_file", null, () =>
+			wrapper.Add.Button( "MENU_SETTINGS_BUTTONS_LOAD", "upload_file", () =>
 			   {
 				   currentFileSelection?.Close();
 
@@ -124,8 +123,8 @@ namespace TTT.UI.Menu
 			string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
 			DialogBox dialogBox = new();
-			dialogBox.SetTranslationTitle( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath ) );
-			dialogBox.AddTranslation( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT", fullFilePath ) );
+			dialogBox.SetTitle( fullFilePath );
+			dialogBox.AddText( fullFilePath );
 			dialogBox.OnAgree = () =>
 			{
 				onConfirm();

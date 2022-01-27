@@ -4,7 +4,6 @@ using System.Text.Json;
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Globalization;
 using TTT.Items;
 using TTT.Player;
 using TTT.Roles;
@@ -177,7 +176,7 @@ namespace TTT.UI
 		{
 			DialogBox dialogBox = new();
 			dialogBox.Header.DragHeader.IsLocked = false;
-			dialogBox.SetTranslationTitle( new TranslationData( "MENU_SHOPEDITOR_ITEM_EDIT_SPECIFIC", new TranslationData( item.ItemData.Name.ToUpper() ) ) );
+			dialogBox.SetTitle( item.ItemData.Name.ToUpper() );
 			dialogBox.AddClass( "itemeditwindow" );
 
 			dialogBox.OnAgree = () =>

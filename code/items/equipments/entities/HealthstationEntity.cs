@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTT.Globalization;
 using TTT.Player;
 using TTT.UI;
 
@@ -51,7 +50,7 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public TranslationData TextOnTick => new( "HEALTH_STATION", new object[] { Input.GetKeyWithBinding( "+iv_use" ).ToUpper(), $"{StoredHealth}" } );
+		public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use )} to use the Health Station ({StoredHealth} charges)";
 
 		public bool CanHint( TTTPlayer client )
 		{

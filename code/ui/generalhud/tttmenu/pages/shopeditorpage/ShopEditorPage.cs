@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Items;
 using TTT.Roles;
 
@@ -17,18 +16,17 @@ namespace TTT.UI
 
 		private Panel Controls { get; set; }
 		private Panel RoleShopContent { get; set; }
-		private readonly TranslationCheckbox _translationCheckbox;
+		private readonly Checkbox _checkbox;
 
 		public ShopEditorPage()
 		{
 			Panel wrapper = new( Controls );
 
-			TranslationDropdown roleDropdown = wrapper.Add.TranslationDropdown();
-			roleDropdown.AddTooltip( new TranslationData( "MENU_SHOPEDITOR_SELECTROLE" ), "roleselection" );
+			DropDown roleDropdown = new DropDown( wrapper );
 			roleDropdown.AddEventListener( "onchange", () =>
 			 {
 				 bool hasRoleSelected = roleDropdown.Selected != null && roleDropdown.Selected.Value is TTTRole role;
-				 _translationCheckbox.SetClass( "inactive", !hasRoleSelected );
+				 _checkbox.SetClass( "inactive", !hasRoleSelected );
 
 				 if ( hasRoleSelected )
 				 {
@@ -45,20 +43,21 @@ namespace TTT.UI
 					continue;
 				}
 
-				TranslationOption option = new( new TranslationData( role.GetRoleTranslationKey( "NAME" ) ), role );
+				Option option = new( new string( role.Name ), role );
 				roleDropdown.Options.Add( option );
-				roleDropdown.Select( option );
+				roleDropdown.Selected = option;
 			}
 
 			wrapper.Add.HorizontalLineBreak();
 
-			_translationCheckbox = wrapper.Add.TranslationCheckbox( new TranslationData( "MENU_SHOPEDITOR_ENABLEROLE" ) );
-			_translationCheckbox.AddClass( "inactive" );
-			_translationCheckbox.AddEventListener( "onchange", () =>
+			_checkbox = new Checkbox();
+			_checkbox.Parent = wrapper;
+			_checkbox.AddClass( "inactive" );
+			_checkbox.AddEventListener( "onchange", () =>
 			 {
 				 if ( roleDropdown.Selected.Value is TTTRole role )
 				 {
-					 ServerToggleShop( role.Name, _translationCheckbox.Checked );
+					 ServerToggleShop( role.Name, _checkbox.Checked );
 				 }
 			 } );
 		}
@@ -68,7 +67,7 @@ namespace TTT.UI
 			RoleShopContent.DeleteChildren( true );
 			ShopItems.Clear();
 
-			_translationCheckbox.Checked = selectedRole.Shop.Enabled;
+			_checkbox.Checked = selectedRole.Shop.Enabled;
 
 			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>() )
 			{
@@ -102,7 +101,7 @@ namespace TTT.UI
 
 				wrapper.Add.HorizontalLineBreak();
 
-				wrapper.Add.TranslationButton( new TranslationData(), "settings", null, () =>
+				wrapper.Add.Button( "", "settings", () =>
 				 {
 					 EditItem( item, selectedRole );
 				 } );

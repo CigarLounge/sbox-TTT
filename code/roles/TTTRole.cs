@@ -85,10 +85,5 @@ namespace TTT.Roles
 		{
 
 		}
-
-		public string GetRoleTranslationKey( string key )
-		{
-			return $"{Name.ToUpper()}_{key}";
-		}
 	}
 }

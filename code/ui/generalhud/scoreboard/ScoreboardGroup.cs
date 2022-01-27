@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public partial class ScoreboardGroup : Panel
@@ -12,9 +10,9 @@ namespace TTT.UI
 		public int GroupMembers = 0;
 
 		private readonly Panel _groupTitlePanel;
-		private readonly TranslationLabel _groupTitleLabel;
-		private readonly TranslationLabel _groupKarmaLabel;
-		private readonly TranslationLabel _groupPingLabel;
+		private readonly Label _groupTitleLabel;
+		private readonly Label _groupKarmaLabel;
+		private readonly Label _groupPingLabel;
 		private readonly Panel _groupContent;
 
 		public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
@@ -29,13 +27,13 @@ namespace TTT.UI
 			_groupTitlePanel.AddClass( "opacity-medium" );
 			_groupTitlePanel.AddClass( "rounded-top" );
 
-			_groupTitleLabel = _groupTitlePanel.Add.TranslationLabel( new TranslationData() );
+			_groupTitleLabel = _groupTitlePanel.Add.Label();
 			_groupTitleLabel.AddClass( "group-title-label" );
 
-			_groupKarmaLabel = _groupTitlePanel.Add.TranslationLabel( new TranslationData( "SCOREBOARD_PLAYER_STATUS_KARMA" ) );
+			_groupKarmaLabel = _groupTitlePanel.Add.Label( "Karma" );
 			_groupKarmaLabel.AddClass( "group-karma-label" );
 
-			_groupPingLabel = _groupTitlePanel.Add.TranslationLabel( new TranslationData( "SCOREBOARD_PLAYER_STATUS_PING" ) );
+			_groupPingLabel = _groupTitlePanel.Add.Label( "Ping" );
 			_groupPingLabel.AddClass( "group-ping-label" );
 
 			_groupContent = new( this );
@@ -53,10 +51,9 @@ namespace TTT.UI
 			return scoreboardEntry;
 		}
 
-		// TODO: Implement logic for the player counter in the title
 		public void UpdateLabel()
 		{
-			_groupTitleLabel.UpdateTranslation( new TranslationData( $"SCOREBOARD_GROUP_{GroupTitle.ToUpper()}", GroupMembers ) );
+			_groupTitleLabel.Text = GroupTitle;
 		}
 	}
 }

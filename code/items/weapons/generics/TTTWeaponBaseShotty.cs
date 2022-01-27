@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTT.Globalization;
 using TTT.Player;
 using TTT.UI;
 
@@ -63,7 +62,7 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public TranslationData TextOnTick => TTTWeaponBaseGeneric.PickupText( LibraryName );
+		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( LibraryName );
 
 		public bool CanHint( TTTPlayer client )
 		{

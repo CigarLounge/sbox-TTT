@@ -2,9 +2,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globalization;
-using TTT.Globals;
-using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -44,15 +41,8 @@ namespace TTT.Player
 			this.CopyBonesFrom( player );
 			this.SetRagdollVelocityFrom( player );
 
-			List<C4Entity> attachedC4s = new();
-
 			foreach ( Entity child in player.Children )
 			{
-				if ( child is C4Entity c4 && c4.AttachedBone > -1 )
-				{
-					attachedC4s.Add( c4 );
-				}
-
 				if ( child is ModelEntity e )
 				{
 					string model = e.GetModelName();
@@ -66,11 +56,6 @@ namespace TTT.Player
 					clothing.SetModel( model );
 					clothing.SetParent( this, true );
 				}
-			}
-
-			foreach ( C4Entity c4 in attachedC4s )
-			{
-				c4.SetParent( this, c4.AttachedBone );
 			}
 		}
 
@@ -139,7 +124,7 @@ namespace TTT.Player
 
 		public float HintDistance => 80f;
 
-		public TranslationData TextOnTick => new( IsIdentified ? "CORPSE_INSPECT" : "CORPSE_IDENTIFY", new object[] { Input.GetKeyWithBinding( "+iv_use" ).ToUpper() } );
+		public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use )} to inspect" : $"Hold {Input.GetButtonOrigin( InputButton.Use )} to identify";
 
 		public bool CanHint( TTTPlayer client ) => true;
 

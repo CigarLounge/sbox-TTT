@@ -2,7 +2,6 @@ using System;
 
 using Sandbox;
 
-using TTT.Globalization;
 using TTT.Player;
 using TTT.UI;
 
@@ -84,7 +83,8 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public TranslationData TextOnTick => new( "GENERIC_PICKUP", new object[] { Input.GetKeyWithBinding( "+iv_use" ).ToUpper(), new TranslationData( LibraryName.ToUpper() ) } );
+
+		public string TextOnTick => $"Press {Input.GetButtonOrigin( InputButton.Use )} to pickup {LibraryName}";
 
 		public bool CanHint( TTTPlayer client )
 		{

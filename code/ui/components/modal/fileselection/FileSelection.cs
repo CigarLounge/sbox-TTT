@@ -61,7 +61,8 @@ namespace TTT.UI
 			EntryPanelContent = new( Content );
 			EntryPanelContent.AddClass( "selection" );
 
-			FileNameEntry = Content.Add.TranslationTextEntry();
+			FileNameEntry = new TextEntry();
+			FileNameEntry.Parent = Content;
 			FileNameEntry.AddClass( "hide" );
 			FileNameEntry.AddEventListener( "onfocus", ( panelEvent ) =>
 			 {

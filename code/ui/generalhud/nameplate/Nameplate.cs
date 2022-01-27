@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Player;
 
 namespace TTT.UI
@@ -71,33 +70,25 @@ namespace TTT.UI
 			return HealthGroupList[^1];
 		}
 
-		public override void UpdateHintPanel( TranslationData translationData )
+		public override void UpdateHintPanel( string text )
 		{
 			SetClass( "fade-in", this.IsEnabled() );
 
-			bool isAlive = false;
-
-			// needed regarding https://github.com/Facepunch/sbox-issues/issues/1197
-			try
+			if ( !Player.IsValid() )
 			{
-				isAlive = Player.LifeState == LifeState.Alive;
-			}
-			catch ( Exception e )
-			{
-				Log.Warning( e.StackTrace );
-
 				return;
 			}
 
 			// Network sync workaround
+			var isAlive = Player.LifeState == LifeState.Alive;
 			if ( Player.Health == 0 && isAlive )
 			{
 				_damageIndicatorLabel.Text = "";
 			}
 			else
 			{
-				float health = Player.Health / Player.MaxHealth * 100;
-				HealthGroup healthGroup = GetHealthGroup( health );
+				var health = Player.Health / Player.MaxHealth * 100;
+				var healthGroup = GetHealthGroup( health );
 
 				_damageIndicatorLabel.Style.FontColor = healthGroup.Color;
 				_damageIndicatorLabel.Text = healthGroup.Title;

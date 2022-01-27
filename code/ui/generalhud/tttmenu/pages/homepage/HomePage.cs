@@ -6,7 +6,7 @@ namespace TTT.UI.Menu
 	[UseTemplate]
 	public partial class HomePage : Panel
 	{
-		private TranslationButton ShopEditorButton { get; set; }
+		private Button ShopEditorButton { get; set; }
 
 		public void GoToSettingsPage()
 		{

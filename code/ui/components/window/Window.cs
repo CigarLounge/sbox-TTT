@@ -1,7 +1,5 @@
 using Sandbox.UI;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class Window : RichPanel
@@ -37,11 +35,6 @@ namespace TTT.UI
 		public void SetTitle( string title )
 		{
 			Header.NavigationHeader.SetTitle( title );
-		}
-
-		public void SetTranslationTitle( TranslationData translationData )
-		{
-			Header.NavigationHeader.SetTranslationTitle( translationData );
 		}
 	}
 }

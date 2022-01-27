@@ -3,7 +3,6 @@ using System;
 using Sandbox;
 
 using TTT.Events;
-using TTT.Globalization;
 using TTT.Map;
 using TTT.Player;
 using TTT.Rounds;
@@ -39,7 +38,6 @@ namespace TTT.Gamemode
 				PrecacheFiles();
 			}
 
-			TTTLanguage.Load();
 			SettingsManager.Load();
 			_ = MapSelection.Load();
 
