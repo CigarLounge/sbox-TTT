@@ -44,10 +44,11 @@ namespace TTT.Items
         public override float DamageDistance => 35f;
         public override float ImpactSize => 10f;
 
-        private readonly float _primaryEntitySpeed = 300f;
-        private Vector3 _entityVelocity = new(0, 0, 30);
-        private Vector3 _entitySpawnOffset = new(0, 5, 42);
+        private readonly float _primaryEntitySpeed = 200f;
+        private Vector3 _entityVelocity = new(0, 0, 10);
+        private Vector3 _entitySpawnOffset = new(0, 5, 25);
         private Angles _entityAngles = new(0, 0, 0);
+        private Rotation _entityRotation = Rotation.FromPitch(0);
 
         public Knife()
         {
@@ -121,19 +122,25 @@ namespace TTT.Items
             knife.UseGravity = true;
             knife.Speed = _primaryEntitySpeed;
             knife.IsSticky = false;
-            knife.Damage = Primary.Damage;
+            knife.Damage = SwingDamage;
             knife.Force = Primary.Force;
             knife.StartVelocity = MathUtil.RelativeAdd(Vector3.Zero, _entityVelocity, Owner.EyeRot);
+            knife.Rotation = _entityRotation;
             knife.Start();
         }
 
         public class ThrownKnife : FiredEntity
         {
+            private bool _hasLanded = false;
+
             protected override void OnPhysicsCollision(CollisionEventData eventData)
             {
-                if (eventData.Entity == Owner) return;
+                if (!_hasLanded && eventData.Entity is TTTPlayer playerHit)
+                {
+                    playerHit.TakeDamage(DamageInfo.Generic(200f));
+                }
 
-                Log.Info("hit");
+                _hasLanded = true;
             }
         }
     }
