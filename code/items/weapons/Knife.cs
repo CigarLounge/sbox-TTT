@@ -2,7 +2,9 @@ using Sandbox;
 
 using SWB_Base;
 
+using TTT.Globalization;
 using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
@@ -46,9 +48,8 @@ namespace TTT.Items
 
         private readonly float _primaryEntitySpeed = 200f;
         private Vector3 _entityVelocity = new(0, 0, 10);
-        private Vector3 _entitySpawnOffset = new(0, 5, 25);
-        private Angles _entityAngles = new(0, 0, 0);
-        private Rotation _entityRotation = Rotation.FromPitch(0);
+        private Vector3 _entitySpawnOffset = new(0, 10, 50);
+        private Angles _entityAngles = new(90, -60, 10);
 
         public Knife()
         {
@@ -106,6 +107,7 @@ namespace TTT.Items
                 {
                     ThrowKnife(new ThrownKnife());
                     Owner.Inventory.Drop(this);
+                    Delete();
                 }
             }
         }
@@ -121,23 +123,67 @@ namespace TTT.Items
             knife.RemoveDelay = -1;
             knife.UseGravity = true;
             knife.Speed = _primaryEntitySpeed;
-            knife.IsSticky = false;
+            knife.IsSticky = true;
             knife.Damage = SwingDamage;
             knife.Force = Primary.Force;
             knife.StartVelocity = MathUtil.RelativeAdd(Vector3.Zero, _entityVelocity, Owner.EyeRot);
-            knife.Rotation = _entityRotation;
             knife.Start();
         }
 
-        public class ThrownKnife : FiredEntity
+        public class ThrownKnife : FiredEntity, IEntityHint
         {
+            public float HintDistance => 80f;
+
+            public TranslationData TextOnTick => TTTWeaponBaseGeneric.PickupText("weapon_knife");
+
+            public bool CanHint(TTTPlayer client)
+            {
+                return true;
+            }
+
+            public EntityHintPanel DisplayHint(TTTPlayer client)
+            {
+                return new Hint(TextOnTick);
+            }
+
             private bool _hasLanded = false;
+
+            public void Tick(TTTPlayer player)
+            {
+                if (Host.IsClient)
+                {
+                    return;
+                }
+
+                if (player.LifeState != LifeState.Alive)
+                {
+                    return;
+                }
+
+                using (Prediction.Off())
+                {
+                    if (Input.Pressed(InputButton.Use))
+                    {
+                        player.Inventory.TryAdd(new Knife(), deleteIfFails: false, makeActive: true);
+                        Delete();
+                    }
+                }
+            }
 
             protected override void OnPhysicsCollision(CollisionEventData eventData)
             {
                 if (!_hasLanded && eventData.Entity is TTTPlayer playerHit)
                 {
-                    playerHit.TakeDamage(DamageInfo.Generic(200f));
+                    DamageInfo info = new()
+                    {
+                        Damage = Damage,
+                        Force = 50f,
+                        Attacker = Owner,
+                        Weapon = this
+                    };
+
+                    playerHit.TakeDamage(info);
+                    Delete();
                 }
 
                 _hasLanded = true;
