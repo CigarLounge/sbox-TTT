@@ -7,72 +7,72 @@ using TTT.Player;
 
 namespace TTT.UI
 {
-    public class RadarPoint : Panel
-    {
-        private readonly Vector3 _position;
-        private readonly Label _distanceLabel;
-        private const int BLUR_RADIUS = 10;
+	public class RadarPoint : Panel
+	{
+		private readonly Vector3 _position;
+		private readonly Label _distanceLabel;
+		private const int BLUR_RADIUS = 10;
 
-        public RadarPoint(Radar.RadarPointData data)
-        {
-            _position = data.Position;
+		public RadarPoint( Radar.RadarPointData data )
+		{
+			_position = data.Position;
 
-            StyleSheet.Load("/items/perks/radar/RadarPoint.scss");
+			StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
 
-            RadarDisplay.Instance.AddChild(this);
+			RadarDisplay.Instance.AddChild( this );
 
-            AddClass("circular");
+			AddClass( "circular" );
 
-            _distanceLabel = Add.Label();
-            _distanceLabel.AddClass("distance-label");
-            _distanceLabel.AddClass("text-shadow");
+			_distanceLabel = Add.Label();
+			_distanceLabel.AddClass( "distance-label" );
+			_distanceLabel.AddClass( "text-shadow" );
 
-            Style.BackgroundColor = data.Color;
-            Style.BoxShadow = new ShadowList()
-            {
-                new Shadow
-                {
-                    Blur = BLUR_RADIUS,
-                    Color = data.Color
-                }
-            };
-        }
+			Style.BackgroundColor = data.Color;
+			Style.BoxShadow = new ShadowList()
+			{
+				new Shadow
+				{
+					Blur = BLUR_RADIUS,
+					Color = data.Color
+				}
+			};
+		}
 
-        public override void Tick()
-        {
-            base.Tick();
+		public override void Tick()
+		{
+			base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
+			if ( Local.Pawn is not TTTPlayer player )
+			{
+				return;
+			}
 
-            _distanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters(player.Position.Distance(_position)):n0}m";
+			_distanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
 
-            Vector3 screenPos = _position.ToScreen();
-            this.Enabled(screenPos.z > 0f);
+			Vector3 screenPos = _position.ToScreen();
+			this.Enabled( screenPos.z > 0f );
 
-            if (!this.IsEnabled())
-            {
-                return;
-            }
+			if ( !this.IsEnabled() )
+			{
+				return;
+			}
 
-            Style.Left = Length.Fraction(screenPos.x);
-            Style.Top = Length.Fraction(screenPos.y);
-        }
-    }
+			Style.Left = Length.Fraction( screenPos.x );
+			Style.Top = Length.Fraction( screenPos.y );
+		}
+	}
 
-    public class RadarDisplay : Panel
-    {
-        public static RadarDisplay Instance { get; set; }
+	public class RadarDisplay : Panel
+	{
+		public static RadarDisplay Instance { get; set; }
 
-        public RadarDisplay() : base()
-        {
-            Instance = this;
+		public RadarDisplay() : base()
+		{
+			Instance = this;
 
-            AddClass("fullscreen");
+			AddClass( "fullscreen" );
 
-            Style.ZIndex = -1;
-        }
-    }
+			Style.ZIndex = -1;
+		}
+	}
 }

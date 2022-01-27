@@ -1,13 +1,13 @@
 namespace TTT.Teams
 {
-    [Team("innocents")]
-    public class InnocentTeam : TTTTeam
-    {
-        public override Color Color => Color.FromBytes(27, 197, 78);
+	[Team( "innocents" )]
+	public class InnocentTeam : TTTTeam
+	{
+		public override Color Color => Color.FromBytes( 27, 197, 78 );
 
-        public InnocentTeam() : base()
-        {
+		public InnocentTeam() : base()
+		{
 
-        }
-    }
+		}
+	}
 }

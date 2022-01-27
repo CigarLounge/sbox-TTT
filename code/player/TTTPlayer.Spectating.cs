@@ -8,95 +8,95 @@ using TTT.Player.Camera;
 
 namespace TTT.Player
 {
-    public partial class TTTPlayer
-    {
-        private TTTPlayer _spectatingPlayer;
-        public TTTPlayer CurrentPlayer
-        {
-            get => _spectatingPlayer ?? this;
-            set
-            {
-                _spectatingPlayer = value == this ? null : value;
+	public partial class TTTPlayer
+	{
+		private TTTPlayer _spectatingPlayer;
+		public TTTPlayer CurrentPlayer
+		{
+			get => _spectatingPlayer ?? this;
+			set
+			{
+				_spectatingPlayer = value == this ? null : value;
 
-                Event.Run(TTTEvent.Player.Spectating.Change, this);
-            }
-        }
+				Event.Run( TTTEvent.Player.Spectating.Change, this );
+			}
+		}
 
-        public bool IsSpectatingPlayer
-        {
-            get => _spectatingPlayer != null;
-        }
+		public bool IsSpectatingPlayer
+		{
+			get => _spectatingPlayer != null;
+		}
 
-        public bool IsSpectator
-        {
-            get => (Camera is IObservationCamera);
-        }
+		public bool IsSpectator
+		{
+			get => (Camera is IObservationCamera);
+		}
 
-        private int _targetIdx = 0;
+		private int _targetIdx = 0;
 
-        [Event(TTTEvent.Player.Died)]
-        private static void OnPlayerDied(TTTPlayer deadPlayer)
-        {
-            if (!Host.IsClient || Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
+		[Event( TTTEvent.Player.Died )]
+		private static void OnPlayerDied( TTTPlayer deadPlayer )
+		{
+			if ( !Host.IsClient || Local.Pawn is not TTTPlayer player )
+			{
+				return;
+			}
 
-            if (player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer)
-            {
-                player.UpdateObservatedPlayer();
-            }
-        }
+			if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
+			{
+				player.UpdateObservatedPlayer();
+			}
+		}
 
-        public void UpdateObservatedPlayer()
-        {
-            TTTPlayer oldObservatedPlayer = CurrentPlayer;
+		public void UpdateObservatedPlayer()
+		{
+			TTTPlayer oldObservatedPlayer = CurrentPlayer;
 
-            CurrentPlayer = null;
+			CurrentPlayer = null;
 
-            List<TTTPlayer> players = Utils.GetAlivePlayers();
+			List<TTTPlayer> players = Utils.GetAlivePlayers();
 
-            if (players.Count > 0)
-            {
-                if (++_targetIdx >= players.Count)
-                {
-                    _targetIdx = 0;
-                }
+			if ( players.Count > 0 )
+			{
+				if ( ++_targetIdx >= players.Count )
+				{
+					_targetIdx = 0;
+				}
 
-                CurrentPlayer = players[_targetIdx];
-            }
+				CurrentPlayer = players[_targetIdx];
+			}
 
-            if (Camera is IObservationCamera camera)
-            {
-                camera.OnUpdateObservatedPlayer(oldObservatedPlayer, CurrentPlayer);
-            }
-        }
+			if ( Camera is IObservationCamera camera )
+			{
+				camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
+			}
+		}
 
-        public void MakeSpectator(bool useRagdollCamera = true)
-        {
-            EnableAllCollisions = false;
-            EnableDrawing = false;
-            Controller = null;
-            Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-            LifeState = LifeState.Dead;
-            Health = 0f;
-            ShowFlashlight(false, false);
-        }
+		public void MakeSpectator( bool useRagdollCamera = true )
+		{
+			EnableAllCollisions = false;
+			EnableDrawing = false;
+			Controller = null;
+			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+			LifeState = LifeState.Dead;
+			Health = 0f;
+			ShowFlashlight( false, false );
+		}
 
-        public void ToggleForcedSpectator()
-        {
-            IsForcedSpectator = !IsForcedSpectator;
+		public void ToggleForcedSpectator()
+		{
+			IsForcedSpectator = !IsForcedSpectator;
 
-            if (IsForcedSpectator && LifeState == LifeState.Alive)
-            {
-                MakeSpectator(false);
-                OnKilled();
+			if ( IsForcedSpectator && LifeState == LifeState.Alive )
+			{
+				MakeSpectator( false );
+				OnKilled();
 
-                if (!Client.GetValue<bool>("forcedspectator", false))
-                {
-                    Client.SetValue("forcedspectator", true);
-                }
-            }
-        }
-    }
+				if ( !Client.GetValue<bool>( "forcedspectator", false ) )
+				{
+					Client.SetValue( "forcedspectator", true );
+				}
+			}
+		}
+	}
 }

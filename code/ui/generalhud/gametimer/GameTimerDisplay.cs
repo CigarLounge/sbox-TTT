@@ -6,50 +6,50 @@ using TTT.Globalization;
 
 namespace TTT.UI
 {
-    public class GameTimerDisplay : Panel
-    {
-        private readonly Panel _timerPanel;
-        private readonly Label _timerLabel;
-        private readonly Panel _roundPanel;
-        private readonly TranslationLabel _roundLabel;
+	public class GameTimerDisplay : Panel
+	{
+		private readonly Panel _timerPanel;
+		private readonly Label _timerLabel;
+		private readonly Panel _roundPanel;
+		private readonly TranslationLabel _roundLabel;
 
-        public GameTimerDisplay() : base()
-        {
-            StyleSheet.Load("/ui/generalhud/gametimer/GameTimerDisplay.scss");
+		public GameTimerDisplay() : base()
+		{
+			StyleSheet.Load( "/ui/generalhud/gametimer/GameTimerDisplay.scss" );
 
-            AddClass("background-color-primary");
-            AddClass("centered-horizontal");
-            AddClass("opacity-heavy");
-            AddClass("rounded");
-            AddClass("text-shadow");
+			AddClass( "background-color-primary" );
+			AddClass( "centered-horizontal" );
+			AddClass( "opacity-heavy" );
+			AddClass( "rounded" );
+			AddClass( "text-shadow" );
 
-            _timerPanel = new(this);
-            _timerPanel.AddClass("timer-panel");
+			_timerPanel = new( this );
+			_timerPanel.AddClass( "timer-panel" );
 
-            _timerLabel = _timerPanel.Add.Label();
-            _timerLabel.AddClass("timer-label");
+			_timerLabel = _timerPanel.Add.Label();
+			_timerLabel.AddClass( "timer-label" );
 
-            _roundPanel = new(this);
-            _roundPanel.AddClass("round-panel");
+			_roundPanel = new( this );
+			_roundPanel.AddClass( "round-panel" );
 
-            _roundLabel = _roundPanel.Add.TranslationLabel(new TranslationData());
-            _roundLabel.AddClass("round-label");
-            _roundLabel.AddClass("text-color-info");
-        }
+			_roundLabel = _roundPanel.Add.TranslationLabel( new TranslationData() );
+			_roundLabel.AddClass( "round-label" );
+			_roundLabel.AddClass( "text-color-info" );
+		}
 
-        public override void Tick()
-        {
-            base.Tick();
+		public override void Tick()
+		{
+			base.Tick();
 
-            if (Game.Instance.Round == null)
-            {
-                return;
-            }
+			if ( Game.Instance.Round == null )
+			{
+				return;
+			}
 
-            _roundLabel.UpdateTranslation(new TranslationData($"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace(' ', '_')}"));
+			_roundLabel.UpdateTranslation( new TranslationData( $"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace( ' ', '_' )}" ) );
 
-            _timerPanel.SetClass("disabled", Game.Instance.Round is Rounds.WaitingRound);
-            _timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
-        }
-    }
+			_timerPanel.SetClass( "disabled", Game.Instance.Round is Rounds.WaitingRound );
+			_timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
+		}
+	}
 }

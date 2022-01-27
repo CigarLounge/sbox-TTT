@@ -4,44 +4,44 @@ using Sandbox.UI;
 
 namespace TTT.UI
 {
-    public partial class Modal : Window
-    {
-        public Action<Modal> OnDisplay;
-        public bool IsDeletedOnClose;
+	public partial class Modal : Window
+	{
+		public Action<Modal> OnDisplay;
+		public bool IsDeletedOnClose;
 
-        public Modal(Panel parent = null, bool isDeletedOnClose = true) : base(parent)
-        {
-            IsDeletedOnClose = isDeletedOnClose;
+		public Modal( Panel parent = null, bool isDeletedOnClose = true ) : base( parent )
+		{
+			IsDeletedOnClose = isDeletedOnClose;
 
-            Action<PanelHeader> action = Header.NavigationHeader.OnClose;
+			Action<PanelHeader> action = Header.NavigationHeader.OnClose;
 
-            Header.NavigationHeader.OnClose = (panelHeader) =>
-            {
-                action?.Invoke(panelHeader);
+			Header.NavigationHeader.OnClose = ( panelHeader ) =>
+			{
+				action?.Invoke( panelHeader );
 
-                if (IsDeletedOnClose)
-                {
-                    Delete(true);
-                }
-            };
+				if ( IsDeletedOnClose )
+				{
+					Delete( true );
+				}
+			};
 
-            Content.Style.FlexDirection = Sandbox.UI.FlexDirection.Column;
+			Content.Style.FlexDirection = Sandbox.UI.FlexDirection.Column;
 
-            this.Enabled(false);
-        }
+			this.Enabled( false );
+		}
 
-        public virtual void Display()
-        {
-            OnDisplay?.Invoke(this);
+		public virtual void Display()
+		{
+			OnDisplay?.Invoke( this );
 
-            this.Enabled(true);
-        }
+			this.Enabled( true );
+		}
 
-        public virtual void Close()
-        {
-            this.Enabled(false);
+		public virtual void Close()
+		{
+			this.Enabled( false );
 
-            Header.NavigationHeader.OnClose?.Invoke(Header.NavigationHeader);
-        }
-    }
+			Header.NavigationHeader.OnClose?.Invoke( Header.NavigationHeader );
+		}
+	}
 }

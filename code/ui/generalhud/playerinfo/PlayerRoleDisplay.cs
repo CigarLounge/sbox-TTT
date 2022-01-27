@@ -7,49 +7,49 @@ using TTT.Player;
 
 namespace TTT.UI
 {
-    public class PlayerRoleDisplay : Panel
-    {
-        private TranslationLabel _roleLabel;
+	public class PlayerRoleDisplay : Panel
+	{
+		private TranslationLabel _roleLabel;
 
-        public PlayerRoleDisplay() : base()
-        {
-            StyleSheet.Load("/ui/generalhud/playerinfo/PlayerRoleDisplay.scss");
+		public PlayerRoleDisplay() : base()
+		{
+			StyleSheet.Load( "/ui/generalhud/playerinfo/PlayerRoleDisplay.scss" );
 
-            AddClass("rounded");
-            AddClass("centered-horizontal");
-            AddClass("opacity-heavy");
-            AddClass("text-shadow");
+			AddClass( "rounded" );
+			AddClass( "centered-horizontal" );
+			AddClass( "opacity-heavy" );
+			AddClass( "text-shadow" );
 
-            _roleLabel = Add.TranslationLabel(new TranslationData());
-            _roleLabel.AddClass("centered");
-            _roleLabel.AddClass("role-label");
+			_roleLabel = Add.TranslationLabel( new TranslationData() );
+			_roleLabel.AddClass( "centered" );
+			_roleLabel.AddClass( "role-label" );
 
-            OnRoleUpdate(Local.Pawn as TTTPlayer);
-        }
+			OnRoleUpdate( Local.Pawn as TTTPlayer );
+		}
 
-        public override void Tick()
-        {
-            base.Tick();
+		public override void Tick()
+		{
+			base.Tick();
 
-            if (Local.Pawn is not TTTPlayer player)
-            {
-                return;
-            }
+			if ( Local.Pawn is not TTTPlayer player )
+			{
+				return;
+			}
 
-            this.Enabled(!player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound);
-        }
+			this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound );
+		}
 
-        [Event(Events.TTTEvent.Player.Role.Select)]
-        private void OnRoleUpdate(TTTPlayer player)
-        {
-            if (player == null || player != Local.Pawn as TTTPlayer)
-            {
-                return;
-            }
+		[Event( Events.TTTEvent.Player.Role.Select )]
+		private void OnRoleUpdate( TTTPlayer player )
+		{
+			if ( player == null || player != Local.Pawn as TTTPlayer )
+			{
+				return;
+			}
 
-            Style.BackgroundColor = player.Role.Color;
+			Style.BackgroundColor = player.Role.Color;
 
-            _roleLabel.UpdateTranslation(new TranslationData(player.Role.GetRoleTranslationKey("NAME")));
-        }
-    }
+			_roleLabel.UpdateTranslation( new TranslationData( player.Role.GetRoleTranslationKey( "NAME" ) ) );
+		}
+	}
 }

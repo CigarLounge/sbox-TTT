@@ -8,86 +8,86 @@ using Sandbox.UI;
 namespace SWB_Base
 {
 
-    public partial class WeaponBase
-    {
-        private Panel healthDisplay;
-        private Panel ammoDisplay;
-        private Panel customizationMenu;
+	public partial class WeaponBase
+	{
+		private Panel healthDisplay;
+		private Panel ammoDisplay;
+		private Panel customizationMenu;
 
-        private Panel hitmarker;
+		private Panel hitmarker;
 
-        public override void CreateHudElements()
-        {
-            // TTT OVERRIDE
-            return;
-            var showHUDCL = GetSetting<bool>("swb_cl_showhud", true);
-            var showHUDSV = GetSetting<bool>("swb_sv_showhud", true);
+		public override void CreateHudElements()
+		{
+			// TTT OVERRIDE
+			return;
+			var showHUDCL = GetSetting<bool>( "swb_cl_showhud", true );
+			var showHUDSV = GetSetting<bool>( "swb_sv_showhud", true );
 
-            if (Local.Hud == null || !showHUDCL || !showHUDSV) return;
+			if ( Local.Hud == null || !showHUDCL || !showHUDSV ) return;
 
-            if (UISettings.ShowCrosshair)
-            {
-                CrosshairPanel = new Crosshair
-                {
-                    Parent = Local.Hud
-                };
-            }
+			if ( UISettings.ShowCrosshair )
+			{
+				CrosshairPanel = new Crosshair
+				{
+					Parent = Local.Hud
+				};
+			}
 
-            if (UISettings.ShowHitmarker)
-            {
-                hitmarker = new Hitmarker
-                {
-                    Parent = Local.Hud
-                };
-            }
+			if ( UISettings.ShowHitmarker )
+			{
+				hitmarker = new Hitmarker
+				{
+					Parent = Local.Hud
+				};
+			}
 
-            if (UISettings.ShowHealthCount || UISettings.ShowHealthIcon)
-            {
-                healthDisplay = new HealthDisplay(UISettings)
-                {
-                    Parent = Local.Hud
-                };
-            }
+			if ( UISettings.ShowHealthCount || UISettings.ShowHealthIcon )
+			{
+				healthDisplay = new HealthDisplay( UISettings )
+				{
+					Parent = Local.Hud
+				};
+			}
 
-            if (UISettings.ShowAmmoCount || UISettings.ShowWeaponIcon || UISettings.ShowFireMode)
-            {
-                ammoDisplay = new AmmoDisplay(UISettings)
-                {
-                    Parent = Local.Hud
-                };
-            }
-        }
+			if ( UISettings.ShowAmmoCount || UISettings.ShowWeaponIcon || UISettings.ShowFireMode )
+			{
+				ammoDisplay = new AmmoDisplay( UISettings )
+				{
+					Parent = Local.Hud
+				};
+			}
+		}
 
-        public override void DestroyHudElements()
-        {
-            base.DestroyHudElements();
+		public override void DestroyHudElements()
+		{
+			base.DestroyHudElements();
 
-            if (healthDisplay != null) healthDisplay.Delete(true);
-            if (ammoDisplay != null) ammoDisplay.Delete(true);
-            if (hitmarker != null) hitmarker.Delete(true);
-            if (customizationMenu != null) customizationMenu.Delete();
-        }
+			if ( healthDisplay != null ) healthDisplay.Delete( true );
+			if ( ammoDisplay != null ) ammoDisplay.Delete( true );
+			if ( hitmarker != null ) hitmarker.Delete( true );
+			if ( customizationMenu != null ) customizationMenu.Delete();
+		}
 
-        public void UISimulate(Client player)
-        {
-            // TTT OVERRIDE
-            return;
-            // Cutomization menu
-            if (Input.Pressed(InputButton.Menu) && AttachmentCategories != null)
-            {
-                if (customizationMenu == null)
-                {
-                    customizationMenu = new CustomizationMenu();
-                    customizationMenu.Parent = Local.Hud;
-                }
-                else
-                {
-                    customizationMenu.Delete();
-                    customizationMenu = null;
-                }
-            }
+		public void UISimulate( Client player )
+		{
+			// TTT OVERRIDE
+			return;
+			// Cutomization menu
+			if ( Input.Pressed( InputButton.Menu ) && AttachmentCategories != null )
+			{
+				if ( customizationMenu == null )
+				{
+					customizationMenu = new CustomizationMenu();
+					customizationMenu.Parent = Local.Hud;
+				}
+				else
+				{
+					customizationMenu.Delete();
+					customizationMenu = null;
+				}
+			}
 
-            IsCustomizing = customizationMenu != null;
-        }
-    }
+			IsCustomizing = customizationMenu != null;
+		}
+	}
 }

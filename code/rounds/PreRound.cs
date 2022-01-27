@@ -11,151 +11,151 @@ using TTT.Settings;
 
 namespace TTT.Rounds
 {
-    public class PreRound : BaseRound
-    {
-        public override string RoundName => "Preparing";
-        public override int RoundDuration
-        {
-            get => ServerSettings.Instance.Round.PreRoundTime;
-        }
+	public class PreRound : BaseRound
+	{
+		public override string RoundName => "Preparing";
+		public override int RoundDuration
+		{
+			get => ServerSettings.Instance.Round.PreRoundTime;
+		}
 
-        public override void OnPlayerKilled(TTTPlayer player)
-        {
-            StartRespawnTimer(player);
+		public override void OnPlayerKilled( TTTPlayer player )
+		{
+			StartRespawnTimer( player );
 
-            player.MakeSpectator();
+			player.MakeSpectator();
 
-            base.OnPlayerKilled(player);
-        }
+			base.OnPlayerKilled( player );
+		}
 
-        protected override void OnStart()
-        {
-            if (Host.IsServer)
-            {
-                Gamemode.Game.Instance.MapHandler.Reset();
+		protected override void OnStart()
+		{
+			if ( Host.IsServer )
+			{
+				Gamemode.Game.Instance.MapHandler.Reset();
 
-                foreach (Client client in Client.All)
-                {
-                    if (client.Pawn is TTTPlayer player)
-                    {
-                        player.RemoveLogicButtons();
-                        player.Respawn();
-                    }
-                }
-            }
-        }
+				foreach ( Client client in Client.All )
+				{
+					if ( client.Pawn is TTTPlayer player )
+					{
+						player.RemoveLogicButtons();
+						player.Respawn();
+					}
+				}
+			}
+		}
 
-        protected override void OnTimeUp()
-        {
-            base.OnTimeUp();
+		protected override void OnTimeUp()
+		{
+			base.OnTimeUp();
 
-            List<TTTPlayer> players = new();
-            List<TTTPlayer> spectators = new();
+			List<TTTPlayer> players = new();
+			List<TTTPlayer> spectators = new();
 
-            foreach (TTTPlayer player in Utils.GetPlayers())
-            {
-                player.Client.SetValue("forcedspectator", player.IsForcedSpectator);
+			foreach ( TTTPlayer player in Utils.GetPlayers() )
+			{
+				player.Client.SetValue( "forcedspectator", player.IsForcedSpectator );
 
-                if (player.IsForcedSpectator)
-                {
-                    player.MakeSpectator(false);
-                    spectators.Add(player);
-                }
-                else
-                {
-                    players.Add(player);
-                }
-            }
+				if ( player.IsForcedSpectator )
+				{
+					player.MakeSpectator( false );
+					spectators.Add( player );
+				}
+				else
+				{
+					players.Add( player );
+				}
+			}
 
-            AssignRolesAndRespawn(players);
+			AssignRolesAndRespawn( players );
 
-            Gamemode.Game.Instance.ChangeRound(new InProgressRound
-            {
-                Players = players,
-                Spectators = spectators
-            });
-        }
+			Gamemode.Game.Instance.ChangeRound( new InProgressRound
+			{
+				Players = players,
+				Spectators = spectators
+			} );
+		}
 
-        private void AssignRolesAndRespawn(List<TTTPlayer> players)
-        {
-            int traitorCount = (int) Math.Max(players.Count * 0.25f, 1f);
+		private void AssignRolesAndRespawn( List<TTTPlayer> players )
+		{
+			int traitorCount = (int)Math.Max( players.Count * 0.25f, 1f );
 
-            for (int i = 0; i < traitorCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
+			for ( int i = 0; i < traitorCount; i++ )
+			{
+				List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
+				int randomId = Utils.RNG.Next( unassignedPlayers.Count );
 
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new TraitorRole());
-                }
-            }
+				if ( unassignedPlayers[randomId].Role is NoneRole )
+				{
+					unassignedPlayers[randomId].SetRole( new TraitorRole() );
+				}
+			}
 
-            int detectiveCount = (int) (players.Count * 0.125f);
+			int detectiveCount = (int)(players.Count * 0.125f);
 
-            for (int i = 0; i < detectiveCount; i++)
-            {
-                List<TTTPlayer> unassignedPlayers = players.Where(p => p.Role is NoneRole).ToList();
-                int randomId = Utils.RNG.Next(unassignedPlayers.Count);
+			for ( int i = 0; i < detectiveCount; i++ )
+			{
+				List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
+				int randomId = Utils.RNG.Next( unassignedPlayers.Count );
 
-                if (unassignedPlayers[randomId].Role is NoneRole)
-                {
-                    unassignedPlayers[randomId].SetRole(new DetectiveRole());
-                }
-            }
+				if ( unassignedPlayers[randomId].Role is NoneRole )
+				{
+					unassignedPlayers[randomId].SetRole( new DetectiveRole() );
+				}
+			}
 
-            foreach (TTTPlayer player in players)
-            {
-                if (player.Role is NoneRole)
-                {
-                    player.SetRole(new InnocentRole());
-                }
+			foreach ( TTTPlayer player in players )
+			{
+				if ( player.Role is NoneRole )
+				{
+					player.SetRole( new InnocentRole() );
+				}
 
-                using (Prediction.Off())
-                {
-                    player.SendClientRole();
-                }
+				using ( Prediction.Off() )
+				{
+					player.SendClientRole();
+				}
 
-                if (player.LifeState == LifeState.Dead)
-                {
-                    player.Respawn();
-                }
-                else
-                {
-                    player.SetHealth(player.MaxHealth);
-                }
-            }
-        }
+				if ( player.LifeState == LifeState.Dead )
+				{
+					player.Respawn();
+				}
+				else
+				{
+					player.SetHealth( player.MaxHealth );
+				}
+			}
+		}
 
-        private static async void StartRespawnTimer(TTTPlayer player)
-        {
-            try
-            {
-                await GameTask.DelaySeconds(1);
+		private static async void StartRespawnTimer( TTTPlayer player )
+		{
+			try
+			{
+				await GameTask.DelaySeconds( 1 );
 
-                if (player.IsValid() && Gamemode.Game.Instance.Round is PreRound)
-                {
-                    player.Respawn();
-                }
-            }
-            catch (Exception e)
-            {
-                if (e.Message.Trim() == "A task was canceled.")
-                {
-                    return;
-                }
+				if ( player.IsValid() && Gamemode.Game.Instance.Round is PreRound )
+				{
+					player.Respawn();
+				}
+			}
+			catch ( Exception e )
+			{
+				if ( e.Message.Trim() == "A task was canceled." )
+				{
+					return;
+				}
 
-                Log.Error($"[TASK] {e.Message}: {e.StackTrace}");
-            }
-        }
+				Log.Error( $"[TASK] {e.Message}: {e.StackTrace}" );
+			}
+		}
 
-        public override void OnPlayerSpawn(TTTPlayer player)
-        {
-            bool handsAdded = player.Inventory.TryAdd(new Hands(), deleteIfFails: true, makeActive: false);
+		public override void OnPlayerSpawn( TTTPlayer player )
+		{
+			bool handsAdded = player.Inventory.TryAdd( new Hands(), deleteIfFails: true, makeActive: false );
 
-            Log.Debug($"Attempting to add Hands to {player.Client.Name} {handsAdded}");
+			Log.Debug( $"Attempting to add Hands to {player.Client.Name} {handsAdded}" );
 
-            base.OnPlayerSpawn(player);
-        }
-    }
+			base.OnPlayerSpawn( player );
+		}
+	}
 }

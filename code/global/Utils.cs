@@ -10,277 +10,277 @@ using TTT.Player;
 
 namespace TTT.Globals
 {
-    public static partial class Utils
-    {
-        public readonly static Random RNG = new();
+	public static partial class Utils
+	{
+		public readonly static Random RNG = new();
 
-        public static List<Client> GetClients(Func<TTTPlayer, bool> predicate = null)
-        {
-            List<Client> clients = new();
+		public static List<Client> GetClients( Func<TTTPlayer, bool> predicate = null )
+		{
+			List<Client> clients = new();
 
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
-                {
-                    clients.Add(client);
-                }
-            }
+			foreach ( Client client in Client.All )
+			{
+				if ( client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke( player )) )
+				{
+					clients.Add( client );
+				}
+			}
 
-            return clients;
-        }
+			return clients;
+		}
 
-        public static List<TTTPlayer> GetPlayers(Func<TTTPlayer, bool> predicate = null)
-        {
-            List<TTTPlayer> players = new();
+		public static List<TTTPlayer> GetPlayers( Func<TTTPlayer, bool> predicate = null )
+		{
+			List<TTTPlayer> players = new();
 
-            foreach (Client client in Client.All)
-            {
-                if (client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke(player)))
-                {
-                    players.Add(player);
-                }
-            }
+			foreach ( Client client in Client.All )
+			{
+				if ( client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke( player )) )
+				{
+					players.Add( player );
+				}
+			}
 
-            return players;
-        }
+			return players;
+		}
 
-        public static List<TTTPlayer> GetAlivePlayers() => GetPlayers((pl) => pl.LifeState == LifeState.Alive);
+		public static List<TTTPlayer> GetAlivePlayers() => GetPlayers( ( pl ) => pl.LifeState == LifeState.Alive );
 
-        public static bool HasMinimumPlayers() => GetPlayers((pl) => !pl.IsForcedSpectator).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
+		public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 
-        /// <summary>
-        /// Loops through every type derived from the given type and collects non-abstract types.
-        /// </summary>
-        /// <returns>List of all available types of the given type</returns>
-        public static List<Type> GetTypes<T>() => GetTypes<T>(null);
+		/// <summary>
+		/// Loops through every type derived from the given type and collects non-abstract types.
+		/// </summary>
+		/// <returns>List of all available types of the given type</returns>
+		public static List<Type> GetTypes<T>() => GetTypes<T>( null );
 
-        /// <summary>
-        /// Loops through every type derived from the given type and collects non-abstract types that matches the given predicate.
-        /// </summary>
-        /// <param name="predicate">a filter function to limit the scope</param>
-        /// <returns>List of all available and matching types of the given type</returns>
-        public static List<Type> GetTypes<T>(Func<Type, bool> predicate)
-        {
-            IEnumerable<Type> types = Library.GetAll<T>().Where(t => !t.IsAbstract && !t.ContainsGenericParameters);
+		/// <summary>
+		/// Loops through every type derived from the given type and collects non-abstract types that matches the given predicate.
+		/// </summary>
+		/// <param name="predicate">a filter function to limit the scope</param>
+		/// <returns>List of all available and matching types of the given type</returns>
+		public static List<Type> GetTypes<T>( Func<Type, bool> predicate )
+		{
+			IEnumerable<Type> types = Library.GetAll<T>().Where( t => !t.IsAbstract && !t.ContainsGenericParameters );
 
-            if (predicate != null)
-            {
-                types = types.Where(predicate);
-            }
+			if ( predicate != null )
+			{
+				types = types.Where( predicate );
+			}
 
-            return types.ToList();
-        }
+			return types.ToList();
+		}
 
-        public static List<Type> GetTypesWithAttribute<T, U>(bool inherit = false) where U : Attribute => GetTypes<T>((t) => HasAttribute<U>(t, inherit));
+		public static List<Type> GetTypesWithAttribute<T, U>( bool inherit = false ) where U : Attribute => GetTypes<T>( ( t ) => HasAttribute<U>( t, inherit ) );
 
-        /// <summary>
-        /// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
-        /// </summary>
-        /// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
-        /// <returns>Derived `Type` of given type</returns>
-        public static Type GetTypeByLibraryName<T>(string name)
-        {
-            name = name.ToLower();
+		/// <summary>
+		/// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
+		/// </summary>
+		/// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
+		/// <returns>Derived `Type` of given type</returns>
+		public static Type GetTypeByLibraryName<T>( string name )
+		{
+			name = name.ToLower();
 
-            foreach (Type type in GetTypes<T>())
-            {
-                if (GetLibraryName(type).Equals(name))
-                {
-                    return type;
-                }
-            }
+			foreach ( Type type in GetTypes<T>() )
+			{
+				if ( GetLibraryName( type ).Equals( name ) )
+				{
+					return type;
+				}
+			}
 
-            return null;
-        }
+			return null;
+		}
 
-        /// <summary>
-        /// Returns an instance of the given type by the given type `Type`.
-        /// </summary>
-        /// <param name="type">A derived `Type` of the given type</param>
-        /// <returns>Instance of the given type object</returns>
-        public static T GetObjectByType<T>(Type type) => Library.Create<T>(type);
+		/// <summary>
+		/// Returns an instance of the given type by the given type `Type`.
+		/// </summary>
+		/// <param name="type">A derived `Type` of the given type</param>
+		/// <returns>Instance of the given type object</returns>
+		public static T GetObjectByType<T>( Type type ) => Library.Create<T>( type );
 
-        /// <summary>
-        /// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
-        /// </summary>
-        /// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
-        /// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-        public static string GetLibraryName(Type type) => Library.GetAttribute(type).Name.ToLower();
+		/// <summary>
+		/// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
+		/// </summary>
+		/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
+		/// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
+		public static string GetLibraryName( Type type ) => Library.GetAttribute( type ).Name.ToLower();
 
-        public static T GetAttribute<T>(Type type) where T : Attribute
-        {
-            foreach (object obj in type.GetCustomAttributes(false))
-            {
-                if (obj is T t)
-                {
-                    return t;
-                }
-            }
+		public static T GetAttribute<T>( Type type ) where T : Attribute
+		{
+			foreach ( object obj in type.GetCustomAttributes( false ) )
+			{
+				if ( obj is T t )
+				{
+					return t;
+				}
+			}
 
-            return default;
-        }
+			return default;
+		}
 
-        public static bool HasAttribute<T>(Type type, bool inherit = false) where T : Attribute => type.IsDefined(typeof(T), inherit);
+		public static bool HasAttribute<T>( Type type, bool inherit = false ) where T : Attribute => type.IsDefined( typeof( T ), inherit );
 
-        /// <summary>
-        /// Returns an approximate value for meters given the Source engine units (for distances)
-        /// based on https://developer.valvesoftware.com/wiki/Dimensions
-        /// </summary>
-        /// <param name="sourceUnits"></param>
-        /// <returns>sourceUnits in meters</returns>
-        public static float SourceUnitsToMeters(float sourceUnits) => sourceUnits / 39.37f;
+		/// <summary>
+		/// Returns an approximate value for meters given the Source engine units (for distances)
+		/// based on https://developer.valvesoftware.com/wiki/Dimensions
+		/// </summary>
+		/// <param name="sourceUnits"></param>
+		/// <returns>sourceUnits in meters</returns>
+		public static float SourceUnitsToMeters( float sourceUnits ) => sourceUnits / 39.37f;
 
-        /// <summary>
-        /// Returns seconds in the format mm:ss
-        /// </summary>
-        /// <param name="seconds"></param>
-        /// <returns>Seconds as a string in the format "mm:ss"</returns>
-        public static string TimerString(float seconds) => TimeSpan.FromSeconds(seconds).ToString(@"mm\:ss");
+		/// <summary>
+		/// Returns seconds in the format mm:ss
+		/// </summary>
+		/// <param name="seconds"></param>
+		/// <returns>Seconds as a string in the format "mm:ss"</returns>
+		public static string TimerString( float seconds ) => TimeSpan.FromSeconds( seconds ).ToString( @"mm\:ss" );
 
-        public static T GetHoveringPanel<T>(Panel excludePanel, Panel rootPanel = null) where T : Panel
-        {
-            rootPanel ??= UI.Hud.Current.RootPanel;
+		public static T GetHoveringPanel<T>( Panel excludePanel, Panel rootPanel = null ) where T : Panel
+		{
+			rootPanel ??= UI.Hud.Current.RootPanel;
 
-            T highestPanel = default;
-            int? zindex = null;
+			T highestPanel = default;
+			int? zindex = null;
 
-            foreach (Panel loopPanel in rootPanel.Children)
-            {
-                if (loopPanel == excludePanel)
-                {
-                    continue;
-                }
+			foreach ( Panel loopPanel in rootPanel.Children )
+			{
+				if ( loopPanel == excludePanel )
+				{
+					continue;
+				}
 
-                if (loopPanel.IsInside(Mouse.Position))
-                {
-                    if (loopPanel is T t)
-                    {
-                        if ((loopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0))
-                        {
-                            zindex = loopPanel.ComputedStyle.ZIndex;
-                            highestPanel = t;
-                        }
-                    }
+				if ( loopPanel.IsInside( Mouse.Position ) )
+				{
+					if ( loopPanel is T t )
+					{
+						if ( (loopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0) )
+						{
+							zindex = loopPanel.ComputedStyle.ZIndex;
+							highestPanel = t;
+						}
+					}
 
-                    T childLoopPanel = GetHoveringPanel<T>(excludePanel, loopPanel);
+					T childLoopPanel = GetHoveringPanel<T>( excludePanel, loopPanel );
 
-                    if (childLoopPanel != null && (childLoopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0))
-                    {
-                        zindex = childLoopPanel.ComputedStyle.ZIndex;
-                        highestPanel = childLoopPanel;
-                    }
-                }
-            }
+					if ( childLoopPanel != null && (childLoopPanel.ComputedStyle.ZIndex ?? 0) >= (zindex ?? 0) )
+					{
+						zindex = childLoopPanel.ComputedStyle.ZIndex;
+						highestPanel = childLoopPanel;
+					}
+				}
+			}
 
-            return highestPanel;
-        }
+			return highestPanel;
+		}
 
-        public static void Enabled(this Panel panel, bool enabled)
-        {
-            panel.SetClass("disabled", !enabled);
-        }
+		public static void Enabled( this Panel panel, bool enabled )
+		{
+			panel.SetClass( "disabled", !enabled );
+		}
 
-        public static bool IsEnabled(this Panel panel)
-        {
-            return !panel.HasClass("disabled");
-        }
+		public static bool IsEnabled( this Panel panel )
+		{
+			return !panel.HasClass( "disabled" );
+		}
 
-        public static string GetTypeName(Type type) => type.FullName.Replace(type.Namespace, "").TrimStart('.');
+		public static string GetTypeName( Type type ) => type.FullName.Replace( type.Namespace, "" ).TrimStart( '.' );
 
-        public enum Realm
-        {
-            Client,
-            Server
-        }
+		public enum Realm
+		{
+			Client,
+			Server
+		}
 
-        public static void CreateRecursiveDirectories(string fileName)
-        {
-            string[] splits = fileName.Split('/');
-            string currentDir = "";
+		public static void CreateRecursiveDirectories( string fileName )
+		{
+			string[] splits = fileName.Split( '/' );
+			string currentDir = "";
 
-            for (int i = 0; i < splits.Length - 1; i++)
-            {
-                currentDir += splits[i];
+			for ( int i = 0; i < splits.Length - 1; i++ )
+			{
+				currentDir += splits[i];
 
-                if (!FileSystem.Data.DirectoryExists(currentDir))
-                {
-                    FileSystem.Data.CreateDirectory(currentDir);
-                }
+				if ( !FileSystem.Data.DirectoryExists( currentDir ) )
+				{
+					FileSystem.Data.CreateDirectory( currentDir );
+				}
 
-                currentDir += '/';
-            }
-        }
+				currentDir += '/';
+			}
+		}
 
-        public static string GetSettingsFolderPath(Realm realm, string path = null, string pathAddition = null)
-        {
-            if (!FileSystem.Data.DirectoryExists("settings"))
-            {
-                FileSystem.Data.CreateDirectory("settings");
-            }
+		public static string GetSettingsFolderPath( Realm realm, string path = null, string pathAddition = null )
+		{
+			if ( !FileSystem.Data.DirectoryExists( "settings" ) )
+			{
+				FileSystem.Data.CreateDirectory( "settings" );
+			}
 
-            string settingsName = Utils.GetTypeName(realm == Realm.Client ? typeof(Settings.ClientSettings) : typeof(Settings.ServerSettings));
+			string settingsName = Utils.GetTypeName( realm == Realm.Client ? typeof( Settings.ClientSettings ) : typeof( Settings.ServerSettings ) );
 
-            path ??= $"/settings/{settingsName.ToLower()}/{pathAddition}";
+			path ??= $"/settings/{settingsName.ToLower()}/{pathAddition}";
 
-            if (!FileSystem.Data.DirectoryExists(path))
-            {
-                CreateRecursiveDirectories(path);
-            }
+			if ( !FileSystem.Data.DirectoryExists( path ) )
+			{
+				CreateRecursiveDirectories( path );
+			}
 
-            return path;
-        }
+			return path;
+		}
 
-        public static bool HasGreatorOrEqualAxis(this Vector3 local, Vector3 other)
-        {
-            return local.x >= other.x || local.y >= other.y || local.z >= other.z;
-        }
+		public static bool HasGreatorOrEqualAxis( this Vector3 local, Vector3 other )
+		{
+			return local.x >= other.x || local.y >= other.y || local.z >= other.z;
+		}
 
-        /// <summary>
-        /// Adds the item to the IList if that IList does not already contain the item
-        /// </summary>
-        public static void AddIfDoesNotContain<T>(this IList<T> list, T item)
-        {
-            if (!list.Contains(item))
-            {
-                list.Add(item);
-            }
-        }
+		/// <summary>
+		/// Adds the item to the IList if that IList does not already contain the item
+		/// </summary>
+		public static void AddIfDoesNotContain<T>( this IList<T> list, T item )
+		{
+			if ( !list.Contains( item ) )
+			{
+				list.Add( item );
+			}
+		}
 
-        public static void SetPropertyValue<T>(object obj, string propertyName, T value)
-        {
-            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+		public static void SetPropertyValue<T>( object obj, string propertyName, T value )
+		{
+			PropertyInfo propertyInfo = obj.GetType().GetProperty( propertyName );
 
-            if (propertyInfo != null && propertyInfo.CanWrite)
-            {
-                try
-                {
-                    propertyInfo.SetValue(obj, Convert.ChangeType(value, propertyInfo.GetValue(obj).GetType()));
-                }
-                catch (Exception ex)
-                {
-                    Log.Error($"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})");
-                }
-            }
-            else
-            {
-                Log.Warning($"Tried to write property '{propertyName}' of '{obj}' with '{value}'");
-            }
-        }
+			if ( propertyInfo != null && propertyInfo.CanWrite )
+			{
+				try
+				{
+					propertyInfo.SetValue( obj, Convert.ChangeType( value, propertyInfo.GetValue( obj ).GetType() ) );
+				}
+				catch ( Exception ex )
+				{
+					Log.Error( $"Tried to write property '{propertyName}' of '{obj}' with '{value}' ({ex.Message})" );
+				}
+			}
+			else
+			{
+				Log.Warning( $"Tried to write property '{propertyName}' of '{obj}' with '{value}'" );
+			}
+		}
 
-        public static T GetPropertyValue<T>(object obj, string propertyName)
-        {
-            PropertyInfo propertyInfo = obj.GetType().GetProperty(propertyName);
+		public static T GetPropertyValue<T>( object obj, string propertyName )
+		{
+			PropertyInfo propertyInfo = obj.GetType().GetProperty( propertyName );
 
-            if (propertyInfo == null || !propertyInfo.CanRead)
-            {
-                Log.Warning($"Tried to read non-existing property '{propertyName}' of '{obj}'");
+			if ( propertyInfo == null || !propertyInfo.CanRead )
+			{
+				Log.Warning( $"Tried to read non-existing property '{propertyName}' of '{obj}'" );
 
-                return default;
-            }
+				return default;
+			}
 
-            return (T) propertyInfo.GetValue(obj);
-        }
+			return (T)propertyInfo.GetValue( obj );
+		}
 
-        public static object GetPropertyValue(object obj, string propertyName) => GetPropertyValue<object>(obj, propertyName);
-    }
+		public static object GetPropertyValue( object obj, string propertyName ) => GetPropertyValue<object>( obj, propertyName );
+	}
 }

@@ -6,117 +6,117 @@ using TTT.Items;
 
 namespace TTT.Player
 {
-    public partial class PerksInventory
-    {
-        private List<TTTPerk> PerkList { get; } = new();
-        private readonly TTTPlayer _owner;
+	public partial class PerksInventory
+	{
+		private List<TTTPerk> PerkList { get; } = new();
+		private readonly TTTPlayer _owner;
 
-        public PerksInventory(TTTPlayer owner)
-        {
-            _owner = owner;
-        }
+		public PerksInventory( TTTPlayer owner )
+		{
+			_owner = owner;
+		}
 
-        public bool Give(TTTPerk perk)
-        {
-            if (Has(perk.LibraryName))
-            {
-                return false;
-            }
+		public bool Give( TTTPerk perk )
+		{
+			if ( Has( perk.LibraryName ) )
+			{
+				return false;
+			}
 
-            PerkList.Add(perk);
+			PerkList.Add( perk );
 
-            if (Host.IsServer)
-            {
-                _owner.ClientAddPerk(To.Single(_owner), perk.LibraryName);
-            }
+			if ( Host.IsServer )
+			{
+				_owner.ClientAddPerk( To.Single( _owner ), perk.LibraryName );
+			}
 
-            perk.Equip(_owner);
+			perk.Equip( _owner );
 
-            return true;
-        }
+			return true;
+		}
 
-        public bool Take(TTTPerk perk)
-        {
-            if (!Has(perk.LibraryName))
-            {
-                return false;
-            }
+		public bool Take( TTTPerk perk )
+		{
+			if ( !Has( perk.LibraryName ) )
+			{
+				return false;
+			}
 
-            PerkList.Remove(perk);
+			PerkList.Remove( perk );
 
-            perk.Remove();
-            perk.Delete();
+			perk.Remove();
+			perk.Delete();
 
-            if (Host.IsServer)
-            {
-                _owner.ClientRemovePerk(To.Single(_owner), perk.LibraryName);
-            }
+			if ( Host.IsServer )
+			{
+				_owner.ClientRemovePerk( To.Single( _owner ), perk.LibraryName );
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        public T Find<T>(string perkName = null) where T : TTTPerk
-        {
-            foreach (TTTPerk loopPerk in PerkList)
-            {
-                if (loopPerk is not T t || t.Equals(default(T)))
-                {
-                    continue;
-                }
+		public T Find<T>( string perkName = null ) where T : TTTPerk
+		{
+			foreach ( TTTPerk loopPerk in PerkList )
+			{
+				if ( loopPerk is not T t || t.Equals( default( T ) ) )
+				{
+					continue;
+				}
 
-                if (perkName == t.LibraryName)
-                {
-                    return t;
-                }
+				if ( perkName == t.LibraryName )
+				{
+					return t;
+				}
 
-                if (perkName == null)
-                {
-                    return t;
-                }
-            }
+				if ( perkName == null )
+				{
+					return t;
+				}
+			}
 
-            return default;
-        }
+			return default;
+		}
 
-        public TTTPerk Find(string perkName)
-        {
-            return Find<TTTPerk>(perkName);
-        }
+		public TTTPerk Find( string perkName )
+		{
+			return Find<TTTPerk>( perkName );
+		}
 
-        public bool Has(string perkName = null)
-        {
-            return Find(perkName) != null;
-        }
+		public bool Has( string perkName = null )
+		{
+			return Find( perkName ) != null;
+		}
 
-        public bool Has<T>(string perkName = null) where T : TTTPerk
-        {
-            return Find<T>(perkName) != null;
-        }
+		public bool Has<T>( string perkName = null ) where T : TTTPerk
+		{
+			return Find<T>( perkName ) != null;
+		}
 
-        public void Clear()
-        {
-            foreach (TTTPerk perk in PerkList)
-            {
-                perk.Remove();
-                perk.Delete();
-            }
+		public void Clear()
+		{
+			foreach ( TTTPerk perk in PerkList )
+			{
+				perk.Remove();
+				perk.Delete();
+			}
 
-            PerkList.Clear();
+			PerkList.Clear();
 
-            if (Host.IsServer)
-            {
-                _owner.ClientClearPerks(To.Single(_owner));
-            }
-        }
+			if ( Host.IsServer )
+			{
+				_owner.ClientClearPerks( To.Single( _owner ) );
+			}
+		}
 
-        public int Count()
-        {
-            return PerkList.Count;
-        }
+		public int Count()
+		{
+			return PerkList.Count;
+		}
 
-        public TTTPerk Get(int index)
-        {
-            return PerkList[index];
-        }
-    }
+		public TTTPerk Get( int index )
+		{
+			return PerkList[index];
+		}
+	}
 }

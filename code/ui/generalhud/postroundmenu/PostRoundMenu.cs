@@ -5,75 +5,75 @@ using TTT.Globalization;
 
 namespace TTT.UI
 {
-    public class PostRoundStats
-    {
-        public readonly string WinningRole;
-        public Color WinningColor;
+	public class PostRoundStats
+	{
+		public readonly string WinningRole;
+		public Color WinningColor;
 
-        public PostRoundStats(string winningRole, Color winningColor)
-        {
-            WinningRole = winningRole;
-            WinningColor = winningColor;
-        }
-    }
+		public PostRoundStats( string winningRole, Color winningColor )
+		{
+			WinningRole = winningRole;
+			WinningColor = winningColor;
+		}
+	}
 
-    public class PostRoundMenu : Panel
-    {
-        public static PostRoundMenu Instance;
+	public class PostRoundMenu : Panel
+	{
+		public static PostRoundMenu Instance;
 
-        private PostRoundStats _stats;
+		private PostRoundStats _stats;
 
-        private readonly Panel _backgroundBannerPanel;
-        private readonly Panel _containerPanel;
+		private readonly Panel _backgroundBannerPanel;
+		private readonly Panel _containerPanel;
 
-        private readonly TranslationLabel _headerLabel;
-        private readonly TranslationLabel _contentLabel;
+		private readonly TranslationLabel _headerLabel;
+		private readonly TranslationLabel _contentLabel;
 
-        public PostRoundMenu()
-        {
-            Instance = this;
+		public PostRoundMenu()
+		{
+			Instance = this;
 
-            StyleSheet.Load("/ui/generalhud/postroundmenu/PostRoundMenu.scss");
+			StyleSheet.Load( "/ui/generalhud/postroundmenu/PostRoundMenu.scss" );
 
-            AddClass("text-shadow");
+			AddClass( "text-shadow" );
 
-            _backgroundBannerPanel = new(this);
-            _backgroundBannerPanel.AddClass("background-color-secondary");
-            _backgroundBannerPanel.AddClass("background-banner-panel");
-            _backgroundBannerPanel.AddClass("opacity-medium");
+			_backgroundBannerPanel = new( this );
+			_backgroundBannerPanel.AddClass( "background-color-secondary" );
+			_backgroundBannerPanel.AddClass( "background-banner-panel" );
+			_backgroundBannerPanel.AddClass( "opacity-medium" );
 
-            _containerPanel = new(_backgroundBannerPanel);
-            _containerPanel.AddClass("container-panel");
+			_containerPanel = new( _backgroundBannerPanel );
+			_containerPanel.AddClass( "container-panel" );
 
-            _headerLabel = _containerPanel.Add.TranslationLabel(new TranslationData());
-            _headerLabel.AddClass("header-label");
+			_headerLabel = _containerPanel.Add.TranslationLabel( new TranslationData() );
+			_headerLabel.AddClass( "header-label" );
 
-            _contentLabel = _containerPanel.Add.TranslationLabel(new TranslationData());
-            _contentLabel.AddClass("content-label");
-        }
+			_contentLabel = _containerPanel.Add.TranslationLabel( new TranslationData() );
+			_contentLabel.AddClass( "content-label" );
+		}
 
-        public void OpenAndSetPostRoundMenu(PostRoundStats stats)
-        {
-            _stats = stats;
+		public void OpenAndSetPostRoundMenu( PostRoundStats stats )
+		{
+			_stats = stats;
 
-            OpenPostRoundMenu();
-        }
+			OpenPostRoundMenu();
+		}
 
-        public void ClosePostRoundMenu()
-        {
-            SetClass("fade-in", false);
-            _containerPanel.SetClass("pop-in", false);
-        }
+		public void ClosePostRoundMenu()
+		{
+			SetClass( "fade-in", false );
+			_containerPanel.SetClass( "pop-in", false );
+		}
 
-        public void OpenPostRoundMenu()
-        {
-            SetClass("fade-in", true);
-            _containerPanel.SetClass("pop-in", true);
+		public void OpenPostRoundMenu()
+		{
+			SetClass( "fade-in", true );
+			_containerPanel.SetClass( "pop-in", true );
 
-            _contentLabel.UpdateTranslation(new TranslationData("POST_ROUND_TEXT"));
+			_contentLabel.UpdateTranslation( new TranslationData( "POST_ROUND_TEXT" ) );
 
-            _headerLabel.UpdateTranslation(new TranslationData($"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}"));
-            _headerLabel.Style.FontColor = _stats.WinningColor;
-        }
-    }
+			_headerLabel.UpdateTranslation( new TranslationData( $"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}" ) );
+			_headerLabel.Style.FontColor = _stats.WinningColor;
+		}
+	}
 }

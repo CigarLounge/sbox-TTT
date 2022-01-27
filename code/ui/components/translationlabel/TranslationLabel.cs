@@ -8,76 +8,76 @@ using TTT.Globalization;
 
 namespace TTT.UI
 {
-    public class TranslationLabel : Label, ITranslatable
-    {
-        public new string Text
-        {
-            get => base.Text;
-            set
-            {
-                base.Text = value;
-            }
-        }
+	public class TranslationLabel : Label, ITranslatable
+	{
+		public new string Text
+		{
+			get => base.Text;
+			set
+			{
+				base.Text = value;
+			}
+		}
 
-        private TranslationData _translationData = new();
+		private TranslationData _translationData = new();
 
-        public TranslationLabel()
-        {
-            TTTLanguage.Translatables.Add(this);
-        }
+		public TranslationLabel()
+		{
+			TTTLanguage.Translatables.Add( this );
+		}
 
-        public TranslationLabel(TranslationData translationData, string classname = null) : base()
-        {
-            UpdateTranslation(translationData);
-            AddClass(classname);
+		public TranslationLabel( TranslationData translationData, string classname = null ) : base()
+		{
+			UpdateTranslation( translationData );
+			AddClass( classname );
 
-            TTTLanguage.Translatables.Add(this);
-        }
+			TTTLanguage.Translatables.Add( this );
+		}
 
-        public override void OnDeleted()
-        {
-            TTTLanguage.Translatables.Remove(this);
+		public override void OnDeleted()
+		{
+			TTTLanguage.Translatables.Remove( this );
 
-            base.OnDeleted();
-        }
+			base.OnDeleted();
+		}
 
-        public override void SetProperty(string name, string value)
-        {
-            base.SetProperty(name, value);
+		public override void SetProperty( string name, string value )
+		{
+			base.SetProperty( name, value );
 
-            if (name == "key")
-            {
-                UpdateTranslation(new TranslationData(value));
-                return;
-            }
-        }
+			if ( name == "key" )
+			{
+				UpdateTranslation( new TranslationData( value ) );
+				return;
+			}
+		}
 
-        public void UpdateTranslation(TranslationData translationData)
-        {
-            _translationData = translationData;
-            base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation(_translationData);
-        }
+		public void UpdateTranslation( TranslationData translationData )
+		{
+			_translationData = translationData;
+			base.Text = TTTLanguage.ActiveLanguage.GetFormattedTranslation( _translationData );
+		}
 
-        public void UpdateLanguage(Language language)
-        {
-            base.Text = language.GetFormattedTranslation(_translationData);
-        }
-    }
+		public void UpdateLanguage( Language language )
+		{
+			base.Text = language.GetFormattedTranslation( _translationData );
+		}
+	}
 }
 
 namespace Sandbox.UI.Construct
 {
-    using TTT.UI;
+	using TTT.UI;
 
-    public static class TranslationLabelConstructor
-    {
-        public static TranslationLabel TranslationLabel(this PanelCreator self, TranslationData translationData, string classname = null)
-        {
-            TranslationLabel translationLabel = new(translationData, classname);
+	public static class TranslationLabelConstructor
+	{
+		public static TranslationLabel TranslationLabel( this PanelCreator self, TranslationData translationData, string classname = null )
+		{
+			TranslationLabel translationLabel = new( translationData, classname );
 
-            self.panel.AddChild(translationLabel);
+			self.panel.AddChild( translationLabel );
 
-            return translationLabel;
-        }
-    }
+			return translationLabel;
+		}
+	}
 }

@@ -7,46 +7,46 @@ using TTT.Globalization;
 
 namespace TTT.UI
 {
-    public partial class PanelHeader : Panel
-    {
-        public Action<PanelHeader> OnClose { get; set; }
+	public partial class PanelHeader : Panel
+	{
+		public Action<PanelHeader> OnClose { get; set; }
 
-        private TranslationLabel _title;
+		private TranslationLabel _title;
 
-        public PanelHeader(Panel parent = null) : base(parent)
-        {
-            StyleSheet.Load("/ui/panelheader/PanelHeader.scss");
+		public PanelHeader( Panel parent = null ) : base( parent )
+		{
+			StyleSheet.Load( "/ui/panelheader/PanelHeader.scss" );
 
-            Reload();
-        }
+			Reload();
+		}
 
-        public void Reload()
-        {
-            DeleteChildren(true);
+		public void Reload()
+		{
+			DeleteChildren( true );
 
-            _title = Add.TranslationLabel(new TranslationData(), "title");
+			_title = Add.TranslationLabel( new TranslationData(), "title" );
 
-            OnCreateHeader();
+			OnCreateHeader();
 
-            Add.ButtonWithIcon(null, "close", "closeButton", () =>
-            {
-                OnClose?.Invoke(this);
-            });
-        }
+			Add.ButtonWithIcon( null, "close", "closeButton", () =>
+			 {
+				 OnClose?.Invoke( this );
+			 } );
+		}
 
-        public void SetTitle(string text)
-        {
-            _title.Text = text;
-        }
+		public void SetTitle( string text )
+		{
+			_title.Text = text;
+		}
 
-        public void SetTranslationTitle(TranslationData translationdata)
-        {
-            _title.UpdateTranslation(translationdata);
-        }
+		public void SetTranslationTitle( TranslationData translationdata )
+		{
+			_title.UpdateTranslation( translationdata );
+		}
 
-        public virtual void OnCreateHeader()
-        {
+		public virtual void OnCreateHeader()
+		{
 
-        }
-    }
+		}
+	}
 }

@@ -4,28 +4,28 @@ using Sandbox;
 
 namespace TTT.Player
 {
-    public partial class TTTPlayer
-    {
-        private readonly List<ModelEntity> _clothing = new();
+	public partial class TTTPlayer
+	{
+		private readonly List<ModelEntity> _clothing = new();
 
-        public ModelEntity AttachClothing(string modelName)
-        {
-            ModelEntity entity = new();
-            entity.SetModel(modelName);
-            entity.SetParent(this, true);
-            entity.EnableShadowInFirstPerson = true;
-            entity.EnableHideInFirstPerson = true;
+		public ModelEntity AttachClothing( string modelName )
+		{
+			ModelEntity entity = new();
+			entity.SetModel( modelName );
+			entity.SetParent( this, true );
+			entity.EnableShadowInFirstPerson = true;
+			entity.EnableHideInFirstPerson = true;
 
-            _clothing.Add(entity);
+			_clothing.Add( entity );
 
-            return entity;
-        }
+			return entity;
+		}
 
-        public void RemoveClothing()
-        {
-            _clothing.ForEach(entity => entity.Delete());
-            _clothing.Clear();
-        }
-    }
+		public void RemoveClothing()
+		{
+			_clothing.ForEach( entity => entity.Delete() );
+			_clothing.Clear();
+		}
+	}
 
 }

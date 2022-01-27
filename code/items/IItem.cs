@@ -6,38 +6,38 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
-    public class ItemAttribute : Attribute
-    {
-        public ItemAttribute() : base()
-        {
+	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
+	public class ItemAttribute : Attribute
+	{
+		public ItemAttribute() : base()
+		{
 
-        }
-    }
+		}
+	}
 
-    public interface IItem
-    {
-        static string ITEM_TAG => "TTT_ITEM";
+	public interface IItem
+	{
+		static string ITEM_TAG => "TTT_ITEM";
 
-        string LibraryName { get; }
+		string LibraryName { get; }
 
-        Entity Owner { get; }
+		Entity Owner { get; }
 
-        void Equip(TTTPlayer player);
+		void Equip( TTTPlayer player );
 
-        void OnEquip();
+		void OnEquip();
 
-        void Remove();
+		void Remove();
 
-        void OnRemove();
+		void OnRemove();
 
-        void Delete();
+		void Delete();
 
-        void Simulate(Client owner);
+		void Simulate( Client owner );
 
-        void OnPurchase(TTTPlayer player)
-        {
-            player.Inventory.TryAdd(this, deleteIfFails: true, makeActive: false);
-        }
-    }
+		void OnPurchase( TTTPlayer player )
+		{
+			player.Inventory.TryAdd( this, deleteIfFails: true, makeActive: false );
+		}
+	}
 }

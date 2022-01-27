@@ -6,22 +6,22 @@ using Sandbox.UI;
 
 namespace TTT.UI
 {
-    public partial class Drop : DragDrop
-    {
-        public static List<Drop> List { get; private set; } = new();
+	public partial class Drop : DragDrop
+	{
+		public static List<Drop> List { get; private set; } = new();
 
-        public Drop(Panel parent = null) : base(parent)
-        {
-            List.Add(this);
+		public Drop( Panel parent = null ) : base( parent )
+		{
+			List.Add( this );
 
-            StyleSheet.Load("/ui/components/dragdrop/Drop.scss");
+			StyleSheet.Load( "/ui/components/dragdrop/Drop.scss" );
 
-            AddClass("drop");
-        }
+			AddClass( "drop" );
+		}
 
-        public override void OnDeleted()
-        {
-            List.Remove(this);
-        }
-    }
+		public override void OnDeleted()
+		{
+			List.Remove( this );
+		}
+	}
 }

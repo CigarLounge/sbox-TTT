@@ -2,21 +2,21 @@ using Sandbox.UI;
 
 namespace TTT.UI
 {
-    public class InventoryWrapper : Panel
-    {
-        public static InventoryWrapper Instance;
+	public class InventoryWrapper : Panel
+	{
+		public static InventoryWrapper Instance;
 
-        public Effects Effects;
-        public InventorySelection InventorySelection;
+		public Effects Effects;
+		public InventorySelection InventorySelection;
 
-        public InventoryWrapper()
-        {
-            Instance = this;
+		public InventoryWrapper()
+		{
+			Instance = this;
 
-            StyleSheet.Load("/ui/generalhud/inventorywrapper/InventoryWrapper.scss");
+			StyleSheet.Load( "/ui/generalhud/inventorywrapper/InventoryWrapper.scss" );
 
-            Effects = AddChild<Effects>();
-            InventorySelection = AddChild<InventorySelection>();
-        }
-    }
+			Effects = AddChild<Effects>();
+			InventorySelection = AddChild<InventorySelection>();
+		}
+	}
 }

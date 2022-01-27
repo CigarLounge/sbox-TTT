@@ -5,74 +5,74 @@ using TTT.UI;
 
 namespace TTT.Player
 {
-    public partial class TTTPlayer
-    {
-        private const float MAX_HINT_DISTANCE = 20480f;
+	public partial class TTTPlayer
+	{
+		private const float MAX_HINT_DISTANCE = 20480f;
 
-        private EntityHintPanel _currentHintPanel;
-        private IEntityHint _currentHint;
+		private EntityHintPanel _currentHintPanel;
+		private IEntityHint _currentHint;
 
-        private void TickEntityHints()
-        {
-            if (Camera is ThirdPersonSpectateCamera)
-            {
-                DeleteHint();
+		private void TickEntityHints()
+		{
+			if ( Camera is ThirdPersonSpectateCamera )
+			{
+				DeleteHint();
 
-                return;
-            }
+				return;
+			}
 
-            IEntityHint hint = IsLookingAtHintableEntity(MAX_HINT_DISTANCE);
+			IEntityHint hint = IsLookingAtHintableEntity( MAX_HINT_DISTANCE );
 
-            if (hint == null || !hint.CanHint(this))
-            {
-                DeleteHint();
-                return;
-            }
+			if ( hint == null || !hint.CanHint( this ) )
+			{
+				DeleteHint();
+				return;
+			}
 
-            if (hint == _currentHint)
-            {
-                hint.Tick(this);
+			if ( hint == _currentHint )
+			{
+				hint.Tick( this );
 
-                if (IsClient)
-                {
-                    _currentHintPanel.UpdateHintPanel(hint.TextOnTick);
-                }
+				if ( IsClient )
+				{
+					_currentHintPanel.UpdateHintPanel( hint.TextOnTick );
+				}
 
-                return;
-            }
+				return;
+			}
 
-            DeleteHint();
+			DeleteHint();
 
-            if (IsClient)
-            {
-                if (hint.ShowGlow && hint is ModelEntity model && model.IsValid())
-                {
-                    model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
-                    model.GlowActive = true;
-                }
+			if ( IsClient )
+			{
+				if ( hint.ShowGlow && hint is ModelEntity model && model.IsValid() )
+				{
+					model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
+					model.GlowActive = true;
+				}
 
-                _currentHintPanel = hint.DisplayHint(this);
-                _currentHintPanel.Parent = HintDisplay.Instance;
-                _currentHintPanel.Enabled(true);
-            }
+				_currentHintPanel = hint.DisplayHint( this );
+				_currentHintPanel.Parent = HintDisplay.Instance;
+				_currentHintPanel.Enabled( true );
+			}
 
-            _currentHint = hint;
-        }
+			_currentHint = hint;
+		}
 
-        private void DeleteHint()
-        {
-            if (IsClient)
-            {
-                if (_currentHint != null && _currentHint is ModelEntity model && model.IsValid())
-                {
-                    model.GlowActive = false;
-                }
+		private void DeleteHint()
+		{
+			if ( IsClient )
+			{
+				if ( _currentHint != null && _currentHint is ModelEntity model && model.IsValid() )
+				{
+					model.GlowActive = false;
+				}
 
-                _currentHintPanel?.Delete(true);
-                _currentHintPanel = null;
-            }
+				_currentHintPanel?.Delete( true );
+				_currentHintPanel = null;
+			}
 
-            _currentHint = null;
-        }
-    }
+			_currentHint = null;
+		}
+	}
 }

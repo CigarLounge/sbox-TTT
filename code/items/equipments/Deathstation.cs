@@ -4,37 +4,37 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-    [Library("equipment_deathstation")]
-    [Equipment(SlotType = SlotType.UtilityEquipment)]
-    [Buyable(Price = 100)]
-    [Hammer.Skip]
-    public partial class DeathStation : TTTEquipment
-    {
-        public override string ViewModelPath => "";
+	[Library( "equipment_deathstation" )]
+	[Equipment( SlotType = SlotType.UtilityEquipment )]
+	[Buyable( Price = 100 )]
+	[Hammer.Skip]
+	public partial class DeathStation : TTTEquipment
+	{
+		public override string ViewModelPath => "";
 
-        public override void Spawn()
-        {
-            base.Spawn();
+		public override void Spawn()
+		{
+			base.Spawn();
 
-            RenderColor = Color.Transparent;
-        }
+			RenderColor = Color.Transparent;
+		}
 
-        public override void Simulate(Client client)
-        {
-            if (Owner is not TTTPlayer owner || !IsServer)
-            {
-                return;
-            }
+		public override void Simulate( Client client )
+		{
+			if ( Owner is not TTTPlayer owner || !IsServer )
+			{
+				return;
+			}
 
-            using (Prediction.Off())
-            {
-                if (Input.Pressed(InputButton.Attack1))
-                {
-                    owner.Inventory.DropEntity(this, typeof(DeathstationEntity));
-                }
-            }
-        }
+			using ( Prediction.Off() )
+			{
+				if ( Input.Pressed( InputButton.Attack1 ) )
+				{
+					owner.Inventory.DropEntity( this, typeof( DeathstationEntity ) );
+				}
+			}
+		}
 
-        public override bool CanDrop() => false;
-    }
+		public override bool CanDrop() => false;
+	}
 }

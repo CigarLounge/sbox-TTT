@@ -5,128 +5,128 @@ using Sandbox.UI;
 
 namespace TTT.UI
 {
-    public struct PanelContentData
-    {
-        public Action<PanelContent> Content;
-        public string Title;
-        public string ClassName;
+	public struct PanelContentData
+	{
+		public Action<PanelContent> Content;
+		public string Title;
+		public string ClassName;
 
-        public PanelContentData(Action<PanelContent> content, string title = "", string className = "")
-        {
-            Content = content;
-            Title = title;
-            ClassName = className;
-        }
-    }
+		public PanelContentData( Action<PanelContent> content, string title = "", string className = "" )
+		{
+			Content = content;
+			Title = title;
+			ClassName = className;
+		}
+	}
 
-    public partial class PanelContent : Panel
-    {
-        public string Title { get; private set; } = "";
+	public partial class PanelContent : Panel
+	{
+		public string Title { get; private set; } = "";
 
-        public string ClassName { get; private set; } = "";
+		public string ClassName { get; private set; } = "";
 
-        public bool CanPrevious
-        {
-            get
-            {
-                return _historyIndex > 0;
-            }
-        }
+		public bool CanPrevious
+		{
+			get
+			{
+				return _historyIndex > 0;
+			}
+		}
 
-        public bool CanNext
-        {
-            get
-            {
-                return _historyIndex < (_contentHistory.Count - 1);
-            }
-        }
+		public bool CanNext
+		{
+			get
+			{
+				return _historyIndex < (_contentHistory.Count - 1);
+			}
+		}
 
-        public Action<PanelContentData> OnPanelContentUpdated { get; set; }
+		public Action<PanelContentData> OnPanelContentUpdated { get; set; }
 
-        public PanelContentData? CurrentPanelContentData { get; private set; }
+		public PanelContentData? CurrentPanelContentData { get; private set; }
 
-        private readonly List<PanelContentData> _contentHistory = new();
+		private readonly List<PanelContentData> _contentHistory = new();
 
-        private int _historyIndex = 0;
+		private int _historyIndex = 0;
 
-        public PanelContent(Panel parent = null) : base(parent)
-        {
+		public PanelContent( Panel parent = null ) : base( parent )
+		{
 
-        }
+		}
 
-        public void Reset()
-        {
-            _contentHistory.Clear();
-            _historyIndex = 0;
+		public void Reset()
+		{
+			_contentHistory.Clear();
+			_historyIndex = 0;
 
-            DeleteChildren(true);
-        }
+			DeleteChildren( true );
+		}
 
-        public void SetPanelContent(Action<PanelContent> createContent, string title = "", string className = "")
-        {
-            int historyOffset = _contentHistory.Count - _historyIndex - 1;
+		public void SetPanelContent( Action<PanelContent> createContent, string title = "", string className = "" )
+		{
+			int historyOffset = _contentHistory.Count - _historyIndex - 1;
 
-            if (historyOffset > 0)
-            {
-                _contentHistory.RemoveRange(_historyIndex + 1, historyOffset);
-            }
+			if ( historyOffset > 0 )
+			{
+				_contentHistory.RemoveRange( _historyIndex + 1, historyOffset );
+			}
 
-            _contentHistory.Add(new PanelContentData(createContent, title, className));
-            _historyIndex = _contentHistory.Count - 1;
+			_contentHistory.Add( new PanelContentData( createContent, title, className ) );
+			_historyIndex = _contentHistory.Count - 1;
 
-            UpdatePanelContent();
-        }
+			UpdatePanelContent();
+		}
 
-        public void Previous()
-        {
-            if (_historyIndex < 1)
-            {
-                return;
-            }
+		public void Previous()
+		{
+			if ( _historyIndex < 1 )
+			{
+				return;
+			}
 
-            _historyIndex--;
+			_historyIndex--;
 
-            UpdatePanelContent();
-        }
+			UpdatePanelContent();
+		}
 
-        public void Next()
-        {
-            if (_historyIndex > _contentHistory.Count - 2)
-            {
-                return;
-            }
+		public void Next()
+		{
+			if ( _historyIndex > _contentHistory.Count - 2 )
+			{
+				return;
+			}
 
-            _historyIndex++;
+			_historyIndex++;
 
-            UpdatePanelContent();
-        }
+			UpdatePanelContent();
+		}
 
-        public void UpdatePanelContent()
-        {
-            DeleteChildren(true);
+		public void UpdatePanelContent()
+		{
+			DeleteChildren( true );
 
-            string oldClassName = CurrentPanelContentData?.ClassName;
+			string oldClassName = CurrentPanelContentData?.ClassName;
 
-            if (!string.IsNullOrEmpty(oldClassName))
-            {
-                SetClass(oldClassName, false);
-            }
+			if ( !string.IsNullOrEmpty( oldClassName ) )
+			{
+				SetClass( oldClassName, false );
+			}
 
-            PanelContentData panelContentData = _contentHistory[_historyIndex];
+			PanelContentData panelContentData = _contentHistory[_historyIndex];
 
-            Title = panelContentData.Title;
-            ClassName = panelContentData.ClassName;
+			Title = panelContentData.Title;
+			ClassName = panelContentData.ClassName;
 
-            panelContentData.Content(this);
+			panelContentData.Content( this );
 
-            OnPanelContentUpdated?.Invoke(panelContentData);
+			OnPanelContentUpdated?.Invoke( panelContentData );
 
-            CurrentPanelContentData = panelContentData;
+			CurrentPanelContentData = panelContentData;
 
-            if (!string.IsNullOrEmpty(panelContentData.ClassName))
-            {
-                SetClass(panelContentData.ClassName, true);
-            }
-        }
-    }
+			if ( !string.IsNullOrEmpty( panelContentData.ClassName ) )
+			{
+				SetClass( panelContentData.ClassName, true );
+			}
+		}
+	}
 }

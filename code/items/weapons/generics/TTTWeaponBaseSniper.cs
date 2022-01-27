@@ -8,76 +8,76 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-    [Hammer.Skip]
-    public partial class TTTWeaponBaseSniper : SWB_Base.WeaponBaseSniper, ICarriableItem, IEntityHint
-    {
-        public string LibraryName { get; }
-        public SlotType SlotType { get; } = SlotType.Secondary;
-        public Type DroppedType { get; set; } = null;
+	[Hammer.Skip]
+	public partial class TTTWeaponBaseSniper : SWB_Base.WeaponBaseSniper, ICarriableItem, IEntityHint
+	{
+		public string LibraryName { get; }
+		public SlotType SlotType { get; } = SlotType.Secondary;
+		public Type DroppedType { get; set; } = null;
 
-        public TTTWeaponBaseSniper() : base()
-        {
-            LibraryName = Utils.GetLibraryName(GetType());
+		public TTTWeaponBaseSniper() : base()
+		{
+			LibraryName = Utils.GetLibraryName( GetType() );
 
-            foreach (object obj in GetType().GetCustomAttributes(false))
-            {
-                if (obj is WeaponAttribute weaponAttribute)
-                {
-                    SlotType = weaponAttribute.SlotType;
-                }
-            }
+			foreach ( object obj in GetType().GetCustomAttributes( false ) )
+			{
+				if ( obj is WeaponAttribute weaponAttribute )
+				{
+					SlotType = weaponAttribute.SlotType;
+				}
+			}
 
-            EnableShadowInFirstPerson = false;
+			EnableShadowInFirstPerson = false;
 
-            Tags.Add(IItem.ITEM_TAG);
-        }
+			Tags.Add( IItem.ITEM_TAG );
+		}
 
-        public override void Simulate(Client owner)
-        {
-            TTTWeaponBaseGeneric.Simulate(owner, DroppedType, Primary);
+		public override void Simulate( Client owner )
+		{
+			TTTWeaponBaseGeneric.Simulate( owner, DroppedType, Primary );
 
-            base.Simulate(owner);
-        }
+			base.Simulate( owner );
+		}
 
-        public new bool CanDrop() => true;
+		public new bool CanDrop() => true;
 
-        public void Equip(TTTPlayer player)
-        {
-            OnEquip();
-        }
+		public void Equip( TTTPlayer player )
+		{
+			OnEquip();
+		}
 
-        public virtual void OnEquip()
-        {
+		public virtual void OnEquip()
+		{
 
-        }
+		}
 
-        public void Remove()
-        {
-            OnRemove();
-        }
+		public void Remove()
+		{
+			OnRemove();
+		}
 
-        public virtual void OnRemove()
-        {
+		public virtual void OnRemove()
+		{
 
-        }
+		}
 
-        public float HintDistance => 80f;
+		public float HintDistance => 80f;
 
-        public TranslationData TextOnTick => TTTWeaponBaseGeneric.PickupText(LibraryName);
+		public TranslationData TextOnTick => TTTWeaponBaseGeneric.PickupText( LibraryName );
 
-        public bool CanHint(TTTPlayer client)
-        {
-            return true;
-        }
+		public bool CanHint( TTTPlayer client )
+		{
+			return true;
+		}
 
-        public EntityHintPanel DisplayHint(TTTPlayer client)
-        {
-            return new Hint(TextOnTick);
-        }
+		public EntityHintPanel DisplayHint( TTTPlayer client )
+		{
+			return new Hint( TextOnTick );
+		}
 
-        public void Tick(TTTPlayer player)
-        {
-            TTTWeaponBaseGeneric.Tick(player, this);
-        }
-    }
+		public void Tick( TTTPlayer player )
+		{
+			TTTWeaponBaseGeneric.Tick( player, this );
+		}
+	}
 }
