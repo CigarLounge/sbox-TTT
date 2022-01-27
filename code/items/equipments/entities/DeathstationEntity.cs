@@ -7,13 +7,13 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "entity_healthstation" )]
-	[Precached( "models/entities/healthstation.vmdl" )]
+	[Precached( "models/health_station/health_station.vmdl" )]
 	public partial class DeathstationEntity : Prop, IEntityHint
 	{
 		[Net]
 		public float StoredDamage { get; set; } = 200f;
 
-		public override string ModelPath => "models/entities/healthstation.vmdl";
+		public override string ModelPath => "models/health_station/health_station.vmdl";
 
 		public override void Spawn()
 		{
