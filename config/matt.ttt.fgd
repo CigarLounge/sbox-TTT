@@ -165,6 +165,16 @@
 ]
 
 //
+// TTT.Items.UMP45
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/smgs/ump45/w_ump45.vmdl" ) = UMP45 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
 // TTT.Items.TTTAmmoRandom
 //
 @PointClass base(BaseProperties_matt_ttt) = entity_ammo_random : ""
