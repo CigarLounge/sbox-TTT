@@ -12,7 +12,7 @@ namespace TTT.Teams
 	[AttributeUsage( AttributeTargets.Class, Inherited = false )]
 	public class TeamAttribute : LibraryAttribute
 	{
-		public TeamAttribute( string name ) : base( "team_" + name )
+		public TeamAttribute( string name ) : base( name )
 		{
 
 		}
