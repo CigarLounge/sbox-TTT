@@ -108,6 +108,7 @@ namespace TTT.UI.Menu
 		private static void CreateSwitchSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject )
 		{
 			Checkbox checkbox = new();
+			checkbox.SetContent( propertyName );
 			checkbox.Parent = parent;
 			checkbox.Checked = Utils.GetPropertyValue<bool>( propertyObject, propertyName );
 			checkbox.AddEventListener( "onchange", ( panelEvent ) =>
