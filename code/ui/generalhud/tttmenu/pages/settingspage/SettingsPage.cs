@@ -101,7 +101,7 @@ namespace TTT.UI.Menu
 					tab.Add.LineBreak();
 				}
 
-				tabContainer.AddTab( tab, new string( $"MENU_SETTINGS_TAB_{categoryName.ToUpper()}" ) );
+				tabContainer.AddTab( tab, categoryName );
 			}
 		}
 
@@ -118,7 +118,7 @@ namespace TTT.UI.Menu
 
 		private static void CreateInputSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject )
 		{
-			CreateSettingsEntry( parent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), ( value ) =>
+			CreateSettingsEntry( parent, propertyName, Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), ( value ) =>
 			{
 				UpdateSettingsProperty( settings, propertyObject, propertyName, value );
 			} );
@@ -127,7 +127,7 @@ namespace TTT.UI.Menu
 		private static void CreateDropdownSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo )
 		{
 			parent.Add.Panel( categoryName.ToLower() );
-			parent.Add.Label( new string( $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}" ), "h3" );
+			parent.Add.Label( propertyName, "h3" );
 
 			DropDown dropdownSelection = new( parent );
 

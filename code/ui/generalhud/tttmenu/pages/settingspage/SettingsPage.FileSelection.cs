@@ -12,35 +12,35 @@ namespace TTT.UI.Menu
 		{
 			Panel wrapper = new();
 
-			wrapper.Add.Button( "MENU_SETTINGS_BUTTONS_SAVE", "save", () =>
-			   {
-				   currentFileSelection?.Close();
+			wrapper.Add.Button( "Save as", "save", () =>
+			{
+				currentFileSelection?.Close();
 
-				   FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
-				   fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
-				   fileSelection.OnAgree = () => OnAgreeSaveAs( fileSelection, isServerSettings );
-				   fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
-				   fileSelection.EnableFileNameEntry();
-				   fileSelection.Display();
+				FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
+				fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
+				fileSelection.OnAgree = () => OnAgreeSaveAs( fileSelection, isServerSettings );
+				fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
+				fileSelection.EnableFileNameEntry();
+				fileSelection.Display();
 
-				   currentFileSelection = fileSelection;
-			   } );
+				currentFileSelection = fileSelection;
+			} );
 
 			wrapper.Add.HorizontalLineBreak();
 
-			wrapper.Add.Button( "MENU_SETTINGS_BUTTONS_LOAD", "upload_file", () =>
-			   {
-				   currentFileSelection?.Close();
+			wrapper.Add.Button( "Load from", "upload_file", () =>
+			{
+				currentFileSelection?.Close();
 
-				   FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
-				   fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
-				   fileSelection.OnAgree = () => OnAgreeLoadFrom( fileSelection, isServerSettings );
-				   fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
+				FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
+				fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
+				fileSelection.OnAgree = () => OnAgreeLoadFrom( fileSelection, isServerSettings );
+				fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
 
-				   fileSelection.Display();
+				fileSelection.Display();
 
-				   currentFileSelection = fileSelection;
-			   } );
+				currentFileSelection = fileSelection;
+			} );
 
 			parent.AddChild( wrapper );
 		}
