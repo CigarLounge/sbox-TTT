@@ -180,7 +180,7 @@ namespace TTT.UI
 			// Clear and delete all perks
 			foreach ( InspectEntry perkEntry in _perkEntries )
 			{
-				perkEntry.Delete();
+				perkEntry.Delete( true );
 			}
 
 			_perkEntries.Clear();
