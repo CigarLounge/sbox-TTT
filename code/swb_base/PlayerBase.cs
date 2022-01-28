@@ -11,13 +11,13 @@ namespace SWB_Base
 
 		public PlayerBase( IBaseInventory inventory = null )
 		{
-			// if ( inventory != null )
+			// if (inventory != null)
 			// {
-			// 	Inventory = inventory;
+			//     Inventory = inventory;
 			// }
 			// else
 			// {
-			// 	Inventory = new InventoryBase( this );
+			//     Inventory = new InventoryBase(this);
 			// }
 		}
 
