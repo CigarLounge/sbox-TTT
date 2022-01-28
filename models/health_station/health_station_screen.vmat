@@ -2,12 +2,20 @@
 
 Layer0
 {
-	shader "simple.vfx"
+	shader "complex.vfx"
+
+	//---- Translucent ----
+	F_TRANSLUCENT 1
+
+	//---- Ambient Occlusion ----
+	g_flAmbientOcclusionDirectDiffuse "0.000"
+	g_flAmbientOcclusionDirectSpecular "0.000"
+	TextureAmbientOcclusion "materials/default/default_ao.tga"
 
 	//---- Color ----
 	g_flModelTintAmount "1.000"
-	g_vColorTint "[0.666667 0.192157 0.141176 0.000000]"
-	TextureColor "materials/default/default_color.tga"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "models/health_station/health_station_screen.png"
 
 	//---- Fade ----
 	g_flFadeExponent "1.000"
@@ -34,4 +42,8 @@ Layer0
 	g_vTexCoordOffset "[0.000 0.000]"
 	g_vTexCoordScale "[1.000 1.000]"
 	g_vTexCoordScrollSpeed "[0.000 0.000]"
+
+	//---- Translucent ----
+	g_flOpacityScale "1.000"
+	TextureTranslucency "models/health_station/health_station_screen_trans.png"
 }
