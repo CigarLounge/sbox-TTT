@@ -2,19 +2,17 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class ScoreboardHeader : Panel
 	{
 		private readonly Panel _gameLogoPanel;
 		private readonly Panel _serverInfoPanel;
-		private readonly TranslationLabel _serverNameLabel;
-		private readonly TranslationLabel _serverDescriptionLabel;
+		private readonly Label _serverNameLabel;
+		private readonly Label _serverDescriptionLabel;
 		private readonly Panel _serverDataPanel;
 		private readonly Label _serverMapLabel;
-		private readonly TranslationLabel _serverPlayersLabel;
+		private readonly Label _serverPlayersLabel;
 
 		public ScoreboardHeader( Panel parent ) : base( parent )
 		{
@@ -26,13 +24,13 @@ namespace TTT.UI
 			_serverInfoPanel = new( this );
 			_serverInfoPanel.AddClass( "server-information-panel" );
 
-			_serverNameLabel = _serverInfoPanel.Add.TranslationLabel( new TranslationData() );
+			_serverNameLabel = _serverInfoPanel.Add.Label();
 			_serverNameLabel.AddClass( "server-name-label" );
-			_serverNameLabel.UpdateTranslation( new TranslationData( "SCOREBOARD_GAMEMODE", "TTT" ) );
+			_serverNameLabel.Text = "TTT Server";
 
-			_serverDescriptionLabel = _serverInfoPanel.Add.TranslationLabel( new TranslationData() );
+			_serverDescriptionLabel = _serverInfoPanel.Add.Label();
 			_serverDescriptionLabel.AddClass( "server-description-label" );
-			_serverDescriptionLabel.UpdateTranslation( new TranslationData( "SCOREBOARD_CREATEDBY", "mzegar" ) );
+			_serverDescriptionLabel.Text = "Created by github.com/mzegar";
 
 			_serverDataPanel = new( this );
 			_serverDataPanel.AddClass( "server-data-panel" );
@@ -40,7 +38,7 @@ namespace TTT.UI
 			_serverMapLabel = _serverDataPanel.Add.Label();
 			_serverMapLabel.AddClass( "server-map-label" );
 
-			_serverPlayersLabel = _serverDataPanel.Add.TranslationLabel( new TranslationData() );
+			_serverPlayersLabel = _serverDataPanel.Add.Label();
 			_serverPlayersLabel.AddClass( "server-players-label" );
 
 			UpdateServerInfo();
@@ -51,7 +49,7 @@ namespace TTT.UI
 			int maxPlayers = ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 );
 
 			_serverMapLabel.Text = Global.MapName;
-			_serverPlayersLabel.UpdateTranslation( new TranslationData( "SCOREBOARD_SERVER_PLAYERAMOUNT", Client.All.Count, maxPlayers ) );
+			_serverPlayersLabel.Text = $"{Client.All.Count} / {maxPlayers} Players";
 		}
 	}
 }

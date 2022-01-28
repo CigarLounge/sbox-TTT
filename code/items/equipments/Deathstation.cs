@@ -4,7 +4,7 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-	[Library( "equipment_deathstation" )]
+	[Library( "Death Station" )]
 	[Equipment( SlotType = SlotType.UtilityEquipment )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]

@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Items;
 
 namespace TTT.UI
@@ -19,7 +18,7 @@ namespace TTT.UI
 			{
 				_item = value;
 
-				_nameLabel.UpdateTranslation( new TranslationData( _item?.LibraryName.ToUpper() ?? "" ) );
+				_nameLabel.Text = _item?.LibraryName ?? "";
 				_effectImage.Texture = _item != null ? Texture.Load( FileSystem.Mounted, $"/ui/weapons/{_item.LibraryName}.png", false ) : null;
 
 				if ( _effectImage.Texture == null )
@@ -35,7 +34,7 @@ namespace TTT.UI
 		}
 
 		private IItem _item;
-		private readonly TranslationLabel _nameLabel;
+		private readonly Label _nameLabel;
 		private readonly Panel _effectIconPanel;
 		private readonly Image _effectImage;
 		private Label _label;
@@ -52,7 +51,7 @@ namespace TTT.UI
 			_effectImage = _effectIconPanel.Add.Image();
 			_effectImage.AddClass( "effect-image" );
 
-			_nameLabel = Add.TranslationLabel( new TranslationData() );
+			_nameLabel = Add.Label();
 			_nameLabel.AddClass( "name-label" );
 
 			Item = effect;

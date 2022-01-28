@@ -1,12 +1,11 @@
 using Sandbox;
 
-using TTT.Globalization;
 using TTT.Player;
 using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "entity_healthstation" )]
+	[Library( "Death Station" )]
 	[Precached( "models/health_station/health_station.vmdl" )]
 	public partial class DeathstationEntity : Prop, IEntityHint
 	{
@@ -25,7 +24,7 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public TranslationData TextOnTick => new( "HEALTH_STATION", new object[] { Input.GetKeyWithBinding( "+iv_use" ).ToUpper(), $"{StoredDamage}" } );
+		public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station. ({StoredDamage} charges)";
 
 		public bool CanHint( TTTPlayer client )
 		{

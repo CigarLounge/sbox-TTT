@@ -6,7 +6,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Settings;
 
 namespace TTT.UI.Menu
@@ -14,7 +13,7 @@ namespace TTT.UI.Menu
 	[UseTemplate]
 	public partial class SettingsPage : Panel
 	{
-		private TranslationButton ServerSettingsButton { get; set; }
+		private Button ServerSettingsButton { get; set; }
 
 		public SettingsPage()
 		{
@@ -35,7 +34,7 @@ namespace TTT.UI.Menu
 			SettingFunctions.RequestServerSettings();
 		}
 
-		public static void CreateSettings( TranslationTabContainer tabContainer, Settings.Settings settings, Type settingsType = null )
+		public static void CreateSettings( TabContainer tabContainer, Settings.Settings settings, Type settingsType = null )
 		{
 			settingsType ??= settings.GetType();
 
@@ -102,14 +101,15 @@ namespace TTT.UI.Menu
 					tab.Add.LineBreak();
 				}
 
-				tabContainer.AddTab( tab, new TranslationData( $"MENU_SETTINGS_TAB_{categoryName.ToUpper()}" ) );
+				tabContainer.AddTab( tab, categoryName );
 			}
 		}
 
 		private static void CreateSwitchSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject )
 		{
-			TranslationCheckbox checkbox = parent.Add.TranslationCheckbox( new TranslationData( $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}" ) );
-			checkbox.AddTooltip( new TranslationData( $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION" ) );
+			Checkbox checkbox = new();
+			checkbox.SetContent( propertyName );
+			checkbox.Parent = parent;
 			checkbox.Checked = Utils.GetPropertyValue<bool>( propertyObject, propertyName );
 			checkbox.AddEventListener( "onchange", ( panelEvent ) =>
 			 {
@@ -119,18 +119,18 @@ namespace TTT.UI.Menu
 
 		private static void CreateInputSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject )
 		{
-			CreateSettingsEntry( parent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", ( value ) =>
-			   {
-				   UpdateSettingsProperty( settings, propertyObject, propertyName, value );
-			   } );
+			CreateSettingsEntry( parent, propertyName, Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), ( value ) =>
+			{
+				UpdateSettingsProperty( settings, propertyObject, propertyName, value );
+			} );
 		}
 
 		private static void CreateDropdownSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo )
 		{
 			parent.Add.Panel( categoryName.ToLower() );
-			parent.Add.TranslationLabel( new TranslationData( $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}" ), "h3" ).AddTooltip( new TranslationData( $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION" ) );
+			parent.Add.Label( propertyName, "h3" );
 
-			TranslationDropdown dropdownSelection = parent.Add.TranslationDropdown();
+			DropDown dropdownSelection = new( parent );
 
 			foreach ( PropertyInfo possibleDropdownPropertyInfo in propertyInfo.PropertyType.GetProperties() )
 			{
@@ -145,13 +145,11 @@ namespace TTT.UI.Menu
 
 						foreach ( KeyValuePair<string, object> keyValuePair in Utils.GetPropertyValue<Dictionary<string, object>>( propertyObject, possibleDropdownPropertyInfo.Name ) )
 						{
-							dropdownSelection.Options.Add( new TranslationOption( new TranslationData( keyValuePair.Key ), keyValuePair.Value ) );
+							dropdownSelection.Options.Add( new Option( new string( keyValuePair.Key ), keyValuePair.Value ) );
 						}
 					}
 				}
 			}
-
-			dropdownSelection.Select( Utils.GetPropertyValue<string>( propertyObject, propertyName ) );
 		}
 
 		private static void UpdateSettingsProperty<T>( Settings.Settings settings, object propertyObject, string propertyName, T value )
@@ -173,13 +171,11 @@ namespace TTT.UI.Menu
 			}
 		}
 
-		public static TextEntry CreateSettingsEntry<T>( Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null )
+		public static TextEntry CreateSettingsEntry<T>( Panel parent, string title, T defaultValue, Action<T> OnSubmit = null, Action<T> OnChange = null )
 		{
-			TranslationLabel textLabel = parent.Add.TranslationLabel( new TranslationData( title ) );
-			textLabel.AddTooltip( new TranslationData( description ) );
+			Label textLabel = parent.Add.Label( new string( title ) );
 
-			TranslationTextEntry textEntry = parent.Add.TranslationTextEntry();
-			textEntry.Text = defaultValue.ToString();
+			TextEntry textEntry = parent.Add.TextEntry( defaultValue.ToString() );
 
 			textEntry.AddEventListener( "onsubmit", ( panelEvent ) =>
 			 {

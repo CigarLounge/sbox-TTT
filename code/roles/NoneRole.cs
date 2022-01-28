@@ -2,7 +2,7 @@ using TTT.Teams;
 
 namespace TTT.Roles
 {
-	[Role( "none" )]
+	[Role( "None" )]
 	public class NoneRole : TTTRole
 	{
 		public override Color Color => Color.Transparent;

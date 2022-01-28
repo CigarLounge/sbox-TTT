@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Settings;
 
 namespace TTT.UI.Menu
@@ -13,35 +12,35 @@ namespace TTT.UI.Menu
 		{
 			Panel wrapper = new();
 
-			wrapper.Add.TranslationButton( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE" ), "save", null, () =>
-			   {
-				   currentFileSelection?.Close();
+			wrapper.Add.Button( "Save as", "save", () =>
+			{
+				currentFileSelection?.Close();
 
-				   FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
-				   fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
-				   fileSelection.OnAgree = () => OnAgreeSaveAs( fileSelection, isServerSettings );
-				   fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
-				   fileSelection.EnableFileNameEntry();
-				   fileSelection.Display();
+				FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
+				fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
+				fileSelection.OnAgree = () => OnAgreeSaveAs( fileSelection, isServerSettings );
+				fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
+				fileSelection.EnableFileNameEntry();
+				fileSelection.Display();
 
-				   currentFileSelection = fileSelection;
-			   } );
+				currentFileSelection = fileSelection;
+			} );
 
 			wrapper.Add.HorizontalLineBreak();
 
-			wrapper.Add.TranslationButton( new TranslationData( "MENU_SETTINGS_BUTTONS_LOAD" ), "upload_file", null, () =>
-			   {
-				   currentFileSelection?.Close();
+			wrapper.Add.Button( "Load from", "upload_file", () =>
+			{
+				currentFileSelection?.Close();
 
-				   FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
-				   fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
-				   fileSelection.OnAgree = () => OnAgreeLoadFrom( fileSelection, isServerSettings );
-				   fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
+				FileSelection fileSelection = parent.FindPopupPanel().Add.FileSelection();
+				fileSelection.DefaultSelectionFileType = $"*{SettingFunctions.SETTINGS_FILE_EXTENSION}";
+				fileSelection.OnAgree = () => OnAgreeLoadFrom( fileSelection, isServerSettings );
+				fileSelection.DefaultSelectionPath = GetSettingsPathByData( isServerSettings );
 
-				   fileSelection.Display();
+				fileSelection.Display();
 
-				   currentFileSelection = fileSelection;
-			   } );
+				currentFileSelection = fileSelection;
+			} );
 
 			parent.AddChild( wrapper );
 		}
@@ -124,8 +123,8 @@ namespace TTT.UI.Menu
 			string fullFilePath = folderPath + fileName + SettingFunctions.SETTINGS_FILE_EXTENSION;
 
 			DialogBox dialogBox = new();
-			dialogBox.SetTranslationTitle( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE", fullFilePath ) );
-			dialogBox.AddTranslation( new TranslationData( "MENU_SETTINGS_BUTTONS_SAVE_OVERWRITE_TEXT", fullFilePath ) );
+			dialogBox.SetTitle( fullFilePath );
+			dialogBox.AddText( fullFilePath );
 			dialogBox.OnAgree = () =>
 			{
 				onConfirm();

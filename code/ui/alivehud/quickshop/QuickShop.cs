@@ -5,7 +5,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTT.Events;
-using TTT.Globalization;
 using TTT.Items;
 using TTT.Player;
 
@@ -20,9 +19,9 @@ namespace TTT.UI
 		private readonly List<QuickShopItem> _items = new();
 		private Panel _backgroundPanel;
 		private Panel _quickshopContainer;
-		private TranslationLabel _creditLabel;
+		private Label _creditLabel;
 		private Panel _itemPanel;
-		private TranslationLabel _itemDescriptionLabel;
+		private Label _itemDescriptionLabel;
 
 		private int _credits = 0;
 
@@ -54,13 +53,13 @@ namespace TTT.UI
 			_quickshopContainer = new Panel( this );
 			_quickshopContainer.AddClass( "quickshop-container" );
 
-			_creditLabel = _quickshopContainer.Add.TranslationLabel( new TranslationData() );
+			_creditLabel = _quickshopContainer.Add.Label();
 			_creditLabel.AddClass( "credit-label" );
 
 			_itemPanel = new Panel( _quickshopContainer );
 			_itemPanel.AddClass( "item-panel" );
 
-			_itemDescriptionLabel = _quickshopContainer.Add.TranslationLabel( new TranslationData() );
+			_itemDescriptionLabel = _quickshopContainer.Add.Label();
 			_itemDescriptionLabel.AddClass( "item-description-label" );
 
 			Reload();
@@ -122,8 +121,8 @@ namespace TTT.UI
 				 {
 					 TTTPlayer.RequestItem( item.ItemData?.Name );
 
-					// The item was purchased, let's deselect it from the UI.
-					_selectedItemData = null;
+					 // The item was purchased, let's deselect it from the UI.
+					 _selectedItemData = null;
 				 }
 
 				 Update();
@@ -134,7 +133,7 @@ namespace TTT.UI
 
 		public void Update()
 		{
-			_creditLabel.UpdateTranslation( new TranslationData( "QUICKSHOP_CREDITS_DESCRIPTION", _credits ) );
+			_creditLabel.Text = $"You have ${_credits}";
 
 			foreach ( QuickShopItem item in _items )
 			{
@@ -145,7 +144,7 @@ namespace TTT.UI
 
 			if ( _selectedItemData != null )
 			{
-				_itemDescriptionLabel.UpdateTranslation( new TranslationData( "QUICKSHOP_ITEM_DESCRIPTION", new TranslationData( _selectedItemData?.Name.ToUpper() ) ) );
+				_itemDescriptionLabel.Text = $"The description for the {_selectedItemData?.Name ?? ""} will go here.";
 			}
 		}
 

@@ -13,7 +13,7 @@ namespace TTT.Roles
 	[AttributeUsage( AttributeTargets.Class, Inherited = false )]
 	public class RoleAttribute : LibraryAttribute
 	{
-		public RoleAttribute( string name ) : base( "role_" + name )
+		public RoleAttribute( string name ) : base( name )
 		{
 
 		}
@@ -84,11 +84,6 @@ namespace TTT.Roles
 		public virtual void UpdateDefaultShop( List<Type> newItemsList )
 		{
 
-		}
-
-		public string GetRoleTranslationKey( string key )
-		{
-			return $"{Name.ToUpper()}_{key}";
 		}
 	}
 }

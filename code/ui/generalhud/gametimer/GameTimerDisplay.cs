@@ -2,7 +2,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTT.Gamemode;
-using TTT.Globalization;
 
 namespace TTT.UI
 {
@@ -11,7 +10,7 @@ namespace TTT.UI
 		private readonly Panel _timerPanel;
 		private readonly Label _timerLabel;
 		private readonly Panel _roundPanel;
-		private readonly TranslationLabel _roundLabel;
+		private readonly Label _roundLabel;
 
 		public GameTimerDisplay() : base()
 		{
@@ -32,7 +31,7 @@ namespace TTT.UI
 			_roundPanel = new( this );
 			_roundPanel.AddClass( "round-panel" );
 
-			_roundLabel = _roundPanel.Add.TranslationLabel( new TranslationData() );
+			_roundLabel = _roundPanel.Add.Label();
 			_roundLabel.AddClass( "round-label" );
 			_roundLabel.AddClass( "text-color-info" );
 		}
@@ -46,7 +45,7 @@ namespace TTT.UI
 				return;
 			}
 
-			_roundLabel.UpdateTranslation( new TranslationData( $"ROUND_STATE_{Game.Instance.Round.RoundName.ToUpper().Replace( ' ', '_' )}" ) );
+			_roundLabel.Text = $"{Game.Instance.Round.RoundName.ToUpper()}";
 
 			_timerPanel.SetClass( "disabled", Game.Instance.Round is Rounds.WaitingRound );
 			_timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;

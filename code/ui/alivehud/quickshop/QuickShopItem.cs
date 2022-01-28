@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Items;
 using TTT.Player;
 
@@ -14,7 +13,7 @@ namespace TTT.UI
 		public bool IsDisabled = false;
 
 		private Panel _itemIcon;
-		private TranslationLabel _itemNameLabel;
+		private Label _itemNameLabel;
 		private Label _itemPriceLabel;
 
 		public QuickShopItem( Panel parent ) : base( parent )
@@ -30,7 +29,7 @@ namespace TTT.UI
 			_itemIcon = new Panel( this );
 			_itemIcon.AddClass( "item-icon" );
 
-			_itemNameLabel = Add.TranslationLabel( new TranslationData() );
+			_itemNameLabel = Add.Label();
 			_itemNameLabel.AddClass( "item-name-label" );
 		}
 
@@ -38,10 +37,10 @@ namespace TTT.UI
 		{
 			ItemData = shopItemData;
 
-			_itemNameLabel.UpdateTranslation( new TranslationData( shopItemData.Name.ToUpper() ) );
+			_itemNameLabel.Text = shopItemData.Name;
 			_itemPriceLabel.Text = $"${shopItemData.Price}";
 
-			_itemIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png" ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
+			_itemIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png", false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 		}
 
 		public void Update()

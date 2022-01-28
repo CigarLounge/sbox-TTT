@@ -2,14 +2,13 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
 using TTT.Player;
 
 namespace TTT.UI
 {
 	public class PlayerRoleDisplay : Panel
 	{
-		private TranslationLabel _roleLabel;
+		private Label _roleLabel;
 
 		public PlayerRoleDisplay() : base()
 		{
@@ -20,7 +19,7 @@ namespace TTT.UI
 			AddClass( "opacity-heavy" );
 			AddClass( "text-shadow" );
 
-			_roleLabel = Add.TranslationLabel( new TranslationData() );
+			_roleLabel = Add.Label();
 			_roleLabel.AddClass( "centered" );
 			_roleLabel.AddClass( "role-label" );
 
@@ -47,9 +46,8 @@ namespace TTT.UI
 				return;
 			}
 
+			_roleLabel.Text = player.Role.Name;
 			Style.BackgroundColor = player.Role.Color;
-
-			_roleLabel.UpdateTranslation( new TranslationData( player.Role.GetRoleTranslationKey( "NAME" ) ) );
 		}
 	}
 }

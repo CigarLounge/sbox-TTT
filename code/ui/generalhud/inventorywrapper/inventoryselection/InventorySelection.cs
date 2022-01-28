@@ -7,7 +7,6 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTT.Events;
-using TTT.Globalization;
 using TTT.Items;
 using TTT.Player;
 
@@ -268,7 +267,7 @@ namespace TTT.UI
 			public ICarriableItem Carriable { get; init; }
 			public Label SlotLabel;
 			private readonly Label _ammoLabel;
-			private TranslationLabel _carriableLabel;
+			private Label _carriableLabel;
 
 			public InventorySlot( Panel parent, ICarriableItem carriable ) : base( parent )
 			{
@@ -280,7 +279,7 @@ namespace TTT.UI
 				SlotLabel = Add.Label( ((int)carriable.SlotType).ToString() );
 				SlotLabel.AddClass( "slot-label" );
 
-				_carriableLabel = Add.TranslationLabel( new TranslationData( carriable.LibraryName.ToUpper() ) );
+				_carriableLabel = Add.Label( carriable.LibraryName );
 
 				_ammoLabel = Add.Label();
 

@@ -1,8 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class PostRoundStats
@@ -26,8 +24,8 @@ namespace TTT.UI
 		private readonly Panel _backgroundBannerPanel;
 		private readonly Panel _containerPanel;
 
-		private readonly TranslationLabel _headerLabel;
-		private readonly TranslationLabel _contentLabel;
+		private readonly Label _headerLabel;
+		private readonly Label _contentLabel;
 
 		public PostRoundMenu()
 		{
@@ -45,10 +43,10 @@ namespace TTT.UI
 			_containerPanel = new( _backgroundBannerPanel );
 			_containerPanel.AddClass( "container-panel" );
 
-			_headerLabel = _containerPanel.Add.TranslationLabel( new TranslationData() );
+			_headerLabel = _containerPanel.Add.Label();
 			_headerLabel.AddClass( "header-label" );
 
-			_contentLabel = _containerPanel.Add.TranslationLabel( new TranslationData() );
+			_contentLabel = _containerPanel.Add.Label();
 			_contentLabel.AddClass( "content-label" );
 		}
 
@@ -70,9 +68,9 @@ namespace TTT.UI
 			SetClass( "fade-in", true );
 			_containerPanel.SetClass( "pop-in", true );
 
-			_contentLabel.UpdateTranslation( new TranslationData( "POST_ROUND_TEXT" ) );
+			_contentLabel.Text = "Thanks for playing TTT, more updates and stats to come!";
 
-			_headerLabel.UpdateTranslation( new TranslationData( $"POST_ROUND_WIN_{_stats.WinningRole.ToUpper()}" ) );
+			_headerLabel.Text = _stats.WinningRole == "nones" ? "IT'S A TIE!" : $"THE {_stats.WinningRole.ToUpper()} WIN!";
 			_headerLabel.Style.FontColor = _stats.WinningColor;
 		}
 	}

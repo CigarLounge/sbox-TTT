@@ -192,7 +192,6 @@ namespace TTT.Player
 
 			SimulateActiveChild( client, ActiveChild );
 
-			TickC4Simulate();
 			TickItemSimulate();
 			TickPlayerUse();
 			TickPlayerDropCarriable();
@@ -270,14 +269,6 @@ namespace TTT.Player
 			for ( int i = 0; i < perks.Count(); i++ )
 			{
 				perks.Get( i ).Simulate( Client );
-			}
-		}
-
-		private void TickC4Simulate()
-		{
-			foreach ( C4Entity c4 in All.Where( x => x is C4Entity ) )
-			{
-				c4.Simulate( Client );
 			}
 		}
 

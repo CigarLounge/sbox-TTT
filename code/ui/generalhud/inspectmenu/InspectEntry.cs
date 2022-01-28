@@ -2,15 +2,13 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class InspectEntry : Panel
 	{
-		public TranslationData TranslationData;
+		public string ActiveText { get; private set; }
 		private readonly Image _inspectIcon;
-		private readonly TranslationLabel _inspectQuickLabel;
+		private readonly Label _inspectQuickLabel;
 
 		public InspectEntry( Panel parent ) : base( parent )
 		{
@@ -23,25 +21,28 @@ namespace TTT.UI
 			_inspectIcon = Add.Image();
 			_inspectIcon.AddClass( "inspect-icon" );
 
-			_inspectQuickLabel = Add.TranslationLabel( new TranslationData() );
+			_inspectQuickLabel = Add.Label();
 			_inspectQuickLabel.AddClass( "quick-label" );
 		}
 
-		public void SetData( string imagePath, TranslationData translationData )
+		public void SetImage( string imagePath )
 		{
-			SetTranslationData( translationData );
-
 			_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 		}
 
-		public void SetTranslationData( TranslationData translationData )
+		public void SetData( string text )
 		{
-			TranslationData = translationData;
+			ActiveText = text;
 		}
 
-		public void SetQuickInfo( TranslationData translationData )
+		public void SetActiveText( string text )
 		{
-			_inspectQuickLabel.UpdateTranslation( translationData );
+			ActiveText = text;
+		}
+
+		public void SetImageText( string text )
+		{
+			_inspectQuickLabel.Text = text;
 		}
 	}
 }

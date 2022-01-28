@@ -9,7 +9,7 @@ using TTT.Teams;
 
 namespace TTT.Roles
 {
-	[Role( "detective" )]
+	[Role( "Detective" )]
 	public class DetectiveRole : TTTRole
 	{
 		public override Color Color => Color.FromBytes( 25, 102, 255 );

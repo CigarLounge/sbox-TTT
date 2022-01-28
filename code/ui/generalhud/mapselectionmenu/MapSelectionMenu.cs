@@ -4,8 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Globalization;
-
 namespace TTT.UI
 {
 	public class MapSelectionMenu : Panel
@@ -27,7 +25,7 @@ namespace TTT.UI
 			AddClass( "opacity-heavy" );
 			AddClass( "fullscreen" );
 
-			Add.TranslationLabel( new TranslationData( "VOTE_NEXT_MAP" ), "title" );
+			Add.Label( "Vote for the next map!", "title" );
 
 			_mapPanels = new();
 
