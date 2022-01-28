@@ -179,13 +179,3 @@
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]
 
-//
-// TTT.Items.Knife+ThrownKnife
-//
-@PointClass base(BaseProperties_matt_ttt) = Knife : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-

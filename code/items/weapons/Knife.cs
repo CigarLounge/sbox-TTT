@@ -128,66 +128,67 @@ namespace TTT.Items
 			knife.StartVelocity = MathUtil.RelativeAdd( Vector3.Zero, _entityVelocity, Owner.EyeRot );
 			knife.Start();
 		}
+	}
 
-		[Library( "Knife" )]
-		public class ThrownKnife : FiredEntity, IEntityHint
+	public class ThrownKnife : FiredEntity, IEntityHint
+	{
+		public float HintDistance => 80f;
+
+		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( "Knife" );
+
+		public bool CanHint( TTTPlayer client )
 		{
-			public float HintDistance => 80f;
+			return true;
+		}
 
-			public string TextOnTick => TTTWeaponBaseGeneric.PickupText( "weapon_knife" );
+		public EntityHintPanel DisplayHint( TTTPlayer client )
+		{
+			return new Hint( TextOnTick );
+		}
 
-			public bool CanHint( TTTPlayer client )
+		private bool _hasLanded = false;
+
+		public void Tick( TTTPlayer player )
+		{
+			if ( Host.IsClient )
 			{
-				return true;
+				return;
 			}
 
-			public EntityHintPanel DisplayHint( TTTPlayer client )
+			if ( player.LifeState != LifeState.Alive )
 			{
-				return new Hint( TextOnTick );
+				return;
 			}
 
-			private bool _hasLanded = false;
-
-			public void Tick( TTTPlayer player )
+			using ( Prediction.Off() )
 			{
-				if ( Host.IsClient )
+				if ( Input.Pressed( InputButton.Use ) )
 				{
-					return;
-				}
-
-				if ( player.LifeState != LifeState.Alive )
-				{
-					return;
-				}
-
-				using ( Prediction.Off() )
-				{
-					if ( Input.Pressed( InputButton.Use ) )
-					{
-						player.Inventory.TryAdd( new Knife(), deleteIfFails: false, makeActive: true );
-						Delete();
-					}
-				}
-			}
-
-			protected override void OnPhysicsCollision( CollisionEventData eventData )
-			{
-				if ( !_hasLanded && eventData.Entity is TTTPlayer playerHit )
-				{
-					DamageInfo info = new()
-					{
-						Damage = Damage,
-						Force = 50f,
-						Attacker = Owner,
-						Weapon = this
-					};
-
-					playerHit.TakeDamage( info );
+					player.Inventory.TryAdd( new Knife(), deleteIfFails: false, makeActive: true );
 					Delete();
 				}
-
-				_hasLanded = true;
 			}
+		}
+
+		protected override void OnPhysicsCollision( CollisionEventData eventData )
+		{
+			if ( !_hasLanded && eventData.Entity is TTTPlayer playerHit )
+			{
+				DamageInfo info = new()
+				{
+					Damage = Damage,
+					Force = 50f,
+					Attacker = Owner,
+					Weapon = new Knife()
+				};
+
+				Velocity = Vector3.Zero;
+				Parent = playerHit;
+				EnableAllCollisions = false;
+				playerHit.TakeDamage( info );
+			}
+
+			_hasLanded = true;
 		}
 	}
 }

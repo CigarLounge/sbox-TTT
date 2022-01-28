@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 using Sandbox;
-
+using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -41,8 +41,16 @@ namespace TTT.Player
 			this.CopyBonesFrom( player );
 			this.SetRagdollVelocityFrom( player );
 
+			List<Entity> attachedEnts = new();
+
 			foreach ( Entity child in player.Children )
 			{
+				if ( child is ThrownKnife k )
+				{
+					attachedEnts.Add( k );
+					continue;
+				}
+
 				if ( child is ModelEntity e )
 				{
 					string model = e.GetModelName();
@@ -56,6 +64,11 @@ namespace TTT.Player
 					clothing.SetModel( model );
 					clothing.SetParent( this, true );
 				}
+			}
+
+			foreach ( Entity entity in attachedEnts )
+			{
+				entity.SetParent( this, false );
 			}
 		}
 
