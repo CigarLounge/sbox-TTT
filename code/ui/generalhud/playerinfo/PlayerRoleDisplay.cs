@@ -15,7 +15,6 @@ namespace TTT.UI
 			StyleSheet.Load( "/ui/generalhud/playerinfo/PlayerRoleDisplay.scss" );
 
 			AddClass( "rounded" );
-			AddClass( "centered-horizontal" );
 			AddClass( "opacity-heavy" );
 			AddClass( "text-shadow" );
 
