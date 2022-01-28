@@ -78,7 +78,7 @@ namespace TTT.UI
 
 			_timeSinceDeathEntry = new InspectEntry( _inspectIconsPanel );
 			_timeSinceDeathEntry.Enabled( true ); // Time since death is ALWAYS visible
-			_timeSinceDeathEntry.SetData( "/ui/inspectmenu/time.png", "" );
+			_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
 			inspectionEntries.Add( _timeSinceDeathEntry );
 
 			_suicideEntry = new InspectEntry( _inspectIconsPanel );
@@ -155,23 +155,26 @@ namespace TTT.UI
 			_confirmationData = confirmationData;
 
 			_headshotEntry.Enabled( confirmationData.Headshot );
-			_headshotEntry.SetData( "/ui/inspectmenu/headshot.png", new string( "CORPSE_INSPECT_IDENTIFIER_HEADSHOT" ) );
-			_headshotEntry.SetQuickInfo( new string( "CORPSE_INSPECT_QUICKINFO_HEADSHOT" ) );
+			_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
+			_headshotEntry.SetImageText( "Headshot" );
+			_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
 
 			_suicideEntry.Enabled( confirmationData.Suicide );
-			_suicideEntry.SetData( String.Empty, new string( "CORPSE_INSPECT_IDENTIFIER_SUICIDE" ) );
-			_suicideEntry.SetQuickInfo( new string( "CORPSE_INSPECT_QUICKINFO_SUICIDE" ) );
+			_suicideEntry.SetImageText( "Suicide" );
+			_suicideEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
 
 			_distanceEntry.Enabled( !confirmationData.Suicide );
-			_distanceEntry.SetData( "/ui/inspectmenu/distance.png", $"They were killed from approximately {confirmationData.Distance}m away." );
-			_distanceEntry.SetQuickInfo( $"{confirmationData.Distance}m" );
+			_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
+			_distanceEntry.SetImageText( $"{confirmationData.Distance:n0}m" );
+			_distanceEntry.SetActiveText( $"They were killed from approximately {confirmationData.Distance:n0}m away." );
 
 			_weaponEntry.Enabled( !string.IsNullOrEmpty( killerWeapon ) );
 
 			if ( _weaponEntry.IsEnabled() )
 			{
-				_weaponEntry.SetData( $"/ui/weapons/{killerWeapon}.png", $"It appears a {killerWeapon.ToUpper()} was used to kill them." );
-				_weaponEntry.SetQuickInfo( $"{killerWeapon.ToUpper()}" );
+				_weaponEntry.SetImage( $"/ui/weapons/{killerWeapon}.png" );
+				_weaponEntry.SetImageText( $"{killerWeapon}" );
+				_weaponEntry.SetActiveText( $"It appears a {killerWeapon} was used to kill them." );
 			}
 
 			// Clear and delete all perks
@@ -188,7 +191,8 @@ namespace TTT.UI
 				foreach ( string perkName in perks )
 				{
 					InspectEntry perkEntry = new( this );
-					perkEntry.SetData( $"/ui/weapons/{perkName}.png", $"They were carrying a {perkName}" );
+					perkEntry.SetImage( $"/ui/weapons/{perkName}.png" );
+					perkEntry.SetActiveText( $"They were carrying a {perkName}" );
 
 					_perkEntries.Add( perkEntry );
 				}
@@ -204,7 +208,7 @@ namespace TTT.UI
 				return;
 			}
 
-			_inspectDetailsLabel.Text = _selectedInspectEntry.Text;
+			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 		}
 
 		public override void Tick()
@@ -217,7 +221,8 @@ namespace TTT.UI
 			}
 
 			string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
-			_timeSinceDeathEntry.SetQuickInfo( $"{timeSinceDeath}" );
+			_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
+			_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
 			if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
 			{

@@ -37,10 +37,10 @@ namespace TTT.UI
 		{
 			ItemData = shopItemData;
 
-			_itemNameLabel.Text = shopItemData.Name.ToUpper();
+			_itemNameLabel.Text = shopItemData.Name;
 			_itemPriceLabel.Text = $"${shopItemData.Price}";
 
-			_itemIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png" ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
+			_itemIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, $"/ui/icons/{shopItemData.Name}.png", false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 		}
 
 		public void Update()

@@ -124,7 +124,8 @@ namespace TTT.Player
 
 		public float HintDistance => 80f;
 
-		public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use )} to inspect" : $"Hold {Input.GetButtonOrigin( InputButton.Use )} to identify";
+		public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
+												 : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
 
 		public bool CanHint( TTTPlayer client ) => true;
 

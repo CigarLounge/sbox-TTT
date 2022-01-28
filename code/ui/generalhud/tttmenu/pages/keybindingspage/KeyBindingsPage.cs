@@ -12,7 +12,7 @@ namespace TTT.UI.Menu
 		{
 			StyleSheet.Load( "/ui/generalhud/tttmenu/pages/KeyBindingsPage/KeyBindingsPage.scss" );
 
-			Add.Label( "MENU_KEYBINDINGS_DESCRIPTION" );
+			Add.Label( "You can change your bindings in the s&box options menu or through console." );
 			Add.Label( "" );
 
 			Add.Label( "Movement", "h1" );

@@ -7,7 +7,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "weapon_knife" )]
+	[Library( "Knife" )]
 	[Weapon( SlotType = SlotType.Melee )]
 	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
@@ -129,6 +129,7 @@ namespace TTT.Items
 			knife.Start();
 		}
 
+		[Library( "Knife" )]
 		public class ThrownKnife : FiredEntity, IEntityHint
 		{
 			public float HintDistance => 80f;

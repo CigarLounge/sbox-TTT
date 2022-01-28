@@ -7,7 +7,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "entity_healthstation" )]
+	[Library( "Health Station" )]
 	[Precached( "models/health_station/health_station.vmdl" )]
 	public partial class HealthstationEntity : Prop, IEntityHint
 	{
@@ -50,7 +50,7 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use )} to use the Health Station ({StoredHealth} charges)";
+		public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station ({StoredHealth} charges)";
 
 		public bool CanHint( TTTPlayer client )
 		{

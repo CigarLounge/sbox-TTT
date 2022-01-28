@@ -13,7 +13,7 @@ namespace TTT.Roles
 	[AttributeUsage( AttributeTargets.Class, Inherited = false )]
 	public class RoleAttribute : LibraryAttribute
 	{
-		public RoleAttribute( string name ) : base( "role_" + name )
+		public RoleAttribute( string name ) : base( name )
 		{
 
 		}

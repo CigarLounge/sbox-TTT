@@ -144,7 +144,7 @@ namespace TTT.UI
 
 			if ( _selectedItemData != null )
 			{
-				_itemDescriptionLabel.Text = _selectedItemData?.Name ?? "";
+				_itemDescriptionLabel.Text = $"The description for the {_selectedItemData?.Name ?? ""} will go here.";
 			}
 		}
 

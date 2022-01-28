@@ -1,12 +1,9 @@
 <link rel="stylesheet" href="SettingsPage.scss">
 
 <div class="root">
-    <button icon="settings" key="MENU_SUBMENU_SETTINGS_CLIENT" onclick="GoToClientSettings()">
-    </button>
+    <button icon="settings" onclick="GoToClientSettings()">Client Settings</button>
     <br />
 
-    <button icon="settings" key="MENU_SUBMENU_SETTINGS_SERVER" class="inactive" onclick="GoToServerSettings()"
-        @ref="ServerSettingsButton">
-    </button>
+    <button icon="settings" class="inactive" onclick="GoToServerSettings()" @ref="ServerSettingsButton">Server Settings</button>
     <br />
 </div>

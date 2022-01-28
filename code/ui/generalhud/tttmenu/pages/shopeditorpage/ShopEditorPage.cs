@@ -101,10 +101,10 @@ namespace TTT.UI
 
 				wrapper.Add.HorizontalLineBreak();
 
-				wrapper.Add.Button( "", "settings", () =>
-				 {
-					 EditItem( item, selectedRole );
-				 } );
+				wrapper.Add.ButtonWithIcon( null, "settings", null, () =>
+				{
+					EditItem( item, selectedRole );
+				} );
 
 				wrapper.Add.LineBreak();
 

@@ -7,7 +7,7 @@ namespace TTT.Items
 	/// <summary>
 	/// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
 	/// </summary>
-	[Library( "equipment_decoy" )]
+	[Library( "Decoy" )]
 	[Weapon( SlotType = SlotType.UtilityEquipment )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]

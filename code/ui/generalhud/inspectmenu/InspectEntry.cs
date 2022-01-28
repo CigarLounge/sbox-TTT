@@ -6,7 +6,7 @@ namespace TTT.UI
 {
 	public class InspectEntry : Panel
 	{
-		public string Text;
+		public string ActiveText { get; private set; }
 		private readonly Image _inspectIcon;
 		private readonly Label _inspectQuickLabel;
 
@@ -25,17 +25,24 @@ namespace TTT.UI
 			_inspectQuickLabel.AddClass( "quick-label" );
 		}
 
-		public void SetData( string imagePath, string text )
+		public void SetImage( string imagePath )
 		{
-			_inspectQuickLabel.Text = text;
 			_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-			Text = text;
 		}
 
-		public void SetQuickInfo( string text )
+		public void SetData( string text )
+		{
+			ActiveText = text;
+		}
+
+		public void SetActiveText( string text )
+		{
+			ActiveText = text;
+		}
+
+		public void SetImageText( string text )
 		{
 			_inspectQuickLabel.Text = text;
-			Text = text;
 		}
 	}
 }

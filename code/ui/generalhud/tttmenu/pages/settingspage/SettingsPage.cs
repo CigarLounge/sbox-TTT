@@ -118,10 +118,10 @@ namespace TTT.UI.Menu
 
 		private static void CreateInputSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject )
 		{
-			CreateSettingsEntry( parent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}_DESCRIPTION", ( value ) =>
-			   {
-				   UpdateSettingsProperty( settings, propertyObject, propertyName, value );
-			   } );
+			CreateSettingsEntry( parent, $"MENU_SETTINGS_{categoryName.ToUpper()}_{propertyName.ToUpper()}", Utils.GetPropertyValue( propertyObject, propertyName ).ToString(), ( value ) =>
+			{
+				UpdateSettingsProperty( settings, propertyObject, propertyName, value );
+			} );
 		}
 
 		private static void CreateDropdownSetting( Panel parent, Settings.Settings settings, string categoryName, string propertyName, object propertyObject, PropertyInfo propertyInfo, PropertyInfo subPropertyInfo )
@@ -170,7 +170,7 @@ namespace TTT.UI.Menu
 			}
 		}
 
-		public static TextEntry CreateSettingsEntry<T>( Panel parent, string title, T defaultValue, string description, Action<T> OnSubmit = null, Action<T> OnChange = null )
+		public static TextEntry CreateSettingsEntry<T>( Panel parent, string title, T defaultValue, Action<T> OnSubmit = null, Action<T> OnChange = null )
 		{
 			Label textLabel = parent.Add.Label( new string( title ) );
 

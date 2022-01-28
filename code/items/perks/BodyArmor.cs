@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT.Items
 {
-	[Library( "perk_bodyarmor" )]
+	[Library( "Body Armor" )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
 	public partial class BodyArmor : TTTPerk

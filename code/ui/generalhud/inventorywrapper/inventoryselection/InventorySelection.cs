@@ -279,7 +279,7 @@ namespace TTT.UI
 				SlotLabel = Add.Label( ((int)carriable.SlotType).ToString() );
 				SlotLabel.AddClass( "slot-label" );
 
-				_carriableLabel = Add.Label( carriable.LibraryName.ToUpper() );
+				_carriableLabel = Add.Label( carriable.LibraryName );
 
 				_ammoLabel = Add.Label();
 

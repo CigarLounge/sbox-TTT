@@ -6,7 +6,7 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-	[Library( "perk_disguiser" )]
+	[Library( "Disguiser" )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
 	public partial class Disguiser : TTTBoolPerk
