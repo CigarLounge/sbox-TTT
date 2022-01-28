@@ -190,9 +190,10 @@ namespace TTT.UI
 			{
 				foreach ( string perkName in perks )
 				{
-					InspectEntry perkEntry = new( this );
+					InspectEntry perkEntry = new( _inspectIconsPanel );
 					perkEntry.SetImage( $"/ui/weapons/{perkName}.png" );
-					perkEntry.SetActiveText( $"They were carrying a {perkName}" );
+					perkEntry.SetImageText( $"{perkName}" );
+					perkEntry.SetActiveText( $"They were carrying a {perkName}." );
 
 					_perkEntries.Add( perkEntry );
 				}
