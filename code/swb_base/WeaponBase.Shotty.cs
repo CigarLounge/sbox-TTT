@@ -7,97 +7,106 @@ using Sandbox;
 
 namespace SWB_Base
 {
-	public partial class WeaponBaseShotty : WeaponBase
-	{
-		public virtual float ShellReloadTimeStart => -1; // Duration of the reload start animation
-		public virtual float ShellReloadTimeInsert => -1; // Duration of the reload insert animation
-		public virtual float ShellEjectDelay => -1; // The shell eject delay after firing
-		public virtual string ReloadFinishAnim => "reload_finished"; // Finishing reload animation
-		public virtual bool CanShootDuringReload => true; // Can the shotgun shoot while reloading
+    public partial class WeaponBaseShotty : WeaponBase
+    {
+        /// <summary>Duration of the reload start animation</summary>
+        public virtual float ShellReloadTimeStart => -1;
 
-		public override bool BulletCocking => false;
+        /// <summary>Duration of the reload insert animatio</summary>
+        public virtual float ShellReloadTimeInsert => -1;
 
-		private void CancelReload()
-		{
-			IsReloading = false;
-		}
+        /// <summary>The shell eject delay after firing</summary>
+        public virtual float ShellEjectDelay => -1;
 
-		public override void AttackPrimary()
-		{
-			if ( IsReloading && !CanShootDuringReload ) return;
+        /// <summary>Animation for finishing the reload</summary>
+        public virtual string ReloadFinishAnim => "reload_finished";
 
-			CancelReload();
-			base.AttackPrimary();
-		}
+        /// <summary>Can the shotgun shoot while reloading</summary>
+        public virtual bool CanShootDuringReload => true;
 
-		public override void AttackSecondary()
-		{
-			if ( IsReloading && !CanShootDuringReload ) return;
+        public override bool BulletCocking => false;
 
-			CancelReload();
-			base.AttackSecondary();
-		}
+        private void CancelReload()
+        {
+            IsReloading = false;
+        }
 
-		public async Task EjectShell( string bulletEjectParticle )
-		{
-			var activeWeapon = Owner.ActiveChild;
-			var instanceID = InstanceID;
+        public override void AttackPrimary()
+        {
+            if (IsReloading && !CanShootDuringReload) return;
 
-			await GameTask.DelaySeconds( ShellEjectDelay );
-			if ( !IsAsyncValid( activeWeapon, instanceID ) ) return;
-			ShootEffects( null, bulletEjectParticle, null );
-		}
+            CancelReload();
+            base.AttackPrimary();
+        }
 
-		public override void Reload()
-		{
-			General.ReloadTime = ShellReloadTimeStart;
-			base.Reload();
-		}
+        public override void AttackSecondary()
+        {
+            if (IsReloading && !CanShootDuringReload) return;
 
-		public override void OnReloadFinish()
-		{
-			IsReloading = false;
+            CancelReload();
+            base.AttackSecondary();
+        }
 
-			if ( !CanShootDuringReload )
-			{
-				TimeSincePrimaryAttack = 0;
-				TimeSinceSecondaryAttack = 0;
-			}
+        public async Task EjectShell(string bulletEjectParticle)
+        {
+            var activeWeapon = Owner.ActiveChild;
+            var instanceID = InstanceID;
 
-			if ( Primary.Ammo >= Primary.ClipSize )
-				return;
+            await GameTask.DelaySeconds(ShellEjectDelay);
+            if (!IsAsyncValid(activeWeapon, instanceID)) return;
+            ShootEffects(null, bulletEjectParticle, null);
+        }
 
-			if ( Owner is PlayerBase player )
-			{
-				var hasInfiniteReserve = Primary.InfiniteAmmo == InfiniteAmmoType.reserve;
-				var ammo = hasInfiniteReserve ? 1 : player.TakeAmmo( Primary.AmmoType, 1 );
+        public override void Reload()
+        {
+            General.ReloadTime = ShellReloadTimeStart;
+            base.Reload();
+        }
 
-				if ( ammo != 0 )
-				{
-					Primary.Ammo += 1;
-				}
+        public override void OnReloadFinish()
+        {
+            IsReloading = false;
 
-				if ( ammo != 0 && Primary.Ammo < Primary.ClipSize )
-				{
-					General.ReloadTime = ShellReloadTimeInsert;
-					base.Reload();
-				}
-				else
-				{
-					StartReloadEffects( false, General.ReloadAnim );
-					_ = FinishReload();
-				}
-			}
-		}
+            if (!CanShootDuringReload)
+            {
+                TimeSincePrimaryAttack = 0;
+                TimeSinceSecondaryAttack = 0;
+            }
 
-		public async Task FinishReload()
-		{
-			var activeWeapon = Owner.ActiveChild;
-			var instanceID = InstanceID;
+            if (Primary.Ammo >= Primary.ClipSize)
+                return;
 
-			await GameTask.DelaySeconds( ShellEjectDelay );
-			if ( !IsAsyncValid( activeWeapon, instanceID ) ) return;
-			StartReloadEffects( false, ReloadFinishAnim );
-		}
-	}
+            if (Owner is PlayerBase player)
+            {
+                var hasInfiniteReserve = Primary.InfiniteAmmo == InfiniteAmmoType.reserve;
+                var ammo = hasInfiniteReserve ? 1 : player.TakeAmmo(Primary.AmmoType, 1);
+
+                if (ammo != 0)
+                {
+                    Primary.Ammo += 1;
+                }
+
+                if (ammo != 0 && Primary.Ammo < Primary.ClipSize)
+                {
+                    General.ReloadTime = ShellReloadTimeInsert;
+                    base.Reload();
+                }
+                else
+                {
+                    StartReloadEffects(false, General.ReloadAnim);
+                    _ = FinishReload();
+                }
+            }
+        }
+
+        public async Task FinishReload()
+        {
+            var activeWeapon = Owner.ActiveChild;
+            var instanceID = InstanceID;
+
+            await GameTask.DelaySeconds(ShellEjectDelay);
+            if (!IsAsyncValid(activeWeapon, instanceID)) return;
+            StartReloadEffects(false, ReloadFinishAnim);
+        }
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-
 using Sandbox;
 
 namespace SWB_Base
@@ -12,13 +11,13 @@ namespace SWB_Base
 
 		public PlayerBase( IBaseInventory inventory = null )
 		{
-			// if (inventory != null)
+			// if ( inventory != null )
 			// {
-			//     Inventory = inventory;
+			// 	Inventory = inventory;
 			// }
 			// else
 			// {
-			//     Inventory = new InventoryBase(this);
+			// 	Inventory = new InventoryBase( this );
 			// }
 		}
 
@@ -49,7 +48,7 @@ namespace SWB_Base
 			// Inventory.DropActive();
 			// Inventory.DeleteContents();
 
-			// BecomeRagdollOnClient(LastDamage.Force, GetHitboxBone(LastDamage.HitboxIndex));
+			// BecomeRagdollOnClient( LastDamage.Force, GetHitboxBone( LastDamage.HitboxIndex ) );
 
 			// Controller = null;
 			// Camera = new SpectateRagdollCamera();
@@ -204,16 +203,16 @@ namespace SWB_Base
 		{
 			//DebugOverlay.Sphere( pos, 5.0f, Color.Red, false, 50.0f );
 
-			// DamageIndicator.Current?.OnHit(pos);
+			// DamageIndicator.Current?.OnHit( pos );
 		}
 
 		[ClientRpc]
 		public void ShowHitmarker( bool isKill, bool playSound )
 		{
-			// Hitmarker.Current?.Create(isKill);
+			// Hitmarker.Current?.Create( isKill );
 
-			// if (playSound)
-			//     PlaySound("swb_hitmarker");
+			// if ( playSound )
+			// 	PlaySound( "swb_hitmarker" );
 		}
 	}
 }

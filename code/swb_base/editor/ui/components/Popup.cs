@@ -7,216 +7,216 @@ using System.Linq;
 
 namespace SWB_Base
 {
-	public partial class Popup : Panel
-	{
-		// For keyboard navigation
-		public Panel PopupSource { get; set; }
-		public Panel SelectedChild { get; set; }
+    public partial class Popup : Panel
+    {
+        // For keyboard navigation
+        public Panel PopupSource { get; set; }
+        public Panel SelectedChild { get; set; }
 
-		public PositionMode Position { get; set; }
-		public float PopupSourceOffset { get; set; }
+        public PositionMode Position { get; set; }
+        public float PopupSourceOffset { get; set; }
 
-		public enum PositionMode
-		{
-			AboveLeft,
-			BelowLeft,
-			BelowCenter,
-			BelowStretch
-		}
+        public enum PositionMode
+        {
+            AboveLeft,
+            BelowLeft,
+            BelowCenter,
+            BelowStretch
+        }
 
-		public Popup( Panel sourcePanel, PositionMode position, float offset )
-		{
-			StyleSheet.Load( "/swb_base/editor/ui/components/Popup.scss" );
+        public Popup(Panel sourcePanel, PositionMode position, float offset)
+        {
+            StyleSheet.Load("/swb_base/editor/ui/components/Popup.scss");
 
-			Parent = sourcePanel.FindPopupPanel();
-			PopupSource = sourcePanel;
-			Position = position;
-			PopupSourceOffset = offset;
+            Parent = sourcePanel.FindPopupPanel();
+            PopupSource = sourcePanel;
+            Position = position;
+            PopupSourceOffset = offset;
 
-			AllPopups.Add( this );
-			AddClass( "popup-panel" );
-			PositionMe();
+            AllPopups.Add(this);
+            AddClass("popup-panel");
+            PositionMe();
 
-			switch ( Position )
-			{
-				case PositionMode.AboveLeft:
-					AddClass( "above-left" );
-					break;
+            switch (Position)
+            {
+                case PositionMode.AboveLeft:
+                    AddClass("above-left");
+                    break;
 
-				case PositionMode.BelowLeft:
-					AddClass( "below-left" );
-					break;
+                case PositionMode.BelowLeft:
+                    AddClass("below-left");
+                    break;
 
-				case PositionMode.BelowCenter:
-					AddClass( "below-center" );
-					break;
+                case PositionMode.BelowCenter:
+                    AddClass("below-center");
+                    break;
 
-				case PositionMode.BelowStretch:
-					AddClass( "below-stretch" );
-					break;
-			}
-		}
+                case PositionMode.BelowStretch:
+                    AddClass("below-stretch");
+                    break;
+            }
+        }
 
-		public override void OnDeleted()
-		{
-			base.OnDeleted();
+        public override void OnDeleted()
+        {
+            base.OnDeleted();
 
-			AllPopups.Remove( this );
-		}
-
-
-		protected Panel Header;
-		protected Label TitleLabel;
-		protected IconPanel IconPanel;
-
-		void CreateHeader()
-		{
-			if ( Header != null ) return;
-
-			Header = Add.Panel( "header" );
-
-			IconPanel = Header.Add.Icon( null );
-			TitleLabel = Header.Add.Label( null, "title" );
-		}
+            AllPopups.Remove(this);
+        }
 
 
-		public string Title
-		{
-			get => TitleLabel?.Text;
-			set
-			{
-				CreateHeader();
-				TitleLabel.Text = value;
-			}
-		}
+        protected Panel Header;
+        protected Label TitleLabel;
+        protected IconPanel IconPanel;
 
-		public string Icon
-		{
-			get => IconPanel?.Text;
-			set
-			{
-				CreateHeader();
-				IconPanel.Text = value;
-			}
-		}
+        void CreateHeader()
+        {
+            if (Header != null) return;
 
-		/// <summary>
-		/// Closes all panels, marks this one as a success and closes it.
-		/// </summary>
-		public void Success()
-		{
-			AddClass( "success" );
-			Popup.CloseAll();
-		}
+            Header = Add.Panel("header");
 
-		/// <summary>
-		/// Closes all panels, marks this one as a failure and closes it.
-		/// </summary>
-		public void Failure()
-		{
-			AddClass( "failure" );
-			Popup.CloseAll();
-		}
+            IconPanel = Header.Add.Icon(null);
+            TitleLabel = Header.Add.Label(null, "title");
+        }
 
-		public Panel AddOption( string text, Action action = null )
-		{
-			return Add.Button( text, () =>
-			{
-				CloseAll();
-				action?.Invoke();
-			} );
-		}
 
-		public Panel AddOption( string text, string icon, Action action = null )
-		{
-			return Add.ButtonWithIcon( text, icon, null, () =>
-			{
-				CloseAll();
-				action?.Invoke();
-			} );
-		}
+        public string Title
+        {
+            get => TitleLabel?.Text;
+            set
+            {
+                CreateHeader();
+                TitleLabel.Text = value;
+            }
+        }
 
-		public void MoveSelection( int dir )
-		{
-			var currentIndex = GetChildIndex( SelectedChild );
+        public string Icon
+        {
+            get => IconPanel?.Text;
+            set
+            {
+                CreateHeader();
+                IconPanel.Text = value;
+            }
+        }
 
-			if ( currentIndex >= 0 ) currentIndex += dir;
-			else if ( currentIndex < 0 ) currentIndex = dir == 1 ? 0 : -1;
+        /// <summary>
+        /// Closes all panels, marks this one as a success and closes it.
+        /// </summary>
+        public void Success()
+        {
+            AddClass("success");
+            Popup.CloseAll();
+        }
 
-			SelectedChild?.SetClass( "active", false );
-			SelectedChild = GetChild( currentIndex, true );
-			SelectedChild?.SetClass( "active", true );
-		}
+        /// <summary>
+        /// Closes all panels, marks this one as a failure and closes it.
+        /// </summary>
+        public void Failure()
+        {
+            AddClass("failure");
+            Popup.CloseAll();
+        }
 
-		public override void Tick()
-		{
-			base.Tick();
+        public Panel AddOption(string text, Action action = null)
+        {
+            return Add.Button(text, () =>
+           {
+               CloseAll();
+               action?.Invoke();
+           });
+        }
 
-			PositionMe();
-		}
+        public Panel AddOption(string text, string icon, Action action = null)
+        {
+            return Add.ButtonWithIcon(text, icon, null, () =>
+           {
+               CloseAll();
+               action?.Invoke();
+           });
+        }
 
-		public override void OnLayout( ref Rect layoutRect )
-		{
-			var padding = 10;
-			var h = Screen.Height - padding;
-			var w = Screen.Width - padding;
+        public void MoveSelection(int dir)
+        {
+            var currentIndex = GetChildIndex(SelectedChild);
 
-			if ( layoutRect.bottom > h )
-			{
-				layoutRect.top -= layoutRect.bottom - h;
-				layoutRect.bottom -= layoutRect.bottom - h;
-			}
+            if (currentIndex >= 0) currentIndex += dir;
+            else if (currentIndex < 0) currentIndex = dir == 1 ? 0 : -1;
 
-			if ( layoutRect.right > w )
-			{
-				layoutRect.left -= layoutRect.right - w;
-				layoutRect.right -= layoutRect.right - w;
-			}
-		}
+            SelectedChild?.SetClass("active", false);
+            SelectedChild = GetChild(currentIndex, true);
+            SelectedChild?.SetClass("active", true);
+        }
 
-		void PositionMe()
-		{
-			var rect = PopupSource.Box.Rect * PopupSource.ScaleFromScreen;
+        public override void Tick()
+        {
+            base.Tick();
 
-			Style.MaxHeight = Screen.Height - 50;
+            PositionMe();
+        }
 
-			switch ( Position )
-			{
-				case PositionMode.AboveLeft:
-					{
-						Style.Left = rect.left;
-						Style.Bottom = Parent.Box.Rect.height - rect.top + PopupSourceOffset;
-						Style.BackgroundColor = Color.Red;
-						break;
-					}
+        public override void OnLayout(ref Rect layoutRect)
+        {
+            var padding = 10;
+            var h = Screen.Height - padding;
+            var w = Screen.Width - padding;
 
-				case PositionMode.BelowLeft:
-					{
-						Style.Left = rect.left;
-						Style.Top = rect.bottom + PopupSourceOffset;
-						break;
-					}
+            if (layoutRect.bottom > h)
+            {
+                layoutRect.top -= layoutRect.bottom - h;
+                layoutRect.bottom -= layoutRect.bottom - h;
+            }
 
-				case PositionMode.BelowCenter:
-					{
-						Style.Left = rect.Center.x; // centering is done via styles
-						Style.Top = rect.bottom + PopupSourceOffset;
-						break;
-					}
+            if (layoutRect.right > w)
+            {
+                layoutRect.left -= layoutRect.right - w;
+                layoutRect.right -= layoutRect.right - w;
+            }
+        }
 
-				case PositionMode.BelowStretch:
-					{
-						Style.Left = rect.left;
-						Style.Width = rect.width;
-						Style.Top = rect.bottom + PopupSourceOffset;
-						break;
-					}
-			}
+        void PositionMe()
+        {
+            var rect = PopupSource.Box.Rect * PopupSource.ScaleFromScreen;
 
-			Style.Dirty();
-		}
+            Style.MaxHeight = Screen.Height - 50;
 
-	}
+            switch (Position)
+            {
+                case PositionMode.AboveLeft:
+                    {
+                        Style.Left = rect.left;
+                        Style.Bottom = Parent.Box.Rect.height - rect.top + PopupSourceOffset;
+                        Style.BackgroundColor = Color.Red;
+                        break;
+                    }
+
+                case PositionMode.BelowLeft:
+                    {
+                        Style.Left = rect.left;
+                        Style.Top = rect.bottom + PopupSourceOffset;
+                        break;
+                    }
+
+                case PositionMode.BelowCenter:
+                    {
+                        Style.Left = rect.Center.x; // centering is done via styles
+                        Style.Top = rect.bottom + PopupSourceOffset;
+                        break;
+                    }
+
+                case PositionMode.BelowStretch:
+                    {
+                        Style.Left = rect.left;
+                        Style.Width = rect.width;
+                        Style.Top = rect.bottom + PopupSourceOffset;
+                        break;
+                    }
+            }
+
+            Style.Dirty();
+        }
+
+    }
 
 
 }
