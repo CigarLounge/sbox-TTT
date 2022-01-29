@@ -47,9 +47,8 @@ namespace TTT.UI
 		{
 			BuyError buyError = (Local.Pawn as TTTPlayer).CanBuy( ItemData );
 
-			// Let's not show any items that the player could not access in the first place, or
-			// items that have had their limit reached.
-			SetClass( "disabled", buyError == BuyError.NoAccess || buyError == BuyError.LimitReached );
+			// Let's not show any items that the player could not access in the first place.
+			SetClass( "disabled", buyError == BuyError.NoAccess );
 
 			// Decrease the opacity to show that the item cannot be purchased
 			// ex. lack of credits
