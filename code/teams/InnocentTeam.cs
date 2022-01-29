@@ -1,6 +1,6 @@
 namespace TTT.Teams
 {
-	[Team( "innocents" )]
+	[Team( "Innocents" )]
 	public class InnocentTeam : TTTTeam
 	{
 		public override Color Color => Color.FromBytes( 27, 197, 78 );

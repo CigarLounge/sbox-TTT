@@ -1,6 +1,6 @@
 namespace TTT.Teams
 {
-	[Team( "nones" )]
+	[Team( "Nones" )]
 	public class NoneTeam : TTTTeam
 	{
 		public override Color Color => Color.Transparent;
