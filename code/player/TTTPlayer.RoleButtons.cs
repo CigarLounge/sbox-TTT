@@ -29,7 +29,7 @@ namespace TTT.Player
 
 			foreach ( Entity entity in All )
 			{
-				if ( entity is TTTLogicButton logicButton && (logicButton.CheckValue.Equals( Role.Name ) || logicButton.CheckValue.Equals( Team.Name )) )
+				if ( entity is TTTLogicButton logicButton && (logicButton.CheckValue.Equals( Role.Name.ToLower() ) || logicButton.CheckValue.Equals( Team.Name.ToLower() )) )
 				{
 					logicButtonDataList.Add( logicButton.PackageData() );
 				}
