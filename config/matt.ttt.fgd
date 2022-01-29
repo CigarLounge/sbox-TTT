@@ -1,0 +1,191 @@
+
+@BaseClass = BaseProperties_matt_ttt
+[
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
+	parentAttachmentName(parentAttachment) [ group="Hierarchy" ] : "Parent Model Bone/Attachment Name" : : "The name of the bone or attachment to attach to on the entity's parent in the movement hierarchy. Use !bonemerge to use bone-merge style attachment."
+
+	useLocalOffset(boolean) [ group="Hierarchy" ] : "Use Model Attachment offsets" : 0 : "Whether to respect the specified local offset when doing the initial hierarchical attachment to its parent."
+	local.origin(vector) [ group="Hierarchy" ] : "Model Attachment position offset" : : "Offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.angles(angle) [ group="Hierarchy" ] : "Model Attachment angular offset" : : "Angular offset in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+	local.scales(vector) [ group="Hierarchy" ] : "Model Attachment scale" : : "Scale in the local space of the parent model's attachment/bone to use in hierarchy. Not used if you are not using parent attachment."
+
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	tags(tags) : "Tags" : "" : "A list of general purpose tags for this entity, for interactions with other entities such as triggers."
+]
+
+//
+// TTT.Map.TTTChangeCredits
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
+[
+	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
+
+	input ExchangeCredits(void) : ""
+
+	output OnSuccess(void) : "Fires when credits are successfully added or removed from activator."
+	output OnFailure(void) : "Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits."
+]
+
+//
+// TTT.Map.TTTFeedEntry
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+[
+	message(string) : "Message" : "" : ""
+	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
+	[
+		0 : "All"
+		1 : "Activator"
+		2 : "Innocents"
+		3 : "Traitors"
+		4 : "Other"
+	]
+	text_color(color255) : "Color" :  : ""
+	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : ""
+
+	input DisplayMessage(void) : ""
+]
+
+//
+// TTT.Map.TTTForceWin
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+[
+	team(string) : "Team" :  : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams."
+	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
+
+	input InnocentsWin(void) : ""
+	input TraitorsWin(void) : ""
+	input ForceWin(void) : ""
+]
+
+//
+// TTT.Map.TTTLogicAssigned
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
+[
+	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Role` for `role_traitor`, but check the `Team` for `team_traitors`."
+
+	input Activate(void) : ""
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+]
+
+//
+// TTT.Map.TTTMapSettings
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_map_settings : ""
+[
+
+	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
+	output RoundPreparation(void) : "Fired once Preround begins."
+	output RoundStart(void) : "Fired once round starts and roles are assigned."
+	output RoundEnd(void) : "Fired once a win condition is met."
+]
+
+//
+// TTT.Map.TTTLogicButton
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
+[
+	check_value(string) : "Check Value" :  : "Note that teams are often plural. For example, check the `Team` for `team_traitors`, but check the `Role` for `role_traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team."
+	description(string) : "Description" :  : "On screen tooltip shown on button"
+	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 uniques."
+	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
+	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."
+	locked(boolean) : "Locked" : 0 : "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input."
+
+	input Press(void) : ""
+	input Lock(void) : ""
+	input Unlock(void) : ""
+	input Toggle(void) : ""
+
+	output OnPressed(void) : ""
+]
+
+//
+// TTT.Items.Deagle
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = Deagle : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.FAL
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/rifles/fal/w_fal.vmdl" ) = FAL : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.Knife
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = Knife : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.L96A1
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" ) = L96A1 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.RPG
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = RPG : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.SPAS12
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = SPAS12 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.UMP45
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/smgs/ump45/w_ump45.vmdl" ) = UMP45 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.TTTAmmoRandom
+//
+@PointClass base(BaseProperties_matt_ttt) = entity_ammo_random : ""
+[
+]
+
+//
+// TTT.Items.TTTWeaponRandom
+//
+@PointClass base(BaseProperties_matt_ttt) = entity_weapon_random : ""
+[
+	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
+]
+
