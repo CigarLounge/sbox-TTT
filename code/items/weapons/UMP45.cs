@@ -6,6 +6,7 @@ namespace TTT.Items
 	[Library( "UMP45" )]
 	[Weapon( SlotType = SlotType.Primary )]
 	[Spawnable]
+	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/police/v_hands_police.vmdl", "weapons/swb/smgs/ump45/v_ump45.vmdl", "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	public class UMP45 : TTTWeaponBase
