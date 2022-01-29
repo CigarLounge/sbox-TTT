@@ -101,7 +101,6 @@ namespace TTT.Rounds
 				if ( unassignedPlayers[randomId].Role is NoneRole )
 				{
 					unassignedPlayers[randomId].SetRole( new DetectiveRole() );
-					unassignedPlayers[randomId].Inventory.Add( new BodyArmor() );
 				}
 			}
 

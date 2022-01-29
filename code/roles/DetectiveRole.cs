@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globals;
+using TTT.Items;
 using TTT.Player;
 using TTT.Teams;
 
@@ -32,6 +32,8 @@ namespace TTT.Roles
 					player.SendClientRole( To.Single( otherPlayer ) );
 				}
 			}
+
+			player.Inventory.Add( new BodyArmor() );
 
 			base.OnSelect( player );
 		}
