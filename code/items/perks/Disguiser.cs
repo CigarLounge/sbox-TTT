@@ -1,13 +1,16 @@
+using System;
 using System.Threading.Tasks;
 
 using Sandbox;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.Items
 {
 	[Library( "Disguiser" )]
 	[Buyable( Price = 100 )]
+	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]
 	public partial class Disguiser : TTTBoolPerk
 	{

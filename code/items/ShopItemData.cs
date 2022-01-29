@@ -1,8 +1,9 @@
 using System;
-
+using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.Items
 {
@@ -14,6 +15,17 @@ namespace TTT.Items
 		public BuyableAttribute() : base()
 		{
 
+		}
+	}
+
+	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false )]
+	public class Shops : Attribute
+	{
+		public Type[] Roles;
+
+		public Shops( Type[] roleTypes ) : base()
+		{
+			Roles = roleTypes;
 		}
 	}
 

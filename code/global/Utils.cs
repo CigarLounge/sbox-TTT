@@ -73,6 +73,9 @@ namespace TTT.Globals
 
 		public static List<Type> GetTypesWithAttribute<T, U>( bool inherit = false ) where U : Attribute => GetTypes<T>( ( t ) => HasAttribute<U>( t, inherit ) );
 
+		public static List<Type> GetTypesWithAttribute<T, U, I>( bool inherit = false ) where U : Attribute
+																						where I : Attribute => GetTypes<T>( ( t ) => HasAttribute<U>( t, inherit ) && HasAttribute<I>( t, inherit ) );
+
 		/// <summary>
 		/// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
 		/// </summary>
@@ -244,6 +247,14 @@ namespace TTT.Globals
 			{
 				list.Add( item );
 			}
+		}
+
+		/// <summary>
+		/// Checks if a C# array is null or empty
+		/// </summary>
+		public static bool IsNullOrEmpty<T>( this T[] arr )
+		{
+			return arr == null || arr.Length == 0;
 		}
 
 		public static void SetPropertyValue<T>( object obj, string propertyName, T value )

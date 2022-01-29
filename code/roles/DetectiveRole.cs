@@ -39,7 +39,7 @@ namespace TTT.Roles
 		// serverside function
 		public override void CreateDefaultShop()
 		{
-			Shop.AddAllItems();
+			Shop.AddItemsForRole( this );
 
 			base.CreateDefaultShop();
 		}

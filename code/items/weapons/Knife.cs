@@ -1,8 +1,10 @@
+using System;
 using Sandbox;
 
 using SWB_Base;
 
 using TTT.Player;
+using TTT.Roles;
 using TTT.UI;
 
 namespace TTT.Items
@@ -10,6 +12,7 @@ namespace TTT.Items
 	[Library( "Knife" )]
 	[Weapon( SlotType = SlotType.Melee )]
 	[Buyable( Price = 100 )]
+	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	public class Knife : TTTWeaponBaseMelee

@@ -76,7 +76,7 @@ namespace TTT.Rounds
 			} );
 		}
 
-		private void AssignRolesAndRespawn( List<TTTPlayer> players )
+		private static void AssignRolesAndRespawn( List<TTTPlayer> players )
 		{
 			int traitorCount = (int)Math.Max( players.Count * 0.25f, 1f );
 
@@ -101,6 +101,7 @@ namespace TTT.Rounds
 				if ( unassignedPlayers[randomId].Role is NoneRole )
 				{
 					unassignedPlayers[randomId].SetRole( new DetectiveRole() );
+					unassignedPlayers[randomId].Inventory.Add( new BodyArmor() );
 				}
 			}
 

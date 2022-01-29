@@ -1,13 +1,16 @@
+using System;
 using System.Collections.Generic;
 using Sandbox;
 using SWB_Base;
 using SWB_Base.Attachments;
+using TTT.Roles;
 
 namespace TTT.Items
 {
 	[Library( "UMP45 Prototype" )]
 	[Weapon( SlotType = SlotType.Primary )]
 	[Buyable( Price = 100 )]
+	[Shops( new Type[] { typeof( DetectiveRole ) } )]
 	[Precached( "weapons/swb/hands/police/v_hands_police.vmdl", "weapons/swb/smgs/ump45/v_ump45.vmdl", "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	public class UMP45Prototype : TTTWeaponBase

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
 
 using TTT.Player;
+using TTT.Roles;
 using TTT.Teams;
 using TTT.UI;
 
@@ -11,6 +13,7 @@ namespace TTT.Items
 {
 	[Library( "Radar" )]
 	[Buyable( Price = 100 )]
+	[Shops( new Type[] { typeof( DetectiveRole ), typeof( TraitorRole ) } )]
 	[Hammer.Skip]
 	public partial class Radar : TTTCountdownPerk
 	{

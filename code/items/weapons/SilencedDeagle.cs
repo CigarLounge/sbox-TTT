@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using Sandbox;
 
 using SWB_Base;
+using TTT.Roles;
 
 namespace TTT.Items
 {
 	[Library( "Silenced Deagle" )]
 	[Weapon( SlotType = SlotType.Secondary )]
 	[Buyable( Price = 100 )]
+	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class SilencedDeagle : Deagle

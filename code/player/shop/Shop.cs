@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text.Json;
 
 using Sandbox;
@@ -112,13 +113,24 @@ namespace TTT.Player
 			return $"settings/{Utils.GetTypeName( typeof( Settings.ServerSettings ) ).ToLower()}/shop/{role.Name.ToLower()}.json";
 		}
 
-		internal void AddAllItems()
+		internal void AddItemsForRole( TTTRole role )
 		{
 			Items.Clear();
 
 			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>() )
 			{
-				Items.Add( ShopItemData.CreateItemData( itemType ) );
+				var itemShopAvailability = itemType.GetCustomAttribute<Shops>();
+				if ( itemShopAvailability != null )
+				{
+					for ( int i = 0; i < itemShopAvailability.Roles.Length; ++i )
+					{
+						var itemRoleType = itemShopAvailability.Roles[i];
+						if ( itemRoleType == role.GetType() )
+						{
+							Items.Add( ShopItemData.CreateItemData( itemType ) );
+						}
+					}
+				}
 			}
 		}
 
