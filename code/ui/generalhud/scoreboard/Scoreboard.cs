@@ -188,11 +188,6 @@ namespace TTT.UI
 			_entries.Remove( playerId );
 		}
 
-		public bool IsClientConnected( long playerId )
-		{
-			return !_entries.ContainsKey( playerId );
-		}
-
 		public override void Tick()
 		{
 			base.Tick();

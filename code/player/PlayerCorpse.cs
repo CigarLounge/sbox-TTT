@@ -194,15 +194,7 @@ namespace TTT.Player
 							DeadPlayer.CorpseCredits = credits;
 						}
 
-						RPCs.ClientConfirmPlayer( confirmingPlayer,
-												  this,
-												  DeadPlayer,
-												  DeadPlayerClientData.Name,
-												  DeadPlayerClientData.PlayerId,
-												  DeadPlayer.Role.Name,
-												  DeadPlayer.Team.Name,
-												  GetConfirmationData(),
-												  KillerWeapon, Perks );
+						RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks );
 					}
 				}
 

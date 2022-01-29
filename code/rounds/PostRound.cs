@@ -44,13 +44,7 @@ namespace TTT.Rounds
 						{
 							player.PlayerCorpse.IsIdentified = true;
 
-							RPCs.ClientConfirmPlayer( null, player.PlayerCorpse, player,
-													player.PlayerCorpse.DeadPlayerClientData.Name,
-													player.PlayerCorpse.DeadPlayerClientData.PlayerId,
-													player.Role.Name, player.Team.Name,
-													player.PlayerCorpse.GetConfirmationData(),
-													player.PlayerCorpse.KillerWeapon,
-													player.PlayerCorpse.Perks );
+							RPCs.ClientConfirmPlayer( null, player.PlayerCorpse, player, player.PlayerCorpse.DeadPlayerClientData.Name, player.PlayerCorpse.DeadPlayerClientData.PlayerId, player.Role.Name, player.Team.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon, player.PlayerCorpse.Perks );
 						}
 						else
 						{

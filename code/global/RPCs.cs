@@ -79,16 +79,7 @@ namespace TTT.Globals
 
 		// Someone refactor this mess.
 		[ClientRpc]
-		public static void ClientConfirmPlayer( TTTPlayer confirmPlayer,
-												PlayerCorpse playerCorpse,
-												TTTPlayer deadPlayer,
-												string deadPlayerName,
-												long deadPlayerId,
-												string roleName,
-												string teamName,
-												ConfirmationData confirmationData,
-												string killerWeapon,
-												string[] perks )
+		public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
 		{
 			if ( !deadPlayer.IsValid() )
 			{
