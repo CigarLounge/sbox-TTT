@@ -112,11 +112,10 @@ namespace TTT.UI
 			if ( client == null )
 			{
 				Log.Warning( "Tried to add a client that isn't valid" );
-
 				return;
 			}
 
-			if ( _entries.TryGetValue( client.PlayerId, out ScoreboardEntry panel ) )
+			if ( _entries.ContainsKey( client.PlayerId ) )
 			{
 				return;
 			}
@@ -134,6 +133,12 @@ namespace TTT.UI
 
 		public void UpdateClient( Client client )
 		{
+			if ( client == null )
+			{
+				Log.Warning( "Tried to update a client that isn't valid" );
+				return;
+			}
+
 			if ( !_entries.TryGetValue( client.PlayerId, out ScoreboardEntry panel ) )
 			{
 				return;
@@ -181,6 +186,11 @@ namespace TTT.UI
 
 			panel.Delete();
 			_entries.Remove( playerId );
+		}
+
+		public bool IsClientConnected( long playerId )
+		{
+			return !_entries.ContainsKey( playerId );
 		}
 
 		public override void Tick()

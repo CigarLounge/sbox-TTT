@@ -143,7 +143,8 @@ namespace TTT.Gamemode
 
 			RPCs.ClientOnPlayerDisconnect( client.PlayerId, reason );
 
-			base.ClientDisconnect( client, reason );
+			Log.Info( $"\"{client.Name}\" has left the game ({reason})" );
+			UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
 		}
 
 		public override bool CanHearPlayerVoice( Client source, Client dest )

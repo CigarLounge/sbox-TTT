@@ -159,7 +159,16 @@ namespace TTT.Player
 				{
 					PlayerCorpse.IsIdentified = true;
 
-					RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks );
+					RPCs.ClientConfirmPlayer( null,
+											  PlayerCorpse,
+											  this,
+											  PlayerCorpse.DeadPlayerClientData.Name,
+											  PlayerCorpse.DeadPlayerClientData.PlayerId,
+											  Role.Name,
+											  Team.Name,
+											  PlayerCorpse.GetConfirmationData(),
+											  PlayerCorpse.KillerWeapon,
+											  PlayerCorpse.Perks );
 				}
 			}
 		}

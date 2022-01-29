@@ -131,12 +131,12 @@ namespace TTT.UI
 
 			_playerCorpse = playerCorpse;
 
-			_avatarImage.SetTexture( $"avatar:{_playerCorpse.DeadPlayer?.Client.PlayerId}" );
+			_avatarImage.SetTexture( $"avatar:{_playerCorpse.DeadPlayerClientData.PlayerId}" );
 
-			_playerLabel.Text = _playerCorpse.DeadPlayer?.Client.Name;
+			_playerLabel.Text = _playerCorpse.DeadPlayerClientData.Name;
 
-			_roleLabel.Text = _playerCorpse.DeadPlayer?.Role.Name;
-			_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer?.Role.Color;
+			_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Name;
+			_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 			SetConfirmationData( _playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks );
 
