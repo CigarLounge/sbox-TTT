@@ -77,8 +77,9 @@ namespace TTT.Globals
 			Scoreboard.Instance?.UpdateClient( client );
 		}
 
+		// Someone refactor this mess.
 		[ClientRpc]
-		public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+		public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
 		{
 			if ( !deadPlayer.IsValid() )
 			{
@@ -95,6 +96,12 @@ namespace TTT.Globals
 				playerCorpse.DeadPlayer = deadPlayer;
 				playerCorpse.KillerWeapon = killerWeapon;
 				playerCorpse.Perks = perks;
+
+				playerCorpse.DeadPlayerClientData = new ClientData()
+				{
+					Name = deadPlayerName,
+					PlayerId = deadPlayerId
+				};
 
 				playerCorpse.CopyConfirmationData( confirmationData );
 				InspectMenu.Instance.SetPlayerData( playerCorpse );

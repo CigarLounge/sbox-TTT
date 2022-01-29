@@ -6,8 +6,15 @@ using TTT.UI;
 
 namespace TTT.Player
 {
+	public struct ClientData
+	{
+		public long PlayerId { get; set; }
+		public string Name { get; set; }
+	}
+
 	public partial class PlayerCorpse : ModelEntity, IEntityHint
 	{
+		public ClientData DeadPlayerClientData { get; set; }
 		public TTTPlayer DeadPlayer { get; set; }
 		public List<Particles> Ropes = new();
 		public List<PhysicsJoint> RopeSprings = new();
@@ -33,7 +40,15 @@ namespace TTT.Player
 
 		public void CopyFrom( TTTPlayer player )
 		{
+			ClientData clientData = new()
+			{
+				Name = player.Client.Name,
+				PlayerId = player.Client.PlayerId
+			};
+
+			DeadPlayerClientData = clientData;
 			DeadPlayer = player;
+
 
 			SetModel( player.GetModelName() );
 			TakeDecalsFrom( player );
@@ -165,7 +180,6 @@ namespace TTT.Player
 				{
 					IsIdentified = true;
 
-					// TODO: Handle player disconnects.
 					if ( DeadPlayer != null && DeadPlayer.IsValid() )
 					{
 						DeadPlayer.IsConfirmed = true;
@@ -180,7 +194,7 @@ namespace TTT.Player
 							DeadPlayer.CorpseCredits = credits;
 						}
 
-						RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks );
+						RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks );
 					}
 				}
 

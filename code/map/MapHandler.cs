@@ -5,6 +5,7 @@ using Sandbox;
 
 using TTT.Globals;
 using TTT.Items;
+using TTT.Player;
 
 namespace TTT.Map
 {
@@ -45,7 +46,7 @@ namespace TTT.Map
 
 			foreach ( Entity entity in Entity.All )
 			{
-				if ( entity is Sandbox.Prop || entity is BaseCarriable || entity.Tags.Has( IItem.ITEM_TAG ) )
+				if ( entity is Sandbox.Prop || entity is BaseCarriable || entity.Tags.Has( IItem.ITEM_TAG ) || entity is PlayerCorpse )
 				{
 					entity.Delete();
 				}

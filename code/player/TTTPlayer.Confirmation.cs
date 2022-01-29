@@ -12,7 +12,6 @@ namespace TTT.Player
 		public bool Suicide;
 		public float Time;
 		public float Distance;
-		// TODO damage type
 	}
 
 	public partial class TTTPlayer
