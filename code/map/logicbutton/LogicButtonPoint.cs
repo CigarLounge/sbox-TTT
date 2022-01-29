@@ -20,8 +20,6 @@ namespace TTT.UI
 		// Position pulled from Data
 		public Vector3 Position { get; private set; }
 
-		private readonly Label _descriptionLabel;
-
 		// If the distance from the player to the button is less than this value, the element is fully visible.
 		private int _minViewDistance = 512;
 
@@ -42,7 +40,8 @@ namespace TTT.UI
 
 			_entity = Entity.FindByIndex( Data.NetworkIdent ) as TTTLogicButton;
 
-			_descriptionLabel = Add.Label( _entity.Description );
+			Add.Image( "/ui/icons/logic_button.png", "pointer" );
+			Add.Label( _entity.Description, "text-shadow" );
 		}
 
 		public override void Tick()
