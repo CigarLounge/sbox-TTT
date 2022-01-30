@@ -28,7 +28,7 @@ namespace TTT.Items
 		public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
 		private const float MAX_PICKUP_MASS = 205;
-		private Vector3 MAX_PICKUP_SIZE = new( 100, 100, 100 );
+		private Vector3 MAX_PICKUP_SIZE = new( 75, 75, 75 );
 		private const float PUSHING_FORCE = 200f;
 
 		private IGrabbable GrabbedEntity;
