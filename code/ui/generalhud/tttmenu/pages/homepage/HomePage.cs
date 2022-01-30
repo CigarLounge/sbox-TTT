@@ -47,7 +47,7 @@ namespace TTT.UI.Menu
 				return;
 			}
 
-			ForceSpectatorButton.Text = $"Force Spectator ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
+			ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
 		}
 
 		public void ToggleForceSpectator()
