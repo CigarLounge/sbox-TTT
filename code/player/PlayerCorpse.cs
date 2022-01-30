@@ -21,7 +21,7 @@ namespace TTT.Player
 		public string KillerWeapon { get; set; }
 		public bool IsIdentified { get; set; } = false;
 		public bool WasHeadshot { get; set; } = false;
-		public bool Suicide { get; set; } = false;
+		public DamageFlags DamageFlag { get; set; } = DamageFlags.Generic;
 		public float Distance { get; set; } = 0f;
 		public float KilledTime { get; private set; }
 		public string[] Perks { get; set; }
@@ -135,7 +135,7 @@ namespace TTT.Player
 			WasHeadshot = confirmationData.Headshot;
 			KilledTime = confirmationData.Time;
 			Distance = confirmationData.Distance;
-			Suicide = confirmationData.Suicide;
+			DamageFlag = confirmationData.DamageFlag;
 		}
 
 		public ConfirmationData GetConfirmationData()
@@ -146,7 +146,7 @@ namespace TTT.Player
 				Headshot = WasHeadshot,
 				Time = KilledTime,
 				Distance = Distance,
-				Suicide = Suicide
+				DamageFlag = DamageFlag
 			};
 		}
 

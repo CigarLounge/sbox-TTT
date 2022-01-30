@@ -18,7 +18,7 @@ namespace TTT.UI
 		private InspectEntry _selectedInspectEntry;
 
 		private readonly InspectEntry _timeSinceDeathEntry;
-		private readonly InspectEntry _suicideEntry;
+		private readonly InspectEntry _deathCauseEntry;
 		private readonly InspectEntry _weaponEntry;
 		private readonly InspectEntry _headshotEntry;
 		private readonly InspectEntry _distanceEntry;
@@ -81,9 +81,9 @@ namespace TTT.UI
 			_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
 			inspectionEntries.Add( _timeSinceDeathEntry );
 
-			_suicideEntry = new InspectEntry( _inspectIconsPanel );
-			_suicideEntry.Enabled( false );
-			inspectionEntries.Add( _suicideEntry );
+			_deathCauseEntry = new InspectEntry( _inspectIconsPanel );
+			_deathCauseEntry.Enabled( false );
+			inspectionEntries.Add( _deathCauseEntry );
 
 			_weaponEntry = new InspectEntry( _inspectIconsPanel );
 			_weaponEntry.Enabled( false );
@@ -159,11 +159,13 @@ namespace TTT.UI
 			_headshotEntry.SetImageText( "Headshot" );
 			_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
 
-			_suicideEntry.Enabled( confirmationData.Suicide );
-			_suicideEntry.SetImageText( "Suicide" );
-			_suicideEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
+			var deathCauseStrings = GetCauseOfDeathStrings();
+			_deathCauseEntry.Enabled( true );
+			_deathCauseEntry.SetImage( $"/ui/inspectmenu/{deathCauseStrings.name}.png" );
+			_deathCauseEntry.SetImageText( deathCauseStrings.imageText );
+			_deathCauseEntry.SetActiveText( deathCauseStrings.activeText );
 
-			_distanceEntry.Enabled( !confirmationData.Suicide );
+			_distanceEntry.Enabled( confirmationData.DamageFlag != DamageFlags.Generic );
 			_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
 			_distanceEntry.SetImageText( $"{confirmationData.Distance:n0}m" );
 			_distanceEntry.SetActiveText( $"They were killed from approximately {confirmationData.Distance:n0}m away." );
@@ -210,6 +212,25 @@ namespace TTT.UI
 			}
 
 			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
+		}
+
+		private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
+		{
+			return _confirmationData.DamageFlag switch
+			{
+				DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
+				DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
+				DamageFlags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
+				DamageFlags.Buckshot => ("Bullet", "Bullet", "This corpse was shot to death."),
+				DamageFlags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
+				DamageFlags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
+				DamageFlags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
+				DamageFlags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
+				DamageFlags.Blast => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
+				DamageFlags.PhysicsImpact => ("Prop", "Prop", "A wild flying prop caused this death."),
+				DamageFlags.Drown => ("Drown", "Drown", "This corpse drowned to death."),
+				_ => ("Unknown", "Unknown", "The cause of death is unknown.")
+			};
 		}
 
 		public override void Tick()

@@ -89,6 +89,7 @@ namespace TTT.Items
 				var damageInfo = DamageInfo.FromBullet( trace.EndPos, forward * force, damage )
 					.UsingTraceResult( trace )
 					.WithAttacker( Owner )
+					.WithFlag( DamageFlags.Slash )
 					.WithWeapon( this );
 
 				trace.Entity.TakeDamage( damageInfo );
@@ -182,7 +183,8 @@ namespace TTT.Items
 					Damage = Damage,
 					Force = 50f,
 					Attacker = Owner,
-					Weapon = new Knife()
+					Weapon = new Knife(),
+					Flags = DamageFlags.Slash
 				};
 
 				Velocity = Vector3.Zero;

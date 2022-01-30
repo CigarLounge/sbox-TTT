@@ -115,7 +115,7 @@ namespace TTT.Player
 				MakeSpectator( false );
 			}
 
-			RemovePlayerCorpse();
+			// RemovePlayerCorpse();
 			Inventory.DeleteContents();
 			Gamemode.Game.Instance.Round.OnPlayerSpawn( this );
 

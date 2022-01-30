@@ -9,7 +9,7 @@ namespace TTT.Player
 	{
 		public bool Identified;
 		public bool Headshot;
-		public bool Suicide;
+		public DamageFlags DamageFlag;
 		public float Time;
 		public float Distance;
 	}
@@ -57,7 +57,7 @@ namespace TTT.Player
 			corpse.KillerWeapon = LastDamageWeapon?.LibraryName;
 			corpse.WasHeadshot = LastDamageWasHeadshot;
 			corpse.Distance = LastDistanceToAttacker;
-			corpse.Suicide = LastAttacker == this;
+			corpse.DamageFlag = _lastDamageInfo.Flags;
 
 			PerksInventory perksInventory = Inventory.Perks;
 
