@@ -172,7 +172,7 @@ namespace TTT.UI
 
 			if ( _weaponEntry.IsEnabled() )
 			{
-				_weaponEntry.SetImage( $"/ui/weapons/{killerWeapon}.png" );
+				_weaponEntry.SetImage( $"/ui/icons/{killerWeapon}.png" );
 				_weaponEntry.SetImageText( $"{killerWeapon}" );
 				_weaponEntry.SetActiveText( $"It appears a {killerWeapon} was used to kill them." );
 			}
@@ -191,7 +191,7 @@ namespace TTT.UI
 				foreach ( string perkName in perks )
 				{
 					InspectEntry perkEntry = new( _inspectIconsPanel );
-					perkEntry.SetImage( $"/ui/weapons/{perkName}.png" );
+					perkEntry.SetImage( $"/ui/icons/{perkName}.png" );
 					perkEntry.SetImageText( $"{perkName}" );
 					perkEntry.SetActiveText( $"They were carrying a {perkName}." );
 
