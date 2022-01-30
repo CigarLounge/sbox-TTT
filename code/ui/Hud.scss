@@ -14,15 +14,15 @@ $button-secondary-fg: white !default;
 $button-dark: #1b3039 !default;
 $button-size: 50px;
 
-@import "/code/ui/components/styles/tabcontainer.scss";
-@import "/code/ui/components/styles/button.scss";
-@import "/code/ui/components/styles/checkbox.scss";
-@import "/code/ui/components/styles/dropdown.scss";
-@import "/code/ui/components/styles/label.scss";
-@import "/code/ui/components/styles/textentry.scss";
-@import "/code/ui/components/styles/slider.scss";
+@import "/ui/components/styles/tabcontainer.scss";
+@import "/ui/components/styles/button.scss";
+@import "/ui/components/styles/checkbox.scss";
+@import "/ui/components/styles/dropdown.scss";
+@import "/ui/components/styles/label.scss";
+@import "/ui/components/styles/textentry.scss";
+@import "/ui/components/styles/slider.scss";
 
-@import "/code/ui/components/linebreak/linebreak.scss";
+@import "/ui/components/linebreak/linebreak.scss";
 
 Panel, .panel {
     font-family: Poppins;
