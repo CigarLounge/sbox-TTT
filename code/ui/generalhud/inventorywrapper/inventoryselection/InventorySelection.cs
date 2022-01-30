@@ -109,6 +109,14 @@ namespace TTT.UI
 				return;
 			}
 
+			foreach ( InventorySlot slot in Children )
+			{
+				if ( slot.Carriable == carriable )
+				{
+					return;
+				}
+			}
+
 			AddChild( new InventorySlot( this, carriable ) );
 			SortChildren( ( p1, p2 ) =>
 			 {
@@ -118,7 +126,7 @@ namespace TTT.UI
 				 int result = s1.Carriable.SlotType.CompareTo( s2.Carriable.SlotType );
 				 return result != 0
 					 ? result
-					 : String.Compare( s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal );
+					 : string.Compare( s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal );
 			 } );
 
 			this.Enabled( Children.Any() );

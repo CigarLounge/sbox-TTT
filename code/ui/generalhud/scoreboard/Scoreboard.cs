@@ -111,7 +111,6 @@ namespace TTT.UI
 		{
 			if ( client == null )
 			{
-				Log.Warning( "Tried to add a client that isn't valid" );
 				return;
 			}
 
@@ -135,7 +134,6 @@ namespace TTT.UI
 		{
 			if ( client == null )
 			{
-				Log.Warning( "Tried to update a client that isn't valid" );
 				return;
 			}
 
