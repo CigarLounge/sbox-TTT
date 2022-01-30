@@ -30,7 +30,7 @@ namespace TTT.UI
 
 			_serverDescriptionLabel = _serverInfoPanel.Add.Label();
 			_serverDescriptionLabel.AddClass( "server-description-label" );
-			_serverDescriptionLabel.Text = "Created by github.com/mzegar";
+			_serverDescriptionLabel.Text = "Created by github.com/mzegar/sbox-TTT/contributors";
 
 			_serverDataPanel = new( this );
 			_serverDataPanel.AddClass( "server-data-panel" );
