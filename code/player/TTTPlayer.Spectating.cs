@@ -89,10 +89,9 @@ namespace TTT.Player
 
 			if ( IsForcedSpectator && LifeState == LifeState.Alive )
 			{
-				MakeSpectator( false );
-				OnKilled();
+				TakeDamage( DamageInfo.Generic( 1000 ) );
 
-				if ( !Client.GetValue<bool>( "forcedspectator", false ) )
+				if ( !Client.GetValue( "forcedspectator", false ) )
 				{
 					Client.SetValue( "forcedspectator", true );
 				}

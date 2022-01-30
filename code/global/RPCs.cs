@@ -23,18 +23,6 @@ namespace TTT.Globals
 		}
 
 		[ClientRpc]
-		public static void ClientOnPlayerConnected( Client client )
-		{
-			Event.Run( TTTEvent.Player.Connected, client );
-		}
-
-		[ClientRpc]
-		public static void ClientOnPlayerDisconnect( long playerId, NetworkDisconnectionReason reason )
-		{
-			Event.Run( TTTEvent.Player.Disconnected, playerId, reason );
-		}
-
-		[ClientRpc]
 		public static void ClientOnPlayerSpawned( TTTPlayer player )
 		{
 			if ( !player.IsValid() )

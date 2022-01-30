@@ -122,10 +122,6 @@ namespace TTT.Gamemode
 
 			Round.OnPlayerJoin( client.Pawn as TTTPlayer );
 
-			Event.Run( TTTEvent.Player.Connected, client );
-
-			RPCs.ClientOnPlayerConnected( client );
-
 			TTTPlayer player = new();
 			client.Pawn = player;
 			player.InitialSpawn();
@@ -139,12 +135,16 @@ namespace TTT.Gamemode
 
 			Round.OnPlayerLeave( client.Pawn as TTTPlayer );
 
-			Event.Run( TTTEvent.Player.Disconnected, client.PlayerId, reason );
-
-			RPCs.ClientOnPlayerDisconnect( client.PlayerId, reason );
-
 			Log.Info( $"\"{client.Name}\" has left the game ({reason})" );
 			UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
+
+			// Only delete the pawn if they are alive.
+			// Keep the dead body otherwise on disconnect.
+			if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )
+			{
+				client.Pawn.Delete();
+				client.Pawn = null;
+			}
 		}
 
 		public override bool CanHearPlayerVoice( Client source, Client dest )

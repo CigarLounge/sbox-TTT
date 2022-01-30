@@ -23,19 +23,6 @@ namespace TTT.Events
 			public const string Spawned = "TTT.player.spawned";
 
 			/// <summary>
-			/// Occurs when a player connects.
-			/// <para>The <strong><see cref="Sandbox.Client"/></strong> instance of the player who connected.</para>
-			/// </summary>
-			public const string Connected = "TTT.player.connected";
-
-			/// <summary>
-			/// Occurs when a player disconnects.
-			/// <para>The <strong><see cref="ulong"/></strong> of the player's PlayerId who disconnected.</para>
-			/// <para>The <strong><see cref="Sandbox.NetworkDisconnectionReason"/></strong>.</para>
-			/// </summary>
-			public const string Disconnected = "TTT.player.disconnected";
-
-			/// <summary>
 			/// Occurs when a player takes damage.
 			/// <para>The <strong><see cref="TTT.Player.TTTPlayer"/></strong> instance of the player who took damage.</para>
 			/// <para>The <strong><see cref="float"/></strong> of the amount of damage taken.</para>

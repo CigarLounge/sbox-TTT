@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
@@ -21,9 +21,9 @@ namespace TTT.UI
 
 		public static Scoreboard Instance;
 
-		private readonly Dictionary<long, ScoreboardEntry> _entries = new();
+		private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
 		private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
-		private readonly Dictionary<long, bool> _forcedSpecList = new();
+		private readonly Dictionary<Client, bool> _forcedSpecList = new();
 
 		private readonly Panel _backgroundPanel;
 		private readonly Panel _scoreboardContainer;
@@ -77,13 +77,6 @@ namespace TTT.UI
 			{
 				AddScoreboardGroup( defaultScoreboardGroup.ToString() );
 			}
-
-			foreach ( Client client in Client.All )
-			{
-				AddClient( client );
-			}
-
-			UpdateScoreboardGroups();
 		}
 
 		[Event( TTTEvent.Player.Spawned )]
@@ -92,42 +85,18 @@ namespace TTT.UI
 			UpdateClient( player.Client );
 		}
 
-		[Event( TTTEvent.Player.Connected )]
-		public void OnPlayerConnected( Client client )
+		public ScoreboardEntry AddClient( Client client )
 		{
-			AddClient( client );
-
-			UpdateScoreboardGroups();
-		}
-
-		[Event( TTTEvent.Player.Disconnected )]
-		private void OnPlayerDisconnected( long playerId, NetworkDisconnectionReason reason )
-		{
-			RemoveClient( playerId );
-			UpdateScoreboardGroups();
-		}
-
-		public void AddClient( Client client )
-		{
-			if ( client == null )
-			{
-				return;
-			}
-
-			if ( _entries.ContainsKey( client.PlayerId ) )
-			{
-				return;
-			}
-
 			ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
 			ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
 
 			scoreboardGroup.GroupMembers++;
 
-			_entries.Add( client.PlayerId, scoreboardEntry );
+			_entries.Add( client, scoreboardEntry );
 
 			scoreboardGroup.UpdateLabel();
 			_scoreboardHeader.UpdateServerInfo();
+			return scoreboardEntry;
 		}
 
 		public void UpdateClient( Client client )
@@ -137,7 +106,7 @@ namespace TTT.UI
 				return;
 			}
 
-			if ( !_entries.TryGetValue( client.PlayerId, out ScoreboardEntry panel ) )
+			if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 			{
 				return;
 			}
@@ -147,7 +116,7 @@ namespace TTT.UI
 			if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
 			{
 				// instead of remove and add, move the panel into the right parent
-				RemoveClient( client.PlayerId );
+				RemoveClient( client );
 				AddClient( client );
 			}
 			else
@@ -158,17 +127,9 @@ namespace TTT.UI
 			UpdateScoreboardGroups();
 		}
 
-		public void Update()
+		public void RemoveClient( Client client )
 		{
-			foreach ( Client client in Client.All )
-			{
-				UpdateClient( client );
-			}
-		}
-
-		public void RemoveClient( long playerId )
-		{
-			if ( !_entries.TryGetValue( playerId, out ScoreboardEntry panel ) )
+			if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 			{
 				return;
 			}
@@ -183,33 +144,57 @@ namespace TTT.UI
 			scoreboardGroup.UpdateLabel();
 
 			panel.Delete();
-			_entries.Remove( playerId );
+			_entries.Remove( client );
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
+			SetClass( "fade-in", Input.Down( InputButton.Score ) );
+			_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
+
+			if ( !HasClass( "fade-in" ) )
+			{
+				return;
+			}
+
+			// This code sucks. I'm forced to due this because of...
+			// https://github.com/Facepunch/sbox-issues/issues/1324
+			foreach ( var client in Client.All.Except( _entries.Keys ) )
+			{
+				var entry = AddClient( client );
+				_entries[client] = entry;
+				UpdateClient( client );
+				UpdateScoreboardGroups();
+			}
+
+			foreach ( var client in _entries.Keys.Except( Client.All ) )
+			{
+				if ( _entries.TryGetValue( client, out var row ) )
+				{
+					row?.Delete();
+					UpdateScoreboardGroups();
+					_entries.Remove( client );
+				}
+			}
+
 			// Due to not having a `client.GetValue` change callback, we have to handle it differently
 			foreach ( Client client in Client.All )
 			{
 				bool newIsForcedSpectator = client.GetValue<bool>( "forcedspectator" );
 
-				if ( !_forcedSpecList.TryGetValue( client.PlayerId, out bool isForcedSpectator ) )
+				if ( !_forcedSpecList.TryGetValue( client, out bool isForcedSpectator ) )
 				{
-					_forcedSpecList.Add( client.PlayerId, newIsForcedSpectator );
+					_forcedSpecList.Add( client, newIsForcedSpectator );
 				}
 				else if ( isForcedSpectator != newIsForcedSpectator )
 				{
-					_forcedSpecList[client.PlayerId] = newIsForcedSpectator;
+					_forcedSpecList[client] = newIsForcedSpectator;
 
 					UpdateClient( client );
 				}
 			}
-
-			SetClass( "fade-in", Input.Down( InputButton.Score ) );
-
-			_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
 		}
 
 		private ScoreboardGroup AddScoreboardGroup( string groupName )
