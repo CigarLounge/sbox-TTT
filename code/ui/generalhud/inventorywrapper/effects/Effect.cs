@@ -19,7 +19,7 @@ namespace TTT.UI
 				_item = value;
 
 				_nameLabel.Text = _item?.LibraryName ?? "";
-				_effectImage.Texture = _item != null ? Texture.Load( FileSystem.Mounted, $"/ui/weapons/{_item.LibraryName}.png", false ) : null;
+				_effectImage.Texture = _item != null ? Texture.Load( FileSystem.Mounted, $"/ui/icons/{_item.LibraryName}.png", false ) : null;
 
 				if ( _effectImage.Texture == null )
 				{
