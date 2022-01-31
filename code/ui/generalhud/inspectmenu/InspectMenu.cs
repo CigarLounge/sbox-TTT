@@ -15,12 +15,12 @@ namespace TTT.UI
 		private ConfirmationData _confirmationData;
 		private InspectEntry _selectedInspectEntry;
 
+		private readonly List<InspectEntry> _inspectionEntries = new();
 		private readonly InspectEntry _timeSinceDeathEntry;
 		private readonly InspectEntry _deathCauseEntry;
 		private readonly InspectEntry _weaponEntry;
 		private readonly InspectEntry _headshotEntry;
 		private readonly InspectEntry _distanceEntry;
-		private readonly List<InspectEntry> _perkEntries;
 
 		private readonly Panel _inspectContainer;
 		private readonly Image _avatarImage;
@@ -57,47 +57,26 @@ namespace TTT.UI
 			_inspectIconsPanel = new Panel( _inspectContainer );
 			_inspectIconsPanel.AddClass( "info-panel" );
 
-			List<InspectEntry> inspectionEntries = new();
-
 			_timeSinceDeathEntry = new InspectEntry( _inspectIconsPanel );
 			_timeSinceDeathEntry.Enabled( true ); // Time since death is ALWAYS visible
 			_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
-			inspectionEntries.Add( _timeSinceDeathEntry );
+			_inspectionEntries.Add( _timeSinceDeathEntry );
 
 			_deathCauseEntry = new InspectEntry( _inspectIconsPanel );
 			_deathCauseEntry.Enabled( false );
-			inspectionEntries.Add( _deathCauseEntry );
+			_inspectionEntries.Add( _deathCauseEntry );
 
 			_weaponEntry = new InspectEntry( _inspectIconsPanel );
 			_weaponEntry.Enabled( false );
-			inspectionEntries.Add( _weaponEntry );
+			_inspectionEntries.Add( _weaponEntry );
 
 			_headshotEntry = new InspectEntry( _inspectIconsPanel );
 			_headshotEntry.Enabled( false );
-			inspectionEntries.Add( _headshotEntry );
+			_inspectionEntries.Add( _headshotEntry );
 
 			_distanceEntry = new InspectEntry( _inspectIconsPanel );
 			_distanceEntry.Enabled( false );
-			inspectionEntries.Add( _distanceEntry );
-
-			_perkEntries = new List<InspectEntry>();
-
-			foreach ( InspectEntry entry in inspectionEntries )
-			{
-				entry.AddEventListener( "onmouseover", () =>
-				 {
-					 _selectedInspectEntry = entry;
-
-					 UpdateCurrentInspectDescription();
-				 } );
-
-				entry.AddEventListener( "onmouseout", () =>
-				 {
-					 _selectedInspectEntry = null;
-
-					 UpdateCurrentInspectDescription();
-				 } );
-			}
+			_inspectionEntries.Add( _distanceEntry );
 
 			_inspectDetailsLabel = _inspectContainer.Add.Label();
 			_inspectDetailsLabel.AddClass( "inspect-details-label" );
@@ -149,8 +128,25 @@ namespace TTT.UI
 					perkEntry.SetImageText( $"{perkName}" );
 					perkEntry.SetActiveText( $"They were carrying a {perkName}." );
 
-					_perkEntries.Add( perkEntry );
+					_inspectionEntries.Add( perkEntry );
 				}
+			}
+
+			foreach ( InspectEntry entry in _inspectionEntries )
+			{
+				entry.AddEventListener( "onmouseover", () =>
+				 {
+					 _selectedInspectEntry = entry;
+
+					 UpdateCurrentInspectDescription();
+				 } );
+
+				entry.AddEventListener( "onmouseout", () =>
+				 {
+					 _selectedInspectEntry = null;
+
+					 UpdateCurrentInspectDescription();
+				 } );
 			}
 		}
 
