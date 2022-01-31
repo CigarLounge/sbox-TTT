@@ -12,7 +12,7 @@ namespace TTT.Map
 		public IDictionary<long, string> PlayerIdMapVote { get; set; }
 
 		// Map name (string) -> Map image (string)
-		[Net, Change]
+		[Net]
 		public IDictionary<string, string> MapImages { get; set; }
 
 		public int TotalRoundsPlayed = 0;
@@ -53,11 +53,6 @@ namespace TTT.Map
 				indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey( mapName ) ? 1 : indexToVoteCount[mapName] + 1;
 			}
 			return indexToVoteCount;
-		}
-
-		public static void OnMapImagesChanged()
-		{
-			Event.Run( Events.TTTEvent.Game.MapImagesChange );
 		}
 	}
 }

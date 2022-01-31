@@ -169,7 +169,7 @@ namespace TTT.Player
 			{
 				if ( IsClient && !Input.Down( InputButton.Use ) )
 				{
-					FullScreenMenu.Instance.Close();
+					FullScreenHintMenu.Instance.Close();
 					return;
 				}
 
@@ -199,7 +199,7 @@ namespace TTT.Player
 				{
 					if ( IsClient )
 					{
-						FullScreenMenu.Instance.Open( new InspectMenu( this ) );
+						FullScreenHintMenu.Instance.Open( new InspectMenu( this ) );
 					}
 				}
 			}

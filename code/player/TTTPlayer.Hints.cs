@@ -70,7 +70,7 @@ namespace TTT.Player
 
 				_currentHintPanel?.Delete( true );
 				_currentHintPanel = null;
-				FullScreenMenu.Instance?.Close();
+				FullScreenHintMenu.Instance?.Close();
 			}
 
 			_currentHint = null;

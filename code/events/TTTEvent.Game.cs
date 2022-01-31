@@ -15,11 +15,6 @@ namespace TTT.Events
 			/// <para>Event is passed the <strong><see cref="TTT.Rounds.BaseRound"/></strong> instance of the new round.</para>
 			/// </summary>
 			public const string RoundChange = "TTT.game.roundchange";
-
-			/// <summary>
-			/// Updates when the map images are networked.
-			/// </summary>
-			public const string MapImagesChange = "TTT.game.mapimagechange";
 		}
 	}
 }

@@ -21,10 +21,6 @@ namespace TTT.UI
 
 			AddClass( "text-shadow" );
 
-			AddClass( "background-color-secondary" );
-			AddClass( "opacity-heavy" );
-			AddClass( "fullscreen" );
-
 			Add.Label( "Vote for the next map!", "title" );
 
 			_mapPanels = new();
@@ -32,14 +28,6 @@ namespace TTT.UI
 			_mapWrapper = new Panel( this );
 			_mapWrapper.AddClass( "map-wrapper" );
 
-			InitMapPanels();
-
-			this.Enabled( false );
-		}
-
-		[Event( Events.TTTEvent.Game.MapImagesChange )]
-		private void OnMapImagesChange()
-		{
 			InitMapPanels();
 		}
 
@@ -64,13 +52,6 @@ namespace TTT.UI
 
 		public override void Tick()
 		{
-			base.Tick();
-
-			if ( !this.IsEnabled() )
-			{
-				return;
-			}
-
 			IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
 
 			IDictionary<string, int> mapToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap( playerIdMapVote );

@@ -1,19 +1,18 @@
-using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI
 {
-	public class FullScreenMenu : Panel
+	public class FullScreenHintMenu : Panel
 	{
-		public static FullScreenMenu Instance;
+		public static FullScreenHintMenu Instance;
 		public Panel ActivePanel { get; private set; }
+		public bool IsForcedOpen { get; set; } = false;
 
-		public FullScreenMenu()
+		public FullScreenHintMenu()
 		{
 			Instance = this;
 
-			StyleSheet.Load( "/ui/generalhud/fullscreenmenu/FullScreenMenu.scss" );
+			StyleSheet.Load( "/ui/generalhud/fullscreenHintmenu/FullScreenHintMenu.scss" );
 
 			AddClass( "background-color-secondary" );
 			AddClass( "fullscreen" );
@@ -21,6 +20,14 @@ namespace TTT.UI
 			this.Style.ZIndex = 2;
 
 			this.EnableFade( false );
+		}
+
+		public void ForceOpen( Panel panel )
+		{
+			IsForcedOpen = true;
+			ActivePanel = null;
+
+			Open( panel );
 		}
 
 		public void Open( Panel panel )
@@ -36,17 +43,13 @@ namespace TTT.UI
 			this.EnableFade( true );
 		}
 
-		public bool IsOpen()
-		{
-			return ActivePanel != null;
-		}
-
 		public void Close()
 		{
-			if ( !IsOpen() ) return;
+			if ( ActivePanel == null || IsForcedOpen ) return;
 			this.EnableFade( false );
 			DeleteChildren( true );
 			ActivePanel = null;
+			IsForcedOpen = false;
 		}
 	}
 }
