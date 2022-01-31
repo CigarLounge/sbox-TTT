@@ -181,7 +181,7 @@ namespace TTT.Globals
 			panel.SetClass( "disabled", !enabled );
 		}
 
-		public static void EnabledFade( this Panel panel, bool enabled )
+		public static void EnableFade( this Panel panel, bool enabled )
 		{
 			panel.SetClass( "fade-in", enabled );
 			panel.SetClass( "fade-out", !enabled );

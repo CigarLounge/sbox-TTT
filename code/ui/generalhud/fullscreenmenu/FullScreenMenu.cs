@@ -20,7 +20,7 @@ namespace TTT.UI
 
 			this.Style.ZIndex = 2;
 
-			this.EnabledFade( false );
+			this.EnableFade( false );
 		}
 
 		public void Open( Panel panel )
@@ -33,12 +33,12 @@ namespace TTT.UI
 			DeleteChildren( true );
 			ActivePanel = panel;
 			AddChild( panel );
-			this.EnabledFade( true );
+			this.EnableFade( true );
 		}
 
 		public void Close()
 		{
-			this.EnabledFade( false );
+			this.EnableFade( false );
 			DeleteChildren( true );
 			ActivePanel = null;
 		}
