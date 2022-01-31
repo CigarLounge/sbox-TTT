@@ -77,7 +77,7 @@ namespace TTT.Map
 				prop.Rotation = modelEntityData.Rotation;
 				prop.Scale = modelEntityData.Scale;
 				prop.RenderColor = modelEntityData.Color;
-				prop.SetModel( modelEntityData.Model );
+				prop.Model = modelEntityData.Model;
 				prop.Spawn();
 			}
 
@@ -104,7 +104,7 @@ namespace TTT.Map
 				Rotation = modelEntity.Rotation,
 				Scale = modelEntity.Scale,
 				Color = modelEntity.RenderColor,
-				Model = modelEntity.GetModel(),
+				Model = modelEntity.Model,
 			};
 		}
 	}

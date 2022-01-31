@@ -110,9 +110,6 @@ namespace TTT.Player
 				PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
 			}
 
-			// Register player damage with the Karma system
-			Gamemode.Game.Instance?.Karma?.RegisterPlayerDamage( info.Attacker as TTTPlayer, this, info.Damage );
-
 			_lastDamageInfo = info;
 
 			base.TakeDamage( info );

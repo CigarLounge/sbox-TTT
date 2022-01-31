@@ -123,7 +123,7 @@ namespace TTT.Rounds
 			return aliveTeams.Count == 1 ? aliveTeams[0] : null;
 		}
 
-		private static void LoadPostRound( TTTTeam winningTeam )
+		public static void LoadPostRound( TTTTeam winningTeam )
 		{
 			Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
 			Gamemode.Game.Instance.ForceRoundChange( new PostRound() );

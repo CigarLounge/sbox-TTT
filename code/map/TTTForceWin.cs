@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Player;
 using TTT.Rounds;
 using TTT.Teams;
@@ -54,16 +53,11 @@ namespace TTT.Map
 			Log.Warning( $"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name." );
 		}
 
-		private void ForceEndRound( TTTTeam team )
+		private static void ForceEndRound( TTTTeam team )
 		{
 			if ( Gamemode.Game.Instance.Round is InProgressRound )
 			{
-				//Logic taken from InProgressRound.LoadPostRound. Should reference the function instead?
-				Gamemode.Game.Instance.ForceRoundChange( new PostRound() );
-				RPCs.ClientOpenAndSetPostRoundMenu(
-					team.Name,
-					team.Color
-				);
+				InProgressRound.LoadPostRound( team );
 			}
 		}
 	}

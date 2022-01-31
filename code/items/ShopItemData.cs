@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Player;
-using TTT.Roles;
 
 namespace TTT.Items
 {

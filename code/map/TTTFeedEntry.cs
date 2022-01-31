@@ -1,6 +1,5 @@
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Teams;
 
 namespace TTT.Map

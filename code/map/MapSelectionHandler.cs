@@ -55,7 +55,7 @@ namespace TTT.Map
 			return indexToVoteCount;
 		}
 
-		public void OnMapImagesChanged()
+		public static void OnMapImagesChanged()
 		{
 			Event.Run( Events.TTTEvent.Game.MapImagesChange );
 		}

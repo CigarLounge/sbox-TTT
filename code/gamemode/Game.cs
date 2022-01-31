@@ -22,8 +22,6 @@ namespace TTT.Gamemode
 		[Net]
 		public MapSelectionHandler MapSelection { get; set; } = new();
 
-		public KarmaSystem Karma { get; private set; } = new();
-
 		public MapHandler MapHandler { get; private set; }
 
 		// [ConVar.Replicated("ttt_debug")]
