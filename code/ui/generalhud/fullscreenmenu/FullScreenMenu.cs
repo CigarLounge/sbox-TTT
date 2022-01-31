@@ -7,6 +7,7 @@ namespace TTT.UI
 	public class FullScreenMenu : Panel
 	{
 		public static FullScreenMenu Instance;
+		public Panel ActivePanel { get; private set; }
 
 		public FullScreenMenu()
 		{
@@ -21,11 +22,24 @@ namespace TTT.UI
 			this.Enabled( false );
 		}
 
-		public void OpenMenu( Panel panel )
+		public void Open( Panel panel )
 		{
+			if ( ActivePanel != null )
+			{
+				return;
+			}
+
 			DeleteChildren( true );
+			ActivePanel = panel;
 			AddChild( panel );
 			this.Enabled( true );
+		}
+
+		public void Close()
+		{
+			this.Enabled( false );
+			DeleteChildren( true );
+			ActivePanel = null;
 		}
 	}
 }

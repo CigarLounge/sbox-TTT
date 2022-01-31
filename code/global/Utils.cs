@@ -83,8 +83,6 @@ namespace TTT.Globals
 		/// <returns>Derived `Type` of given type</returns>
 		public static Type GetTypeByLibraryName<T>( string name )
 		{
-			name = name;
-
 			foreach ( Type type in GetTypes<T>() )
 			{
 				if ( GetLibraryName( type ).Equals( name ) )

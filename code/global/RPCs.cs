@@ -92,7 +92,6 @@ namespace TTT.Globals
 				};
 
 				playerCorpse.CopyConfirmationData( confirmationData );
-				InspectMenu.Instance.SetPlayerData( playerCorpse );
 			}
 
 			Client deadClient = deadPlayer.Client;

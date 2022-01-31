@@ -11,9 +11,7 @@ namespace TTT.UI
 {
 	public class InspectMenu : Panel
 	{
-		public static InspectMenu Instance;
-
-		private PlayerCorpse _playerCorpse;
+		private readonly PlayerCorpse _playerCorpse;
 		private ConfirmationData _confirmationData;
 		private InspectEntry _selectedInspectEntry;
 
@@ -24,7 +22,6 @@ namespace TTT.UI
 		private readonly InspectEntry _distanceEntry;
 		private readonly List<InspectEntry> _perkEntries;
 
-		private readonly Panel _backgroundPanel;
 		private readonly Panel _inspectContainer;
 		private readonly Image _avatarImage;
 		private readonly Label _playerLabel;
@@ -34,7 +31,10 @@ namespace TTT.UI
 
 		public InspectMenu( PlayerCorpse playerCorpse )
 		{
-			Instance = this;
+			if ( playerCorpse.DeadPlayer == null )
+			{
+				return;
+			}
 
 			StyleSheet.Load( "/ui/generalhud/inspectmenu/InspectMenu.scss" );
 
@@ -48,7 +48,7 @@ namespace TTT.UI
 			_avatarImage.AddClass( "box-shadow" );
 			_avatarImage.AddClass( "circular" );
 
-			_playerLabel = _inspectContainer.Add.Label( String.Empty );
+			_playerLabel = _inspectContainer.Add.Label();
 			_playerLabel.AddClass( "player-label" );
 
 			_roleLabel = _inspectContainer.Add.Label();
@@ -102,54 +102,33 @@ namespace TTT.UI
 			_inspectDetailsLabel = _inspectContainer.Add.Label();
 			_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
-			InspectCorpse( playerCorpse );
+			_playerCorpse = playerCorpse;
+			_confirmationData = _playerCorpse.GetConfirmationData();
+			SetConfirmationData( _playerCorpse.KillerWeapon, _playerCorpse.Perks );
 		}
 
-		public void InspectCorpse( PlayerCorpse playerCorpse )
+		private void SetConfirmationData( string killerWeapon, string[] perks )
 		{
-			if ( playerCorpse?.DeadPlayer == null )
-			{
-				return;
-			}
-
-			_playerCorpse = playerCorpse;
-
 			_avatarImage.SetTexture( $"avatar:{_playerCorpse.DeadPlayerClientData.PlayerId}" );
-
 			_playerLabel.Text = _playerCorpse.DeadPlayerClientData.Name;
-
 			_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Name;
 			_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
-			SetConfirmationData( _playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks );
-		}
-
-		public void SetPlayerData( PlayerCorpse playerCorpse )
-		{
-			_playerCorpse = playerCorpse;
-
-			SetConfirmationData( playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks );
-		}
-
-		public void SetConfirmationData( ConfirmationData confirmationData, string killerWeapon, string[] perks )
-		{
-			_confirmationData = confirmationData;
-
-			_headshotEntry.Enabled( confirmationData.Headshot );
+			_headshotEntry.Enabled( _confirmationData.Headshot );
 			_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
 			_headshotEntry.SetImageText( "Headshot" );
 			_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
 
-			var deathCauseStrings = GetCauseOfDeathStrings();
+			var (name, imageText, activeText) = GetCauseOfDeathStrings();
 			_deathCauseEntry.Enabled( true );
-			_deathCauseEntry.SetImage( $"/ui/inspectmenu/{deathCauseStrings.name}.png" );
-			_deathCauseEntry.SetImageText( deathCauseStrings.imageText );
-			_deathCauseEntry.SetActiveText( deathCauseStrings.activeText );
+			_deathCauseEntry.SetImage( $"/ui/inspectmenu/{name}.png" );
+			_deathCauseEntry.SetImageText( imageText );
+			_deathCauseEntry.SetActiveText( activeText );
 
-			_distanceEntry.Enabled( confirmationData.DamageFlag != DamageFlags.Generic );
+			_distanceEntry.Enabled( _confirmationData.DamageFlag != DamageFlags.Generic );
 			_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
-			_distanceEntry.SetImageText( $"{confirmationData.Distance:n0}m" );
-			_distanceEntry.SetActiveText( $"They were killed from approximately {confirmationData.Distance:n0}m away." );
+			_distanceEntry.SetImageText( $"{_confirmationData.Distance:n0}m" );
+			_distanceEntry.SetActiveText( $"They were killed from approximately {_confirmationData.Distance:n0}m away." );
 
 			_weaponEntry.Enabled( !string.IsNullOrEmpty( killerWeapon ) );
 
@@ -159,14 +138,6 @@ namespace TTT.UI
 				_weaponEntry.SetImageText( $"{killerWeapon}" );
 				_weaponEntry.SetActiveText( $"It appears a {killerWeapon} was used to kill them." );
 			}
-
-			// Clear and delete all perks
-			foreach ( InspectEntry perkEntry in _perkEntries )
-			{
-				perkEntry.Delete( true );
-			}
-
-			_perkEntries.Clear();
 
 			// Populate perk entries
 			if ( perks != null )
@@ -216,21 +187,14 @@ namespace TTT.UI
 
 		public override void Tick()
 		{
-			// if ( !Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance( Local.Pawn.Owner.Position ) > 100f )
-			// {
-			// 	Enabled = false;
+			string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
+			_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
+			_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
-			// 	return;
-			// }
-
-			// string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
-			// _timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
-			// _timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
-
-			// if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
-			// {
-			// 	UpdateCurrentInspectDescription();
-			// }
+			if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
+			{
+				UpdateCurrentInspectDescription();
+			}
 		}
 	}
 }
