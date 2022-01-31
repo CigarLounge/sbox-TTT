@@ -83,8 +83,6 @@ namespace TTT.Globals
 		/// <returns>Derived `Type` of given type</returns>
 		public static Type GetTypeByLibraryName<T>( string name )
 		{
-			name = name;
-
 			foreach ( Type type in GetTypes<T>() )
 			{
 				if ( GetLibraryName( type ).Equals( name ) )
@@ -181,6 +179,12 @@ namespace TTT.Globals
 		public static void Enabled( this Panel panel, bool enabled )
 		{
 			panel.SetClass( "disabled", !enabled );
+		}
+
+		public static void EnableFade( this Panel panel, bool enabled )
+		{
+			panel.SetClass( "fade-in", enabled );
+			panel.SetClass( "fade-out", !enabled );
 		}
 
 		public static bool IsEnabled( this Panel panel )

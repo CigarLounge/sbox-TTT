@@ -38,14 +38,6 @@ namespace TTT.Player
 			PlayerCorpse = null;
 		}
 
-		public static void ClientEnableInspectMenu( PlayerCorpse playerCorpse )
-		{
-			if ( InspectMenu.Instance != null && !InspectMenu.Instance.Enabled )
-			{
-				InspectMenu.Instance.InspectCorpse( playerCorpse );
-			}
-		}
-
 		private void BecomePlayerCorpseOnServer( Vector3 force, int forceBone )
 		{
 			PlayerCorpse corpse = new()

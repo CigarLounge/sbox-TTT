@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using Sandbox;
+using Sandbox.UI;
 using TTT.Items;
 using TTT.UI;
 
@@ -168,11 +169,7 @@ namespace TTT.Player
 			{
 				if ( IsClient && !Input.Down( InputButton.Use ) )
 				{
-					if ( InspectMenu.Instance != null )
-					{
-						InspectMenu.Instance.Enabled = false;
-					}
-
+					FullScreenMenu.Instance.Close();
 					return;
 				}
 
@@ -200,7 +197,10 @@ namespace TTT.Player
 
 				if ( Input.Down( InputButton.Use ) && IsIdentified )
 				{
-					TTTPlayer.ClientEnableInspectMenu( this );
+					if ( IsClient )
+					{
+						FullScreenMenu.Instance.Open( new InspectMenu( this ) );
+					}
 				}
 			}
 		}
