@@ -1,9 +1,6 @@
-using System.Linq;
-
 using Sandbox;
 
 using TTT.Events;
-using TTT.Items;
 using TTT.Player.Camera;
 using TTT.Roles;
 

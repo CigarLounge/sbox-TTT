@@ -36,8 +36,14 @@ namespace TTT.UI
 			this.EnableFade( true );
 		}
 
+		public bool IsOpen()
+		{
+			return ActivePanel != null;
+		}
+
 		public void Close()
 		{
+			if ( !IsOpen() ) return;
 			this.EnableFade( false );
 			DeleteChildren( true );
 			ActivePanel = null;
