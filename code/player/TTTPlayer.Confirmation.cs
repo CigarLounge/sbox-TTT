@@ -40,10 +40,10 @@ namespace TTT.Player
 
 		public static void ClientEnableInspectMenu( PlayerCorpse playerCorpse )
 		{
-			if ( InspectMenu.Instance != null && !InspectMenu.Instance.Enabled )
-			{
-				InspectMenu.Instance.InspectCorpse( playerCorpse );
-			}
+			// if ( InspectMenu.Instance != null && !InspectMenu.Instance.Enabled )
+			// {
+			// 	InspectMenu.Instance.InspectCorpse( playerCorpse );
+			// }
 		}
 
 		private void BecomePlayerCorpseOnServer( Vector3 force, int forceBone )

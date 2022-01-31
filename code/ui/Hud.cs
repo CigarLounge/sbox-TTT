@@ -104,7 +104,7 @@ namespace TTT.UI
 				AddChild<VoiceList>();
 
 				AddChild<InfoFeed>();
-				AddChild<InspectMenu>();
+				AddChild<FullScreenMenu>();
 				AddChild<PostRoundMenu>();
 				AddChild<Scoreboard>();
 				AddChild<MapSelectionMenu>();

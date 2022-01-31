@@ -32,30 +32,13 @@ namespace TTT.UI
 		private readonly Panel _inspectIconsPanel;
 		private readonly Label _inspectDetailsLabel;
 
-		public bool Enabled
-		{
-			get => this.IsEnabled();
-			set
-			{
-				this.Enabled( value );
-
-				SetClass( "fade-in", this.IsEnabled() );
-				_inspectContainer.SetClass( "pop-in", this.IsEnabled() );
-			}
-		}
-
-		public InspectMenu()
+		public InspectMenu( PlayerCorpse playerCorpse )
 		{
 			Instance = this;
 
 			StyleSheet.Load( "/ui/generalhud/inspectmenu/InspectMenu.scss" );
 
 			AddClass( "text-shadow" );
-
-			_backgroundPanel = new Panel( this );
-			_backgroundPanel.AddClass( "background-color-secondary" );
-			_backgroundPanel.AddClass( "opacity-medium" );
-			_backgroundPanel.AddClass( "fullscreen" );
 
 			_inspectContainer = new Panel( this );
 			_inspectContainer.AddClass( "inspect-container" );
@@ -119,7 +102,7 @@ namespace TTT.UI
 			_inspectDetailsLabel = _inspectContainer.Add.Label();
 			_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
-			Enabled = false;
+			InspectCorpse( playerCorpse );
 		}
 
 		public void InspectCorpse( PlayerCorpse playerCorpse )
@@ -139,8 +122,6 @@ namespace TTT.UI
 			_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 			SetConfirmationData( _playerCorpse.GetConfirmationData(), _playerCorpse.KillerWeapon, _playerCorpse.Perks );
-
-			Enabled = true;
 		}
 
 		public void SetPlayerData( PlayerCorpse playerCorpse )
@@ -235,21 +216,21 @@ namespace TTT.UI
 
 		public override void Tick()
 		{
-			if ( !Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance( Local.Pawn.Owner.Position ) > 100f )
-			{
-				Enabled = false;
+			// if ( !Enabled || !_playerCorpse.IsValid() || _playerCorpse.Transform.Position.Distance( Local.Pawn.Owner.Position ) > 100f )
+			// {
+			// 	Enabled = false;
 
-				return;
-			}
+			// 	return;
+			// }
 
-			string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
-			_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
-			_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
+			// string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
+			// _timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
+			// _timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
-			if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
-			{
-				UpdateCurrentInspectDescription();
-			}
+			// if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
+			// {
+			// 	UpdateCurrentInspectDescription();
+			// }
 		}
 	}
 }

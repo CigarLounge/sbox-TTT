@@ -73,6 +73,11 @@ Panel, .panel {
     pointer-events: none;
 }
 
+.fade-in {
+    transition: all 0.15s ease-out;
+    opacity: 1;;
+}
+
 .rounded {
     border-radius: 8px;
 }
