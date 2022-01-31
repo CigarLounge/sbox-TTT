@@ -7,7 +7,6 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Hammer.Skip]
 	public abstract partial class TTTAmmo : Prop, IEntityHint
 	{
 		/// <summary>

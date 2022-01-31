@@ -5,7 +5,6 @@ using Sandbox;
 
 namespace TTT.Items
 {
-	[Hammer.Skip]
 	public abstract class TTTCountdownPerk : TTTPerk
 	{
 		public abstract float Countdown { get; }
