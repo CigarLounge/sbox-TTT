@@ -7,7 +7,6 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Hammer.Skip]
 	public partial class TTTWeaponBase : SWB_Base.WeaponBase, ICarriableItem, IEntityHint
 	{
 		public string LibraryName { get; }

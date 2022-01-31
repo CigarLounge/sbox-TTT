@@ -17,7 +17,6 @@ namespace TTT.Items
 		}
 	}
 
-	[Hammer.Skip]
 	public abstract class TTTPerk : IItem
 	{
 		public string LibraryName { get; }
