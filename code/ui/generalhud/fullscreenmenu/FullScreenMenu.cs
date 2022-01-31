@@ -13,13 +13,14 @@ namespace TTT.UI
 		{
 			Instance = this;
 
+			StyleSheet.Load( "/ui/generalhud/fullscreenmenu/FullScreenMenu.scss" );
+
 			AddClass( "background-color-secondary" );
-			AddClass( "opacity-medium" );
 			AddClass( "fullscreen" );
 
 			this.Style.ZIndex = 2;
 
-			this.Enabled( false );
+			this.EnabledFade( false );
 		}
 
 		public void Open( Panel panel )
@@ -32,12 +33,12 @@ namespace TTT.UI
 			DeleteChildren( true );
 			ActivePanel = panel;
 			AddChild( panel );
-			this.Enabled( true );
+			this.EnabledFade( true );
 		}
 
 		public void Close()
 		{
-			this.Enabled( false );
+			this.EnabledFade( false );
 			DeleteChildren( true );
 			ActivePanel = null;
 		}

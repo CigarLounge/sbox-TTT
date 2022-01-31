@@ -73,6 +73,14 @@ Panel, .panel {
     pointer-events: none;
 }
 
+.fade-in {
+    opacity: 0.75;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
 .rounded {
     border-radius: 8px;
 }

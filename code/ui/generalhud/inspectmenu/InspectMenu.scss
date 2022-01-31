@@ -14,11 +14,6 @@ InspectMenu {
         align-items: center;
         justify-content: center;
         transition: transform 0.25s ease-out;
-        transform: scale(0.9);
-
-        &.pop-in {
-            transform: scale(1);
-        }
 
         .avatar-image {
             width: 80px;
