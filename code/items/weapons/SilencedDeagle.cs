@@ -18,7 +18,7 @@ namespace TTT.Items
 	{
 		public SilencedDeagle()
 		{
-			DroppedType = typeof( RevolverAmmo );
+			DroppedType = typeof( MagnumAmmo );
 
 			General = new WeaponInfo
 			{

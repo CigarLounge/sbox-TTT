@@ -31,7 +31,7 @@ namespace TTT.Items
 
 		public Deagle()
 		{
-			DroppedType = typeof( RevolverAmmo );
+			DroppedType = typeof( MagnumAmmo );
 
 			General = new WeaponInfo
 			{
