@@ -81,6 +81,11 @@ namespace TTT.UI
 
 				slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
 				slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
+
+				if ( slot.Carriable is TTTWeaponBase weapon && weapon.DroppedType != null )
+				{
+					slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
+				}
 			}
 
 			SortChildren( ( p1, p2 ) =>
