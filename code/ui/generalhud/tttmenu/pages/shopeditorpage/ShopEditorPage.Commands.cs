@@ -97,12 +97,10 @@ namespace TTT.UI
 
 			TTTRole role = Utils.GetObjectByType<TTTRole>( roleType );
 
-			if ( role == null || role.Shop == null )
+			if ( role == null )
 			{
 				return false;
 			}
-
-			role.Shop.Enabled = toggle;
 
 			if ( Host.IsServer )
 			{
