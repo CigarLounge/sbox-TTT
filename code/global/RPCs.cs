@@ -152,7 +152,7 @@ namespace TTT.Globals
 		[ClientRpc]
 		public static void ClientOpenMapSelectionMenu()
 		{
-			FullScreenHintMenu.Instance.ForceOpen( new MapSelectionMenu() );
+			FullScreenHintMenu.Instance?.ForceOpen( new MapSelectionMenu() );
 		}
 
 		[ClientRpc]
