@@ -17,8 +17,6 @@ namespace TTT.Player
 			set
 			{
 				_spectatingPlayer = value == this ? null : value;
-
-				Event.Run( TTTEvent.Player.Spectating.Change, this );
 			}
 		}
 

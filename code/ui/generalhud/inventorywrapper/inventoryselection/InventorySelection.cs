@@ -14,6 +14,8 @@ namespace TTT.UI
 {
 	public class InventorySelection : Panel
 	{
+		private readonly Dictionary<ICarriableItem, InventorySlot> _entries = new();
+
 		private readonly InputButton[] _slotInputButtons = new[]
 		{
 			InputButton.Slot0,
@@ -39,14 +41,6 @@ namespace TTT.UI
 			{
 				return;
 			}
-
-			foreach ( Entity entity in player.CurrentPlayer.Inventory.List )
-			{
-				if ( entity is ICarriableItem carriableItem )
-				{
-					OnCarriableItemPickup( carriableItem );
-				}
-			}
 		}
 
 		public override void Tick()
@@ -58,109 +52,56 @@ namespace TTT.UI
 				return;
 			}
 
+			foreach ( var item in player.CurrentPlayer.Inventory.List )
+			{
+				if ( item is ICarriableItem carriable )
+				{
+					if ( !_entries.ContainsKey( carriable ) )
+					{
+						_entries[carriable] = CarriableItemPickup( carriable );
+					}
+				}
+			}
+
 			ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
 
-			bool invalidSlot = false;
-
-			foreach ( Panel child in Children )
+			foreach ( var slot in _entries.Values )
 			{
-				if ( child is InventorySlot slot )
+				if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable as Entity ) )
 				{
-					if ( slot.Carriable == null )
-					{
-						invalidSlot = true;
-
-						break;
-					}
-
-					slot.SetClass( "rounded-top", child == Children.First() );
-					slot.SetClass( "rounded-bottom", child == Children.Last() );
-
-					slot.SlotLabel.SetClass( "rounded-top-left", child == Children.First() );
-					slot.SlotLabel.SetClass( "rounded-bottom-left", child == Children.Last() );
-
-					slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
-					slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
-
-					if ( slot.Carriable is SWB_Base.WeaponBase weapon && weapon is ICarriableItem carriable && carriable.SlotType != SlotType.Melee )
-					{
-						slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
-					}
+					_entries.Remove( slot.Carriable );
+					slot?.Delete();
 				}
+
+				slot.SetClass( "rounded-top", slot == Children.First() as InventorySlot );
+				slot.SetClass( "rounded-bottom", slot == Children.Last() as InventorySlot );
+
+				slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
+				slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
+
+				slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
+				slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
 			}
 
-			if ( invalidSlot )
-			{
-				OnSpectatingChange( player );
-			}
-		}
-
-		[Event( TTTEvent.Player.Inventory.Clear )]
-		private void OnCarriableItemClear()
-		{
-			DeleteChildren( true );
-		}
-
-		[Event( TTTEvent.Player.Inventory.PickUp )]
-		private void OnCarriableItemPickup( ICarriableItem carriable )
-		{
-			if ( carriable == null )
-			{
-				return;
-			}
-
-			foreach ( InventorySlot slot in Children )
-			{
-				if ( slot.Carriable == carriable )
-				{
-					return;
-				}
-			}
-
-			AddChild( new InventorySlot( this, carriable ) );
 			SortChildren( ( p1, p2 ) =>
-			 {
-				 InventorySlot s1 = p1 as InventorySlot;
-				 InventorySlot s2 = p2 as InventorySlot;
+			{
+				InventorySlot s1 = p1 as InventorySlot;
+				InventorySlot s2 = p2 as InventorySlot;
 
-				 int result = s1.Carriable.SlotType.CompareTo( s2.Carriable.SlotType );
-				 return result != 0
-					 ? result
-					 : string.Compare( s1.Carriable.LibraryTitle, s2.Carriable.LibraryTitle, StringComparison.Ordinal );
-			 } );
+				int result = s1.Carriable.SlotType.CompareTo( s2.Carriable.SlotType );
+				return result != 0
+					? result
+					: string.Compare( s1.Carriable.LibraryTitle, s2.Carriable.LibraryTitle, StringComparison.Ordinal );
+			} );
 
 			this.Enabled( Children.Any() );
 		}
 
-		[Event( TTTEvent.Player.Inventory.Drop )]
-		private void OnCarriableItemDrop( ICarriableItem carriable )
+		private InventorySlot CarriableItemPickup( ICarriableItem carriable )
 		{
-			foreach ( Panel child in Children )
-			{
-				if ( child is InventorySlot slot )
-				{
-					if ( slot.Carriable.LibraryTitle == carriable.LibraryTitle )
-					{
-						child.Delete();
-					}
-				}
-			}
-
-			this.Enabled( Children.Any() );
-		}
-
-		[Event( TTTEvent.Player.Spectating.Change )]
-		private void OnSpectatingChange( TTTPlayer player )
-		{
-			OnCarriableItemClear();
-
-			foreach ( Entity entity in player.Inventory.List )
-			{
-				if ( entity is ICarriableItem carriableItem )
-				{
-					OnCarriableItemPickup( carriableItem );
-				}
-			}
+			var inventorySlot = new InventorySlot( this, carriable );
+			AddChild( inventorySlot );
+			return inventorySlot;
 		}
 
 		/// <summary>
@@ -275,7 +216,6 @@ namespace TTT.UI
 			public ICarriableItem Carriable { get; init; }
 			public Label SlotLabel;
 			private readonly Label _ammoLabel;
-			private Label _carriableLabel;
 
 			public InventorySlot( Panel parent, ICarriableItem carriable ) : base( parent )
 			{
@@ -287,7 +227,7 @@ namespace TTT.UI
 				SlotLabel = Add.Label( ((int)carriable.SlotType).ToString() );
 				SlotLabel.AddClass( "slot-label" );
 
-				_carriableLabel = Add.Label( carriable.LibraryTitle );
+				Add.Label( carriable.LibraryTitle );
 
 				_ammoLabel = Add.Label();
 

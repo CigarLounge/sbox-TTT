@@ -156,24 +156,6 @@ namespace TTT.Globals
 		}
 
 		[ClientRpc]
-		public static void ClientOnPlayerCarriableItemPickup( Entity carriable )
-		{
-			Event.Run( TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem );
-		}
-
-		[ClientRpc]
-		public static void ClientOnPlayerCarriableItemDrop( Entity carriable )
-		{
-			Event.Run( TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem );
-		}
-
-		[ClientRpc]
-		public static void ClientClearInventory()
-		{
-			Event.Run( TTTEvent.Player.Inventory.Clear );
-		}
-
-		[ClientRpc]
 		public static void ClientDisplayMessage( string message, Color color )
 		{
 			InfoFeed.Current?.AddEntry( message, color );
