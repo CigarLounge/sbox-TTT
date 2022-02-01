@@ -1,31 +1,13 @@
-using System;
-
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Player;
 using TTT.UI;
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class PerkAttribute : ItemAttribute
+	public abstract class TTTPerk
 	{
-		public PerkAttribute() : base()
-		{
-
-		}
-	}
-
-	public abstract class TTTPerk : IItem
-	{
-		public string LibraryTitle { get; }
 		public Entity Owner { get; private set; }
-
-		protected TTTPerk()
-		{
-			LibraryTitle = Utils.GetLibraryTitle( GetType() );
-		}
 
 		public void Equip( TTTPlayer player )
 		{

@@ -7,15 +7,6 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class EquipmentAttribute : CarriableAttribute
-	{
-		public EquipmentAttribute() : base()
-		{
-
-		}
-	}
-
 	public abstract class TTTEquipment : BaseCarriable, ICarriableItem
 	{
 		public string LibraryTitle { get; }
@@ -25,15 +16,6 @@ namespace TTT.Items
 		protected TTTEquipment()
 		{
 			LibraryTitle = Utils.GetLibraryTitle( GetType() );
-
-			foreach ( object obj in GetType().GetCustomAttributes( false ) )
-			{
-				if ( obj is EquipmentAttribute equipmentAttribute )
-				{
-					SlotType = equipmentAttribute.SlotType;
-				}
-			}
-
 			EnableShadowInFirstPerson = false;
 		}
 

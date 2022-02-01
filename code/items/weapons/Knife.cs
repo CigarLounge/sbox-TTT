@@ -10,13 +10,15 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_knife", Title = "Knife" )]
-	[Weapon( SlotType = SlotType.Melee )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
-	public class Knife : TTTWeaponBaseMelee
+	public class Knife : WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "Knife";
+		public SlotType SlotType => SlotType.Melee;
+
 		public override int Bucket => 0;
 		public override HoldType HoldType => HoldType.Fists; // just use fists for now
 		public override string HandsModelPath => "weapons/swb/hands/swat/v_hands_swat.vmdl";
@@ -132,13 +134,18 @@ namespace TTT.Items
 			knife.StartVelocity = MathUtil.RelativeAdd( Vector3.Zero, _entityVelocity, Owner.EyeRot );
 			knife.Start();
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 
 	public class ThrownKnife : FiredEntity, IEntityHint
 	{
 		public float HintDistance => 80f;
 
-		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( "Knife" );
+		public string TextOnTick => WeaponGenerics.PickupText( "Knife" );
 
 		public bool CanHint( TTTPlayer client )
 		{

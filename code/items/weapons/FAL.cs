@@ -1,20 +1,24 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_fal", Title = "FAL" )]
-	[Weapon( SlotType = SlotType.Primary )]
 	[Spawnable]
 	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/rifles/fal/v_fal.vmdl", "weapons/swb/rifles/fal/w_fal.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/rifles/fal/w_fal.vmdl" )]
-	public class FAL : TTTWeaponBase
+	public class FAL : WeaponBase, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "FAL";
+		public SlotType SlotType => SlotType.Primary;
+		public Type DroppedType => typeof( RifleAmmo );
+
 		public override int Bucket => 3;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -32,8 +36,6 @@ namespace TTT.Items
 
 		public FAL()
 		{
-			DroppedType = typeof( RifleAmmo );
-
 			General = new WeaponInfo
 			{
 				DrawTime = 1f,
@@ -89,5 +91,10 @@ namespace TTT.Items
 				Pos = new Vector3( 11.22f, -4.96f, 1.078f )
 			};
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

@@ -1,21 +1,24 @@
 using System;
-using System.Collections.Generic;
-
 using Sandbox;
 
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_spas12", Title = "SPAS12" )]
-	[Weapon( SlotType = SlotType.Primary )]
 	[Spawnable]
 	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/shotguns/spas/v_spas12.vmdl", "weapons/swb/shotguns/spas/w_spas12.vmdl",
 	"particles/swb/muzzle/flash_medium.vpcf", "particles/swb/tracer/tracer_medium.vpcf", "particles/pistol_ejectbrass.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/shotguns/spas/w_spas12.vmdl" )]
-	public class SPAS12 : TTTWeaponBaseShotty
+	public class SPAS12 : WeaponBaseShotty, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "SPAS12";
+		public SlotType SlotType => SlotType.Primary;
+		public Type DroppedType => typeof( ShotgunAmmo );
+
 		public override int Bucket => 2;
 		public override HoldType HoldType => HoldType.Shotgun;
 		public override string HandsModelPath => "weapons/swb/hands/swat/v_hands_swat.vmdl";
@@ -32,8 +35,6 @@ namespace TTT.Items
 
 		public SPAS12()
 		{
-			DroppedType = typeof( ShotgunAmmo );
-
 			Primary = new ClipInfo
 			{
 				Ammo = 8,
@@ -83,5 +84,10 @@ namespace TTT.Items
 				Pos = new Vector3( 11.22f, -4.96f, 1.078f )
 			};
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

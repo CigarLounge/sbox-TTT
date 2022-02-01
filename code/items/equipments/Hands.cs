@@ -17,7 +17,6 @@ namespace TTT.Items
 	}
 
 	[Library( "ttt_equipment_hands", Title = "Hands" )]
-	[Equipment( SlotType = SlotType.UtilityEquipment )]
 	[Precached( "particles/rope.vpcf" )]
 	[Hammer.Skip]
 	partial class Hands : TTTEquipment

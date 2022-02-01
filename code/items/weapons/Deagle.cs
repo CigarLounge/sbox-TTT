@@ -1,20 +1,24 @@
 using System;
-using System.Collections.Generic;
 
 using Sandbox;
 
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_deagle", Title = "Deagle" )]
-	[Weapon( SlotType = SlotType.Secondary )]
 	[Spawnable]
 	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
-	public class Deagle : TTTWeaponBase
+	public class Deagle : WeaponBase, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "Deagle";
+		public SlotType SlotType => SlotType.Secondary;
+		public Type DroppedType => typeof( RevolverAmmo );
+
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Pistol;
 		public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -31,8 +35,6 @@ namespace TTT.Items
 
 		public Deagle()
 		{
-			DroppedType = typeof( RevolverAmmo );
-
 			General = new WeaponInfo
 			{
 				DrawTime = 1f,
@@ -88,6 +90,11 @@ namespace TTT.Items
 				Pos = new Vector3( 10.4f, -16.2f, 2.6f )
 			};
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }
 

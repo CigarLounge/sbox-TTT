@@ -5,7 +5,6 @@ using TTT.Player;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_deathstation", Title = "Death Station" )]
-	[Equipment( SlotType = SlotType.UtilityEquipment )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
 	public partial class DeathStation : TTTEquipment

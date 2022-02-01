@@ -36,13 +36,9 @@ namespace TTT.Items
 		public Type Type = null;
 		public bool IsLimited { get; set; } = true;
 
-		public ShopItemData( string name )
-		{
-			Name = name;
-		}
-
 		public void CopyFrom( ShopItemData shopItemData )
 		{
+			Name = shopItemData.Name;
 			Price = shopItemData.Price;
 			Description = shopItemData.Description ?? Description;
 			SlotType = shopItemData.SlotType ?? SlotType;
@@ -52,40 +48,29 @@ namespace TTT.Items
 
 		public ShopItemData Clone()
 		{
-			ShopItemData shopItemData = new( Name );
+			ShopItemData shopItemData = new();
 			shopItemData.CopyFrom( this );
-
 			return shopItemData;
 		}
 
 		public static ShopItemData CreateItemData( Type type )
 		{
-			LibraryAttribute attribute = Library.GetAttribute( type );
-			bool buyable = false;
-
-			ShopItemData shopItemData = new( attribute.Title )
+			var isBuyable = Utils.GetAttribute<BuyableAttribute>( type );
+			if ( isBuyable == null )
 			{
+				return null;
+			}
+
+			ShopItemData shopItemData = new()
+			{
+				Name = Utils.GetLibraryTitle( type ),
 				Type = type
 			};
 
-			foreach ( object obj in type.GetCustomAttributes( false ) )
+			var carriable = Utils.GetObjectByType<ICarriableItem>( type );
+			if ( carriable != null )
 			{
-				if ( obj is BuyableAttribute buyableAttribute )
-				{
-					shopItemData.Price = buyableAttribute.Price;
-					buyable = true;
-				}
-				else if ( obj is CarriableAttribute carriableAttribute )
-				{
-					shopItemData.SlotType = carriableAttribute.SlotType;
-				}
-			}
-
-			if ( !buyable )
-			{
-				Log.Warning( $"'{type}' is missing the 'BuyableAttribute'" );
-
-				return null;
+				shopItemData.SlotType = carriable.SlotType;
 			}
 
 			return shopItemData;

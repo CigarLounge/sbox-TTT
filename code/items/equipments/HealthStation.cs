@@ -7,7 +7,6 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
-	[Equipment( SlotType = SlotType.UtilityEquipment )]
 	[Shops( new Type[] { typeof( DetectiveRole ) } )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]

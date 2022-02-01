@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globals;
-
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_random" )]

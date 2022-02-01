@@ -6,17 +6,7 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class WeaponAttribute : CarriableAttribute
-	{
-
-		public WeaponAttribute() : base()
-		{
-
-		}
-	}
-
-	public static partial class TTTWeaponBaseGeneric
+	public static partial class WeaponGenerics
 	{
 		private const int AMMO_DROP_POSITION_OFFSET = 50;
 		private const int AMMO_DROP_VELOCITY = 500;

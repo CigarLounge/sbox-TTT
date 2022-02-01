@@ -1,21 +1,24 @@
 using System;
-using System.Collections.Generic;
-
 using Sandbox;
 
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_l96a1", Title = "L96A1" )]
-	[Weapon( SlotType = SlotType.Primary )]
 	[Spawnable]
 	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/snipers/l96a1/v_l96a1.vmdl", "weapons/swb/snipers/l96a1/w_l96a1.vmdl",
 	"particles/swb/muzzle/flash_large.vpcf", "particles/swb/tracer/tracer_large.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" )]
-	public class L96A1 : TTTWeaponBaseSniper
+	public class L96A1 : WeaponBaseSniper, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "L96A1";
+		public SlotType SlotType => SlotType.Primary;
+		public Type DroppedType => typeof( SniperAmmo );
+
 		public override int Bucket => 5;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
@@ -40,13 +43,6 @@ namespace TTT.Items
 
 		public L96A1()
 		{
-			DroppedType = typeof( SniperAmmo );
-
-			UISettings = new UISettings
-			{
-				ShowCrosshair = false
-			};
-
 			General = new WeaponInfo
 			{
 				DrawTime = 0.5f,
@@ -105,5 +101,10 @@ namespace TTT.Items
 				Pos = new Vector3( 11.22f, -4.96f, 1.078f )
 			};
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

@@ -4,17 +4,22 @@ using System.Collections.Generic;
 using Sandbox;
 
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_rpg", Title = "RPG" )]
-	[Weapon( SlotType = SlotType.Primary )]
 	[Buyable( Price = 300 )]
 	[Precached( "weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl"
 	, "particles/swb/smoke/swb_smokepuff_1.vpcf", "particles/swb/smoke/swb_smoketrail_1.vpcf", "particles/swb/fire/swb_fire_rocket_1.vpcf", "weapons/swb/explosives/rpg-7/temp_particles/grenade_he_explosion.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" )]
-	public class RPG : TTTWeaponBaseEntity
+	public class RPG : WeaponBaseEntity, ICarriableItem, IEntityHint
 	{
+		public string LibraryTitle => "RPG";
+		public SlotType SlotType => SlotType.Primary;
+		public Type DroppedType => typeof( RPGAmmo );
+
 		public override int Bucket => 4;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string ViewModelPath => "weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl";
@@ -35,13 +40,6 @@ namespace TTT.Items
 
 		public RPG()
 		{
-			DroppedType = typeof( RPGAmmo );
-
-			UISettings = new UISettings
-			{
-				ShowFireMode = false,
-			};
-
 			General = new WeaponInfo
 			{
 				ReloadTime = 4f,
@@ -125,5 +123,10 @@ namespace TTT.Items
 
 			return rocket;
 		}
+
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }
