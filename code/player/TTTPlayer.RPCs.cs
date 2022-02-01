@@ -28,15 +28,8 @@ namespace TTT.Player
 		}
 
 		[ClientRpc]
-		public void ClientAddPerk( string perkName )
+		public void ClientAddPerk( IItem perk )
 		{
-			TTTPerk perk = Utils.GetObjectByType<TTTPerk>( Utils.GetTypeByLibraryTitle<TTTPerk>( perkName ) );
-
-			if ( perk == null )
-			{
-				return;
-			}
-
 			Inventory.TryAdd( perk, deleteIfFails: true, makeActive: false );
 		}
 
