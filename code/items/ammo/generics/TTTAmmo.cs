@@ -12,7 +12,7 @@ namespace TTT.Items
 		/// <summary>
 		/// The library name of the ammo.
 		/// </summary>
-		public string LibraryName { get; set; }
+		public string LibraryTitle { get; set; }
 
 		/// <summary>
 		/// The ammo type to use.
@@ -42,7 +42,7 @@ namespace TTT.Items
 
 		public TTTAmmo() : base()
 		{
-			LibraryName = Utils.GetLibraryName( GetType() );
+			LibraryTitle = Utils.GetLibraryTitle( GetType() );
 		}
 
 		public override void Spawn()
@@ -83,7 +83,7 @@ namespace TTT.Items
 		public float HintDistance => 80f;
 
 
-		public string TextOnTick => $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryName}";
+		public string TextOnTick => $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryTitle}";
 
 		public bool CanHint( TTTPlayer client )
 		{

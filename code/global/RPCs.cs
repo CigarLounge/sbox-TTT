@@ -53,7 +53,7 @@ namespace TTT.Globals
 				return;
 			}
 
-			player.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryName<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
+			player.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
 
 			Client client = player.Client;
 
@@ -74,7 +74,7 @@ namespace TTT.Globals
 				return;
 			}
 
-			deadPlayer.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryName<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
+			deadPlayer.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
 
 			deadPlayer.IsConfirmed = true;
 			deadPlayer.CorpseConfirmer = confirmPlayer;

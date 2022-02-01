@@ -11,7 +11,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "Radar" )]
+	[Library( "ttt_equipment_radar", Title = "Radar" )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( DetectiveRole ), typeof( TraitorRole ) } )]
 	[Hammer.Skip]

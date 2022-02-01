@@ -63,7 +63,7 @@ namespace TTT.Items
 			LibraryAttribute attribute = Library.GetAttribute( type );
 			bool buyable = false;
 
-			ShopItemData shopItemData = new( attribute.Name )
+			ShopItemData shopItemData = new( attribute.Title )
 			{
 				Type = type
 			};

@@ -19,7 +19,7 @@ namespace TTT.Items
 	{
 		static string ITEM_TAG => "TTT_ITEM";
 
-		string LibraryName { get; }
+		string LibraryTitle { get; }
 
 		Entity Owner { get; }
 

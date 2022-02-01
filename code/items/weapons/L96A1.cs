@@ -7,7 +7,7 @@ using SWB_Base;
 
 namespace TTT.Items
 {
-	[Library( "L96A1" )]
+	[Library( "ttt_weapon_l96a1", Title = "L96A1" )]
 	[Weapon( SlotType = SlotType.Primary )]
 	[Spawnable]
 	[Buyable( Price = 100 )]

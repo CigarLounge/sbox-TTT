@@ -108,7 +108,7 @@ namespace TTT.Player
 			}
 
 			IEnumerable<TTTLogicButton> logicButtons = All.Where( x => x is TTTLogicButton ).Select( x => x as TTTLogicButton );
-			IEnumerable<TTTLogicButton> applicableButtons = logicButtons.Where( x => x.CheckValue.Equals( Teams.TeamFunctions.GetTeam( typeof( Teams.TraitorTeam ) ) ) || x.CheckValue.Equals( Utils.GetLibraryName( typeof( TraitorRole ) ) ) );
+			IEnumerable<TTTLogicButton> applicableButtons = logicButtons.Where( x => x.CheckValue.Equals( Teams.TeamFunctions.GetTeam( typeof( Teams.TraitorTeam ) ) ) || x.CheckValue.Equals( Utils.GetLibraryTitle( typeof( TraitorRole ) ) ) );
 
 			player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
 		}

@@ -7,7 +7,7 @@ using SWB_Base;
 
 namespace TTT.Items
 {
-	[Library( "RPG" )]
+	[Library( "ttt_weapon_rpg", Title = "RPG" )]
 	[Weapon( SlotType = SlotType.Primary )]
 	[Buyable( Price = 300 )]
 	[Precached( "weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl"

@@ -18,13 +18,13 @@ namespace TTT.Items
 
 	public abstract class TTTEquipment : BaseCarriable, ICarriableItem
 	{
-		public string LibraryName { get; }
+		public string LibraryTitle { get; }
 		public SlotType SlotType { get; } = SlotType.UtilityEquipment;
 		public Type DroppedType { get; set; } = null;
 
 		protected TTTEquipment()
 		{
-			LibraryName = Utils.GetLibraryName( GetType() );
+			LibraryTitle = Utils.GetLibraryTitle( GetType() );
 
 			foreach ( object obj in GetType().GetCustomAttributes( false ) )
 			{

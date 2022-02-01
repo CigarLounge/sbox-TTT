@@ -9,7 +9,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "Knife" )]
+	[Library( "ttt_weapon_knife", Title = "Knife" )]
 	[Weapon( SlotType = SlotType.Melee )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( TraitorRole ) } )]

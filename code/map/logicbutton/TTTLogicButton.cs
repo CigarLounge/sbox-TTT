@@ -18,7 +18,7 @@ namespace TTT.Map
 				_checkValue = value?.ToLower();
 			}
 		}
-		private string _checkValue = Utils.GetLibraryName( typeof( TraitorTeam ) );
+		private string _checkValue = Utils.GetLibraryTitle( typeof( TraitorTeam ) );
 
 		[Property( "Description", "On screen tooltip shown on button" )]
 		[Net]

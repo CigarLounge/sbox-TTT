@@ -49,7 +49,7 @@ namespace TTT.Roles
 
 		public TTTRole()
 		{
-			Name = Utils.GetLibraryName( GetType() );
+			Name = Utils.GetLibraryTitle( GetType() );
 		}
 
 		public virtual void OnSelect( TTTPlayer player )

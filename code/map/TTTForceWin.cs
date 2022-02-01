@@ -18,7 +18,7 @@ namespace TTT.Map
 				_team = value?.ToLower();
 			}
 		}
-		private string _team = Utils.GetLibraryName( typeof( InnocentTeam ) );
+		private string _team = Utils.GetLibraryTitle( typeof( InnocentTeam ) );
 
 		[Property( "Use Activators Team", "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player." )]
 		public bool UseActivatorsTeam { get; set; } = false;

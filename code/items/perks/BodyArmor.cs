@@ -4,7 +4,7 @@ using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "Body Armor" )]
+	[Library( "ttt_perk_bodyarmor", Title = "Body Armor" )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]

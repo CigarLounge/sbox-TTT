@@ -42,7 +42,7 @@ namespace TTT.Player
 				foreach ( Type type in itemList )
 				{
 					bool found = false;
-					string availableItemName = Utils.GetLibraryName( type );
+					string availableItemName = Utils.GetLibraryTitle( type );
 
 					foreach ( string loadedItemName in loadedItems )
 					{
@@ -79,7 +79,7 @@ namespace TTT.Player
 
 			foreach ( Type type in itemList )
 			{
-				availableItems.Add( Utils.GetLibraryName( type ) );
+				availableItems.Add( Utils.GetLibraryTitle( type ) );
 			}
 
 			Utils.CreateRecursiveDirectories( fileName );

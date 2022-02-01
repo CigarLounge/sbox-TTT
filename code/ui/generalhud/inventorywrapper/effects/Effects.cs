@@ -38,7 +38,7 @@ namespace TTT.UI
 		{
 			foreach ( Effect effect in _effectList )
 			{
-				if ( effect.Item.LibraryName == perk.LibraryName )
+				if ( effect.Item.LibraryTitle == perk.LibraryTitle )
 				{
 					_effectList.Remove( effect );
 					effect.Delete();
