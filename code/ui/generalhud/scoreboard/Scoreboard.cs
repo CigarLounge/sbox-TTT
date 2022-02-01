@@ -79,12 +79,6 @@ namespace TTT.UI
 			}
 		}
 
-		[Event( TTTEvent.Player.Spawned )]
-		private void OnPlayerSpawned( TTTPlayer player )
-		{
-			UpdateClient( player.Client );
-		}
-
 		public ScoreboardEntry AddClient( Client client )
 		{
 			ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
@@ -163,10 +157,8 @@ namespace TTT.UI
 			// https://github.com/Facepunch/sbox-issues/issues/1324
 			foreach ( var client in Client.All.Except( _entries.Keys ) )
 			{
-				var entry = AddClient( client );
-				_entries[client] = entry;
+				AddClient( client );
 				UpdateClient( client );
-				UpdateScoreboardGroups();
 			}
 
 			foreach ( var client in _entries.Keys.Except( Client.All ) )
@@ -174,8 +166,7 @@ namespace TTT.UI
 				if ( _entries.TryGetValue( client, out var row ) )
 				{
 					row?.Delete();
-					UpdateScoreboardGroups();
-					_entries.Remove( client );
+					RemoveClient( client );
 				}
 			}
 
@@ -191,9 +182,9 @@ namespace TTT.UI
 				else if ( isForcedSpectator != newIsForcedSpectator )
 				{
 					_forcedSpecList[client] = newIsForcedSpectator;
-
-					UpdateClient( client );
 				}
+
+				UpdateClient( client );
 			}
 		}
 
@@ -204,7 +195,7 @@ namespace TTT.UI
 				return _scoreboardGroups[groupName];
 			}
 
-			ScoreboardGroup scoreboardGroup = new ScoreboardGroup( _scoreboardContent, groupName );
+			ScoreboardGroup scoreboardGroup = new( _scoreboardContent, groupName );
 			scoreboardGroup.UpdateLabel();
 
 			_scoreboardGroups.Add( groupName, scoreboardGroup );

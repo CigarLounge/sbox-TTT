@@ -107,7 +107,8 @@ namespace TTT.Globals
 
 			InfoFeed.Current?.AddEntry(
 				confirmClient,
-				deadClient,
+				playerCorpse.DeadPlayerClientData.Name,
+				deadPlayer.Role.Color,
 				"found the body of",
 				$"({deadPlayer.Role.Name})"
 			);
