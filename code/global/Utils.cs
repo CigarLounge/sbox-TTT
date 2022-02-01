@@ -81,11 +81,11 @@ namespace TTT.Globals
 		/// </summary>
 		/// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
 		/// <returns>Derived `Type` of given type</returns>
-		public static Type GetTypeByLibraryName<T>( string name )
+		public static Type GetTypeByLibraryTitle<T>( string name )
 		{
 			foreach ( Type type in GetTypes<T>() )
 			{
-				if ( GetLibraryName( type ).Equals( name ) )
+				if ( GetLibraryTitle( type ).Equals( name ) )
 				{
 					return type;
 				}
@@ -106,7 +106,7 @@ namespace TTT.Globals
 		/// </summary>
 		/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
 		/// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-		public static string GetLibraryName( Type type ) => Library.GetAttribute( type ).Name;
+		public static string GetLibraryTitle( Type type ) => Library.GetAttribute( type ).Title;
 
 		public static T GetAttribute<T>( Type type ) where T : Attribute
 		{

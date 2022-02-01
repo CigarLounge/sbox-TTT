@@ -47,7 +47,7 @@ namespace TTT.Player
 
 				foreach ( ShopItemData shopItemData in shop.Items )
 				{
-					Type itemType = Utils.GetTypeByLibraryName<IItem>( shopItemData.Name );
+					Type itemType = Utils.GetTypeByLibraryTitle<IItem>( shopItemData.Name );
 
 					if ( itemType == null || !Utils.HasAttribute<BuyableAttribute>( itemType ) )
 					{
@@ -140,13 +140,13 @@ namespace TTT.Player
 
 			foreach ( ShopItemData shopItemData in Items )
 			{
-				storedItemList.Add( Utils.GetLibraryName( shopItemData.Type ) );
+				storedItemList.Add( Utils.GetLibraryTitle( shopItemData.Type ) );
 			}
 
 			foreach ( Type type in newItemsList )
 			{
 				bool found = false;
-				string newItemName = Utils.GetLibraryName( type );
+				string newItemName = Utils.GetLibraryTitle( type );
 
 				foreach ( string storedItemName in storedItemList )
 				{

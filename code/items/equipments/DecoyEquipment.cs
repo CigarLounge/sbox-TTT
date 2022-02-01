@@ -1,13 +1,15 @@
+using System;
 using Sandbox;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.Items
 {
 	/// <summary>
 	/// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
 	/// </summary>
-	[Library( "Decoy" )]
+	[Library( "ttt_equipment_decoy", Title = "Decoy" )]
 	[Weapon( SlotType = SlotType.UtilityEquipment )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]

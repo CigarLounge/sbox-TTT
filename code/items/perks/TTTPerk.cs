@@ -19,12 +19,12 @@ namespace TTT.Items
 
 	public abstract class TTTPerk : IItem
 	{
-		public string LibraryName { get; }
+		public string LibraryTitle { get; }
 		public Entity Owner { get; private set; }
 
 		protected TTTPerk()
 		{
-			LibraryName = Utils.GetLibraryName( GetType() );
+			LibraryTitle = Utils.GetLibraryTitle( GetType() );
 		}
 
 		public void Equip( TTTPlayer player )

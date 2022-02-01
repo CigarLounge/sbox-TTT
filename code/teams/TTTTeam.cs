@@ -30,7 +30,7 @@ namespace TTT.Teams
 
 		public TTTTeam()
 		{
-			Name = Utils.GetLibraryName( GetType() );
+			Name = Utils.GetLibraryTitle( GetType() );
 
 			Teams[Name] = this;
 		}
@@ -62,7 +62,7 @@ namespace TTT.Teams
 
 			if ( !TTTTeam.Teams.TryGetValue( teamname, out TTTTeam team ) )
 			{
-				team = Utils.GetObjectByType<TTTTeam>( Utils.GetTypeByLibraryName<TTTTeam>( teamname ) );
+				team = Utils.GetObjectByType<TTTTeam>( Utils.GetTypeByLibraryTitle<TTTTeam>( teamname ) );
 			}
 
 			return team;

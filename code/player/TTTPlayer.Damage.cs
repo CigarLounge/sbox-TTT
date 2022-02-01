@@ -71,7 +71,7 @@ namespace TTT.Player
 				info.Damage *= 2.0f;
 			}
 
-			if ( Inventory.Perks.Has( Utils.GetLibraryName( typeof( BodyArmor ) ) ) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
+			if ( Inventory.Perks.Has( Utils.GetLibraryTitle( typeof( BodyArmor ) ) ) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 			{
 				info.Damage *= ArmorReductionPercentage;
 			}

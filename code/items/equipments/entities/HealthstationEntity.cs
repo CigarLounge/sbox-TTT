@@ -7,7 +7,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "Health Station" )]
+	[Library( "ttt_equipment_healthstation_ent", Title = "Health Station" )]
 	[Precached( "models/health_station/health_station.vmdl" )]
 	public partial class HealthstationEntity : Prop, IEntityHint
 	{

@@ -30,7 +30,7 @@ namespace TTT.UI
 
 			if ( ProcessItemUpdate( itemName, toggle, shopItemDataJson, roleName, out _ ) )
 			{
-				Shop.Save( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryName<TTTRole>( roleName ) ) );
+				Shop.Save( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ) );
 
 				ClientUpdateItem( itemName, toggle, shopItemDataJson, roleName );
 			}
@@ -40,7 +40,7 @@ namespace TTT.UI
 		{
 			shopItemData = null;
 
-			Type roleType = Utils.GetTypeByLibraryName<TTTRole>( roleName );
+			Type roleType = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
 
 			if ( roleType == null )
 			{
@@ -63,7 +63,7 @@ namespace TTT.UI
 					return false;
 				}
 
-				Type itemType = Utils.GetTypeByLibraryName<IItem>( itemName );
+				Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
 
 				if ( itemType == null )
 				{

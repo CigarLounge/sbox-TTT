@@ -97,7 +97,7 @@ namespace TTT.Player
 				return;
 			}
 
-			Type itemType = Utils.GetTypeByLibraryName<IItem>( itemName );
+			Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
 
 			if ( itemType == null || !Utils.HasAttribute<BuyableAttribute>( itemType ) )
 			{
@@ -129,7 +129,7 @@ namespace TTT.Player
 				return;
 			}
 
-			Type type = Utils.GetTypeByLibraryName<TTTRole>( roleName );
+			Type type = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
 
 			if ( type == null )
 			{

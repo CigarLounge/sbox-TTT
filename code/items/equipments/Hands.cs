@@ -16,7 +16,7 @@ namespace TTT.Items
 		void SecondaryAction();
 	}
 
-	[Library( "Hands" )]
+	[Library( "ttt_equipment_hands", Title = "Hands" )]
 	[Equipment( SlotType = SlotType.UtilityEquipment )]
 	[Precached( "particles/rope.vpcf" )]
 	[Hammer.Skip]

@@ -8,7 +8,7 @@ using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "Disguiser" )]
+	[Library( "ttt_equipment_disguiser", Title = "Disguiser" )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]

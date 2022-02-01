@@ -151,7 +151,7 @@ namespace TTT.Player
 	}
 
 	[Hammer.Skip]
-	[Library( "Flashlight" )]
+	[Library( "ttt_flashlight", Title = "Flashlight" )]
 	public partial class Flashlight : SpotLightEntity
 	{
 		public Flashlight() : base()

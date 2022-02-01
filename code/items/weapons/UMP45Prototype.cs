@@ -7,7 +7,7 @@ using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "UMP45 Prototype" )]
+	[Library( "ttt_weapon_ump45prototype", Title = "UMP45 Prototype" )]
 	[Weapon( SlotType = SlotType.Primary )]
 	[Buyable( Price = 100 )]
 	[Shops( new Type[] { typeof( DetectiveRole ) } )]

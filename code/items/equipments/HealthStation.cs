@@ -1,11 +1,14 @@
+using System;
 using Sandbox;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "Health Station" )]
+	[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
 	[Equipment( SlotType = SlotType.UtilityEquipment )]
+	[Shops( new Type[] { typeof( DetectiveRole ) } )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
 	public partial class HealthStation : TTTEquipment

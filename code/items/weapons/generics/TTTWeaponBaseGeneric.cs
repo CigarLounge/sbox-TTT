@@ -39,9 +39,9 @@ namespace TTT.Items
 			}
 		}
 
-		public static string PickupText( string LibraryName )
+		public static string PickupText( string LibraryTitle )
 		{
-			return $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryName}";
+			return $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryTitle}";
 		}
 
 		public static void Tick( TTTPlayer player, ICarriableItem item )

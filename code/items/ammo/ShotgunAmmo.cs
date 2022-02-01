@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT.Items
 {
-	[Library( "Shotgun Ammo" )]
+	[Library( "ttt_ammo_shotgun", Title = "Shotgun Ammo" )]
 	[Spawnable]
 	[Hammer.EditorModel( "models/ammo/ammo_buckshot.vmdl" )]
 	partial class ShotgunAmmo : TTTAmmo

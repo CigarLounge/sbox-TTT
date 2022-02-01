@@ -79,8 +79,8 @@ namespace TTT.UI
 					slot.SlotLabel.SetClass( "rounded-top-left", child == Children.First() );
 					slot.SlotLabel.SetClass( "rounded-bottom-left", child == Children.Last() );
 
-					slot.SetClass( "active", slot.Carriable.LibraryName == activeItem?.LibraryName );
-					slot.SetClass( "opacity-heavy", slot.Carriable.LibraryName == activeItem?.LibraryName );
+					slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
+					slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
 
 					if ( slot.Carriable is SWB_Base.WeaponBase weapon && weapon is ICarriableItem carriable && carriable.SlotType != SlotType.Melee )
 					{
@@ -126,7 +126,7 @@ namespace TTT.UI
 				 int result = s1.Carriable.SlotType.CompareTo( s2.Carriable.SlotType );
 				 return result != 0
 					 ? result
-					 : string.Compare( s1.Carriable.LibraryName, s2.Carriable.LibraryName, StringComparison.Ordinal );
+					 : string.Compare( s1.Carriable.LibraryTitle, s2.Carriable.LibraryTitle, StringComparison.Ordinal );
 			 } );
 
 			this.Enabled( Children.Any() );
@@ -139,7 +139,7 @@ namespace TTT.UI
 			{
 				if ( child is InventorySlot slot )
 				{
-					if ( slot.Carriable.LibraryName == carriable.LibraryName )
+					if ( slot.Carriable.LibraryTitle == carriable.LibraryTitle )
 					{
 						child.Delete();
 					}
@@ -201,7 +201,7 @@ namespace TTT.UI
 							// Ex. "3" pressed, find all carriables with slot type "3".
 							weaponsOfSlotTypeSelected.Add( slot.Carriable );
 
-							if ( slot.Carriable.LibraryName == activeCarriable?.LibraryName )
+							if ( slot.Carriable.LibraryTitle == activeCarriable?.LibraryTitle )
 							{
 								// If the current active carriable has the same slot type as
 								// the keyboard index the user pressed
@@ -229,7 +229,7 @@ namespace TTT.UI
 			if ( mouseWheelIndex != 0 )
 			{
 				int activeCarriableIndex = childrenList.FindIndex( ( p ) =>
-					 p is InventorySlot slot && slot.Carriable.LibraryName == activeCarriable?.LibraryName );
+					 p is InventorySlot slot && slot.Carriable.LibraryTitle == activeCarriable?.LibraryTitle );
 
 				int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
 				input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -287,7 +287,7 @@ namespace TTT.UI
 				SlotLabel = Add.Label( ((int)carriable.SlotType).ToString() );
 				SlotLabel.AddClass( "slot-label" );
 
-				_carriableLabel = Add.Label( carriable.LibraryName );
+				_carriableLabel = Add.Label( carriable.LibraryTitle );
 
 				_ammoLabel = Add.Label();
 

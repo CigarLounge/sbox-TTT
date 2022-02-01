@@ -7,7 +7,7 @@ using TTT.Globals;
 
 namespace TTT.Items
 {
-	[Library( "entity_weapon_random" )]
+	[Library( "ttt_weapon_random" )]
 	public class TTTWeaponRandom : Entity
 	{
 		private static readonly int AMMO_DISTANCE_UP = 24;
@@ -41,7 +41,7 @@ namespace TTT.Items
 
 			if ( !carriable.DroppedType.IsSubclassOf( typeof( TTTAmmo ) ) )
 			{
-				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.LibraryName} is not a descendant of {typeof( TTTAmmo ).Name}." );
+				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.LibraryTitle} is not a descendant of {typeof( TTTAmmo ).Name}." );
 				return;
 			}
 

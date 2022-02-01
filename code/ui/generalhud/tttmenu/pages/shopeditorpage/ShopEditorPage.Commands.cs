@@ -41,7 +41,7 @@ namespace TTT.UI
 		[ClientRpc]
 		public static void ClientUpdateRoleShop( string roleName, string shopJson )
 		{
-			Type roleType = Utils.GetTypeByLibraryName<TTTRole>( roleName );
+			Type roleType = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
 
 			if ( roleType == null )
 			{
@@ -74,7 +74,7 @@ namespace TTT.UI
 
 			if ( ProcessShopToggle( roleName, toggle ) )
 			{
-				Shop.Save( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryName<TTTRole>( roleName ) ) );
+				Shop.Save( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ) );
 
 				ClientToggleShop( roleName, toggle );
 			}
@@ -88,7 +88,7 @@ namespace TTT.UI
 
 		private static bool ProcessShopToggle( string roleName, bool toggle )
 		{
-			Type roleType = Utils.GetTypeByLibraryName<TTTRole>( roleName );
+			Type roleType = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
 
 			if ( roleType == null )
 			{

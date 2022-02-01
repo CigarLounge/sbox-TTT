@@ -9,13 +9,13 @@ namespace TTT.Items
 {
 	public partial class TTTWeaponBaseMelee : SWB_Base.WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
-		public string LibraryName { get; }
+		public string LibraryTitle { get; }
 		public SlotType SlotType { get; } = SlotType.Secondary;
 		public Type DroppedType { get; set; } = null;
 
 		public TTTWeaponBaseMelee() : base()
 		{
-			LibraryName = Utils.GetLibraryName( GetType() );
+			LibraryTitle = Utils.GetLibraryTitle( GetType() );
 
 			foreach ( object obj in GetType().GetCustomAttributes( false ) )
 			{
@@ -61,7 +61,7 @@ namespace TTT.Items
 
 		public float HintDistance => 80f;
 
-		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( LibraryName );
+		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( LibraryTitle );
 
 		public bool CanHint( TTTPlayer client )
 		{
