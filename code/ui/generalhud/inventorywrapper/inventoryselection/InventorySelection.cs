@@ -82,7 +82,7 @@ namespace TTT.UI
 				slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
 				slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
 
-				if ( slot.Carriable is TTTWeaponBase weapon && weapon.DroppedType != null )
+				if ( slot.Carriable.SlotType != SlotType.Melee && slot.Carriable is SWB_Base.WeaponBase weapon )
 				{
 					slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
 				}
@@ -238,7 +238,7 @@ namespace TTT.UI
 
 				if ( Local.Pawn is TTTPlayer player )
 				{
-					if ( carriable is SWB_Base.WeaponBase weapon && carriable.SlotType != SlotType.Melee )
+					if ( carriable.SlotType != SlotType.Melee && carriable is SWB_Base.WeaponBase weapon )
 					{
 						_ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Primary.AmmoType ) );
 						_ammoLabel.AddClass( "ammo-label" );
