@@ -106,6 +106,11 @@ namespace TTT.UI
 		{
 			ShopItemData storedItem = null;
 
+			if ( shop == null )
+			{
+				return;
+			}
+
 			foreach ( ShopItemData loopItem in shop.Items )
 			{
 				if ( loopItem.Name.Equals( itemName ) )

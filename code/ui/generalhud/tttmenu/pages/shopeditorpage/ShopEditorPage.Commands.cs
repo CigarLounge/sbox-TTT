@@ -97,7 +97,7 @@ namespace TTT.UI
 
 			TTTRole role = Utils.GetObjectByType<TTTRole>( roleType );
 
-			if ( role == null )
+			if ( role == null || role.Shop == null )
 			{
 				return false;
 			}
