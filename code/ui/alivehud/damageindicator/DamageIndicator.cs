@@ -1,90 +1,62 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI;
+using System;
+using System.Threading.Tasks;
 
-using TTT.Events;
-using TTT.Player;
-
-namespace TTT.UI
+// No namespace since `SWB_Base.PlayerBase.cs` hooks into this class.
+public partial class DamageIndicator : Panel
 {
-	public partial class DamageIndicator : Panel
+	public static DamageIndicator Current;
+
+	public DamageIndicator()
 	{
-		public static DamageIndicator Instance;
+		Current = this;
+		StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
+	}
 
-		private const float MAX_DAMAGE_INDICATOR_DURATION = 5f;
-		private float _currentRemainingDamageIndicatorDuration = 0f;
-		private TimeSince _timeSinceLastDamage = 0f;
-		private float _lastDamage = 0f;
+	public void OnHit( Vector3 pos )
+	{
+		var p = new HitPoint( pos );
+		p.Parent = this;
+	}
 
-		public DamageIndicator() : base()
+	public class HitPoint : Panel
+	{
+		public Vector3 Position;
+
+		public HitPoint( Vector3 pos )
 		{
-			Instance = this;
+			Position = pos;
 
-			StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
-
-			Style.SetBackgroundImage( Texture.Load( FileSystem.Mounted, "/ui/damageindicator/default.png" ) );
-
-			Style.ZIndex = -1;
-		}
-
-		[Event( TTTEvent.Player.TakeDamage )]
-		private void OnTakeDamage( TTTPlayer player, float damage )
-		{
-			if ( Host.IsServer )
-			{
-				return;
-			}
-
-			_lastDamage = damage;
-			_timeSinceLastDamage = 0f;
-		}
-
-		[Event( TTTEvent.Player.Spawned )]
-		private void OnPlayerSpawned( TTTPlayer player )
-		{
-			if ( Host.IsServer || player != Local.Client.Pawn )
-			{
-				return;
-			}
-
-			// Reset damage indicator on spawn.
-			_lastDamage = 0f;
+			_ = Lifetime();
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
-			if ( Local.Pawn is not TTTPlayer player )
-			{
-				Style.Opacity = 0;
-				return;
-			}
+			var wpos = CurrentView.Rotation.Inverse * (Position.WithZ( 0 ) - CurrentView.Position.WithZ( 0 )).Normal;
+			wpos = wpos.WithZ( 0 ).Normal;
 
-			float remainingDamageIndicatorTime = _lastDamage / player.MaxHealth * 20;
+			var angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
 
-			if ( _currentRemainingDamageIndicatorDuration != 0f )
-			{
-				remainingDamageIndicatorTime += _currentRemainingDamageIndicatorDuration;
-				_currentRemainingDamageIndicatorDuration = 0f;
-			}
+			var pt = new PanelTransform();
 
-			remainingDamageIndicatorTime = Math.Min( remainingDamageIndicatorTime, MAX_DAMAGE_INDICATOR_DURATION );
+			pt.AddTranslateX( Length.Percent( -50.0f ) );
+			pt.AddTranslateY( Length.Percent( -50.0f ) );
+			pt.AddRotation( 0, 0, angle.RadianToDegree() );
 
-			if ( _lastDamage > 0f && _timeSinceLastDamage < remainingDamageIndicatorTime )
-			{
-				_currentRemainingDamageIndicatorDuration = remainingDamageIndicatorTime - _timeSinceLastDamage;
+			Style.Transform = pt;
+			Style.Dirty();
 
-				Style.Display = DisplayMode.Flex;
-				Style.Opacity = Math.Clamp( (_currentRemainingDamageIndicatorDuration / remainingDamageIndicatorTime) * (remainingDamageIndicatorTime / MAX_DAMAGE_INDICATOR_DURATION), 0f, 0.3f );
-			}
-			else
-			{
-				_currentRemainingDamageIndicatorDuration = 0f;
+		}
 
-				Style.Display = DisplayMode.None;
-			}
+		async Task Lifetime()
+		{
+			await Task.Delay( 200 );
+			AddClass( "dying" );
+			await Task.Delay( 500 );
+			Delete();
 		}
 	}
 }
