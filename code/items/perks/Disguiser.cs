@@ -42,6 +42,8 @@ namespace TTT.Items
 				return;
 			}
 
+			IsEnabled = player.IsDisguised;
+
 			if ( Input.Down( InputButton.Grenade ) && !_isLocked )
 			{
 				if ( Host.IsServer )
@@ -49,8 +51,6 @@ namespace TTT.Items
 					player.IsDisguised = !player.IsDisguised;
 					_isLocked = true;
 				}
-
-				IsEnabled = player.IsDisguised;
 
 				_ = DisguiserLockout();
 			}
