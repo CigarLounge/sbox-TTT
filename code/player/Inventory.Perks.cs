@@ -18,40 +18,16 @@ namespace TTT.Player
 
 		public bool Give( TTTPerk perk )
 		{
-			if ( Has( perk.LibraryTitle ) )
-			{
-				return false;
-			}
-
 			PerkList.Add( perk );
-
-			if ( Host.IsServer )
-			{
-				_owner.ClientAddPerk( To.Single( _owner ), perk.LibraryTitle );
-			}
-
 			perk.Equip( _owner );
-
 			return true;
 		}
 
 		public bool Take( TTTPerk perk )
 		{
-			if ( !Has( perk.LibraryTitle ) )
-			{
-				return false;
-			}
-
 			PerkList.Remove( perk );
-
 			perk.Remove();
 			perk.Delete();
-
-			if ( Host.IsServer )
-			{
-				_owner.ClientRemovePerk( To.Single( _owner ), perk.LibraryTitle );
-			}
-
 			return true;
 		}
 
@@ -62,11 +38,6 @@ namespace TTT.Player
 				if ( loopPerk is not T t || t.Equals( default( T ) ) )
 				{
 					continue;
-				}
-
-				if ( perkName == t.LibraryTitle )
-				{
-					return t;
 				}
 
 				if ( perkName == null )
@@ -100,13 +71,7 @@ namespace TTT.Player
 				perk.Remove();
 				perk.Delete();
 			}
-
 			PerkList.Clear();
-
-			if ( Host.IsServer )
-			{
-				_owner.ClientClearPerks( To.Single( _owner ) );
-			}
 		}
 
 		public int Count()

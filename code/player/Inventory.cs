@@ -23,24 +23,13 @@ namespace TTT.Player
 
 		public override void DeleteContents()
 		{
-			foreach ( Entity entity in List )
-			{
-				if ( entity is IItem item )
-				{
-					item.Remove();
-				}
-			}
-
 			Perks.Clear();
 			(Owner as TTTPlayer).Ammo.Clear();
-
 			base.DeleteContents();
 		}
 
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			TTTPlayer player = Owner as TTTPlayer;
-
 			if ( entity is ICarriableItem carriable )
 			{
 				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( carriable.SlotType ) )

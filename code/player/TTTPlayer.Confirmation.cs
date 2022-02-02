@@ -57,7 +57,7 @@ namespace TTT.Player
 
 			for ( int i = 0; i < corpse.Perks.Length; i++ )
 			{
-				corpse.Perks[i] = perksInventory.Get( i ).LibraryTitle;
+				corpse.Perks[i] = "Test";
 			}
 
 			corpse.CopyFrom( this );
