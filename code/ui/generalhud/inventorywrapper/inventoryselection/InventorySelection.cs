@@ -52,6 +52,8 @@ namespace TTT.UI
 				return;
 			}
 
+			// This code sucks. I'm forced to due this because of...
+			// https://github.com/Facepunch/sbox-issues/issues/1324
 			foreach ( var item in player.CurrentPlayer.Inventory.List )
 			{
 				if ( item is ICarriableItem carriable )
@@ -64,7 +66,6 @@ namespace TTT.UI
 			}
 
 			ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
-
 			foreach ( var slot in _entries.Values )
 			{
 				if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable as Entity ) )
