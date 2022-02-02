@@ -89,7 +89,6 @@ namespace TTT.UI
 			_entries.Add( client, scoreboardEntry );
 
 			scoreboardGroup.UpdateLabel();
-			_scoreboardHeader.UpdateServerInfo();
 			return scoreboardEntry;
 		}
 
@@ -118,6 +117,7 @@ namespace TTT.UI
 				panel.Update();
 			}
 
+			_scoreboardHeader.UpdateServerInfo();
 			UpdateScoreboardGroups();
 		}
 
