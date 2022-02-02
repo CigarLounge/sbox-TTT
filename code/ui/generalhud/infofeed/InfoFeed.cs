@@ -43,12 +43,12 @@ namespace TTT.UI
 			return e;
 		}
 
-		public virtual Panel AddEntry( Client leftClient, Client rightClient, string method, string postfix = "" )
+		public virtual Panel AddEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string postfix = "" )
 		{
 			InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
 
 			bool isLeftLocal = leftClient == Local.Client;
-			bool isRightLocal = rightClient == Local.Client;
+			bool isRightLocal = rightClientName == Local.Client.Name;
 
 			TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
 
@@ -57,10 +57,8 @@ namespace TTT.UI
 
 			e.AddLabel( method, "method" );
 
-			TTTPlayer rightPlayer = rightClient.Pawn as TTTPlayer;
-
-			Label rightLabel = e.AddLabel( isRightLocal ? "You" : rightClient.Name, "right" );
-			rightLabel.Style.FontColor = rightPlayer.Role is NoneRole ? Color.White : rightPlayer.Role.Color;
+			Label rightLabel = e.AddLabel( isRightLocal ? "You" : rightClientName, "right" );
+			rightLabel.Style.FontColor = rightClientRoleColor;
 
 			if ( !string.IsNullOrEmpty( postfix ) )
 			{

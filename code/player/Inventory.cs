@@ -31,8 +31,6 @@ namespace TTT.Player
 				}
 			}
 
-			RPCs.ClientClearInventory( To.Multiple( Utils.GetClients( ( pl ) => pl.CurrentPlayer == Owner as TTTPlayer ) ) );
-
 			Perks.Clear();
 			(Owner as TTTPlayer).Ammo.Clear();
 
@@ -50,7 +48,6 @@ namespace TTT.Player
 					return false;
 				}
 
-				RPCs.ClientOnPlayerCarriableItemPickup( To.Multiple( Utils.GetClients( ( pl ) => pl.CurrentPlayer == player ) ), entity );
 				Sound.FromWorld( "dm.pickup_weapon", entity.Position );
 			}
 
@@ -102,7 +99,6 @@ namespace TTT.Player
 		{
 			if ( Contains( item ) )
 			{
-				RPCs.ClientOnPlayerCarriableItemDrop( To.Single( Owner ), item );
 				item.Delete();
 				List.Remove( item );
 
@@ -129,11 +125,6 @@ namespace TTT.Player
 			if ( !Host.IsServer || !Contains( entity ) || entity is ICarriableItem item && !item.CanDrop() )
 			{
 				return false;
-			}
-
-			using ( Prediction.Off() )
-			{
-				RPCs.ClientOnPlayerCarriableItemDrop( To.Multiple( Utils.GetClients( ( pl ) => pl.CurrentPlayer == Owner as TTTPlayer ) ), entity );
 			}
 
 			return base.Drop( entity );

@@ -102,19 +102,17 @@ namespace TTT.UI
 				return false;
 			}
 
-			role.Shop.Enabled = toggle;
-
 			if ( Host.IsServer )
 			{
 				foreach ( Client client in Client.All )
 				{
-					if ( client.Pawn is TTTPlayer player && player.Role.Equals( roleName ) )
+					if ( client.Pawn is TTTPlayer player && player.Role.Name.ToLower().Equals( roleName.ToLower() ) )
 					{
 						player.Shop.Enabled = toggle;
 					}
 				}
 			}
-			else if ( Local.Client?.Pawn is TTTPlayer player && player.Role.Name.Equals( roleName ) )
+			else if ( Local.Client?.Pawn is TTTPlayer player && player.Role.Name.ToLower().Equals( roleName.ToLower() ) )
 			{
 				player.Shop.Enabled = toggle;
 			}

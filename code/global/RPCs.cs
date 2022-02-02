@@ -107,7 +107,8 @@ namespace TTT.Globals
 
 			InfoFeed.Current?.AddEntry(
 				confirmClient,
-				deadClient,
+				playerCorpse.DeadPlayerClientData.Name,
+				deadPlayer.Role.Color,
 				"found the body of",
 				$"({deadPlayer.Role.Name})"
 			);
@@ -152,25 +153,7 @@ namespace TTT.Globals
 		[ClientRpc]
 		public static void ClientOpenMapSelectionMenu()
 		{
-			FullScreenHintMenu.Instance.ForceOpen( new MapSelectionMenu() );
-		}
-
-		[ClientRpc]
-		public static void ClientOnPlayerCarriableItemPickup( Entity carriable )
-		{
-			Event.Run( TTTEvent.Player.Inventory.PickUp, carriable as ICarriableItem );
-		}
-
-		[ClientRpc]
-		public static void ClientOnPlayerCarriableItemDrop( Entity carriable )
-		{
-			Event.Run( TTTEvent.Player.Inventory.Drop, carriable as ICarriableItem );
-		}
-
-		[ClientRpc]
-		public static void ClientClearInventory()
-		{
-			Event.Run( TTTEvent.Player.Inventory.Clear );
+			FullScreenHintMenu.Instance?.ForceOpen( new MapSelectionMenu() );
 		}
 
 		[ClientRpc]

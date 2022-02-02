@@ -29,27 +29,6 @@ namespace TTT.Events
 			/// </summary>
 			public const string TakeDamage = "TTT.player.takedamage";
 
-			public static class Inventory
-			{
-				/// <summary>
-				/// Occurs when the player's inventory is cleared.
-				/// <para>No data is passed to this event.</para>
-				/// </summary>
-				public const string Clear = "TTT.player.inventory.clear";
-
-				/// <summary>
-				/// Occurs when an item is dropped.
-				/// <para>Event is passed the <strong><see cref="Items.ICarriableItem"/></strong> instance of the item dropped.</para>
-				/// </summary>
-				public const string Drop = "TTT.player.inventory.drop";
-
-				/// <summary>
-				/// Occurs when an item is picked up.
-				/// <para>Event is passed the <strong><see cref="Items.ICarriableItem"/></strong> instance of the item picked up.</para>
-				/// </summary>
-				public const string PickUp = "TTT.player.inventory.pickup";
-			}
-
 			public static class Role
 			{
 				/// <summary>
@@ -57,15 +36,6 @@ namespace TTT.Events
 				/// <para>Event is passed the <strong><see cref="TTT.Player.TTTPlayer"/></strong> instance of the player whose role was set.</para>
 				/// </summary>
 				public const string Select = "TTT.player.role.select";
-			}
-
-			public static class Spectating
-			{
-				/// <summary>
-				/// Occurs when the player is changed to spectate.
-				/// <para>Event is passed the <strong><see cref="TTT.Player.TTTPlayer"/></strong> instance of the player who was changed to spectate.</para>
-				/// </summary>
-				public const string Change = "TTT.player.spectating.change";
 			}
 		}
 	}

@@ -17,7 +17,7 @@ namespace TTT.Items
 	{
 		public string LibraryTitle => "Deagle";
 		public SlotType SlotType => SlotType.Secondary;
-		public Type DroppedType => typeof( RevolverAmmo );
+		public Type DroppedType => typeof( MagnumAmmo );
 
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Pistol;

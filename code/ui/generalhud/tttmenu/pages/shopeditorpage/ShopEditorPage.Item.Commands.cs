@@ -86,13 +86,13 @@ namespace TTT.UI
 			{
 				foreach ( Client client in Client.All )
 				{
-					if ( client.Pawn is TTTPlayer player && player.Role.Equals( roleName ) )
+					if ( client.Pawn is TTTPlayer player && player.Role.Name.ToLower().Equals( roleName.ToLower() ) )
 					{
 						UpdateShop( player.Shop, toggle, itemName, shopItemData );
 					}
 				}
 			}
-			else if ( Local.Client?.Pawn is TTTPlayer player && player.Role.Name.Equals( roleName ) )
+			else if ( Local.Client?.Pawn is TTTPlayer player && player.Role.Name.ToLower().Equals( roleName.ToLower() ) )
 			{
 				UpdateShop( player.Shop, toggle, itemName, shopItemData );
 
@@ -105,6 +105,11 @@ namespace TTT.UI
 		private static void UpdateShop( Shop shop, bool toggle, string itemName, ShopItemData shopItemData )
 		{
 			ShopItemData storedItem = null;
+
+			if ( shop == null )
+			{
+				return;
+			}
 
 			foreach ( ShopItemData loopItem in shop.Items )
 			{
