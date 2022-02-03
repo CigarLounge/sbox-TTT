@@ -34,7 +34,7 @@ Layer0
 	TextureTintMask "materials/default/default.tga"
 
 	//---- Self Illum ----
-	g_flEmissionScale "0.239"
+	g_flEmissionScale "0.131"
 	g_flSelfIllumScale "16.000"
 
 	//---- Texture Coordinates ----

@@ -1,12 +1,15 @@
 {
-  "Title": "sbox-ttt",
+  "Title": "TTT",
   "Type": "game",
   "Org": "matt",
   "Ident": "ttt",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "ResourcePaths": null,
+  "ResourcePaths": [
+    "/ui/*",
+    "/assets/*"
+  ],
   "HasCode": true,
   "CodePath": "code",
   "RootNamespace": "Sandbox"

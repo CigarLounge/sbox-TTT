@@ -58,7 +58,7 @@ namespace TTT.UI
 			{
 				if ( item is ICarriableItem carriable )
 				{
-					if ( !_entries.ContainsKey( carriable ) )
+					if ( !_entries.ContainsKey( carriable ) && carriable.Owner != null )
 					{
 						_entries[carriable] = CarriableItemPickup( carriable );
 					}

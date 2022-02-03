@@ -23,7 +23,7 @@ namespace SWB_Base
 
 		public override void Respawn()
 		{
-			// SetModel("models/citizen/citizen.vmdl");
+			// SetModel( "models/citizen/citizen.vmdl" );
 			// //SetModel( "playermodels/css_playermodels/css_t_arctic.vmdl" );
 
 			// Controller = new WalkController();
@@ -203,7 +203,7 @@ namespace SWB_Base
 		{
 			//DebugOverlay.Sphere( pos, 5.0f, Color.Red, false, 50.0f );
 
-			// DamageIndicator.Current?.OnHit( pos );
+			DamageIndicator.Current?.OnHit( pos );
 		}
 
 		[ClientRpc]
