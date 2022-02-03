@@ -11,7 +11,7 @@ namespace TTT.Items
 		public ItemData( Type type )
 		{
 			LibraryName = Utils.GetLibraryName( type );
-			LibraryName = Utils.GetLibraryTitle( type );
+			LibraryTitle = Utils.GetLibraryTitle( type );
 		}
 	}
 
