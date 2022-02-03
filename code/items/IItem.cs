@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Sandbox;
 
 namespace TTT.Items
 {
@@ -14,7 +16,7 @@ namespace TTT.Items
 	public interface IItem
 	{
 		static string ITEM_TAG => "TTT_ITEM";
-		string LibraryTitle { get; }
+		string LibraryTitle => Library.GetAttributes<LibraryAttribute>().First().Title;
 		void Delete();
 	}
 }
