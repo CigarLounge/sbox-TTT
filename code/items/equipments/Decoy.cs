@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 using TTT.Player;
@@ -14,14 +15,8 @@ namespace TTT.Items
 	{
 		public override string ViewModelPath => "";
 		public SlotType SlotType => SlotType.UtilityEquipment;
+		public Type DroppedType => typeof( DecoyEntity );
 		private readonly ItemData _data = new( typeof( Decoy ) );
-
-		public override void Spawn()
-		{
-			base.Spawn();
-
-			RenderColor = Color.Transparent;
-		}
 
 		public override void Simulate( Client client )
 		{
@@ -34,7 +29,7 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Attack1 ) )
 				{
-					owner.Inventory.DropEntity( this, typeof( DecoyEntity ) );
+					owner.Inventory.DropEntity( this, DroppedType );
 				}
 			}
 		}

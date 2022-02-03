@@ -16,7 +16,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" )]
 	public class RPG : WeaponBaseEntity, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( L96A1 ) );
+		private readonly ItemData _data = new( typeof( RPG ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( RPGAmmo );
 

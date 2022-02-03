@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 using TTT.Player;
@@ -11,6 +12,7 @@ namespace TTT.Items
 	{
 		public override string ViewModelPath => "";
 		public SlotType SlotType => SlotType.UtilityEquipment;
+		public Type DroppedType => typeof( DeathstationEntity );
 		private readonly ItemData _data = new( typeof( DeathStation ) );
 
 		public override void Spawn()
@@ -31,7 +33,7 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Attack1 ) )
 				{
-					owner.Inventory.DropEntity( this, typeof( DeathstationEntity ) );
+					owner.Inventory.DropEntity( this, DroppedType );
 				}
 			}
 		}

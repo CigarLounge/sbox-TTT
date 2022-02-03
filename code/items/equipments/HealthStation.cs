@@ -16,13 +16,6 @@ namespace TTT.Items
 		public SlotType SlotType => SlotType.UtilityEquipment;
 		private readonly ItemData _data = new( typeof( HealthStation ) );
 
-		public override void Spawn()
-		{
-			base.Spawn();
-
-			RenderColor = Color.Transparent;
-		}
-
 		public override void Simulate( Client client )
 		{
 			if ( Owner is not TTTPlayer owner || !IsServer )
