@@ -46,7 +46,7 @@ namespace TTT.Player
 				Rotation = Rotation
 			};
 
-			corpse.KillerWeapon = LastDamageWeapon?.LibraryTitle;
+			corpse.KillerWeapon = LastDamageWeapon?.GetItemData().LibraryTitle;
 			corpse.WasHeadshot = LastDamageWasHeadshot;
 			corpse.Distance = LastDistanceToAttacker;
 			corpse.DamageFlag = _lastDamageInfo.Flags;

@@ -7,9 +7,11 @@ namespace TTT.Items
 	[Library( "ttt_equipment_deathstation", Title = "Death Station" )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
-	public partial class DeathStation : TTTEquipment
+	public partial class DeathStation : BaseCarriable, ICarriableItem
 	{
 		public override string ViewModelPath => "";
+		public SlotType SlotType => SlotType.UtilityEquipment;
+		private readonly ItemData _data = new( typeof( DeathStation ) );
 
 		public override void Spawn()
 		{
@@ -34,6 +36,7 @@ namespace TTT.Items
 			}
 		}
 
-		public override bool CanDrop() => false;
+		public ItemData GetItemData() { return _data; }
+		public bool CanDrop() { return false; }
 	}
 }

@@ -1,8 +1,6 @@
-using System;
 using Sandbox;
 
 using TTT.Player;
-using TTT.Roles;
 
 namespace TTT.Items
 {
@@ -12,16 +10,11 @@ namespace TTT.Items
 	[Library( "ttt_equipment_decoy", Title = "Decoy" )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
-	public partial class DecoyEquipment : TTTEquipment
+	public partial class Decoy : BaseCarriable, ICarriableItem
 	{
 		public override string ViewModelPath => "";
-
-		public DecoyEquipment() : base()
-		{
-
-		}
-
-		public override bool CanDrop() => false;
+		public SlotType SlotType => SlotType.UtilityEquipment;
+		private readonly ItemData _data = new( typeof( Decoy ) );
 
 		public override void Spawn()
 		{
@@ -45,5 +38,8 @@ namespace TTT.Items
 				}
 			}
 		}
+
+		public ItemData GetItemData() { return _data; }
+		public bool CanDrop() { return false; }
 	}
 }

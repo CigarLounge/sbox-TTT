@@ -15,7 +15,8 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class SilencedDeagle : Deagle
 	{
-		public new static string LibraryTitle => "Silenced Deagle";
+		private readonly ItemData _data = new( typeof( SilencedDeagle ) );
+		public new ItemData GetItemData() { return _data; }
 
 		public SilencedDeagle()
 		{

@@ -106,6 +106,13 @@ namespace TTT.Globals
 		/// </summary>
 		/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
 		/// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
+		public static string GetLibraryName( Type type ) => Library.GetAttribute( type ).Name;
+
+		/// <summary>
+		/// Returns the `Sandbox.LibraryAttribute`'s `Title` of the given `Type`.
+		/// </summary>
+		/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
+		/// <returns>`Sandbox.LibraryAttribute`'s `Title`</returns>
 		public static string GetLibraryTitle( Type type ) => Library.GetAttribute( type ).Title;
 
 		public static T GetAttribute<T>( Type type ) where T : Attribute

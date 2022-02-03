@@ -16,7 +16,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" )]
 	public class RPG : WeaponBaseEntity, ICarriableItem, IEntityHint
 	{
-		public string LibraryTitle => "RPG";
+		private readonly ItemData _data = new( typeof( L96A1 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( RPGAmmo );
 
@@ -124,9 +124,11 @@ namespace TTT.Items
 			return rocket;
 		}
 
+		public ItemData GetItemData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

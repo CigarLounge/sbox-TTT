@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Player;
 
 namespace TTT.Items
@@ -19,10 +18,12 @@ namespace TTT.Items
 	[Library( "ttt_equipment_hands", Title = "Hands" )]
 	[Precached( "particles/rope.vpcf" )]
 	[Hammer.Skip]
-	partial class Hands : TTTEquipment
+	partial class Hands : BaseCarriable, ICarriableItem
 	{
 		public override string ViewModelPath => "";
-		public override bool CanDrop() => false;
+		public SlotType SlotType => SlotType.UtilityEquipment;
+		private readonly ItemData _data = new( typeof( Hands ) );
+
 		public static readonly float MAX_INTERACT_DISTANCE = 75;
 		public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
@@ -33,6 +34,9 @@ namespace TTT.Items
 		private IGrabbable GrabbedEntity;
 		private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 		private bool IsPushingEntity = false;
+
+		public ItemData GetItemData() { return _data; }
+		public bool CanDrop() { return false; }
 
 		public override void Spawn()
 		{

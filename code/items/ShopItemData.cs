@@ -1,5 +1,4 @@
 using System;
-using Sandbox;
 
 using TTT.Player;
 
@@ -86,16 +85,8 @@ namespace TTT.Items
 			{
 				return false;
 			}
-			else if ( Type.IsSubclassOf( typeof( SWB_Base.WeaponBase ) ) )
-			{
-				return !player.Inventory.IsCarryingType( Type ) && player.Inventory.HasEmptySlot( SlotType.Value );
-			}
-			else if ( Type.IsSubclassOf( typeof( TTTEquipment ) ) )
-			{
-				return player.Inventory.HasEmptySlot( SlotType.Value );
-			}
 
-			return false;
+			return !player.Inventory.IsCarryingType( Type ) && player.Inventory.HasEmptySlot( SlotType.Value );
 		}
 	}
 }

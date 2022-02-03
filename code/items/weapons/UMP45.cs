@@ -13,7 +13,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	public class UMP45 : WeaponBase, ICarriableItem, IEntityHint
 	{
-		public string LibraryTitle => "UMP45";
+		private readonly ItemData _data = new( typeof( UMP45 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( SMGAmmo );
 
@@ -85,9 +85,11 @@ namespace TTT.Items
 			};
 		}
 
+		public ItemData GetItemData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

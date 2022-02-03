@@ -17,7 +17,7 @@ namespace TTT.Player
 		/// <summary>
 		/// The text to display on the hint each tick.
 		/// </summary>
-		string TextOnTick => null;
+		string TextOnTick { get; }
 
 		/// <summary>
 		/// Whether or not we can show the UI hint.

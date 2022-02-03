@@ -16,7 +16,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	public class Knife : WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
-		public string LibraryTitle => "Knife";
+		private readonly ItemData _data = new( typeof( Knife ) );
 		public SlotType SlotType => SlotType.Melee;
 
 		public override int Bucket => 0;
@@ -135,9 +135,11 @@ namespace TTT.Items
 			knife.Start();
 		}
 
+		public ItemData GetItemData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 
@@ -146,16 +148,8 @@ namespace TTT.Items
 		public float HintDistance => 80f;
 
 		public string TextOnTick => WeaponGenerics.PickupText( "Knife" );
-
-		public bool CanHint( TTTPlayer client )
-		{
-			return true;
-		}
-
-		public EntityHintPanel DisplayHint( TTTPlayer client )
-		{
-			return new Hint( TextOnTick );
-		}
+		public bool CanHint( TTTPlayer client ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer client ) { return new Hint( TextOnTick ); }
 
 		private bool _hasLanded = false;
 

@@ -1,6 +1,3 @@
-using Sandbox;
-
-using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -8,8 +5,8 @@ namespace TTT.Player
 	public partial class TTTPlayer : IEntityHint
 	{
 		public float HintDistance => 20480f;
-
 		public bool ShowGlow => false;
+		public string TextOnTick => "";
 
 		public bool CanHint( TTTPlayer player )
 		{

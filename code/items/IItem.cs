@@ -1,22 +1,41 @@
 using System;
-using System.Linq;
-using Sandbox;
+
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class ItemAttribute : Attribute
+	public class ItemData
 	{
-		public ItemAttribute() : base()
-		{
+		public string LibraryName { get; private set; }
+		public string LibraryTitle { get; private set; }
 
+		public ItemData( Type type )
+		{
+			LibraryName = Utils.GetLibraryName( type );
+			LibraryName = Utils.GetLibraryTitle( type );
 		}
 	}
 
 	public interface IItem
 	{
 		static string ITEM_TAG => "TTT_ITEM";
-		string LibraryTitle => Library.GetAttributes<LibraryAttribute>().First().Title;
+		ItemData GetItemData();
 		void Delete();
+	}
+
+	public enum SlotType
+	{
+		Primary = 1,
+		Secondary,
+		Melee,
+		OffensiveEquipment,
+		UtilityEquipment,
+		Grenade
+	}
+
+	public interface ICarriableItem : IItem
+	{
+		SlotType SlotType { get; }
+		Type DroppedType => null;
+		bool CanDrop();
 	}
 }

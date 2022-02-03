@@ -10,9 +10,11 @@ namespace TTT.Items
 	[Shops( new Type[] { typeof( DetectiveRole ) } )]
 	[Buyable( Price = 100 )]
 	[Hammer.Skip]
-	public partial class HealthStation : TTTEquipment
+	public partial class HealthStation : BaseCarriable, ICarriableItem
 	{
 		public override string ViewModelPath => "";
+		public SlotType SlotType => SlotType.UtilityEquipment;
+		private readonly ItemData _data = new( typeof( HealthStation ) );
 
 		public override void Spawn()
 		{
@@ -37,6 +39,7 @@ namespace TTT.Items
 			}
 		}
 
-		public override bool CanDrop() => false;
+		public ItemData GetItemData() { return _data; }
+		public bool CanDrop() { return false; }
 	}
 }

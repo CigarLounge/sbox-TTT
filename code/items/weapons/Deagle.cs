@@ -15,7 +15,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class Deagle : WeaponBase, ICarriableItem, IEntityHint
 	{
-		public string LibraryTitle => "Deagle";
+		private readonly ItemData _data = new( typeof( Deagle ) );
 		public SlotType SlotType => SlotType.Secondary;
 		public Type DroppedType => typeof( MagnumAmmo );
 
@@ -91,9 +91,11 @@ namespace TTT.Items
 			};
 		}
 
+		public ItemData GetItemData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

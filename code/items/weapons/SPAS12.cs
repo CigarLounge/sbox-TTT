@@ -15,7 +15,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "weapons/swb/shotguns/spas/w_spas12.vmdl" )]
 	public class SPAS12 : WeaponBaseShotty, ICarriableItem, IEntityHint
 	{
-		public string LibraryTitle => "SPAS12";
+		private readonly ItemData _data = new( typeof( SPAS12 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( ShotgunAmmo );
 
@@ -85,9 +85,11 @@ namespace TTT.Items
 			};
 		}
 
+		public ItemData GetItemData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( WeaponGenerics.PickupText( LibraryTitle ) ); }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }
