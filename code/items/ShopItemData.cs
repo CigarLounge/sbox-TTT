@@ -4,28 +4,6 @@ using TTT.Player;
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class BuyableAttribute : Attribute
-	{
-		public int Price = 100;
-
-		public BuyableAttribute() : base()
-		{
-
-		}
-	}
-
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false )]
-	public class Shops : Attribute
-	{
-		public Type[] Roles;
-
-		public Shops( Type[] roleTypes ) : base()
-		{
-			Roles = roleTypes;
-		}
-	}
-
 	public class ShopItemData
 	{
 		public string Name { get; set; }
@@ -54,8 +32,8 @@ namespace TTT.Items
 
 		public static ShopItemData CreateItemData( Type type )
 		{
-			var isBuyable = Utils.GetAttribute<BuyableAttribute>( type );
-			if ( isBuyable == null )
+			var item = Utils.GetObjectByType<IItem>( type );
+			if ( item == null )
 			{
 				return null;
 			}
@@ -63,15 +41,16 @@ namespace TTT.Items
 			ShopItemData shopItemData = new()
 			{
 				Name = Utils.GetLibraryTitle( type ),
-				Type = type
+				Type = type,
+				Price = item.Price
 			};
 
-			var carriable = Utils.GetObjectByType<ICarriableItem>( type );
-			if ( carriable != null )
+			if ( item is ICarriableItem carriable )
 			{
 				shopItemData.SlotType = carriable.SlotType;
 			}
 
+			item.Delete();
 			return shopItemData;
 		}
 

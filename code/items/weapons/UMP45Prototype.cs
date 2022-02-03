@@ -10,15 +10,14 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_ump45prototype", Title = "UMP45 Prototype" )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( DetectiveRole ) } )]
 	[Precached( "weapons/swb/hands/police/v_hands_police.vmdl", "weapons/swb/smgs/ump45/v_ump45.vmdl", "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	public class UMP45Prototype : WeaponBase, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( UMP45 ) );
+		private readonly LibraryData _data = new( typeof( UMP45 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( SMGAmmo );
+		public List<TTTRole> ShopAvailability => new() { new DetectiveRole() };
 
 		public override int Bucket => 3;
 		public override HoldType HoldType => HoldType.Rifle;
@@ -144,8 +143,8 @@ namespace TTT.Items
 			};
 		}
 
-		public ItemData GetItemData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
+		public LibraryData GetLibraryData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

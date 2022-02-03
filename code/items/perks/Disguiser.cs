@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Sandbox;
@@ -9,11 +9,13 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_disguiser", Title = "Disguiser" )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]
-	public partial class Disguiser : TTTBoolPerk
+	public partial class Disguiser : TTTBoolPerk, IItem
 	{
+		public LibraryData GetLibraryData() { return _data; }
+		public List<TTTRole> ShopAvailability => new() { new TraitorRole() };
+		private readonly LibraryData _data = new( typeof( Disguiser ) );
+
 		public override bool IsEnabled { get; set; } = false;
 
 		private readonly float _lockOutSeconds = 1f;

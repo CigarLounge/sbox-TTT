@@ -9,13 +9,12 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_l96a1", Title = "L96A1" )]
 	[Spawnable]
-	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/snipers/l96a1/v_l96a1.vmdl", "weapons/swb/snipers/l96a1/w_l96a1.vmdl",
 	"particles/swb/muzzle/flash_large.vpcf", "particles/swb/tracer/tracer_large.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" )]
 	public class L96A1 : WeaponBaseSniper, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( L96A1 ) );
+		private readonly LibraryData _data = new( typeof( L96A1 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( SniperAmmo );
 
@@ -102,8 +101,8 @@ namespace TTT.Items
 			};
 		}
 
-		public ItemData GetItemData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
+		public LibraryData GetLibraryData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

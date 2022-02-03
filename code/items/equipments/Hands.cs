@@ -22,7 +22,7 @@ namespace TTT.Items
 	{
 		public override string ViewModelPath => "";
 		public SlotType SlotType => SlotType.UtilityEquipment;
-		private readonly ItemData _data = new( typeof( Hands ) );
+		private readonly LibraryData _data = new( typeof( Hands ) );
 
 		public static readonly float MAX_INTERACT_DISTANCE = 75;
 		public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
@@ -35,7 +35,7 @@ namespace TTT.Items
 		private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 		private bool IsPushingEntity = false;
 
-		public ItemData GetItemData() { return _data; }
+		public LibraryData GetLibraryData() { return _data; }
 		public bool CanDrop() { return false; }
 
 		public override void Spawn()

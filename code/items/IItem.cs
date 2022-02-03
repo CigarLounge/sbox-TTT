@@ -1,24 +1,27 @@
 using System;
-
+using System.Collections.Generic;
+using TTT.Roles;
 
 namespace TTT.Items
 {
-	public class ItemData
+	public class LibraryData
 	{
-		public string LibraryName { get; private set; }
-		public string LibraryTitle { get; private set; }
+		public string Name { get; private set; }
+		public string Title { get; private set; }
 
-		public ItemData( Type type )
+		public LibraryData( Type type )
 		{
-			LibraryName = Utils.GetLibraryName( type );
-			LibraryTitle = Utils.GetLibraryTitle( type );
+			Name = Utils.GetLibraryName( type );
+			Title = Utils.GetLibraryTitle( type );
 		}
 	}
 
 	public interface IItem
 	{
 		static string ITEM_TAG => "TTT_ITEM";
-		ItemData GetItemData();
+		List<TTTRole> ShopAvailability => new();
+		int Price => 0;
+		LibraryData GetLibraryData();
 		void Delete();
 	}
 

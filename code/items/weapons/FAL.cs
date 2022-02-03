@@ -10,12 +10,11 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_fal", Title = "FAL" )]
 	[Spawnable]
-	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/rifles/fal/v_fal.vmdl", "weapons/swb/rifles/fal/w_fal.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/rifles/fal/w_fal.vmdl" )]
 	public class FAL : WeaponBase, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( FAL ) );
+		private readonly LibraryData _data = new( typeof( FAL ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( RifleAmmo );
 
@@ -92,8 +91,8 @@ namespace TTT.Items
 			};
 		}
 
-		public ItemData GetItemData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
+		public LibraryData GetLibraryData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

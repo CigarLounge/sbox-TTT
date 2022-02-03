@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Sandbox;
@@ -9,14 +8,13 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_silenceddeagle", Title = "Silenced Deagle" )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class SilencedDeagle : Deagle
 	{
-		private readonly ItemData _data = new( typeof( SilencedDeagle ) );
-		public new ItemData GetItemData() { return _data; }
+		private readonly LibraryData _data = new( typeof( SilencedDeagle ) );
+		public new LibraryData GetLibraryData() { return _data; }
+		public new List<TTTRole> ShopAvailability => new() { new TraitorRole() };
 
 		public SilencedDeagle()
 		{

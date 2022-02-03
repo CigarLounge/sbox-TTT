@@ -10,13 +10,12 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_rpg", Title = "RPG" )]
-	[Buyable( Price = 300 )]
 	[Precached( "weapons/swb/explosives/rpg-7/swb_v_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl", "weapons/swb/explosives/rpg-7/swb_w_rpg7_rocket_he.vmdl"
 	, "particles/swb/smoke/swb_smokepuff_1.vpcf", "particles/swb/smoke/swb_smoketrail_1.vpcf", "particles/swb/fire/swb_fire_rocket_1.vpcf", "weapons/swb/explosives/rpg-7/temp_particles/grenade_he_explosion.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" )]
 	public class RPG : WeaponBaseEntity, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( RPG ) );
+		private readonly LibraryData _data = new( typeof( RPG ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( RPGAmmo );
 
@@ -124,8 +123,8 @@ namespace TTT.Items
 			return rocket;
 		}
 
-		public ItemData GetItemData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
+		public LibraryData GetLibraryData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

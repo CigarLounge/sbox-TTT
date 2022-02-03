@@ -18,8 +18,8 @@ namespace TTT.UI
 			{
 				_item = value;
 
-				_nameLabel.Text = _item?.GetItemData().LibraryTitle ?? "";
-				_effectImage.Texture = _item != null ? Texture.Load( FileSystem.Mounted, $"/ui/icons/{_item.GetItemData().LibraryTitle}.png", false ) : null;
+				_nameLabel.Text = _item?.GetLibraryData().Title ?? "";
+				_effectImage.Texture = _item != null ? Texture.Load( FileSystem.Mounted, $"/ui/icons/{_item.GetLibraryData().Title}.png", false ) : null;
 
 				if ( _effectImage.Texture == null )
 				{

@@ -9,13 +9,12 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_spas12", Title = "SPAS12" )]
 	[Spawnable]
-	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/shotguns/spas/v_spas12.vmdl", "weapons/swb/shotguns/spas/w_spas12.vmdl",
 	"particles/swb/muzzle/flash_medium.vpcf", "particles/swb/tracer/tracer_medium.vpcf", "particles/pistol_ejectbrass.vpcf" )]
 	[Hammer.EditorModel( "weapons/swb/shotguns/spas/w_spas12.vmdl" )]
 	public class SPAS12 : WeaponBaseShotty, ICarriableItem, IEntityHint
 	{
-		private readonly ItemData _data = new( typeof( SPAS12 ) );
+		private readonly LibraryData _data = new( typeof( SPAS12 ) );
 		public SlotType SlotType => SlotType.Primary;
 		public Type DroppedType => typeof( ShotgunAmmo );
 
@@ -85,8 +84,8 @@ namespace TTT.Items
 			};
 		}
 
-		public ItemData GetItemData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.LibraryTitle );
+		public LibraryData GetLibraryData() { return _data; }
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

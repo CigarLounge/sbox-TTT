@@ -49,7 +49,7 @@ namespace TTT.Player
 				{
 					Type itemType = Utils.GetTypeByLibraryTitle<IItem>( shopItemData.Name );
 
-					if ( itemType == null || !Utils.HasAttribute<BuyableAttribute>( itemType ) )
+					if ( itemType == null )
 					{
 						continue;
 					}
@@ -117,20 +117,23 @@ namespace TTT.Player
 		{
 			Items.Clear();
 
-			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>() )
+			foreach ( var itemType in Library.GetAll<IItem>() )
 			{
-				var itemShopAvailability = itemType.GetCustomAttribute<Shops>();
-				if ( itemShopAvailability != null )
+				var item = Utils.GetObjectByType<IItem>( itemType );
+				if ( item == null )
 				{
-					for ( int i = 0; i < itemShopAvailability.Roles.Length; ++i )
+					continue;
+				}
+
+				foreach ( var r in item.ShopAvailability )
+				{
+					if ( r.Name == role.Name )
 					{
-						var itemRoleType = itemShopAvailability.Roles[i];
-						if ( itemRoleType == role.GetType() )
-						{
-							Items.Add( ShopItemData.CreateItemData( itemType ) );
-						}
+						Items.Add( ShopItemData.CreateItemData( itemType ) );
 					}
 				}
+
+				item.Delete();
 			}
 		}
 
