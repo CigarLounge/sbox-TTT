@@ -978,6 +978,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -987,6 +990,9 @@
 								event_keys = 
 								{
 									name = "Weapon_AK47.Remove_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -996,6 +1002,9 @@
 								event_keys = 
 								{
 									name = "Weapon_AK47.Insert_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1005,6 +1014,9 @@
 								event_keys = 
 								{
 									name = "Weapon_AK47.BoltAction"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1038,6 +1050,9 @@
 								event_keys = 
 								{
 									name = "Weapon_AK47.BoltAction"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1071,6 +1086,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1080,6 +1098,9 @@
 								event_keys = 
 								{
 									name = "Weapon_AK47.Buttstock_Back"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1134,6 +1155,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1167,6 +1191,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1200,6 +1227,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1233,6 +1263,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1266,6 +1299,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1299,6 +1335,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Thrust"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1332,6 +1371,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
