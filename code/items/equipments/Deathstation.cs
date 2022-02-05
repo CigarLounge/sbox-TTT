@@ -6,13 +6,15 @@ using TTT.Player;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_deathstation", Title = "Death Station" )]
+	[Shop( SlotType.UtilityEquipment, 100 )]
 	[Hammer.Skip]
 	public partial class DeathStation : BaseCarriable, ICarriableItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Radar ) );
+		public Type DroppedType => typeof( DeathStation );
+
 		public override string ViewModelPath => "";
-		public SlotType SlotType => SlotType.UtilityEquipment;
-		public Type DroppedType => typeof( DeathstationEntity );
-		private readonly LibraryData _data = new( typeof( DeathStation ) );
 
 		public override void Spawn()
 		{
@@ -37,7 +39,6 @@ namespace TTT.Items
 			}
 		}
 
-		public LibraryData GetLibraryData() { return _data; }
 		public bool CanDrop() { return false; }
 	}
 }

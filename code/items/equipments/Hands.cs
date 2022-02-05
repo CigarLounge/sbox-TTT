@@ -16,13 +16,15 @@ namespace TTT.Items
 	}
 
 	[Library( "ttt_equipment_hands", Title = "Hands" )]
+	[Shop( SlotType.UtilityEquipment, 100 )]
 	[Precached( "particles/rope.vpcf" )]
 	[Hammer.Skip]
 	partial class Hands : BaseCarriable, ICarriableItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Hands ) );
+
 		public override string ViewModelPath => "";
-		public SlotType SlotType => SlotType.UtilityEquipment;
-		private readonly LibraryData _data = new( typeof( Hands ) );
 
 		public static readonly float MAX_INTERACT_DISTANCE = 75;
 		public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
@@ -35,7 +37,6 @@ namespace TTT.Items
 		private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 		private bool IsPushingEntity = false;
 
-		public LibraryData GetLibraryData() { return _data; }
 		public bool CanDrop() { return false; }
 
 		public override void Spawn()

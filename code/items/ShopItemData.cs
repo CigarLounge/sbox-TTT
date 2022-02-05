@@ -1,5 +1,5 @@
 using System;
-
+using Sandbox;
 using TTT.Player;
 
 namespace TTT.Items
@@ -32,25 +32,21 @@ namespace TTT.Items
 
 		public static ShopItemData CreateItemData( Type type )
 		{
-			var item = Utils.GetObjectByType<IItem>( type );
-			if ( item == null )
+			var libraryData = Library.GetAttribute( type );
+			var shopData = Utils.GetAttribute<ShopAttribute>( type );
+			if ( libraryData == null || shopData == null )
 			{
 				return null;
 			}
 
 			ShopItemData shopItemData = new()
 			{
-				Name = Utils.GetLibraryTitle( type ),
+				Name = libraryData.Title,
 				Type = type,
-				Price = item.Price
+				Price = shopData.Price,
+				SlotType = shopData.SlotType,
 			};
 
-			if ( item is ICarriableItem carriable )
-			{
-				shopItemData.SlotType = carriable.SlotType;
-			}
-
-			item.Delete();
 			return shopItemData;
 		}
 

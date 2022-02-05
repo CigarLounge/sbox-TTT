@@ -9,13 +9,15 @@ namespace TTT.Items
 	/// Decoy equipment definition, for the physical entity, see items/equipments/entities/DecoyEntity.cs
 	/// </summary>
 	[Library( "ttt_equipment_decoy", Title = "Decoy" )]
+	[Shop( SlotType.UtilityEquipment, 100 )]
 	[Hammer.Skip]
 	public partial class Decoy : BaseCarriable, ICarriableItem
 	{
-		public override string ViewModelPath => "";
-		public SlotType SlotType => SlotType.UtilityEquipment;
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Decoy ) );
 		public Type DroppedType => typeof( DecoyEntity );
-		private readonly LibraryData _data = new( typeof( Decoy ) );
+
+		public override string ViewModelPath => "";
 
 		public override void Simulate( Client client )
 		{
@@ -33,7 +35,6 @@ namespace TTT.Items
 			}
 		}
 
-		public LibraryData GetLibraryData() { return _data; }
 		public bool CanDrop() { return false; }
 	}
 }

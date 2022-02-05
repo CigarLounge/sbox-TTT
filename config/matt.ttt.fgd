@@ -318,59 +318,9 @@
 ]
 
 //
-// TTT.Items.FAL
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/rifles/fal/w_fal.vmdl" ) = ttt_weapon_fal : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
 // TTT.Items.Knife
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = ttt_weapon_knife : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Items.L96A1
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/snipers/l96a1/w_l96a1.vmdl" ) = ttt_weapon_l96a1 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Items.RPG
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = ttt_weapon_rpg : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Items.SilencedDeagle
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = ttt_weapon_silenceddeagle : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Items.SPAS12
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/shotguns/spas/w_spas12.vmdl" ) = ttt_weapon_spas12 : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -383,26 +333,6 @@
 @PointClass base(BaseProperties_matt_ttt) = ttt_weapon_random : ""
 [
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
-]
-
-//
-// TTT.Items.UMP45
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/smgs/ump45/w_ump45.vmdl" ) = ttt_weapon_ump45 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Items.UMP45Prototype
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/smgs/ump45/w_ump45.vmdl" ) = ttt_weapon_ump45prototype : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
 ]
 
 //

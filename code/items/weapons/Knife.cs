@@ -11,13 +11,13 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_knife", Title = "Knife" )]
+	[Shop( SlotType.Melee, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	public class Knife : WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
-		private readonly LibraryData _data = new( typeof( Knife ) );
-		public List<TTTRole> ShopAvailability => new() { new TraitorRole() };
-		public SlotType SlotType => SlotType.Melee;
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Knife ) );
 
 		public override int Bucket => 0;
 		public override HoldType HoldType => HoldType.Fists; // just use fists for now
@@ -135,8 +135,7 @@ namespace TTT.Items
 			knife.Start();
 		}
 
-		public LibraryData GetLibraryData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

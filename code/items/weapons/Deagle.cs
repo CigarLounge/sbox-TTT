@@ -4,21 +4,20 @@ using Sandbox;
 
 using SWB_Base;
 using TTT.Player;
-using TTT.Roles;
 using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_deagle", Title = "Deagle" )]
+	[Shop( SlotType.Secondary, 100 )]
 	[Spawnable]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class Deagle : WeaponBase, ICarriableItem, IEntityHint
 	{
-		private readonly LibraryData _data = new( typeof( Deagle ) );
-		public SlotType SlotType => SlotType.Secondary;
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Deagle ) );
 		public Type DroppedType => typeof( MagnumAmmo );
-		public List<TTTRole> ShopAvailability => new();
 
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Pistol;
@@ -92,8 +91,7 @@ namespace TTT.Items
 			};
 		}
 
-		public LibraryData GetLibraryData() { return _data; }
-		public string TextOnTick => WeaponGenerics.PickupText( _data.Title );
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

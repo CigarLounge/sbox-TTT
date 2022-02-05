@@ -117,23 +117,20 @@ namespace TTT.Player
 		{
 			Items.Clear();
 
-			foreach ( var itemType in Library.GetAll<IItem>() )
+			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, ShopAttribute>() )
 			{
-				var item = Utils.GetObjectByType<IItem>( itemType );
-				if ( item == null )
+				var itemShopAvailability = itemType.GetCustomAttribute<ShopAttribute>();
+				if ( itemShopAvailability != null )
 				{
-					continue;
-				}
-
-				foreach ( var r in item.ShopAvailability )
-				{
-					if ( r.Name == role.Name )
+					for ( int i = 0; i < itemShopAvailability.Roles.Length; ++i )
 					{
-						Items.Add( ShopItemData.CreateItemData( itemType ) );
+						var itemRoleType = itemShopAvailability.Roles[i];
+						if ( itemRoleType == role.GetType() )
+						{
+							Items.Add( ShopItemData.CreateItemData( itemType ) );
+						}
 					}
 				}
-
-				item.Delete();
 			}
 		}
 

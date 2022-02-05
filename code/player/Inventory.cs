@@ -30,9 +30,9 @@ namespace TTT.Player
 
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			if ( entity is ICarriableItem carriable )
+			if ( entity is IItem item )
 			{
-				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( carriable.SlotType ) )
+				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) )
 				{
 					return false;
 				}
@@ -99,7 +99,13 @@ namespace TTT.Player
 
 		public bool HasEmptySlot( SlotType slotType )
 		{
-			int itemsInSlot = List.Count( x => ((ICarriableItem)x).SlotType == slotType );
+			// Let's let them carry max perks for now.
+			if ( slotType == SlotType.Perk )
+			{
+				return true;
+			}
+
+			int itemsInSlot = List.Count( x => ((IItem)x).GetItemData().SlotType == slotType );
 
 			return SlotCapacity[(int)slotType - 1] - itemsInSlot > 0;
 		}

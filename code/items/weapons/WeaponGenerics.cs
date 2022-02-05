@@ -34,7 +34,7 @@ namespace TTT.Items
 			return $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryTitle}";
 		}
 
-		public static void Tick( TTTPlayer player, ICarriableItem item )
+		public static void Tick( TTTPlayer player, IItem item )
 		{
 			if ( Host.IsClient )
 			{
@@ -50,7 +50,7 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Use ) )
 				{
-					if ( player.Inventory.Active is ICarriableItem carriable && carriable.SlotType == item.SlotType )
+					if ( player.Inventory.Active is IItem activeItem && activeItem.GetItemData().SlotType == item.GetItemData().SlotType )
 					{
 						player.Inventory.DropActive();
 					}

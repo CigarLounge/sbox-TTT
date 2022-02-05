@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sandbox;
 
@@ -7,13 +8,14 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
+	[Shop( SlotType.UtilityEquipment, 100, new Type[] { typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
 	public partial class HealthStation : BaseCarriable, ICarriableItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( HealthStation ) );
+
 		public override string ViewModelPath => "";
-		public SlotType SlotType => SlotType.UtilityEquipment;
-		public List<TTTRole> ShopAvailability => new() { new DetectiveRole() };
-		private readonly LibraryData _data = new( typeof( HealthStation ) );
 
 		public override void Simulate( Client client )
 		{
@@ -31,7 +33,6 @@ namespace TTT.Items
 			}
 		}
 
-		public LibraryData GetLibraryData() { return _data; }
 		public bool CanDrop() { return false; }
 	}
 }

@@ -12,12 +12,12 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_radar", Title = "Radar" )]
+	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
 	public partial class Radar : TTTCountdownPerk, IItem
 	{
-		public LibraryData GetLibraryData() { return _data; }
-		public List<TTTRole> ShopAvailability => new() { new TraitorRole(), new DetectiveRole() };
-		private readonly LibraryData _data = new( typeof( Radar ) );
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Radar ) );
 
 		public struct RadarPointData
 		{
