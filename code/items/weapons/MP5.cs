@@ -73,8 +73,8 @@ namespace TTT.Items
 
 			ZoomAnimData = new AngPos
 			{
-				Angle = new Angles( 0.27f, -0.06f, 0f ),
-				Pos = new Vector3( -20.004f, -8.12f, 4.278f )
+				Angle = new Angles( -2.664f, 5.02f, 0f ),
+				Pos = new Vector3( -2.545f, -0.4f, 0.715f )
 			};
 
 			RunAnimData = new AngPos
