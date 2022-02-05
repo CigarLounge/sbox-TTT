@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 using TTT.Player;
@@ -5,11 +6,14 @@ using TTT.Player;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_deathstation", Title = "Death Station" )]
-	[Equipment( SlotType = SlotType.UtilityEquipment )]
-	[Buyable( Price = 100 )]
+	[Shop( SlotType.UtilityEquipment, 100 )]
 	[Hammer.Skip]
-	public partial class DeathStation : TTTEquipment
+	public partial class DeathStation : BaseCarriable, ICarriableItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( DeathStation ) );
+		public Type DroppedType => typeof( DeathstationEntity );
+
 		public override string ViewModelPath => "";
 
 		public override void Spawn()
@@ -30,11 +34,11 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Attack1 ) )
 				{
-					owner.Inventory.DropEntity( this, typeof( DeathstationEntity ) );
+					owner.Inventory.DropEntity( this, DroppedType );
 				}
 			}
 		}
 
-		public override bool CanDrop() => false;
+		public bool CanDrop() { return false; }
 	}
 }

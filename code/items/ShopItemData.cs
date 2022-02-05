@@ -1,32 +1,9 @@
 using System;
 using Sandbox;
-
 using TTT.Player;
 
 namespace TTT.Items
 {
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = true )]
-	public class BuyableAttribute : Attribute
-	{
-		public int Price = 100;
-
-		public BuyableAttribute() : base()
-		{
-
-		}
-	}
-
-	[AttributeUsage( AttributeTargets.Class, AllowMultiple = false, Inherited = false )]
-	public class Shops : Attribute
-	{
-		public Type[] Roles;
-
-		public Shops( Type[] roleTypes ) : base()
-		{
-			Roles = roleTypes;
-		}
-	}
-
 	public class ShopItemData
 	{
 		public string Name { get; set; }
@@ -36,13 +13,9 @@ namespace TTT.Items
 		public Type Type = null;
 		public bool IsLimited { get; set; } = true;
 
-		public ShopItemData( string name )
-		{
-			Name = name;
-		}
-
 		public void CopyFrom( ShopItemData shopItemData )
 		{
+			Name = shopItemData.Name;
 			Price = shopItemData.Price;
 			Description = shopItemData.Description ?? Description;
 			SlotType = shopItemData.SlotType ?? SlotType;
@@ -52,41 +25,27 @@ namespace TTT.Items
 
 		public ShopItemData Clone()
 		{
-			ShopItemData shopItemData = new( Name );
+			ShopItemData shopItemData = new();
 			shopItemData.CopyFrom( this );
-
 			return shopItemData;
 		}
 
 		public static ShopItemData CreateItemData( Type type )
 		{
-			LibraryAttribute attribute = Library.GetAttribute( type );
-			bool buyable = false;
-
-			ShopItemData shopItemData = new( attribute.Title )
+			var libraryData = Library.GetAttribute( type );
+			var shopData = Utils.GetAttribute<ShopAttribute>( type );
+			if ( libraryData == null || shopData == null )
 			{
-				Type = type
-			};
-
-			foreach ( object obj in type.GetCustomAttributes( false ) )
-			{
-				if ( obj is BuyableAttribute buyableAttribute )
-				{
-					shopItemData.Price = buyableAttribute.Price;
-					buyable = true;
-				}
-				else if ( obj is CarriableAttribute carriableAttribute )
-				{
-					shopItemData.SlotType = carriableAttribute.SlotType;
-				}
-			}
-
-			if ( !buyable )
-			{
-				Log.Warning( $"'{type}' is missing the 'BuyableAttribute'" );
-
 				return null;
 			}
+
+			ShopItemData shopItemData = new()
+			{
+				Name = libraryData.Title,
+				Type = type,
+				Price = shopData.Price,
+				SlotType = shopData.SlotType,
+			};
 
 			return shopItemData;
 		}
@@ -101,16 +60,8 @@ namespace TTT.Items
 			{
 				return false;
 			}
-			else if ( Type.IsSubclassOf( typeof( SWB_Base.WeaponBase ) ) )
-			{
-				return !player.Inventory.IsCarryingType( Type ) && player.Inventory.HasEmptySlot( SlotType.Value );
-			}
-			else if ( Type.IsSubclassOf( typeof( TTTEquipment ) ) )
-			{
-				return player.Inventory.HasEmptySlot( SlotType.Value );
-			}
 
-			return false;
+			return !player.Inventory.IsCarryingType( Type ) && player.Inventory.HasEmptySlot( SlotType.Value );
 		}
 	}
 }

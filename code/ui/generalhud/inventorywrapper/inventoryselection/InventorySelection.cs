@@ -14,7 +14,7 @@ namespace TTT.UI
 {
 	public class InventorySelection : Panel
 	{
-		private readonly Dictionary<ICarriableItem, InventorySlot> _entries = new();
+		private readonly Dictionary<IItem, InventorySlot> _entries = new();
 
 		private readonly InputButton[] _slotInputButtons = new[]
 		{
@@ -56,16 +56,16 @@ namespace TTT.UI
 			// https://github.com/Facepunch/sbox-issues/issues/1324
 			foreach ( var item in player.CurrentPlayer.Inventory.List )
 			{
-				if ( item is ICarriableItem carriable )
+				if ( item is IItem carriable )
 				{
-					if ( !_entries.ContainsKey( carriable ) && carriable.Owner != null )
+					if ( !_entries.ContainsKey( carriable ) && item.Owner != null )
 					{
 						_entries[carriable] = CarriableItemPickup( carriable );
 					}
 				}
 			}
 
-			ICarriableItem activeItem = player.CurrentPlayer.ActiveChild as ICarriableItem;
+			IItem activeItem = player.CurrentPlayer.ActiveChild as IItem;
 			foreach ( var slot in _entries.Values )
 			{
 				if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable as Entity ) )
@@ -80,10 +80,10 @@ namespace TTT.UI
 				slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
 				slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
 
-				slot.SetClass( "active", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
-				slot.SetClass( "opacity-heavy", slot.Carriable.LibraryTitle == activeItem?.LibraryTitle );
+				slot.SetClass( "active", slot.Carriable.GetItemData().Title == activeItem?.GetItemData().Title );
+				slot.SetClass( "opacity-heavy", slot.Carriable.GetItemData().Title == activeItem?.GetItemData().Title );
 
-				if ( slot.Carriable.SlotType != SlotType.Melee && slot.Carriable is SWB_Base.WeaponBase weapon )
+				if ( slot.Carriable.GetItemData().SlotType != SlotType.Melee && slot.Carriable is SWB_Base.WeaponBase weapon )
 				{
 					slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
 				}
@@ -94,16 +94,16 @@ namespace TTT.UI
 				InventorySlot s1 = p1 as InventorySlot;
 				InventorySlot s2 = p2 as InventorySlot;
 
-				int result = s1.Carriable.SlotType.CompareTo( s2.Carriable.SlotType );
+				int result = s1.Carriable.GetItemData().SlotType.CompareTo( s2.Carriable.GetItemData().SlotType );
 				return result != 0
 					? result
-					: string.Compare( s1.Carriable.LibraryTitle, s2.Carriable.LibraryTitle, StringComparison.Ordinal );
+					: string.Compare( s1.Carriable.GetItemData().Title, s2.Carriable.GetItemData().Title, StringComparison.Ordinal );
 			} );
 
 			this.Enabled( Children.Any() );
 		}
 
-		private InventorySlot CarriableItemPickup( ICarriableItem carriable )
+		private InventorySlot CarriableItemPickup( IItem carriable )
 		{
 			var inventorySlot = new InventorySlot( this, carriable );
 			AddChild( inventorySlot );
@@ -129,26 +129,26 @@ namespace TTT.UI
 
 			List<Panel> childrenList = Children.ToList();
 
-			ICarriableItem activeCarriable = Local.Pawn.ActiveChild as ICarriableItem;
+			IItem activeCarriable = Local.Pawn.ActiveChild as IItem;
 
 			int keyboardIndexPressed = GetKeyboardNumberPressed( input );
 			if ( keyboardIndexPressed != -1 )
 			{
-				List<ICarriableItem> weaponsOfSlotTypeSelected = new();
+				List<IItem> weaponsOfSlotTypeSelected = new();
 				int activeCarriableOfSlotTypeIndex = -1;
 
 				for ( int i = 0; i < childrenList.Count; ++i )
 				{
 					if ( childrenList[i] is InventorySlot slot )
 					{
-						if ( (int)slot.Carriable.SlotType == keyboardIndexPressed )
+						if ( (int)slot.Carriable.GetItemData().SlotType == keyboardIndexPressed )
 						{
 							// Using the keyboard index the user pressed, find all carriables that
 							// have the same slot type as the index.
 							// Ex. "3" pressed, find all carriables with slot type "3".
 							weaponsOfSlotTypeSelected.Add( slot.Carriable );
 
-							if ( slot.Carriable.LibraryTitle == activeCarriable?.LibraryTitle )
+							if ( slot.Carriable.GetItemData().Title == activeCarriable?.GetItemData().Title )
 							{
 								// If the current active carriable has the same slot type as
 								// the keyboard index the user pressed
@@ -176,7 +176,7 @@ namespace TTT.UI
 			if ( mouseWheelIndex != 0 )
 			{
 				int activeCarriableIndex = childrenList.FindIndex( ( p ) =>
-					 p is InventorySlot slot && slot.Carriable.LibraryTitle == activeCarriable?.LibraryTitle );
+					 p is InventorySlot slot && slot.Carriable.GetItemData().Title == activeCarriable?.GetItemData().Title );
 
 				int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
 				input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -219,27 +219,27 @@ namespace TTT.UI
 
 		private class InventorySlot : Panel
 		{
-			public ICarriableItem Carriable { get; init; }
+			public IItem Carriable { get; init; }
 			public Label SlotLabel;
 			private readonly Label _ammoLabel;
 
-			public InventorySlot( Panel parent, ICarriableItem carriable ) : base( parent )
+			public InventorySlot( Panel parent, IItem carriable ) : base( parent )
 			{
 				Parent = parent;
 				Carriable = carriable;
 
 				AddClass( "background-color-primary" );
 
-				SlotLabel = Add.Label( ((int)carriable.SlotType).ToString() );
+				SlotLabel = Add.Label( ((int)carriable.GetItemData().SlotType).ToString() );
 				SlotLabel.AddClass( "slot-label" );
 
-				Add.Label( carriable.LibraryTitle );
+				Add.Label( carriable.GetItemData().Title );
 
 				_ammoLabel = Add.Label();
 
 				if ( Local.Pawn is TTTPlayer player )
 				{
-					if ( carriable.SlotType != SlotType.Melee && carriable is SWB_Base.WeaponBase weapon )
+					if ( carriable.GetItemData().SlotType != SlotType.Melee && carriable is SWB_Base.WeaponBase weapon )
 					{
 						_ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Primary.AmmoType ) );
 						_ammoLabel.AddClass( "ammo-label" );

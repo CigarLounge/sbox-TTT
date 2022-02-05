@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTT.Globals;
+using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -46,7 +47,7 @@ namespace TTT.Player
 				Rotation = Rotation
 			};
 
-			corpse.KillerWeapon = LastDamageWeapon?.LibraryTitle;
+			corpse.KillerWeapon = LastDamageWeapon?.GetItemData().Title;
 			corpse.WasHeadshot = LastDamageWasHeadshot;
 			corpse.Distance = LastDistanceToAttacker;
 			corpse.DamageFlag = _lastDamageInfo.Flags;
@@ -57,7 +58,7 @@ namespace TTT.Player
 
 			for ( int i = 0; i < corpse.Perks.Length; i++ )
 			{
-				corpse.Perks[i] = perksInventory.Get( i ).LibraryTitle;
+				corpse.Perks[i] = (perksInventory.Get( i ) as IItem).GetItemData().Title;
 			}
 
 			corpse.CopyFrom( this );

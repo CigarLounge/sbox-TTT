@@ -31,14 +31,14 @@ namespace TTT.UI
 
 		public void AddEffect( TTTPerk perk )
 		{
-			_effectList.Add( new Effect( this, perk ) );
+			_effectList.Add( new Effect( this, perk as IItem ) );
 		}
 
 		public void RemoveEffect( TTTPerk perk )
 		{
 			foreach ( Effect effect in _effectList )
 			{
-				if ( effect.Item.LibraryTitle == perk.LibraryTitle )
+				if ( effect.Item.GetItemData().Title == (perk as IItem).GetItemData().Title )
 				{
 					_effectList.Remove( effect );
 					effect.Delete();

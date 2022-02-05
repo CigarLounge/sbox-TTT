@@ -17,17 +17,17 @@ namespace TTT.Player
 		/// <summary>
 		/// The text to display on the hint each tick.
 		/// </summary>
-		string TextOnTick => null;
+		string TextOnTick { get; }
 
 		/// <summary>
 		/// Whether or not we can show the UI hint.
 		/// </summary>
-		bool CanHint( TTTPlayer client );
+		bool CanHint( TTTPlayer player );
 
 		/// <summary>
 		/// The hint we should display.
 		/// </summary>
-		EntityHintPanel DisplayHint( TTTPlayer client );
+		EntityHintPanel DisplayHint( TTTPlayer player );
 
 		/// <summary>
 		/// Occurs on each tick if the hint is active.

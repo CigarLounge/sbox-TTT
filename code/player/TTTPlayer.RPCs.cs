@@ -37,7 +37,7 @@ namespace TTT.Player
 				return;
 			}
 
-			Inventory.TryAdd( perk, deleteIfFails: true, makeActive: false );
+			Inventory.TryAdd( perk as IItem, deleteIfFails: true, makeActive: false );
 		}
 
 		[ClientRpc]
@@ -50,7 +50,7 @@ namespace TTT.Player
 				return;
 			}
 
-			Inventory.Perks.Take( perk );
+			Inventory.Perks.Take( perk as IItem );
 		}
 
 		[ClientRpc]

@@ -8,12 +8,14 @@ using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "ttt_equipment_disguiser", Title = "Disguiser" )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( TraitorRole ) } )]
+	[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
+	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]
-	public partial class Disguiser : TTTBoolPerk
+	public partial class Disguiser : TTTBoolPerk, IItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Disguiser ) );
+
 		public override bool IsEnabled { get; set; } = false;
 
 		private readonly float _lockOutSeconds = 1f;

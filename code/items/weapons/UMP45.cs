@@ -1,16 +1,22 @@
+using System;
 using Sandbox;
 using SWB_Base;
+using TTT.Player;
+using TTT.UI;
 
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_ump45", Title = "UMP45" )]
-	[Weapon( SlotType = SlotType.Primary )]
+	[Shop( SlotType.Primary, 100 )]
 	[Spawnable]
-	[Buyable( Price = 100 )]
 	[Precached( "weapons/swb/hands/police/v_hands_police.vmdl", "weapons/swb/smgs/ump45/v_ump45.vmdl", "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/smgs/ump45/w_ump45.vmdl" )]
-	public class UMP45 : TTTWeaponBase
+	public class UMP45 : WeaponBase, ICarriableItem, IEntityHint
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( UMP45 ) );
+		public Type DroppedType => typeof( SMGAmmo );
+
 		public override int Bucket => 3;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "weapons/swb/hands/police/v_hands_police.vmdl";
@@ -23,8 +29,6 @@ namespace TTT.Items
 
 		public UMP45()
 		{
-			DroppedType = typeof( SMGAmmo );
-
 			General = new WeaponInfo
 			{
 				DrawTime = 1.2f,
@@ -80,5 +84,17 @@ namespace TTT.Items
 				Pos = new Vector3( 27.694f, -4.96f, 2.24f )
 			};
 		}
+
+		public override void Simulate( Client client )
+		{
+			WeaponGenerics.Simulate( client, Primary, DroppedType );
+			base.Simulate( client );
+		}
+
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }

@@ -10,13 +10,14 @@ using TTT.UI;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_knife", Title = "Knife" )]
-	[Weapon( SlotType = SlotType.Melee )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( TraitorRole ) } )]
+	[Shop( SlotType.Melee, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
-	public class Knife : TTTWeaponBaseMelee
+	public class Knife : WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Knife ) );
+
 		public override int Bucket => 0;
 		public override HoldType HoldType => HoldType.Fists; // just use fists for now
 		public override string HandsModelPath => "weapons/swb/hands/swat/v_hands_swat.vmdl";
@@ -132,23 +133,27 @@ namespace TTT.Items
 			knife.StartVelocity = MathUtil.RelativeAdd( Vector3.Zero, _entityVelocity, Owner.EyeRot );
 			knife.Start();
 		}
+
+		public override void Simulate( Client client )
+		{
+			WeaponGenerics.Simulate( client, Primary, null );
+			base.Simulate( client );
+		}
+
+		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		bool ICarriableItem.CanDrop() { return true; }
+		public bool CanHint( TTTPlayer player ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
+		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 
 	public class ThrownKnife : FiredEntity, IEntityHint
 	{
 		public float HintDistance => 80f;
 
-		public string TextOnTick => TTTWeaponBaseGeneric.PickupText( "Knife" );
-
-		public bool CanHint( TTTPlayer client )
-		{
-			return true;
-		}
-
-		public EntityHintPanel DisplayHint( TTTPlayer client )
-		{
-			return new Hint( TextOnTick );
-		}
+		public string TextOnTick => WeaponGenerics.PickupText( "Knife" );
+		public bool CanHint( TTTPlayer client ) { return true; }
+		public EntityHintPanel DisplayHint( TTTPlayer client ) { return new Hint( TextOnTick ); }
 
 		private bool _hasLanded = false;
 

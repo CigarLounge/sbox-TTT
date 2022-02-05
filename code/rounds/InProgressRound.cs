@@ -73,27 +73,6 @@ namespace TTT.Rounds
 		private static void GiveFixedLoadout( TTTPlayer player )
 		{
 			Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
-
-			if ( player.Inventory.TryAdd( new Deagle(), deleteIfFails: true, makeActive: false ) )
-			{
-				player.GiveAmmo( SWB_Base.AmmoType.Revolver, 10 );
-			}
-
-			// Randomize between FAL and SPAS12
-			if ( Utils.RNG.Next() % 2 == 0 )
-			{
-				if ( player.Inventory.TryAdd( new FAL(), deleteIfFails: true, makeActive: false ) )
-				{
-					player.GiveAmmo( SWB_Base.AmmoType.Rifle, 30 );
-				}
-			}
-			else
-			{
-				if ( player.Inventory.TryAdd( new SPAS12(), deleteIfFails: true, makeActive: false ) )
-				{
-					player.GiveAmmo( SWB_Base.AmmoType.Shotgun, 15 );
-				}
-			}
 		}
 
 		protected override void OnTimeUp()

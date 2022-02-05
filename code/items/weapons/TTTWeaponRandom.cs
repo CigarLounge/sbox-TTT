@@ -3,8 +3,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globals;
-
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_random" )]
@@ -41,7 +39,7 @@ namespace TTT.Items
 
 			if ( !carriable.DroppedType.IsSubclassOf( typeof( TTTAmmo ) ) )
 			{
-				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.LibraryTitle} is not a descendant of {typeof( TTTAmmo ).Name}." );
+				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.GetItemData().Title} is not a descendant of {typeof( TTTAmmo ).Name}." );
 				return;
 			}
 

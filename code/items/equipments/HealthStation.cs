@@ -7,20 +7,14 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
-	[Equipment( SlotType = SlotType.UtilityEquipment )]
-	[Shops( new Type[] { typeof( DetectiveRole ) } )]
-	[Buyable( Price = 100 )]
+	[Shop( SlotType.UtilityEquipment, 100, new Type[] { typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
-	public partial class HealthStation : TTTEquipment
+	public partial class HealthStation : BaseCarriable, ICarriableItem
 	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( HealthStation ) );
+
 		public override string ViewModelPath => "";
-
-		public override void Spawn()
-		{
-			base.Spawn();
-
-			RenderColor = Color.Transparent;
-		}
 
 		public override void Simulate( Client client )
 		{
@@ -38,6 +32,6 @@ namespace TTT.Items
 			}
 		}
 
-		public override bool CanDrop() => false;
+		public bool CanDrop() { return false; }
 	}
 }

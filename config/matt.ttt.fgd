@@ -348,16 +348,6 @@
 ]
 
 //
-// TTT.Items.RPG
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/explosives/rpg-7/swb_w_rpg7.vmdl" ) = ttt_weapon_rpg : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
 // TTT.Items.SilencedDeagle
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/pistols/deagle/w_deagle.vmdl" ) = ttt_weapon_silenceddeagle : ""
@@ -375,6 +365,14 @@
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
 	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.TTTWeaponRandom
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_weapon_random : ""
+[
+	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]
 
 //
@@ -458,13 +456,5 @@
 
 	output OnDamaged(void) : "Fired when the entity gets damaged."
 	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.Items.TTTWeaponRandom
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_weapon_random : ""
-[
-	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]
 

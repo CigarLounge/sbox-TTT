@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -69,7 +69,7 @@ namespace TTT.UI
 
 			_checkbox.Checked = selectedRole.Shop.Enabled;
 
-			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, BuyableAttribute>() )
+			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, ShopAttribute>() )
 			{
 				ShopItemData shopItemData = ShopItemData.CreateItemData( itemType );
 

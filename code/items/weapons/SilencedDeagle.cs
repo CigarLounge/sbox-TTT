@@ -9,17 +9,13 @@ using TTT.Roles;
 namespace TTT.Items
 {
 	[Library( "ttt_weapon_silenceddeagle", Title = "Silenced Deagle" )]
-	[Weapon( SlotType = SlotType.Secondary )]
-	[Buyable( Price = 100 )]
-	[Shops( new Type[] { typeof( TraitorRole ) } )]
+	[Shop( SlotType.Secondary, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
 	public class SilencedDeagle : Deagle
 	{
 		public SilencedDeagle()
 		{
-			DroppedType = typeof( MagnumAmmo );
-
 			General = new WeaponInfo
 			{
 				DrawTime = 1f,

@@ -23,27 +23,16 @@ namespace TTT.Player
 
 		public override void DeleteContents()
 		{
-			foreach ( Entity entity in List )
-			{
-				if ( entity is IItem item )
-				{
-					item.Remove();
-				}
-			}
-
 			Perks.Clear();
 			(Owner as TTTPlayer).Ammo.Clear();
-
 			base.DeleteContents();
 		}
 
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			TTTPlayer player = Owner as TTTPlayer;
-
-			if ( entity is ICarriableItem carriable )
+			if ( entity is IItem item )
 			{
-				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( carriable.SlotType ) )
+				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) )
 				{
 					return false;
 				}
@@ -54,20 +43,15 @@ namespace TTT.Player
 			return base.Add( entity, makeActive );
 		}
 
-		public bool Add( TTTPerk perk )
-		{
-			return Perks.Give( perk );
-		}
-
 		public bool Add( IItem item, bool makeActive = false )
 		{
 			if ( item is Entity ent )
 			{
 				return Add( ent, makeActive );
 			}
-			else if ( item is TTTPerk perk )
+			else if ( item is TTTPerk && item.GetItemData().SlotType == SlotType.Perk )
 			{
-				return Add( perk );
+				return Perks.Give( item );
 			}
 
 			return false;
@@ -110,7 +94,13 @@ namespace TTT.Player
 
 		public bool HasEmptySlot( SlotType slotType )
 		{
-			int itemsInSlot = List.Count( x => ((ICarriableItem)x).SlotType == slotType );
+			// Let's let them carry max perks for now.
+			if ( slotType == SlotType.Perk )
+			{
+				return true;
+			}
+
+			int itemsInSlot = List.Count( x => ((IItem)x).GetItemData().SlotType == slotType );
 
 			return SlotCapacity[(int)slotType - 1] - itemsInSlot > 0;
 		}

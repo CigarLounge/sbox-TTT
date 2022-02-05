@@ -1,7 +1,5 @@
 using Sandbox;
 
-// TODO Fix flickering on close-range walls (with fast rotation)
-// TODO Add physics (avoid collision with walls or the playermodel)
 namespace TTT.Player
 {
 	public partial class TTTPlayer
@@ -9,7 +7,7 @@ namespace TTT.Player
 		private Flashlight _worldFlashlight;
 		private Flashlight _viewFlashlight;
 
-		private const float FLASHLIGHT_DISTANCE = 15f;
+		private const float FLASHLIGHT_DISTANCE = 20f;
 		private const float SMOOTH_SPEED = 25f;
 
 		public bool HasFlashlightEntity
