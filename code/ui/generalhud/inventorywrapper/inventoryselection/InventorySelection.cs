@@ -85,7 +85,6 @@ namespace TTT.UI
 
 				if ( slot.Carriable.GetItemData().SlotType != SlotType.Melee && slot.Carriable is SWB_Base.WeaponBase weapon )
 				{
-					Log.Info( slot.Carriable.GetItemData().SlotType );
 					slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
 				}
 			}
