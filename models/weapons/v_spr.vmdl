@@ -534,6 +534,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -543,6 +546,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Back"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -552,6 +558,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Clip_Out"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -561,6 +570,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Clip_In"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -570,6 +582,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Forward"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -603,6 +618,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Clip_In"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -612,6 +630,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Forward"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -645,6 +666,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -654,6 +678,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Safety"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -708,6 +735,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -741,6 +771,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -774,6 +807,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -807,6 +843,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -840,6 +879,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -873,6 +915,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Thrust"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -906,6 +951,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -951,6 +999,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Back"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -960,6 +1011,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Forward"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1005,6 +1059,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Back"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1014,6 +1071,9 @@
 								event_keys = 
 								{
 									name = "Weapon_spr.Bolt_Forward"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1038,10 +1098,24 @@
 				]
 				default_root_bone_name = ""
 			},
+			{
+				_class = "ModelModifierList"
+				children = 
+				[
+					{
+						_class = "ModelModifier_Translate"
+						translation = [ -4.0, -6.0, -5.0 ]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "models/weapons/v_spr.vanmgrph"
 		importer_notes = """
 Imported from compiled VMDL_C
 ==Warnings==
