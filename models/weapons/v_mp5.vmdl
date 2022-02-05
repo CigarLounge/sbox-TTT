@@ -1601,7 +1601,7 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1613,7 +1613,7 @@
 								event_frame = 8
 								event_keys = 
 								{
-									name = "Weapon_mp5.Bolt_Back"
+									name = "mp5_bolt_back"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1625,7 +1625,7 @@
 								event_frame = 30
 								event_keys = 
 								{
-									name = "Weapon_mp5.Remove_Clip"
+									name = "mp5_remove_clip"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1637,7 +1637,7 @@
 								event_frame = 46
 								event_keys = 
 								{
-									name = "Weapon_mp5.Insert_Clip"
+									name = "mp5_insert_clip"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1649,7 +1649,7 @@
 								event_frame = 73
 								event_keys = 
 								{
-									name = "Weapon_mp5.HK_Slap"
+									name = "mp5_hk_slap"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1781,7 +1781,7 @@
 								event_frame = 8
 								event_keys = 
 								{
-									name = "Weapon_mp5.Buttstock_Back"
+									name = "mp5_buttstock_back"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
