@@ -332,7 +332,7 @@
 					{
 						_class = "RenderMeshFile"
 						name = "v_arms_devgru_bg_hands_lod0"
-						filename = "models\\weapons\\v_arms_devgru_fbx\\mesh\\v_arms_devgru_bg_hands_lod0.fbx"
+						filename = "models/weapons/v_arms_devgru_fbx/mesh/v_arms_v2.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
@@ -375,6 +375,57 @@
 					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "IKData"
+				children = 
+				[
+					{
+						_class = "IKChain"
+						name = "bip01_l_wrist"
+						children = 
+						[
+							{
+								_class = "IKChainJoint"
+								name = "bip01_l_upperarm"
+								children = 
+								[
+									{
+										_class = "IKChainJoint"
+										name = "bip01_l_forearm"
+										children = 
+										[
+											{
+												_class = "IKChainJoint"
+												name = "bip01_l_wrist1"
+												bone = "bip01_l_wrist"
+											},
+										]
+										bone = "bip01_l_forearm"
+									},
+								]
+								bone = "bip01_l_upperarm"
+							},
+						]
+						m_bDoBonesOrientAlongPositiveX = true
+						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_TwoBone"
+						"m_DefaultTargetSettings.m_Bone" = 
+						{
+							m_Name = "bip01_l_hand"
+						}
+						"m_DefaultTargetSettings.m_TargetSource" = "Bone"
+						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
+						{
+							m_id = 4294967295
+						}
+						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
+						{
+							m_Name = ""
+						}
+						"m_Data.m_bParentJointRequiresAlignment" = true
+					},
+				]
 			},
 		]
 		model_archetype = ""
