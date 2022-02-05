@@ -2484,6 +2484,10 @@
 				]
 				default_root_bone_name = ""
 			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""

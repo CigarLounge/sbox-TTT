@@ -20,7 +20,7 @@ namespace TTT.Items
 
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Rifle;
-		public override string HandsModelPath => "models/weapons/v_arms_devgru.vmdl";
+		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";
 		public override string ViewModelPath => "models/weapons/v_mp5.vmdl";
 		public override AngPos ViewModelOffset => new()
 		{
