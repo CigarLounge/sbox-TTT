@@ -13,7 +13,7 @@
 						_class = "Attachment"
 						name = "muzzle"
 						parent_bone = "mp5_rootbone"
-						relative_origin = [ -4.3, 0.2, 17.0 ]
+						relative_origin = [ -4.3, 0.2, 18.0 ]
 						relative_angles = [ -90.0, 90.0, 0.0 ]
 						weight = 1.0
 						ignore_rotation = false
@@ -42,6 +42,15 @@
 						parent_bone = "magazine"
 						relative_origin = [ 0.0, 10.000002, -0.0 ]
 						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "ejection_point"
+						parent_bone = "mp5_rootbone"
+						relative_origin = [ -4.3, 1.0, 8.0 ]
+						relative_angles = [ 0.0, 70.0, 0.0 ]
 						weight = 1.0
 						ignore_rotation = false
 					},
