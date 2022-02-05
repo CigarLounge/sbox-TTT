@@ -32,6 +32,9 @@ namespace TTT.Items
 			Title = Library.Title;
 			Shop = new ShopData( type );
 			SlotType = Shop.SlotType;
+
+			Log.Info( Title );
+			Log.Info( SlotType );
 		}
 
 		public class LibraryData
@@ -55,7 +58,7 @@ namespace TTT.Items
 			public ShopData( Type type )
 			{
 				var shopData = Utils.GetAttribute<ShopAttribute>( type );
-				SlotType = SlotType.Perk;
+				SlotType = shopData.SlotType;
 				Price = shopData.Price;
 				RoleShopAvailability = shopData.Roles;
 			}

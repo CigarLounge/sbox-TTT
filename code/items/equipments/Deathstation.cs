@@ -11,8 +11,8 @@ namespace TTT.Items
 	public partial class DeathStation : BaseCarriable, ICarriableItem
 	{
 		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Radar ) );
-		public Type DroppedType => typeof( DeathStation );
+		private readonly ItemData _data = new( typeof( DeathStation ) );
+		public Type DroppedType => typeof( DeathstationEntity );
 
 		public override string ViewModelPath => "";
 

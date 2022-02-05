@@ -11,7 +11,7 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "ttt_equipment_radar", Title = "Radar" )]
+	[Library( "ttt_perk_radar", Title = "Radar" )]
 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
 	public partial class Radar : TTTCountdownPerk, IItem

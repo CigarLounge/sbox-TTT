@@ -16,18 +16,40 @@ namespace TTT.Player
 			_owner = owner;
 		}
 
-		public bool Give( TTTPerk perk )
+		public bool Give( IItem item )
 		{
+			var perk = item as TTTPerk;
 			PerkList.Add( perk );
+
+			if ( Host.IsServer )
+			{
+				_owner.ClientAddPerk( To.Single( _owner ), item.GetItemData().Title );
+			}
+
 			perk.Equip( _owner );
+
 			return true;
 		}
 
-		public bool Take( TTTPerk perk )
+		public bool Take( IItem item )
 		{
+			if ( !Has( item.GetItemData().Title ) )
+			{
+				return false;
+			}
+
+			var perk = item as TTTPerk;
+
 			PerkList.Remove( perk );
+
 			perk.Remove();
 			perk.Delete();
+
+			if ( Host.IsServer )
+			{
+				_owner.ClientRemovePerk( To.Single( _owner ), item.GetItemData().Title );
+			}
+
 			return true;
 		}
 
@@ -45,25 +67,20 @@ namespace TTT.Player
 					return t;
 				}
 			}
-
 			return default;
 		}
-
 		public TTTPerk Find( string perkName )
 		{
 			return Find<TTTPerk>( perkName );
 		}
-
 		public bool Has( string perkName = null )
 		{
 			return Find( perkName ) != null;
 		}
-
 		public bool Has<T>( string perkName = null ) where T : TTTPerk
 		{
 			return Find<T>( perkName ) != null;
 		}
-
 		public void Clear()
 		{
 			foreach ( TTTPerk perk in PerkList )
@@ -71,7 +88,13 @@ namespace TTT.Player
 				perk.Remove();
 				perk.Delete();
 			}
+
 			PerkList.Clear();
+
+			if ( Host.IsServer )
+			{
+				_owner.ClientClearPerks( To.Single( _owner ) );
+			}
 		}
 
 		public int Count()

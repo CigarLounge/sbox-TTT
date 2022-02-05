@@ -69,7 +69,7 @@ namespace TTT.UI
 
 			_checkbox.Checked = selectedRole.Shop.Enabled;
 
-			foreach ( Type itemType in Library.GetAll<IItem>() )
+			foreach ( Type itemType in Utils.GetTypesWithAttribute<IItem, ShopAttribute>() )
 			{
 				ShopItemData shopItemData = ShopItemData.CreateItemData( itemType );
 

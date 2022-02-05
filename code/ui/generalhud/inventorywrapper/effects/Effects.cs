@@ -38,13 +38,13 @@ namespace TTT.UI
 		{
 			foreach ( Effect effect in _effectList )
 			{
-				// if ( effect.Item.LibraryTitle == perk.LibraryTitle )
-				// {
-				// 	_effectList.Remove( effect );
-				// 	effect.Delete();
+				if ( effect.Item.GetItemData().Title == (perk as IItem).GetItemData().Title )
+				{
+					_effectList.Remove( effect );
+					effect.Delete();
 
-				// 	return;
-				// }
+					return;
+				}
 			}
 		}
 	}

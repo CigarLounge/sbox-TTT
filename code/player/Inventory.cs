@@ -43,20 +43,15 @@ namespace TTT.Player
 			return base.Add( entity, makeActive );
 		}
 
-		public bool Add( TTTPerk perk )
-		{
-			return Perks.Give( perk );
-		}
-
 		public bool Add( IItem item, bool makeActive = false )
 		{
 			if ( item is Entity ent )
 			{
 				return Add( ent, makeActive );
 			}
-			else if ( item is TTTPerk perk )
+			else if ( item is TTTPerk && item.GetItemData().SlotType == SlotType.Perk )
 			{
-				return Add( perk );
+				return Perks.Give( item );
 			}
 
 			return false;

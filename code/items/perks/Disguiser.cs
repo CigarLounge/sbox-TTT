@@ -8,7 +8,7 @@ using TTT.Roles;
 
 namespace TTT.Items
 {
-	[Library( "ttt_equipment_disguiser", Title = "Disguiser" )]
+	[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]
 	public partial class Disguiser : TTTBoolPerk, IItem

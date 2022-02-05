@@ -24,7 +24,7 @@ namespace TTT.Player
 
 		private static void CheckNewItems()
 		{
-			List<Type> itemList = Utils.GetTypes<IItem>();
+			List<Type> itemList = Utils.GetTypesWithAttribute<IItem, ShopAttribute>();
 			List<string> loadedItems = null;
 			string fileName = $"settings/{Utils.GetTypeName( typeof( Settings.ServerSettings ) ).ToLower()}/internal/shopitems.json";
 

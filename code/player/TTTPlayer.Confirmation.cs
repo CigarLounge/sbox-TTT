@@ -1,6 +1,7 @@
 using Sandbox;
 
 using TTT.Globals;
+using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -57,7 +58,7 @@ namespace TTT.Player
 
 			for ( int i = 0; i < corpse.Perks.Length; i++ )
 			{
-				corpse.Perks[i] = "Test";
+				corpse.Perks[i] = (perksInventory.Get( i ) as IItem).GetItemData().Title;
 			}
 
 			corpse.CopyFrom( this );
