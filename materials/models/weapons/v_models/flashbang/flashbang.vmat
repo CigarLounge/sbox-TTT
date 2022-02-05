@@ -1,0 +1,8 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/v_models/flashbang/flashbang.tga"
+	TextureRoughness	"materials\models\weapons\v_models\flashbang\flashbang_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.500000 0.500000 0.500000 1.000000]"
+	TextureNormal	"materials/models/weapons/v_models/flashbang/flashbang_normal.tga"
+}

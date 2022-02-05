@@ -1,0 +1,11 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/v_models/hands/hand_1.tga"
+	TextureRoughness	"materials\models\weapons\v_models\hands\hand_1_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.100000 0.100000 0.100000 1.000000]"
+	F_SPECULAR	"1"
+	g_flPhongBoost	"0.500000"
+	g_flSpecularExponent	"8.000000"
+	TextureNormal	"materials/models/weapons/v_models/hands/hand_1_normal.tga"
+}

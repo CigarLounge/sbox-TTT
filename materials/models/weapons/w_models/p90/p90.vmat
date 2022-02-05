@@ -1,0 +1,13 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/w_models/p90/p90.tga"
+	F_SPECULAR	"1"
+	g_flPhongBoost	"0.600000"
+	g_flSpecularExponent	"22.000000"
+	TextureNormal	"materials/models/weapons/w_models/p90/p90_normal.tga"
+	TextureRoughness	"materials/default/default_rough_s1import.tga"
+	DynamicParams
+	{
+	}
+}

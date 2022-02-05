@@ -1,0 +1,17 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/w_models/pdw/pdw.tga"
+	F_ALPHA_TEST	"1"
+	TextureTranslucency	"materials\models\weapons\w_models\pdw\pdw_a_trans.tga"
+	F_SPECULAR_CUBE_MAP	"1"
+	F_SPECULAR	"1"
+	TextureRoughness	"materials\models\weapons\w_models\pdw\KAC_pdw_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.100000 0.100000 0.100000 1.000000]"
+	g_flPhongBoost	"0.600000"
+	g_flSpecularExponent	"25.000000"
+	TextureNormal	"materials/models/weapons/w_models/pdw/KAC_pdw_normal.tga"
+	DynamicParams
+	{
+	}
+}

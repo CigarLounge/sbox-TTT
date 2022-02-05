@@ -1,0 +1,14 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/v_models/amd65/amd65.tga"
+	TextureRoughness	"materials\models\weapons\v_models\amd65\amd-65_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.020000 0.020000 0.020000 1.000000]"
+	F_SPECULAR	"1"
+	g_flPhongBoost	"1.000000"
+	g_flSpecularExponent	"20.000000"
+	TextureNormal	"materials/models/weapons/v_models/amd65/amd-65_normal.tga"
+	DynamicParams
+	{
+	}
+}

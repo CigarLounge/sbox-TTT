@@ -1,0 +1,15 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/v_models/_accessories2/rmr/glass.tga"
+	TextureSelfIllumMask	"materials/models/weapons/v_models/_accessories2/rmr/glass_selfillum.tga"
+	F_SELF_ILLUM	"1"
+	F_TRANSLUCENT	"1"
+	TextureTranslucency	"materials\models\weapons\v_models\_accessories2\rmr\glass_a_trans.tga"
+	TextureRoughness	"materials\models\weapons\v_models\_accessories2\rmr\glass_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.900000 0.900000 0.900000 1.000000]"
+	F_SPECULAR	"1"
+	g_flPhongBoost	"1.000000"
+	g_flSpecularExponent	"21.000000"
+	TextureNormal	"materials/models/weapons/v_models/_accessories2/rmr/glass_normal.tga"
+}

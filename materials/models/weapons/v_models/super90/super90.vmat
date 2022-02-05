@@ -1,0 +1,11 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/v_models/super90/super90.tga"
+	TextureRoughness	"materials\models\weapons\v_models\super90\super90_normal_a-1_rough.tga"
+	g_vEnvironmentMapTint	"[0.030000 0.030000 0.030000 1.000000]"
+	F_SPECULAR	"1"
+	g_flPhongBoost	"0.600000"
+	g_flSpecularExponent	"35.000000"
+	TextureNormal	"materials/models/weapons/v_models/super90/super90_normal.tga"
+}

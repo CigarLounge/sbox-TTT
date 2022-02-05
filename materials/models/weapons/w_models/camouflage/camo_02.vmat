@@ -1,0 +1,6 @@
+"Layer0"
+{
+	shader	"complex.vfx"
+	TextureColor	"materials/models/weapons/w_models/camouflage/camo_02.tga"
+	TextureRoughness	"materials/default/default_rough_s1import.tga"
+}
