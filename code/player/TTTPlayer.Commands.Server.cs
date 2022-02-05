@@ -106,6 +106,35 @@ namespace TTT.Player
 			player.RequestPurchase( itemType );
 		}
 
+		[ServerCmd( Name = "ttt_giveitem" )]
+		public static void GiveItem( string itemName )
+		{
+			if ( !ConsoleSystem.Caller.HasPermission( "items" ) )
+			{
+				return;
+			}
+
+			if ( itemName == null )
+			{
+				return;
+			}
+
+			TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+			if ( !player.IsValid() )
+			{
+				return;
+			}
+
+			Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
+			if ( itemType == null )
+			{
+				return;
+			}
+
+			player.Inventory.TryAdd( Utils.GetObjectByType<IItem>( itemType ), true, false );
+		}
+
 		[ServerCmd( Name = "ttt_setrole" )]
 		public static void SetRole( string roleName, string id = null )
 		{
