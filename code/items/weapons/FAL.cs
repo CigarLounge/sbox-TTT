@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+
 using Sandbox;
 
 using SWB_Base;
@@ -8,63 +8,64 @@ using TTT.UI;
 
 namespace TTT.Items
 {
-	[Library( "ttt_weapon_deagle", Title = "Deagle" )]
-	[Shop( SlotType.Secondary, 100 )]
+	[Library( "ttt_weapon_fal", Title = "FAL" )]
+	[Shop( SlotType.Primary, 100 )]
 	[Spawnable]
-	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/pistols/deagle/v_deagle.vmdl", "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
-	[Hammer.EditorModel( "weapons/swb/pistols/deagle/w_deagle.vmdl" )]
-	public class Deagle : WeaponBase, ICarriableItem, IEntityHint
+	[Precached( "weapons/swb/hands/rebel/v_hands_rebel.vmdl", "weapons/swb/rifles/fal/v_fal.vmdl", "weapons/swb/rifles/fal/w_fal.vmdl" )]
+	[Hammer.EditorModel( "weapons/swb/rifles/fal/w_fal.vmdl" )]
+	public class FAL : WeaponBase, ICarriableItem, IEntityHint
 	{
 		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Deagle ) );
-		public Type DroppedType => typeof( MagnumAmmo );
+		private readonly ItemData _data = new( typeof( FAL ) );
+		public Type DroppedType => typeof( RifleAmmo );
 
-		public override int Bucket => 1;
-		public override HoldType HoldType => HoldType.Pistol;
+		public override int Bucket => 3;
+		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";
-		public override string ViewModelPath => "weapons/swb/pistols/deagle/v_deagle.vmdl";
+		public override string ViewModelPath => "weapons/swb/rifles/fal/v_fal.vmdl";
 		public override AngPos ViewModelOffset => new()
 		{
 			Angle = new Angles( 0, -5, 0 ),
 			Pos = new Vector3( -5, 0, 0 )
 		};
-		public override string WorldModelPath => "weapons/swb/pistols/deagle/w_deagle.vmdl";
-		public override string Icon => "/swb_weapons/textures/deagle.png";
+		public override string WorldModelPath => "weapons/swb/rifles/fal/w_fal.vmdl";
+		public override string Icon => "/swb_weapons/textures/fal.png";
 		public override int FOV => 75;
 		public override int ZoomFOV => 75;
+		public override float WalkAnimationSpeedMod => 0.85f;
 
-		public Deagle()
+		public FAL()
 		{
 			General = new WeaponInfo
 			{
 				DrawTime = 1f,
-				ReloadTime = 1.8f,
-				ReloadEmptyTime = 2.9f
+				ReloadTime = 2.03f,
+				ReloadEmptyTime = 2.67f
 			};
 
 			Primary = new ClipInfo
 			{
-				Ammo = 7,
-				AmmoType = AmmoType.Revolver,
-				ClipSize = 7,
+				Ammo = 20,
+				AmmoType = AmmoType.Rifle,
+				ClipSize = 20,
 
-				BulletSize = 6f,
-				Damage = 30f,
-				Force = 2f,
-				Spread = 0.06f,
-				Recoil = 4f,
-				RPM = 300,
+				BulletSize = 4f,
+				Damage = 15f,
+				Force = 3f,
+				Spread = 0.1f,
+				Recoil = 0.5f,
+				RPM = 600,
 				FiringType = FiringType.semi,
 				ScreenShake = new ScreenShake
 				{
 					Length = 0.5f,
 					Speed = 4.0f,
-					Size = 1.0f,
+					Size = 0.5f,
 					Rotation = 0.5f
 				},
 
-				DryFireSound = "swb_pistol.empty",
-				ShootSound = "deagle.fire",
+				DryFireSound = "swb_rifle.empty",
+				ShootSound = "fal.fire",
 
 				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
 				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
@@ -74,20 +75,20 @@ namespace TTT.Items
 
 			ZoomAnimData = new AngPos
 			{
-				Angle = new Angles( 0.25f, 4.95f, -0.4f ),
-				Pos = new Vector3( -5f, -2f, 2.45f )
+				Angle = new Angles( -0.1f, 4.95f, -1f ),
+				Pos = new Vector3( -5f, -4.211f, 0.75f )
 			};
 
 			RunAnimData = new AngPos
 			{
-				Angle = new Angles( -30, 0, 0 ),
-				Pos = new Vector3( 0, -3, -8 )
+				Angle = new Angles( 10, 40, 0 ),
+				Pos = new Vector3( 5, 0, 0 )
 			};
 
 			CustomizeAnimData = new AngPos
 			{
-				Angle = new Angles( -19.2f, 69.6f, 0f ),
-				Pos = new Vector3( 10.4f, -16.2f, 2.6f )
+				Angle = new Angles( -2.25f, 51.84f, 0f ),
+				Pos = new Vector3( 11.22f, -4.96f, 1.078f )
 			};
 		}
 
@@ -104,5 +105,3 @@ namespace TTT.Items
 		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
 	}
 }
-
-

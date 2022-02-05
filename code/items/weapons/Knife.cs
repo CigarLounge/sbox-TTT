@@ -134,6 +134,12 @@ namespace TTT.Items
 			knife.Start();
 		}
 
+		public override void Simulate( Client client )
+		{
+			WeaponGenerics.Simulate( client, Primary, null );
+			base.Simulate( client );
+		}
+
 		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }

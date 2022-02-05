@@ -32,9 +32,6 @@ namespace TTT.Items
 			Title = Library.Title;
 			Shop = new ShopData( type );
 			SlotType = Shop.SlotType;
-
-			Log.Info( Title );
-			Log.Info( SlotType );
 		}
 
 		public class LibraryData
