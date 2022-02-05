@@ -98,7 +98,7 @@ namespace TTT.Player
 			}
 
 			Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
-			if ( itemType == null )
+			if ( itemType == null || !Utils.HasAttribute<ShopAttribute>( itemType ) )
 			{
 				return;
 			}
