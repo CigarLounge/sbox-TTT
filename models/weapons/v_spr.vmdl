@@ -22,8 +22,8 @@
 						_class = "Attachment"
 						name = "ejection_point"
 						parent_bone = "bullet2"
-						relative_origin = [ -0.5, -1.5, 0.5 ]
-						relative_angles = [ -20.0, -180.0, -90.0 ]
+						relative_origin = [ -1.023963, -1.500145, 0.496017 ]
+						relative_angles = [ 26.688971, -179.70137, -89.891579 ]
 						weight = 1.0
 						ignore_rotation = false
 					},
@@ -1030,7 +1030,7 @@
 								parent_bone = "bip01_l_wrist"
 								relative_origin = [ 0.0, 0.0, 0.0 ]
 								relative_angles = [ 0.0, 0.0, 0.0 ]
-								weight = 1.0
+								weight = 2.0
 							},
 						]
 						input_axis = 0

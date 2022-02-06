@@ -3166,7 +3166,7 @@
 								parent_bone = "bip01_l_wrist"
 								relative_origin = [ 0.0, 0.0, 0.0 ]
 								relative_angles = [ 0.0, 0.0, 0.0 ]
-								weight = 1.0
+								weight = 1.2
 							},
 						]
 						input_axis = 0

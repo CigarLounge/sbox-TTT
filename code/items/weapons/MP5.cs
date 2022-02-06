@@ -10,7 +10,7 @@ namespace TTT.Items
 	[Library( "ttt_weapon_mp5", Title = "MP5" )]
 	[Shop( SlotType.Primary, 100 )]
 	[Spawnable]
-	[Precached( "models/weapons/v_arms_devgru.vmdl", "models/weapons/v_mp5.vmdl", "models/weapons/w_mp5.vmdl" )]
+	[Precached( "models/weapons/v_mp5.vmdl", "models/weapons/w_mp5.vmdl" )]
 	[Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
 	public class MP5 : WeaponBase, ICarriableItem, IEntityHint
 	{
@@ -21,7 +21,7 @@ namespace TTT.Items
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";
-		public override string ViewModelPath => "models/weapons/v_ak47.vmdl";
+		public override string ViewModelPath => "models/weapons/v_mp5.vmdl";
 		public override AngPos ViewModelOffset => new()
 		{
 			Angle = new Angles( 0, -5, 0 ),
@@ -37,8 +37,7 @@ namespace TTT.Items
 			General = new WeaponInfo
 			{
 				DrawTime = 1.0f,
-				ReloadTime = 2.8f,
-				ReloadEmptyTime = 2.8f
+				ReloadTime = 2.8f
 			};
 
 			Primary = new ClipInfo

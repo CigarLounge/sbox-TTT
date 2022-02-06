@@ -47,10 +47,10 @@ namespace TTT.Items
 			General = new WeaponInfo
 			{
 				DrawTime = 1.5f,
-				ReloadTime = 2.9f,
+				ReloadTime = 3f,
 
 				BoltBackTime = 1f,
-				BoltBackEjectDelay = 0.5f
+				BoltBackEjectDelay = 0.2f
 			};
 
 			Primary = new ClipInfo
