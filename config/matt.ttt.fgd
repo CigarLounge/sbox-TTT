@@ -279,6 +279,16 @@
 ]
 
 //
+// TTT.Items.AUG
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_aug.vmdl" ) = ttt_weapon_aug : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
 // TTT.Items.Knife
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = ttt_weapon_knife : ""
