@@ -6,45 +6,6 @@
 		children = 
 		[
 			{
-				_class = "BodyGroupList"
-				children = 
-				[
-					{
-						_class = "BodyGroup"
-						name = "grenade"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_spr_bg_grenade_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_spr_bg_grenade_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_spr_bg_grenade_sm3_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-				]
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[
@@ -59,10 +20,10 @@
 					},
 					{
 						_class = "Attachment"
-						name = "bolt"
+						name = "ejection_point"
 						parent_bone = "bullet2"
-						relative_origin = [ 0.0, -2.0, 0.0 ]
-						relative_angles = [ -30.000008, -180.0, -89.999985 ]
+						relative_origin = [ -0.5, -1.5, 0.5 ]
+						relative_angles = [ -20.0, -180.0, -90.0 ]
 						weight = 1.0
 						ignore_rotation = false
 					},
@@ -305,57 +266,6 @@
 						_class = "RenderMeshFile"
 						name = "v_spr_bg_gun_lod0"
 						filename = "models\\weapons\\v_spr_fbx\\mesh\\v_spr_bg_gun_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_spr_bg_grenade_sm1_lod0"
-						filename = "models\\weapons\\v_spr_fbx\\mesh\\v_spr_bg_grenade_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_spr_bg_grenade_sm2_lod0"
-						filename = "models\\weapons\\v_spr_fbx\\mesh\\v_spr_bg_grenade_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_spr_bg_grenade_sm3_lod0"
-						filename = "models\\weapons\\v_spr_fbx\\mesh\\v_spr_bg_grenade_sm3_lod0.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
