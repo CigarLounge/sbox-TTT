@@ -1781,7 +1781,7 @@
 								event_frame = 8
 								event_keys = 
 								{
-									name = "mp5_buttstock_back"
+									name = "mp5_buttstock_back-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""

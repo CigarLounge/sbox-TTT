@@ -160,7 +160,7 @@
 				m_networkMode = "ClientSimulate"
 				m_sNote = ""
 				m_tagSpans = [  ]
-				m_sequenceName = "unholster"
+				m_sequenceName = "draw"
 				m_playbackSpeed = 1.0
 				m_bLoop = false
 			}

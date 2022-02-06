@@ -46,10 +46,10 @@ namespace TTT.Items
 		{
 			General = new WeaponInfo
 			{
-				DrawTime = 0.5f,
-				ReloadTime = 1.8f,
+				DrawTime = 1.5f,
+				ReloadTime = 2.9f,
 
-				BoltBackTime = 1.6f,
+				BoltBackTime = 1f,
 				BoltBackEjectDelay = 0.5f
 			};
 
@@ -86,8 +86,8 @@ namespace TTT.Items
 
 			ZoomAnimData = new AngPos
 			{
-				Angle = new Angles( 0f, 2.5f, -2f ),
-				Pos = new Vector3( -6f, 4f, -2f )
+				Angle = new Angles( -0.48f, 3.95f, -2f ),
+				Pos = new Vector3( -3.805f, 1f, 0.933f )
 			};
 
 			RunAnimData = new AngPos

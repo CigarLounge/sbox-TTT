@@ -533,7 +533,7 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -545,7 +545,7 @@
 								event_frame = 7
 								event_keys = 
 								{
-									name = "Weapon_spr.Bolt_Back"
+									name = "spr_bolt_back-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -557,7 +557,7 @@
 								event_frame = 31
 								event_keys = 
 								{
-									name = "Weapon_spr.Clip_Out"
+									name = "spr_clip_out-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -569,7 +569,7 @@
 								event_frame = 61
 								event_keys = 
 								{
-									name = "Weapon_spr.Clip_In"
+									name = "spr_clip_in-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -581,7 +581,7 @@
 								event_frame = 85
 								event_keys = 
 								{
-									name = "Weapon_spr.Bolt_Forward"
+									name = "spr_bolt_forward-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -665,7 +665,7 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -677,7 +677,7 @@
 								event_frame = 12
 								event_keys = 
 								{
-									name = "Weapon_spr.Safety"
+									name = "spr_safety-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -770,7 +770,7 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -982,23 +982,11 @@
 						[
 							{
 								_class = "AnimEvent"
-								event_class = "AE_CL_DISPATCHEFFECT0"
-								event_frame = 0
-								event_keys = null
-							},
-							{
-								_class = "AnimEvent"
-								event_class = "AE_CL_EJECTBRASS1"
-								event_frame = 31
-								event_keys = null
-							},
-							{
-								_class = "AnimEvent"
 								event_class = "AE_CL_PLAYSOUND"
 								event_frame = 21
 								event_keys = 
 								{
-									name = "Weapon_spr.Bolt_Back"
+									name = "spr_bolt_back-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""
@@ -1010,7 +998,7 @@
 								event_frame = 34
 								event_keys = 
 								{
-									name = "Weapon_spr.Bolt_Forward"
+									name = "spr_bolt_forward-1"
 									stop_on_seq_change = false
 									use_layer_sequence = false
 									tags = ""

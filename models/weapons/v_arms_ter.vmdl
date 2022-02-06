@@ -321,8 +321,8 @@
 					{
 						_class = "Bone"
 						name = "bip01_l_finger0"
-						origin = [ 2.9, 31.5, 0.0 ]
-						angles = [ 10.0, 36.0, -20.0 ]
+						origin = [ 2.9, 31.5, 0.3 ]
+						angles = [ 10.0, 39.0, -20.0 ]
 						do_not_discard = true
 					},
 				]

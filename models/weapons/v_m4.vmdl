@@ -1144,6 +1144,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1153,6 +1156,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Remove_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1162,6 +1168,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Insert_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1171,6 +1180,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Slap"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1204,6 +1216,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Insert_Clip-Mid"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1213,6 +1228,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Slap"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1246,6 +1264,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Throw_Catch"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1255,6 +1276,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1309,6 +1333,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1342,6 +1369,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1375,6 +1405,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1408,6 +1441,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1441,6 +1477,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1474,6 +1513,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Thrust"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1507,6 +1549,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2497,6 +2542,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -2506,6 +2554,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Remove_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -2515,6 +2566,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Insert_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -2524,6 +2578,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Slap"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2561,6 +2618,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Insert_Clip-Mid"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -2570,6 +2630,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Slap"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2607,6 +2670,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Throw_Catch"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -2616,6 +2682,9 @@
 								event_keys = 
 								{
 									name = "Weapon_m4.Bolt_Action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2681,6 +2750,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2718,6 +2790,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2755,6 +2830,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Thrust"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2792,6 +2870,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -4249,6 +4330,10 @@
 					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
 			},
 		]
 		model_archetype = ""
