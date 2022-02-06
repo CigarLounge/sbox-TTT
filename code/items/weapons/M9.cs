@@ -38,8 +38,7 @@ namespace TTT.Items
 			General = new WeaponInfo
 			{
 				DrawTime = 1.3f,
-				ReloadTime = 1.6f,
-				ReloadEmptyTime = 2.9f
+				ReloadTime = 1.6f
 			};
 
 			Primary = new ClipInfo
@@ -72,11 +71,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos
-			{
-				Angle = new Angles( -0.62f, 5.1f, -0.4f ),
-				Pos = new Vector3( -4.155f, -2f, 0.916f )
-			};
+			ZoomAnimData = new AngPos { Angle = new Angles( -1.57f, 5.2f, 0f ), Pos = new Vector3( -3.12f, 0f, 0.567f ) };
 
 			RunAnimData = new AngPos
 			{
