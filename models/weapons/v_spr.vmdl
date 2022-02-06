@@ -1010,6 +1010,34 @@
 				_class = "BoneMarkupList"
 				bone_cull_type = "None"
 			},
+			{
+				_class = "AnimConstraintList"
+				children = 
+				[
+					{
+						_class = "AnimConstraintTiltTwist"
+						children = 
+						[
+							{
+								_class = "AnimConstraintBoneInput"
+								parent_bone = "bip01_l_hand"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+							{
+								_class = "AnimConstraintSlave"
+								parent_bone = "bip01_l_wrist"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+						]
+						input_axis = 0
+						slave_axis = 0
+					},
+				]
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""

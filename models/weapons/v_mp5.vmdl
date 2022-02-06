@@ -3134,16 +3134,6 @@
 			},
 			{
 				_class = "BoneMarkupList"
-				children = 
-				[
-					{
-						_class = "BoneMarkup"
-						target_bone = "bip01_l_wrist"
-						ignore_Translation = true
-						ignore_rotation = true
-						do_not_discard = false
-					},
-				]
 				bone_cull_type = "None"
 			},
 			{
