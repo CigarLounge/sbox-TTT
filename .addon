@@ -11,6 +11,6 @@
     "/assets/*"
   ],
   "HasCode": true,
-  "CodePath": "code/",
+  "CodePath": "code",
   "RootNamespace": "Sandbox"
 }

@@ -43,6 +43,11 @@ namespace TTT.Gamemode
 			{
 				ShopManager.Load();
 			}
+
+			if ( IsClient )
+			{
+				_ = new UI.Hud();
+			}
 		}
 
 		public override void Shutdown()

@@ -27,14 +27,6 @@ namespace TTT.UI.Menu
 			ShopEditorPage.ServerRequestShopEditorAccess();
 		}
 
-		public HomePage()
-		{
-			if ( Local.Client.HasPermission( "shopeditor" ) )
-			{
-				ShopEditorButton.RemoveClass( "inactive" );
-			}
-		}
-
 		public void GoToComponentTesting()
 		{
 			TTTMenu.Instance.AddPage( new ComponentTestingPage() );
@@ -47,6 +39,7 @@ namespace TTT.UI.Menu
 				return;
 			}
 
+			ShopEditorButton.SetClass( "inactive", !Local.Client.HasPermission( "shopeditor" ) );
 			ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
 		}
 
