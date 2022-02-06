@@ -3134,6 +3134,16 @@
 			},
 			{
 				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "BoneMarkup"
+						target_bone = "bip01_l_wrist"
+						ignore_Translation = true
+						ignore_rotation = true
+						do_not_discard = false
+					},
+				]
 				bone_cull_type = "None"
 			},
 			{
@@ -3143,6 +3153,34 @@
 					{
 						_class = "ModelModifier_Translate"
 						translation = [ -5.0, -3.0, -5.0 ]
+					},
+				]
+			},
+			{
+				_class = "AnimConstraintList"
+				children = 
+				[
+					{
+						_class = "AnimConstraintTiltTwist"
+						children = 
+						[
+							{
+								_class = "AnimConstraintBoneInput"
+								parent_bone = "bip01_l_hand"
+								relative_origin = [ 50.0, 0.0, 0.0 ]
+								relative_angles = [ 50.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+							{
+								_class = "AnimConstraintSlave"
+								parent_bone = "bip01_l_wrist"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+						]
+						input_axis = 0
+						slave_axis = 0
 					},
 				]
 			},
