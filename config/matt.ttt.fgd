@@ -291,7 +291,7 @@
 //
 // TTT.Items.Knife
 //
-@PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" ) = ttt_weapon_knife : ""
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_knife.vmdl" ) = ttt_weapon_knife : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 

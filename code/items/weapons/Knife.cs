@@ -11,8 +11,8 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_knife", Title = "Knife" )]
 	[Shop( SlotType.Melee, 100, new Type[] { typeof( TraitorRole ) } )]
-	[Precached( "weapons/swb/hands/swat/v_hands_swat.vmdl", "weapons/swb/melee/bayonet/v_bayonet.vmdl", "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
-	[Hammer.EditorModel( "weapons/swb/melee/bayonet/w_bayonet.vmdl" )]
+	[Precached( "models/weapons/v_knife.vmdl", "models/weapons/w_knife.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/w_knife.vmdl" )]
 	public class Knife : WeaponBaseMelee, ICarriableItem, IEntityHint
 	{
 		public ItemData GetItemData() { return _data; }
@@ -20,25 +20,25 @@ namespace TTT.Items
 
 		public override int Bucket => 0;
 		public override HoldType HoldType => HoldType.Fists; // just use fists for now
-		public override string HandsModelPath => "weapons/swb/hands/swat/v_hands_swat.vmdl";
-		public override string ViewModelPath => "weapons/swb/melee/bayonet/v_bayonet.vmdl";
+		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";
+		public override string ViewModelPath => "models/weapons/v_knife.vmdl";
 		public override AngPos ViewModelOffset => new()
 		{
 			Angle = new Angles( 0, -15, 0 ),
 			Pos = new Vector3( -4, 0, 0 )
 		};
-		public override string WorldModelPath => "weapons/swb/melee/bayonet/w_bayonet.vmdl";
-		public override string Icon => "/swb_weapons/textures/bayonet.png";
+		public override string WorldModelPath => "models/weapons/w_knife.vmdl";
+		public override string Icon => "";
 		public override int FOV => 75;
 		public override float WalkAnimationSpeedMod => 1.25f;
 
-		public override string SwingAnimationHit => "stab";
-		public override string SwingAnimationMiss => "stab_miss";
+		public override string SwingAnimationHit => "fire";
+		public override string SwingAnimationMiss => "fire";
 		public override string StabAnimationHit => "stab";
 		public override string StabAnimationMiss => "stab_miss";
-		public override string SwingSound => "bayonet.stab";
+		public override string SwingSound => "knife_flesh_hit-1";
 		public override string StabSound => "bayonet.stab";
-		public override string MissSound => "bayonet.slash";
+		public override string MissSound => "knife_swing-1";
 		public override string HitWorldSound => "bayonet.hitwall";
 		public override float SwingSpeed => 1f;
 		public override float StabSpeed => 1f;
