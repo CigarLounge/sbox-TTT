@@ -11,7 +11,7 @@ namespace TTT.Items
 	[Library( "ttt_weapon_scout", Title = "Scout" )]
 	[Shop( SlotType.Primary, 100 )]
 	[Spawnable]
-	[Precached( "models/weapons/v_arms_ter.vmdl", "models/weapons/v_spr.vmdl", "models/weapons/w_spr.vmdl",
+	[Precached( "models/weapons/v_spr.vmdl", "models/weapons/w_spr.vmdl",
 	"particles/swb/muzzle/flash_large.vpcf", "particles/swb/tracer/tracer_large.vpcf" )]
 	[Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
 	public class Scout : WeaponBaseSniper, ICarriableItem, IEntityHint
@@ -74,8 +74,8 @@ namespace TTT.Items
 					Rotation = 0.5f
 				},
 
-				DryFireSound = "swb_sniper.empty",
-				ShootSound = "l96a1.fire",
+				DryFireSound = "dryfire_rifle-1",
+				ShootSound = "spr_fire-1",
 
 				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
 				MuzzleFlashParticle = "particles/swb/muzzle/flash_large.vpcf",

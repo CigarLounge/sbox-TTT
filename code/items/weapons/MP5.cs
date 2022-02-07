@@ -61,8 +61,8 @@ namespace TTT.Items
 					Rotation = 0.35f
 				},
 
-				DryFireSound = "swb_smg.empty",
-				ShootSound = "ump45.fire",
+				DryFireSound = "dryfire_pistol-1",
+				ShootSound = "mp5_fire-1",
 
 				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
 				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
@@ -70,11 +70,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos
-			{
-				Angle = new Angles( -2.664f, 5.02f, 0f ),
-				Pos = new Vector3( -2.545f, -0.4f, 0.715f )
-			};
+			ZoomAnimData = new AngPos { Angle = new Angles( -1.96f, 4.79f, 0f ), Pos = new Vector3( -4.159f, 0f, 0.448f ) };
 
 			RunAnimData = new AngPos
 			{

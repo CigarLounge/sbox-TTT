@@ -348,7 +348,7 @@
 					},
 					{
 						_class = "Attachment"
-						name = "ejection_site"
+						name = "ejection_point"
 						parent_bone = "bolt"
 						relative_origin = [ 1.5, -6.0, 0.0 ]
 						relative_angles = [ -15.000001, 0.0, 90.0 ]
@@ -4109,7 +4109,7 @@
 								parent_bone = "bip01_l_wrist"
 								relative_origin = [ 0.0, 0.0, 0.0 ]
 								relative_angles = [ 0.0, 0.0, 0.0 ]
-								weight = 1.0
+								weight = 1.3
 							},
 						]
 						input_axis = 0

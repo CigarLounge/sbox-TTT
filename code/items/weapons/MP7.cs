@@ -11,7 +11,7 @@ namespace TTT.Items
 	[Shop( SlotType.Primary, 100 )]
 	[Spawnable]
 	[Precached( "models/weapons/v_mp7.vmdl", "models/weapons/w_mp7.vmdl" )]
-	[Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/w_mp7.vmdl" )]
 	public class MP7 : WeaponBase, ICarriableItem, IEntityHint
 	{
 		public ItemData GetItemData() { return _data; }
@@ -70,11 +70,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos
-			{
-				Angle = new Angles( -2.664f, 5.02f, 0f ),
-				Pos = new Vector3( -2.545f, -0.4f, 0.715f )
-			};
+			ZoomAnimData = new AngPos { Angle = new Angles( -1.164f, 5.18f, 0f ), Pos = new Vector3( -3.215f, -0.4f, 0.835f ) };
 
 			RunAnimData = new AngPos
 			{

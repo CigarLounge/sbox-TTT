@@ -27,78 +27,6 @@
 				]
 			},
 			{
-				_class = "LODGroupList"
-				children = 
-				[
-					{
-						_class = "LODGroup"
-						switch_threshold = 0.0
-						meshes = 
-						[
-							"w_sg551_bg_studio_lod0",
-							"w_sg551_bg_silencer_sm1_lod0",
-							"w_sg551_bg_flashlight_sm1_lod0",
-							"w_sg551_bg_optics_sm1_lod0",
-							"w_sg551_bg_optics_sm2_lod0",
-							"w_sg551_bg_optics_sm3_lod0",
-							"w_sg551_bg_magazine_sm0_lod0",
-						]
-					},
-					{
-						_class = "LODGroup"
-						switch_threshold = 24.0
-						meshes = 
-						[
-							"w_sg551_bg_studio_lod1",
-							"w_sg551_bg_silencer_sm1_lod1",
-							"w_sg551_bg_flashlight_sm1_lod1",
-							"w_sg551_bg_optics_sm1_lod1",
-							"w_sg551_bg_optics_sm2_lod1",
-							"w_sg551_bg_optics_sm3_lod1",
-							"w_sg551_bg_magazine_sm0_lod1",
-						]
-					},
-					{
-						_class = "LODGroup"
-						switch_threshold = 70.0
-						meshes = 
-						[
-							"w_sg551_bg_studio_lod2",
-							"w_sg551_bg_optics_sm1_lod2",
-							"w_sg551_bg_magazine_sm0_lod2",
-						]
-					},
-					{
-						_class = "LODGroup"
-						switch_threshold = 200.0
-						meshes = 
-						[
-							"w_sg551_bg_silencer_sm1_lod3",
-							"w_sg551_bg_flashlight_sm1_lod3",
-							"w_sg551_bg_optics_sm1_lod3",
-							"w_sg551_bg_optics_sm2_lod3",
-							"w_sg551_bg_optics_sm3_lod3",
-						]
-					},
-					{
-						_class = "LODGroup"
-						note = "Disabled, Source1 Shadow LOD, Invalid Switch :: -1.0"
-						disabled = true
-						switch_threshold = -1.0
-						meshes = 
-						[
-							"w_sg551_bg_studio_lod4",
-							"w_sg551_bg_silencer_sm1_lod4",
-							"w_sg551_bg_flashlight_sm1_lod4",
-							"w_sg551_bg_optics_sm1_lod4",
-							"w_sg551_bg_optics_sm2_lod4",
-							"w_sg551_bg_optics_sm3_lod4",
-							"w_sg551_bg_magazine_sm0_lod4",
-						]
-					},
-				]
-			},
-			{
 				_class = "PhysicsBodyMarkupList"
 				children = 
 				[
@@ -1240,7 +1168,7 @@
 					{
 						_class = "Bone"
 						name = "hold_R"
-						origin = [ 0.0, 0.0, 0.0 ]
+						origin = [ -2.0, 0.0, 0.0 ]
 						angles = [ 0.0, 0.0, 0.0 ]
 						do_not_discard = true
 					},

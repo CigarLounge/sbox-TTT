@@ -4,7 +4,7 @@
 	{
 		sounds = 
 		[
-			"sounds/weapons/m4/m4_fire-1.vsnd",
+			"sounds/weapons/mp5/m4_fire-mono.vsnd",
 		]
 	}
 }

@@ -344,7 +344,7 @@
 					},
 					{
 						_class = "Attachment"
-						name = "ejection_site"
+						name = "ejection_point"
 						parent_bone = "bolt"
 						relative_origin = [ -2.0, -8.0, -0.8 ]
 						relative_angles = [ 40.000008, 124.999992, 180.0 ]
@@ -4029,7 +4029,7 @@
 				[
 					{
 						_class = "ModelModifier_Translate"
-						translation = [ -3.0, -5.0, -4.5 ]
+						translation = [ -5.0, -4.5, -4.5 ]
 					},
 				]
 			},

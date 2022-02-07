@@ -36,7 +36,7 @@ namespace TTT.Items
 		{
 			General = new WeaponInfo
 			{
-				DrawTime = 1.5f,
+				DrawTime = 1.3f,
 				ReloadTime = 3.2f
 			};
 
@@ -62,7 +62,7 @@ namespace TTT.Items
 				},
 
 				DryFireSound = "dryfire_rifle-1",
-				ShootSound = "m4_fire-1",
+				ShootSound = "aug_fire-1",
 
 				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
 				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
@@ -70,7 +70,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos { Angle = new Angles( -0.784f, 5.21f, 0.5f ), Pos = new Vector3( -4.145f, -0.4f, 0.713f ) };
+			ZoomAnimData = new AngPos { Angle = new Angles( -0.144f, 5.01f, 0.5f ), Pos = new Vector3( -3.431f, -0.4f, -0.405f ) };
 
 			RunAnimData = new AngPos
 			{
