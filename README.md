@@ -11,3 +11,9 @@ If you'd like to contribute, please check out our [document](https://github.com/
 ## DEVELOPMENT
 
 You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg).
+
+Latest video: https://youtu.be/G9ghFjVx-Wc
+
+## LICENSE
+
+Everything within this repo falls under a GPL-3.0 License. Please respect the license and understand that any derative work will need that same license applied.
