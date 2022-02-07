@@ -6,116 +6,6 @@
 		children = 
 		[
 			{
-				_class = "BodyGroupList"
-				children = 
-				[
-					{
-						_class = "BodyGroup"
-						name = "silencer"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_silencer_sm1_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "flashlight"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_flashlight_sm1_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "optics"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_optics_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_optics_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_optics_sm3_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "grenade"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_grenade_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_grenade_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mp7_bg_grenade_sm3_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-				]
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[
@@ -596,142 +486,6 @@
 							exception_list = [  ]
 						}
 					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_silencer_sm1_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_silencer_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_flashlight_sm1_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_flashlight_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_optics_sm1_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_optics_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_optics_sm2_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_optics_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_optics_sm3_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_optics_sm3_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_grenade_sm1_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_grenade_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_grenade_sm2_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_grenade_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mp7_bg_grenade_sm3_lod0"
-						filename = "models\\weapons\\v_mp7_fbx\\mesh\\v_mp7_bg_grenade_sm3_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
 				]
 			},
 			{
@@ -813,6 +567,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -822,6 +579,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP7.Remove_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -831,6 +591,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP7.Insert_Clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -840,6 +603,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP7.Bolt_Action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -873,6 +639,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP7.Bolt_Action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -906,6 +675,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -915,6 +687,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP5.Fire_Select"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -969,6 +744,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1002,6 +780,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1787,7 +1568,10 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1796,7 +1580,10 @@
 								event_frame = 9
 								event_keys = 
 								{
-									name = "Weapon_MP7.Remove_Clip"
+									name = "mp7_remove_clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1805,7 +1592,10 @@
 								event_frame = 34
 								event_keys = 
 								{
-									name = "Weapon_MP7.Insert_Clip"
+									name = "mp7_insert_clip"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1814,7 +1604,10 @@
 								event_frame = 64
 								event_keys = 
 								{
-									name = "Weapon_MP7.Bolt_Action"
+									name = "mp7_bolt_action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1848,6 +1641,9 @@
 								event_keys = 
 								{
 									name = "Weapon_MP7.Bolt_Action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1880,7 +1676,10 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1889,7 +1688,10 @@
 								event_frame = 9
 								event_keys = 
 								{
-									name = "Weapon_MP7.Forearm_Deploy"
+									name = "mp7_deploy-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1898,7 +1700,10 @@
 								event_frame = 22
 								event_keys = 
 								{
-									name = "Weapon_MP5.Fire_Select"
+									name = "mp5_fire_select-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1953,6 +1758,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1986,6 +1794,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2019,6 +1830,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2052,6 +1866,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2085,6 +1902,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2118,6 +1938,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2151,6 +1974,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -3009,10 +2835,24 @@
 				]
 				default_root_bone_name = ""
 			},
+			{
+				_class = "ModelModifierList"
+				children = 
+				[
+					{
+						_class = "ModelModifier_Translate"
+						translation = [ -5.0, -3.0, -5.0 ]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "models/weapons/v_mp7.vanmgrph"
 		importer_notes = """
 Imported from compiled VMDL_C
 ==Warnings==
