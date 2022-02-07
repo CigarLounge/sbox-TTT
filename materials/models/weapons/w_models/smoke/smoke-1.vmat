@@ -1,9 +1,0 @@
-"Layer0"
-{
-	shader	"complex.vfx"
-	TextureColor	"materials/models/weapons/w_models/smoke/smoke-1.tga"
-	F_SPECULAR_CUBE_MAP	"1"
-	F_SPECULAR	"1"
-	TextureRoughness	"materials/models/weapons/w_models/smoke/smoke-1_envmask.tga"
-	g_vEnvironmentMapTint	"[0.700000 0.700000 0.700000 1.000000]"
-}
