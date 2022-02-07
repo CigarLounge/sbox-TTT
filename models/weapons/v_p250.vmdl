@@ -6,83 +6,6 @@
 		children = 
 		[
 			{
-				_class = "BodyGroupList"
-				children = 
-				[
-					{
-						_class = "BodyGroup"
-						name = "silencer"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_p250_bg_silencer_sm1_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "flashlight"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_p250_bg_flashlight_sm1_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "grenade"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_p250_bg_grenade_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_p250_bg_grenade_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_p250_bg_grenade_sm3_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-				]
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[
@@ -500,91 +423,6 @@
 							exception_list = [  ]
 						}
 					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_p250_bg_silencer_sm1_lod0"
-						filename = "models\\weapons\\v_p250_fbx\\mesh\\v_p250_bg_silencer_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_p250_bg_flashlight_sm1_lod0"
-						filename = "models\\weapons\\v_p250_fbx\\mesh\\v_p250_bg_flashlight_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_p250_bg_grenade_sm1_lod0"
-						filename = "models\\weapons\\v_p250_fbx\\mesh\\v_p250_bg_grenade_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_p250_bg_grenade_sm2_lod0"
-						filename = "models\\weapons\\v_p250_fbx\\mesh\\v_p250_bg_grenade_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_p250_bg_grenade_sm3_lod0"
-						filename = "models\\weapons\\v_p250_fbx\\mesh\\v_p250_bg_grenade_sm3_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
 				]
 			},
 			{
@@ -749,7 +587,10 @@
 								event_frame = 8
 								event_keys = 
 								{
-									name = "Weapon_p250.Clip_Out"
+									name = "p250_clip_out"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -758,7 +599,10 @@
 								event_frame = 24
 								event_keys = 
 								{
-									name = "Weapon_p250.Clip_In"
+									name = "p250_clip_in"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -767,7 +611,10 @@
 								event_frame = 42
 								event_keys = 
 								{
-									name = "Weapon_p250.Slide_Shut"
+									name = "p250_slide_shut"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -801,6 +648,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Clip_In-Mid"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -810,6 +660,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Slide_Shut"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -842,7 +695,10 @@
 								event_frame = 0
 								event_keys = 
 								{
-									name = "Player.RevolverDeploy"
+									name = "deploy_pistol-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -851,7 +707,10 @@
 								event_frame = 9
 								event_keys = 
 								{
-									name = "Weapon_p250.Slide_Action"
+									name = "p250_slide_action"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -978,6 +837,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1011,6 +873,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1044,6 +909,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1077,6 +945,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1110,6 +981,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1380,6 +1254,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Clip_Out"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1389,6 +1266,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Clip_In"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1398,6 +1278,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Slide_Shut"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1431,6 +1314,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Clip_In-Mid"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1440,6 +1326,9 @@
 								event_keys = 
 								{
 									name = "Weapon_p250.Slide_Shut"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1473,6 +1362,9 @@
 								event_keys = 
 								{
 									name = "Player.RevolverDeploy"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2085,10 +1977,52 @@
 				]
 				default_root_bone_name = ""
 			},
+			{
+				_class = "AnimConstraintList"
+				children = 
+				[
+					{
+						_class = "AnimConstraintTiltTwist"
+						children = 
+						[
+							{
+								_class = "AnimConstraintBoneInput"
+								parent_bone = "bip01_l_hand"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+							{
+								_class = "AnimConstraintSlave"
+								parent_bone = "bip01_l_wrist"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = -1.0
+							},
+						]
+						input_axis = 0
+						slave_axis = 0
+					},
+				]
+			},
+			{
+				_class = "ModelModifierList"
+				children = 
+				[
+					{
+						_class = "ModelModifier_Translate"
+						translation = [ -2.0, -5.0, -5.0 ]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "models/weapons/v_p250.vanmgrph"
 		importer_notes = """
 Imported from compiled VMDL_C
 ==Warnings==

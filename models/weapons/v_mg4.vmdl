@@ -6,106 +6,6 @@
 		children = 
 		[
 			{
-				_class = "BodyGroupList"
-				children = 
-				[
-					{
-						_class = "BodyGroup"
-						name = "grenade"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_grenade_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_grenade_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_grenade_sm3_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-					{
-						_class = "BodyGroup"
-						name = "bullets"
-						children = 
-						[
-							{
-								_class = "BodyGroupChoice"
-								meshes = [  ]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm1_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm2_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm3_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm4_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm5_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm6_lod0",
-								]
-							},
-							{
-								_class = "BodyGroupChoice"
-								meshes = 
-								[
-									"v_mg4_bg_bullets_sm7_lod0",
-								]
-							},
-						]
-						hidden_in_tools = false
-					},
-				]
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[
@@ -1369,176 +1269,6 @@
 							exception_list = [  ]
 						}
 					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_grenade_sm1_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_grenade_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_grenade_sm2_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_grenade_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_grenade_sm3_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_grenade_sm3_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm1_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm1_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm2_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm2_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm3_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm3_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm4_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm4_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm5_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm5_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm6_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm6_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
-					{
-						_class = "RenderMeshFile"
-						name = "v_mg4_bg_bullets_sm7_lod0"
-						filename = "models\\weapons\\v_mg4_fbx\\mesh\\v_mg4_bg_bullets_sm7_lod0.fbx"
-						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, 0.0, 0.0 ]
-						import_scale = 1.0
-						align_origin_x_type = "None"
-						align_origin_y_type = "None"
-						align_origin_z_type = "None"
-						parent_bone = ""
-						import_filter = 
-						{
-							exclude_by_default = false
-							exception_list = [  ]
-						}
-					},
 				]
 			},
 			{
@@ -1703,7 +1433,10 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_GenericRifle.Jingle"
+									name = "rifle_jingle-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1712,7 +1445,10 @@
 								event_frame = 14
 								event_keys = 
 								{
-									name = "Weapon_mg4.Clip_Out"
+									name = "mg4_clip_out-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1721,7 +1457,10 @@
 								event_frame = 47
 								event_keys = 
 								{
-									name = "Weapon_mg4.Clip_In"
+									name = "mg4_clip_in-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1730,7 +1469,10 @@
 								event_frame = 72
 								event_keys = 
 								{
-									name = "Weapon_mg4.FeedCover_Open"
+									name = "mg4_feed_cover_open-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1739,7 +1481,10 @@
 								event_frame = 96
 								event_keys = 
 								{
-									name = "Weapon_mg4.InsertBullets"
+									name = "mg4_insert_bullets-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1748,7 +1493,10 @@
 								event_frame = 120
 								event_keys = 
 								{
-									name = "Weapon_mg4.FeedCover_Close"
+									name = "mg4_feed_cover_close-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1757,7 +1505,10 @@
 								event_frame = 158
 								event_keys = 
 								{
-									name = "Weapon_mg4.Bolt_Back"
+									name = "mg4_bolt_back-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1766,7 +1517,10 @@
 								event_frame = 179
 								event_keys = 
 								{
-									name = "Weapon_mg4.Bolt_Forward"
+									name = "mg4_bolt_forward-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1800,6 +1554,9 @@
 								event_keys = 
 								{
 									name = "Weapon_mg4.InsertBullets"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1809,6 +1566,9 @@
 								event_keys = 
 								{
 									name = "Weapon_mg4.FeedCover_Close"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1818,6 +1578,9 @@
 								event_keys = 
 								{
 									name = "Weapon_mg4.Bolt_Back"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 							{
@@ -1827,6 +1590,9 @@
 								event_keys = 
 								{
 									name = "Weapon_mg4.Bolt_Forward"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1859,7 +1625,10 @@
 								event_frame = 1
 								event_keys = 
 								{
-									name = "Weapon_MG4.Deploy"
+									name = "mg4_deploy-1"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1914,6 +1683,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1947,6 +1719,9 @@
 								event_keys = 
 								{
 									name = "Weapon_GenericRifle.Jingle"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -1980,6 +1755,9 @@
 								event_keys = 
 								{
 									name = "Grenade.PullPin"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2013,6 +1791,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2046,6 +1827,9 @@
 								event_keys = 
 								{
 									name = "Grenade.Throw"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2079,6 +1863,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Thrust"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2112,6 +1899,9 @@
 								event_keys = 
 								{
 									name = "Weapon.Swing"
+									stop_on_seq_change = false
+									use_layer_sequence = false
+									tags = ""
 								}
 							},
 						]
@@ -2682,10 +2472,52 @@
 				]
 				default_root_bone_name = ""
 			},
+			{
+				_class = "AnimConstraintList"
+				children = 
+				[
+					{
+						_class = "AnimConstraintTiltTwist"
+						children = 
+						[
+							{
+								_class = "AnimConstraintBoneInput"
+								parent_bone = "bip01_l_hand"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+							{
+								_class = "AnimConstraintSlave"
+								parent_bone = "bip01_l_wrist"
+								relative_origin = [ 0.0, 0.0, 0.0 ]
+								relative_angles = [ 0.0, 0.0, 0.0 ]
+								weight = 1.0
+							},
+						]
+						input_axis = 2
+						slave_axis = 0
+					},
+				]
+			},
+			{
+				_class = "ModelModifierList"
+				children = 
+				[
+					{
+						_class = "ModelModifier_Translate"
+						translation = [ -3.0, -5.0, -4.5 ]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "models/weapons/v_mg4.vanmgrph"
 		importer_notes = """
 Imported from compiled VMDL_C
 ==Warnings==
