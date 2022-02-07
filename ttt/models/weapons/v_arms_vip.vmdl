@@ -1,0 +1,278 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "HitboxSetList"
+				children = 
+				[
+					{
+						_class = "HitboxSet"
+						name = "default"
+						children = 
+						[
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_spine4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.93761, 0.0, 0.0 ]
+								hitbox_maxs = [ 1.93766, 1.822822, 1.346623 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_upperarm"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.541531, -3.487217, -3.97667 ]
+								hitbox_maxs = [ 15.489464, 3.023815, 1.781394 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_forearm"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.127844, -2.252635, -2.856174 ]
+								hitbox_maxs = [ 11.481699, 2.883274, 1.775442 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.425442, -2.988829, -2.448159 ]
+								hitbox_maxs = [ 4.040348, 0.962091, 1.979087 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.225269, -0.460696, -0.516713 ]
+								hitbox_maxs = [ 1.445873, 0.599057, 0.576735 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger3"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.214055, -0.459969, -0.475536 ]
+								hitbox_maxs = [ 1.719914, 0.650231, 0.757226 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger2"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.440108, -0.575166, -0.736737 ]
+								hitbox_maxs = [ 2.125568, 0.526747, 0.653372 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger1"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.507361, -0.648512, -0.616263 ]
+								hitbox_maxs = [ 2.055357, 0.531075, 0.951054 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger0"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.62915, -1.49381, -1.874059 ]
+								hitbox_maxs = [ 2.191058, 1.940728, 1.195317 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_finger01"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.449345, -0.536602, -0.572435 ]
+								hitbox_maxs = [ 1.432905, 0.48585, 0.585326 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_ulna"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -3.449583, -2.057674, -2.200616 ]
+								hitbox_maxs = [ 6.710783, 2.851782, 1.774202 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_upperarm"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.586242, -3.501749, -1.891785 ]
+								hitbox_maxs = [ 21.064001, 3.002067, 3.861467 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_forearm"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.800005, -2.256153, -1.882546 ]
+								hitbox_maxs = [ 11.481699, 2.865378, 2.746945 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.446905, -3.689481, -1.983522 ]
+								hitbox_maxs = [ 4.082629, 0.935495, 2.449431 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_finger4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.517557, -0.668807, -0.547586 ]
+								hitbox_maxs = [ 1.614769, 0.77905, 0.848322 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_finger3"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.630164, -0.72336, -1.118093 ]
+								hitbox_maxs = [ 2.019101, 0.746835, 0.962369 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_finger2"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.933358, -0.923147, -0.918897 ]
+								hitbox_maxs = [ 2.159024, 0.560557, 0.766151 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_finger1"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -0.68605, -0.892282, -1.016219 ]
+								hitbox_maxs = [ 1.925192, 0.64903, 0.656686 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_finger0"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.615034, -1.59766, -1.485065 ]
+								hitbox_maxs = [ 2.245761, 1.739307, 1.90595 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_ulna"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -7.523858, -2.06515, -1.882546 ]
+								hitbox_maxs = [ 5.93509, 2.820868, 2.245695 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_wrist"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -2.427341, 0.0, -1.268001 ]
+								hitbox_maxs = [ 0.36529, 1.892349, 0.735454 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_elbow"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.180156, -0.593464, -1.65759 ]
+								hitbox_maxs = [ 4.155674, 2.847679, 2.600442 ]
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "v_arms_vip_bg_hands_lod0"
+						filename = "models\\weapons\\v_arms_vip_fbx\\mesh\\v_arms_vip_bg_hands_lod0.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "AnimFile"
+						name = "ter_hands"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_arms_vip_fbx\\anim\\ter_hands.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 1.0
+						take = 0
+						reverse = false
+					},
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		importer_notes = """
+Imported from compiled VMDL_C
+"""
+	}
+}

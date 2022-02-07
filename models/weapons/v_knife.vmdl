@@ -1,4 +1,629 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
-{
-	m_sMDLFilename = "models/weapons/v_knife.mdl"
-}
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc29:version{3cec427c-1b0e-4d48-a90a-0436f33a6041} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "HitboxSetList"
+				children = 
+				[
+					{
+						_class = "HitboxSet"
+						name = "default"
+						children = 
+						[
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_spine4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.93761, 0.0, 0.0 ]
+								hitbox_maxs = [ 1.93766, 1.822822, 1.346623 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -2.988829, -1.343 ]
+								hitbox_maxs = [ 3.502897, 0.2884, 1.4083 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -3.689481, -2.077465 ]
+								hitbox_maxs = [ 4.667017, 0.34668, 4.83757 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_spine4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.93761, 0.0, 0.0 ]
+								hitbox_maxs = [ 1.93766, 1.822822, 1.346623 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -2.988829, -1.343 ]
+								hitbox_maxs = [ 3.502897, 0.2884, 1.4083 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -3.689481, -2.077465 ]
+								hitbox_maxs = [ 4.667017, 0.34668, 4.83757 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_spine4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.93761, 0.0, 0.0 ]
+								hitbox_maxs = [ 1.93766, 1.822822, 1.346623 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -2.988829, -1.343 ]
+								hitbox_maxs = [ 3.502897, 0.2884, 1.4083 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -3.689481, -2.077465 ]
+								hitbox_maxs = [ 4.667017, 0.34668, 4.83757 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_spine4"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ -1.93761, 0.0, 0.0 ]
+								hitbox_maxs = [ 1.93766, 1.822822, 1.346623 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_r_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -2.988829, -1.343 ]
+								hitbox_maxs = [ 3.502897, 0.2884, 1.4083 ]
+							},
+							{
+								_class = "Hitbox"
+								parent_bone = "bip01_l_hand"
+								surface_property = "default"
+								translation_only = false
+								group_id = 0
+								hitbox_mins = [ 0.0, -3.689481, -2.077465 ]
+								hitbox_maxs = [ 4.667017, 0.34668, 4.83757 ]
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "v_knife_bg_gun_lod0"
+						filename = "models\\weapons\\v_knife_fbx\\mesh\\v_knife_bg_gun_lod0.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "AnimFile"
+						name = "range_attack"
+						activity_name = "ACT_RANGE_ATTACK1"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\range_attack.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 12.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "range_attack2"
+						activity_name = "ACT_RANGE_ATTACK2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\range_attack2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 12.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "idle"
+						activity_name = "ACT_VM_IDLE_1"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = true
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\idle.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 30.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "waveover"
+						activity_name = "ACT_VM_WAVEOVER"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\waveover.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 40.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "waveover2"
+						activity_name = "ACT_VM_WAVEOVER2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\waveover2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 40.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "halt"
+						activity_name = "ACT_VM_HALT"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\halt.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 30.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "halt2"
+						activity_name = "ACT_VM_HALT2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\halt2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 30.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "idle_defend"
+						activity_name = "ACT_VM_IDLE_2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = true
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\idle_defend.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 30.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "prime_grenade"
+						children = 
+						[
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_PLAYSOUND"
+								event_frame = 7
+								event_keys = 
+								{
+									name = "Grenade.PullPin"
+								}
+							},
+						]
+						activity_name = "ACT_VM_PRIME_GRENADE"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\prime_grenade.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 48.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "throw_grenade"
+						children = 
+						[
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_PLAYSOUND"
+								event_frame = 2
+								event_keys = 
+								{
+									name = "Grenade.Throw"
+								}
+							},
+						]
+						activity_name = "ACT_VM_THROW_GRENADE"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\throw_grenade.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 41.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "throw_grenade_underhand"
+						children = 
+						[
+							{
+								_class = "AnimEvent"
+								event_class = "AE_CL_PLAYSOUND"
+								event_frame = 2
+								event_keys = 
+								{
+									name = "Grenade.Throw"
+								}
+							},
+						]
+						activity_name = "ACT_VM_THROW_GRENADE_UNDERHAND"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\throw_grenade_underhand.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 41.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "deploy"
+						activity_name = "ACT_VM_DRAW"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\deploy.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 32.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "holster"
+						activity_name = "ACT_VM_HOLSTER"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\holster.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 33.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "unholster"
+						activity_name = "ACT_VM_UNHOLSTER"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\unholster.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 36.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_left1"
+						activity_name = "ACT_VM_SLASHLEFT1"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_left1.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 34.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_left2"
+						activity_name = "ACT_VM_SLASHLEFT2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_left2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 34.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_right1"
+						activity_name = "ACT_VM_SLASHRIGHT1"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_right1.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 39.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_right2"
+						activity_name = "ACT_VM_SLASHRIGHT2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_right2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 39.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_forward1"
+						activity_name = "ACT_VM_SLASHFORWARD1"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_forward1.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 34.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "slash_forward2"
+						activity_name = "ACT_VM_SLASHFORWARD2"
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models\\weapons\\v_knife_fbx\\anim\\slash_forward2.dmx"
+						start_frame = -1
+						end_frame = -1
+						framerate = 34.0
+						take = 0
+						reverse = false
+					},
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		importer_notes = """
+Imported from compiled VMDL_C
+==Warnings==
+Cannot import non-trivial meshgroup: gun
+Cannot import non-trivial meshgroup: silencer
+Cannot import non-trivial meshgroup: flashlight
+Cannot import non-trivial meshgroup: optics
+
+"""
+	}
+}
