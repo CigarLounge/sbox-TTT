@@ -7,6 +7,7 @@ namespace TTT.Player
 {
 	public partial class TTTPlayer
 	{
+		public const float INTERACT_DISTANCE = 80f;
 		private const float MAX_HINT_DISTANCE = 20480f;
 
 		private EntityHintPanel _currentHintPanel;

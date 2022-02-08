@@ -80,7 +80,7 @@ namespace TTT.Items
 			}
 		}
 
-		public float HintDistance => 80f;
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 
 
 		public string TextOnTick => $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {LibraryTitle}";

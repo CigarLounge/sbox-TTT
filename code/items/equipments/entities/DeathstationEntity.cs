@@ -22,7 +22,7 @@ namespace TTT.Items
 			SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		}
 
-		public float HintDistance => 80f;
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 
 		public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station. ({StoredDamage} charges)";
 

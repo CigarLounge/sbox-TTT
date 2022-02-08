@@ -140,6 +140,7 @@ namespace TTT.Items
 			base.Simulate( client );
 		}
 
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
@@ -149,7 +150,7 @@ namespace TTT.Items
 
 	public class ThrownKnife : FiredEntity, IEntityHint
 	{
-		public float HintDistance => 80f;
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 
 		public string TextOnTick => WeaponGenerics.PickupText( "Knife" );
 		public bool CanHint( TTTPlayer client ) { return true; }

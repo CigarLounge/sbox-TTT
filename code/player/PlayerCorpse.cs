@@ -151,7 +151,7 @@ namespace TTT.Player
 			};
 		}
 
-		public float HintDistance => 80f;
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 
 		public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
 												 : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";

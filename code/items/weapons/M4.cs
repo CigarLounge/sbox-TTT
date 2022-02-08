@@ -85,6 +85,7 @@ namespace TTT.Items
 			};
 		}
 
+		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
