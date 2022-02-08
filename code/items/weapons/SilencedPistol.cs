@@ -10,7 +10,6 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_silencedpistol", Title = "Silenced Pistol" )]
 	[Shop( SlotType.Secondary, 100 )]
-	[Spawnable]
 	[Precached( "models/weapons/v_vertec.vmdl", "models/weapons/w_vertec.vmdl" )]
 	[Hammer.EditorModel( "models/weapons/w_vertec.vmdl" )]
 	public class SilencedPistol : WeaponBase, ICarriableItem, IEntityHint
