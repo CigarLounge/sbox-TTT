@@ -9,7 +9,6 @@ tools_thumbnail_cache.bin
 *.los
 
 # weapon models/materials/sounds
-ttt-models
 materials/models/weapons/*
 models/weapons/*
 sounds/weapons/*
