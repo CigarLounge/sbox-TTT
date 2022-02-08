@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Sandbox;
+using SWB_Base.UI;
 
 namespace SWB_Base
 {
@@ -23,7 +24,7 @@ namespace SWB_Base
 
 		public override void Respawn()
 		{
-			// SetModel( "models/citizen/citizen.vmdl" );
+			// SetModel("models/citizen/citizen.vmdl");
 			// //SetModel( "playermodels/css_playermodels/css_t_arctic.vmdl" );
 
 			// Controller = new WalkController();

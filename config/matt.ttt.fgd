@@ -369,6 +369,16 @@
 ]
 
 //
+// TTT.Items.SilencedPistol
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec.vmdl" ) = ttt_weapon_silencedpistol : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
 // TTT.Items.TTTWeaponRandom
 //
 @PointClass base(BaseProperties_matt_ttt) = ttt_weapon_random : ""

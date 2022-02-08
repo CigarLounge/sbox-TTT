@@ -1,5 +1,6 @@
 ﻿using Sandbox;
 using Sandbox.UI;
+using SWB_Base.UI;
 
 /* 
  * Weapon base UI
@@ -19,7 +20,6 @@ namespace SWB_Base
 		public override void CreateHudElements()
 		{
 			return;
-
 			// var showHUDCL = GetSetting<bool>( "swb_cl_showhud", true );
 			// var showHUDSV = GetSetting<bool>( "swb_sv_showhud", true );
 
@@ -70,23 +70,23 @@ namespace SWB_Base
 
 		public void UISimulate( Client player )
 		{
-			return;
 			// Cutomization menu
-			if ( EnableCustomizationSV > 0 && Input.Pressed( InputButton.Menu ) && AttachmentCategories != null )
-			{
-				if ( customizationMenu == null )
-				{
-					customizationMenu = new CustomizationMenu();
-					customizationMenu.Parent = Local.Hud;
-				}
-				else
-				{
-					customizationMenu.Delete();
-					customizationMenu = null;
-				}
-			}
+			return;
+			// if ( EnableCustomizationSV > 0 && Input.Pressed( InputButton.Menu ) && AttachmentCategories != null )
+			// {
+			// 	if ( customizationMenu == null )
+			// 	{
+			// 		customizationMenu = new CustomizationMenu();
+			// 		customizationMenu.Parent = Local.Hud;
+			// 	}
+			// 	else
+			// 	{
+			// 		customizationMenu.Delete();
+			// 		customizationMenu = null;
+			// 	}
+			// }
 
-			IsCustomizing = customizationMenu != null;
+			// IsCustomizing = customizationMenu != null;
 		}
 	}
 }

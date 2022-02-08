@@ -14,20 +14,21 @@
         <text class="title">Model Editor</text>
 
         <text class="subTitle">Position</text>
-        <SliderEntry min="-30" max="30" step="0.001" name="X" @value="X" @sensitivity="Sensitivity"></SliderEntry>
-        <SliderEntry min="-30" max="30" step="0.001" name="Y" @value="Y"></SliderEntry>
-        <SliderEntry min="-30" max="30" step="0.001" name="Z" @value="Z"></SliderEntry>
+        <swb_SliderEntry min="-30" max="30" step="0.001" name="X" @value="X" @sensitivity="Sensitivity"></swb_SliderEntry>
+        <swb_SliderEntry min="-30" max="30" step="0.001" name="Y" @value="Y"></swb_SliderEntry>
+        <swb_SliderEntry min="-30" max="30" step="0.001" name="Z" @value="Z"></swb_SliderEntry>
 
         <text class="subTitle">Angle</text>
-        <SliderEntry min="-360" max="360" step="0.001" name="Pitch" @value="Pitch"></SliderEntry>
-        <SliderEntry min="-360" max="360" step="0.001" name="Yaw" @value="Yaw"></SliderEntry>
-        <SliderEntry min="-360" max="360" step="0.001" name="Roll" @value="Roll"></SliderEntry>
+        <swb_SliderEntry min="-360" max="360" step="0.001" name="Pitch" @value="Pitch"></swb_SliderEntry>
+        <swb_SliderEntry min="-360" max="360" step="0.001" name="Yaw" @value="Yaw"></swb_SliderEntry>
+        <swb_SliderEntry min="-360" max="360" step="0.001" name="Roll" @value="Roll"></swb_SliderEntry>
 
         <text class="subTitle">Use Data</text>
         <div class="dataButtons">
             <button style="background-color: #9b59b6;" onclick="SetZoomAnimData()">ZoomAnimData</button>
             <button style="background-color: #9b59b6;" onclick="SetRunAnimData()">RunAnimData</button>
             <button style="background-color: #9b59b6;" class="large" onclick="SetCustomizeAnimData()">CustomizeAnimData</button>
+            <button style="background-color: #9b59b6;" @ref="AttachmentAnimDataButton" class="large" onclick="SetSightAttachmentAnimData()">AttachmentAnimData</button>
         </div>
 
         <div class="buttonContainer">
