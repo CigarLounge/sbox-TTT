@@ -9,9 +9,7 @@ tools_thumbnail_cache.bin
 *.los
 
 # models/materials/sounds
-materials/models/weapons/*
-models/weapons/*
-sounds/weapons/*
+ttt-models/*
 
 # vscode
 .vscode
