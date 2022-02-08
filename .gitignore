@@ -15,6 +15,7 @@ tools_thumbnail_cache.bin
 *.sound
 *.wav
 *.mp3
+*.dmx
 
 # vscode
 .vscode
