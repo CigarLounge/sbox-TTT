@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Sandbox;
 
 namespace TTT.Items
@@ -10,6 +10,9 @@ namespace TTT.Items
 	{
 		private static readonly int AMMO_DISTANCE_UP = 24;
 
+		[Property( "Weapons to Spawn", "Comma seperated list of weapons that can potentially spawn here. If empty all [Spawnable] weapons will be conisdered. Ex. \"ttt_weapon_m9, ttt_weapon_m4\"" )]
+		public string WeaponsToSpawn { get; private set; } = "";
+
 		/// <summary>
 		/// Defines the amount of matching ammo entities that should be spawned near the weapons.
 		/// </summary>
@@ -18,13 +21,26 @@ namespace TTT.Items
 
 		public void Activate()
 		{
-			List<Type> wepTypes = Utils.GetTypesWithAttribute<SWB_Base.WeaponBase, SpawnableAttribute>();
+			List<Type> wepTypes = new();
+			if ( string.IsNullOrEmpty( WeaponsToSpawn ) )
+			{
+				wepTypes = Utils.GetTypesWithAttribute<SWB_Base.WeaponBase, SpawnableAttribute>();
+			}
+			else
+			{
+				// No string array support in hammer, let's do a little trimming.
+				var weaponNames = WeaponsToSpawn.Split( ',' ).Select( ( w ) => w.Trim() );
+				foreach ( var name in weaponNames )
+				{
+					var weaponType = Utils.GetTypeByLibraryTitle<Type>( name );
+					if ( weaponType != null ) wepTypes.Add( weaponType );
+				}
+			}
 
 			if ( wepTypes.Count <= 0 )
 			{
 				return;
 			}
-
 
 			Type weaponTypeToSpawn = Utils.RNG.FromList( wepTypes );
 			SWB_Base.WeaponBase weapon = Utils.GetObjectByType<SWB_Base.WeaponBase>( weaponTypeToSpawn );

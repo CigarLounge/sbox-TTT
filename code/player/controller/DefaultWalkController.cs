@@ -54,6 +54,7 @@ namespace TTT.Player
 			Duck = new Duck( this );
 			DefaultSpeed = 237f;
 			WalkSpeed = 110f;
+			GroundFriction = 7.0f;
 		}
 
 		public override void Simulate()

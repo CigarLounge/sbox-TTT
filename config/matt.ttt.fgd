@@ -393,6 +393,7 @@
 //
 @PointClass base(BaseProperties_matt_ttt) = ttt_weapon_random : ""
 [
+	weapons_to_spawn(string) : "Weapons To Spawn" : "" : "Comma seperated list of weapons that can potentially spawn here. If empty all [Spawnable] weapons will be conisdered. Ex. \"ttt_weapon_m9, ttt_weapon_m4\""
 	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
 ]
 
