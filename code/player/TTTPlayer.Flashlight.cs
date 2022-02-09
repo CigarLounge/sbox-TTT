@@ -7,7 +7,7 @@ namespace TTT.Player
 		private Flashlight _worldFlashlight;
 		private Flashlight _viewFlashlight;
 
-		private const float FLASHLIGHT_DISTANCE = 20f;
+		private const float FLASHLIGHT_DISTANCE = 35f;
 		private const float SMOOTH_SPEED = 25f;
 
 		public bool HasFlashlightEntity

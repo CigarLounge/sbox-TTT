@@ -80,7 +80,7 @@ namespace TTT.Player
 			Animator = new StandardPlayerAnimator();
 
 			EnableHideInFirstPerson = true;
-			EnableShadowInFirstPerson = false;
+			EnableShadowInFirstPerson = true;
 			EnableDrawing = true;
 
 			Credits = 0;

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Sandbox;
 
 using SWB_Base;
@@ -10,35 +9,47 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_silencedpistol", Title = "Silenced Pistol" )]
 	[Shop( SlotType.Secondary, 100, new Type[] { typeof( TraitorRole ) } )]
-	[Precached( "models/weapons/v_vertec.vmdl", "models/weapons/w_vertec.vmdl" )]
-	[Hammer.EditorModel( "models/weapons/w_vertec.vmdl" )]
+	[Precached( "models/weapons/v_vertec-silenced.vmdl", "models/weapons/w_vertec-silenced.vmdl" )]
+	[Hammer.EditorModel( "models/weapons/w_vertec-silenced.vmdl" )]
 	public class SilencedPistol : M9
 	{
-		public new ItemData GetItemData() { return _data; }
+		public override string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		public override ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( SilencedPistol ) );
+
+		public override string ViewModelPath => "models/weapons/v_vertec-silenced.vmdl";
+		public override string WorldModelPath => "models/weapons/w_vertec-silenced.vmdl";
 
 		public SilencedPistol()
 		{
-			AttachmentCategories = new List<AttachmentCategory>()
+			Primary = new ClipInfo
 			{
-				new AttachmentCategory
+				Ammo = 7,
+				AmmoType = AmmoType.SMG,
+				ClipSize = 7,
+
+				BulletSize = 6f,
+				Damage = 30f,
+				Force = 2f,
+				Spread = 0.06f,
+				Recoil = 4f,
+				RPM = 300,
+				FiringType = FiringType.semi,
+				ScreenShake = new ScreenShake
 				{
-					Name = AttachmentCategoryName.Muzzle,
-					BoneOrAttachment = "muzzle",
-					Attachments = new List<AttachmentBase>()
-					{
-						new SWB_Base.Attachments.PistolSilencer
-						{
-							Enabled = true,
-							MuzzleFlashParticle = "particles/swb/muzzle/flash_medium_silenced.vpcf",
-							ShootSound = "vertec_fire_silenced-1",
-							ViewParentBone = "barrel",
-							ViewTransform = new Transform { Position = new Vector3(-0.3f, 0f, 8.5f), Rotation = Rotation.From(new Angles(-90f, 0f, 0f)), Scale = 7f },
-							WorldParentBone = "ak47_bolt",
-							WorldTransform = new Transform { Position = new Vector3(8.65f, -0.5f, 0f), Rotation = Rotation.From(new Angles(0f, 0f, 0f)), Scale = 7f },
-						}
-					}
+					Length = 0.5f,
+					Speed = 4.0f,
+					Size = 1.0f,
+					Rotation = 0.5f
 				},
+
+				DryFireSound = "dryfire_pistol-1",
+				ShootSound = "vertec_fire_silenced-1",
+
+				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
+				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
+
+				InfiniteAmmo = 0
 			};
 		}
 	}

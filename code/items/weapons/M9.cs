@@ -15,7 +15,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_vertec.vmdl" )]
 	public class M9 : WeaponBase, ICarriableItem, IEntityHint
 	{
-		public ItemData GetItemData() { return _data; }
+		public virtual ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( M9 ) );
 		public Type DroppedType => typeof( SMGAmmo );
 
@@ -93,7 +93,7 @@ namespace TTT.Items
 		}
 
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
-		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		public virtual string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

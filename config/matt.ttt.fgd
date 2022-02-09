@@ -371,7 +371,7 @@
 //
 // TTT.Items.SilencedPistol
 //
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec.vmdl" ) = ttt_weapon_silencedpistol : ""
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec-silenced.vmdl" ) = ttt_weapon_silencedpistol : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
@@ -381,7 +381,7 @@
 //
 // TTT.Items.SilentFox
 //
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7.vmdl" ) = ttt_weapon_silentfox : ""
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7-silenced.vmdl" ) = ttt_weapon_silentfox : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
