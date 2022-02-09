@@ -9,7 +9,6 @@ namespace TTT.Items
 {
 	[Library( "ttt_weapon_aug", Title = "AUG" )]
 	[Shop( SlotType.Primary, 100 )]
-	[Spawnable]
 	[Precached( "models/weapons/v_aug.vmdl", "models/weapons/w_aug.vmdl" )]
 	[Hammer.EditorModel( "models/weapons/w_aug.vmdl" )]
 	public class AUG : WeaponBase, ICarriableItem, IEntityHint

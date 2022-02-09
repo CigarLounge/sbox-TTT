@@ -37,7 +37,7 @@ namespace TTT.Items
 			General = new WeaponInfo
 			{
 				DrawTime = 1.5f,
-				ReloadTime = 3.2f
+				ReloadTime = 3.0f
 			};
 
 			Primary = new ClipInfo
