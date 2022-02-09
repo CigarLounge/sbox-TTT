@@ -52,8 +52,8 @@ namespace TTT.Player
 		public DefaultWalkController() : base()
 		{
 			Duck = new Duck( this );
-			DefaultSpeed = 243f;
-			WalkSpeed = 120f;
+			DefaultSpeed = 237f;
+			WalkSpeed = 110f;
 		}
 
 		public override void Simulate()
