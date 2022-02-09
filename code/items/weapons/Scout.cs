@@ -83,18 +83,6 @@ namespace TTT.Items
 
 				InfiniteAmmo = 0
 			};
-
-			RunAnimData = new AngPos
-			{
-				Angle = new Angles( 10, 40, 0 ),
-				Pos = new Vector3( 5, 0, 0 )
-			};
-
-			CustomizeAnimData = new AngPos
-			{
-				Angle = new Angles( -2.25f, 51.84f, 0f ),
-				Pos = new Vector3( 11.22f, -4.96f, 1.078f )
-			};
 		}
 
 		public override void Simulate( Client client )
