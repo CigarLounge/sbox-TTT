@@ -51,10 +51,9 @@ namespace TTT.Player
 
 		public DefaultWalkController() : base()
 		{
-			GroundFriction = 8f;
-			DefaultSpeed = 175f;
-
 			Duck = new Duck( this );
+			DefaultSpeed = 243f;
+			WalkSpeed = 120f;
 		}
 
 		public override void Simulate()
@@ -127,6 +126,17 @@ namespace TTT.Player
 		public void OnPreTickMove()
 		{
 			_fallVelocity = Velocity.z;
+		}
+
+		public override float GetWishSpeed()
+		{
+			var ws = Duck.GetWishSpeed();
+			if ( ws >= 0 ) return ws;
+
+			if ( Input.Down( InputButton.Run ) && IsSprintEnabled ) return SprintSpeed;
+			if ( Input.Down( InputButton.Run ) ) return WalkSpeed;
+
+			return DefaultSpeed;
 		}
 
 		public override void CategorizePosition( bool stayOnGround )
