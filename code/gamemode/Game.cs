@@ -15,7 +15,7 @@ namespace TTT.Gamemode
 		public static Game Instance { get; private set; }
 
 		[Net, Change]
-		public BaseRound Round { get; private set; }
+		public BaseRound Round { get; private set; } = new TTT.Rounds.WaitingRound();
 
 		[Net]
 		public MapSelectionHandler MapSelection { get; set; } = new();
@@ -40,7 +40,6 @@ namespace TTT.Gamemode
 			if ( IsServer )
 			{
 				ShopManager.Load();
-				Round = new WaitingRound();
 			}
 
 			if ( IsClient )
