@@ -74,10 +74,15 @@ namespace TTT.Rounds
 		{
 			Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
 
-			player.GiveAmmo( SWB_Base.AmmoType.SMG, 9000 );
-			player.GiveAmmo( SWB_Base.AmmoType.Pistol, 9000 );
-			player.GiveAmmo( SWB_Base.AmmoType.Sniper, 9000 );
-			player.GiveAmmo( SWB_Base.AmmoType.Rifle, 9000 );
+			if ( player.Inventory.TryAdd( new P250(), true, false ) )
+			{
+				player.GiveAmmo( SWB_Base.AmmoType.SMG, 100 );
+			}
+
+			if ( player.Inventory.TryAdd( new M4(), true, false ) )
+			{
+				player.GiveAmmo( SWB_Base.AmmoType.Rifle, 60 );
+			}
 		}
 
 		protected override void OnTimeUp()
