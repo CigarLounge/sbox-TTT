@@ -22,7 +22,7 @@ namespace TTT.UI.Menu
 			CreateBinding( this, "Right", new() { InputButton.Right } );
 			CreateBinding( this, "Jump", new() { InputButton.Jump } );
 			CreateBinding( this, "Crouch", new() { InputButton.Duck } );
-			CreateBinding( this, "Sprint", new() { InputButton.Run } );
+			CreateBinding( this, "Walk", new() { InputButton.Run } );
 			Add.Label( "" );
 
 			Add.Label( "Weapons", "h1" );
