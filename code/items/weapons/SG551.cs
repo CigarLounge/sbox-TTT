@@ -62,7 +62,7 @@ namespace TTT.Items
 				},
 
 				DryFireSound = "dryfire_rifle-1",
-				ShootSound = "m4_fire-1",
+				ShootSound = "sg551_fire-1",
 
 				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
 				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
