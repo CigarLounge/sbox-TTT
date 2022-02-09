@@ -21,7 +21,7 @@ namespace TTT.UI
 
 			wrapper.Add.Label( "TTT is work-in-progress!" );
 			wrapper.Add.Label( "Everything you see is subject to change or is actively being worked on!" );
-			wrapper.Add.Label( "Our project is open source, consider contributing at github.com/TTT" );
+			wrapper.Add.Label( "Our project is open source, consider contributing at github.com/mzegar/sbox-TTT" );
 
 			AddClass( "fullscreen" );
 		}
