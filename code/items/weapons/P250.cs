@@ -71,7 +71,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos { Angle = new Angles( -1.164f, 5.18f, 0f ), Pos = new Vector3( -3.215f, -0.4f, 0.835f ) };
+			ZoomAnimData = new AngPos { Angle = new Angles( -1.164f, 5.18f, 0f ), Pos = new Vector3( -3.405f, -0.4f, 1.286f ) };
 
 			RunAnimData = new AngPos
 			{

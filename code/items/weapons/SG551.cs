@@ -85,6 +85,12 @@ namespace TTT.Items
 			};
 		}
 
+		public override void Simulate( Client client )
+		{
+			WeaponGenerics.Simulate( client, Primary, DroppedType );
+			base.Simulate( client );
+		}
+
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
 		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }

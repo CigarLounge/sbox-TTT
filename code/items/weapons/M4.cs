@@ -70,7 +70,7 @@ namespace TTT.Items
 				InfiniteAmmo = 0
 			};
 
-			ZoomAnimData = new AngPos { Angle = new Angles( -1.52f, 5.04f, 0f ), Pos = new Vector3( -2.669f, 0f, 0.599f ) };
+			ZoomAnimData = new AngPos { Angle = new Angles( -0.79f, 5.19f, 0f ), Pos = new Vector3( -4.169f, 0f, 0.269f ) };
 
 			RunAnimData = new AngPos
 			{
@@ -83,6 +83,12 @@ namespace TTT.Items
 				Angle = new Angles( -3.71f, 48.72f, 0f ),
 				Pos = new Vector3( 27.694f, -4.96f, 2.24f )
 			};
+		}
+
+		public override void Simulate( Client client )
+		{
+			WeaponGenerics.Simulate( client, Primary, DroppedType );
+			base.Simulate( client );
 		}
 
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
