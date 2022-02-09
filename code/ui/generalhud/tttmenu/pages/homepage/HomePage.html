@@ -1,0 +1,18 @@
+<link rel="stylesheet" href="HomePage.scss">
+
+<div class="root">
+    <Button icon="videocam" @ref="ForceSpectatorButton" onclick="ToggleForceSpectator()"></Button>
+    <br />
+
+    <Button icon="keyboard" onclick="GoToKeyBindingsPage()">Keybindings</Button>
+    <br />
+
+    <Button icon="settings" onclick="GoToSettingsPage()">Settings</Button>
+    <br />
+
+    <Button @ref="ShopEditorButton" class="inactive" icon="shopping_cart" onclick="GoToShopEditor()">Shop Editor</Button>
+    <br />
+
+    <Button icon="science" onclick="GoToComponentTesting()">Component Testing</Button>
+    <br />
+</div>

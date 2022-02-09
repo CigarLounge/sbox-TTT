@@ -1,0 +1,105 @@
+QuickShop {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.15s ease-out;
+    pointer-events: all;
+    text-align: center;
+    z-index: 100;
+
+    .quickshop-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s ease-out;
+        transform: scale(0.9);
+
+        &.pop-in {
+            transform: scale(1);
+        }
+
+        .credit-label {
+            margin: 25px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .item-panel {
+            flex-wrap: wrap;
+            max-width: 680px;
+            overflow: scroll;
+            justify-content: flex-start;
+            max-height: 700px;
+        }
+
+        .item-description-label {
+            margin: 25px;
+            font-size: 18px;
+            transition: opacity 0.25s ease-out;
+            opacity: 0;
+
+            &.fade-in {
+                opacity: 1;
+            }
+        }
+    }
+
+    &.fade-in {
+        opacity: 1;
+    }
+}
+
+QuickShopItem {
+    opacity: 1;
+    flex-direction: column;
+    width: 90px;
+    height: 90px;
+    margin: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    transition: transform 0.1s ease-in;
+    box-shadow: 0 0 10px black;
+    white-space: nowrap;
+
+    &:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    &:active {
+        transform: scale(1);
+    }
+
+    .item-icon {
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 100%;
+        height: 100%;
+    }
+
+    .item-name-label {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .item-price-label {
+        position: absolute;
+        top: -32px;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    &.cannot-purchase {
+        opacity: 0.35;
+        transform: scale(1);
+        cursor: none;
+    }
+}
