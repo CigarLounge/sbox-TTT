@@ -6,7 +6,7 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 
 ## LICENSE
 
-Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` does NOT fall under the GPL-3.0 License. These are compiled files which I am forced to distribute whenever a client downloads the gamemode (therefore they are included in the repo). Everything else is GPL-3.0 License, so go wild.
+Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` does NOT fall under the GPL-3.0 License. These are compiled files which I am forced to distribute whenever a client downloads the game (therefore they are included in the repo). Everything else is GPL-3.0 License, so go wild.
 
 ## CONTRIBUTING
 
