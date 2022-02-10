@@ -96,7 +96,7 @@ namespace TTT.Items
 				return;
 			}
 
-			TraceResult tr = Trace.Ray( player.EyePos, player.EyePos + player.EyeRot.Forward * MAX_INTERACT_DISTANCE )
+			TraceResult tr = Trace.Ray( player.EyePosition, player.EyePosition + player.EyeRotation.Forward * MAX_INTERACT_DISTANCE )
 					.EntitiesOnly()
 					.Ignore( player )
 					.Run();
@@ -112,7 +112,7 @@ namespace TTT.Items
 			player.SetAnimInt( "holdtype", 4 );
 			player.SetAnimInt( "holdtype_handedness", 0 );
 
-			tr.Entity.Velocity += player.EyeRot.Forward * PUSHING_FORCE;
+			tr.Entity.Velocity += player.EyeRotation.Forward * PUSHING_FORCE;
 
 			_ = WaitForAnimationFinish();
 		}
@@ -143,8 +143,8 @@ namespace TTT.Items
 				return;
 			}
 
-			Vector3 eyePos = player.EyePos;
-			Vector3 eyeDir = player.EyeRot.Forward;
+			Vector3 eyePos = player.EyePosition;
+			Vector3 eyeDir = player.EyeRotation.Forward;
 
 			TraceResult tr = Trace.Ray( eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE )
 				.UseHitboxes()

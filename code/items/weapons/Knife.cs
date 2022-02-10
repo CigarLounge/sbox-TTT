@@ -65,8 +65,8 @@ namespace TTT.Items
 			TimeSinceSecondaryAttack = 0;
 
 			var hitEntity = true;
-			var pos = Owner.EyePos;
-			var forward = Owner.EyeRot.Forward;
+			var pos = Owner.EyePosition;
+			var forward = Owner.EyeRotation.Forward;
 			var trace = Trace.Ray( pos, pos + forward * DamageDistance )
 				.Ignore( this )
 				.Ignore( Owner )
@@ -122,15 +122,15 @@ namespace TTT.Items
 				knife.SetModel( WorldModelPath );
 
 			knife.Owner = Owner;
-			knife.Position = MathUtil.RelativeAdd( Position, _entitySpawnOffset, Owner.EyeRot );
-			knife.Rotation = Owner.EyeRot * Rotation.From( _entityAngles );
+			knife.Position = MathUtil.RelativeAdd( Position, _entitySpawnOffset, Owner.EyeRotation );
+			knife.Rotation = Owner.EyeRotation * Rotation.From( _entityAngles );
 			knife.RemoveDelay = -1;
 			knife.UseGravity = true;
 			knife.Speed = _primaryEntitySpeed;
 			knife.IsSticky = true;
 			knife.Damage = SwingDamage;
 			knife.Force = Primary.Force;
-			knife.StartVelocity = MathUtil.RelativeAdd( Vector3.Zero, _entityVelocity, Owner.EyeRot );
+			knife.StartVelocity = MathUtil.RelativeAdd( Vector3.Zero, _entityVelocity, Owner.EyeRotation );
 			knife.Start();
 		}
 

@@ -18,7 +18,7 @@ namespace TTT.Player
 			}
 			else
 			{
-				trace = Trace.Ray( EyePos, EyePos + EyeRot.Forward * maxHintDistance );
+				trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * maxHintDistance );
 			}
 
 			trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( this );

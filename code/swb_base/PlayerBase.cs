@@ -96,7 +96,7 @@ namespace SWB_Base
 				{
 					if ( dropped.PhysicsGroup != null )
 					{
-						dropped.PhysicsGroup.Velocity = Velocity + (EyeRot.Forward + EyeRot.Up) * 300;
+						dropped.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * 300;
 					}
 
 					timeSinceDropped = 0;

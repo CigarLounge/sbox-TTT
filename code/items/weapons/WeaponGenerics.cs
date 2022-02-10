@@ -31,9 +31,9 @@ namespace TTT.Items
 					{
 						TTTAmmo ammoBox = Utils.GetObjectByType<TTTAmmo>( ammoType );
 
-						ammoBox.Position = client.Pawn.EyePos + client.Pawn.EyeRot.Forward * AMMO_DROP_POSITION_OFFSET;
-						ammoBox.Rotation = client.Pawn.EyeRot;
-						ammoBox.Velocity = client.Pawn.EyeRot.Forward * AMMO_DROP_VELOCITY;
+						ammoBox.Position = client.Pawn.EyePosition + client.Pawn.EyeRotation.Forward * AMMO_DROP_POSITION_OFFSET;
+						ammoBox.Rotation = client.Pawn.EyeRotation;
+						ammoBox.Velocity = client.Pawn.EyeRotation.Forward * AMMO_DROP_VELOCITY;
 						ammoBox.SetCurrentAmmo( clip.Ammo );
 					}
 
