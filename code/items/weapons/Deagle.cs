@@ -43,7 +43,7 @@ namespace TTT.Items
 			Primary = new ClipInfo
 			{
 				Ammo = 7,
-				AmmoType = AmmoType.SMG,
+				AmmoType = AmmoType.Revolver,
 				ClipSize = 7,
 
 				BulletSize = 6f,
