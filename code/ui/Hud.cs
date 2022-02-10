@@ -98,7 +98,7 @@ namespace TTT.UI
 					AddChild<BreathIndicator>(),
 					AddChild<StaminaIndicator>(),
 					AddChild<QuickShop>(),
-					AddChild<DamageIndicator>()
+					AddChild<SWB_Base.DamageIndicator>()
 				};
 			}
 
