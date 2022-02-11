@@ -150,24 +150,11 @@ namespace TTT.Player
 			using ( Prediction.Off() )
 			{
 				RPCs.ClientOnPlayerDied( this );
+				Role?.OnKilled( _lastDamageInfo.Attacker as TTTPlayer );
 
 				if ( Gamemode.Game.Instance.Round is Rounds.InProgressRound )
 				{
 					SyncMIA();
-
-					if ( Role is TraitorRole )
-					{
-						var clients = Utils.GiveAliveDetectivesCredits( 100 );
-						RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 1 equipment credit for your performance.", Color.White );
-					}
-					else if ( Role is DetectiveRole )
-					{
-						if ( _lastDamageInfo.Attacker.IsValid() && _lastDamageInfo.Attacker is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role is TraitorRole )
-						{
-							player.Credits += 100;
-							RPCs.ClientDisplayMessage( To.Single( player.Client ), "You have received 1 credit for killing a Detective", Color.White );
-						}
-					}
 				}
 				else if ( Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
 				{

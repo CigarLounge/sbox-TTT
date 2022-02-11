@@ -48,6 +48,12 @@ namespace TTT.Roles
 			base.OnSelect( player );
 		}
 
+		public override void OnKilled( TTTPlayer killer )
+		{
+			var clients = Utils.GiveAliveDetectivesCredits( 100 );
+			RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );
+		}
+
 		// serverside function
 		public override void CreateDefaultShop()
 		{

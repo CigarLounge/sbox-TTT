@@ -65,6 +65,11 @@ namespace TTT.Roles
 
 		}
 
+		public virtual void OnKilled( TTTPlayer killer )
+		{
+
+		}
+
 		// serverside function
 		public virtual void InitShop()
 		{

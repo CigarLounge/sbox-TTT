@@ -36,6 +36,15 @@ namespace TTT.Roles
 			base.OnSelect( player );
 		}
 
+		public override void OnKilled( TTTPlayer killer )
+		{
+			if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role is TraitorRole )
+			{
+				killer.Credits += 100;
+				RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
+			}
+		}
+
 		// serverside function
 		public override void CreateDefaultShop()
 		{
