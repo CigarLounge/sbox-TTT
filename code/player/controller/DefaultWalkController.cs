@@ -35,8 +35,8 @@ namespace TTT.Player
 		public const float STAMINA_LOSS_PER_SPRINT_JUMP = 30f;
 		public const float STAMINA_GAIN_PER_SECOND = 10f;
 
-		public const float FALL_DAMAGE_VELOCITY = 550f;
-		public const float FALL_DAMAGE_SCALE = 0.25f;
+		public const float FALL_DAMAGE_VELOCITY = 630f;
+		public const float FALL_DAMAGE_SCALE = 0.20f;
 
 		public const float MAX_BREATH = 100f;
 		public const float BREATH_LOSS_PER_SECOND = 10f;
@@ -162,13 +162,19 @@ namespace TTT.Player
 			{
 				using ( Prediction.Off() )
 				{
+					var totalDamage = Math.Floor( (MathF.Abs( _fallVelocity ) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE );
+					if ( totalDamage <= 0 )
+					{
+						return;
+					}
+
 					DamageInfo damageInfo = new()
 					{
 						Attacker = Pawn,
 						Flags = DamageFlags.Fall,
 						HitboxIndex = (int)HitboxIndex.LeftFoot,
 						Position = Position,
-						Damage = (MathF.Abs( _fallVelocity ) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE
+						Damage = (float)totalDamage
 					};
 
 					Pawn.TakeDamage( damageInfo );
