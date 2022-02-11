@@ -103,7 +103,8 @@ namespace TTT.Player
 			// Play pain sounds
 			if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 			{
-				PlaySound( "fall" ).SetVolume( 0.5f ).SetPosition( info.Position );
+				var volume = 0.05f * info.Damage;
+				PlaySound( "fall" ).SetVolume( volume > 0.5f ? 0.5f : volume ).SetPosition( info.Position );
 			}
 			else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 			{

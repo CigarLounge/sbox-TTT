@@ -70,7 +70,7 @@ namespace TTT.Player
 		[ClientRpc]
 		public void ClientTookDamage( Vector3 position, float damage )
 		{
-			Event.Run( TTTEvent.Player.TakeDamage, this, damage );
+			SWB_Base.DamageIndicator.Current?.OnHit( position );
 		}
 
 

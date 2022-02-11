@@ -204,7 +204,7 @@ namespace SWB_Base
 		{
 			//DebugOverlay.Sphere( pos, 5.0f, Color.Red, false, 50.0f );
 
-			DamageIndicator.Current?.OnHit( pos );
+			// DamageIndicator.Current?.OnHit( pos );
 		}
 
 		[ClientRpc]
