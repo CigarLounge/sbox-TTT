@@ -94,14 +94,7 @@ namespace TTT.Player
 
 		public bool HasEmptySlot( SlotType slotType )
 		{
-			// Let's let them carry max perks for now.
-			if ( slotType == SlotType.Perk )
-			{
-				return true;
-			}
-
 			int itemsInSlot = List.Count( x => ((IItem)x).GetItemData().SlotType == slotType );
-
 			return SlotCapacity[(int)slotType - 1] - itemsInSlot > 0;
 		}
 

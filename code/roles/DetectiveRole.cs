@@ -25,13 +25,16 @@ namespace TTT.Roles
 		{
 			if ( Host.IsServer && player.Team == DefaultTeam )
 			{
-				foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
+				if ( player.Team == DefaultTeam )
 				{
-					player.SendClientRole( To.Single( otherPlayer ) );
+					foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
+					{
+						player.SendClientRole( To.Single( otherPlayer ) );
+					}
 				}
-			}
 
-			player.Inventory.Add( new BodyArmor() );
+				player.Inventory.Add( new BodyArmor() );
+			}
 
 			base.OnSelect( player );
 		}
