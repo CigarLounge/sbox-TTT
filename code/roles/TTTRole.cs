@@ -22,15 +22,10 @@ namespace TTT.Roles
 	public abstract class TTTRole
 	{
 		public readonly string Name;
-
 		public virtual Color Color => Color.Black;
-
 		public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );
-
-		public virtual int DefaultCredits => 50;
-
+		public virtual int DefaultCredits => 0;
 		public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
-
 		public virtual bool IsSelectable => true;
 
 		public Shop Shop

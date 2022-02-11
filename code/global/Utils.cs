@@ -7,6 +7,7 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.Globals
 {
@@ -45,6 +46,22 @@ namespace TTT.Globals
 		}
 
 		public static List<TTTPlayer> GetAlivePlayers() => GetPlayers( ( pl ) => pl.LifeState == LifeState.Alive );
+
+		public static List<Client> GiveAliveDetectivesCredits( int credits )
+		{
+			List<Client> players = new();
+
+			foreach ( Client client in Client.All )
+			{
+				if ( client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role is DetectiveRole )
+				{
+					player.Credits += credits;
+					players.Add( client );
+				}
+			}
+
+			return players;
+		}
 
 		public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
 

@@ -18,6 +18,7 @@ namespace TTT.Items
 		private readonly ItemData _data = new( typeof( Deagle ) );
 		public Type DroppedType => typeof( MagnumAmmo );
 
+		public override float TuckRange => -1f;
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Pistol;
 		public override string HandsModelPath => "weapons/swb/hands/rebel/v_hands_rebel.vmdl";

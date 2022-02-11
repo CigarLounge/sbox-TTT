@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Events;
@@ -73,6 +74,7 @@ namespace TTT.Player
 			IsForcedSpectator = false;
 		}
 
+		// Let's clean this up at some point, it's poorly written.
 		public override void Respawn()
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
@@ -131,6 +133,7 @@ namespace TTT.Player
 			}
 		}
 
+		// Let's clean this up at some point, it's poorly written.
 		public override void OnKilled()
 		{
 			base.OnKilled();
@@ -151,6 +154,20 @@ namespace TTT.Player
 				if ( Gamemode.Game.Instance.Round is Rounds.InProgressRound )
 				{
 					SyncMIA();
+
+					if ( Role is TraitorRole )
+					{
+						var clients = Utils.GiveAliveDetectivesCredits( 1 );
+						RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 1 equipment credit for your performance.", Color.White );
+					}
+					else if ( Role is DetectiveRole )
+					{
+						if ( _lastDamageInfo.Attacker.IsValid() && _lastDamageInfo.Attacker is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role is TraitorRole )
+						{
+							player.Credits += 1;
+							RPCs.ClientDisplayMessage( To.Single( player.Client ), "You have received 1 credit for killing a Detective", Color.White );
+						}
+					}
 				}
 				else if ( Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
 				{
