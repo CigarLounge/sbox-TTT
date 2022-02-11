@@ -132,7 +132,7 @@ namespace TTT.Rounds
 				}
 				else
 				{
-					RoundEndTime += 1f;
+					TimeUntilRoundEnd += 1f;
 				}
 
 				_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
