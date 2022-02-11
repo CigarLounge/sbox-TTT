@@ -157,14 +157,14 @@ namespace TTT.Player
 
 					if ( Role is TraitorRole )
 					{
-						var clients = Utils.GiveAliveDetectivesCredits( 1 );
+						var clients = Utils.GiveAliveDetectivesCredits( 100 );
 						RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 1 equipment credit for your performance.", Color.White );
 					}
 					else if ( Role is DetectiveRole )
 					{
 						if ( _lastDamageInfo.Attacker.IsValid() && _lastDamageInfo.Attacker is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role is TraitorRole )
 						{
-							player.Credits += 1;
+							player.Credits += 100;
 							RPCs.ClientDisplayMessage( To.Single( player.Client ), "You have received 1 credit for killing a Detective", Color.White );
 						}
 					}
