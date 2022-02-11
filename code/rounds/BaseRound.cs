@@ -20,7 +20,7 @@ namespace TTT.Rounds
 		{
 			if ( Host.IsServer && RoundDuration > 0 )
 			{
-				TimeUntilRoundEnd = RoundDuration;
+				TimeUntilRoundEnd = RoundDuration + 1; // Add 1 second due to game tick.
 			}
 
 			OnStart();
