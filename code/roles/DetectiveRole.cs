@@ -31,7 +31,6 @@ namespace TTT.Roles
 				}
 			}
 
-			Log.Info( player.Client.Name );
 			player.Inventory.Add( new BodyArmor() );
 
 			base.OnSelect( player );
