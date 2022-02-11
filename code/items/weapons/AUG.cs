@@ -17,6 +17,7 @@ namespace TTT.Items
 		private readonly ItemData _data = new( typeof( AUG ) );
 		public Type DroppedType => typeof( RifleAmmo );
 
+		public override float TuckRange => -1f;
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Rifle;
 		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";

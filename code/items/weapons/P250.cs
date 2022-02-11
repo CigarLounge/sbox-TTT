@@ -19,6 +19,7 @@ namespace TTT.Items
 		private readonly ItemData _data = new( typeof( P250 ) );
 		public Type DroppedType => typeof( SMGAmmo );
 
+		public override float TuckRange => -1f;
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Pistol;
 		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";

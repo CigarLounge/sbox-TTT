@@ -13,9 +13,7 @@ namespace TTT.Roles
 	public class DetectiveRole : TTTRole
 	{
 		public override Color Color => Color.FromBytes( 25, 102, 255 );
-
-		public override int DefaultCredits => 100;
-
+		public override int DefaultCredits => 200;
 		public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( InnocentTeam ) );
 
 		public DetectiveRole() : base()
@@ -33,6 +31,7 @@ namespace TTT.Roles
 				}
 			}
 
+			Log.Info( player.Client.Name );
 			player.Inventory.Add( new BodyArmor() );
 
 			base.OnSelect( player );

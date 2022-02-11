@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using TTT.Items;
+using TTT.Roles;
 using TTT.UI;
 
 namespace TTT.Player
@@ -182,13 +183,11 @@ namespace TTT.Player
 						DeadPlayer.IsConfirmed = true;
 						DeadPlayer.CorpseConfirmer = confirmingPlayer;
 
-						int credits = DeadPlayer.Credits;
-
-						if ( credits > 0 )
+						if ( DeadPlayer.Credits > 0 && (confirmingPlayer.Role is TraitorRole || confirmingPlayer.Role is DetectiveRole) )
 						{
-							confirmingPlayer.Credits += credits;
+							confirmingPlayer.Credits += DeadPlayer.Credits;
 							DeadPlayer.Credits = 0;
-							DeadPlayer.CorpseCredits = credits;
+							DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 						}
 
 						RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks );
