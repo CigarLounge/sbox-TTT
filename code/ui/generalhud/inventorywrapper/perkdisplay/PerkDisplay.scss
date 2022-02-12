@@ -1,0 +1,25 @@
+PerkDisplay {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column-reverse;
+    margin-bottom: 25px;
+}
+
+PerkSlot {
+    flex-direction: column;
+    width: 72px;
+    height: 72px;
+    margin-top: 15px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    .image {
+        opacity: 1;
+        transition: opacity 0.5s ease-out;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+    }
+}

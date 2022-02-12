@@ -98,7 +98,7 @@ namespace TTT.Player
 
 			Credits -= itemData.Price;
 
-			Inventory.TryAdd( Utils.GetObjectByType<IItem>( itemType ), true, false );
+			AddItem( Utils.GetObjectByType<IItem>( itemType ) );
 			BoughtItemsSet.Add( itemData.Name );
 
 			ClientBoughtItem( To.Single( this ), itemData.Name );

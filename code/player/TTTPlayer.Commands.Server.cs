@@ -132,7 +132,7 @@ namespace TTT.Player
 				return;
 			}
 
-			player.Inventory.TryAdd( Utils.GetObjectByType<IItem>( itemType ), true, false );
+			player.AddItem( Utils.GetObjectByType<IItem>( itemType ) );
 		}
 
 		[ServerCmd( Name = "ttt_setrole" )]

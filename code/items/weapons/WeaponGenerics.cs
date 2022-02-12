@@ -63,7 +63,7 @@ namespace TTT.Items
 						player.Inventory.DropActive();
 					}
 
-					player.Inventory.TryAdd( item, deleteIfFails: false, makeActive: true );
+					player.Inventory.Add( item as Entity, true );
 				}
 			}
 		}

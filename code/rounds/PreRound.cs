@@ -151,10 +151,7 @@ namespace TTT.Rounds
 
 		public override void OnPlayerSpawn( TTTPlayer player )
 		{
-			bool handsAdded = player.Inventory.TryAdd( new Hands(), deleteIfFails: true, makeActive: false );
-
-			Log.Debug( $"Attempting to add Hands to {player.Client.Name} {handsAdded}" );
-
+			bool handsAdded = player.Inventory.Add( new Hands() );
 			base.OnPlayerSpawn( player );
 		}
 	}
