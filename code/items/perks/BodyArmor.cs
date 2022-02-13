@@ -1,6 +1,7 @@
 using Sandbox;
 using TTT.Roles;
 using System;
+using TTT.Player;
 
 namespace TTT.Items
 {
@@ -11,6 +12,5 @@ namespace TTT.Items
 	{
 		public ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( BodyArmor ) );
-		public override PerkCategory GetCategory() { return PerkCategory.Passive; }
 	}
 }

@@ -1,16 +1,11 @@
 using Sandbox;
+using TTT.Player;
 
 namespace TTT.Items
 {
-	public enum PerkCategory
-	{
-		Passive,
-		Cooldown,
-		Boolean,
-	}
-
 	public abstract class Perk : BaseNetworkable
 	{
-		public abstract PerkCategory GetCategory();
+		public virtual void Simulate( TTTPlayer player ) { }
+		public virtual string ActiveText() { return string.Empty; }
 	}
 }

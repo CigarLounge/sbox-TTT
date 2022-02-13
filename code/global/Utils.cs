@@ -216,6 +216,11 @@ namespace TTT.Globals
 			return !panel.HasClass( "disabled" );
 		}
 
+		public static void SetImage( this Image image, string imagePath )
+		{
+			image.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
+		}
+
 		public static string GetTypeName( Type type ) => type.FullName.Replace( type.Namespace, "" ).TrimStart( '.' );
 
 		public enum Realm

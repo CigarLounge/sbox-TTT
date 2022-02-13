@@ -71,7 +71,7 @@ namespace TTT.UI
 				AddChild<WIPDisclaimer>();
 
 				AddChild<HintDisplay>();
-				// AddChild<RadarDisplay>();
+				AddChild<RadarDisplay>();
 				AddChild<PlayerRoleDisplay>();
 				AddChild<PlayerInfoDisplay>();
 				AddChild<InventoryWrapper>();

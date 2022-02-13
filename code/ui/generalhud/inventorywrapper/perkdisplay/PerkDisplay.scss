@@ -7,19 +7,25 @@ PerkDisplay {
 
 PerkSlot {
     flex-direction: column;
-    width: 72px;
-    height: 72px;
-    margin-top: 15px;
+    width: 100px;
+    height: 100px;
     align-items: center;
-    justify-content: center;
-    text-align: center;
 
-    .image {
+    .name {
+        font-size: 10px;
+    }
+
+    .active {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    Image {
+        height: 100%;
+        width: 100%;
         opacity: 1;
         transition: opacity 0.5s ease-out;
         background-repeat: no-repeat;
         background-size: contain;
-        height: 100%;
-        width: 100%;
     }
 }

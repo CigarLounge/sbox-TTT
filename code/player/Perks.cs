@@ -37,6 +37,18 @@ namespace TTT.Player
 			return _perks[i];
 		}
 
+		public T Find<T>() where T : Perk
+		{
+			foreach ( var perk in _perks )
+			{
+				if ( perk is not T t || t.Equals( default( T ) ) )
+					continue;
+
+				return t;
+			}
+			return default;
+		}
+
 		public void Clear()
 		{
 			_perks.Clear();

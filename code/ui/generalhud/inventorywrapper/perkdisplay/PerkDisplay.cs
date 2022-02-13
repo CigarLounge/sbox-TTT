@@ -56,20 +56,30 @@ namespace TTT.UI
 
 		public class PerkSlot : Panel
 		{
+			private readonly Perk _perk;
+			private readonly Label _name;
+			private readonly Image _image;
+			private readonly Label _activeLabel;
+
 			public PerkSlot( Perk perk )
 			{
+				_perk = perk;
 				var item = perk as IItem;
-				switch ( perk.GetCategory() )
-				{
-					case PerkCategory.Passive:
-						Add.Label( item.GetItemData().Title );
-						break;
-				}
+				_activeLabel = Add.Label( "", "active" );
+				_activeLabel.AddClass( "text-shadow" );
+				_activeLabel.AddClass( "centered" );
+
+				_image = Add.Image();
+				_image.SetImage( $"/ui/icons/{item.GetItemData().Library.Name}.png" );
+
+				_name = Add.Label( item.GetItemData().Title, "name" );
+				_name.AddClass( "text-shadow" );
 			}
 
 			public override void Tick()
 			{
 				base.Tick();
+				_activeLabel.Text = _perk.ActiveText();
 			}
 		}
 	}

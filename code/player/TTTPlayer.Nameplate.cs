@@ -1,3 +1,4 @@
+using TTT.Items;
 using TTT.UI;
 
 namespace TTT.Player
@@ -10,7 +11,8 @@ namespace TTT.Player
 
 		public bool CanHint( TTTPlayer player )
 		{
-			return !IsDisguised;
+			var disguiser = Perks.Find<Disguiser>();
+			return disguiser == null || (disguiser != null && !disguiser.IsEnabled);
 		}
 
 		public EntityHintPanel DisplayHint( TTTPlayer player )

@@ -19,10 +19,6 @@ namespace TTT.Player
 		[Net]
 		public bool IsForcedSpectator { get; set; } = false;
 
-		// Handled by Disguiser.cs perk.
-		[Net]
-		public bool IsDisguised { get; set; } = false;
-
 		public bool IsInitialSpawning { get; set; } = false;
 
 		public new Inventory Inventory
@@ -294,18 +290,10 @@ namespace TTT.Player
 
 		private void TickItemSimulate()
 		{
-			if ( Client == null )
+			for ( int i = 0; i < Perks.Count; ++i )
 			{
-				return;
+				Perks.Get( i ).Simulate( this );
 			}
-
-			// MZEGAR TODO Simulate.
-			// PerksInventory perks = Inventory.Perks;
-
-			// for ( int i = 0; i < perks.Count(); i++ )
-			// {
-			// 	perks.Get( i ).Simulate( Client );
-			// }
 		}
 
 		protected override void OnDestroy()

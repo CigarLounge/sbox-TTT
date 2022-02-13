@@ -1,150 +1,137 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
-// using Sandbox;
+using Sandbox;
 
-// using TTT.Player;
-// using TTT.Roles;
-// using TTT.Teams;
-// using TTT.UI;
+using TTT.Player;
+using TTT.Roles;
+using TTT.Teams;
+using TTT.UI;
 
-// namespace TTT.Items
-// {
-// 	[Library( "ttt_perk_radar", Title = "Radar" )]
-// 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
-// 	[Hammer.Skip]
-// 	public partial class Radar : TTTCountdownPerk, IItem
-// 	{
-// 		public ItemData GetItemData() { return _data; }
-// 		private readonly ItemData _data = new( typeof( Radar ) );
+namespace TTT.Items
+{
+	[Library( "ttt_perk_radar", Title = "Radar" )]
+	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
+	[Hammer.Skip]
+	public partial class Radar : Perk, IItem
+	{
+		public ItemData GetItemData() { return _data; }
+		private readonly ItemData _data = new( typeof( Radar ) );
 
-// 		public struct RadarPointData
-// 		{
-// 			public Color Color;
-// 			public Vector3 Position;
-// 		}
+		public struct RadarPointData
+		{
+			public Color Color;
+			public Vector3 Position;
+		}
 
-// 		public override float Countdown { get; } = 20f;
+		private readonly float _timeToExecute = 5f;
+		private TimeUntil _timeUntilExecution;
+		private RadarPointData[] _lastPositions;
+		private readonly List<RadarPoint> _cachedPoints = new();
+		private readonly Color _defaultRadarColor = Color.FromBytes( 124, 252, 0 );
+		private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-// 		private RadarPointData[] _lastPositions;
-// 		private readonly List<RadarPoint> _cachedPoints = new();
-// 		private readonly Color _defaultRadarColor = Color.FromBytes( 124, 252, 0 );
-// 		private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
+		public Radar() : base()
+		{
+			// We should execute as soon as the perk is equipped.
+			_timeUntilExecution = 0;
+		}
 
-// 		public Radar() : base()
-// 		{
+		public override void Simulate( TTTPlayer player )
+		{
+			if ( _timeUntilExecution < 0 )
+			{
+				UpdatePositions( player );
 
-// 		}
+				if ( Host.IsClient )
+				{
+					_timeUntilExecution = _timeToExecute;
+				}
+			}
+		}
 
-// 		public override void OnRemove()
-// 		{
-// 			if ( Host.IsClient )
-// 			{
-// 				ClearRadarPoints();
-// 			}
+		public override string ActiveText() { return $"{Math.Ceiling( _timeUntilExecution )}"; }
 
-// 			base.OnRemove();
-// 		}
+		private void UpdatePositions( TTTPlayer owner )
+		{
+			if ( Host.IsServer )
+			{
+				List<RadarPointData> pointData = new();
 
-// 		private void UpdatePositions()
-// 		{
-// 			if ( Host.IsServer )
-// 			{
-// 				if ( Owner is not TTTPlayer owner )
-// 				{
-// 					return;
-// 				}
+				foreach ( TTTPlayer player in Utils.GetAlivePlayers() )
+				{
+					if ( player.Client.PlayerId == owner.Client.PlayerId )
+					{
+						continue;
+					}
 
-// 				List<RadarPointData> pointData = new();
+					pointData.Add( new RadarPointData
+					{
+						Position = player.Position + _radarPointOffset,
+						Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+					} );
+				}
 
-// 				foreach ( TTTPlayer player in Globals.Utils.GetAlivePlayers() )
-// 				{
-// 					if ( player.Client.PlayerId == owner.Client.PlayerId )
-// 					{
-// 						continue;
-// 					}
+				if ( owner.Team is not TraitorTeam )
+				{
+					List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
 
-// 					pointData.Add( new RadarPointData
-// 					{
-// 						Position = player.Position + _radarPointOffset,
-// 						Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
-// 					} );
-// 				}
+					foreach ( Vector3 decoyPosition in decoyPositions )
+					{
+						pointData.Add( new RadarPointData
+						{
+							Position = decoyPosition + _radarPointOffset,
+							Color = _defaultRadarColor
+						} );
+					}
+				}
 
-// 				if ( owner.Team is not TraitorTeam )
-// 				{
-// 					List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
+				ClientSendRadarPositions( To.Single( owner.Client ), owner, pointData.ToArray() );
+			}
+			else
+			{
+				ClearRadarPoints();
 
-// 					foreach ( Vector3 decoyPosition in decoyPositions )
-// 					{
-// 						pointData.Add( new RadarPointData
-// 						{
-// 							Position = decoyPosition + _radarPointOffset,
-// 							Color = _defaultRadarColor
-// 						} );
-// 					}
-// 				}
+				if ( _lastPositions.IsNullOrEmpty() )
+				{
+					return;
+				}
 
-// 				ClientSendRadarPositions( To.Single( Owner ), owner, pointData.ToArray() );
-// 			}
-// 			else
-// 			{
-// 				ClearRadarPoints();
+				foreach ( RadarPointData pointData in _lastPositions )
+				{
+					_cachedPoints.Add( new RadarPoint( pointData ) );
+				}
+			}
+		}
 
-// 				foreach ( RadarPointData pointData in _lastPositions )
-// 				{
-// 					_cachedPoints.Add( new RadarPoint( pointData ) );
-// 				}
-// 			}
-// 		}
+		private void ClearRadarPoints()
+		{
+			foreach ( RadarPoint radarPoint in _cachedPoints )
+			{
+				radarPoint.Delete();
+			}
 
-// 		public override void OnEquip()
-// 		{
-// 			base.OnEquip();
+			_cachedPoints.Clear();
+		}
 
-// 			if ( Host.IsServer )
-// 			{
-// 				UpdatePositions();
-// 			}
-// 		}
+		[ClientRpc]
+		public static void ClientSendRadarPositions( TTTPlayer player, RadarPointData[] points )
+		{
+			if ( !player.IsValid() || player != Local.Pawn )
+			{
+				return;
+			}
 
-// 		public override void OnCountdown()
-// 		{
-// 			if ( Host.IsServer )
-// 			{
-// 				UpdatePositions();
-// 			}
-// 		}
+			Radar radar = player.Perks.Find<Radar>();
+			if ( radar == null )
+			{
+				return;
+			}
 
-// 		private void ClearRadarPoints()
-// 		{
-// 			foreach ( RadarPoint radarPoint in _cachedPoints )
-// 			{
-// 				radarPoint.Delete();
-// 			}
-
-// 			_cachedPoints.Clear();
-// 		}
-
-// 		[ClientRpc]
-// 		public static void ClientSendRadarPositions( TTTPlayer player, RadarPointData[] points )
-// 		{
-// 			if ( !player.IsValid() || player != Local.Pawn )
-// 			{
-// 				return;
-// 			}
-
-// 			Radar radar = player.Inventory.Perks.Find<Radar>();
-
-// 			if ( radar == null )
-// 			{
-// 				return;
-// 			}
-
-// 			radar._lastPositions = points;
-// 			radar.UpdatePositions();
-// 		}
-// 	}
-// }
+			radar._lastPositions = points;
+			radar.UpdatePositions( player );
+		}
+	}
+}
 
