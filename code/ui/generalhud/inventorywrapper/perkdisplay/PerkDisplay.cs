@@ -65,12 +65,14 @@ namespace TTT.UI
 			{
 				_perk = perk;
 				var item = perk as IItem;
-				_activeLabel = Add.Label( "", "active" );
+
+				var panel = Add.Panel( "icon-panel" );
+				_image = panel.Add.Image();
+				_image.SetImage( $"/ui/icons/{item.GetItemData().Library.Name}.png" );
+
+				_activeLabel = panel.Add.Label( "", "active" );
 				_activeLabel.AddClass( "text-shadow" );
 				_activeLabel.AddClass( "centered" );
-
-				_image = Add.Image();
-				_image.SetImage( $"/ui/icons/{item.GetItemData().Library.Name}.png" );
 
 				_name = Add.Label( item.GetItemData().Title, "name" );
 				_name.AddClass( "text-shadow" );

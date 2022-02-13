@@ -25,7 +25,7 @@ namespace TTT.Items
 			public Vector3 Position;
 		}
 
-		private readonly float _timeToExecute = 3f;
+		private readonly float _timeToExecute = 20f;
 		private TimeUntil _timeUntilExecution;
 		private RadarPointData[] _lastPositions;
 		private readonly List<RadarPoint> _cachedPoints = new();
@@ -43,14 +43,14 @@ namespace TTT.Items
 
 		public override void Simulate( TTTPlayer player )
 		{
-			if ( _timeUntilExecution < 0 )
+			if ( Math.Round( _timeUntilExecution ) < 0f )
 			{
 				UpdatePositions( player );
 				_timeUntilExecution = _timeToExecute;
 			}
 		}
 
-		public override string ActiveText() { return $"{Math.Ceiling( _timeUntilExecution )}"; }
+		public override string ActiveText() { return $"{Math.Abs( Math.Round( _timeUntilExecution ) )}"; }
 
 		private void UpdatePositions( TTTPlayer owner )
 		{

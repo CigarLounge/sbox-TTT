@@ -2,7 +2,7 @@ PerkDisplay {
     display: flex;
     align-items: flex-end;
     flex-direction: column-reverse;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 }
 
 PerkSlot {
@@ -10,21 +10,27 @@ PerkSlot {
     width: 100px;
     height: 100px;
     align-items: center;
+    margin-bottom: 10px;
 
     .name {
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .active {
-        font-size: 24px;
+        font-size: 25px;
         font-weight: bold;
+        z-index: 1;
+    }
+
+    .icon-panel {
+        width: 81px;
+        height: 84px;
     }
 
     Image {
         height: 100%;
         width: 100%;
-        opacity: 1;
-        transition: opacity 0.5s ease-out;
+        opacity: 0.65;
         background-repeat: no-repeat;
         background-size: contain;
     }
