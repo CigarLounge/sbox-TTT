@@ -36,11 +36,6 @@ namespace TTT.UI
 
 			AddClass( "opacity-heavy" );
 			AddClass( "text-shadow" );
-
-			if ( Local.Pawn is not TTTPlayer player )
-			{
-				return;
-			}
 		}
 
 		public override void Tick()
