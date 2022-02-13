@@ -75,5 +75,13 @@ namespace TTT.UI
 			AddClass( "fullscreen" );
 			Style.ZIndex = -1;
 		}
+
+		public override void Tick()
+		{
+			if ( Local.Pawn is not TTTPlayer player || !player.Perks.Has( typeof( Radar ) ) )
+			{
+				Delete();
+			}
+		}
 	}
 }

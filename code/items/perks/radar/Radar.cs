@@ -34,6 +34,7 @@ namespace TTT.Items
 
 		public Radar()
 		{
+			// Create radar hud here, it cleans itself up inside.
 			if ( Host.IsClient )
 				Hud.Current?.GeneralHudPanel?.AddChildToAliveHud( new RadarDisplay() );
 
@@ -68,11 +69,11 @@ namespace TTT.Items
 					pointData.Add( new RadarPointData
 					{
 						Position = player.Position + _radarPointOffset,
-						Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+						Color = player.Role.Name == owner.Role.Name ? owner.Role.Color : _defaultRadarColor
 					} );
 				}
 
-				if ( owner.Team is not TraitorTeam )
+				if ( owner.Role is not TraitorRole )
 				{
 					List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
 
@@ -86,7 +87,7 @@ namespace TTT.Items
 					}
 				}
 
-				ClientSendRadarPositions( To.Single( owner.Client ), owner, pointData.ToArray() );
+				ClientSendRadarPositions( To.Single( owner ), owner, pointData.ToArray() );
 			}
 			else
 			{
