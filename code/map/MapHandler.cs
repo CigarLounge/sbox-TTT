@@ -28,7 +28,7 @@ namespace TTT.Map
 					MapSettings = mapSettings;
 					MapSettings.FireSettingsSpawn();
 				}
-				else if ( entity is Sandbox.Prop || entity is BaseCarriable )
+				else if ( entity is BaseCarriable )
 				{
 					ModelEntityDataList.Add( ModelEntityData.Create( entity as ModelEntity ) );
 				}
@@ -46,7 +46,7 @@ namespace TTT.Map
 
 			foreach ( Entity entity in Entity.All )
 			{
-				if ( entity is Sandbox.Prop || entity is BaseCarriable || entity.Tags.Has( IItem.ITEM_TAG ) || entity is PlayerCorpse )
+				if ( entity is BaseCarriable || entity.Tags.Has( IItem.ITEM_TAG ) || entity is PlayerCorpse )
 				{
 					entity.Delete();
 				}
