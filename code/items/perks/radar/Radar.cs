@@ -69,11 +69,11 @@ namespace TTT.Items
 					pointData.Add( new RadarPointData
 					{
 						Position = player.Position + _radarPointOffset,
-						Color = player.Role.Name == owner.Role.Name ? owner.Role.Color : _defaultRadarColor
+						Color = player.Team.Name == owner.Team.Name ? owner.Role.Color : _defaultRadarColor
 					} );
 				}
 
-				if ( owner.Role is not TraitorRole )
+				if ( owner.Team is not TraitorTeam )
 				{
 					List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
 

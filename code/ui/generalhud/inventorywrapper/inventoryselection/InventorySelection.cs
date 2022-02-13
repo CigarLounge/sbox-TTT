@@ -248,7 +248,7 @@ namespace TTT.UI
 
 				if ( Local.Pawn is TTTPlayer player )
 				{
-					SlotLabel.Style.BackgroundColor = player.Role.Color;
+					SlotLabel.Style.BackgroundColor = player.Team.Color;
 				}
 			}
 
