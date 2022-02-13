@@ -33,7 +33,7 @@ namespace TTT.Roles
 					}
 				}
 
-				player.Inventory.Add( new BodyArmor() );
+				player.Perks.Add( new BodyArmor() );
 			}
 
 			base.OnSelect( player );

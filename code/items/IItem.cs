@@ -66,7 +66,6 @@ namespace TTT.Items
 	{
 		static string ITEM_TAG => "TTT_ITEM";
 		ItemData GetItemData();
-		void Delete();
 	}
 
 	public enum SlotType

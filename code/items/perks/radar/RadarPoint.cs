@@ -15,6 +15,9 @@ namespace TTT.UI
 
 		public RadarPoint( Radar.RadarPointData data )
 		{
+			if ( RadarDisplay.Instance == null )
+				return;
+
 			_position = data.Position;
 
 			StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
@@ -47,7 +50,7 @@ namespace TTT.UI
 				return;
 			}
 
-			_distanceLabel.Text = $"{Globals.Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
+			_distanceLabel.Text = $"{Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
 
 			Vector3 screenPos = _position.ToScreen();
 			this.Enabled( screenPos.z > 0f );
@@ -69,10 +72,16 @@ namespace TTT.UI
 		public RadarDisplay() : base()
 		{
 			Instance = this;
-
 			AddClass( "fullscreen" );
-
 			Style.ZIndex = -1;
+		}
+
+		public override void Tick()
+		{
+			if ( Local.Pawn is not TTTPlayer player || !player.Perks.Has( typeof( Radar ) ) )
+			{
+				Delete();
+			}
 		}
 	}
 }

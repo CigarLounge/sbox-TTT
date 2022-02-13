@@ -74,12 +74,12 @@ namespace TTT.Rounds
 		{
 			Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
 
-			if ( player.Inventory.TryAdd( new P250(), true, false ) )
+			if ( player.Inventory.Add( new P250() ) )
 			{
 				player.GiveAmmo( SWB_Base.AmmoType.SMG, 100 );
 			}
 
-			if ( player.Inventory.TryAdd( new M4(), true, false ) )
+			if ( player.Inventory.Add( new M4() ) )
 			{
 				player.GiveAmmo( SWB_Base.AmmoType.Rifle, 60 );
 			}

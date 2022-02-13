@@ -52,9 +52,9 @@ namespace TTT.Items
 
 		public bool IsBuyable( TTTPlayer player )
 		{
-			if ( Type.IsSubclassOf( typeof( TTTPerk ) ) )
+			if ( Type.IsSubclassOf( typeof( Perk ) ) )
 			{
-				return !player.Inventory.Perks.Has( Name );
+				return !player.Perks.Has( Type );
 			}
 			else if ( SlotType == null )
 			{

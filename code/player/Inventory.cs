@@ -10,86 +10,30 @@ namespace TTT.Player
 {
 	public partial class Inventory : BaseInventory
 	{
-		public readonly PerksInventory Perks;
+		public new TTTPlayer Owner
+		{
+			get => (TTTPlayer)base.Owner;
+			private init => base.Owner = value;
+		}
+
 		public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 
 		private const int DROPPOSITIONOFFSET = 50;
 		private const int DROPVELOCITY = 500;
 
-		public Inventory( TTTPlayer player ) : base( player )
-		{
-			Perks = new( player );
-		}
+		public Inventory( TTTPlayer player ) : base( player ) { }
 
-		public override void DeleteContents()
-		{
-			Perks.Clear();
-			(Owner as TTTPlayer).Ammo.Clear();
-			base.DeleteContents();
-		}
-
+		// Used for adding any carriables.
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			if ( entity is IItem item )
+			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
 			{
-				if ( IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) )
-				{
-					return false;
-				}
-
-				Sound.FromWorld( "dm.pickup_weapon", entity.Position );
-			}
-
-			return base.Add( entity, makeActive );
-		}
-
-		public bool Add( IItem item, bool makeActive = false )
-		{
-			if ( item is Entity ent )
-			{
-				return Add( ent, makeActive );
-			}
-			else if ( item is TTTPerk && item.GetItemData().SlotType == SlotType.Perk )
-			{
-				return Perks.Give( item );
-			}
-
-			return false;
-		}
-
-		/// <summary>
-		/// Tries to add an `TTT.Items.IItem` to the inventory.
-		/// </summary>
-		/// <param name="item">`TTT.Items.IItem` that will be added to the inventory if conditions are met.</param>
-		/// <param name="deleteIfFails">Delete `TTT.Items.IItem` if it fails to add to inventory.</param>
-		/// <param name="makeActive">Make `TTT.Items.IItem` the active item in the inventory.</param>
-		/// <returns></returns>
-		public bool TryAdd( IItem item, bool deleteIfFails = false, bool makeActive = false )
-		{
-			if ( Owner.LifeState != LifeState.Alive || !Add( item, makeActive ) )
-			{
-				if ( deleteIfFails )
-				{
-					item.Delete();
-				}
-
+				entity?.Delete(); // Prevent entity from spawning in the map.
 				return false;
 			}
 
+			Sound.FromWorld( "dm.pickup_weapon", entity.Position );
 			return true;
-		}
-
-		public bool Remove( Entity item )
-		{
-			if ( Contains( item ) )
-			{
-				item.Delete();
-				List.Remove( item );
-
-				return true;
-			}
-
-			return false;
 		}
 
 		public bool HasEmptySlot( SlotType slotType )
@@ -105,7 +49,7 @@ namespace TTT.Player
 
 		public override bool Drop( Entity entity )
 		{
-			if ( !Host.IsServer || !Contains( entity ) || entity is ICarriableItem item && !item.CanDrop() )
+			if ( entity is not ICarriableItem item || !item.CanDrop() )
 			{
 				return false;
 			}
@@ -115,23 +59,24 @@ namespace TTT.Player
 
 		public void DropAll()
 		{
+			// Cache due to "collections modified error"
 			List<Entity> cache = new( List );
-
 			foreach ( Entity entity in cache )
 			{
 				Drop( entity );
 			}
 		}
 
-		public bool DropEntity( Entity self, Type entity )
+		public void DropEntity( Entity self, Type entity )
 		{
+			List.Remove( self );
+			self.Delete();
+
 			Entity droppedEntity = Utils.GetObjectByType<Entity>( entity );
 			droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
 			droppedEntity.Rotation = Owner.EyeRotation;
 			droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
 			droppedEntity.Tags.Add( IItem.ITEM_TAG );
-
-			return Remove( self );
 		}
 	}
 }

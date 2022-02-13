@@ -35,8 +35,6 @@ namespace TTT.Globals
 			player.CorpseConfirmer = null;
 
 			player.SetRole( new NoneRole() );
-
-			Event.Run( TTTEvent.Player.Spawned, player );
 		}
 
 		/// <summary>

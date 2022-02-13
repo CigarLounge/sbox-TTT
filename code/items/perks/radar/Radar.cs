@@ -14,7 +14,7 @@ namespace TTT.Items
 	[Library( "ttt_perk_radar", Title = "Radar" )]
 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
-	public partial class Radar : TTTCountdownPerk, IItem
+	public partial class Radar : Perk, IItem
 	{
 		public ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( Radar ) );
@@ -25,40 +25,41 @@ namespace TTT.Items
 			public Vector3 Position;
 		}
 
-		public override float Countdown { get; } = 20f;
-
+		private readonly float _timeToExecute = 20f;
+		private TimeUntil _timeUntilExecution;
 		private RadarPointData[] _lastPositions;
 		private readonly List<RadarPoint> _cachedPoints = new();
 		private readonly Color _defaultRadarColor = Color.FromBytes( 124, 252, 0 );
 		private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-		public Radar() : base()
+		public Radar()
 		{
-
-		}
-
-		public override void OnRemove()
-		{
+			// Create radar hud here, it cleans itself up inside.
 			if ( Host.IsClient )
-			{
-				ClearRadarPoints();
-			}
+				Hud.Current?.GeneralHudPanel?.AddChildToAliveHud( new RadarDisplay() );
 
-			base.OnRemove();
+			// We should execute as soon as the perk is equipped.
+			_timeUntilExecution = 0;
 		}
 
-		private void UpdatePositions()
+		public override void Simulate( TTTPlayer player )
+		{
+			if ( Math.Round( _timeUntilExecution ) < 0f )
+			{
+				UpdatePositions( player );
+				_timeUntilExecution = _timeToExecute;
+			}
+		}
+
+		public override string ActiveText() { return $"{Math.Abs( Math.Round( _timeUntilExecution ) )}"; }
+
+		private void UpdatePositions( TTTPlayer owner )
 		{
 			if ( Host.IsServer )
 			{
-				if ( Owner is not TTTPlayer owner )
-				{
-					return;
-				}
-
 				List<RadarPointData> pointData = new();
 
-				foreach ( TTTPlayer player in Globals.Utils.GetAlivePlayers() )
+				foreach ( TTTPlayer player in Utils.GetAlivePlayers() )
 				{
 					if ( player.Client.PlayerId == owner.Client.PlayerId )
 					{
@@ -68,11 +69,11 @@ namespace TTT.Items
 					pointData.Add( new RadarPointData
 					{
 						Position = player.Position + _radarPointOffset,
-						Color = player.Team.Name == owner.Team.Name ? owner.Team.Color : _defaultRadarColor
+						Color = player.Role.Name == owner.Role.Name ? owner.Role.Color : _defaultRadarColor
 					} );
 				}
 
-				if ( owner.Team is not TraitorTeam )
+				if ( owner.Role is not TraitorRole )
 				{
 					List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
 
@@ -86,34 +87,21 @@ namespace TTT.Items
 					}
 				}
 
-				ClientSendRadarPositions( To.Single( Owner ), owner, pointData.ToArray() );
+				ClientSendRadarPositions( To.Single( owner ), owner, pointData.ToArray() );
 			}
 			else
 			{
 				ClearRadarPoints();
 
+				if ( _lastPositions.IsNullOrEmpty() )
+				{
+					return;
+				}
+
 				foreach ( RadarPointData pointData in _lastPositions )
 				{
 					_cachedPoints.Add( new RadarPoint( pointData ) );
 				}
-			}
-		}
-
-		public override void OnEquip()
-		{
-			base.OnEquip();
-
-			if ( Host.IsServer )
-			{
-				UpdatePositions();
-			}
-		}
-
-		public override void OnCountdown()
-		{
-			if ( Host.IsServer )
-			{
-				UpdatePositions();
 			}
 		}
 
@@ -135,15 +123,15 @@ namespace TTT.Items
 				return;
 			}
 
-			Radar radar = player.Inventory.Perks.Find<Radar>();
-
+			Radar radar = player.Perks.Find<Radar>();
 			if ( radar == null )
 			{
 				return;
 			}
 
 			radar._lastPositions = points;
-			radar.UpdatePositions();
+			radar.UpdatePositions( player );
 		}
 	}
 }
+

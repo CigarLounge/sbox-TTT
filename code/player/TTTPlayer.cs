@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Events;
+using TTT.Items;
 using TTT.Player.Camera;
 using TTT.Roles;
 
@@ -9,17 +10,14 @@ namespace TTT.Player
 {
 	public partial class TTTPlayer : SWB_Base.PlayerBase
 	{
-		private static int CarriableDropVelocity { get; set; } = 300;
+		[BindComponent]
+		public Perks Perks { get; }
 
 		[Net, Local]
 		public int Credits { get; set; } = 0;
 
 		[Net]
 		public bool IsForcedSpectator { get; set; } = false;
-
-		// Handled by Disguiser.cs perk.
-		[Net]
-		public bool IsDisguised { get; set; } = false;
 
 		public bool IsInitialSpawning { get; set; } = false;
 
@@ -35,11 +33,18 @@ namespace TTT.Player
 			private set => base.Controller = value;
 		}
 
+		private static int CarriableDropVelocity { get; set; } = 300;
 		private DamageInfo _lastDamageInfo;
 
 		public TTTPlayer()
 		{
 			Inventory = new Inventory( this );
+		}
+
+		public override void Spawn()
+		{
+			Components.GetOrCreate<Perks>();
+			base.Spawn();
 		}
 
 		// Important: Server-side only
@@ -93,8 +98,6 @@ namespace TTT.Player
 
 			using ( Prediction.Off() )
 			{
-				Event.Run( TTTEvent.Player.Spawned, this );
-
 				RPCs.ClientOnPlayerSpawned( this );
 				SendClientRole();
 			}
@@ -114,8 +117,7 @@ namespace TTT.Player
 				MakeSpectator( false );
 			}
 
-			// RemovePlayerCorpse();
-			Inventory.DeleteContents();
+			DeleteItems();
 			Gamemode.Game.Instance.Round.OnPlayerSpawn( this );
 
 			switch ( Gamemode.Game.Instance.Round )
@@ -141,7 +143,7 @@ namespace TTT.Player
 			BecomePlayerCorpseOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
 
 			Inventory.DropAll();
-			Inventory.DeleteContents();
+			DeleteItems();
 
 			ShowFlashlight( false, false );
 
@@ -222,6 +224,31 @@ namespace TTT.Player
 			}
 		}
 
+		/// <summary>
+		/// Add any IItem, typically a perk or weapon.
+		/// </summary>
+		public void AddItem( IItem item, bool makeActive = false )
+		{
+			if ( item == null )
+				return;
+
+			if ( item.GetItemData().SlotType == SlotType.Perk )
+			{
+				Perks.Add( item as Perk );
+			}
+			else
+			{
+				Inventory.Add( item as Entity, makeActive );
+			}
+		}
+
+		public void DeleteItems()
+		{
+			Perks.Clear();
+			ClearAmmo();
+			Inventory.DeleteContents();
+		}
+
 		private void TickPlayerDropCarriable()
 		{
 			if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) && ActiveChild != null && Inventory != null )
@@ -260,16 +287,9 @@ namespace TTT.Player
 
 		private void TickItemSimulate()
 		{
-			if ( Client == null )
+			for ( int i = 0; i < Perks.Count; ++i )
 			{
-				return;
-			}
-
-			PerksInventory perks = Inventory.Perks;
-
-			for ( int i = 0; i < perks.Count(); i++ )
-			{
-				perks.Get( i ).Simulate( Client );
+				Perks.Get( i ).Simulate( this );
 			}
 		}
 

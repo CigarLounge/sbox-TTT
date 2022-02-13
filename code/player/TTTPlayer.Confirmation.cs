@@ -51,14 +51,11 @@ namespace TTT.Player
 			corpse.WasHeadshot = LastDamageWasHeadshot;
 			corpse.Distance = LastDistanceToAttacker;
 			corpse.DamageFlag = _lastDamageInfo.Flags;
+			corpse.Perks = new string[Perks.Count];
 
-			PerksInventory perksInventory = Inventory.Perks;
-
-			corpse.Perks = new string[perksInventory.Count()];
-
-			for ( int i = 0; i < corpse.Perks.Length; i++ )
+			for ( int i = 0; i < Perks.Count; i++ )
 			{
-				corpse.Perks[i] = (perksInventory.Get( i ) as IItem).GetItemData().Title;
+				corpse.Perks[i] = (Perks.Get( i ) as IItem).GetItemData().Title;
 			}
 
 			corpse.CopyFrom( this );
