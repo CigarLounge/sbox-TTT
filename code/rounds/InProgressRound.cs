@@ -83,8 +83,6 @@ namespace TTT.Rounds
 			{
 				player.GiveAmmo( SWB_Base.AmmoType.Rifle, 60 );
 			}
-
-			player.Perks.Add( new BodyArmor() );
 		}
 
 		protected override void OnTimeUp()
