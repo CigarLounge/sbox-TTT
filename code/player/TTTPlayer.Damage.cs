@@ -98,8 +98,6 @@ namespace TTT.Player
 
 			ClientTookDamage( client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
 
-			Event.Run( TTTEvent.Player.TakeDamage, this, info.Damage );
-
 			// Play pain sounds
 			if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 			{

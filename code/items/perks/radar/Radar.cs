@@ -25,15 +25,18 @@ namespace TTT.Items
 			public Vector3 Position;
 		}
 
-		private readonly float _timeToExecute = 5f;
+		private readonly float _timeToExecute = 3f;
 		private TimeUntil _timeUntilExecution;
 		private RadarPointData[] _lastPositions;
 		private readonly List<RadarPoint> _cachedPoints = new();
 		private readonly Color _defaultRadarColor = Color.FromBytes( 124, 252, 0 );
 		private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-		public Radar() : base()
+		public Radar()
 		{
+			if ( Host.IsClient )
+				Hud.Current?.GeneralHudPanel?.AddChildToAliveHud( new RadarDisplay() );
+
 			// We should execute as soon as the perk is equipped.
 			_timeUntilExecution = 0;
 		}
@@ -43,11 +46,7 @@ namespace TTT.Items
 			if ( _timeUntilExecution < 0 )
 			{
 				UpdatePositions( player );
-
-				if ( Host.IsClient )
-				{
-					_timeUntilExecution = _timeToExecute;
-				}
+				_timeUntilExecution = _timeToExecute;
 			}
 		}
 

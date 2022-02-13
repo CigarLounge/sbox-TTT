@@ -71,7 +71,6 @@ namespace TTT.UI
 				AddChild<WIPDisclaimer>();
 
 				AddChild<HintDisplay>();
-				AddChild<RadarDisplay>();
 				AddChild<PlayerRoleDisplay>();
 				AddChild<PlayerInfoDisplay>();
 				AddChild<InventoryWrapper>();
@@ -87,6 +86,12 @@ namespace TTT.UI
 				AddChild<PostRoundMenu>();
 				AddChild<Scoreboard>();
 				AddChild<TTTMenu>();
+			}
+
+			public void AddChildToAliveHud( Panel panel )
+			{
+				AddChild( panel );
+				_aliveHud.Add( panel );
 			}
 
 			private void CreateAliveHud()

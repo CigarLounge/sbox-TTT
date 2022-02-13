@@ -98,8 +98,6 @@ namespace TTT.Player
 
 			using ( Prediction.Off() )
 			{
-				Event.Run( TTTEvent.Player.Spawned, this );
-
 				RPCs.ClientOnPlayerSpawned( this );
 				SendClientRole();
 			}
@@ -119,7 +117,6 @@ namespace TTT.Player
 				MakeSpectator( false );
 			}
 
-			// RemovePlayerCorpse();
 			DeleteItems();
 			Gamemode.Game.Instance.Round.OnPlayerSpawn( this );
 

@@ -15,6 +15,9 @@ namespace TTT.UI
 
 		public RadarPoint( Radar.RadarPointData data )
 		{
+			if ( RadarDisplay.Instance == null )
+				return;
+
 			_position = data.Position;
 
 			StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
