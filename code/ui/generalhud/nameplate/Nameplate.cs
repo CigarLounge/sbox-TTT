@@ -5,6 +5,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.UI
 {
@@ -13,8 +14,8 @@ namespace TTT.UI
 		public TTTPlayer Player;
 
 		private readonly Panel _labelHolder;
-		private readonly Panel _nameHolder;
 		private readonly Label _nameLabel;
+		private readonly Label _roleLabel;
 		private readonly Label _damageIndicatorLabel;
 
 		private struct HealthGroup
@@ -45,14 +46,14 @@ namespace TTT.UI
 
 			StyleSheet.Load( "/ui/generalhud/nameplate/Nameplate.scss" );
 
-			AddClass( "text-shadow" );
-
 			_labelHolder = Add.Panel( "label-holder" );
 
-			_nameHolder = _labelHolder.Add.Panel( "name-holder" );
-			_nameLabel = _nameHolder.Add.Label( "", "name" );
-
+			_nameLabel = _labelHolder.Add.Label( "", "name" );
+			_nameLabel.AddClass( "text-shadow" );
 			_damageIndicatorLabel = _labelHolder.Add.Label( "", "damage-indicator" );
+			_damageIndicatorLabel.AddClass( "text-shadow" );
+			_roleLabel = _labelHolder.Add.Label( "", "role" );
+			_roleLabel.AddClass( "text-shadow-light" );
 
 			this.Enabled( false );
 		}
@@ -95,6 +96,11 @@ namespace TTT.UI
 			}
 
 			_nameLabel.Text = Player.Client?.Name ?? "";
+			if ( Player.Role is not NoneRole && Player.Role is not InnocentRole )
+			{
+				_roleLabel.Text = Player.Role.Name;
+				_roleLabel.Style.FontColor = Player.Role.Color;
+			}
 		}
 	}
 }
