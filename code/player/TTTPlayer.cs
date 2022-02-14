@@ -195,7 +195,7 @@ namespace TTT.Player
 
 			SimulateActiveChild( client, ActiveChild );
 
-			TickItemSimulate();
+			TickPerkSimulate();
 			TickPlayerUse();
 			TickPlayerDropCarriable();
 			TickPlayerFlashlight();
@@ -286,7 +286,7 @@ namespace TTT.Player
 			}
 		}
 
-		private void TickItemSimulate()
+		private void TickPerkSimulate()
 		{
 			for ( int i = 0; i < Perks.Count; ++i )
 			{

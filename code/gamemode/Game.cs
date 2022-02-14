@@ -75,12 +75,8 @@ namespace TTT.Gamemode
 			Host.AssertServer();
 
 			Round.Finish();
-
 			BaseRound oldRound = Round;
 			Round = round;
-
-			Event.Run( TTTEvent.Game.RoundChange, oldRound, round );
-
 			Round.Start();
 		}
 
