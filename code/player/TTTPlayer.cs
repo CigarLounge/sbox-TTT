@@ -247,6 +247,7 @@ namespace TTT.Player
 			Perks.Clear();
 			ClearAmmo();
 			Inventory.DeleteContents();
+			RemoveClothing();
 		}
 
 		private void TickPlayerDropCarriable()

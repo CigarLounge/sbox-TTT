@@ -34,6 +34,7 @@ namespace TTT.Roles
 				}
 
 				player.Perks.Add( new BodyArmor() );
+				player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 			}
 
 			base.OnSelect( player );

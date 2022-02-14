@@ -68,16 +68,11 @@ namespace TTT.Player
 					continue;
 				}
 
-				if ( child is ModelEntity e )
+				if ( child is BaseClothing e )
 				{
-					string model = e.GetModelName();
-
-					if ( model == null || !model.Contains( "clothes" ) )
-					{
-						continue;
-					}
-
-					ModelEntity clothing = new();
+					var model = e.GetModelName();
+					var clothing = new ModelEntity();
+					clothing.RenderColor = e.RenderColor;
 					clothing.SetModel( model );
 					clothing.SetParent( this, true );
 				}
