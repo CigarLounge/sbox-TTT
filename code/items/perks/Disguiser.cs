@@ -14,7 +14,7 @@ namespace TTT.Items
 		public ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( Disguiser ) );
 
-		[Net]
+		[Net, Local]
 		public bool IsEnabled { get; set; } = false;
 		private readonly float _lockOutSeconds = 1f;
 		private bool _isLocked = false;

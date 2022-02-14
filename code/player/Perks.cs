@@ -9,7 +9,7 @@ namespace TTT.Player
 {
 	public partial class Perks : EntityComponent
 	{
-		[Net]
+		[Net, Local]
 		private IList<Perk> _perks { get; set; }
 
 		public int Count { get => _perks.Count; }
