@@ -24,8 +24,12 @@ namespace TTT.Player
 
 				if ( Input.Pressed( InputButton.Walk ) )
 				{
+
+					Log.Info( "First phase 1" );
 					if ( Local.Pawn is TTTPlayer player && CanUseTeamVoiceChat( player ) )
 					{
+
+						Log.Info( "Can apparently talk." );
 						RequestTeamChat( true );
 					}
 				}
@@ -48,6 +52,7 @@ namespace TTT.Player
 		{
 			TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 
+			Log.Info( "Server hit" );
 			if ( !player.IsValid() || toggle && !CanUseTeamVoiceChat( player ) )
 			{
 				return;
