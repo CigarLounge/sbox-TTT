@@ -53,6 +53,7 @@ namespace TTT.Player
 				return;
 			}
 
+			Log.Info( $"{player.Name}: can team chat." );
 			ToggleTeamChat( player, toggle );
 		}
 
@@ -66,8 +67,9 @@ namespace TTT.Player
 			{
 				foreach ( Client client in Client.All )
 				{
-					if ( client.Pawn is TTTPlayer pawnPlayer && player.Team.Name == pawnPlayer.Team.Name )
+					if ( client.Pawn is TTTPlayer pawnPlayer && player.Team == pawnPlayer.Team )
 					{
+						Log.Info( $"{client.Name} added to voice chat list." );
 						clients.Add( client );
 					}
 				}

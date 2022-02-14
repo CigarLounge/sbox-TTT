@@ -152,21 +152,25 @@ namespace TTT.Gamemode
 		{
 			Host.AssertServer();
 
+			Log.Info( "Got through 0" );
 			if ( source.Name.Equals( dest.Name ) || source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer )
 			{
 				return false;
 			}
 
+			Log.Info( "Got through 1" );
 			if ( Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead && destPlayer.LifeState == LifeState.Alive )
 			{
 				return false;
 			}
 
+			Log.Info( "Got through 2" );
 			if ( sourcePlayer.IsTeamVoiceChatEnabled && destPlayer.Team != sourcePlayer.Team )
 			{
 				return false;
 			}
 
+			Log.Info( "Got through 3" );
 			return true;
 		}
 
