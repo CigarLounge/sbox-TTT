@@ -66,7 +66,7 @@ namespace TTT.Player
 			{
 				foreach ( Client client in Client.All )
 				{
-					if ( client.Pawn is TTTPlayer pawnPlayer && player.Team == pawnPlayer.Team )
+					if ( client.Pawn is TTTPlayer pawnPlayer && player.Team.Name == pawnPlayer.Team.Name )
 					{
 						clients.Add( client );
 					}
@@ -99,7 +99,7 @@ namespace TTT.Player
 
 		private static bool CanUseTeamVoiceChat( TTTPlayer player )
 		{
-			return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof( TraitorTeam );
+			return player.LifeState == LifeState.Alive && (player.Team.GetType() == typeof( TraitorTeam ));
 		}
 
 		[ClientRpc]
