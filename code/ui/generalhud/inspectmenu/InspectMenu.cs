@@ -126,7 +126,7 @@ namespace TTT.UI
 					InspectEntry perkEntry = new( _inspectIconsPanel );
 					perkEntry.SetImage( $"/ui/icons/{perkName}.png" );
 					perkEntry.SetImageText( $"{perkName}" );
-					perkEntry.SetActiveText( $"They were carrying a {perkName}." );
+					perkEntry.SetActiveText( $"They were carrying {perkName}." );
 
 					_inspectionEntries.Add( perkEntry );
 				}
