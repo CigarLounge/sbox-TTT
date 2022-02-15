@@ -28,7 +28,7 @@ namespace TTT.Items
 
 		public override float ShellReloadTimeStart => 0.33f;
 		public override float ShellReloadTimeInsert => 0.54f;
-		public override float ShellEjectDelay => 0.5f;
+		public override float ShellEjectDelay => 0.3f;
 
 		public Bekas()
 		{
