@@ -32,6 +32,11 @@ namespace TTT.Items
 
 		public Bekas()
 		{
+			General = new WeaponInfo
+			{
+				DrawTime = 1f,
+			};
+
 			Primary = new ClipInfo
 			{
 				Ammo = 6,
