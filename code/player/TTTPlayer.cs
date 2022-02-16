@@ -145,8 +145,6 @@ namespace TTT.Player
 			Inventory.DropAll();
 			DeleteItems();
 
-			ShowFlashlight( false, false );
-
 			IsMissingInAction = true;
 
 			using ( Prediction.Off() )
@@ -198,7 +196,6 @@ namespace TTT.Player
 			TickPerkSimulate();
 			TickPlayerUse();
 			TickPlayerDropCarriable();
-			TickPlayerFlashlight();
 			TickPlayerShop();
 			TickLogicButtonActivate();
 

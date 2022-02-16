@@ -78,7 +78,6 @@ namespace TTT.Player
 			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 			LifeState = LifeState.Dead;
 			Health = 0f;
-			ShowFlashlight( false, false );
 		}
 
 		public void ToggleForcedSpectator()

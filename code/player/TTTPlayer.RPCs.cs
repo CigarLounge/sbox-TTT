@@ -10,12 +10,6 @@ namespace TTT.Player
 	public partial class TTTPlayer
 	{
 		[ClientRpc]
-		private void ClientShowFlashlightLocal( bool shouldShow )
-		{
-			ShowFlashlight( shouldShow );
-		}
-
-		[ClientRpc]
 		public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
 		{
 			Sound.FromScreen( "dm.ui_attacker" )
