@@ -108,9 +108,7 @@ namespace TTT.Player
 			{
 				Controller = new DefaultWalkController();
 				Camera = new FirstPersonCamera();
-
 				EnableAllCollisions = true;
-				EnableDrawing = true;
 			}
 			else
 			{
