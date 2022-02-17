@@ -14,7 +14,7 @@ namespace TTT.Player
 	public partial class TTTPlayer
 	{
 		public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
-		public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new();
+		public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new(); //UI display
 		public static LogicButtonPoint FocusedButton;
 		public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 

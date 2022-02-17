@@ -28,6 +28,7 @@ namespace TTT.Rounds
 			// We failed to fetch TTT maps, fall back to default map.
 			if ( maps.Count == 0 )
 			{
+				Log.Warning( "No viable TTT-support maps found on server. Restarting game on default map." );
 				Global.ChangeLevel( ServerSettings.Instance.Map.DefaultMap );
 				return;
 			}

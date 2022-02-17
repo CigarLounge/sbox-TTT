@@ -16,7 +16,7 @@ namespace TTT.Map
 		[Property( "Text color" )]
 		public Color Color { get; set; } = Color.White;
 
-		[Property( "Receiver Team Override" )]
+		[Property( "Receiver Team Override", "Use this ONLY if you're using a custom team name not listed in the `Receiver` list." )]
 		public string ReceiverTeamOverride { get; set; } = "Override Team Name";
 
 		[Input]
