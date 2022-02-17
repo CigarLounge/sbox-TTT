@@ -220,20 +220,28 @@ namespace TTT.Player
 		}
 
 		/// <summary>
-		/// Add any IItem, typically a perk or weapon.
+		/// Add any IItem, either a perk or weapon. This code really badly needs to be cleaned up.
 		/// </summary>
-		public void AddItem( IItem item, bool makeActive = false )
+		public void AddItem( IItem item, bool makeActive = false, bool deleteOnFail = true )
 		{
 			if ( item == null )
 				return;
 
 			if ( item.GetItemData().SlotType == SlotType.Perk )
 			{
-				Perks.Add( item as Perk );
+				if ( item is not Perk perk )
+					return;
+
+				Perks.Add( perk );
 			}
 			else
 			{
-				Inventory.Add( item as Entity, makeActive );
+				if ( item is not Entity itemEntity )
+					return;
+
+				var addedToInventory = Inventory.Add( item as Entity, makeActive );
+				if ( !addedToInventory && deleteOnFail )
+					itemEntity?.Delete();
 			}
 		}
 

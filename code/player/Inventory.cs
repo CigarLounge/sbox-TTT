@@ -23,13 +23,11 @@ namespace TTT.Player
 
 		public Inventory( TTTPlayer player ) : base( player ) { }
 
-		// Used for adding any carriables.
-		public bool Add( Entity entity, bool makeActive = false, bool deleteOnFail = true )
+		// This code is poorly written, we should fix this.
+		public override bool Add( Entity entity, bool makeActive = false )
 		{
 			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
 			{
-				if ( deleteOnFail )
-					entity?.Delete();
 				return false;
 			}
 

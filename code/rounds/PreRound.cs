@@ -151,7 +151,7 @@ namespace TTT.Rounds
 
 		public override void OnPlayerSpawn( TTTPlayer player )
 		{
-			bool handsAdded = player.Inventory.Add( new Hands() );
+			player.AddItem( new Hands() );
 			base.OnPlayerSpawn( player );
 		}
 	}

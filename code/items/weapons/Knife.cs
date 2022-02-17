@@ -174,7 +174,7 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Use ) )
 				{
-					player.Inventory.Add( new Knife(), false, false );
+					player.AddItem( new Knife(), true, false );
 					Delete();
 				}
 			}
