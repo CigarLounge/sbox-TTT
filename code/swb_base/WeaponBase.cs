@@ -1,6 +1,7 @@
 ﻿using System;
 using Sandbox;
 using Sandbox.UI;
+using TTT.Items;
 
 /* 
  * Weapon base for weapons using magazine based reloading 
@@ -23,9 +24,32 @@ namespace SWB_Base
             PickupTrigger = new PickupTrigger();
             PickupTrigger.Parent = this;
             PickupTrigger.Position = Position;
+
+			Log.Debug( this );
+			if ( this is not IItem item )
+				return;
+
+			if ( string.IsNullOrEmpty( ClassInfo?.Name ) )
+				return;
+
+			item.Data = ItemData.All[ClassInfo.Name];
         }
 
-        public override void ActiveStart(Entity ent)
+		public override void ClientSpawn()
+		{
+			base.ClientSpawn();
+
+			Log.Debug( this );
+			if ( this is not IItem item )
+				return;
+
+			if ( string.IsNullOrEmpty( ClassInfo?.Name ) )
+				return;
+
+			item.Data = ItemData.All[ClassInfo.Name];
+		}
+
+		public override void ActiveStart(Entity ent)
         {
             base.ActiveStart(ent);
 

@@ -21,9 +21,7 @@ namespace TTT.Items
 	[Hammer.Skip]
 	partial class Hands : BaseCarriable, ICarriableItem
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Hands ) );
-
+		public ItemData Data { get; set; }
 		public override string ViewModelPath => "";
 
 		public static readonly float MAX_INTERACT_DISTANCE = 75;
@@ -44,6 +42,14 @@ namespace TTT.Items
 			base.Spawn();
 
 			RenderColor = Color.Transparent;
+			Data = ItemData.All[ClassInfo.Name];
+		}
+
+		public override void ClientSpawn()
+		{
+			base.ClientSpawn();
+
+			Data = ItemData.All[ClassInfo.Name];
 		}
 
 		public override void Simulate( Client client )

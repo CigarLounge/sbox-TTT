@@ -9,11 +9,8 @@ namespace TTT.Items
 	[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ) } )]
 	[Hammer.Skip]
-	public partial class Disguiser : Perk, IItem
+	public partial class Disguiser : Perk
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Disguiser ) );
-
 		[Net, Local]
 		public bool IsEnabled { get; set; } = false;
 		private readonly float _lockOutSeconds = 1f;

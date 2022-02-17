@@ -13,10 +13,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_vertec-silenced.vmdl" )]
 	public class SilencedPistol : M9
 	{
-		public override string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
-		public override ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( SilencedPistol ) );
-
+		public override string TextOnTick => WeaponGenerics.PickupText( Data.Library.Title );
 		public override string ViewModelPath => "models/weapons/v_vertec-silenced.vmdl";
 		public override string WorldModelPath => "models/weapons/w_vertec-silenced.vmdl";
 

@@ -58,7 +58,7 @@ namespace TTT.Items
 			{
 				if ( Input.Pressed( InputButton.Use ) )
 				{
-					if ( player.Inventory.Active is IItem activeItem && activeItem.GetItemData().SlotType == item.GetItemData().SlotType )
+					if ( player.Inventory.Active is IItem activeItem && activeItem.Data.SlotType == item.Data.SlotType )
 					{
 						player.Inventory.DropActive();
 					}

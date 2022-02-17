@@ -227,7 +227,7 @@ namespace TTT.Player
 			if ( item == null )
 				return;
 
-			if ( item.GetItemData().SlotType == SlotType.Perk )
+			if ( item.Data.SlotType == SlotType.Perk )
 			{
 				if ( item is not Perk perk )
 					return;

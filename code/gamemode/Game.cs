@@ -239,5 +239,17 @@ namespace TTT.Gamemode
 		{
 			Event.Run( TTTEvent.Game.RoundChange, oldRound, newRound );
 		}
+
+		[Event.Entity.PostSpawn]
+		private void EntityPostSpawn()
+		{
+			foreach ( var type in Library.GetAll<Items.IItem>() )
+			{
+				if ( !type.IsAbstract )
+				{
+					_ = new Items.ItemData( type );
+				}
+			}
+		}
 	}
 }

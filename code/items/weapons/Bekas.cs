@@ -13,8 +13,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
 	public class Bekas : WeaponBaseShotty, ICarriableItem, IEntityHint
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Bekas ) );
+		public ItemData Data { get; set; }
 		public Type DroppedType => typeof( Bekas );
 
 		public override int Bucket => 2;
@@ -76,7 +75,7 @@ namespace TTT.Items
 		}
 
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
-		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		public string TextOnTick => WeaponGenerics.PickupText( Data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

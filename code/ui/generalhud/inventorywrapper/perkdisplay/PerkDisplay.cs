@@ -68,13 +68,13 @@ namespace TTT.UI
 
 				var panel = Add.Panel( "icon-panel" );
 				_image = panel.Add.Image();
-				_image.SetImage( $"/ui/icons/{item.GetItemData().Library.Name}.png" );
+				_image.SetImage( $"/ui/icons/{item.Data.Library.Name}.png" );
 
 				_activeLabel = panel.Add.Label( "", "active" );
 				_activeLabel.AddClass( "text-shadow" );
 				_activeLabel.AddClass( "centered" );
 
-				_name = Add.Label( item.GetItemData().Title, "name" );
+				_name = Add.Label( item.Data.Title, "name" );
 				_name.AddClass( "text-shadow" );
 			}
 

@@ -13,8 +13,7 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_p90.vmdl" )]
 	public class P90 : WeaponBase, ICarriableItem, IEntityHint
 	{
-		public virtual ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( P90 ) );
+		public ItemData Data { get; set; }
 		public Type DroppedType => typeof( SMGAmmo );
 
 		public override float TuckRange => -1f;
@@ -78,7 +77,7 @@ namespace TTT.Items
 		}
 
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
-		public virtual string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		public virtual string TextOnTick => WeaponGenerics.PickupText( Data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

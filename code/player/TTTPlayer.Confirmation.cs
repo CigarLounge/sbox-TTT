@@ -47,7 +47,7 @@ namespace TTT.Player
 				Rotation = Rotation
 			};
 
-			corpse.KillerWeapon = LastDamageWeapon?.GetItemData().Title;
+			corpse.KillerWeapon = LastDamageWeapon?.Data.Title;
 			corpse.WasHeadshot = LastDamageWasHeadshot;
 			corpse.Distance = LastDistanceToAttacker;
 			corpse.DamageFlag = _lastDamageInfo.Flags;
@@ -55,7 +55,7 @@ namespace TTT.Player
 
 			for ( int i = 0; i < Perks.Count; i++ )
 			{
-				corpse.Perks[i] = (Perks.Get( i ) as IItem).GetItemData().Title;
+				corpse.Perks[i] = Perks.Get( i ).Data.Title;
 			}
 
 			corpse.CopyFrom( this );

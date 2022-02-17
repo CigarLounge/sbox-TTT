@@ -11,10 +11,15 @@ namespace TTT.Items
 	[Hammer.Skip]
 	public partial class HealthStation : BaseCarriable, ICarriableItem
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( HealthStation ) );
-
+		public ItemData Data { get; set; }
 		public override string ViewModelPath => "";
+
+		public override void Spawn()
+		{
+			base.Spawn();
+
+			Data = ItemData.All[ClassInfo.Name];
+		}
 
 		public override void Simulate( Client client )
 		{

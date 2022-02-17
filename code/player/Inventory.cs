@@ -26,7 +26,7 @@ namespace TTT.Player
 		// This code is poorly written, we should fix this.
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
+			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.Data.SlotType ) || !base.Add( entity, makeActive ) )
 			{
 				return false;
 			}
@@ -37,7 +37,7 @@ namespace TTT.Player
 
 		public bool HasEmptySlot( SlotType slotType )
 		{
-			int itemsInSlot = List.Count( x => ((IItem)x).GetItemData().SlotType == slotType );
+			int itemsInSlot = List.Count( x => ((IItem)x).Data.SlotType == slotType );
 			return SlotCapacity[(int)slotType - 1] - itemsInSlot > 0;
 		}
 

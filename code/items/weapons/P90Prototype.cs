@@ -14,10 +14,8 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_p90-silenced.vmdl" )]
 	public class P90Prototype : P90
 	{
-		public override string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
-		public override ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( P90Prototype ) );
-
+		public override string TextOnTick => WeaponGenerics.PickupText( Data.Library.Title );
+		public ItemData Data { get; set; }
 		public override string ViewModelPath => "models/weapons/v_p90-silenced.vmdl";
 		public override string WorldModelPath => "models/weapons/w_p90-silenced.vmdl";
 

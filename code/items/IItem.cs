@@ -1,4 +1,6 @@
+using Sandbox;
 using System;
+using System.Collections.Generic;
 
 namespace TTT.Items
 {
@@ -19,6 +21,8 @@ namespace TTT.Items
 
 	public class ItemData
 	{
+		public static Dictionary<string, ItemData> All { get; set; } = new();
+
 		public readonly LibraryData Library;
 		public readonly ShopData Shop;
 
@@ -32,6 +36,8 @@ namespace TTT.Items
 			Title = Library.Title;
 			Shop = new ShopData( type );
 			SlotType = Shop.SlotType;
+
+			All[Library.Name] = this;
 		}
 
 		public class LibraryData
@@ -65,7 +71,8 @@ namespace TTT.Items
 	public interface IItem
 	{
 		static string ITEM_TAG => "TTT_ITEM";
-		ItemData GetItemData();
+		// public setter, yikes!
+		ItemData Data { get; set; }
 	}
 
 	public enum SlotType

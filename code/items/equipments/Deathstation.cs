@@ -10,8 +10,7 @@ namespace TTT.Items
 	[Hammer.Skip]
 	public partial class DeathStation : BaseCarriable, ICarriableItem
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( DeathStation ) );
+		public ItemData Data { get; set; }
 		public Type DroppedType => typeof( DeathstationEntity );
 
 		public override string ViewModelPath => "";
@@ -20,6 +19,7 @@ namespace TTT.Items
 		{
 			base.Spawn();
 
+			Data = ItemData.All[ClassInfo.Name];
 			RenderColor = Color.Transparent;
 		}
 

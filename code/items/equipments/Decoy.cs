@@ -13,11 +13,24 @@ namespace TTT.Items
 	[Hammer.Skip]
 	public partial class Decoy : BaseCarriable, ICarriableItem
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Decoy ) );
+		public ItemData Data { get; set; }
 		public Type DroppedType => typeof( DecoyEntity );
 
 		public override string ViewModelPath => "";
+
+		public override void Spawn()
+		{
+			base.Spawn();
+
+			Data = ItemData.All[ClassInfo.Name];
+		}
+
+		public override void ClientSpawn()
+		{
+			base.ClientSpawn();
+
+			Data = ItemData.All[ClassInfo.Name];
+		}
 
 		public override void Simulate( Client client )
 		{

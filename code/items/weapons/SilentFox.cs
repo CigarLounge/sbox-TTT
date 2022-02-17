@@ -13,10 +13,6 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_mp7-silenced.vmdl" )]
 	public class SilentFox : MP7
 	{
-		public override string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
-		public override ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( SilentFox ) );
-
 		public override string ViewModelPath => "models/weapons/v_mp7-silenced.vmdl";
 		public override string WorldModelPath => "models/weapons/w_mp7-silenced.vmdl";
 

@@ -14,10 +14,8 @@ namespace TTT.Items
 	[Hammer.EditorModel( "models/weapons/w_mp7.vmdl" )]
 	public class MP7 : WeaponBase, ICarriableItem, IEntityHint
 	{
-		public virtual ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( MP7 ) );
+		public ItemData Data { get; set; }
 		public Type DroppedType => typeof( SMGAmmo );
-
 		public override float TuckRange => -1f;
 		public override int Bucket => 1;
 		public override HoldType HoldType => HoldType.Rifle;
@@ -79,7 +77,7 @@ namespace TTT.Items
 		}
 
 		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
-		public virtual string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
+		public virtual string TextOnTick => WeaponGenerics.PickupText( Data.Library.Title );
 		bool ICarriableItem.CanDrop() { return true; }
 		public bool CanHint( TTTPlayer player ) { return true; }
 		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }

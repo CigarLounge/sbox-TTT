@@ -14,11 +14,8 @@ namespace TTT.Items
 	[Library( "ttt_perk_radar", Title = "Radar" )]
 	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ), typeof( DetectiveRole ) } )]
 	[Hammer.Skip]
-	public partial class Radar : Perk, IItem
+	public partial class Radar : Perk
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Radar ) );
-
 		public struct RadarPointData
 		{
 			public Color Color;

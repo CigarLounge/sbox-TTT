@@ -55,7 +55,7 @@ namespace TTT.Items
 
 			if ( !carriable.DroppedType.IsSubclassOf( typeof( TTTAmmo ) ) )
 			{
-				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.GetItemData().Title} is not a descendant of {typeof( TTTAmmo ).Name}." );
+				Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.Data.Title} is not a descendant of {typeof( TTTAmmo ).Name}." );
 				return;
 			}
 
