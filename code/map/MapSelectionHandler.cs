@@ -31,7 +31,6 @@ namespace TTT.Map
 		private static async Task<List<string>> GetTTTMapNames()
 		{
 			Package result = await Package.Fetch( Global.GameName, true );
-
 			return result.GameConfiguration.MapList;
 		}
 
