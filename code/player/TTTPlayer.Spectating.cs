@@ -3,95 +3,93 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Events;
-using TTT.Globals;
 using TTT.Player.Camera;
 
-namespace TTT.Player
+namespace TTT.Player;
+
+public partial class TTTPlayer
 {
-	public partial class TTTPlayer
+	private TTTPlayer _spectatingPlayer;
+	public TTTPlayer CurrentPlayer
 	{
-		private TTTPlayer _spectatingPlayer;
-		public TTTPlayer CurrentPlayer
+		get => _spectatingPlayer ?? this;
+		set
 		{
-			get => _spectatingPlayer ?? this;
-			set
-			{
-				_spectatingPlayer = value == this ? null : value;
-			}
+			_spectatingPlayer = value == this ? null : value;
+		}
+	}
+
+	public bool IsSpectatingPlayer
+	{
+		get => _spectatingPlayer != null;
+	}
+
+	public bool IsSpectator
+	{
+		get => (Camera is IObservationCamera);
+	}
+
+	private int _targetIdx = 0;
+
+	[Event( TTTEvent.Player.Died )]
+	private static void OnPlayerDied( TTTPlayer deadPlayer )
+	{
+		if ( !Host.IsClient || Local.Pawn is not TTTPlayer player )
+		{
+			return;
 		}
 
-		public bool IsSpectatingPlayer
+		if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
 		{
-			get => _spectatingPlayer != null;
+			player.UpdateObservatedPlayer();
 		}
+	}
 
-		public bool IsSpectator
+	public void UpdateObservatedPlayer()
+	{
+		TTTPlayer oldObservatedPlayer = CurrentPlayer;
+
+		CurrentPlayer = null;
+
+		List<TTTPlayer> players = Utils.GetAlivePlayers();
+
+		if ( players.Count > 0 )
 		{
-			get => (Camera is IObservationCamera);
-		}
-
-		private int _targetIdx = 0;
-
-		[Event( TTTEvent.Player.Died )]
-		private static void OnPlayerDied( TTTPlayer deadPlayer )
-		{
-			if ( !Host.IsClient || Local.Pawn is not TTTPlayer player )
+			if ( ++_targetIdx >= players.Count )
 			{
-				return;
-			}
-
-			if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
-			{
-				player.UpdateObservatedPlayer();
-			}
-		}
-
-		public void UpdateObservatedPlayer()
-		{
-			TTTPlayer oldObservatedPlayer = CurrentPlayer;
-
-			CurrentPlayer = null;
-
-			List<TTTPlayer> players = Utils.GetAlivePlayers();
-
-			if ( players.Count > 0 )
-			{
-				if ( ++_targetIdx >= players.Count )
-				{
-					_targetIdx = 0;
-				}
-
-				CurrentPlayer = players[_targetIdx];
+				_targetIdx = 0;
 			}
 
-			if ( Camera is IObservationCamera camera )
-			{
-				camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
-			}
+			CurrentPlayer = players[_targetIdx];
 		}
 
-		public void MakeSpectator( bool useRagdollCamera = true )
+		if ( Camera is IObservationCamera camera )
 		{
-			EnableAllCollisions = false;
-			EnableDrawing = false;
-			Controller = null;
-			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-			LifeState = LifeState.Dead;
-			Health = 0f;
+			camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
 		}
+	}
 
-		public void ToggleForcedSpectator()
+	public void MakeSpectator( bool useRagdollCamera = true )
+	{
+		EnableAllCollisions = false;
+		EnableDrawing = false;
+		Controller = null;
+		Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+		LifeState = LifeState.Dead;
+		Health = 0f;
+	}
+
+	public void ToggleForcedSpectator()
+	{
+		IsForcedSpectator = !IsForcedSpectator;
+
+		if ( IsForcedSpectator && LifeState == LifeState.Alive )
 		{
-			IsForcedSpectator = !IsForcedSpectator;
+			TakeDamage( DamageInfo.Generic( 1000 ) );
 
-			if ( IsForcedSpectator && LifeState == LifeState.Alive )
+			if ( !Client.GetValue( "forcedspectator", false ) )
 			{
-				TakeDamage( DamageInfo.Generic( 1000 ) );
-
-				if ( !Client.GetValue( "forcedspectator", false ) )
-				{
-					Client.SetValue( "forcedspectator", true );
-				}
+				Client.SetValue( "forcedspectator", true );
 			}
 		}
 	}

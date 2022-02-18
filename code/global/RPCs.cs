@@ -1,163 +1,161 @@
 using Sandbox;
 
 using TTT.Events;
-using TTT.Items;
 using TTT.Player;
 using TTT.Roles;
 using TTT.Teams;
 using TTT.UI;
 
-namespace TTT.Globals
+namespace TTT.Globals;
+
+public partial class RPCs
 {
-	public partial class RPCs
+	[ClientRpc]
+	public static void ClientOnPlayerDied( TTTPlayer player )
 	{
-		[ClientRpc]
-		public static void ClientOnPlayerDied( TTTPlayer player )
+		if ( !player.IsValid() )
 		{
-			if ( !player.IsValid() )
-			{
-				return;
-			}
-
-			Event.Run( TTTEvent.Player.Died, player );
+			return;
 		}
 
-		[ClientRpc]
-		public static void ClientOnPlayerSpawned( TTTPlayer player )
+		Event.Run( TTTEvent.Player.Died, player );
+	}
+
+	[ClientRpc]
+	public static void ClientOnPlayerSpawned( TTTPlayer player )
+	{
+		if ( !player.IsValid() )
 		{
-			if ( !player.IsValid() )
-			{
-				return;
-			}
-
-			player.IsMissingInAction = false;
-			player.IsConfirmed = false;
-			player.CorpseConfirmer = null;
-
-			player.SetRole( new NoneRole() );
+			return;
 		}
 
-		/// <summary>
-		/// Must be called on the server, updates TTTPlayer's `Role`.
-		/// </summary>
-		/// <param name="player">The player whose `Role` is to be updated</param>
-		/// <param name="roleName">Same as the `TTT.Roles.TTTRole`'s `TTT.Roles.RoleAttribute`'s name</param>
-		/// <param name="teamName">The name of the team</param>
-		[ClientRpc]
-		public static void ClientSetRole( TTTPlayer player, string roleName, string teamName = null )
+		player.IsMissingInAction = false;
+		player.IsConfirmed = false;
+		player.CorpseConfirmer = null;
+
+		player.SetRole( new NoneRole() );
+	}
+
+	/// <summary>
+	/// Must be called on the server, updates TTTPlayer's `Role`.
+	/// </summary>
+	/// <param name="player">The player whose `Role` is to be updated</param>
+	/// <param name="roleName">Same as the `TTT.Roles.TTTRole`'s `TTT.Roles.RoleAttribute`'s name</param>
+	/// <param name="teamName">The name of the team</param>
+	[ClientRpc]
+	public static void ClientSetRole( TTTPlayer player, string roleName, string teamName = null )
+	{
+		if ( !player.IsValid() )
 		{
-			if ( !player.IsValid() )
-			{
-				return;
-			}
-
-			player.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
-
-			Client client = player.Client;
-
-			if ( client == null || !client.IsValid() )
-			{
-				return;
-			}
-
-			Scoreboard.Instance?.UpdateClient( client );
+			return;
 		}
 
-		// Someone refactor this mess.
-		[ClientRpc]
-		public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+		player.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
+
+		Client client = player.Client;
+
+		if ( client == null || !client.IsValid() )
 		{
-			if ( !deadPlayer.IsValid() )
+			return;
+		}
+
+		Scoreboard.Instance?.UpdateClient( client );
+	}
+
+	// Someone refactor this mess.
+	[ClientRpc]
+	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+	{
+		if ( !deadPlayer.IsValid() )
+		{
+			return;
+		}
+
+		deadPlayer.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
+
+		deadPlayer.IsConfirmed = true;
+		deadPlayer.CorpseConfirmer = confirmPlayer;
+
+		if ( playerCorpse.IsValid() )
+		{
+			playerCorpse.DeadPlayer = deadPlayer;
+			playerCorpse.KillerWeapon = killerWeapon;
+			playerCorpse.Perks = perks;
+
+			playerCorpse.DeadPlayerClientData = new ClientData()
 			{
-				return;
-			}
+				Name = deadPlayerName,
+				PlayerId = deadPlayerId
+			};
 
-			deadPlayer.SetRole( Utils.GetObjectByType<TTTRole>( Utils.GetTypeByLibraryTitle<TTTRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
+			playerCorpse.CopyConfirmationData( confirmationData );
+		}
 
-			deadPlayer.IsConfirmed = true;
-			deadPlayer.CorpseConfirmer = confirmPlayer;
+		Client deadClient = deadPlayer.Client;
 
-			if ( playerCorpse.IsValid() )
-			{
-				playerCorpse.DeadPlayer = deadPlayer;
-				playerCorpse.KillerWeapon = killerWeapon;
-				playerCorpse.Perks = perks;
+		Scoreboard.Instance.UpdateClient( deadClient );
 
-				playerCorpse.DeadPlayerClientData = new ClientData()
-				{
-					Name = deadPlayerName,
-					PlayerId = deadPlayerId
-				};
+		if ( !confirmPlayer.IsValid() )
+		{
+			return;
+		}
 
-				playerCorpse.CopyConfirmationData( confirmationData );
-			}
+		Client confirmClient = confirmPlayer.Client;
 
-			Client deadClient = deadPlayer.Client;
+		InfoFeed.Current?.AddEntry(
+			confirmClient,
+			playerCorpse.DeadPlayerClientData.Name,
+			deadPlayer.Role.Color,
+			"found the body of",
+			$"({deadPlayer.Role.Name})"
+		);
 
-			Scoreboard.Instance.UpdateClient( deadClient );
-
-			if ( !confirmPlayer.IsValid() )
-			{
-				return;
-			}
-
-			Client confirmClient = confirmPlayer.Client;
-
+		if ( confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0 )
+		{
 			InfoFeed.Current?.AddEntry(
 				confirmClient,
-				playerCorpse.DeadPlayerClientData.Name,
-				deadPlayer.Role.Color,
-				"found the body of",
-				$"({deadPlayer.Role.Name})"
+				$"found $ {deadPlayer.CorpseCredits} credits!"
 			);
-
-			if ( confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0 )
-			{
-				InfoFeed.Current?.AddEntry(
-					confirmClient,
-					$"found $ {deadPlayer.CorpseCredits} credits!"
-				);
-			}
 		}
+	}
 
-		[ClientRpc]
-		public static void ClientAddMissingInAction( TTTPlayer missingInActionPlayer )
+	[ClientRpc]
+	public static void ClientAddMissingInAction( TTTPlayer missingInActionPlayer )
+	{
+		if ( !missingInActionPlayer.IsValid() )
 		{
-			if ( !missingInActionPlayer.IsValid() )
-			{
-				return;
-			}
-
-			missingInActionPlayer.IsMissingInAction = true;
-
-			Scoreboard.Instance.UpdateClient( missingInActionPlayer.Client );
+			return;
 		}
 
-		[ClientRpc]
-		public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
-		{
-			PostRoundMenu.Instance.OpenAndSetPostRoundMenu( new PostRoundStats(
-				winningRole: winningTeam,
-				winningColor: winningColor
-			) );
-		}
+		missingInActionPlayer.IsMissingInAction = true;
 
-		[ClientRpc]
-		public static void ClientClosePostRoundMenu()
-		{
-			PostRoundMenu.Instance.ClosePostRoundMenu();
-		}
+		Scoreboard.Instance.UpdateClient( missingInActionPlayer.Client );
+	}
 
-		[ClientRpc]
-		public static void ClientOpenMapSelectionMenu()
-		{
-			FullScreenHintMenu.Instance?.ForceOpen( new MapSelectionMenu() );
-		}
+	[ClientRpc]
+	public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
+	{
+		PostRoundMenu.Instance.OpenAndSetPostRoundMenu( new PostRoundStats(
+			winningRole: winningTeam,
+			winningColor: winningColor
+		) );
+	}
 
-		[ClientRpc]
-		public static void ClientDisplayMessage( string message, Color color )
-		{
-			InfoFeed.Current?.AddEntry( message, color );
-		}
+	[ClientRpc]
+	public static void ClientClosePostRoundMenu()
+	{
+		PostRoundMenu.Instance.ClosePostRoundMenu();
+	}
+
+	[ClientRpc]
+	public static void ClientOpenMapSelectionMenu()
+	{
+		FullScreenHintMenu.Instance?.ForceOpen( new MapSelectionMenu() );
+	}
+
+	[ClientRpc]
+	public static void ClientDisplayMessage( string message, Color color )
+	{
+		InfoFeed.Current?.AddEntry( message, color );
 	}
 }

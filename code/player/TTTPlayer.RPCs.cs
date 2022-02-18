@@ -5,29 +5,28 @@ using TTT.Globals;
 using TTT.Items;
 using TTT.UI;
 
-namespace TTT.Player
+namespace TTT.Player;
+
+public partial class TTTPlayer
 {
-	public partial class TTTPlayer
+	[ClientRpc]
+	public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
 	{
-		[ClientRpc]
-		public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
-		{
-			Sound.FromScreen( "dm.ui_attacker" )
-				.SetPitch( 1 + inverseHealth * 1 )
-				.SetPosition( position );
-		}
+		Sound.FromScreen( "dm.ui_attacker" )
+			.SetPitch( 1 + inverseHealth * 1 )
+			.SetPosition( position );
+	}
 
-		[ClientRpc]
-		public void ClientTookDamage( Vector3 position, float damage )
-		{
-			SWB_Base.DamageIndicator.Current?.OnHit( position );
-		}
+	[ClientRpc]
+	public void ClientTookDamage( Vector3 position, float damage )
+	{
+		SWB_Base.DamageIndicator.Current?.OnHit( position );
+	}
 
 
-		[ClientRpc]
-		public void ClientInitialSpawn()
-		{
-			Event.Run( TTTEvent.Player.InitialSpawn, Client );
-		}
+	[ClientRpc]
+	public void ClientInitialSpawn()
+	{
+		Event.Run( TTTEvent.Player.InitialSpawn, Client );
 	}
 }

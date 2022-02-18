@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.player;
 using System;
 using System.ComponentModel;
 using TTT.Player;
@@ -43,7 +44,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 {
 	[Net, Predicted]
 	public TimeSince TimeSinceDeployed { get; set; }
-	
+
 	public CarriableInfo Info { get; set; }
 	public PickupTrigger PickupTrigger { get; protected set; }
 	public new TTTPlayer Owner

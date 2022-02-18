@@ -1,53 +1,52 @@
 using System.Collections.Generic;
 using Sandbox;
 
-namespace TTT.Player
+namespace TTT.Player;
+
+public partial class BaseClothing : ModelEntity
 {
-	public partial class BaseClothing : ModelEntity
+	public TTTPlayer Wearer => Parent as TTTPlayer;
+	public virtual void Attached() { }
+	public virtual void Detatched() { }
+}
+
+public partial class TTTPlayer
+{
+	protected List<BaseClothing> Clothing { get; set; } = new();
+
+	public BaseClothing AttachClothing( string modelName )
 	{
-		public TTTPlayer Wearer => Parent as TTTPlayer;
-		public virtual void Attached() { }
-		public virtual void Detatched() { }
+		var entity = new BaseClothing();
+		entity.SetModel( modelName );
+		AttachClothing( entity );
+		return entity;
 	}
 
-	public partial class TTTPlayer
+	public T AttachClothing<T>() where T : BaseClothing, new()
 	{
-		protected List<BaseClothing> Clothing { get; set; } = new();
+		var entity = new T();
+		AttachClothing( entity );
+		return entity;
+	}
 
-		public BaseClothing AttachClothing( string modelName )
+	public void AttachClothing( BaseClothing clothing )
+	{
+		clothing.SetParent( this, true );
+		clothing.EnableShadowInFirstPerson = true;
+		clothing.EnableHideInFirstPerson = true;
+		clothing.Attached();
+
+		Clothing.Add( clothing );
+	}
+
+	public void RemoveClothing()
+	{
+		Clothing.ForEach( ( entity ) =>
 		{
-			var entity = new BaseClothing();
-			entity.SetModel( modelName );
-			AttachClothing( entity );
-			return entity;
-		}
+			entity.Detatched();
+			entity.Delete();
+		} );
 
-		public T AttachClothing<T>() where T : BaseClothing, new()
-		{
-			var entity = new T();
-			AttachClothing( entity );
-			return entity;
-		}
-
-		public void AttachClothing( BaseClothing clothing )
-		{
-			clothing.SetParent( this, true );
-			clothing.EnableShadowInFirstPerson = true;
-			clothing.EnableHideInFirstPerson = true;
-			clothing.Attached();
-
-			Clothing.Add( clothing );
-		}
-
-		public void RemoveClothing()
-		{
-			Clothing.ForEach( ( entity ) =>
-			{
-				entity.Detatched();
-				entity.Delete();
-			} );
-
-			Clothing.Clear();
-		}
+		Clothing.Clear();
 	}
 }

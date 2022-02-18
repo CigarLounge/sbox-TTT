@@ -4,49 +4,48 @@ using Sandbox.UI.Construct;
 
 using TTT.Player;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public class PlayerRoleDisplay : Panel
 {
-	public class PlayerRoleDisplay : Panel
+	private Label _roleLabel;
+
+	public PlayerRoleDisplay() : base()
 	{
-		private Label _roleLabel;
+		StyleSheet.Load( "/ui/generalhud/playerinfo/PlayerRoleDisplay.scss" );
 
-		public PlayerRoleDisplay() : base()
+		AddClass( "rounded" );
+		AddClass( "opacity-heavy" );
+		AddClass( "text-shadow" );
+
+		_roleLabel = Add.Label();
+		_roleLabel.AddClass( "centered" );
+		_roleLabel.AddClass( "role-label" );
+
+		OnRoleUpdate( Local.Pawn as TTTPlayer );
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		if ( Local.Pawn is not TTTPlayer player )
 		{
-			StyleSheet.Load( "/ui/generalhud/playerinfo/PlayerRoleDisplay.scss" );
-
-			AddClass( "rounded" );
-			AddClass( "opacity-heavy" );
-			AddClass( "text-shadow" );
-
-			_roleLabel = Add.Label();
-			_roleLabel.AddClass( "centered" );
-			_roleLabel.AddClass( "role-label" );
-
-			OnRoleUpdate( Local.Pawn as TTTPlayer );
+			return;
 		}
 
-		public override void Tick()
+		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound );
+	}
+
+	[Event( Events.TTTEvent.Player.Role.Select )]
+	private void OnRoleUpdate( TTTPlayer player )
+	{
+		if ( player == null || player != Local.Pawn as TTTPlayer )
 		{
-			base.Tick();
-
-			if ( Local.Pawn is not TTTPlayer player )
-			{
-				return;
-			}
-
-			this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound );
+			return;
 		}
 
-		[Event( Events.TTTEvent.Player.Role.Select )]
-		private void OnRoleUpdate( TTTPlayer player )
-		{
-			if ( player == null || player != Local.Pawn as TTTPlayer )
-			{
-				return;
-			}
-
-			_roleLabel.Text = player.Role.Name;
-			Style.BackgroundColor = player.Role.Color;
-		}
+		_roleLabel.Text = player.Role.Name;
+		Style.BackgroundColor = player.Role.Color;
 	}
 }

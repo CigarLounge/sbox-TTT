@@ -1,88 +1,85 @@
-using System;
-
 using Sandbox;
 
 using TTT.Player;
 
-namespace TTT.Rounds
+namespace TTT.Rounds;
+
+public abstract partial class BaseRound : BaseNetworkable
 {
-	public abstract partial class BaseRound : BaseNetworkable
+	[Net]
+	public TimeUntil TimeUntilRoundEnd { get; set; }
+
+	public virtual int RoundDuration => 0;
+	public virtual string RoundName => "";
+
+	public string TimeLeftFormatted { get { return Utils.TimerString( TimeUntilRoundEnd.Relative ); } }
+
+	public void Start()
 	{
-		[Net]
-		public TimeUntil TimeUntilRoundEnd { get; set; }
-
-		public virtual int RoundDuration => 0;
-		public virtual string RoundName => "";
-
-		public string TimeLeftFormatted { get { return Utils.TimerString( TimeUntilRoundEnd.Relative ); } }
-
-		public void Start()
+		if ( Host.IsServer && RoundDuration > 0 )
 		{
-			if ( Host.IsServer && RoundDuration > 0 )
-			{
-				TimeUntilRoundEnd = RoundDuration + 1; // Add 1 second due to game tick.
-			}
-
-			OnStart();
+			TimeUntilRoundEnd = RoundDuration + 1; // Add 1 second due to game tick.
 		}
 
-		public void Finish()
-		{
-			if ( Host.IsServer )
-			{
-				TimeUntilRoundEnd = 0f;
-			}
+		OnStart();
+	}
 
-			OnFinish();
+	public void Finish()
+	{
+		if ( Host.IsServer )
+		{
+			TimeUntilRoundEnd = 0f;
 		}
 
-		public virtual void OnPlayerSpawn( TTTPlayer player )
+		OnFinish();
+	}
+
+	public virtual void OnPlayerSpawn( TTTPlayer player )
+	{
+
+	}
+
+	public virtual void OnPlayerKilled( TTTPlayer player )
+	{
+
+	}
+
+	public virtual void OnPlayerJoin( TTTPlayer player )
+	{
+
+	}
+
+
+	public virtual void OnPlayerLeave( TTTPlayer player )
+	{
+
+	}
+
+	public virtual void OnTick()
+	{
+
+	}
+
+	public virtual void OnSecond()
+	{
+		if ( Host.IsServer && TimeUntilRoundEnd )
 		{
-
+			OnTimeUp();
 		}
+	}
 
-		public virtual void OnPlayerKilled( TTTPlayer player )
-		{
+	protected virtual void OnStart()
+	{
 
-		}
+	}
 
-		public virtual void OnPlayerJoin( TTTPlayer player )
-		{
+	protected virtual void OnFinish()
+	{
 
-		}
+	}
 
+	protected virtual void OnTimeUp()
+	{
 
-		public virtual void OnPlayerLeave( TTTPlayer player )
-		{
-
-		}
-
-		public virtual void OnTick()
-		{
-
-		}
-
-		public virtual void OnSecond()
-		{
-			if ( Host.IsServer && TimeUntilRoundEnd )
-			{
-				OnTimeUp();
-			}
-		}
-
-		protected virtual void OnStart()
-		{
-
-		}
-
-		protected virtual void OnFinish()
-		{
-
-		}
-
-		protected virtual void OnTimeUp()
-		{
-
-		}
 	}
 }

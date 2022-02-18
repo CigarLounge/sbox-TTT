@@ -5,33 +5,33 @@ using Sandbox.UI.Construct;
 using TTT.Items;
 using TTT.Player;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public class RadarPoint : Panel
 {
-	public class RadarPoint : Panel
+	private readonly Vector3 _position;
+	private readonly Label _distanceLabel;
+	private const int BLUR_RADIUS = 10;
+
+	public RadarPoint( Radar.RadarPointData data )
 	{
-		private readonly Vector3 _position;
-		private readonly Label _distanceLabel;
-		private const int BLUR_RADIUS = 10;
+		if ( RadarDisplay.Instance == null )
+			return;
 
-		public RadarPoint( Radar.RadarPointData data )
-		{
-			if ( RadarDisplay.Instance == null )
-				return;
+		_position = data.Position;
 
-			_position = data.Position;
+		StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
 
-			StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
+		RadarDisplay.Instance.AddChild( this );
 
-			RadarDisplay.Instance.AddChild( this );
+		AddClass( "circular" );
 
-			AddClass( "circular" );
+		_distanceLabel = Add.Label();
+		_distanceLabel.AddClass( "distance-label" );
+		_distanceLabel.AddClass( "text-shadow" );
 
-			_distanceLabel = Add.Label();
-			_distanceLabel.AddClass( "distance-label" );
-			_distanceLabel.AddClass( "text-shadow" );
-
-			Style.BackgroundColor = data.Color;
-			Style.BoxShadow = new ShadowList()
+		Style.BackgroundColor = data.Color;
+		Style.BoxShadow = new ShadowList()
 			{
 				new Shadow
 				{
@@ -39,49 +39,48 @@ namespace TTT.UI
 					Color = data.Color
 				}
 			};
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			if ( Local.Pawn is not TTTPlayer player )
-			{
-				return;
-			}
-
-			_distanceLabel.Text = $"{Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
-
-			Vector3 screenPos = _position.ToScreen();
-			this.Enabled( screenPos.z > 0f );
-
-			if ( !this.IsEnabled() )
-			{
-				return;
-			}
-
-			Style.Left = Length.Fraction( screenPos.x );
-			Style.Top = Length.Fraction( screenPos.y );
-		}
 	}
 
-	public class RadarDisplay : Panel
+	public override void Tick()
 	{
-		public static RadarDisplay Instance { get; set; }
+		base.Tick();
 
-		public RadarDisplay() : base()
+		if ( Local.Pawn is not TTTPlayer player )
 		{
-			Instance = this;
-			AddClass( "fullscreen" );
-			Style.ZIndex = -1;
+			return;
 		}
 
-		public override void Tick()
+		_distanceLabel.Text = $"{Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
+
+		Vector3 screenPos = _position.ToScreen();
+		this.Enabled( screenPos.z > 0f );
+
+		if ( !this.IsEnabled() )
 		{
-			if ( Local.Pawn is not TTTPlayer player || !player.Perks.Has( typeof( Radar ) ) )
-			{
-				Delete();
-			}
+			return;
+		}
+
+		Style.Left = Length.Fraction( screenPos.x );
+		Style.Top = Length.Fraction( screenPos.y );
+	}
+}
+
+public class RadarDisplay : Panel
+{
+	public static RadarDisplay Instance { get; set; }
+
+	public RadarDisplay() : base()
+	{
+		Instance = this;
+		AddClass( "fullscreen" );
+		Style.ZIndex = -1;
+	}
+
+	public override void Tick()
+	{
+		if ( Local.Pawn is not TTTPlayer player || !player.Perks.Has( typeof( Radar ) ) )
+		{
+			Delete();
 		}
 	}
 }

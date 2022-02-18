@@ -1,5 +1,5 @@
 using Sandbox;
-
+using Sandbox.player;
 using TTT.Player.Camera;
 using TTT.UI;
 

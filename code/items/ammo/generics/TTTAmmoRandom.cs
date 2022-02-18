@@ -3,25 +3,24 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-namespace TTT.Items
+namespace TTT.Items;
+
+[Library( "ttt_ammo_random" )]
+public class TTTAmmoRandom : Entity
 {
-	[Library( "ttt_ammo_random" )]
-	public class TTTAmmoRandom : Entity
+	public void Activate()
 	{
-		public void Activate()
+		List<Type> ammoTypes = Utils.GetTypesWithAttribute<TTTAmmo, SpawnableAttribute>();
+
+		if ( ammoTypes.Count <= 0 )
 		{
-			List<Type> ammoTypes = Utils.GetTypesWithAttribute<TTTAmmo, SpawnableAttribute>();
-
-			if ( ammoTypes.Count <= 0 )
-			{
-				return;
-			}
-
-			Type typeToSpawn = ammoTypes[Utils.RNG.Next( ammoTypes.Count )];
-			TTTAmmo ent = Utils.GetObjectByType<TTTAmmo>( typeToSpawn );
-			ent.Position = Position;
-			ent.Rotation = Rotation;
-			ent.Spawn();
+			return;
 		}
+
+		Type typeToSpawn = ammoTypes[Utils.RNG.Next( ammoTypes.Count )];
+		TTTAmmo ent = Utils.GetObjectByType<TTTAmmo>( typeToSpawn );
+		ent.Position = Position;
+		ent.Rotation = Rotation;
+		ent.Spawn();
 	}
 }

@@ -1,6 +1,7 @@
+using TTT.Player;
 using TTT.UI;
 
-namespace TTT.Player;
+namespace Sandbox.player;
 
 public interface IEntityHint
 {

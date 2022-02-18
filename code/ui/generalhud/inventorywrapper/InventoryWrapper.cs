@@ -1,15 +1,14 @@
 using Sandbox.UI;
 
-namespace TTT.UI
-{
-	public class InventoryWrapper : Panel
-	{
-		public InventoryWrapper()
-		{
-			StyleSheet.Load( "/ui/generalhud/inventorywrapper/InventoryWrapper.scss" );
+namespace TTT.UI;
 
-			AddChild<PerkDisplay>();
-			AddChild<InventorySelection>();
-		}
+public class InventoryWrapper : Panel
+{
+	public InventoryWrapper()
+	{
+		StyleSheet.Load( "/ui/generalhud/inventorywrapper/InventoryWrapper.scss" );
+
+		AddChild<PerkDisplay>();
+		AddChild<InventorySelection>();
 	}
 }

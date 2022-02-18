@@ -2,58 +2,57 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public partial class ScoreboardGroup : Panel
 {
-	public partial class ScoreboardGroup : Panel
+	public readonly string GroupTitle;
+	public int GroupMembers = 0;
+
+	private readonly Panel _groupTitlePanel;
+	private readonly Label _groupTitleLabel;
+	private readonly Label _groupKarmaLabel;
+	private readonly Label _groupPingLabel;
+	private readonly Panel _groupContent;
+
+	public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
 	{
-		public readonly string GroupTitle;
-		public int GroupMembers = 0;
+		GroupTitle = groupName;
 
-		private readonly Panel _groupTitlePanel;
-		private readonly Label _groupTitleLabel;
-		private readonly Label _groupKarmaLabel;
-		private readonly Label _groupPingLabel;
-		private readonly Panel _groupContent;
+		AddClass( groupName );
+		AddClass( "text-shadow" );
 
-		public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
-		{
-			GroupTitle = groupName;
+		_groupTitlePanel = new( this );
+		_groupTitlePanel.AddClass( "group-title-panel" );
+		_groupTitlePanel.AddClass( "opacity-medium" );
+		_groupTitlePanel.AddClass( "rounded-top" );
 
-			AddClass( groupName );
-			AddClass( "text-shadow" );
+		_groupTitleLabel = _groupTitlePanel.Add.Label();
+		_groupTitleLabel.AddClass( "group-title-label" );
 
-			_groupTitlePanel = new( this );
-			_groupTitlePanel.AddClass( "group-title-panel" );
-			_groupTitlePanel.AddClass( "opacity-medium" );
-			_groupTitlePanel.AddClass( "rounded-top" );
+		_groupKarmaLabel = _groupTitlePanel.Add.Label( "Karma" );
+		_groupKarmaLabel.AddClass( "group-karma-label" );
 
-			_groupTitleLabel = _groupTitlePanel.Add.Label();
-			_groupTitleLabel.AddClass( "group-title-label" );
+		_groupPingLabel = _groupTitlePanel.Add.Label( "Ping" );
+		_groupPingLabel.AddClass( "group-ping-label" );
 
-			_groupKarmaLabel = _groupTitlePanel.Add.Label( "Karma" );
-			_groupKarmaLabel.AddClass( "group-karma-label" );
+		_groupContent = new( this );
+		_groupContent.AddClass( "group-content-panel" );
+	}
 
-			_groupPingLabel = _groupTitlePanel.Add.Label( "Ping" );
-			_groupPingLabel.AddClass( "group-ping-label" );
+	public ScoreboardEntry AddEntry( Client client )
+	{
+		ScoreboardEntry scoreboardEntry = _groupContent.AddChild<ScoreboardEntry>();
+		scoreboardEntry.ScoreboardGroupName = GroupTitle;
+		scoreboardEntry.Client = client;
 
-			_groupContent = new( this );
-			_groupContent.AddClass( "group-content-panel" );
-		}
+		scoreboardEntry.Update();
 
-		public ScoreboardEntry AddEntry( Client client )
-		{
-			ScoreboardEntry scoreboardEntry = _groupContent.AddChild<ScoreboardEntry>();
-			scoreboardEntry.ScoreboardGroupName = GroupTitle;
-			scoreboardEntry.Client = client;
+		return scoreboardEntry;
+	}
 
-			scoreboardEntry.Update();
-
-			return scoreboardEntry;
-		}
-
-		public void UpdateLabel()
-		{
-			_groupTitleLabel.Text = GroupTitle;
-		}
+	public void UpdateLabel()
+	{
+		_groupTitleLabel.Text = GroupTitle;
 	}
 }

@@ -4,236 +4,234 @@ using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Events;
 using TTT.Player;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public partial class Scoreboard : Panel
 {
-	public partial class Scoreboard : Panel
+	public enum DefaultScoreboardGroup
 	{
-		public enum DefaultScoreboardGroup
+		Alive,
+		Missing,
+		Dead,
+		Spectator
+	}
+
+	public static Scoreboard Instance;
+
+	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
+	private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
+	private readonly Dictionary<Client, bool> _forcedSpecList = new();
+
+	private readonly Panel _backgroundPanel;
+	private readonly Panel _scoreboardContainer;
+	private readonly ScoreboardHeader _scoreboardHeader;
+	private readonly Panel _scoreboardContent;
+	private readonly Panel _scoreboardFooter;
+
+	public Scoreboard() : base()
+	{
+		Instance = this;
+
+		StyleSheet.Load( "/ui/generalhud/scoreboard/Scoreboard.scss" );
+
+		_backgroundPanel = new( this );
+		_backgroundPanel.AddClass( "background-color-secondary" );
+		_backgroundPanel.AddClass( "opacity-medium" );
+		_backgroundPanel.AddClass( "fullscreen" );
+
+		_scoreboardContainer = new( this );
+		_scoreboardContainer.AddClass( "rounded" );
+		_scoreboardContainer.AddClass( "scoreboard-container" );
+
+		_scoreboardHeader = new( _scoreboardContainer );
+		_scoreboardHeader.AddClass( "background-color-secondary" );
+		_scoreboardHeader.AddClass( "opacity-heavy" );
+		_scoreboardHeader.AddClass( "rounded-top" );
+
+		_scoreboardContent = new( _scoreboardContainer );
+		_scoreboardContent.AddClass( "background-color-primary" );
+		_scoreboardContent.AddClass( "scoreboard-content" );
+		_scoreboardContent.AddClass( "opacity-heavy" );
+
+		_scoreboardFooter = new( _scoreboardContainer );
+		_scoreboardFooter.AddClass( "background-color-secondary" );
+		_scoreboardFooter.AddClass( "scoreboard-footer" );
+		_scoreboardFooter.AddClass( "rounded-bottom" );
+		_scoreboardFooter.AddClass( "opacity-heavy" );
+
+		Initialize();
+	}
+
+	[Event.Hotload]
+	private void Initialize()
+	{
+		if ( Host.IsServer )
 		{
-			Alive,
-			Missing,
-			Dead,
-			Spectator
+			return;
 		}
 
-		public static Scoreboard Instance;
-
-		private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
-		private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
-		private readonly Dictionary<Client, bool> _forcedSpecList = new();
-
-		private readonly Panel _backgroundPanel;
-		private readonly Panel _scoreboardContainer;
-		private readonly ScoreboardHeader _scoreboardHeader;
-		private readonly Panel _scoreboardContent;
-		private readonly Panel _scoreboardFooter;
-
-		public Scoreboard() : base()
+		foreach ( DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues( typeof( DefaultScoreboardGroup ) ) )
 		{
-			Instance = this;
+			AddScoreboardGroup( defaultScoreboardGroup.ToString() );
+		}
+	}
 
-			StyleSheet.Load( "/ui/generalhud/scoreboard/Scoreboard.scss" );
+	public ScoreboardEntry AddClient( Client client )
+	{
+		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
+		ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
 
-			_backgroundPanel = new( this );
-			_backgroundPanel.AddClass( "background-color-secondary" );
-			_backgroundPanel.AddClass( "opacity-medium" );
-			_backgroundPanel.AddClass( "fullscreen" );
+		scoreboardGroup.GroupMembers++;
 
-			_scoreboardContainer = new( this );
-			_scoreboardContainer.AddClass( "rounded" );
-			_scoreboardContainer.AddClass( "scoreboard-container" );
+		_entries.Add( client, scoreboardEntry );
 
-			_scoreboardHeader = new( _scoreboardContainer );
-			_scoreboardHeader.AddClass( "background-color-secondary" );
-			_scoreboardHeader.AddClass( "opacity-heavy" );
-			_scoreboardHeader.AddClass( "rounded-top" );
+		scoreboardGroup.UpdateLabel();
+		return scoreboardEntry;
+	}
 
-			_scoreboardContent = new( _scoreboardContainer );
-			_scoreboardContent.AddClass( "background-color-primary" );
-			_scoreboardContent.AddClass( "scoreboard-content" );
-			_scoreboardContent.AddClass( "opacity-heavy" );
-
-			_scoreboardFooter = new( _scoreboardContainer );
-			_scoreboardFooter.AddClass( "background-color-secondary" );
-			_scoreboardFooter.AddClass( "scoreboard-footer" );
-			_scoreboardFooter.AddClass( "rounded-bottom" );
-			_scoreboardFooter.AddClass( "opacity-heavy" );
-
-			Initialize();
+	public void UpdateClient( Client client )
+	{
+		if ( client == null )
+		{
+			return;
 		}
 
-		[Event.Hotload]
-		private void Initialize()
+		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 		{
-			if ( Host.IsServer )
-			{
-				return;
-			}
-
-			foreach ( DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues( typeof( DefaultScoreboardGroup ) ) )
-			{
-				AddScoreboardGroup( defaultScoreboardGroup.ToString() );
-			}
+			return;
 		}
 
-		public ScoreboardEntry AddClient( Client client )
+		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
+
+		if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
 		{
-			ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
-			ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
-
-			scoreboardGroup.GroupMembers++;
-
-			_entries.Add( client, scoreboardEntry );
-
-			scoreboardGroup.UpdateLabel();
-			return scoreboardEntry;
+			// instead of remove and add, move the panel into the right parent
+			RemoveClient( client );
+			AddClient( client );
+		}
+		else
+		{
+			panel.Update();
 		}
 
-		public void UpdateClient( Client client )
+		_scoreboardHeader.UpdateServerInfo();
+		UpdateScoreboardGroups();
+	}
+
+	public void RemoveClient( Client client )
+	{
+		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 		{
-			if ( client == null )
-			{
-				return;
-			}
+			return;
+		}
 
-			if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
-			{
-				return;
-			}
+		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup );
 
-			ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
+		if ( scoreboardGroup != null )
+		{
+			scoreboardGroup.GroupMembers--;
+		}
 
-			if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
+		scoreboardGroup.UpdateLabel();
+
+		panel.Delete();
+		_entries.Remove( client );
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		SetClass( "fade-in", Input.Down( InputButton.Score ) );
+		_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
+
+		if ( !HasClass( "fade-in" ) )
+		{
+			return;
+		}
+
+		// This code sucks. I'm forced to due this because of...
+		// https://github.com/Facepunch/sbox-issues/issues/1324
+		foreach ( var client in Client.All.Except( _entries.Keys ) )
+		{
+			AddClient( client );
+			UpdateClient( client );
+		}
+
+		foreach ( var client in _entries.Keys.Except( Client.All ) )
+		{
+			if ( _entries.TryGetValue( client, out var row ) )
 			{
-				// instead of remove and add, move the panel into the right parent
+				row?.Delete();
 				RemoveClient( client );
-				AddClient( client );
-			}
-			else
-			{
-				panel.Update();
-			}
-
-			_scoreboardHeader.UpdateServerInfo();
-			UpdateScoreboardGroups();
-		}
-
-		public void RemoveClient( Client client )
-		{
-			if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
-			{
-				return;
-			}
-
-			_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup );
-
-			if ( scoreboardGroup != null )
-			{
-				scoreboardGroup.GroupMembers--;
-			}
-
-			scoreboardGroup.UpdateLabel();
-
-			panel.Delete();
-			_entries.Remove( client );
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			SetClass( "fade-in", Input.Down( InputButton.Score ) );
-			_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
-
-			if ( !HasClass( "fade-in" ) )
-			{
-				return;
-			}
-
-			// This code sucks. I'm forced to due this because of...
-			// https://github.com/Facepunch/sbox-issues/issues/1324
-			foreach ( var client in Client.All.Except( _entries.Keys ) )
-			{
-				AddClient( client );
-				UpdateClient( client );
-			}
-
-			foreach ( var client in _entries.Keys.Except( Client.All ) )
-			{
-				if ( _entries.TryGetValue( client, out var row ) )
-				{
-					row?.Delete();
-					RemoveClient( client );
-				}
-			}
-
-			// Due to not having a `client.GetValue` change callback, we have to handle it differently
-			foreach ( Client client in Client.All )
-			{
-				bool newIsForcedSpectator = client.GetValue<bool>( "forcedspectator" );
-
-				if ( !_forcedSpecList.TryGetValue( client, out bool isForcedSpectator ) )
-				{
-					_forcedSpecList.Add( client, newIsForcedSpectator );
-				}
-				else if ( isForcedSpectator != newIsForcedSpectator )
-				{
-					_forcedSpecList[client] = newIsForcedSpectator;
-				}
-
-				UpdateClient( client );
 			}
 		}
 
-		private ScoreboardGroup AddScoreboardGroup( string groupName )
+		// Due to not having a `client.GetValue` change callback, we have to handle it differently
+		foreach ( Client client in Client.All )
 		{
-			if ( _scoreboardGroups.ContainsKey( groupName ) )
+			bool newIsForcedSpectator = client.GetValue<bool>( "forcedspectator" );
+
+			if ( !_forcedSpecList.TryGetValue( client, out bool isForcedSpectator ) )
 			{
-				return _scoreboardGroups[groupName];
+				_forcedSpecList.Add( client, newIsForcedSpectator );
+			}
+			else if ( isForcedSpectator != newIsForcedSpectator )
+			{
+				_forcedSpecList[client] = newIsForcedSpectator;
 			}
 
-			ScoreboardGroup scoreboardGroup = new( _scoreboardContent, groupName );
-			scoreboardGroup.UpdateLabel();
+			UpdateClient( client );
+		}
+	}
 
-			_scoreboardGroups.Add( groupName, scoreboardGroup );
-
-			return scoreboardGroup;
+	private ScoreboardGroup AddScoreboardGroup( string groupName )
+	{
+		if ( _scoreboardGroups.ContainsKey( groupName ) )
+		{
+			return _scoreboardGroups[groupName];
 		}
 
-		private ScoreboardGroup GetScoreboardGroup( Client client )
+		ScoreboardGroup scoreboardGroup = new( _scoreboardContent, groupName );
+		scoreboardGroup.UpdateLabel();
+
+		_scoreboardGroups.Add( groupName, scoreboardGroup );
+
+		return scoreboardGroup;
+	}
+
+	private ScoreboardGroup GetScoreboardGroup( Client client )
+	{
+		string group = DefaultScoreboardGroup.Alive.ToString();
+
+		if ( client.GetValue<bool>( "forcedspectator" ) )
 		{
-			string group = DefaultScoreboardGroup.Alive.ToString();
-
-			if ( client.GetValue<bool>( "forcedspectator" ) )
+			group = DefaultScoreboardGroup.Spectator.ToString();
+		}
+		else if ( client.PlayerId != 0 && client.Pawn is TTTPlayer player )
+		{
+			if ( player.IsConfirmed )
 			{
-				group = DefaultScoreboardGroup.Spectator.ToString();
+				group = DefaultScoreboardGroup.Dead.ToString();
 			}
-			else if ( client.PlayerId != 0 && client.Pawn is TTTPlayer player )
+			else if ( player.IsMissingInAction )
 			{
-				if ( player.IsConfirmed )
-				{
-					group = DefaultScoreboardGroup.Dead.ToString();
-				}
-				else if ( player.IsMissingInAction )
-				{
-					group = DefaultScoreboardGroup.Missing.ToString();
-				}
+				group = DefaultScoreboardGroup.Missing.ToString();
 			}
-
-			_scoreboardGroups.TryGetValue( group, out ScoreboardGroup scoreboardGroup );
-
-			return scoreboardGroup ?? AddScoreboardGroup( group );
 		}
 
-		private void UpdateScoreboardGroups()
+		_scoreboardGroups.TryGetValue( group, out ScoreboardGroup scoreboardGroup );
+
+		return scoreboardGroup ?? AddScoreboardGroup( group );
+	}
+
+	private void UpdateScoreboardGroups()
+	{
+		foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
 		{
-			foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
-			{
-				value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
-			}
+			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
 		}
 	}
 }

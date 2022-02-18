@@ -4,62 +4,61 @@ using System;
 using System.Threading.Tasks;
 
 // Use a SWB namespace since it hooks into that addon.
-namespace SWB_Base
+namespace SWB_Base;
+
+public partial class DamageIndicator : Panel
 {
-	public partial class DamageIndicator : Panel
+	public static DamageIndicator Current;
+
+	public DamageIndicator()
 	{
-		public static DamageIndicator Current;
+		Current = this;
+		StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
+	}
 
-		public DamageIndicator()
+	public void OnHit( Vector3 pos )
+	{
+		var p = new HitPoint( pos );
+		p.Parent = this;
+	}
+
+	public class HitPoint : Panel
+	{
+		public Vector3 Position;
+
+		public HitPoint( Vector3 pos )
 		{
-			Current = this;
-			StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
+			Position = pos;
+
+			_ = Lifetime();
 		}
 
-		public void OnHit( Vector3 pos )
+		public override void Tick()
 		{
-			var p = new HitPoint( pos );
-			p.Parent = this;
+			base.Tick();
+
+			var wpos = CurrentView.Rotation.Inverse * (Position.WithZ( 0 ) - CurrentView.Position.WithZ( 0 )).Normal;
+			wpos = wpos.WithZ( 0 ).Normal;
+
+			var angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
+
+			var pt = new PanelTransform();
+
+			pt.AddTranslateX( Length.Percent( -50.0f ) );
+			pt.AddTranslateY( Length.Percent( -50.0f ) );
+			pt.AddRotation( 0, 0, angle.RadianToDegree() );
+
+			Style.Transform = pt;
+			Style.Dirty();
+
 		}
 
-		public class HitPoint : Panel
+		async Task Lifetime()
 		{
-			public Vector3 Position;
-
-			public HitPoint( Vector3 pos )
-			{
-				Position = pos;
-
-				_ = Lifetime();
-			}
-
-			public override void Tick()
-			{
-				base.Tick();
-
-				var wpos = CurrentView.Rotation.Inverse * (Position.WithZ( 0 ) - CurrentView.Position.WithZ( 0 )).Normal;
-				wpos = wpos.WithZ( 0 ).Normal;
-
-				var angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
-
-				var pt = new PanelTransform();
-
-				pt.AddTranslateX( Length.Percent( -50.0f ) );
-				pt.AddTranslateY( Length.Percent( -50.0f ) );
-				pt.AddRotation( 0, 0, angle.RadianToDegree() );
-
-				Style.Transform = pt;
-				Style.Dirty();
-
-			}
-
-			async Task Lifetime()
-			{
-				await Task.Delay( 200 );
-				AddClass( "dying" );
-				await Task.Delay( 500 );
-				Delete();
-			}
+			await Task.Delay( 200 );
+			AddClass( "dying" );
+			await Task.Delay( 500 );
+			Delete();
 		}
 	}
 }

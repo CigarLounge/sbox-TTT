@@ -1,25 +1,24 @@
 using Sandbox;
 using Sandbox.UI;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public partial class ChatBoxTextEntry : TextEntry
 {
-	public partial class ChatBoxTextEntry : TextEntry
+	public ChatBoxTextEntry( Panel parent = null ) : base()
 	{
-		public ChatBoxTextEntry( Panel parent = null ) : base()
+		Parent = parent ?? Parent;
+	}
+
+	public override void OnButtonTyped( string button, KeyModifiers km )
+	{
+		if ( button.Equals( "tab" ) )
 		{
-			Parent = parent ?? Parent;
+			ChatBox.Instance.OnTab();
+
+			return;
 		}
 
-		public override void OnButtonTyped( string button, KeyModifiers km )
-		{
-			if ( button.Equals( "tab" ) )
-			{
-				ChatBox.Instance.OnTab();
-
-				return;
-			}
-
-			base.OnButtonTyped( button, km );
-		}
+		base.OnButtonTyped( button, km );
 	}
 }

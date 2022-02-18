@@ -4,81 +4,79 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Player;
 
-namespace TTT.Teams
+namespace TTT.Teams;
+
+[AttributeUsage( AttributeTargets.Class, Inherited = false )]
+public class TeamAttribute : LibraryAttribute
 {
-	[AttributeUsage( AttributeTargets.Class, Inherited = false )]
-	public class TeamAttribute : LibraryAttribute
+	public TeamAttribute( string name ) : base( name )
 	{
-		public TeamAttribute( string name ) : base( name )
-		{
 
-		}
+	}
+}
+
+public abstract class TTTTeam
+{
+	public readonly string Name;
+
+	public abstract Color Color { get; }
+
+	public readonly List<TTTPlayer> Members = new();
+
+	public static Dictionary<string, TTTTeam> Teams = new();
+
+	public TTTTeam()
+	{
+		Name = Utils.GetLibraryTitle( GetType() );
+
+		Teams[Name] = this;
 	}
 
-	public abstract class TTTTeam
+	public IEnumerable<Client> GetClients()
 	{
-		public readonly string Name;
+		return Members.Select( x => x.Client );
+	}
+}
 
-		public abstract Color Color { get; }
-
-		public readonly List<TTTPlayer> Members = new();
-
-		public static Dictionary<string, TTTTeam> Teams = new();
-
-		public TTTTeam()
+public static class TeamFunctions
+{
+	public static TTTTeam TryGetTeam( string teamname )
+	{
+		if ( teamname == null || !TTTTeam.Teams.TryGetValue( teamname, out TTTTeam team ) )
 		{
-			Name = Utils.GetLibraryTitle( GetType() );
-
-			Teams[Name] = this;
+			return null;
 		}
 
-		public IEnumerable<Client> GetClients()
-		{
-			return Members.Select( x => x.Client );
-		}
+		return team;
 	}
 
-	public static class TeamFunctions
+	public static TTTTeam GetTeam( string teamname )
 	{
-		public static TTTTeam TryGetTeam( string teamname )
+		if ( teamname == null )
 		{
-			if ( teamname == null || !TTTTeam.Teams.TryGetValue( teamname, out TTTTeam team ) )
-			{
-				return null;
-			}
-
-			return team;
+			return null;
 		}
 
-		public static TTTTeam GetTeam( string teamname )
+		if ( !TTTTeam.Teams.TryGetValue( teamname, out TTTTeam team ) )
 		{
-			if ( teamname == null )
-			{
-				return null;
-			}
-
-			if ( !TTTTeam.Teams.TryGetValue( teamname, out TTTTeam team ) )
-			{
-				team = Utils.GetObjectByType<TTTTeam>( Utils.GetTypeByLibraryTitle<TTTTeam>( teamname ) );
-			}
-
-			return team;
+			team = Utils.GetObjectByType<TTTTeam>( Utils.GetTypeByLibraryTitle<TTTTeam>( teamname ) );
 		}
 
-		public static TTTTeam GetTeam( Type teamType )
-		{
-			foreach ( TTTTeam team in TTTTeam.Teams.Values )
-			{
-				if ( team.GetType() == teamType )
-				{
-					return team;
-				}
-			}
+		return team;
+	}
 
-			return Utils.GetObjectByType<TTTTeam>( teamType );
+	public static TTTTeam GetTeam( Type teamType )
+	{
+		foreach ( TTTTeam team in TTTTeam.Teams.Values )
+		{
+			if ( team.GetType() == teamType )
+			{
+				return team;
+			}
 		}
+
+		return Utils.GetObjectByType<TTTTeam>( teamType );
 	}
 }

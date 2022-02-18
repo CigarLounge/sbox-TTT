@@ -4,226 +4,224 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Items;
 using TTT.Roles;
 using TTT.Rounds;
 
-namespace TTT.Player
+namespace TTT.Player;
+
+public partial class TTTPlayer
 {
-	public partial class TTTPlayer
+	private static TTTPlayer GetPlayerById( int id )
 	{
-		private static TTTPlayer GetPlayerById( int id )
+		List<Client> playerList = Client.All.ToList();
+
+		if ( playerList.Count <= id )
 		{
-			List<Client> playerList = Client.All.ToList();
-
-			if ( playerList.Count <= id )
-			{
-				return null;
-			}
-
-			if ( playerList[id].Pawn is TTTPlayer player && player.IsValid() )
-			{
-				return player;
-			}
-
 			return null;
 		}
 
-		[ServerCmd( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
-		public static void RespawnPlayer( string id = null )
+		if ( playerList[id].Pawn is TTTPlayer player && player.IsValid() )
 		{
-			if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
+			return player;
+		}
+
+		return null;
+	}
+
+	[ServerCmd( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
+	public static void RespawnPlayer( string id = null )
+	{
+		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
+		{
+			return;
+		}
+
+		TTTPlayer player = null;
+
+		if ( id == null )
+		{
+			player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		}
+		else
+		{
+			try
+			{
+				player = GetPlayerById( int.Parse( id ) );
+			}
+			catch ( Exception )
 			{
 				return;
 			}
+		}
 
-			TTTPlayer player = null;
-
+		if ( player == null || player.Client.GetValue<bool>( "forcedspectator", false ) )
+		{
 			if ( id == null )
 			{
-				player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+				Log.Info( $"You tried to respawn yourself while you've been a forced spectator this round." );
 			}
 			else
 			{
-				try
-				{
-					player = GetPlayerById( int.Parse( id ) );
-				}
-				catch ( Exception )
-				{
-					return;
-				}
+				Log.Info( $"You tried to spawn the player '{player.Client.Name}' who have been a forced spectator this round." );
 			}
 
-			if ( player == null || player.Client.GetValue<bool>( "forcedspectator", false ) )
-			{
-				if ( id == null )
-				{
-					Log.Info( $"You tried to respawn yourself while you've been a forced spectator this round." );
-				}
-				else
-				{
-					Log.Info( $"You tried to spawn the player '{player.Client.Name}' who have been a forced spectator this round." );
-				}
+			return;
+		}
 
-				return;
-			}
+		player.Respawn();
 
-			player.Respawn();
+		if ( id == null )
+		{
+			Log.Info( $"You respawned yourself." );
+		}
+		else
+		{
+			Log.Info( $"You've respawned the player '{player.Client.Name}'." );
+		}
+	}
 
+	[ServerCmd( Name = "ttt_requestitem" )]
+	public static void RequestItem( string itemName )
+	{
+		if ( itemName == null )
+		{
+			return;
+		}
+
+		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+		if ( !player.IsValid() )
+		{
+			return;
+		}
+
+		Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
+		if ( itemType == null || !Utils.HasAttribute<ShopAttribute>( itemType ) )
+		{
+			return;
+		}
+
+		player.RequestPurchase( itemType );
+	}
+
+	[ServerCmd( Name = "ttt_giveitem" )]
+	public static void GiveItem( string itemName )
+	{
+		if ( !ConsoleSystem.Caller.HasPermission( "items" ) )
+		{
+			return;
+		}
+
+		if ( itemName == null )
+		{
+			return;
+		}
+
+		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+		if ( !player.IsValid() )
+		{
+			return;
+		}
+
+		Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
+		if ( itemType == null )
+		{
+			return;
+		}
+
+		player.AddItem( Utils.GetObjectByType<IItem>( itemType ) );
+	}
+
+	[ServerCmd( Name = "ttt_setrole" )]
+	public static void SetRole( string roleName, string id = null )
+	{
+		if ( !ConsoleSystem.Caller.HasPermission( "role" ) )
+		{
+			return;
+		}
+
+		if ( Gamemode.Game.Instance.Round is not Rounds.InProgressRound )
+		{
 			if ( id == null )
 			{
-				Log.Info( $"You respawned yourself." );
+				Log.Info( $"{ConsoleSystem.Caller.Name} tried to change his/her role when the game hadn't started." );
 			}
 			else
 			{
-				Log.Info( $"You've respawned the player '{player.Client.Name}'." );
+				Log.Info( $"{ConsoleSystem.Caller.Name} tried to change role of ID {id} when the game hadn't started." );
 			}
+
+			return;
 		}
 
-		[ServerCmd( Name = "ttt_requestitem" )]
-		public static void RequestItem( string itemName )
+		Type type = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
+
+		if ( type == null )
 		{
-			if ( itemName == null )
-			{
-				return;
-			}
+			Log.Info( $"{ConsoleSystem.Caller.Name} entered a wrong role name: '{roleName}'." );
 
-			TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-			if ( !player.IsValid() )
-			{
-				return;
-			}
-
-			Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
-			if ( itemType == null || !Utils.HasAttribute<ShopAttribute>( itemType ) )
-			{
-				return;
-			}
-
-			player.RequestPurchase( itemType );
+			return;
 		}
 
-		[ServerCmd( Name = "ttt_giveitem" )]
-		public static void GiveItem( string itemName )
+		TTTRole role = Utils.GetObjectByType<TTTRole>( type );
+
+		if ( role == null )
 		{
-			if ( !ConsoleSystem.Caller.HasPermission( "items" ) )
-			{
-				return;
-			}
-
-			if ( itemName == null )
-			{
-				return;
-			}
-
-			TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-			if ( !player.IsValid() )
-			{
-				return;
-			}
-
-			Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
-			if ( itemType == null )
-			{
-				return;
-			}
-
-			player.AddItem( Utils.GetObjectByType<IItem>( itemType ) );
+			return;
 		}
 
-		[ServerCmd( Name = "ttt_setrole" )]
-		public static void SetRole( string roleName, string id = null )
+		TTTPlayer player = null;
+
+		if ( id == null )
 		{
-			if ( !ConsoleSystem.Caller.HasPermission( "role" ) )
-			{
-				return;
-			}
-
-			if ( Gamemode.Game.Instance.Round is not Rounds.InProgressRound )
-			{
-				if ( id == null )
-				{
-					Log.Info( $"{ConsoleSystem.Caller.Name} tried to change his/her role when the game hadn't started." );
-				}
-				else
-				{
-					Log.Info( $"{ConsoleSystem.Caller.Name} tried to change role of ID {id} when the game hadn't started." );
-				}
-
-				return;
-			}
-
-			Type type = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
-
-			if ( type == null )
-			{
-				Log.Info( $"{ConsoleSystem.Caller.Name} entered a wrong role name: '{roleName}'." );
-
-				return;
-			}
-
-			TTTRole role = Utils.GetObjectByType<TTTRole>( type );
-
-			if ( role == null )
-			{
-				return;
-			}
-
-			TTTPlayer player = null;
-
-			if ( id == null )
-			{
-				player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-			}
-			else
-			{
-				try
-				{
-					player = GetPlayerById( int.Parse( id ) );
-				}
-				catch ( Exception )
-				{
-					return;
-				}
-			}
-
-			if ( player == null )
-			{
-				return;
-			}
-
-			player.SetRole( role );
-			player.SendClientRole();
+			player = ConsoleSystem.Caller.Pawn as TTTPlayer;
 		}
-
-		[ServerCmd( Name = "ttt_forcespec" )]
-		public static void ToggleForceSpectator()
+		else
 		{
-			TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-			if ( !player.IsValid() || player.IsInitialSpawning )
+			try
+			{
+				player = GetPlayerById( int.Parse( id ) );
+			}
+			catch ( Exception )
 			{
 				return;
 			}
-
-			player.ToggleForcedSpectator();
 		}
 
-		[ServerCmd( Name = "ttt_force_restart" )]
-		public static void ForceRestart()
+		if ( player == null )
 		{
-			if ( !ConsoleSystem.Caller.HasPermission( "restart" ) )
-			{
-				return;
-			}
-
-			Gamemode.Game.Instance.ChangeRound( new PreRound() );
-
-			Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
+			return;
 		}
+
+		player.SetRole( role );
+		player.SendClientRole();
+	}
+
+	[ServerCmd( Name = "ttt_forcespec" )]
+	public static void ToggleForceSpectator()
+	{
+		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+
+		if ( !player.IsValid() || player.IsInitialSpawning )
+		{
+			return;
+		}
+
+		player.ToggleForcedSpectator();
+	}
+
+	[ServerCmd( Name = "ttt_force_restart" )]
+	public static void ForceRestart()
+	{
+		if ( !ConsoleSystem.Caller.HasPermission( "restart" ) )
+		{
+			return;
+		}
+
+		Gamemode.Game.Instance.ChangeRound( new PreRound() );
+
+		Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
 	}
 }

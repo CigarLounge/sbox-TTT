@@ -1,19 +1,18 @@
 using Sandbox;
 
-namespace TTT.Globals
+namespace TTT.Globals;
+
+public static class LoggerExtension
 {
-	public static class LoggerExtension
+	public static void Debug( this Logger log, object obj = null )
 	{
-		public static void Debug( this Logger log, object obj = null )
+		if ( !Gamemode.Game.Instance.Debug )
 		{
-			if ( !Gamemode.Game.Instance.Debug )
-			{
-				return;
-			}
-
-			string host = Host.IsServer ? "SERVER" : "CLIENT";
-
-			log.Info( $"[DEBUG][{host}] {obj}" );
+			return;
 		}
+
+		string host = Host.IsServer ? "SERVER" : "CLIENT";
+
+		log.Info( $"[DEBUG][{host}] {obj}" );
 	}
 }

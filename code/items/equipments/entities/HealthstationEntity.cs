@@ -1,7 +1,7 @@
 using System;
 
 using Sandbox;
-
+using Sandbox.player;
 using TTT.Player;
 using TTT.UI;
 

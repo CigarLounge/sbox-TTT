@@ -1,13 +1,12 @@
 using Sandbox.UI;
 
-namespace TTT.UI.Menu
+namespace TTT.UI.Menu;
+
+[UseTemplate]
+public partial class ComponentTestingPage : Panel
 {
-	[UseTemplate]
-	public partial class ComponentTestingPage : Panel
-	{
-		public bool CheckedValue { get; set; } = true;
-		public float FloatValue { get; set; } = 0f;
-		public float SliderValue { get; set; } = 0f;
-		public string TextValue { get; set; } = "";
-	}
+	public bool CheckedValue { get; set; } = true;
+	public float FloatValue { get; set; } = 0f;
+	public float SliderValue { get; set; } = 0f;
+	public string TextValue { get; set; } = "";
 }

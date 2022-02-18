@@ -1,14 +1,13 @@
-namespace TTT.Events
+namespace TTT.Events;
+
+public static partial class TTTEvent
 {
-	public static partial class TTTEvent
+	public static class Shop
 	{
-		public static class Shop
-		{
-			/// <summary>
-			/// Occurs when the shop is changed.
-			/// <para>No data is passed to this event.</para>
-			/// </summary>
-			public const string Change = "TTT.shop.change";
-		}
+		/// <summary>
+		/// Occurs when the shop is changed.
+		/// <para>No data is passed to this event.</para>
+		/// </summary>
+		public const string Change = "TTT.shop.change";
 	}
 }

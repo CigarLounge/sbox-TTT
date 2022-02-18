@@ -5,9 +5,10 @@ using Sandbox;
 
 using TTT.Items;
 using TTT.Player;
+using TTT.Roles;
 using TTT.Teams;
 
-namespace TTT.Roles;
+namespace Sandbox.roles;
 
 public class DetectiveRole : TTTRole
 {
