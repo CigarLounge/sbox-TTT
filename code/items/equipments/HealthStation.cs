@@ -12,14 +12,14 @@ public partial class HealthStation : Carriable
 {
 	public override void Simulate( Client client )
 	{
-		if ( Owner is not TTTPlayer owner || !IsServer )
+		if ( !IsServer )
 			return;
 
 		using ( Prediction.Off() )
 		{
 			if ( Input.Pressed( InputButton.Attack1 ) )
 			{
-				owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
+				Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
 			}
 		}
 	}
