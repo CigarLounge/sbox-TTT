@@ -53,17 +53,6 @@ namespace TTT.Player
 			}
 		}
 
-		[Event( TTTEvent.UI.Reloaded )]
-		public static void OnUIReloaded()
-		{
-			LogicButtonPoints = new();
-
-			foreach ( KeyValuePair<int, TTTLogicButtonData> keyValuePair in LogicButtons )
-			{
-				LogicButtonPoints.Add( keyValuePair.Key, new LogicButtonPoint( keyValuePair.Value ) );
-			}
-		}
-
 		// Receive data of player's buttons from client.
 		[ClientRpc]
 		public void ClientStoreLogicButton( TTTLogicButtonData[] buttons )
