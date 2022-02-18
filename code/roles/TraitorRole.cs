@@ -11,7 +11,7 @@ namespace TTT.Roles;
 
 public class TraitorRole : BaseRole
 {
-	public override Team Team => Team.Traitor;
+	public override Team Team => Team.Traitors;
 	public override string Name => "Traitor";
 	public override Color Color => Color.FromBytes( 223, 41, 53 );
 	public override int DefaultCredits => 200;
