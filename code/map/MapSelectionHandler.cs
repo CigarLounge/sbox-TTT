@@ -31,7 +31,7 @@ public partial class MapSelectionHandler : BaseNetworkable
 	private static async Task<List<string>> GetTTTMapNames()
 	{
 		Package result = await Package.Fetch( Global.GameTitle, true );
-		return result.GameConfiguration.MapList;
+		return result?.GameConfiguration?.MapList ?? new List<string>();
 	}
 
 	private static async Task<List<string>> GetTTTMapImages( List<string> mapNames )
