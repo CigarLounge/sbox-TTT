@@ -1,0 +1,26 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = ""
+		dryfiresound = ""
+		firemode = "0"
+		clipsize = 30
+		primaryrate = 0.0
+		secondaryrate = 0.0
+		reloadtime = 2.0
+		reserveammo = 0
+		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
+		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		slot = "0"
+		spawnable = false
+		viewmodel = resource:""
+		deploytime = 0.6
+		buyable = false
+		price = 0
+		icon = ""
+		worldmodel = resource:""
+		libraryname = "ttt_equipment_hands"
+		title = "Hands"
+	}
+}
