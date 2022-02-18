@@ -30,20 +30,20 @@ public abstract partial class Weapon : Carriable
 {
 	[Net, Predicted]
 	public int AmmoClip { get; set; }
-	
-	[Net, Predicted] 
+
+	[Net, Predicted]
 	public bool IsReloading { get; protected set; }
-	
-	[Net, Predicted] 
+
+	[Net, Predicted]
 	public int ReserveAmmo { get; protected set; }
-	
-	[Net, Predicted] 
+
+	[Net, Predicted]
 	public TimeSince TimeSincePrimaryAttack { get; protected set; }
-	
-	[Net, Predicted] 
+
+	[Net, Predicted]
 	public TimeSince TimeSinceSecondaryAttack { get; protected set; }
-	
-	[Net, Predicted] 
+
+	[Net, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
 	public new WeaponInfo Info
@@ -51,6 +51,7 @@ public abstract partial class Weapon : Carriable
 		get => base.Info as WeaponInfo;
 		set => base.Info = value;
 	}
+
 	public bool UnlimitedAmmo { get; set; }
 
 	public override void Spawn()

@@ -59,7 +59,7 @@ public class InventorySelection : Panel
 			}
 		}
 
-		IItem activeItem = player.CurrentPlayer.ActiveChild as IItem;
+		var activeItem = ItemInfo.All[player.CurrentPlayer.ActiveChild.ClassInfo.Name];
 		foreach ( var slot in _entries.Values )
 		{
 			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable as Entity ) )
@@ -97,7 +97,7 @@ public class InventorySelection : Panel
 		this.Enabled( Children.Any() );
 	}
 
-	private InventorySlot CarriableItemPickup( IItem carriable )
+	private InventorySlot CarriableItemPickup( CarriableInfo carriable )
 	{
 		var inventorySlot = new InventorySlot( this, carriable );
 		AddChild( inventorySlot );
@@ -213,27 +213,27 @@ public class InventorySelection : Panel
 
 	private class InventorySlot : Panel
 	{
-		public IItem Carriable { get; init; }
+		public CarriableInfo Carriable { get; init; }
 		public Label SlotLabel;
 		private readonly Label _ammoLabel;
 
-		public InventorySlot( Panel parent, IItem carriable ) : base( parent )
+		public InventorySlot( Panel parent, CarriableInfo carriable ) : base( parent )
 		{
 			Parent = parent;
 			Carriable = carriable;
 
 			AddClass( "background-color-primary" );
 
-			SlotLabel = Add.Label( ((int)carriable.GetItemData().SlotType).ToString() );
+			SlotLabel = Add.Label( ((int)carriable.Slot).ToString() );
 			SlotLabel.AddClass( "slot-label" );
 
-			Add.Label( carriable.GetItemData().Title );
+			Add.Label( carriable.Title );
 
 			_ammoLabel = Add.Label();
 
 			if ( Local.Pawn is TTTPlayer player )
 			{
-				if ( carriable.GetItemData().SlotType != SlotType.Melee && carriable is SWB_Base.WeaponBase weapon )
+				if ( carriable.Slot != SlotType.Melee && carriable is CarriableInfo weapon )
 				{
 					_ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Primary.AmmoType ) );
 					_ammoLabel.AddClass( "ammo-label" );

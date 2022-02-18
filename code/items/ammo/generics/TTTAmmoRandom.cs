@@ -10,9 +10,9 @@ public class TTTAmmoRandom : Entity
 {
 	public void Activate()
 	{
-		List<Type> ammoTypes = Utils.GetTypesWithAttribute<TTTAmmo, SpawnableAttribute>();
+		var ammoTypes = Library.GetAll<Ammo>();
 
-		if ( ammoTypes.Count <= 0 )
+		if ( ammoTypes. <= 0 )
 		{
 			return;
 		}

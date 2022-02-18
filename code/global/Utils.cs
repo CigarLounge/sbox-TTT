@@ -62,7 +62,7 @@ public static partial class Utils
 		return players;
 	}
 
-	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= GameConVars.MinPlayers;
+	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Gamemode.Game.MinPlayers;
 
 	/// <summary>
 	/// Loops through every type derived from the given type and collects non-abstract types.

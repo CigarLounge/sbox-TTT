@@ -69,8 +69,6 @@ public partial class TTTPlayer : Sandbox.Player
 			}
 
 			Client.SetValue( "forcedspectator", IsForcedSpectator );
-
-			ClientInitialSpawn();
 		}
 
 		IsInitialSpawning = false;
@@ -156,7 +154,7 @@ public partial class TTTPlayer : Sandbox.Player
 			{
 				PlayerCorpse.IsIdentified = true;
 
-				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.Name, Team.GetName(), PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks );
+				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.Name, Team.GetName(), PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
 			}
 		}
 	}
@@ -202,36 +200,10 @@ public partial class TTTPlayer : Sandbox.Player
 	public override void StartTouch( Entity other )
 	{
 		if ( IsClient )
-			return;	
-
-		if ( other is PickupTrigger )
-			StartTouch( other.Parent );	
-	}
-
-	/// <summary>
-	/// Add any IItem, either a perk or weapon. This code really badly needs to be cleaned up.
-	/// </summary>
-	public void AddItem( IItem item, bool makeActive = false, bool deleteOnFail = true )
-	{
-		if ( item == null )
 			return;
 
-		if ( item.GetItemData().SlotType == SlotType.Perk )
-		{
-			if ( item is not Perk perk )
-				return;
-
-			Perks.Add( perk );
-		}
-		else
-		{
-			if ( item is not Entity itemEntity )
-				return;
-
-			var addedToInventory = Inventory.Add( item as Entity, makeActive );
-			if ( !addedToInventory && deleteOnFail )
-				itemEntity?.Delete();
-		}
+		if ( other is PickupTrigger )
+			StartTouch( other.Parent );
 	}
 
 	public void DeleteItems()

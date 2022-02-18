@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Roles;
 using TTT.Rounds;
-using TTT.Teams;
 
 namespace TTT.Player;
 
@@ -40,12 +38,6 @@ public partial class TTTPlayer
 
 		Role = role;
 		Team newTeam = Team;
-
-		if ( oldTeam != Team )
-		{
-			oldTeam?.Members.Remove( this );
-			Team?.Members.Add( this );
-		}
 
 		Role.OnSelect( this );
 	}

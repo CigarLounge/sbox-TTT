@@ -16,9 +16,6 @@ public partial class Perks : EntityComponent
 
 	public void Add( Perk perk )
 	{
-		if ( perk == null || perk is not IItem )
-			return;
-
 		_perks.Add( perk );
 	}
 

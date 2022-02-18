@@ -23,16 +23,11 @@ public partial class Inventory : BaseInventory
 
 	public Inventory( TTTPlayer player ) : base( player ) { }
 
-	// This code is poorly written, we should fix this.
-	public override bool Add( Entity entity, bool makeActive = false )
+	public override void Pickup( Entity entity )
 	{
-		if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasFreeSlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
-		{
-			return false;
-		}
-
-		Sound.FromWorld( "dm.pickup_weapon", entity.Position );
-		return true;
+		// TODO: Play some sound on pickup.
+		// Sound.FromEntity( "pickup_weapon", Owner );
+		if ( base.Add( entity, Active == null ) ) { }
 	}
 
 	public bool HasFreeSlot( SlotType slotType )
@@ -43,16 +38,6 @@ public partial class Inventory : BaseInventory
 	public bool IsCarryingType( Type t )
 	{
 		return List.Any( x => x.GetType() == t );
-	}
-
-	public override bool Drop( Entity entity )
-	{
-		if ( entity is not ICarriableItem item || !item.CanDrop() )
-		{
-			return false;
-		}
-
-		return base.Drop( entity );
 	}
 
 	public void DropAll()
@@ -74,6 +59,5 @@ public partial class Inventory : BaseInventory
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
 		droppedEntity.Rotation = Owner.EyeRotation;
 		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
-		droppedEntity.Tags.Add( IItem.ITEM_TAG );
 	}
 }

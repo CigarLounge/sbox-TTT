@@ -15,7 +15,7 @@ public class LogicButtonPoint : Panel
 	public TTTLogicButtonData Data { get; private set; }
 
 	// Our specific assigned Entity.
-	private TTTLogicButton _entity;
+	private LogicButton _entity;
 
 	// Position pulled from Data
 	public Vector3 Position { get; private set; }
@@ -38,7 +38,7 @@ public class LogicButtonPoint : Panel
 
 		Hud.Current.RootPanel.AddChild( this );
 
-		_entity = Entity.FindByIndex( Data.NetworkIdent ) as TTTLogicButton;
+		_entity = Entity.FindByIndex( Data.NetworkIdent ) as LogicButton;
 
 		Add.Image( "/ui/icons/logic_button.png", "pointer" );
 		Add.Label( _entity.Description, "text-shadow" );

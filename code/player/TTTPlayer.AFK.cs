@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Sandbox;
-using TTT.Gamemode;
-using TTT.Settings;
 
 namespace TTT.Player;
 
@@ -38,9 +35,9 @@ public partial class TTTPlayer
 			return;
 		}
 
-		if ( _timeSinceLastAction > GameConVars.AFKTimer )
+		if ( _timeSinceLastAction > Gamemode.Game.AFKTimer )
 		{
-			if ( GameConVars.KickAFKPlayers )
+			if ( Gamemode.Game.KickAFKPlayers )
 			{
 				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was kicked from the server for being AFK." );
 
