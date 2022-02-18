@@ -10,12 +10,6 @@ public static partial class TTTEvent
 		/// </summary>
 		public const string Died = "TTT.player.died";
 
-		/// <summary>
-		/// Occurs when a player initializes.
-		/// <para>The <strong><see cref="Sandbox.Client"/></strong> instance of the player who spawned initially.</para>
-		/// </summary>
-		public const string InitialSpawn = "TTT.player.initialspawn";
-
 		public static class Role
 		{
 			/// <summary>

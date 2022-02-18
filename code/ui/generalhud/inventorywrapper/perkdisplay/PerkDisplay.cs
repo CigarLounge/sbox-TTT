@@ -64,17 +64,16 @@ public class PerkDisplay : Panel
 		public PerkSlot( Perk perk )
 		{
 			_perk = perk;
-			var item = perk as IItem;
 
 			var panel = Add.Panel( "icon-panel" );
 			_image = panel.Add.Image();
-			_image.SetImage( $"/ui/icons/{item.GetItemData().Library.Name}.png" );
+			_image.SetImage( perk.Info.Icon );
 
 			_activeLabel = panel.Add.Label( "", "active" );
 			_activeLabel.AddClass( "text-shadow" );
 			_activeLabel.AddClass( "centered" );
 
-			_name = Add.Label( item.GetItemData().Title, "name" );
+			_name = Add.Label( perk.Info.Title, "name" );
 			_name.AddClass( "text-shadow" );
 		}
 

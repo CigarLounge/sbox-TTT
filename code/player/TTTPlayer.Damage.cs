@@ -49,7 +49,7 @@ public partial class TTTPlayer
 	[Net]
 	public float MaxHealth { get; set; } = 100f;
 
-	public ICarriableItem LastDamageWeapon { get; private set; }
+	public Carriable LastDamageWeapon { get; private set; }
 
 	public bool LastDamageWasHeadshot { get; private set; } = false;
 
@@ -76,7 +76,7 @@ public partial class TTTPlayer
 			info.Damage *= ArmorReductionPercentage;
 		}
 
-		LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as ICarriableItem : null;
+		LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as Carriable : null;
 
 		To client = To.Single( this );
 

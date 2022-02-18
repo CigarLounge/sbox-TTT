@@ -13,7 +13,7 @@ namespace TTT.UI;
 
 public class InventorySelection : Panel
 {
-	private readonly Dictionary<IItem, InventorySlot> _entries = new();
+	private readonly Dictionary<Carriable, InventorySlot> _entries = new();
 
 	private readonly InputButton[] _slotInputButtons = new[]
 	{

@@ -2,246 +2,124 @@ using System;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Settings;
+namespace TTT.Player;
 
-namespace TTT.Settings
+public partial class DefaultWalkController : WalkController
 {
-	public partial class ServerSettings
+	public const float FALL_DAMAGE_VELOCITY = 630f;
+	public const float FALL_DAMAGE_SCALE = 0.20f;
+
+	public const float MAX_BREATH = 100f;
+	public const float BREATH_LOSS_PER_SECOND = 10f;
+	public const float BREATH_GAIN_PER_SECOND = 50f;
+	public const float DROWN_DAMAGE_PER_SECOND = 20f;
+
+	[Net, Local]
+	public float Breath { get; set; } = 100f;
+
+	public bool IsUnderwater { get; set; } = false;
+
+	private float _fallVelocity;
+
+	public DefaultWalkController() : base()
 	{
-		public Categories.Movement Movement { get; set; } = new Categories.Movement();
+		Duck = new Duck( this );
+		DefaultSpeed = 237f;
+		WalkSpeed = 110f;
+		GroundFriction = 7.0f;
 	}
 
-
-	namespace Categories
+	public override void Simulate()
 	{
-		public partial class Movement
+		#region Drowning
+		IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
+
+		if ( IsUnderwater )
 		{
-			[SwitchSetting]
-			public bool IsSprintEnabled { get; set; } = false;
+			Breath = MathF.Max( Breath - BREATH_LOSS_PER_SECOND * Time.Delta, 0f );
 		}
-	}
-}
-
-namespace TTT.Player
-{
-	public partial class DefaultWalkController : WalkController
-	{
-		public static bool IsSprintEnabled = false;
-
-		public const float MAX_STAMINA = 100f;
-		public const float MAX_SPRINT_SPEED = 400f;
-		public const float STAMINA_LOSS_PER_SECOND = 15f;
-		public const float STAMINA_LOSS_PER_SPRINT_JUMP = 30f;
-		public const float STAMINA_GAIN_PER_SECOND = 10f;
-
-		public const float FALL_DAMAGE_VELOCITY = 630f;
-		public const float FALL_DAMAGE_SCALE = 0.20f;
-
-		public const float MAX_BREATH = 100f;
-		public const float BREATH_LOSS_PER_SECOND = 10f;
-		public const float BREATH_GAIN_PER_SECOND = 50f;
-		public const float DROWN_DAMAGE_PER_SECOND = 20f;
-
-		[Net, Predicted] public float Stamina { get; set; } = 100f;
-		[Net] public float Breath { get; set; } = 100f;
-		public bool IsUnderwater { get; set; } = false;
-
-		private float _fallVelocity;
-
-		public DefaultWalkController() : base()
+		else
 		{
-			Duck = new Duck( this );
-			DefaultSpeed = 237f;
-			WalkSpeed = 110f;
-			GroundFriction = 7.0f;
+			Breath = MathF.Min( Breath + BREATH_GAIN_PER_SECOND * Time.Delta, MAX_BREATH );
 		}
 
-		public override void Simulate()
+		if ( Host.IsServer && Breath == 0f )
 		{
-			if ( Pawn is not TTTPlayer player )
+			using ( Prediction.Off() )
 			{
-				base.Simulate();
-
-				return;
-			}
-
-			#region Sprinting
-			SprintSpeed = DefaultSpeed;
-
-			if ( IsSprintEnabled )
-			{
-				if ( Input.Down( InputButton.Run ) && Velocity.Length >= SprintSpeed * 0.8f && player.GroundEntity.IsValid() )
+				DamageInfo damageInfo = new()
 				{
-					Stamina = MathF.Max( Stamina - STAMINA_LOSS_PER_SECOND * Time.Delta, 0f );
+					Attacker = Pawn,
+					Flags = DamageFlags.Drown,
+					HitboxIndex = (int)HitboxIndex.Head,
+					Position = Position,
+					Damage = MathF.Max( DROWN_DAMAGE_PER_SECOND * Time.Delta, 0f )
+				};
 
-					if ( Input.Pressed( InputButton.Jump ) )
-					{
-						Stamina = MathF.Max( Stamina - STAMINA_LOSS_PER_SPRINT_JUMP, 0f );
-					}
-				}
-				else
-				{
-					Stamina = MathF.Min( Stamina + STAMINA_GAIN_PER_SECOND * Time.Delta, MAX_STAMINA );
-				}
-
-				SprintSpeed = (MAX_SPRINT_SPEED - DefaultSpeed) / MAX_STAMINA * Stamina + DefaultSpeed;
-			}
-			#endregion
-
-			#region Drowning
-			IsUnderwater = Pawn.WaterLevel.Fraction == 1f;
-
-			if ( IsUnderwater )
-			{
-				Breath = MathF.Max( Breath - BREATH_LOSS_PER_SECOND * Time.Delta, 0f );
-			}
-			else
-			{
-				Breath = MathF.Min( Breath + BREATH_GAIN_PER_SECOND * Time.Delta, MAX_BREATH );
-			}
-
-			if ( Host.IsServer && Breath == 0f )
-			{
-				using ( Prediction.Off() )
-				{
-					DamageInfo damageInfo = new DamageInfo
-					{
-						Attacker = Pawn,
-						Flags = DamageFlags.Drown,
-						HitboxIndex = (int)HitboxIndex.Head,
-						Position = Position,
-						Damage = MathF.Max( DROWN_DAMAGE_PER_SECOND * Time.Delta, 0f )
-					};
-
-					Pawn.TakeDamage( damageInfo );
-				}
-			}
-			#endregion
-
-			OnPreTickMove();
-
-			base.Simulate();
-		}
-
-		public void OnPreTickMove()
-		{
-			_fallVelocity = Velocity.z;
-		}
-
-		public override float GetWishSpeed()
-		{
-			var ws = Duck.GetWishSpeed();
-			if ( ws >= 0 ) return ws;
-
-			if ( Input.Down( InputButton.Run ) && IsSprintEnabled ) return SprintSpeed;
-			if ( Input.Down( InputButton.Run ) ) return WalkSpeed;
-
-			return DefaultSpeed;
-		}
-
-		public override void CategorizePosition( bool stayOnGround )
-		{
-			base.CategorizePosition( stayOnGround );
-
-			Vector3 point = Position - Vector3.Up * 2;
-
-			if ( GroundEntity != null || stayOnGround )
-			{
-				point.z -= StepSize;
-			}
-
-			TraceResult pm = TraceBBox( Position, point, 4.0f );
-
-			OnPostCategorizePosition( stayOnGround, pm );
-		}
-
-		public virtual void OnPostCategorizePosition( bool stayOnGround, TraceResult trace )
-		{
-			if ( Host.IsServer && trace.Hit && _fallVelocity < -FALL_DAMAGE_VELOCITY )
-			{
-				using ( Prediction.Off() )
-				{
-					var totalDamage = Math.Floor( (MathF.Abs( _fallVelocity ) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE );
-					if ( totalDamage <= 0 )
-					{
-						return;
-					}
-
-					DamageInfo damageInfo = new()
-					{
-						Attacker = Pawn,
-						Flags = DamageFlags.Fall,
-						HitboxIndex = (int)HitboxIndex.LeftFoot,
-						Position = Position,
-						Damage = (float)totalDamage
-					};
-
-					Pawn.TakeDamage( damageInfo );
-				}
+				Pawn.TakeDamage( damageInfo );
 			}
 		}
+		#endregion
 
-		[Event( TTTEvent.Player.InitialSpawn )]
-		private static void OnInitialSpawn( Client client )
-		{
-			if ( Host.IsClient )
-			{
-				return;
-			}
+		OnPreTickMove();
 
-			Update( client );
-		}
-
-		[Event( TTTEvent.Settings.Change )]
-		public static void OnSettingsChange()
-		{
-			if ( Host.IsClient )
-			{
-				return;
-			}
-
-			Update();
-		}
-
-		public static void Update( Client client = null )
-		{
-			if ( Host.IsClient )
-			{
-				return;
-			}
-
-			bool enabled = ServerSettings.Instance.Movement.IsSprintEnabled;
-
-			IsSprintEnabled = enabled;
-
-			TTTPlayer.ClientSendToggleSprint( client == null ? To.Everyone : To.Single( client ), enabled );
-		}
+		base.Simulate();
 	}
 
-	public partial class TTTPlayer
+	public void OnPreTickMove()
 	{
-		[ServerCmd( Name = "ttt_toggle_sprint", Help = "Toggles sprinting" )]
-		public static void ToggleSprinting()
+		_fallVelocity = Velocity.z;
+	}
+
+	public override float GetWishSpeed()
+	{
+		var ws = Duck.GetWishSpeed();
+		if ( ws >= 0 ) return ws;
+
+		if ( Input.Down( InputButton.Run ) ) return WalkSpeed;
+
+		return DefaultSpeed;
+	}
+
+	public override void CategorizePosition( bool stayOnGround )
+	{
+		base.CategorizePosition( stayOnGround );
+
+		Vector3 point = Position - Vector3.Up * 2;
+
+		if ( GroundEntity != null || stayOnGround )
 		{
-			if ( !ConsoleSystem.Caller.HasPermission( "ttt_toggle_sprint" ) )
-			{
-				return;
-			}
-
-			DefaultWalkController.IsSprintEnabled = !DefaultWalkController.IsSprintEnabled;
-
-			string text = DefaultWalkController.IsSprintEnabled ? "enabled" : "disabled";
-
-			Log.Info( $"You {text} sprinting." );
-
-			return;
+			point.z -= StepSize;
 		}
 
-		[ClientRpc]
-		public static void ClientSendToggleSprint( bool toggle )
+		TraceResult pm = TraceBBox( Position, point, 4.0f );
+
+		OnPostCategorizePosition( stayOnGround, pm );
+	}
+
+	public virtual void OnPostCategorizePosition( bool stayOnGround, TraceResult trace )
+	{
+		if ( Host.IsServer && trace.Hit && _fallVelocity < -FALL_DAMAGE_VELOCITY )
 		{
-			DefaultWalkController.IsSprintEnabled = toggle;
+			using ( Prediction.Off() )
+			{
+				var totalDamage = Math.Floor( (MathF.Abs( _fallVelocity ) - FALL_DAMAGE_VELOCITY) * FALL_DAMAGE_SCALE );
+				if ( totalDamage <= 0 )
+				{
+					return;
+				}
+
+				DamageInfo damageInfo = new()
+				{
+					Attacker = Pawn,
+					Flags = DamageFlags.Fall,
+					HitboxIndex = (int)HitboxIndex.LeftFoot,
+					Position = Position,
+					Damage = (float)totalDamage
+				};
+
+				Pawn.TakeDamage( damageInfo );
+			}
 		}
 	}
 }

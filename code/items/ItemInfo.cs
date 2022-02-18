@@ -9,6 +9,7 @@ public abstract partial class ItemInfo : Asset
 {
 	public static Dictionary<string, ItemInfo> All { get; set; } = new();
 	[Property, Category( "Important" )] public string LibraryName { get; set; }
+	[Property, Category( "Important" )] public string Title { get; set; }
 	[Property, Category( "UI" ), ResourceType( "png" )] public string Icon { get; set; } = "";
 
 	protected override void PostLoad()
