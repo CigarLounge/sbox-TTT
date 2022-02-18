@@ -156,7 +156,7 @@ public static partial class Utils
 	/// </summary>
 	/// <param name="seconds"></param>
 	/// <returns>Seconds as a string in the format "mm:ss"</returns>
-	public static string TimerString( float seconds ) => TimeSpan.FromSeconds( seconds ).ToString( @"mm\:ss" );
+	public static string TimerString( float seconds ) => TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
 
 	public static void Enabled( this Panel panel, bool enabled )
 	{
