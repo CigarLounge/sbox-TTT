@@ -4,6 +4,7 @@ using System.Linq;
 using Sandbox;
 
 using TTT.Events;
+using TTT.Gamemode;
 using TTT.Items;
 using TTT.Map;
 using TTT.Player;
@@ -24,10 +25,7 @@ public partial class InProgressRound : BaseRound
 
 	private List<TTTLogicButton> _logicButtons;
 
-	public override int RoundDuration
-	{
-		get => ServerSettings.Instance.Round.RoundTime;
-	}
+	public override int RoundDuration { get => Gamemode.Game.InProgressRoundTime; }
 
 	public override void OnPlayerKilled( TTTPlayer player )
 	{

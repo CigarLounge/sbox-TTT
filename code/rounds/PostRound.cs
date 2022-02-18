@@ -1,5 +1,5 @@
 using Sandbox;
-
+using TTT.Gamemode;
 using TTT.Player;
 using TTT.Settings;
 
@@ -8,19 +8,15 @@ namespace TTT.Rounds;
 public class PostRound : BaseRound
 {
 	public override string RoundName => "Post";
-	public override int RoundDuration
-	{
-		get => ServerSettings.Instance.Round.PostRoundTime;
-	}
+	public override int RoundDuration { get => Gamemode.Game.PostRoundTime; }
 
 	protected override void OnTimeUp()
 	{
 		base.OnTimeUp();
 
-		// TODO: Allow users to close the menu themselves using mouse cursor.
 		RPCs.ClientClosePostRoundMenu();
 
-		bool shouldChangeMap = Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed >= ServerSettings.Instance.Round.TotalRounds;
+		bool shouldChangeMap = Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed >= Gamemode.Game.RoundLimit;
 		Gamemode.Game.Instance.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 

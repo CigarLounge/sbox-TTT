@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using Sandbox;
-
-using TTT.Items;
+using TTT.Player;
 using TTT.Roles;
 using TTT.Rounds;
 
-namespace TTT.Player;
+namespace TTT.Gamemode;
 
-public partial class TTTPlayer
+public partial class Game
 {
 	private static TTTPlayer GetPlayerById( int id )
 	{
@@ -142,7 +140,7 @@ public partial class TTTPlayer
 			return;
 		}
 
-		if ( Gamemode.Game.Instance.Round is not Rounds.InProgressRound )
+		if ( TTT.Gamemode.Game.Instance.Round is not TTT.Rounds.InProgressRound )
 		{
 			if ( id == null )
 			{
@@ -220,7 +218,7 @@ public partial class TTTPlayer
 			return;
 		}
 
-		Gamemode.Game.Instance.ChangeRound( new PreRound() );
+		TTT.Gamemode.Game.Instance.ChangeRound( new PreRound() );
 
 		Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
 	}

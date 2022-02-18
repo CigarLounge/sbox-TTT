@@ -3,21 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
-
 using TTT.Items;
 using TTT.Player;
 using TTT.Roles;
-using TTT.Settings;
 
 namespace TTT.Rounds;
 
 public class PreRound : BaseRound
 {
 	public override string RoundName => "Preparing";
-	public override int RoundDuration
-	{
-		get => ServerSettings.Instance.Round.PreRoundTime;
-	}
+	public override int RoundDuration { get => Gamemode.Game.PreRoundTime; }
 
 	public override void OnPlayerKilled( TTTPlayer player )
 	{

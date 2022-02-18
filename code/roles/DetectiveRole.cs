@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-
 using Sandbox;
-
 using TTT.Items;
 using TTT.Player;
 using TTT.Roles;
 using TTT.Teams;
 
-namespace Sandbox.roles;
+namespace TTT.Roles;
 
 public class DetectiveRole : TTTRole
 {

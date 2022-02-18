@@ -31,6 +31,6 @@ public partial class HomePage : Panel
 
 	public void ToggleForceSpectator()
 	{
-		TTTPlayer.ToggleForceSpectator();
+		Gamemode.Game.ToggleForceSpectator();
 	}
 }
