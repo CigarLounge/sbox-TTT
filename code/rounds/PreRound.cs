@@ -50,7 +50,7 @@ public class PreRound : BaseRound
 
 		foreach ( TTTPlayer player in Utils.GetPlayers() )
 		{
-			player.Client.SetValue( "forcedspectator", player.IsForcedSpectator );
+			player.Client.SetValue( RawStrings.ForcedSpectator, player.IsForcedSpectator );
 
 			if ( player.IsForcedSpectator )
 			{

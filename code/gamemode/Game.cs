@@ -87,23 +87,9 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
-		/*
-		// TODO: KarmaSystem is waiting on network dictionaries.
-		Karma.RegisterPlayer(client);
-
-		if (Karma.IsBanned(player))
-		{
-			KickPlayer(player);
-
-			return;
-		}
-		*/
-
 		Round.OnPlayerJoin( client.Pawn as TTTPlayer );
-
 		TTTPlayer player = new();
 		client.Pawn = player;
-		player.InitialSpawn();
 
 		base.ClientJoined( client );
 	}

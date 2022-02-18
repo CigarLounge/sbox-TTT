@@ -87,9 +87,9 @@ public partial class TTTPlayer
 		{
 			TakeDamage( DamageInfo.Generic( 1000 ) );
 
-			if ( !Client.GetValue( "forcedspectator", false ) )
+			if ( !Client.GetValue( RawStrings.ForcedSpectator, false ) )
 			{
-				Client.SetValue( "forcedspectator", true );
+				Client.SetValue( RawStrings.ForcedSpectator, true );
 			}
 		}
 	}

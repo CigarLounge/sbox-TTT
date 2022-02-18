@@ -16,8 +16,6 @@ public partial class TTTPlayer : Sandbox.Player
 	[Net]
 	public bool IsForcedSpectator { get; set; } = false;
 
-	public bool IsInitialSpawning { get; set; } = false;
-
 	public new Inventory Inventory
 	{
 		get => base.Inventory as Inventory;
@@ -36,26 +34,20 @@ public partial class TTTPlayer : Sandbox.Player
 	public TTTPlayer()
 	{
 		Inventory = new Inventory( this );
-		Role = new NoneRole();
 	}
 
 	public override void Spawn()
 	{
-		Components.GetOrCreate<Perks>();
 		base.Spawn();
-	}
 
-	// Important: Server-side only
-	public void InitialSpawn()
-	{
+		Role = new NoneRole();
+		Components.GetOrCreate<Perks>();
+
 		bool isPostRound = Gamemode.Game.Current.Round is Rounds.PostRound;
-
-		IsInitialSpawning = true;
 		IsForcedSpectator = isPostRound || Gamemode.Game.Current.Round is Rounds.InProgressRound;
 
 		Respawn();
 
-		// sync roles
 		using ( Prediction.Off() )
 		{
 			foreach ( TTTPlayer player in Utils.GetPlayers() )
@@ -65,17 +57,14 @@ public partial class TTTPlayer : Sandbox.Player
 					player.SendClientRole( To.Single( this ) );
 				}
 			}
-
-			Client.SetValue( "forcedspectator", IsForcedSpectator );
 		}
-
-		IsInitialSpawning = false;
-		IsForcedSpectator = false;
 	}
 
 	// Let's clean this up at some point, it's poorly written.
 	public override void Respawn()
 	{
+		base.Respawn();
+
 		SetModel( "models/citizen/citizen.vmdl" );
 
 		Animator = new StandardPlayerAnimator();
@@ -95,8 +84,6 @@ public partial class TTTPlayer : Sandbox.Player
 			RPCs.ClientOnPlayerSpawned( this );
 			SendClientRole();
 		}
-
-		base.Respawn();
 
 		if ( !IsForcedSpectator )
 		{
@@ -208,7 +195,7 @@ public partial class TTTPlayer : Sandbox.Player
 	{
 		Perks.Clear();
 		ClearAmmo();
-		Inventory.DeleteContents();
+		Inventory?.DeleteContents();
 		RemoveClothing();
 	}
 

@@ -51,7 +51,7 @@ public partial class Game
 			}
 		}
 
-		if ( player == null || player.Client.GetValue<bool>( "forcedspectator", false ) )
+		if ( player == null || player.Client.GetValue<bool>( RawStrings.ForcedSpectator, false ) )
 		{
 			if ( id == null )
 			{
@@ -191,11 +191,8 @@ public partial class Game
 	public static void ToggleForceSpectator()
 	{
 		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
-		if ( !player.IsValid() || player.IsInitialSpawning )
-		{
+		if ( !player.IsValid() )
 			return;
-		}
 
 		player.ToggleForcedSpectator();
 	}

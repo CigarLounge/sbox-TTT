@@ -22,9 +22,7 @@ public partial class TTTPlayer
 
 	public void SetRole( string libraryName )
 	{
-		Role?.OnDeselect( this );
-		Role = Library.Create<BaseRole>( libraryName );
-		Role.OnSelect( this );
+		SetRole( Library.Create<BaseRole>( libraryName ) );
 	}
 
 	/// <summary>
