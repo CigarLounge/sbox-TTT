@@ -30,9 +30,6 @@ public partial class Game : Sandbox.Game
 
 		if ( IsServer )
 		{
-			// Typically initailized on client, for whatever reason it breaks things
-			// if not created on server.
-			// @kole: it's because it needs to be on the server for rpcs
 			_ = new UI.Hud
 			{
 				Parent = this
