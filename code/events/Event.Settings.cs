@@ -1,13 +1,20 @@
+using Sandbox;
+
 namespace TTT.Events;
 
 public static partial class TTTEvent
 {
 	public static class Settings
 	{
+		public const string Changed = "ttt.settings.changed";
+
 		/// <summary>
 		/// Occurs when server or client settings are changed.
 		/// <para>No data is passed to this event.</para>
 		/// </summary>
-		public const string Change = "TTT.settings.change";
+		public class ChangedAttribute : EventAttribute
+		{
+			public ChangedAttribute() : base( Changed ) { }
+		}
 	}
 }
