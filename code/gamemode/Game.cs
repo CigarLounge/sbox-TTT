@@ -29,28 +29,14 @@ public partial class Game : Sandbox.Game
 	{
 		Instance = this;
 
-		if ( IsServer )
-		{
-			PrecacheFiles();
-		}
-
-		SettingsManager.Load();
 		_ = MapSelection.Load();
 
 		if ( IsServer )
 		{
-			ShopManager.Load();
 			// Typically initailized on client, for whatever reason it breaks things
 			// if not created on server.
 			_ = new UI.Hud();
 		}
-	}
-
-	public override void Shutdown()
-	{
-		SettingsManager.Unload();
-
-		base.Shutdown();
 	}
 
 	/// <summary>

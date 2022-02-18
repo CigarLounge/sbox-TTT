@@ -5,7 +5,7 @@ using System.Linq;
 using Sandbox;
 using Sandbox.roles;
 using Sandbox.UI;
-
+using TTT.Gamemode;
 using TTT.Player;
 
 namespace TTT.Globals;
@@ -62,7 +62,7 @@ public static partial class Utils
 		return players;
 	}
 
-	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Settings.ServerSettings.Instance.Round.MinPlayers;
+	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= GameConVars.MinPlayers;
 
 	/// <summary>
 	/// Loops through every type derived from the given type and collects non-abstract types.
