@@ -1,7 +1,7 @@
 {
   "Title": "TTT",
   "Type": "game",
-  "Org": "local",
+  "Org": "matt",
   "Ident": "ttt",
   "Schema": 1,
   "HasAssets": true,
