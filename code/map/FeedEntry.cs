@@ -1,6 +1,6 @@
 using Sandbox;
 
-using TTT.Teams;
+using TTT.Roles;
 
 namespace TTT.Map;
 
@@ -51,12 +51,12 @@ public partial class FeedEntry : Entity
 				break;
 
 			case FeedEntryType.Innocents:
-				RPCs.ClientDisplayMessage( To.Multiple( TeamFunctions.GetTeam( typeof( InnocentTeam ) ).GetClients() ), Message, Color );
+				RPCs.ClientDisplayMessage( Team.Innocents.ToClients(), Message, Color );
 
 				break;
 
 			case FeedEntryType.Traitors:
-				RPCs.ClientDisplayMessage( To.Multiple( TeamFunctions.GetTeam( typeof( TraitorTeam ) ).GetClients() ), Message, Color );
+				RPCs.ClientDisplayMessage( Team.Traitors.ToClients(), Message, Color );
 
 				break;
 
