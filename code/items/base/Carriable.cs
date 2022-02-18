@@ -46,7 +46,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	public TimeSince TimeSinceDeployed { get; set; }
 
 	public CarriableInfo Info { get; set; }
-	public PickupTrigger PickupTrigger { get; protected set; }
 	public new TTTPlayer Owner
 	{
 		get => base.Owner as TTTPlayer;
@@ -63,14 +62,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		// TODO: @mzegar
 		CollisionGroup = CollisionGroup.Weapon; // so players touch it as a trigger but not as a solid
 		SetInteractsAs( CollisionLayer.Debris ); // so player movement doesn't walk into it
-
-		PickupTrigger = new PickupTrigger
-		{
-			Parent = this,
-			Position = Position
-		};
-
-		PickupTrigger.PhysicsBody.EnableAutoSleeping = false;
 
 		if ( string.IsNullOrEmpty( ClassInfo?.Name ) )
 		{
@@ -137,18 +128,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	{
 		base.OnCarryStart( carrier );
 
-		if ( PickupTrigger.IsValid() )
-			PickupTrigger.EnableTouch = false;
-
 		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
 	{
 		base.OnCarryDrop( dropper );
-
-		if ( PickupTrigger.IsValid() )
-			PickupTrigger.EnableTouch = true;
 
 		(dropper as TTTPlayer).Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
