@@ -12,33 +12,16 @@ public enum Team : byte
 	Traitors
 }
 
-// TODO: @matt you decide what to do with this
 public static class TeamExtensions
 {
-	public static Color GetColor( this Team team )
-	{
-		switch ( team )
-		{
-			case Team.Innocents:
-				return Color.FromBytes( 27, 197, 78 );
-			case Team.Traitors:
-				return Color.FromBytes( 223, 41, 53 );
-			default:
-				return Color.White;
-		}
-	}
-
 	public static string GetName( this Team team )
 	{
-		switch ( team )
+		return team switch
 		{
-			case Team.Innocents:
-				return "Innocents";
-			case Team.Traitors:
-				return "Traitors";
-			default:
-				return "None";
-		}
+			Team.Innocents => "Innocents",
+			Team.Traitors => "Traitors",
+			_ => "None",
+		};
 	}
 
 	public static To ToClients( this Team team )
