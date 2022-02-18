@@ -17,19 +17,20 @@ public class DetectiveRole : TTTRole
 
 	public override void OnSelect( TTTPlayer player )
 	{
-		if ( Host.IsServer && player.Team == DefaultTeam )
-		{
-			if ( player.Team == DefaultTeam )
-			{
-				foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
-				{
-					player.SendClientRole( To.Single( otherPlayer ) );
-				}
-			}
+		if ( !Host.IsServer || player.Team != DefaultTeam )
+			return;
 
-			player.Perks.Add( new BodyArmor() );
-			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+		if ( player.Team == DefaultTeam )
+		{
+			foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
+			{
+				player.SendClientRole( To.Single( otherPlayer ) );
+			}
 		}
+
+		player.Perks.Add( new BodyArmor() );
+		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+
 
 		base.OnSelect( player );
 	}

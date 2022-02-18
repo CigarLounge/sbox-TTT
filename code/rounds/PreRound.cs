@@ -12,7 +12,7 @@ namespace TTT.Rounds;
 public class PreRound : BaseRound
 {
 	public override string RoundName => "Preparing";
-	public override int RoundDuration { get => Gamemode.Game.PreRoundTime; }
+	public override int RoundDuration => Gamemode.Game.PreRoundTime;
 
 	public override void OnPlayerKilled( TTTPlayer player )
 	{
@@ -25,19 +25,20 @@ public class PreRound : BaseRound
 
 	protected override void OnStart()
 	{
-		if ( Host.IsServer )
-		{
-			Gamemode.Game.Instance.MapHandler.Reset();
+		if ( !Host.IsServer )
+			return;
 
-			foreach ( Client client in Client.All )
+		Gamemode.Game.Instance.MapHandler.Reset();
+
+		foreach ( Client client in Client.All )
+		{
+			if ( client.Pawn is TTTPlayer player )
 			{
-				if ( client.Pawn is TTTPlayer player )
-				{
-					player.RemoveLogicButtons();
-					player.Respawn();
-				}
+				player.RemoveLogicButtons();
+				player.Respawn();
 			}
 		}
+
 	}
 
 	protected override void OnTimeUp()

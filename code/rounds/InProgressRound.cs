@@ -51,32 +51,26 @@ public partial class InProgressRound : BaseRound
 
 	protected override void OnStart()
 	{
-		if ( Host.IsServer )
-		{
-			// For now, if the RandomWeaponCount of the map is zero, let's just give the players
-			// a fixed weapon loadout.
-			if ( Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0 )
-			{
-				foreach ( TTTPlayer player in Players )
-				{
-					GiveFixedLoadout( player );
-				}
-			}
+		if ( !Host.IsServer )
+			return;
 
-			// Cache buttons for OnSecond tick.
-			_logicButtons = Entity.All.Where( x => x.GetType() == typeof( TTTLogicButton ) ).Select( x => x as TTTLogicButton ).ToList();
+		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
+		// a fixed weapon loadout.
+		if ( Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0 )
+		{
+			foreach ( TTTPlayer player in Players )
+			{
+				GiveFixedLoadout( player );
+			}
 		}
+
+		// Cache buttons for OnSecond tick.
+		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( TTTLogicButton ) ).Select( x => x as TTTLogicButton ).ToList();
 	}
 
 	private static void GiveFixedLoadout( TTTPlayer player )
 	{
 		Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
-
-		player.AddItem( new P250() );
-		player.GiveAmmo( SWB_Base.AmmoType.SMG, 100 );
-
-		player.AddItem( new M4() );
-		player.GiveAmmo( SWB_Base.AmmoType.Rifle, 60 );
 	}
 
 	protected override void OnTimeUp()

@@ -10,7 +10,7 @@ namespace TTT.Rounds;
 public class MapSelectionRound : BaseRound
 {
 	public override string RoundName => "Map Selection";
-	public override int RoundDuration { get => Game.MapSelectionTime; }
+	public override int RoundDuration => Game.MapSelectionTime; 
 
 	protected override void OnTimeUp()
 	{

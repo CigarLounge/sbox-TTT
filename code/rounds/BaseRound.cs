@@ -17,9 +17,7 @@ public abstract partial class BaseRound : BaseNetworkable
 	public void Start()
 	{
 		if ( Host.IsServer && RoundDuration > 0 )
-		{
-			TimeUntilRoundEnd = RoundDuration + 1; // Add 1 second due to game tick.
-		}
+			TimeUntilRoundEnd = RoundDuration + 1; // Add 1 second due to game tick.	
 
 		OnStart();
 	}
@@ -27,59 +25,31 @@ public abstract partial class BaseRound : BaseNetworkable
 	public void Finish()
 	{
 		if ( Host.IsServer )
-		{
 			TimeUntilRoundEnd = 0f;
-		}
 
 		OnFinish();
 	}
 
-	public virtual void OnPlayerSpawn( TTTPlayer player )
-	{
+	public virtual void OnPlayerSpawn( TTTPlayer player ) { }
 
-	}
+	public virtual void OnPlayerKilled( TTTPlayer player ) { }
 
-	public virtual void OnPlayerKilled( TTTPlayer player )
-	{
+	public virtual void OnPlayerJoin( TTTPlayer player ) { }
 
-	}
+	public virtual void OnPlayerLeave( TTTPlayer player ) { }
 
-	public virtual void OnPlayerJoin( TTTPlayer player )
-	{
-
-	}
-
-
-	public virtual void OnPlayerLeave( TTTPlayer player )
-	{
-
-	}
-
-	public virtual void OnTick()
-	{
-
-	}
+	public virtual void OnTick() { }
 
 	public virtual void OnSecond()
 	{
+		// no reason not to be called on the client
 		if ( Host.IsServer && TimeUntilRoundEnd )
-		{
 			OnTimeUp();
-		}
 	}
 
-	protected virtual void OnStart()
-	{
+	protected virtual void OnStart() { }
 
-	}
+	protected virtual void OnFinish() { }
 
-	protected virtual void OnFinish()
-	{
-
-	}
-
-	protected virtual void OnTimeUp()
-	{
-
-	}
+	protected virtual void OnTimeUp() { }
 }
