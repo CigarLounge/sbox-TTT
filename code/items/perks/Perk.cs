@@ -4,7 +4,7 @@ using TTT.Player;
 
 namespace TTT.Items;
 
-[Library("perk"), AutoGenerate]
+[Library( "perk" ), AutoGenerate]
 public partial class PerkInfo : ItemInfo
 {
 
