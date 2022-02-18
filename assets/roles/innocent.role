@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		team = "0"
-		color = [ 255, 255, 255 ]
+		team = "1"
+		color = [ 27, 197, 78 ]
 		defaultcredits = 0
-		libraryname = "ttt_role_none"
-		title = "None"
+		libraryname = "ttt_role_innocent"
+		title = "Innocent"
 	}
 }
