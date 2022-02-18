@@ -29,19 +29,20 @@ public partial class Hud : HudEntity<RootPanel>
 		GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
 	}
 
-	[Event.Hotload]
-	public static void OnHotReloaded()
-	{
-		if ( Host.IsServer )
-		{
-			return;
-		}
+	// TODO: Kole what do we do here?
+	// [Event.Hotload]
+	// public static void OnHotReloaded()
+	// {
+	// 	if ( Host.IsServer )
+	// 	{
+	// 		return;
+	// 	}
 
-		Hud.Current?.Delete();
-		_ = new Hud();
+	// 	Hud.Current?.Delete();
+	// 	_ = new Hud();
 
-		Event.Run( TTTEvent.UI.Reloaded );
-	}
+	// 	Event.Run( TTTEvent.UI.Reloaded );
+	// }
 
 	public class GeneralHud : Panel
 	{

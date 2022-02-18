@@ -59,10 +59,12 @@ public class InventorySelection : Panel
 			}
 		}
 
-		var activeItem = ItemInfo.All[player.CurrentPlayer.ActiveChild.ClassInfo.Name];
+		// TODO: Kole make this better.
+		var activeItem = player.CurrentPlayer.ActiveChild?.ClassInfo?.Name;
+		var activeItemTitle = activeItem != null ? ItemInfo.All[activeItem].Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
-			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable as Entity ) )
+			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable ) )
 			{
 				_entries.Remove( slot.Carriable );
 				slot?.Delete();
@@ -74,8 +76,8 @@ public class InventorySelection : Panel
 			slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
 
-			slot.SetClass( "active", slot.Carriable.Info.Title == activeItem?.Title );
-			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItem?.Title );
+			slot.SetClass( "active", slot.Carriable.Info.Title == activeItemTitle );
+			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItemTitle );
 
 			if ( slot.Carriable.Info.Slot != SlotType.Melee )
 			{
