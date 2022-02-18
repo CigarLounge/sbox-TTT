@@ -10,8 +10,17 @@ using TTT.Teams;
 
 namespace TTT.Roles;
 
-public abstract class TTTRole
+public enum Role : byte
 {
+	None,
+	Innocent,
+	Detective,
+	Traitor
+}
+
+public abstract class BaseRole
+{
+	public virtual Role ID => Role.None;
 	public virtual string Name => "None";
 	public virtual Color Color => Color.Black;
 	public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );
@@ -33,7 +42,7 @@ public abstract class TTTRole
 		}
 	}
 
-	public TTTRole() { }
+	public BaseRole() { }
 
 	public virtual void OnSelect( TTTPlayer player )
 	{
@@ -45,7 +54,7 @@ public abstract class TTTRole
 			player.ServerUpdateShop();
 		}
 
-		Event.Run( TTTEvent.Player.Role.Select, player );
+		Event.Run( TTTEvent.Player.Role.Selected, player );
 	}
 
 	public virtual void OnDeselect( TTTPlayer player ) { }

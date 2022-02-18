@@ -14,7 +14,7 @@ public class WaitingRound : BaseRound
 	{
 		if ( Host.IsServer && Utils.HasMinimumPlayers() )
 		{
-			Gamemode.Game.Instance.ForceRoundChange( new PreRound() );
+			Gamemode.Game.Current.ForceRoundChange( new PreRound() );
 		}
 	}
 
@@ -47,7 +47,7 @@ public class WaitingRound : BaseRound
 		{
 			await GameTask.DelaySeconds( 1 );
 
-			if ( player.IsValid() && Gamemode.Game.Instance.Round is WaitingRound )
+			if ( player.IsValid() && Gamemode.Game.Current.Round is WaitingRound )
 			{
 				player.Respawn();
 			}

@@ -8,8 +8,9 @@ using TTT.Teams;
 
 namespace TTT.Roles;
 
-public class DetectiveRole : TTTRole
+public class DetectiveRole : BaseRole
 {
+	public override Role ID => Role.Detective;
 	public override string Name => "Detective";
 	public override Color Color => Color.FromBytes( 25, 102, 255 );
 	public override int DefaultCredits => 100;

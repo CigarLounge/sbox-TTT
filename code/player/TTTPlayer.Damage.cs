@@ -84,7 +84,7 @@ public partial class TTTPlayer
 		{
 			LastDistanceToAttacker = Utils.SourceUnitsToMeters( Position.Distance( attacker.Position ) );
 
-			if ( Gamemode.Game.Instance.Round is not (Rounds.InProgressRound or Rounds.PostRound) )
+			if ( Gamemode.Game.Current.Round is not (Rounds.InProgressRound or Rounds.PostRound) )
 			{
 				return;
 			}

@@ -16,7 +16,7 @@ public class MapSelectionRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		IDictionary<string, string> maps = Game.Instance.MapSelection.MapImages;
+		IDictionary<string, string> maps = Game.Current.MapSelection.MapImages;
 
 		// We failed to fetch TTT maps, fall back to default map.
 		if ( maps.Count == 0 )
@@ -26,7 +26,7 @@ public class MapSelectionRound : BaseRound
 			return;
 		}
 
-		IDictionary<long, string> playerIdMapVote = Game.Instance.MapSelection.PlayerIdMapVote;
+		IDictionary<long, string> playerIdMapVote = Game.Current.MapSelection.PlayerIdMapVote;
 		IDictionary<string, int> mapToVoteCount = MapSelectionHandler.GetTotalVotesPerMap( playerIdMapVote );
 
 		// Nobody voted, so let's change to a random map.

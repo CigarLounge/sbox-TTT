@@ -6,7 +6,7 @@ namespace TTT.Items;
 [Hammer.EditorModel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" )]
 partial class MagnumAmmo : TTTAmmo
 {
-	public override SWB_Base.AmmoType AmmoType => SWB_Base.AmmoType.Revolver;
+	public override SWB_Base.AmmoType Type => SWB_Base.AmmoType.Revolver;
 	public override int Amount => 12;
 	public override int Max => 60;
 	public override string ModelPath => "models/ammo/ammo_magnum/ammo_magnum.vmdl";

@@ -30,10 +30,8 @@ public partial class Game
 	[ServerCmd( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( string id = null )
 	{
-		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
-		{
-			return;
-		}
+		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )	
+			return;	
 
 		TTTPlayer player = null;
 
@@ -140,7 +138,7 @@ public partial class Game
 			return;
 		}
 
-		if ( TTT.Gamemode.Game.Instance.Round is not TTT.Rounds.InProgressRound )
+		if ( TTT.Gamemode.Game.Current.Round is not TTT.Rounds.InProgressRound )
 		{
 			if ( id == null )
 			{
@@ -154,7 +152,7 @@ public partial class Game
 			return;
 		}
 
-		Type type = Utils.GetTypeByLibraryTitle<TTTRole>( roleName );
+		Type type = Utils.GetTypeByLibraryTitle<BaseRole>( roleName );
 
 		if ( type == null )
 		{
@@ -163,7 +161,7 @@ public partial class Game
 			return;
 		}
 
-		TTTRole role = Utils.GetObjectByType<TTTRole>( type );
+		BaseRole role = Utils.GetObjectByType<BaseRole>( type );
 
 		if ( role == null )
 		{
@@ -218,7 +216,7 @@ public partial class Game
 			return;
 		}
 
-		TTT.Gamemode.Game.Instance.ChangeRound( new PreRound() );
+		TTT.Gamemode.Game.Current.ChangeRound( new PreRound() );
 
 		Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
 	}

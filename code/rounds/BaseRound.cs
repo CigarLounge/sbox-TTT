@@ -10,8 +10,7 @@ public abstract partial class BaseRound : BaseNetworkable
 	public TimeUntil TimeUntilRoundEnd { get; set; }
 
 	public virtual int RoundDuration => 0;
-	public virtual string RoundName => "";
-
+	public virtual string RoundName => string.Empty;
 	public string TimeLeftFormatted { get { return Utils.TimerString( TimeUntilRoundEnd.Relative ); } }
 
 	public void Start()

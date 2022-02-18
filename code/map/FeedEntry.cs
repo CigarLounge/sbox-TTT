@@ -4,8 +4,17 @@ using TTT.Teams;
 
 namespace TTT.Map;
 
+public enum FeedEntryType
+{
+	All,
+	Activator,
+	Innocents,
+	Traitors,
+	Other
+}
+
 [Library( "ttt_feed_entry", Description = "Add text entry to the game feed when input fired." )]
-public partial class TTTFeedEntry : Entity
+public partial class FeedEntry : Entity
 {
 	[Property( "Message" )]
 	public string Message { get; set; } = "";
@@ -18,6 +27,13 @@ public partial class TTTFeedEntry : Entity
 
 	[Property( "Receiver Team Override", "Use this ONLY if you're using a custom team name not listed in the `Receiver` list." )]
 	public string ReceiverTeamOverride { get; set; } = "Override Team Name";
+
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		Parent = Game.Current;
+	}
 
 	[Input]
 	public void DisplayMessage( Entity activator )
@@ -59,13 +75,4 @@ public partial class TTTFeedEntry : Entity
 				break;
 		}
 	}
-}
-
-public enum FeedEntryType
-{
-	All,
-	Activator,
-	Innocents,
-	Traitors,
-	Other
 }

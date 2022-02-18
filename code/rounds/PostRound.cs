@@ -16,8 +16,8 @@ public class PostRound : BaseRound
 
 		RPCs.ClientClosePostRoundMenu();
 
-		bool shouldChangeMap = Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed >= Gamemode.Game.RoundLimit;
-		Gamemode.Game.Instance.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
+		bool shouldChangeMap = Gamemode.Game.Current.MapSelection.TotalRoundsPlayed >= Gamemode.Game.RoundLimit;
+		Gamemode.Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 
 	public override void OnPlayerKilled( TTTPlayer player )

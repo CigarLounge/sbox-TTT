@@ -6,7 +6,7 @@ using TTT.Rounds;
 namespace TTT.Map;
 
 [Library( "ttt_map_settings" )]
-public partial class TTTMapSettings : Entity
+public partial class MapSettings : Entity
 {
 	/// <summary>
 	/// Fired after PostLevelLoaded runs and MapSettings entity is found.
@@ -33,7 +33,14 @@ public partial class TTTMapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
-	[Event( TTTEvent.Game.RoundChange )]
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		Parent = Game.Current;
+	}
+
+	[TTTEvent.Game.RoundChanged]
 	private void FireRoundChange( BaseRound _, BaseRound newRound )
 	{
 		switch ( newRound )

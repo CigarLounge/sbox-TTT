@@ -64,6 +64,13 @@ public partial class TTTLogicButton : Entity
 		}
 	}
 
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		Parent = Game.Current;
+	}
+
 	// (Re)initialize our variables to default. Runs at preround as well as during construction
 	public void Cleanup()
 	{

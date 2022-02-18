@@ -34,7 +34,7 @@ public class Shop
 
 	public bool Accessable()
 	{
-		return Items.Count > 0 && Enabled && Gamemode.Game.Instance.Round is InProgressRound;
+		return Items.Count > 0 && Enabled && Gamemode.Game.Current.Round is InProgressRound;
 	}
 
 	public static Shop InitializeFromJSON( string json )
@@ -74,7 +74,7 @@ public class Shop
 		return shop;
 	}
 
-	public static void Load( TTTRole role )
+	public static void Load( BaseRole role )
 	{
 		string fileName = GetSettingsFile( role );
 
@@ -100,7 +100,7 @@ public class Shop
 		}
 	}
 
-	public static void Save( TTTRole role )
+	public static void Save( BaseRole role )
 	{
 		FileSystem.Data.WriteAllText( GetSettingsFile( role ), JsonSerializer.Serialize( role.Shop, new JsonSerializerOptions
 		{
@@ -108,12 +108,12 @@ public class Shop
 		} ) );
 	}
 
-	public static string GetSettingsFile( TTTRole role )
+	public static string GetSettingsFile( BaseRole role )
 	{
 		return $"settings/{Utils.GetTypeName( typeof( Settings.ServerSettings ) ).ToLower()}/shop/{role.Name.ToLower()}.json";
 	}
 
-	internal void AddItemsForRole( TTTRole role )
+	internal void AddItemsForRole( BaseRole role )
 	{
 		Items.Clear();
 

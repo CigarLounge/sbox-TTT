@@ -32,14 +32,14 @@ public class GameTimerDisplay : Panel
 	{
 		base.Tick();
 
-		if ( Game.Instance.Round == null )
+		if ( Game.Current.Round == null )
 		{
 			return;
 		}
 
-		_roundLabel.Text = $"{Game.Instance.Round.RoundName.ToUpper()}";
+		_roundLabel.Text = $"{Game.Current.Round.RoundName.ToUpper()}";
 
-		_timerLabel.SetClass( "disabled", Game.Instance.Round is Rounds.WaitingRound );
-		_timerLabel.Text = Game.Instance.Round.TimeLeftFormatted;
+		_timerLabel.SetClass( "disabled", Game.Current.Round is Rounds.WaitingRound );
+		_timerLabel.Text = Game.Current.Round.TimeLeftFormatted;
 	}
 }

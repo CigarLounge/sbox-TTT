@@ -9,8 +9,9 @@ using TTT.Teams;
 
 namespace TTT.Roles;
 
-public class TraitorRole : TTTRole
+public class TraitorRole : BaseRole
 {
+	public override Role ID => Role.Traitor;
 	public override string Name => "Traitor";
 	public override Color Color => Color.FromBytes( 223, 41, 53 );
 	public override int DefaultCredits => 200;

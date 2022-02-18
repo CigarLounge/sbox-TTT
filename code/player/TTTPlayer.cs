@@ -50,10 +50,10 @@ public partial class TTTPlayer : Sandbox.Player
 	// Important: Server-side only
 	public void InitialSpawn()
 	{
-		bool isPostRound = Gamemode.Game.Instance.Round is Rounds.PostRound;
+		bool isPostRound = Gamemode.Game.Current.Round is Rounds.PostRound;
 
 		IsInitialSpawning = true;
-		IsForcedSpectator = isPostRound || Gamemode.Game.Instance.Round is Rounds.InProgressRound;
+		IsForcedSpectator = isPostRound || Gamemode.Game.Current.Round is Rounds.InProgressRound;
 
 		Respawn();
 
@@ -116,9 +116,9 @@ public partial class TTTPlayer : Sandbox.Player
 		}
 
 		DeleteItems();
-		Gamemode.Game.Instance.Round.OnPlayerSpawn( this );
+		Gamemode.Game.Current.Round.OnPlayerSpawn( this );
 
-		switch ( Gamemode.Game.Instance.Round )
+		switch ( Gamemode.Game.Current.Round )
 		{
 			// hacky
 			// TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
@@ -150,11 +150,11 @@ public partial class TTTPlayer : Sandbox.Player
 			RPCs.ClientOnPlayerDied( this );
 			Role?.OnKilled( _lastDamageInfo.Attacker as TTTPlayer );
 
-			if ( Gamemode.Game.Instance.Round is Rounds.InProgressRound )
+			if ( Gamemode.Game.Current.Round is Rounds.InProgressRound )
 			{
 				SyncMIA();
 			}
-			else if ( Gamemode.Game.Instance.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
+			else if ( Gamemode.Game.Current.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
 			{
 				PlayerCorpse.IsIdentified = true;
 

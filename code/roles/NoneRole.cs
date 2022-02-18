@@ -2,7 +2,7 @@ using TTT.Teams;
 
 namespace TTT.Roles;
 
-public class NoneRole : TTTRole
+public class NoneRole : BaseRole
 {
 	public override Color Color => Color.Transparent;
 	public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );

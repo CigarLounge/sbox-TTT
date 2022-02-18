@@ -34,7 +34,7 @@ public class PlayerRoleDisplay : Panel
 			return;
 		}
 
-		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Instance.Round is Rounds.InProgressRound );
+		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Current.Round is Rounds.InProgressRound );
 	}
 
 	[Event( Events.TTTEvent.Player.Role.Select )]

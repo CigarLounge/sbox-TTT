@@ -56,7 +56,7 @@ public partial class InProgressRound : BaseRound
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
-		if ( Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0 )
+		if ( Gamemode.Game.Current.MapHandler.RandomWeaponCount == 0 )
 		{
 			foreach ( TTTPlayer player in Players )
 			{
@@ -102,8 +102,8 @@ public partial class InProgressRound : BaseRound
 
 	public static void LoadPostRound( TTTTeam winningTeam )
 	{
-		Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
-		Gamemode.Game.Instance.ForceRoundChange( new PostRound() );
+		Gamemode.Game.Current.MapSelection.TotalRoundsPlayed++;
+		Gamemode.Game.Current.ForceRoundChange( new PostRound() );
 		RPCs.ClientOpenAndSetPostRoundMenu(
 			winningTeam.Name,
 			winningTeam.Color
@@ -127,7 +127,7 @@ public partial class InProgressRound : BaseRound
 
 			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == null )
 			{
-				Gamemode.Game.Instance.ForceRoundChange( new WaitingRound() );
+				Gamemode.Game.Current.ForceRoundChange( new WaitingRound() );
 			}
 		}
 	}
@@ -154,7 +154,7 @@ public partial class InProgressRound : BaseRound
 			return;
 		}
 
-		if ( Gamemode.Game.Instance.Round is InProgressRound inProgressRound )
+		if ( Gamemode.Game.Current.Round is InProgressRound inProgressRound )
 		{
 			inProgressRound.ChangeRoundIfOver();
 		}
@@ -163,7 +163,7 @@ public partial class InProgressRound : BaseRound
 	[Event( TTTEvent.Settings.Change )]
 	private static void OnChangeSettings()
 	{
-		if ( Gamemode.Game.Instance.Round is not InProgressRound inProgressRound )
+		if ( Gamemode.Game.Current.Round is not InProgressRound inProgressRound )
 		{
 			return;
 		}

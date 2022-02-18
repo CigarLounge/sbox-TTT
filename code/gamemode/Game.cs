@@ -6,13 +6,12 @@ using TTT.Events;
 using TTT.Map;
 using TTT.Player;
 using TTT.Rounds;
-using TTT.Settings;
 
 namespace TTT.Gamemode;
 
 public partial class Game : Sandbox.Game
 {
-	public static Game Instance { get; private set; }
+	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
 	public BaseRound Round { get; private set; } = new TTT.Rounds.WaitingRound();
@@ -27,15 +26,17 @@ public partial class Game : Sandbox.Game
 
 	public Game()
 	{
-		Instance = this;
-
 		_ = MapSelection.Load();
 
 		if ( IsServer )
 		{
 			// Typically initailized on client, for whatever reason it breaks things
 			// if not created on server.
-			_ = new UI.Hud();
+			// @kole: it's because it needs to be on the server for rpcs
+			_ = new UI.Hud
+			{
+				Parent = this
+			};
 		}
 	}
 

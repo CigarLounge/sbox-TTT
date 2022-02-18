@@ -7,7 +7,7 @@ using TTT.Teams;
 namespace TTT.Map;
 
 [Library( "ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input." )]
-public partial class TTTForceWin : Entity
+public partial class ForceWin : Entity
 {
 	[Property( "Team", "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams." )]
 	public string Team
@@ -18,10 +18,16 @@ public partial class TTTForceWin : Entity
 			_team = value?.ToLower();
 		}
 	}
-	private string _team = Utils.GetLibraryTitle( typeof( InnocentTeam ) );
 
 	[Property( "Use Activators Team", "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player." )]
 	public bool UseActivatorsTeam { get; set; } = false;
+
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		Parent = Game.Current;
+	}
 
 	[Input]
 	public void InnocentsWin() => ForceEndRound( TeamFunctions.GetTeam( typeof( InnocentTeam ) ) );
@@ -55,7 +61,7 @@ public partial class TTTForceWin : Entity
 
 	private static void ForceEndRound( TTTTeam team )
 	{
-		if ( Gamemode.Game.Instance.Round is InProgressRound )
+		if ( Gamemode.Game.Current.Round is InProgressRound )
 		{
 			InProgressRound.LoadPostRound( team );
 		}

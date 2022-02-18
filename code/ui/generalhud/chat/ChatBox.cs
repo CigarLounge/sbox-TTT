@@ -257,7 +257,7 @@ public partial class ChatBox : Panel
 
 		LifeState lifeState = ConsoleSystem.Caller.Pawn.LifeState;
 
-		if ( Gamemode.Game.Instance?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead )
+		if ( Gamemode.Game.Current?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead )
 		{
 			AddChatEntry( To.Multiple( Utils.GetClients( ( pl ) => pl.LifeState == LifeState.Dead ) ), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.PlayerId}" );
 		}

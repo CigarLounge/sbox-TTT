@@ -28,7 +28,7 @@ public class PreRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		Gamemode.Game.Instance.MapHandler.Reset();
+		Gamemode.Game.Current.MapHandler.CleanUp();
 
 		foreach ( Client client in Client.All )
 		{
@@ -65,7 +65,7 @@ public class PreRound : BaseRound
 
 		AssignRolesAndRespawn( players );
 
-		Gamemode.Game.Instance.ChangeRound( new InProgressRound
+		Gamemode.Game.Current.ChangeRound( new InProgressRound
 		{
 			Players = players,
 			Spectators = spectators
@@ -129,7 +129,7 @@ public class PreRound : BaseRound
 		{
 			await GameTask.DelaySeconds( 1 );
 
-			if ( player.IsValid() && Gamemode.Game.Instance.Round is PreRound )
+			if ( player.IsValid() && Gamemode.Game.Current.Round is PreRound )
 			{
 				player.Respawn();
 			}

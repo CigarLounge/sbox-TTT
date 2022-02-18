@@ -33,7 +33,7 @@ public class MapSelectionMenu : Panel
 
 	private void InitMapPanels()
 	{
-		IDictionary<string, string> mapImages = Gamemode.Game.Instance.MapSelection.MapImages;
+		IDictionary<string, string> mapImages = Gamemode.Game.Current.MapSelection.MapImages;
 		foreach ( KeyValuePair<string, string> mapImage in mapImages )
 		{
 			if ( _mapPanels.Exists( ( mapPanel ) => mapPanel.MapName == mapImage.Key ) )
@@ -52,7 +52,7 @@ public class MapSelectionMenu : Panel
 
 	public override void Tick()
 	{
-		IDictionary<long, string> playerIdMapVote = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
+		IDictionary<long, string> playerIdMapVote = Gamemode.Game.Current.MapSelection.PlayerIdMapVote;
 
 		IDictionary<string, int> mapToVoteCount = Map.MapSelectionHandler.GetTotalVotesPerMap( playerIdMapVote );
 
@@ -95,7 +95,7 @@ public class MapSelectionMenu : Panel
 	public static void VoteNextMap( string name )
 	{
 		long callerPlayerId = ConsoleSystem.Caller.PlayerId;
-		IDictionary<long, string> nextMapVotes = Gamemode.Game.Instance.MapSelection.PlayerIdMapVote;
+		IDictionary<long, string> nextMapVotes = Gamemode.Game.Current.MapSelection.PlayerIdMapVote;
 
 		nextMapVotes[callerPlayerId] = name;
 		Log.Debug( $"{callerPlayerId} voting for map {name}" );

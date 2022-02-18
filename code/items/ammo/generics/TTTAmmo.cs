@@ -22,7 +22,7 @@ public abstract partial class TTTAmmo : Prop, IEntityHint
 	/// <summary>
 	/// The ammo type to use.
 	/// </summary>
-	public virtual AmmoType AmmoType { get; set; }
+	public virtual AmmoType Type { get; set; }
 
 	/// <summary>
 	/// Amount of Ammo within Entity.
@@ -117,7 +117,7 @@ public abstract partial class TTTAmmo : Prop, IEntityHint
 			{
 				if ( player.Inventory.GetSlot( i ) is SWB_Base.WeaponBase weapon )
 				{
-					if ( weapon.Primary.AmmoType == AmmoType )
+					if ( weapon.Primary.AmmoType == Type )
 					{
 						hasWeaponOfAmmoType = true;
 						break;
@@ -130,7 +130,7 @@ public abstract partial class TTTAmmo : Prop, IEntityHint
 				return;
 			}
 
-			int playerAmount = player.AmmoCount( AmmoType );
+			int playerAmount = player.AmmoCount( Type );
 
 			if ( Max < playerAmount + Math.Ceiling( CurrentAmmo * 0.25 ) )
 			{
@@ -138,7 +138,7 @@ public abstract partial class TTTAmmo : Prop, IEntityHint
 			}
 
 			int amountGiven = Math.Min( CurrentAmmo, Max - playerAmount );
-			player.GiveAmmo( AmmoType, amountGiven );
+			player.GiveAmmo( Type, amountGiven );
 			CurrentAmmo -= amountGiven;
 			OnPickup.Fire( player );
 

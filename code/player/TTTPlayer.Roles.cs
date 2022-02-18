@@ -11,7 +11,7 @@ namespace TTT.Player;
 
 public partial class TTTPlayer
 {
-	public TTTRole Role
+	public BaseRole Role
 	{
 		get
 		{
@@ -28,7 +28,7 @@ public partial class TTTPlayer
 		}
 	}
 
-	private TTTRole _role;
+	private BaseRole _role;
 
 	public TTTTeam Team
 	{
@@ -49,7 +49,7 @@ public partial class TTTPlayer
 
 	private TTTTeam _team;
 
-	public void SetRole( TTTRole role, TTTTeam team = null )
+	public void SetRole( BaseRole role, TTTTeam team = null )
 	{
 		TTTTeam oldTeam = Team;
 
@@ -83,7 +83,7 @@ public partial class TTTPlayer
 
 	public void SyncMIA( TTTPlayer player = null )
 	{
-		if ( Gamemode.Game.Instance.Round is not InProgressRound )
+		if ( Gamemode.Game.Current.Round is not InProgressRound )
 		{
 			return;
 		}
