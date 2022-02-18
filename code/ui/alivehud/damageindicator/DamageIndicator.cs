@@ -3,23 +3,21 @@ using Sandbox.UI;
 using System;
 using System.Threading.Tasks;
 
-// Use a SWB namespace since it hooks into that addon.
-namespace SWB_Base;
+namespace TTT.UI;
 
 public partial class DamageIndicator : Panel
 {
-	public static DamageIndicator Current;
-
 	public DamageIndicator()
 	{
-		Current = this;
 		StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
 	}
 
 	public void OnHit( Vector3 pos )
 	{
-		var p = new HitPoint( pos );
-		p.Parent = this;
+		_ = new HitPoint( pos )
+		{
+			Parent = this
+		};
 	}
 
 	public class HitPoint : Panel

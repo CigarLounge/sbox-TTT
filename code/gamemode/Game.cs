@@ -219,6 +219,6 @@ public partial class Game : Sandbox.Game
 
 	public void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
 	{
-		Event.Run( TTTEvent.Game.RoundChange, oldRound, newRound );
+		Event.Run( TTTEvent.Game.RoundChanged, oldRound, newRound );
 	}
 }

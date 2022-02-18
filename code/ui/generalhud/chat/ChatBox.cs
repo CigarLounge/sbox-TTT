@@ -4,7 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTT.Player;
-using TTT.Teams;
 
 namespace TTT.UI;
 
@@ -82,8 +81,8 @@ public partial class ChatBox : Panel
 
 		if ( isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting )
 		{
-			_inputTeamIndicator.Style.BackgroundColor = player.Team.Color;
-			_inputPanel.Style.BorderColor = player.Team.Color;
+			_inputTeamIndicator.Style.BackgroundColor = player.Role.Color;
+			_inputPanel.Style.BorderColor = player.Role.Color;
 		}
 		else
 		{
@@ -199,7 +198,7 @@ public partial class ChatBox : Panel
 				break;
 
 			case Channel.Team:
-				chatEntry.Header.Style.FontColor = TeamFunctions.GetTeam( teamName ).Color;
+				chatEntry.Header.Style.FontColor = ;
 
 				break;
 		}
@@ -221,7 +220,7 @@ public partial class ChatBox : Panel
 	}
 	public static bool CanUseTeamChat( TTTPlayer player )
 	{
-		return player.LifeState == LifeState.Alive && player.Team.GetType() == typeof( TraitorTeam );
+		return player.LifeState == LifeState.Alive && player.Team == Roles.Team.Traitors;
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]

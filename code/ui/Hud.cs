@@ -101,7 +101,6 @@ public partial class Hud : HudEntity<RootPanel>
 			{
 				AddChild<Crosshair>(),
 				AddChild<BreathIndicator>(),
-				AddChild<StaminaIndicator>(),
 				AddChild<QuickShop>(),
 				AddChild<SWB_Base.DamageIndicator>()
 			};

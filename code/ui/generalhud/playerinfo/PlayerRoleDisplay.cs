@@ -37,7 +37,7 @@ public class PlayerRoleDisplay : Panel
 		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Current.Round is Rounds.InProgressRound );
 	}
 
-	[Event( Events.TTTEvent.Player.Role.Select )]
+	[Events.TTTEvent.Player.Role.Selected]
 	private void OnRoleUpdate( TTTPlayer player )
 	{
 		if ( player == null || player != Local.Pawn as TTTPlayer )

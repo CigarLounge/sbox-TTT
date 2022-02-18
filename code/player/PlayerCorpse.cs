@@ -2,8 +2,6 @@ using System.Collections.Generic;
 
 using Sandbox;
 using Sandbox.player;
-using Sandbox.roles;
-using Sandbox.UI;
 using TTT.Items;
 using TTT.Roles;
 using TTT.UI;

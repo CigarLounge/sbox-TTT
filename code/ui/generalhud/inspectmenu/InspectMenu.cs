@@ -83,7 +83,7 @@ public class InspectMenu : Panel
 
 		_playerCorpse = playerCorpse;
 		_confirmationData = _playerCorpse.GetConfirmationData();
-		SetConfirmationData( _playerCorpse.KillerWeapon, _playerCorpse.Perks );
+		SetConfirmationData( _playerCorpse.KillerWeapon.Title, _playerCorpse.Perks );
 	}
 
 	private void SetConfirmationData( string killerWeapon, string[] perks )
