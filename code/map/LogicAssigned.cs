@@ -11,7 +11,7 @@ namespace TTT.Map;
 public partial class LogicAssigned : Entity
 {
 	[Property( "Check Value", "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`." )]
-	public Role CheckRole { get; set; }
+	public Team CheckTeam { get; set; }
 
 	/// <summary>
 	/// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().
@@ -35,7 +35,7 @@ public partial class LogicAssigned : Entity
 	{
 		if ( activator is TTTPlayer player && Gamemode.Game.Current.Round is InProgressRound )
 		{
-			if ( player.Role.ID == CheckRole )
+			if ( player.Role.Team == CheckTeam )
 			{
 				OnPass.Fire( this );
 

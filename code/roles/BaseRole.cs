@@ -1,29 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Sandbox;
 
 using TTT.Events;
 using TTT.Globals;
 using TTT.Player;
-using TTT.Teams;
 
 namespace TTT.Roles;
 
-public enum Role : byte
-{
-	None,
-	Innocent,
-	Detective,
-	Traitor
-}
-
 public abstract class BaseRole
 {
-	public virtual Role ID => Role.None;
+	public virtual Team Team => Team.None;
 	public virtual string Name => "None";
 	public virtual Color Color => Color.Black;
-	public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );
 	public virtual int DefaultCredits => 0;
 	public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
 	public virtual bool IsSelectable => true;

@@ -2,7 +2,7 @@ using Sandbox;
 
 using TTT.Player;
 using TTT.Rounds;
-using TTT.Teams;
+using TTT.Roles;
 
 namespace TTT.Map;
 
@@ -10,14 +10,7 @@ namespace TTT.Map;
 public partial class ForceWin : Entity
 {
 	[Property( "Team", "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams." )]
-	public string Team
-	{
-		get => _team;
-		set
-		{
-			_team = value?.ToLower();
-		}
-	}
+	public Team Team { get; set; }
 
 	[Property( "Use Activators Team", "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player." )]
 	public bool UseActivatorsTeam { get; set; } = false;
@@ -38,7 +31,7 @@ public partial class ForceWin : Entity
 	[Input]
 	public void ForceWin( Entity activator )
 	{
-		TTTTeam winningTeam;
+		Team winningTeam;
 
 		if ( UseActivatorsTeam && activator is TTTPlayer player )
 		{
@@ -49,7 +42,7 @@ public partial class ForceWin : Entity
 			winningTeam = TeamFunctions.TryGetTeam( Team );
 		}
 
-		if ( winningTeam != null )
+		if ( winningTeam != Team.None )
 		{
 			ForceEndRound( winningTeam );
 
@@ -59,7 +52,7 @@ public partial class ForceWin : Entity
 		Log.Warning( $"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name." );
 	}
 
-	private static void ForceEndRound( TTTTeam team )
+	private static void ForceEndRound( Team team )
 	{
 		if ( Gamemode.Game.Current.Round is InProgressRound )
 		{
