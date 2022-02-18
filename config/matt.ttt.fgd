@@ -41,7 +41,7 @@
 		4 : "Other"
 	]
 	text_color(color255) : "Color" :  : ""
-	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : ""
+	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : "Use this ONLY if you're using a custom team name not listed in the `Receiver` list."
 
 	input DisplayMessage(void) : ""
 ]
