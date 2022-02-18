@@ -4,44 +4,39 @@ using System;
 using TTT.Player;
 using System.Threading.Tasks;
 
-namespace TTT.Items
+namespace TTT.Items;
+
+[Hammer.Skip]
+[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
+public partial class Disguiser : Perk
 {
-	[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
-	[Shop( SlotType.Perk, 100, new Type[] { typeof( TraitorRole ) } )]
-	[Hammer.Skip]
-	public partial class Disguiser : Perk, IItem
+	[Net, Local]
+	public bool IsEnabled { get; set; } = false;
+	private readonly float _lockOutSeconds = 1f;
+	private bool _isLocked = false;
+
+	public override void Simulate( TTTPlayer player )
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Disguiser ) );
-
-		[Net, Local]
-		public bool IsEnabled { get; set; } = false;
-		private readonly float _lockOutSeconds = 1f;
-		private bool _isLocked = false;
-
-		public override void Simulate( TTTPlayer player )
+		if ( Input.Down( InputButton.Grenade ) && !_isLocked )
 		{
-			if ( Input.Down( InputButton.Grenade ) && !_isLocked )
+			if ( Host.IsServer )
 			{
-				if ( Host.IsServer )
-				{
-					IsEnabled = !IsEnabled;
-					_isLocked = true;
-				}
-
-				_ = DisguiserLockout();
+				IsEnabled = !IsEnabled;
+				_isLocked = true;
 			}
-		}
 
-		public override string ActiveText()
-		{
-			return IsEnabled ? "ON" : "OFF";
+			_ = DisguiserLockout();
 		}
+	}
 
-		private async Task DisguiserLockout()
-		{
-			await GameTask.DelaySeconds( _lockOutSeconds );
-			_isLocked = false;
-		}
+	public override string ActiveText()
+	{
+		return IsEnabled ? "ON" : "OFF";
+	}
+
+	private async Task DisguiserLockout()
+	{
+		await GameTask.DelaySeconds( _lockOutSeconds );
+		_isLocked = false;
 	}
 }

@@ -4,34 +4,25 @@ using Sandbox;
 using TTT.Player;
 using TTT.Roles;
 
-namespace TTT.Items
+namespace TTT.Items;
+
+[Hammer.Skip]
+[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
+public partial class HealthStation : Carriable
 {
-	[Library( "ttt_equipment_healthstation", Title = "Health Station" )]
-	[Shop( SlotType.UtilityEquipment, 100, new Type[] { typeof( DetectiveRole ) } )]
-	[Hammer.Skip]
-	public partial class HealthStation : BaseCarriable, ICarriableItem
+	public override void Simulate( Client client )
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( HealthStation ) );
+		if ( Owner is not TTTPlayer owner || !IsServer )
+			return;
 
-		public override string ViewModelPath => "";
-
-		public override void Simulate( Client client )
+		using ( Prediction.Off() )
 		{
-			if ( Owner is not TTTPlayer owner || !IsServer )
+			if ( Input.Pressed( InputButton.Attack1 ) )
 			{
-				return;
-			}
-
-			using ( Prediction.Off() )
-			{
-				if ( Input.Pressed( InputButton.Attack1 ) )
-				{
-					owner.Inventory.DropEntity( this, typeof( HealthstationEntity ) );
-				}
+				owner.Inventory.DropEntity( this, typeof( HealthstationEntity ) );
 			}
 		}
-
-		public bool CanDrop() { return false; }
 	}
+
+	public bool CanDrop() { return false; }
 }

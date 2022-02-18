@@ -7,62 +7,56 @@ using TTT.Items;
 using TTT.Player;
 using TTT.Teams;
 
-namespace TTT.Roles
+namespace TTT.Roles;
+
+public class DetectiveRole : TTTRole
 {
-	[Role( "Detective" )]
-	public class DetectiveRole : TTTRole
+	public override string Name => "Detective";
+	public override Color Color => Color.FromBytes( 25, 102, 255 );
+	public override int DefaultCredits => 100;
+	public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( InnocentTeam ) );
+
+	public override void OnSelect( TTTPlayer player )
 	{
-		public override Color Color => Color.FromBytes( 25, 102, 255 );
-		public override int DefaultCredits => 100;
-		public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( InnocentTeam ) );
-
-		public DetectiveRole() : base()
+		if ( Host.IsServer && player.Team == DefaultTeam )
 		{
-
-		}
-
-		public override void OnSelect( TTTPlayer player )
-		{
-			if ( Host.IsServer && player.Team == DefaultTeam )
+			if ( player.Team == DefaultTeam )
 			{
-				if ( player.Team == DefaultTeam )
+				foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
 				{
-					foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
-					{
-						player.SendClientRole( To.Single( otherPlayer ) );
-					}
+					player.SendClientRole( To.Single( otherPlayer ) );
 				}
-
-				player.Perks.Add( new BodyArmor() );
-				player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 			}
 
-			base.OnSelect( player );
+			player.Perks.Add( new BodyArmor() );
+			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 		}
 
-		public override void OnKilled( TTTPlayer killer )
+		base.OnSelect( player );
+	}
+
+	public override void OnKilled( TTTPlayer killer )
+	{
+		if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role is TraitorRole )
 		{
-			if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role is TraitorRole )
-			{
-				killer.Credits += 100;
-				RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
-			}
+			killer.Credits += 100;
+			RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
 		}
+	}
 
-		// serverside function
-		public override void CreateDefaultShop()
-		{
-			Shop.AddItemsForRole( this );
+	// serverside function
+	public override void CreateDefaultShop()
+	{
+		Shop.AddItemsForRole( this );
 
-			base.CreateDefaultShop();
-		}
+		base.CreateDefaultShop();
+	}
 
-		// serverside function
-		public override void UpdateDefaultShop( List<Type> newItemsList )
-		{
-			Shop.AddNewItems( newItemsList );
+	// serverside function
+	public override void UpdateDefaultShop( List<Type> newItemsList )
+	{
+		Shop.AddNewItems( newItemsList );
 
-			base.UpdateDefaultShop( newItemsList );
-		}
+		base.UpdateDefaultShop( newItemsList );
 	}
 }

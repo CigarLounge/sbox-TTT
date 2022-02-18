@@ -16,7 +16,7 @@ namespace TTT.Player
 			private init => base.Owner = value;
 		}
 
-		public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+		public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 
 		private const int DROPPOSITIONOFFSET = 50;
 		private const int DROPVELOCITY = 500;
@@ -26,7 +26,7 @@ namespace TTT.Player
 		// This code is poorly written, we should fix this.
 		public override bool Add( Entity entity, bool makeActive = false )
 		{
-			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasEmptySlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
+			if ( entity is not IItem item || IsCarryingType( entity.GetType() ) || !HasFreeSlot( item.GetItemData().SlotType ) || !base.Add( entity, makeActive ) )
 			{
 				return false;
 			}
@@ -35,10 +35,9 @@ namespace TTT.Player
 			return true;
 		}
 
-		public bool HasEmptySlot( SlotType slotType )
+		public bool HasFreeSlot( SlotType slotType )
 		{
-			int itemsInSlot = List.Count( x => ((IItem)x).GetItemData().SlotType == slotType );
-			return SlotCapacity[(int)slotType - 1] - itemsInSlot > 0;
+			return SlotCapacity[(int)slotType] > 0;
 		}
 
 		public bool IsCarryingType( Type t )

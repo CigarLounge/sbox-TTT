@@ -8,82 +8,57 @@ using TTT.Globals;
 using TTT.Player;
 using TTT.Teams;
 
-namespace TTT.Roles
+namespace TTT.Roles;
+
+public abstract class TTTRole
 {
-	[AttributeUsage( AttributeTargets.Class, Inherited = false )]
-	public class RoleAttribute : LibraryAttribute
-	{
-		public RoleAttribute( string name ) : base( name )
-		{
+	public virtual string Name => "None";
+	public virtual Color Color => Color.Black;
+	public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );
+	public virtual int DefaultCredits => 0;
+	public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
+	public virtual bool IsSelectable => true;
 
+	public Shop Shop
+	{
+		get
+		{
+			ShopDict.TryGetValue( Name, out Shop shop );
+
+			return shop;
+		}
+		internal set
+		{
+			ShopDict[Name] = value;
 		}
 	}
 
-	public abstract class TTTRole
+	public TTTRole() { }
+
+	public virtual void OnSelect( TTTPlayer player )
 	{
-		public readonly string Name;
-		public virtual Color Color => Color.Black;
-		public virtual TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( NoneTeam ) );
-		public virtual int DefaultCredits => 0;
-		public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
-		public virtual bool IsSelectable => true;
+		player.Credits = Math.Max( DefaultCredits, player.Credits );
 
-		public Shop Shop
+		if ( Host.IsServer )
 		{
-			get
-			{
-				ShopDict.TryGetValue( Name, out Shop shop );
-
-				return shop;
-			}
-			internal set
-			{
-				ShopDict[Name] = value;
-			}
+			player.Shop = Shop;
+			player.ServerUpdateShop();
 		}
 
-		public TTTRole()
-		{
-			Name = Utils.GetLibraryTitle( GetType() );
-		}
-
-		public virtual void OnSelect( TTTPlayer player )
-		{
-			player.Credits = Math.Max( DefaultCredits, player.Credits );
-
-			if ( Host.IsServer )
-			{
-				player.Shop = Shop;
-				player.ServerUpdateShop();
-			}
-
-			Event.Run( TTTEvent.Player.Role.Select, player );
-		}
-
-		public virtual void OnDeselect( TTTPlayer player )
-		{
-
-		}
-
-		public virtual void OnKilled( TTTPlayer killer )
-		{
-
-		}
-
-		// serverside function
-		public virtual void InitShop()
-		{
-			Shop.Load( this );
-		}
-
-		public virtual void CreateDefaultShop()
-		{
-
-		}
-
-		public virtual void UpdateDefaultShop( List<Type> newItemsList )
-		{
-
-		}
+		Event.Run( TTTEvent.Player.Role.Select, player );
 	}
+
+	public virtual void OnDeselect( TTTPlayer player ) { }
+
+	public virtual void OnKilled( TTTPlayer killer ) { }
+
+	// serverside function
+	public virtual void InitShop()
+	{
+		Shop.Load( this );
+	}
+
+	public virtual void CreateDefaultShop() { }
+
+	public virtual void UpdateDefaultShop( List<Type> newItemsList ) { }
 }
