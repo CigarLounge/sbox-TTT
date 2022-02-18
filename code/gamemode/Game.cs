@@ -40,10 +40,8 @@ namespace TTT.Gamemode
 			if ( IsServer )
 			{
 				ShopManager.Load();
-			}
-
-			if ( IsClient )
-			{
+				// Typically initailized on client, for whatever reason it breaks things
+				// if not created on server.
 				_ = new UI.Hud();
 			}
 		}
