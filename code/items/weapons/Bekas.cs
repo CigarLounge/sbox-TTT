@@ -15,7 +15,7 @@ namespace TTT.Items
 	{
 		public ItemData GetItemData() { return _data; }
 		private readonly ItemData _data = new( typeof( Bekas ) );
-		public Type DroppedType => typeof( Bekas );
+		public Type DroppedType => typeof( ShotgunAmmo );
 
 		public override int Bucket => 2;
 		public override HoldType HoldType => HoldType.Shotgun;
