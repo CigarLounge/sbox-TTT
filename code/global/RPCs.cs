@@ -35,50 +35,33 @@ public partial class RPCs
 		player.SetRole( new NoneRole() );
 	}
 
-	/// <summary>
-	/// Must be called on the server, updates TTTPlayer's `Role`.
-	/// </summary>
-	/// <param name="player">The player whose `Role` is to be updated</param>
-	/// <param name="roleName">Same as the `TTT.Roles.TTTRole`'s `TTT.Roles.RoleAttribute`'s name</param>
-	/// <param name="teamName">The name of the team</param>
 	[ClientRpc]
-	public static void ClientSetRole( TTTPlayer player, string roleName, string teamName = null )
+	public static void ClientSetRole( TTTPlayer player, BaseRole role )
 	{
 		if ( !player.IsValid() )
 		{
 			return;
 		}
 
-		player.SetRole( Utils.GetObjectByType<BaseRole>( Utils.GetTypeByLibraryTitle<BaseRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
-
-		Client client = player.Client;
-
-		if ( client == null || !client.IsValid() )
-		{
-			return;
-		}
-
-		Scoreboard.Instance?.UpdateClient( client );
+		player.SetRole( role );
+		Scoreboard.Instance?.UpdateClient( player.Client );
 	}
 
 	// Someone refactor this mess.
 	[ClientRpc]
-	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, string teamName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, BaseRole role, ConfirmationData confirmationData, string killerWeapon, string[] perks )
 	{
 		if ( !deadPlayer.IsValid() )
-		{
 			return;
-		}
 
-		deadPlayer.SetRole( Utils.GetObjectByType<BaseRole>( Utils.GetTypeByLibraryTitle<BaseRole>( roleName ) ), TeamFunctions.GetTeam( teamName ) );
-
+		deadPlayer.SetRole( role );
 		deadPlayer.IsConfirmed = true;
 		deadPlayer.CorpseConfirmer = confirmPlayer;
 
 		if ( playerCorpse.IsValid() )
 		{
 			playerCorpse.DeadPlayer = deadPlayer;
-			playerCorpse.KillerWeapon = Items.ItemInfo.All[killerWeapon] as Items.ItemInfo.CarriableInfo;
+			playerCorpse.KillerWeapon = Items.ItemInfo.All[killerWeapon] as Items.CarriableInfo;
 			playerCorpse.Perks = perks;
 
 			playerCorpse.DeadPlayerClientData = new ClientData()

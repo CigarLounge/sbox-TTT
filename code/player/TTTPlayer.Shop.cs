@@ -15,94 +15,6 @@ public partial class TTTPlayer
 {
 	public HashSet<string> BoughtItemsSet = new();
 
-	public Shop Shop
-	{
-		get => _shop;
-		set
-		{
-			if ( _shop == value )
-			{
-				return;
-			}
-
-			_shop = value;
-
-			Event.Run( TTTEvent.Shop.Changed );
-		}
-	}
-	private Shop _shop;
-
-	public BuyError CanBuy( ShopItemData itemData )
-	{
-		if ( Shop == null || !Shop.Accessable() )
-		{
-			return BuyError.NoAccess;
-		}
-
-		if ( !itemData?.IsBuyable( this ) ?? false )
-		{
-			return BuyError.InventoryBlocked;
-		}
-
-		if ( Credits < itemData?.Price )
-		{
-			return BuyError.NotEnoughCredits;
-		}
-
-		bool found = false;
-
-		foreach ( ShopItemData shopItemData in Shop.Items )
-		{
-			if ( shopItemData.Name.Equals( itemData.Name ) )
-			{
-				found = true;
-
-				break;
-			}
-		}
-
-		if ( !found )
-		{
-			return BuyError.NotAvailable;
-		}
-
-		if ( itemData.IsLimited && BoughtItemsSet.Contains( itemData.Name ) )
-		{
-			return BuyError.LimitReached;
-		}
-
-		return BuyError.None;
-	}
-
-	public void RequestPurchase( Type itemType )
-	{
-		ShopItemData itemData = ShopItemData.CreateItemData( itemType );
-
-		foreach ( ShopItemData loopItemData in Shop.Items )
-		{
-			if ( loopItemData.Name.Equals( itemData.Name ) )
-			{
-				itemData.CopyFrom( loopItemData );
-			}
-		}
-
-		BuyError buyError = CanBuy( itemData );
-
-		if ( buyError != BuyError.None )
-		{
-			Log.Warning( $"{Client.Name} tried to buy '{itemData.Name}'. (Error: {buyError})" );
-
-			return;
-		}
-
-		Credits -= itemData.Price;
-
-		AddItem( Utils.GetObjectByType<IItem>( itemType ) );
-		BoughtItemsSet.Add( itemData.Name );
-
-		ClientBoughtItem( To.Single( this ), itemData.Name );
-	}
-
 	[TTTEvent.Game.RoundChanged]
 	private static void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
 	{
@@ -131,20 +43,14 @@ public partial class TTTPlayer
 
 	private static void UpdateQuickShop()
 	{
-		if ( QuickShop.Instance?.Enabled ?? false )
-		{
-			QuickShop.Instance.Update();
-		}
+		// if ( QuickShop.Instance?.Enabled ?? false )
+		// {
+		// 	QuickShop.Instance.Update();
+		// }
 	}
 
 	public void ServerUpdateShop()
 	{
-		ClientUpdateShop( To.Single( this ), JsonSerializer.Serialize( Shop ) );
-	}
 
-	[ClientRpc]
-	public static void ClientUpdateShop( string shopJson )
-	{
-		(Local.Pawn as TTTPlayer).Shop = Shop.InitializeFromJSON( shopJson );
 	}
 }

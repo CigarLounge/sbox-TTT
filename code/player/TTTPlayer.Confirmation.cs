@@ -55,7 +55,7 @@ public partial class TTTPlayer
 
 		for ( int i = 0; i < Perks.Count; i++ )
 		{
-			corpse.Perks[i] = (Perks.Get( i ) as IItem).GetItemData().Title;
+			corpse.Perks[i] = Perks.Get( i ).Info.Title;
 		}
 
 		corpse.CopyFrom( this );

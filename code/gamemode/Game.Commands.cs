@@ -30,8 +30,8 @@ public partial class Game
 	[ServerCmd( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( string id = null )
 	{
-		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )	
-			return;	
+		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
+			return;
 
 		TTTPlayer player = null;
 
@@ -78,56 +78,48 @@ public partial class Game
 	}
 
 	[ServerCmd( Name = "ttt_requestitem" )]
-	public static void RequestItem( string itemName )
+	public static void RequestItem( string libraryName )
 	{
-		if ( itemName == null )
-		{
+		if ( string.IsNullOrEmpty( libraryName ) )
 			return;
-		}
 
 		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
 		if ( !player.IsValid() )
 		{
 			return;
 		}
 
-		Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
-		if ( itemType == null || !Utils.HasAttribute<ShopAttribute>( itemType ) )
-		{
+		var itemInfo = Items.ItemInfo.All[libraryName];
+		if ( !itemInfo.Buyable )
 			return;
-		}
 
-		player.RequestPurchase( itemType );
+		if ( itemInfo is Items.CarriableInfo )
+			player.Inventory.Add( Library.Create<Items.Carriable>( libraryName ) );
+		else if ( itemInfo is Items.PerkInfo )
+			player.Perks.Add( Library.Create<Items.Perk>( libraryName ) );
 	}
 
 	[ServerCmd( Name = "ttt_giveitem" )]
-	public static void GiveItem( string itemName )
+	public static void GiveItem( string libraryName )
 	{
 		if ( !ConsoleSystem.Caller.HasPermission( "items" ) )
-		{
 			return;
-		}
 
-		if ( itemName == null )
-		{
+		if ( string.IsNullOrEmpty( libraryName ) )
 			return;
-		}
 
 		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
-
 		if ( !player.IsValid() )
-		{
 			return;
-		}
 
-		Type itemType = Utils.GetTypeByLibraryTitle<IItem>( itemName );
-		if ( itemType == null )
-		{
+		var itemInfo = Items.ItemInfo.All[libraryName];
+		if ( !itemInfo.Buyable )
 			return;
-		}
 
-		player.AddItem( Utils.GetObjectByType<IItem>( itemType ) );
+		if ( itemInfo is Items.CarriableInfo )
+			player.Inventory.Add( Library.Create<Items.Carriable>( libraryName ) );
+		else if ( itemInfo is Items.PerkInfo )
+			player.Perks.Add( Library.Create<Items.Perk>( libraryName ) );
 	}
 
 	[ServerCmd( Name = "ttt_setrole" )]

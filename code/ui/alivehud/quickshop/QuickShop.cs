@@ -8,15 +8,16 @@ using TTT.Events;
 using TTT.Items;
 using TTT.Player;
 
+// MZEGAR REWORK THIS!
 namespace TTT.UI
 {
 	public partial class QuickShop : Panel
 	{
 		public static QuickShop Instance;
 
-		public static ShopItemData _selectedItemData;
+		// public static ShopItemData _selectedItemData;
 
-		private readonly List<QuickShopItem> _items = new();
+		// private readonly List<QuickShopItem> _items = new();
 		private Panel _backgroundPanel;
 		private Panel _quickshopContainer;
 		private Label _creditLabel;
@@ -71,106 +72,106 @@ namespace TTT.UI
 		{
 			_itemPanel?.DeleteChildren( true );
 
-			_selectedItemData = null;
+			// _selectedItemData = null;
 
 			if ( Local.Pawn is not TTTPlayer player )
 			{
 				return;
 			}
 
-			Shop shop = player.Shop;
+			// Shop shop = player.Shop;
 
-			if ( shop == null )
-			{
-				return;
-			}
+			// if ( shop == null )
+			// {
+			// 	return;
+			// }
 
-			foreach ( ShopItemData itemData in shop.Items )
-			{
-				AddItem( itemData );
-			}
+			// foreach ( ShopItemData itemData in shop.Items )
+			// {
+			// 	AddItem( itemData );
+			// }
 		}
 
-		private void AddItem( ShopItemData itemData )
-		{
-			QuickShopItem item = new( _itemPanel );
-			item.SetItem( itemData );
+		// private void AddItem( ShopItemData itemData )
+		// {
+		// 	QuickShopItem item = new( _itemPanel );
+		// 	item.SetItem( itemData );
 
-			item.AddEventListener( "onmouseover", () =>
-			 {
-				 _selectedItemData = itemData;
+		// 	item.AddEventListener( "onmouseover", () =>
+		// 	 {
+		// 		 _selectedItemData = itemData;
 
-				 Update();
-			 } );
+		// 		 Update();
+		// 	 } );
 
-			item.AddEventListener( "onmouseout", () =>
-			 {
-				 _selectedItemData = null;
+		// 	item.AddEventListener( "onmouseout", () =>
+		// 	 {
+		// 		 _selectedItemData = null;
 
-				 Update();
-			 } );
+		// 		 Update();
+		// 	 } );
 
-			item.AddEventListener( "onclick", () =>
-			 {
-				 if ( item.IsDisabled )
-				 {
-					 return;
-				 }
+		// 	item.AddEventListener( "onclick", () =>
+		// 	 {
+		// 		 if ( item.IsDisabled )
+		// 		 {
+		// 			 return;
+		// 		 }
 
-				 if ( _selectedItemData?.IsBuyable( Local.Pawn as TTTPlayer ) ?? false )
-				 {
-					 TTTPlayer.RequestItem( item.ItemData?.Name );
+		// 		 if ( _selectedItemData?.IsBuyable( Local.Pawn as TTTPlayer ) ?? false )
+		// 		 {
+		// 			 TTTPlayer.RequestItem( item.ItemData?.Name );
 
-					 // The item was purchased, let's deselect it from the UI.
-					 _selectedItemData = null;
-				 }
+		// 			 // The item was purchased, let's deselect it from the UI.
+		// 			 _selectedItemData = null;
+		// 		 }
 
-				 Update();
-			 } );
+		// 		 Update();
+		// 	 } );
 
-			_items.Add( item );
-		}
+		// 	_items.Add( item );
+		// }
 
-		public void Update()
-		{
-			_creditLabel.Text = $"You have ${_credits}";
+		// public void Update()
+		// {
+		// 	_creditLabel.Text = $"You have ${_credits}";
 
-			foreach ( QuickShopItem item in _items )
-			{
-				item.Update();
-			}
+		// 	foreach ( QuickShopItem item in _items )
+		// 	{
+		// 		item.Update();
+		// 	}
 
-			_itemDescriptionLabel.SetClass( "fade-in", _selectedItemData != null );
+		// 	_itemDescriptionLabel.SetClass( "fade-in", _selectedItemData != null );
 
-			if ( _selectedItemData != null )
-			{
-				_itemDescriptionLabel.Text = $"The description for the {_selectedItemData?.Name ?? ""} will go here.";
-			}
-		}
+		// 	if ( _selectedItemData != null )
+		// 	{
+		// 		_itemDescriptionLabel.Text = $"The description for the {_selectedItemData?.Name ?? ""} will go here.";
+		// 	}
+		// }
 
-		[Event( TTTEvent.Shop.Change )]
-		public static void OnShopChanged()
-		{
-			QuickShop.Instance?.Reload();
-		}
+		// [Event( TTTEvent.Shop.Change )]
+		// public static void OnShopChanged()
+		// {
+		// 	QuickShop.Instance?.Reload();
+		// }
 
-		[Event( TTTEvent.Player.Role.Select )]
-		public static void OnRoleChanged( TTTPlayer player )
-		{
-			QuickShop quickShop = QuickShop.Instance;
+		// [Event( TTTEvent.Player.Role.Select )]
+		// public static void OnRoleChanged( TTTPlayer player )
+		// {
+		// 	QuickShop quickShop = QuickShop.Instance;
 
-			if ( quickShop != null )
-			{
-				if ( player.Shop == null || !player.Shop.Accessable() )
-				{
-					quickShop.Enabled = false;
-				}
-				else if ( quickShop.Enabled )
-				{
-					quickShop.Update();
-				}
-			}
-		}
+		// 	if ( quickShop != null )
+		// 	{
+		// 		if ( player.Shop == null || !player.Shop.Accessable() )
+		// 		{
+		// 			quickShop.Enabled = false;
+		// 		}
+		// 		else if ( quickShop.Enabled )
+		// 		{
+		// 			quickShop.Update();
+		// 		}
+		// 	}
+		// }
 
 		public override void Tick()
 		{
@@ -187,7 +188,7 @@ namespace TTT.UI
 			{
 				_credits = newCredits;
 
-				Update();
+				// Update();
 			}
 		}
 	}
@@ -199,28 +200,28 @@ namespace TTT.Player
 
 	public partial class TTTPlayer
 	{
-		public void TickPlayerShop()
-		{
-			if ( !IsClient || QuickShop.Instance == null )
-			{
-				return;
-			}
+		// public void TickPlayerShop()
+		// {
+		// 	if ( !IsClient || QuickShop.Instance == null )
+		// 	{
+		// 		return;
+		// 	}
 
-			if ( Input.Released( InputButton.View ) )
-			{
-				QuickShop.Instance.Enabled = false;
-				QuickShop.Instance.Update();
-			}
-			else if ( Input.Pressed( InputButton.View ) && Local.Pawn is TTTPlayer player )
-			{
-				if ( !(player.Shop?.Accessable() ?? false) )
-				{
-					return;
-				}
+		// 	if ( Input.Released( InputButton.View ) )
+		// 	{
+		// 		QuickShop.Instance.Enabled = false;
+		// 		QuickShop.Instance.Update();
+		// 	}
+		// 	else if ( Input.Pressed( InputButton.View ) && Local.Pawn is TTTPlayer player )
+		// 	{
+		// 		if ( !(player.Shop?.Accessable() ?? false) )
+		// 		{
+		// 			return;
+		// 		}
 
-				QuickShop.Instance.Enabled = true;
-				QuickShop.Instance.Update();
-			}
-		}
+		// 		QuickShop.Instance.Enabled = true;
+		// 		QuickShop.Instance.Update();
+		// 	}
+		// }
 	}
 }

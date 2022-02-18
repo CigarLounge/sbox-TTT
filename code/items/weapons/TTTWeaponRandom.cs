@@ -26,7 +26,8 @@ public class TTTWeaponRandom : Entity
 
 		if ( string.IsNullOrEmpty( WeaponsToSpawn ) )
 		{
-			wepTypes = Utils.GetTypesWithAttribute<SWB_Base.WeaponBase, SpawnableAttribute>();
+			// TODO: Kole potentially cache this. TODO MZEGAR check spawnable here.
+			var weaponTypes = Library.GetAll<Carriable>().ToList();
 		}
 		else
 		{
@@ -44,28 +45,28 @@ public class TTTWeaponRandom : Entity
 			return;
 		}
 
-		Type weaponTypeToSpawn = Utils.RNG.FromList( wepTypes );
-		SWB_Base.WeaponBase weapon = Utils.GetObjectByType<SWB_Base.WeaponBase>( weaponTypeToSpawn );
-		weapon.Position = Position;
-		weapon.Rotation = Rotation;
-		weapon.Spawn();
+		// Type weaponTypeToSpawn = Utils.RNG.FromList( wepTypes );
+		// SWB_Base.WeaponBase weapon = Utils.GetObjectByType<SWB_Base.WeaponBase>( weaponTypeToSpawn );
+		// weapon.Position = Position;
+		// weapon.Rotation = Rotation;
+		// weapon.Spawn();
 
-		if ( weapon is not ICarriableItem carriable || carriable.DroppedType == null )
-		{
-			return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
-		}
+		// if ( weapon is not ICarriableItem carriable || carriable.DroppedType == null )
+		// {
+		// 	return; // If the choosen weapon doesn't use ammo we don't need to spawn any.
+		// }
 
-		if ( !carriable.DroppedType.IsSubclassOf( typeof( TTTAmmo ) ) )
-		{
-			Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.GetItemData().Title} is not a descendant of {typeof( TTTAmmo ).Name}." );
-			return;
-		}
+		// if ( !carriable.DroppedType.IsSubclassOf( typeof( TTTAmmo ) ) )
+		// {
+		// 	Log.Error( $"The defined ammo type {carriable.DroppedType.Name} for the weapon {carriable.GetItemData().Title} is not a descendant of {typeof( TTTAmmo ).Name}." );
+		// 	return;
+		// }
 
-		for ( int i = 0; i < AmmoToSpawn; i++ )
-		{
-			TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>( carriable.DroppedType );
-			ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
-			ammo.Spawn();
-		}
+		// for ( int i = 0; i < AmmoToSpawn; i++ )
+		// {
+		// 	TTTAmmo ammo = Utils.GetObjectByType<TTTAmmo>( carriable.DroppedType );
+		// 	ammo.Position = weapon.Position + Vector3.Up * AMMO_DISTANCE_UP;
+		// 	ammo.Spawn();
+		// }
 	}
 }

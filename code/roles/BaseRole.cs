@@ -10,28 +10,12 @@ using TTT.Player;
 
 namespace TTT.Roles;
 
-public abstract class BaseRole
+public abstract class BaseRole : BaseNetworkable
 {
 	public virtual Team Team => Team.None;
 	public virtual string Name => "None";
 	public virtual Color Color => Color.Black;
 	public virtual int DefaultCredits => 0;
-	public static Dictionary<string, Shop> ShopDict { get; internal set; } = new();
-	public virtual bool IsSelectable => true;
-
-	public Shop Shop
-	{
-		get
-		{
-			ShopDict.TryGetValue( Name, out Shop shop );
-
-			return shop;
-		}
-		internal set
-		{
-			ShopDict[Name] = value;
-		}
-	}
 
 	public BaseRole() { }
 
@@ -41,7 +25,6 @@ public abstract class BaseRole
 
 		if ( Host.IsServer )
 		{
-			player.Shop = Shop;
 			player.ServerUpdateShop();
 		}
 
@@ -55,7 +38,7 @@ public abstract class BaseRole
 	// serverside function
 	public virtual void InitShop()
 	{
-		Shop.Load( this );
+		// Shop.Load( this );
 	}
 
 	public virtual void CreateDefaultShop() { }

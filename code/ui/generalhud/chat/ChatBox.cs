@@ -4,6 +4,7 @@ using Sandbox;
 using Sandbox.UI;
 
 using TTT.Player;
+using TTT.Roles;
 
 namespace TTT.UI;
 
@@ -146,11 +147,11 @@ public partial class ChatBox : Panel
 		Close();
 	}
 
-	public void AddEntry( string header, string content, Channel channel, string avatar = null, string teamName = null )
+	public void AddEntry( string header, string content, Channel channel, string avatar = null, Roles.Team team = Roles.Team.None )
 	{
 		_lastChatFocus = 0f;
 
-		if ( channel == Channel.Team && (string.IsNullOrEmpty( teamName ) || TeamFunctions.TryGetTeam( teamName ) == null) )
+		if ( channel == Channel.Team )
 		{
 			Log.Error( "Cannot add chat entry to Team channel without a team name." );
 
@@ -198,7 +199,7 @@ public partial class ChatBox : Panel
 				break;
 
 			case Channel.Team:
-				chatEntry.Header.Style.FontColor = ;
+				chatEntry.Header.Style.FontColor = team.GetColor();
 
 				break;
 		}
@@ -224,7 +225,7 @@ public partial class ChatBox : Panel
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
-	public static void AddChatEntry( string name, string message, Channel channel, string avatar = null, string team = null )
+	public static void AddChatEntry( string name, string message, Channel channel, string avatar = null, Roles.Team team = Roles.Team.None )
 	{
 		Instance?.AddEntry( name, message, channel, avatar, team );
 
@@ -281,9 +282,7 @@ public partial class ChatBox : Panel
 
 		List<Client> clients = new();
 
-		player.Team.Members.ForEach( member => clients.Add( member.Client ) );
-
-		AddChatEntry( To.Multiple( clients ), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.PlayerId}", player.Team.Name );
+		AddChatEntry( player.Team.ToClients(), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.PlayerId}", player.Team );
 	}
 }
 

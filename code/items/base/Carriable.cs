@@ -21,14 +21,11 @@ public enum SlotType
 public partial class CarriableInfo : ItemInfo
 {
 	public Model CachedViewModel { get; set; }
-	public Model CachedWorldModel { get; set; }
 
-	[Property, Category( "Important" )] public bool Buyable { get; set; }
 	[Property, Category( "Important" )] public SlotType Slot { get; set; }
+	[Property, Category( "Important" )] public bool Spawnable { get; set; }
 	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
-	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string WorldModel { get; set; } = "";
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
-	[Property, Category( "Stats" )] public int Price { get; set; }
 
 	protected override void PostLoad()
 	{

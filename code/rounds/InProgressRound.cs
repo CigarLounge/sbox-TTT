@@ -4,12 +4,9 @@ using System.Linq;
 using Sandbox;
 
 using TTT.Events;
-using TTT.Gamemode;
-using TTT.Items;
 using TTT.Map;
 using TTT.Player;
-using TTT.Settings;
-using TTT.Teams;
+using TTT.Roles;
 
 namespace TTT.Rounds;
 
@@ -23,7 +20,7 @@ public partial class InProgressRound : BaseRound
 	[Net]
 	public List<TTTPlayer> Spectators { get; set; }
 
-	private List<TTTLogicButton> _logicButtons;
+	private List<LogicButton> _logicButtons;
 
 	public override int RoundDuration { get => Gamemode.Game.InProgressRoundTime; }
 
@@ -56,7 +53,7 @@ public partial class InProgressRound : BaseRound
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
-		if ( Gamemode.Game.Current.MapHandler.RandomWeaponCount == 0 )
+		if ( MapHandler.RandomWeaponCount == 0 )
 		{
 			foreach ( TTTPlayer player in Players )
 			{
@@ -65,7 +62,7 @@ public partial class InProgressRound : BaseRound
 		}
 
 		// Cache buttons for OnSecond tick.
-		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( TTTLogicButton ) ).Select( x => x as TTTLogicButton ).ToList();
+		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( LogicButton ) ).Select( x => x as LogicButton ).ToList();
 	}
 
 	private static void GiveFixedLoadout( TTTPlayer player )
@@ -75,18 +72,18 @@ public partial class InProgressRound : BaseRound
 
 	protected override void OnTimeUp()
 	{
-		LoadPostRound( TeamFunctions.GetTeam( typeof( InnocentTeam ) ) );
+		LoadPostRound( Team.Innocents );
 
 		base.OnTimeUp();
 	}
 
-	private TTTTeam IsRoundOver()
+	private Team IsRoundOver()
 	{
-		List<TTTTeam> aliveTeams = new();
+		List<Team> aliveTeams = new();
 
 		foreach ( TTTPlayer player in Players )
 		{
-			if ( player.Team != null && !aliveTeams.Contains( player.Team ) )
+			if ( !aliveTeams.Contains( player.Team ) )
 			{
 				aliveTeams.Add( player.Team );
 			}
@@ -94,19 +91,19 @@ public partial class InProgressRound : BaseRound
 
 		if ( aliveTeams.Count == 0 )
 		{
-			return TeamFunctions.GetTeam( typeof( NoneTeam ) );
+			return Team.None;
 		}
 
-		return aliveTeams.Count == 1 ? aliveTeams[0] : null;
+		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
 	}
 
-	public static void LoadPostRound( TTTTeam winningTeam )
+	public static void LoadPostRound( Team winningTeam )
 	{
 		Gamemode.Game.Current.MapSelection.TotalRoundsPlayed++;
 		Gamemode.Game.Current.ForceRoundChange( new PostRound() );
 		RPCs.ClientOpenAndSetPostRoundMenu(
-			winningTeam.Name,
-			winningTeam.Color
+			winningTeam.GetName(),
+			winningTeam.GetColor()
 		);
 	}
 
@@ -114,7 +111,7 @@ public partial class InProgressRound : BaseRound
 	{
 		if ( Host.IsServer )
 		{
-			if ( !ServerSettings.Instance.Debug.PreventWin )
+			if ( !Gamemode.Game.PreventWin )
 			{
 				base.OnSecond();
 			}
@@ -125,7 +122,7 @@ public partial class InProgressRound : BaseRound
 
 			_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
-			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == null )
+			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
 			{
 				Gamemode.Game.Current.ForceRoundChange( new WaitingRound() );
 			}
@@ -134,9 +131,9 @@ public partial class InProgressRound : BaseRound
 
 	private bool ChangeRoundIfOver()
 	{
-		TTTTeam result = IsRoundOver();
+		Team result = IsRoundOver();
 
-		if ( result != null && !Settings.ServerSettings.Instance.Debug.PreventWin )
+		if ( result != Team.None && !Gamemode.Game.PreventWin )
 		{
 			LoadPostRound( result );
 
@@ -146,7 +143,7 @@ public partial class InProgressRound : BaseRound
 		return false;
 	}
 
-	[Event( TTTEvent.Player.Role.Select )]
+	[TTTEvent.Player.Role.Selected]
 	private static void OnPlayerRoleChange( TTTPlayer player )
 	{
 		if ( Host.IsClient )
@@ -158,16 +155,5 @@ public partial class InProgressRound : BaseRound
 		{
 			inProgressRound.ChangeRoundIfOver();
 		}
-	}
-
-	[Event( TTTEvent.Settings.Change )]
-	private static void OnChangeSettings()
-	{
-		if ( Gamemode.Game.Current.Round is not InProgressRound inProgressRound )
-		{
-			return;
-		}
-
-		inProgressRound.ChangeRoundIfOver();
 	}
 }

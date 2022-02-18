@@ -50,7 +50,7 @@ public class InventorySelection : Panel
 		// https://github.com/Facepunch/sbox-issues/issues/1324
 		foreach ( var item in player.CurrentPlayer.Inventory.List )
 		{
-			if ( item is IItem carriable )
+			if ( item is Carriable carriable )
 			{
 				if ( !_entries.ContainsKey( carriable ) && item.Owner != null )
 				{
@@ -74,12 +74,14 @@ public class InventorySelection : Panel
 			slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
 
-			slot.SetClass( "active", slot.Carriable.GetItemData().Title == activeItem?.GetItemData().Title );
-			slot.SetClass( "opacity-heavy", slot.Carriable.GetItemData().Title == activeItem?.GetItemData().Title );
+			slot.SetClass( "active", slot.Carriable.Info.Title == activeItem?.Title );
+			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItem?.Title );
 
-			if ( slot.Carriable.GetItemData().SlotType != SlotType.Melee && slot.Carriable is SWB_Base.WeaponBase weapon )
+			if ( slot.Carriable.Info.Slot != SlotType.Melee )
 			{
-				slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
+				// TODO: MZEGAR Fix this.
+				slot.UpdateAmmo( FormatAmmo( slot.Carriable, (int)AmmoType.Magnum ) );
+				// slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
 			}
 		}
 
@@ -88,16 +90,16 @@ public class InventorySelection : Panel
 			InventorySlot s1 = p1 as InventorySlot;
 			InventorySlot s2 = p2 as InventorySlot;
 
-			int result = s1.Carriable.GetItemData().SlotType.CompareTo( s2.Carriable.GetItemData().SlotType );
+			int result = s1.Carriable.Info.Slot.CompareTo( s2.Carriable.Info.Slot );
 			return result != 0
 				? result
-				: string.Compare( s1.Carriable.GetItemData().Title, s2.Carriable.GetItemData().Title, StringComparison.Ordinal );
+				: string.Compare( s1.Carriable.Info.Title, s2.Carriable.Info.Title, StringComparison.Ordinal );
 		} );
 
 		this.Enabled( Children.Any() );
 	}
 
-	private InventorySlot CarriableItemPickup( CarriableInfo carriable )
+	private InventorySlot CarriableItemPickup( Carriable carriable )
 	{
 		var inventorySlot = new InventorySlot( this, carriable );
 		AddChild( inventorySlot );
@@ -123,26 +125,26 @@ public class InventorySelection : Panel
 
 		List<Panel> childrenList = Children.ToList();
 
-		IItem activeCarriable = Local.Pawn.ActiveChild as IItem;
+		var activeCarriable = Local.Pawn.ActiveChild as Carriable;
 
 		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
 		if ( keyboardIndexPressed != -1 )
 		{
-			List<IItem> weaponsOfSlotTypeSelected = new();
+			List<Carriable> weaponsOfSlotTypeSelected = new();
 			int activeCarriableOfSlotTypeIndex = -1;
 
 			for ( int i = 0; i < childrenList.Count; ++i )
 			{
 				if ( childrenList[i] is InventorySlot slot )
 				{
-					if ( (int)slot.Carriable.GetItemData().SlotType == keyboardIndexPressed )
+					if ( (int)slot.Carriable.Info.Slot == keyboardIndexPressed )
 					{
 						// Using the keyboard index the user pressed, find all carriables that
 						// have the same slot type as the index.
 						// Ex. "3" pressed, find all carriables with slot type "3".
 						weaponsOfSlotTypeSelected.Add( slot.Carriable );
 
-						if ( slot.Carriable.GetItemData().Title == activeCarriable?.GetItemData().Title )
+						if ( slot.Carriable.Info.Title == activeCarriable?.Info.Title )
 						{
 							// If the current active carriable has the same slot type as
 							// the keyboard index the user pressed
@@ -170,7 +172,7 @@ public class InventorySelection : Panel
 		if ( mouseWheelIndex != 0 )
 		{
 			int activeCarriableIndex = childrenList.FindIndex( ( p ) =>
-				 p is InventorySlot slot && slot.Carriable.GetItemData().Title == activeCarriable?.GetItemData().Title );
+				 p is InventorySlot slot && slot.Carriable.Info.Title == activeCarriable?.Info.Title );
 
 			int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
 			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
@@ -201,41 +203,38 @@ public class InventorySelection : Panel
 		return -1;
 	}
 
-	private static string FormatAmmo( SWB_Base.WeaponBase weapon, int ammoCount )
+	private static string FormatAmmo( Carriable weapon, int ammoCount )
 	{
-		if ( weapon.Primary.InfiniteAmmo != 0 )
-		{
-			return $"{weapon.Primary.AmmoType} + ∞";
-		}
-
-		return $"{weapon.Primary.Ammo} + {ammoCount}";
+		return $"{""} + {ammoCount}";
 	}
 
 	private class InventorySlot : Panel
 	{
-		public CarriableInfo Carriable { get; init; }
+		public Carriable Carriable { get; init; }
 		public Label SlotLabel;
 		private readonly Label _ammoLabel;
 
-		public InventorySlot( Panel parent, CarriableInfo carriable ) : base( parent )
+		public InventorySlot( Panel parent, Carriable carriable ) : base( parent )
 		{
 			Parent = parent;
 			Carriable = carriable;
 
 			AddClass( "background-color-primary" );
 
-			SlotLabel = Add.Label( ((int)carriable.Slot).ToString() );
+			SlotLabel = Add.Label( ((int)carriable.Info.Slot).ToString() );
 			SlotLabel.AddClass( "slot-label" );
 
-			Add.Label( carriable.Title );
+			Add.Label( carriable.Info.Title );
 
 			_ammoLabel = Add.Label();
 
 			if ( Local.Pawn is TTTPlayer player )
 			{
-				if ( carriable.Slot != SlotType.Melee && carriable is CarriableInfo weapon )
+				if ( carriable.Info.Slot != SlotType.Melee && carriable is Carriable weapon )
 				{
-					_ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Primary.AmmoType ) );
+					// TODO: Matt DO IT NOW!.
+					// _ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Info.Ammo ) );
+					_ammoLabel.Text = "...";
 					_ammoLabel.AddClass( "ammo-label" );
 				}
 			}

@@ -20,6 +20,6 @@ public partial class TTTPlayer
 	[ClientRpc]
 	public void ClientTookDamage( Vector3 position, float damage )
 	{
-		SWB_Base.DamageIndicator.Current?.OnHit( position );
+		DamageIndicator.Instance?.OnHit( position );
 	}
 }

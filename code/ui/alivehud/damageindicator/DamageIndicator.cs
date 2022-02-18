@@ -7,8 +7,11 @@ namespace TTT.UI;
 
 public partial class DamageIndicator : Panel
 {
+	public static DamageIndicator Instance;
+
 	public DamageIndicator()
 	{
+		Instance = this;
 		StyleSheet.Load( "/ui/alivehud/damageindicator/DamageIndicator.scss" );
 	}
 

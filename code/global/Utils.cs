@@ -12,8 +12,6 @@ namespace TTT.Globals;
 
 public static partial class Utils
 {
-	public readonly static Random RNG = new();
-
 	public static List<Client> GetClients( Func<TTTPlayer, bool> predicate = null )
 	{
 		List<Client> clients = new();

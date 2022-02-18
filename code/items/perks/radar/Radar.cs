@@ -6,7 +6,6 @@ using Sandbox;
 
 using TTT.Player;
 using TTT.Roles;
-using TTT.Teams;
 using TTT.UI;
 
 namespace TTT.Items;
@@ -64,13 +63,14 @@ public partial class Radar : Perk
 				pointData.Add( new RadarPointData
 				{
 					Position = player.Position + _radarPointOffset,
-					Color = player.Team.Name == owner.Team.Name ? owner.Role.Color : _defaultRadarColor
+					Color = player.Team == owner.Team ? owner.Role.Color : _defaultRadarColor
 				} );
 			}
 
-			if ( owner.Team is not TraitorTeam )
+			if ( owner.Team != Team.Traitors )
 			{
-				List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
+				// TODO: MZEGAR Change from HealthstationEntity => DecoyEntity.
+				List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( HealthStationEntity ) )?.Select( x => x.Position ).ToList();
 
 				foreach ( Vector3 decoyPosition in decoyPositions )
 				{

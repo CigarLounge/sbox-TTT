@@ -23,30 +23,17 @@ public partial class ForceWin : Entity
 	}
 
 	[Input]
-	public void InnocentsWin() => ForceEndRound( TeamFunctions.GetTeam( typeof( InnocentTeam ) ) );
+	public void InnocentsWin() => ForceEndRound( Team.Innocents );
 
 	[Input]
-	public void TraitorsWin() => ForceEndRound( TeamFunctions.GetTeam( typeof( TraitorTeam ) ) );
+	public void TraitorsWin() => ForceEndRound( Team.Traitors );
 
 	[Input]
-	public void ForceWin( Entity activator )
+	public void ActivateForceWin( Entity activator )
 	{
-		Team winningTeam;
-
 		if ( UseActivatorsTeam && activator is TTTPlayer player )
 		{
-			winningTeam = player.Team;
-		}
-		else
-		{
-			winningTeam = TeamFunctions.TryGetTeam( Team );
-		}
-
-		if ( winningTeam != Team.None )
-		{
-			ForceEndRound( winningTeam );
-
-			return;
+			ForceEndRound( player.Team );
 		}
 
 		Log.Warning( $"ttt_force_win: Failed to grant win to team: {Team}, invalid or nonexistant team name." );

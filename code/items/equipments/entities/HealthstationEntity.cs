@@ -13,8 +13,7 @@ public partial class HealthStationEntity : Prop, IEntityHint
 	[Net]
 	public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
-	public override string WorldModel => "models/health_station/health_station.vmdl";
-
+	private const string _worldModel = "models/health_station/health_station.vmdl";
 	private RealTimeUntil NextHeal = 0;
 
 	private const int HEALAMOUNT = 1;
@@ -25,7 +24,7 @@ public partial class HealthStationEntity : Prop, IEntityHint
 	{
 		base.Spawn();
 
-		SetModel( WorldModel );
+		SetModel( _worldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 

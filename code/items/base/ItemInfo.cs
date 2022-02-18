@@ -12,6 +12,8 @@ public abstract partial class ItemInfo : Asset
 	public static Dictionary<string, ItemInfo> All { get; set; } = new();
 	[Property, Category( "Important" )] public string LibraryName { get; set; }
 	[Property, Category( "Important" )] public string Title { get; set; }
+	[Property, Category( "Important" )] public bool Buyable { get; set; }
+	[Property, Category( "Stats" )] public int Price { get; set; }
 	[Property, Category( "UI" ), ResourceType( "png" )] public string Icon { get; set; } = "";
 	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string WorldModel { get; set; } = "";
 

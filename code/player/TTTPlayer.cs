@@ -1,8 +1,5 @@
-using System.Collections.Generic;
 using Sandbox;
 
-using TTT.Events;
-using TTT.Items;
 using TTT.Player.Camera;
 using TTT.Roles;
 
@@ -154,7 +151,7 @@ public partial class TTTPlayer : Sandbox.Player
 			{
 				PlayerCorpse.IsIdentified = true;
 
-				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.Name, Team.GetName(), PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
+				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
 			}
 		}
 	}
@@ -190,7 +187,7 @@ public partial class TTTPlayer : Sandbox.Player
 		TickPerkSimulate();
 		TickPlayerUse();
 		TickPlayerDropCarriable();
-		TickPlayerShop();
+		// TickPlayerShop();
 		TickLogicButtonActivate();
 
 		PawnController controller = GetActiveController();

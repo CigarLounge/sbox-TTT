@@ -14,6 +14,7 @@ public interface IGrabbable
 	void SecondaryAction();
 }
 
+// TODO: Kole will do this. Make it transparent to the player! What a great idea!
 [Hammer.Skip]
 [Library( "ttt_equipment_hands", Title = "Hands" )]
 public partial class Hands : Carriable
@@ -171,10 +172,10 @@ public partial class Hands : Carriable
 	{
 		if ( !IsServer )
 			return;
-		
-		if ( IsPushingEntity )	
+
+		if ( IsPushingEntity )
 			return;
-		
+
 		if ( IsHoldingEntity )
 		{
 			anim.SetParam( "holdtype", 4 );

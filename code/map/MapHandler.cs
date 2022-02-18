@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Sandbox;
 
 using TTT.Globals;
@@ -12,6 +12,16 @@ namespace TTT.Map;
 public partial class MapHandler
 {
 	public MapSettings MapSettings { get; private set; }
+	public static int RandomWeaponCount = 0;
+
+	[Event.Entity.PostSpawn]
+	public static void EntityPostSpawn()
+	{
+		if ( Host.IsClient )
+			return;
+
+		RandomWeaponCount = Entity.All.OfType<TTTWeaponRandom>().Count();
+	}
 
 	public void CleanUp()
 	{

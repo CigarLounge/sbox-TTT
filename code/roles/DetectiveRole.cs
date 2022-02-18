@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 using TTT.Items;
 using TTT.Player;
-using TTT.Roles;
-using TTT.Teams;
 
 namespace TTT.Roles;
 
@@ -47,16 +45,12 @@ public class DetectiveRole : BaseRole
 	// serverside function
 	public override void CreateDefaultShop()
 	{
-		Shop.AddItemsForRole( this );
-
 		base.CreateDefaultShop();
 	}
 
 	// serverside function
 	public override void UpdateDefaultShop( List<Type> newItemsList )
 	{
-		Shop.AddNewItems( newItemsList );
-
 		base.UpdateDefaultShop( newItemsList );
 	}
 }

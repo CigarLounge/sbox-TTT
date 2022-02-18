@@ -1,5 +1,3 @@
-using TTT.Teams;
-
 namespace TTT.Roles;
 
 public class InnocentRole : BaseRole
@@ -11,8 +9,6 @@ public class InnocentRole : BaseRole
 	// serverside function
 	public override void CreateDefaultShop()
 	{
-		Shop.Enabled = false;
-
 		base.CreateDefaultShop();
 	}
 }

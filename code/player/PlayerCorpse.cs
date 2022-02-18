@@ -62,11 +62,12 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 
 		foreach ( Entity child in player.Children )
 		{
-			if ( child is ThrownKnife k )
-			{
-				attachedEnts.Add( k );
-				continue;
-			}
+			// TODO: MZEGAR revert this back.
+			// if ( child is ThrownKnife k )
+			// {
+			// 	attachedEnts.Add( k );
+			// 	continue;
+			// }
 
 			if ( child is BaseClothing e )
 			{
@@ -185,7 +186,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 						DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 					}
 
-					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.GetName(), GetConfirmationData(), KillerWeapon.Title, Perks );
+					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role, GetConfirmationData(), KillerWeapon.Title, Perks );
 				}
 			}
 

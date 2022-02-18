@@ -10,9 +10,9 @@ public enum FeedEntryType
 	Activator,
 	Innocents,
 	Traitors,
-	Other
 }
 
+// TODO: Kole potentially change how this is handled. The FeedEntryType.
 [Library( "ttt_feed_entry", Description = "Add text entry to the game feed when input fired." )]
 public partial class FeedEntry : Entity
 {
@@ -57,20 +57,6 @@ public partial class FeedEntry : Entity
 
 			case FeedEntryType.Traitors:
 				RPCs.ClientDisplayMessage( Team.Traitors.ToClients(), Message, Color );
-
-				break;
-
-			case FeedEntryType.Other:
-				TTTTeam team = TeamFunctions.TryGetTeam( ReceiverTeamOverride );
-
-				if ( team != null )
-				{
-					RPCs.ClientDisplayMessage( To.Multiple( team.GetClients() ), Message, Color );
-				}
-				else
-				{
-					Log.Warning( $"Feed entry receiver value `{Receiver}` is incorrect and will not work." );
-				}
 
 				break;
 		}

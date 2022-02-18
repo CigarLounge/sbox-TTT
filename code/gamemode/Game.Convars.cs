@@ -19,6 +19,11 @@ public partial class Game
 	public static int RoundLimit { get; set; } = 10;
 	#endregion
 
+	#region Debug
+	[ServerVar( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
+	public static bool PreventWin { get; set; } = false;
+	#endregion
+
 
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]

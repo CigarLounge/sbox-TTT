@@ -3,9 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Globals;
 using TTT.Player;
-using TTT.Teams;
 
 namespace TTT.Roles;
 
@@ -18,9 +16,9 @@ public class TraitorRole : BaseRole
 
 	public override void OnSelect( TTTPlayer player )
 	{
-		if ( Host.IsServer && player.Team == DefaultTeam )
+		if ( Host.IsServer && player.Team == Team.None )
 		{
-			foreach ( TTTPlayer otherPlayer in player.Team.Members )
+			foreach ( TTTPlayer otherPlayer in player.Team.GetAll() )
 			{
 				if ( otherPlayer == player )
 				{
@@ -52,16 +50,12 @@ public class TraitorRole : BaseRole
 	// serverside function
 	public override void CreateDefaultShop()
 	{
-		Shop.AddItemsForRole( this );
-
 		base.CreateDefaultShop();
 	}
 
 	// serverside function
 	public override void UpdateDefaultShop( List<Type> newItemsList )
 	{
-		Shop.AddNewItems( newItemsList );
-
 		base.UpdateDefaultShop( newItemsList );
 	}
 }

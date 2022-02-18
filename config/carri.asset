@@ -1,0 +1,25 @@
+//
+// TTT.Items.CarriableInfo
+//
+@BaseClass = carri : ""
+[
+	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
+	[
+		0 : "Primary"
+		1 : "Secondary"
+		2 : "Melee"
+		3 : "Offensive Equipment"
+		4 : "Utility Equipment"
+		5 : "Grenade"
+	]
+	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
+	viewmodel(resource:vmdl) { group = "Models" } : "View Model" : "" : ""
+	deploytime(float) { group = "Stats" } : "Deploy Time" : "0.6" : ""
+	libraryname(string) { group = "Important" } : "Library Name" :  : ""
+	title(string) { group = "Important" } : "Title" :  : ""
+	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
+	price(integer) { group = "Stats" } : "Price" : 0 : ""
+	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
+	worldmodel(resource:vmdl) { group = "Models" } : "World Model" : "" : ""
+]
+

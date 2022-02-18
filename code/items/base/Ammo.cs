@@ -30,6 +30,7 @@ public partial class AmmoInfo : ItemInfo
 	}
 }
 
+// TODO: Kole add hammer property for different world models.
 [Hammer.Skip]
 public abstract partial class Ammo : Prop, IEntityHint
 {
@@ -186,6 +187,8 @@ public abstract partial class Ammo : Prop, IEntityHint
 // 		}
 // 	}
 // }
+
+
 
 
 

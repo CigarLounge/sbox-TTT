@@ -1,0 +1,40 @@
+//
+// TTT.Items.WeaponInfo
+//
+@BaseClass = weap : ""
+[
+	firesound(string) { group = "Sounds" } : "Fire Sound" : "" : ""
+	dryfiresound(string) { group = "Sounds" } : "Dry Fire Sound" : "" : ""
+	firemode(choices) { group = "Important" } : "Fire Mode" : 0 : "" =
+	[
+		0 : "Automatic"
+		1 : "Semi"
+		2 : "Burst"
+	]
+	clipsize(integer) { group = "Stats" } : "Clip Size" : 30 : ""
+	primaryrate(float) { group = "Stats" } : "Primary Rate" : 0 : ""
+	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : 0 : ""
+	reloadtime(float) { group = "Stats" } : "Reload Time" : "2" : ""
+	reserveammo(integer) { group = "Stats" } : "Reserve Ammo" : 0 : ""
+	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" : "particles/pistol_ejectbrass.vpcf" : ""
+	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" : "particles/swb/muzzle/flash_medium.vpcf" : ""
+	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
+	[
+		0 : "Primary"
+		1 : "Secondary"
+		2 : "Melee"
+		3 : "Offensive Equipment"
+		4 : "Utility Equipment"
+		5 : "Grenade"
+	]
+	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
+	viewmodel(resource:vmdl) { group = "Models" } : "View Model" : "" : ""
+	deploytime(float) { group = "Stats" } : "Deploy Time" : "0.6" : ""
+	libraryname(string) { group = "Important" } : "Library Name" :  : ""
+	title(string) { group = "Important" } : "Title" :  : ""
+	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
+	price(integer) { group = "Stats" } : "Price" : 0 : ""
+	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
+	worldmodel(resource:vmdl) { group = "Models" } : "World Model" : "" : ""
+]
+

@@ -79,7 +79,7 @@ public class PreRound : BaseRound
 		for ( int i = 0; i < traitorCount; i++ )
 		{
 			List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
-			int randomId = Utils.RNG.Next( unassignedPlayers.Count );
+			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
 
 			if ( unassignedPlayers[randomId].Role is NoneRole )
 			{
@@ -92,7 +92,7 @@ public class PreRound : BaseRound
 		for ( int i = 0; i < detectiveCount; i++ )
 		{
 			List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
-			int randomId = Utils.RNG.Next( unassignedPlayers.Count );
+			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
 
 			if ( unassignedPlayers[randomId].Role is NoneRole )
 			{
@@ -147,7 +147,7 @@ public class PreRound : BaseRound
 
 	public override void OnPlayerSpawn( TTTPlayer player )
 	{
-		player.AddItem( new Hands() );
+		player.Inventory.Add( new Hands() );
 		base.OnPlayerSpawn( player );
 	}
 }

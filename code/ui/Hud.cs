@@ -102,7 +102,7 @@ public partial class Hud : HudEntity<RootPanel>
 				AddChild<Crosshair>(),
 				AddChild<BreathIndicator>(),
 				AddChild<QuickShop>(),
-				AddChild<SWB_Base.DamageIndicator>()
+				AddChild<DamageIndicator>()
 			};
 		}
 

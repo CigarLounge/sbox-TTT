@@ -29,7 +29,7 @@ public partial class TTTPlayer
 
 		foreach ( Entity entity in All )
 		{
-			if ( entity is TTTLogicButton logicButton && (logicButton.CheckValue.Equals( Role.Name.ToLower() ) || logicButton.CheckValue.Equals( Team.Name.ToLower() )) )
+			if ( entity is LogicButton logicButton && logicButton.CheckTeam == Role.Team )
 			{
 				logicButtonDataList.Add( logicButton.PackageData() );
 			}
@@ -107,10 +107,11 @@ public partial class TTTPlayer
 			return;
 		}
 
-		IEnumerable<TTTLogicButton> logicButtons = All.Where( x => x is TTTLogicButton ).Select( x => x as TTTLogicButton );
-		IEnumerable<TTTLogicButton> applicableButtons = logicButtons.Where( x => x.CheckValue.Equals( Teams.TeamFunctions.GetTeam( typeof( Teams.TraitorTeam ) ) ) || x.CheckValue.Equals( Utils.GetLibraryTitle( typeof( TraitorRole ) ) ) );
+		// TODO: MZEGAR Return this back. 
+		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
+		// IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckValue.Equals( Teams.TeamFunctions.GetTeam( typeof( Teams.TraitorTeam ) ) ) || x.CheckValue.Equals( Utils.GetLibraryTitle( typeof( TraitorRole ) ) ) );
 
-		player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
+		// player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
 	}
 
 	// Handle client telling server to activate a specific button
@@ -126,7 +127,7 @@ public partial class TTTPlayer
 
 		Entity entity = FindByIndex( networkIdent );
 
-		if ( entity == null || entity is not TTTLogicButton button )
+		if ( entity == null || entity is not LogicButton button )
 		{
 			Log.Warning( $"Server received call for null logic button with network id `{networkIdent}`." );
 
