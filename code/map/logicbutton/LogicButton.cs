@@ -2,23 +2,15 @@ using Sandbox;
 
 using TTT.Globals;
 using TTT.Player;
-using TTT.Teams;
+using TTT.Roles;
 
 namespace TTT.Map;
 
 [Library( "ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate." )]
-public partial class TTTLogicButton : Entity
+public partial class LogicButton : Entity
 {
 	[Property( "Check Value", "Note that teams are often plural. For example, check the `Team` for `Traitors`, but check the `Role` for `Traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team." )]
-	public string CheckValue
-	{
-		get => _checkValue;
-		set
-		{
-			_checkValue = value?.ToLower();
-		}
-	}
-	private string _checkValue = Utils.GetLibraryTitle( typeof( TraitorTeam ) );
+	public Team CheckTeam { get; set; } = Team.Traitors;
 
 	[Property( "Description", "On screen tooltip shown on button" )]
 	[Net]
@@ -54,7 +46,7 @@ public partial class TTTLogicButton : Entity
 
 	protected Output OnPressed { get; set; }
 
-	public TTTLogicButton()
+	public LogicButton()
 	{
 		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
