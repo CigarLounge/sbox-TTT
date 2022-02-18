@@ -53,7 +53,7 @@ public static class TeamExtensions
 
 	public static To ToClients( this Team team )
 	{
-		return To.Multiple( Client.All.Where( x => (x.Pawn as TTTPlayer).Role.Team == team ) );
+		return To.Multiple( Client.All.Where( x => (x.Pawn as TTTPlayer).Role.Info.Team == team ) );
 	}
 }
 

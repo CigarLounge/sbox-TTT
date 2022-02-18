@@ -1,27 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Sandbox;
 
 using TTT.Events;
-using TTT.Globals;
 using TTT.Player;
 
 namespace TTT.Roles;
 
-public abstract class BaseRole : BaseNetworkable
+[Library( "role" ), AutoGenerate]
+public partial class RoleInfo : gamemode.Info
 {
-	public virtual Team Team => Team.None;
-	public virtual string Name => "None";
-	public virtual Color Color => Color.Black;
-	public virtual int DefaultCredits => 0;
+	[Property] public Team Team { get; set; } = Team.None;
+	[Property] public Color Color { get; set; }
+	[Property] public int DefaultCredits { get; set; }
+}
 
-	public BaseRole() { }
+[Hammer.Skip]
+public abstract class BaseRole : LibraryClass
+{
+	public RoleInfo Info { get; set; }
+
+	public BaseRole()
+	{
+		Info = gamemode.Info.All[ClassInfo?.Name] as RoleInfo;
+	}
 
 	public virtual void OnSelect( TTTPlayer player )
 	{
-		player.Credits = Math.Max( DefaultCredits, player.Credits );
+		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 
 		if ( Host.IsServer )
 		{

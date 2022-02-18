@@ -63,7 +63,7 @@ public partial class Radar : Perk
 				pointData.Add( new RadarPointData
 				{
 					Position = player.Position + _radarPointOffset,
-					Color = player.Team == owner.Team ? owner.Role.Color : _defaultRadarColor
+					Color = player.Team == owner.Team ? owner.Role.Info.Color : _defaultRadarColor
 				} );
 			}
 

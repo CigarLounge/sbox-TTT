@@ -36,6 +36,7 @@ public partial class TTTPlayer : Sandbox.Player
 	public TTTPlayer()
 	{
 		Inventory = new Inventory( this );
+		Role = new NoneRole();
 	}
 
 	public override void Spawn()
@@ -151,7 +152,7 @@ public partial class TTTPlayer : Sandbox.Player
 			{
 				PlayerCorpse.IsIdentified = true;
 
-				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
+				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.ClassInfo.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
 			}
 		}
 	}

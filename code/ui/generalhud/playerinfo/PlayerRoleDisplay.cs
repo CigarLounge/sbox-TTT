@@ -45,7 +45,7 @@ public class PlayerRoleDisplay : Panel
 			return;
 		}
 
-		_roleLabel.Text = player.Role.Name;
-		Style.BackgroundColor = player.Role.Color;
+		_roleLabel.Text = player.Role.Info.Name;
+		Style.BackgroundColor = player.Role.Info.Color;
 	}
 }

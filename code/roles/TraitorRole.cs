@@ -7,13 +7,9 @@ using TTT.Player;
 
 namespace TTT.Roles;
 
+[Library( "ttt_role_traitor" )]
 public class TraitorRole : BaseRole
 {
-	public override Team Team => Team.Traitors;
-	public override string Name => "Traitor";
-	public override Color Color => Color.FromBytes( 223, 41, 53 );
-	public override int DefaultCredits => 200;
-
 	public override void OnSelect( TTTPlayer player )
 	{
 		if ( Host.IsServer && player.Team == Team.None )

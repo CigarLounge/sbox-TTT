@@ -6,19 +6,15 @@ using TTT.Player;
 
 namespace TTT.Roles;
 
+[Library( "ttt_role_detective" )]
 public class DetectiveRole : BaseRole
 {
-	public override Team Team => Team.Innocents;
-	public override string Name => "Detective";
-	public override Color Color => Color.FromBytes( 25, 102, 255 );
-	public override int DefaultCredits => 100;
-
 	public override void OnSelect( TTTPlayer player )
 	{
-		if ( !Host.IsServer || player.Team != Team )
+		if ( !Host.IsServer || player.Team != Info.Team )
 			return;
 
-		if ( player.Team == Team )
+		if ( player.Team == Info.Team )
 		{
 			foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
 			{
@@ -35,7 +31,7 @@ public class DetectiveRole : BaseRole
 
 	public override void OnKilled( TTTPlayer killer )
 	{
-		if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role.Team == Team.Traitors )
+		if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role.Info.Team == Team.Traitors )
 		{
 			killer.Credits += 100;
 			RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );

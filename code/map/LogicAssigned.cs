@@ -35,7 +35,7 @@ public partial class LogicAssigned : Entity
 	{
 		if ( activator is TTTPlayer player && Gamemode.Game.Current.Round is InProgressRound )
 		{
-			if ( player.Role.Team == CheckTeam )
+			if ( player.Role.Info.Team == CheckTeam )
 			{
 				OnPass.Fire( this );
 

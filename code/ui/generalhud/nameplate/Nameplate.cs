@@ -98,8 +98,8 @@ public class Nameplate : EntityHintPanel
 		_nameLabel.Text = Player.Client?.Name ?? "";
 		if ( Player.Role is not NoneRole && Player.Role is not InnocentRole )
 		{
-			_roleLabel.Text = Player.Role.Name;
-			_roleLabel.Style.FontColor = Player.Role.Color;
+			_roleLabel.Text = Player.Role.Info.Name;
+			_roleLabel.Style.FontColor = Player.Role.Info.Color;
 		}
 	}
 }

@@ -82,8 +82,8 @@ public partial class ChatBox : Panel
 
 		if ( isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting )
 		{
-			_inputTeamIndicator.Style.BackgroundColor = player.Role.Color;
-			_inputPanel.Style.BorderColor = player.Role.Color;
+			_inputTeamIndicator.Style.BackgroundColor = player.Role.Info.Color;
+			_inputPanel.Style.BorderColor = player.Role.Info.Color;
 		}
 		else
 		{

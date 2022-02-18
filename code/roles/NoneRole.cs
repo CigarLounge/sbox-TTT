@@ -1,9 +1,10 @@
+using Sandbox;
+
 namespace TTT.Roles;
 
+[Library( "ttt_role_none" )]
 public class NoneRole : BaseRole
 {
-	public override Color Color => Color.Transparent;
-
 	// serverside function
 	public override void CreateDefaultShop()
 	{

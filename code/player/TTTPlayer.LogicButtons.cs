@@ -29,7 +29,7 @@ public partial class TTTPlayer
 
 		foreach ( Entity entity in All )
 		{
-			if ( entity is LogicButton logicButton && logicButton.CheckTeam == Role.Team )
+			if ( entity is LogicButton logicButton && logicButton.CheckTeam == Role.Info.Team )
 			{
 				logicButtonDataList.Add( logicButton.PackageData() );
 			}

@@ -186,7 +186,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 						DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 					}
 
-					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role, GetConfirmationData(), KillerWeapon.Title, Perks );
+					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.ClassInfo.Name, GetConfirmationData(), KillerWeapon.Title, Perks );
 				}
 			}
 

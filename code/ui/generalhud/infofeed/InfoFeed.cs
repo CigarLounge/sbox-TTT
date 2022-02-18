@@ -26,7 +26,7 @@ public partial class InfoFeed : Panel
 		TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
 
 		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
-		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
+		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Info.Color;
 
 		e.AddLabel( method, "method" );
 
@@ -53,7 +53,7 @@ public partial class InfoFeed : Panel
 		TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
 
 		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
-		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
+		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Info.Color;
 
 		e.AddLabel( method, "method" );
 

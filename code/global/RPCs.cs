@@ -36,25 +36,25 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientSetRole( TTTPlayer player, BaseRole role )
+	public static void ClientSetRole( TTTPlayer player, string roleName )
 	{
 		if ( !player.IsValid() )
 		{
 			return;
 		}
 
-		player.SetRole( role );
+		player.SetRole( roleName );
 		Scoreboard.Instance?.UpdateClient( player.Client );
 	}
 
 	// Someone refactor this mess.
 	[ClientRpc]
-	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, BaseRole role, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
 	{
 		if ( !deadPlayer.IsValid() )
 			return;
 
-		deadPlayer.SetRole( role );
+		deadPlayer.SetRole( roleName );
 		deadPlayer.IsConfirmed = true;
 		deadPlayer.CorpseConfirmer = confirmPlayer;
 
@@ -87,9 +87,9 @@ public partial class RPCs
 		InfoFeed.Current?.AddEntry(
 			confirmClient,
 			playerCorpse.DeadPlayerClientData.Name,
-			deadPlayer.Role.Color,
+			deadPlayer.Role.Info.Color,
 			"found the body of",
-			$"({deadPlayer.Role.Name})"
+			$"({deadPlayer.Role.Info.Name})"
 		);
 
 		if ( confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0 )

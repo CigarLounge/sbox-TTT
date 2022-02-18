@@ -54,7 +54,7 @@ public class VoiceChatEntry : Panel
 
 			if ( player.IsTeamVoiceChatEnabled && player.Role is not NoneRole )
 			{
-				Style.BackgroundColor = player.Role.Color;
+				Style.BackgroundColor = player.Role.Info.Color;
 			}
 		}
 	}

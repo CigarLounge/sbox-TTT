@@ -9,15 +9,21 @@ namespace TTT.Player;
 
 public partial class TTTPlayer
 {
-	[Net, Local]
-	public BaseRole Role { get; set; } = new TTT.Roles.NoneRole();
+	public BaseRole Role { get; set; }
 
-	public Team Team => Role.Team;
+	public Team Team => Role.Info.Team;
 
 	public void SetRole( BaseRole role )
 	{
 		Role?.OnDeselect( this );
 		Role = role;
+		Role.OnSelect( this );
+	}
+
+	public void SetRole( string libraryName )
+	{
+		Role?.OnDeselect( this );
+		Role = Library.Create<BaseRole>( libraryName );
 		Role.OnSelect( this );
 	}
 
@@ -27,7 +33,7 @@ public partial class TTTPlayer
 	/// <param name="to">optional - The target</param>
 	public void SendClientRole( To? to = null )
 	{
-		RPCs.ClientSetRole( to ?? To.Single( this ), this, Role );
+		RPCs.ClientSetRole( to ?? To.Single( this ), this, Role.ClassInfo.Name );
 
 		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
 			SendLogicButtonsToClient();
