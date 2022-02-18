@@ -22,7 +22,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 	public TTTPlayer DeadPlayer { get; set; }
 	public List<Particles> Ropes = new();
 	public List<PhysicsJoint> RopeSprings = new();
-	public string KillerWeapon { get; set; }
+	public CarriableInfo KillerWeapon { get; set; }
 	public bool IsIdentified { get; set; } = false;
 	public bool WasHeadshot { get; set; } = false;
 	public DamageFlags DamageFlag { get; set; } = DamageFlags.Generic;
@@ -187,7 +187,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 						DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 					}
 
-					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.Name, GetConfirmationData(), KillerWeapon, Perks );
+					RPCs.ClientConfirmPlayer( confirmingPlayer, this, DeadPlayer, DeadPlayerClientData.Name, DeadPlayerClientData.PlayerId, DeadPlayer.Role.Name, DeadPlayer.Team.GetName(), GetConfirmationData(), KillerWeapon.Title, Perks );
 				}
 			}
 

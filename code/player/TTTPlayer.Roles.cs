@@ -30,33 +30,16 @@ public partial class TTTPlayer
 
 	private BaseRole _role;
 
-	public TTTTeam Team
+	public Team Team => Role.Team;
+
+	public void SetRole( BaseRole role, Team team = Team.None )
 	{
-		get
-		{
-			if ( _team == null )
-			{
-				_team = TeamFunctions.GetTeam( typeof( NoneTeam ) );
-			}
-
-			return _team;
-		}
-		private set
-		{
-			_team = value;
-		}
-	}
-
-	private TTTTeam _team;
-
-	public void SetRole( BaseRole role, TTTTeam team = null )
-	{
-		TTTTeam oldTeam = Team;
+		Team oldTeam = Team;
 
 		Role?.OnDeselect( this );
 
 		Role = role;
-		Team = team ?? Role.DefaultTeam;
+		Team newTeam = Team;
 
 		if ( oldTeam != Team )
 		{
@@ -76,17 +59,13 @@ public partial class TTTPlayer
 		RPCs.ClientSetRole( to ?? To.Single( this ), this, Role.Name );
 
 		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
-		{
 			SendLogicButtonsToClient();
-		}
 	}
 
 	public void SyncMIA( TTTPlayer player = null )
 	{
 		if ( Gamemode.Game.Current.Round is not InProgressRound )
-		{
 			return;
-		}
 
 		if ( player == null )
 		{
@@ -94,7 +73,7 @@ public partial class TTTPlayer
 
 			foreach ( Client client in Client.All )
 			{
-				if ( (client.Pawn as TTTPlayer).Team.GetType() == typeof( TraitorTeam ) )
+				if ( (client.Pawn as TTTPlayer).Team == Team.Traitors )
 				{
 					traitors.Add( client );
 				}

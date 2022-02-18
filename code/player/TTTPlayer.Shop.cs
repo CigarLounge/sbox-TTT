@@ -27,7 +27,7 @@ public partial class TTTPlayer
 
 			_shop = value;
 
-			Event.Run( TTTEvent.Shop.Change );
+			Event.Run( TTTEvent.Shop.Changed );
 		}
 	}
 	private Shop _shop;
@@ -103,7 +103,7 @@ public partial class TTTPlayer
 		ClientBoughtItem( To.Single( this ), itemData.Name );
 	}
 
-	[Event( TTTEvent.Game.RoundChange )]
+	[TTTEvent.Game.RoundChanged]
 	private static void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
 	{
 		if ( newRound is PreRound preRound )

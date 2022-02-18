@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Sandbox;
 
 using TTT.Events;
-using TTT.Teams;
+using TTT.Roles;
 
 namespace TTT.Player;
 
@@ -99,7 +99,7 @@ public partial class TTTPlayer
 
 	private static bool CanUseTeamVoiceChat( TTTPlayer player )
 	{
-		return player.LifeState == LifeState.Alive && (player.Team.GetType() == typeof( TraitorTeam ));
+		return player.LifeState == LifeState.Alive && player.Team == Team.Traitors;
 	}
 
 	[ClientRpc]
@@ -121,7 +121,7 @@ public partial class TTTPlayer
 		ConsoleSystem.Run( (toggle ? "+" : "-") + "iv_voice" );
 	}
 
-	[Event( TTTEvent.Player.Role.Select )]
+	[TTTEvent.Player.Role.Selected]
 	private static void OnSelectRole( TTTPlayer player )
 	{
 		if ( !Host.IsServer )

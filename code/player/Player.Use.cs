@@ -92,6 +92,6 @@ public partial class TTTPlayer
 		if ( IsUseDisabled() )
 			return;
 
-		base.UseFail();
+		// do nothing
 	}
 }

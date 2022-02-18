@@ -12,6 +12,7 @@ public enum Team : byte
 	Traitors
 }
 
+// TODO: @matt you decide what to do with this
 public static class TeamExtensions
 {
 	public static Color GetColor( this Team team )

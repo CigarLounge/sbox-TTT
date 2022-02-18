@@ -23,13 +23,13 @@ public partial class TTTPlayer : Sandbox.Player
 
 	public new Inventory Inventory
 	{
-		get => (Inventory)base.Inventory;
+		get => base.Inventory as Inventory;
 		private init => base.Inventory = value;
 	}
 
 	public new DefaultWalkController Controller
 	{
-		get => (DefaultWalkController)base.Controller;
+		get => base.Controller as DefaultWalkController;
 		private set => base.Controller = value;
 	}
 
@@ -69,8 +69,6 @@ public partial class TTTPlayer : Sandbox.Player
 			}
 
 			Client.SetValue( "forcedspectator", IsForcedSpectator );
-
-			Event.Run( TTTEvent.Player.InitialSpawn, Client );
 
 			ClientInitialSpawn();
 		}
@@ -158,7 +156,7 @@ public partial class TTTPlayer : Sandbox.Player
 			{
 				PlayerCorpse.IsIdentified = true;
 
-				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.Name, Team.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks );
+				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.Name, Team.GetName(), PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon, PlayerCorpse.Perks );
 			}
 		}
 	}
@@ -201,22 +199,13 @@ public partial class TTTPlayer : Sandbox.Player
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 
-	protected override void UseFail()
-	{
-		// Do nothing. By default this plays a sound that we don't want.
-	}
-
 	public override void StartTouch( Entity other )
 	{
 		if ( IsClient )
-		{
-			return;
-		}
+			return;	
 
 		if ( other is PickupTrigger )
-		{
-			StartTouch( other.Parent );
-		}
+			StartTouch( other.Parent );	
 	}
 
 	/// <summary>

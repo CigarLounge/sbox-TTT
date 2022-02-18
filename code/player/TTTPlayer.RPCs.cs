@@ -22,11 +22,4 @@ public partial class TTTPlayer
 	{
 		SWB_Base.DamageIndicator.Current?.OnHit( position );
 	}
-
-
-	[ClientRpc]
-	public void ClientInitialSpawn()
-	{
-		Event.Run( TTTEvent.Player.InitialSpawn, Client );
-	}
 }

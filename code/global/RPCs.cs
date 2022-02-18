@@ -3,7 +3,6 @@ using Sandbox;
 using TTT.Events;
 using TTT.Player;
 using TTT.Roles;
-using TTT.Teams;
 using TTT.UI;
 
 namespace TTT.Globals;
