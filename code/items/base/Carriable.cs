@@ -67,7 +67,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 			return;
 		}
 
-		Info = ItemInfo.All[ClassInfo.Name] as CarriableInfo;
+		Info = ItemInfo.Collection[ClassInfo.Name] as CarriableInfo;
 		SetModel( Info.WorldModel );
 	}
 
@@ -76,7 +76,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		base.ClientSpawn();
 
 		if ( !string.IsNullOrEmpty( ClassInfo.Name ) )
-			Info = CarriableInfo.All[ClassInfo?.Name] as CarriableInfo;
+			Info = CarriableInfo.Collection[ClassInfo?.Name] as CarriableInfo;
 	}
 
 	public override void Simulate( Client cl )

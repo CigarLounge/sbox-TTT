@@ -89,7 +89,7 @@ public partial class Game
 			return;
 		}
 
-		var itemInfo = Items.ItemInfo.All[libraryName] as Items.ItemInfo;
+		var itemInfo = Items.ItemInfo.Collection[libraryName] as Items.ItemInfo;
 		if ( !itemInfo.Buyable )
 			return;
 
@@ -112,7 +112,7 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Items.ItemInfo.All[libraryName] as Items.ItemInfo;
+		var itemInfo = Items.ItemInfo.Collection[libraryName] as Items.ItemInfo;
 		if ( !itemInfo.Buyable )
 			return;
 

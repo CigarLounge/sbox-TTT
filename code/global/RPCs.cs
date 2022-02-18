@@ -61,7 +61,7 @@ public partial class RPCs
 		if ( playerCorpse.IsValid() )
 		{
 			playerCorpse.DeadPlayer = deadPlayer;
-			playerCorpse.KillerWeapon = Items.ItemInfo.All[killerWeapon] as Items.CarriableInfo;
+			playerCorpse.KillerWeapon = Items.ItemInfo.Collection[killerWeapon] as Items.CarriableInfo;
 			playerCorpse.Perks = perks;
 
 			playerCorpse.DeadPlayerClientData = new ClientData()

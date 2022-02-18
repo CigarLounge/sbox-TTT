@@ -1,11 +1,10 @@
 ﻿using Sandbox;
-using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace TTT.Items;
 
 [Hammer.Skip]
-public abstract partial class ItemInfo : gamemode.Info
+public abstract partial class ItemInfo : AssetInfo
 {
 	public Model CachedWorldModel { get; set; }
 	[Property, Category( "Important" )] public bool Buyable { get; set; }

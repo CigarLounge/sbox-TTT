@@ -47,7 +47,7 @@ public partial class TTTPlayer
 			Rotation = Rotation
 		};
 
-		corpse.KillerWeapon = CarriableInfo.All[LastDamageWeapon.ClassInfo.Title] as CarriableInfo;
+		corpse.KillerWeapon = CarriableInfo.Collection[LastDamageWeapon.ClassInfo.Title] as CarriableInfo;
 		corpse.WasHeadshot = LastDamageWasHeadshot;
 		corpse.Distance = LastDistanceToAttacker;
 		corpse.DamageFlag = _lastDamageInfo.Flags;

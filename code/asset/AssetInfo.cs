@@ -1,13 +1,12 @@
-﻿using Sandbox;
-using System.ComponentModel;
+using Sandbox;
 using System.Collections.Generic;
 
-namespace TTT.gamemode;
+namespace TTT;
 
 [Hammer.Skip]
-public partial class Info : Asset
+public partial class AssetInfo : Asset
 {
-	public static Dictionary<string, Info> All { get; set; } = new();
+	public static Dictionary<string, AssetInfo> Collection { get; set; } = new();
 	[Property] public string LibraryName { get; set; }
 	[Property] public string Title { get; set; } = "";
 
@@ -23,6 +22,6 @@ public partial class Info : Asset
 		if ( attribute == null )
 			return;
 
-		All[LibraryName] = this;
+		Collection[LibraryName] = this;
 	}
 }

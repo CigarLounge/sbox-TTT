@@ -18,6 +18,6 @@ public abstract class Perk : BaseNetworkable
 
 	public Perk()
 	{
-		Info = ItemInfo.All[ClassInfo.Name] as PerkInfo;
+		Info = ItemInfo.Collection[ClassInfo.Name] as PerkInfo;
 	}
 }

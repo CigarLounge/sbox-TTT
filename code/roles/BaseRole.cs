@@ -9,7 +9,7 @@ using TTT.Player;
 namespace TTT.Roles;
 
 [Library( "role" ), AutoGenerate]
-public partial class RoleInfo : gamemode.Info
+public partial class RoleInfo : AssetInfo
 {
 	[Property] public Team Team { get; set; } = Team.None;
 	[Property] public Color Color { get; set; }
@@ -23,7 +23,7 @@ public abstract class BaseRole : LibraryClass
 
 	public BaseRole()
 	{
-		Info = gamemode.Info.All[ClassInfo?.Name] as RoleInfo;
+		Info = AssetInfo.Collection[ClassInfo?.Name] as RoleInfo;
 	}
 
 	public virtual void OnSelect( TTTPlayer player )
