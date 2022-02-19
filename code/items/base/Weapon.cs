@@ -25,7 +25,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; }
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; }
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
-	[Property, Category( "Stats" )] public int ReserveAmmo { get; set; }
+	[Property, Category( "Stats" )] public AmmoType AmmoType { get; set; }
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; } = "particles/pistol_ejectbrass.vpcf";
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; }
 }
@@ -37,9 +37,6 @@ public abstract partial class Weapon : Carriable
 
 	[Net, Predicted]
 	public bool IsReloading { get; protected set; }
-
-	[Net, Predicted]
-	public int ReserveAmmo { get; protected set; }
 
 	[Net, Predicted]
 	public TimeSince TimeSincePrimaryAttack { get; protected set; }
@@ -63,7 +60,6 @@ public abstract partial class Weapon : Carriable
 		base.Spawn();
 
 		AmmoClip = Info.ClipSize;
-		ReserveAmmo = Info.ReserveAmmo;
 	}
 
 	public override void Simulate( Client owner )
@@ -164,7 +160,7 @@ public abstract partial class Weapon : Carriable
 
 	public virtual bool CanReload()
 	{
-		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && ReserveAmmo == 0) )
+		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0) )
 			return false;
 
 		if ( !Owner.IsValid() || !Input.Down( InputButton.Reload ) )
@@ -187,7 +183,6 @@ public abstract partial class Weapon : Carriable
 
 	public virtual void OnReloadFinish()
 	{
-		Log.Debug();
 		IsReloading = false;
 		AmmoClip += TakeAmmo( Info.ClipSize - AmmoClip );
 	}
@@ -290,8 +285,8 @@ public abstract partial class Weapon : Carriable
 		if ( UnlimitedAmmo )
 			return ammo;
 
-		int available = Math.Min( ReserveAmmo, ammo );
-		ReserveAmmo -= available;
+		int available = Math.Min( Owner.AmmoCount( Info.AmmoType ), ammo );
+		Owner.TakeAmmo( Info.AmmoType, available );
 
 		return available;
 	}

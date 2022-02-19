@@ -45,7 +45,7 @@ public class InventorySelection : Panel
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324
-		foreach ( var item in player.CurrentPlayer.Inventory.List )
+		foreach ( var item in player.CurrentPlayer.Children )
 		{
 			if ( item is Carriable carriable )
 			{
@@ -60,7 +60,7 @@ public class InventorySelection : Panel
 		var activeItemTitle = activeItem != null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
-			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable ) )
+			if ( !player.CurrentPlayer.Children.Contains( slot.Carriable ) )
 			{
 				_entries.Remove( slot.Carriable );
 				slot?.Delete();
@@ -75,11 +75,9 @@ public class InventorySelection : Panel
 			slot.SetClass( "active", slot.Carriable.Info.Title == activeItemTitle );
 			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItemTitle );
 
-			if ( slot.Carriable.Info.Slot != SlotType.Melee )
+			if ( slot.Carriable is Weapon weapon )
 			{
-				// TODO: MZEGAR Fix this.
-				slot.UpdateAmmo( FormatAmmo( slot.Carriable, (int)AmmoType.Magnum ) );
-				// slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Primary.AmmoType ) ) );
+				slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Info.AmmoType ) ) );
 			}
 		}
 
@@ -156,13 +154,13 @@ public class InventorySelection : Panel
 			{
 				// The user isn't holding an active carriable, or is holding a weapon that has a different
 				// hold type than the one selected using the keyboard. We can just select the first weapon.
-				input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault() as Entity;
+				input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault();
 			}
 			else
 			{
 				// The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
 				// Find the next possible weapon within the hold types.
-				input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count )] as Entity;
+				input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count )];
 			}
 		}
 
@@ -173,7 +171,7 @@ public class InventorySelection : Panel
 				 p is InventorySlot slot && slot.Carriable.Info.Title == activeCarriable?.Info.Title );
 
 			int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
-			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable as Entity;
+			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
 		}
 	}
 
@@ -201,9 +199,9 @@ public class InventorySelection : Panel
 		return -1;
 	}
 
-	private static string FormatAmmo( Carriable weapon, int ammoCount )
+	private static string FormatAmmo( Weapon weapon, int ammoCount )
 	{
-		return $"{""} + {ammoCount}";
+		return $"{weapon.AmmoClip} + {ammoCount}";
 	}
 
 	private class InventorySlot : Panel
@@ -228,11 +226,9 @@ public class InventorySelection : Panel
 
 			if ( Local.Pawn is Player player )
 			{
-				if ( carriable.Info.Slot != SlotType.Melee && carriable is Carriable weapon )
+				if ( Carriable is Weapon weapon )
 				{
-					// TODO: Matt DO IT NOW!.
-					// _ammoLabel.Text = FormatAmmo( weapon, player.AmmoCount( weapon.Info.Ammo ) );
-					_ammoLabel.Text = "...";
+					_ammoLabel.Text = FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Info.AmmoType ) );
 					_ammoLabel.AddClass( "ammo-label" );
 				}
 			}

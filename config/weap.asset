@@ -18,7 +18,15 @@
 	primaryrate(float) { group = "Stats" } : "Primary Rate" : 0 : ""
 	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : 0 : ""
 	reloadtime(float) { group = "Stats" } : "Reload Time" : "2" : ""
-	reserveammo(integer) { group = "Stats" } : "Reserve Ammo" : 0 : ""
+	ammotype(choices) { group = "Stats" } : "Ammo Type" : 0 : "" =
+	[
+		0 : "None"
+		1 : "Pistol SMG"
+		2 : "Shotgun"
+		3 : "Sniper"
+		4 : "Magnum"
+		5 : "Rifle"
+	]
 	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" : "particles/pistol_ejectbrass.vpcf" : ""
 	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" :  : ""
 	slot(choices) { group = "Important" } : "Slot" : 0 : "" =

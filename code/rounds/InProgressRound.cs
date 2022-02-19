@@ -72,6 +72,10 @@ public partial class InProgressRound : BaseRound
 	{
 		player.Inventory.Add( new Bekas(), true );
 		player.Inventory.Add( new P250() );
+		player.GiveAmmo( AmmoType.PistolSMG, 5000 );
+		player.GiveAmmo( AmmoType.Shotgun, 5000 );
+		player.GiveAmmo( AmmoType.Rifle, 5000 );
+		player.GiveAmmo( AmmoType.Magnum, 5000 );
 		Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
 	}
 

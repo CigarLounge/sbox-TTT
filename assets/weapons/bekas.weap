@@ -26,5 +26,6 @@
 		worldmodel = resource:"models/weapons/w_bekas.vmdl"
 		libraryname = "ttt_weapon_bekas"
 		title = "Bekas-M"
+		ammotype = "2"
 	}
 }

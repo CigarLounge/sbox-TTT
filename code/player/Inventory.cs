@@ -28,20 +28,6 @@ public partial class Inventory : BaseInventory
 		if ( base.Add( entity, Active == null ) ) { }
 	}
 
-	public Carriable Swap( Carriable carriable )
-	{
-		// TODO: return null if the player can carry more 
-		// than 1 weapons with the same slot
-
-		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
-		bool wasActive = ent?.IsActiveChild() ?? false;
-
-		Drop( ent );
-		Add( carriable, wasActive );
-
-		return ent as Carriable;
-	}
-
 	public bool HasFreeSlot( SlotType slotType )
 	{
 		return SlotCapacity[(int)slotType] > 0;
@@ -62,7 +48,6 @@ public partial class Inventory : BaseInventory
 		}
 	}
 
-	// What?
 	public void DropEntity( Entity self, Type entity )
 	{
 		List.Remove( self );
