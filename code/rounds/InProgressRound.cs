@@ -28,9 +28,17 @@ public partial class InProgressRound : BaseRound
 		ChangeRoundIfOver();
 	}
 
-	public override void OnPlayerJoin( Player player )
+	public override void OnPlayerJoin( Player playerJoined )
 	{
-		Spectators.AddIfDoesNotContain( player );
+		Spectators.AddIfDoesNotContain( playerJoined );
+
+		foreach ( Player player in Utils.GetPlayers() )
+		{
+			if ( player.IsConfirmed )
+			{
+				player.SendClientRole( To.Single( playerJoined ) );
+			}
+		}
 	}
 
 	public override void OnPlayerLeave( Player player )

@@ -23,7 +23,7 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// Sends the role + team and all connected additional data like logic buttons of the current TTTPlayer to the given target or - if no target was provided - the player itself
+	/// Sends the role + team and all connected additional data like logic buttons of the current Player to the given target or - if no target was provided - the player itself
 	/// </summary>
 	/// <param name="to">optional - The target</param>
 	public void SendClientRole( To? to = null )

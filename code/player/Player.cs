@@ -36,31 +36,10 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		base.Spawn();
-
-		Role = new NoneRole();
 		Components.GetOrCreate<Perks>();
-
-		bool isPostRound = Game.Current.Round is PostRound;
-		if ( isPostRound || Game.Current.Round is InProgressRound )
-		{
-			MakeSpectator( false );
-		}
-
 		Respawn();
-
-		using ( Prediction.Off() )
-		{
-			foreach ( Player player in Utils.GetPlayers() )
-			{
-				if ( isPostRound || player.IsConfirmed )
-				{
-					player.SendClientRole( To.Single( this ) );
-				}
-			}
-		}
 	}
 
-	// Let's clean this up at some point, it's poorly written.
 	public override void Respawn()
 	{
 		base.Respawn();
@@ -68,22 +47,15 @@ public partial class Player : Sandbox.Player
 		SetModel( "models/citizen/citizen.vmdl" );
 
 		Animator = new StandardPlayerAnimator();
-
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		EnableDrawing = true;
-
 		Credits = 0;
-
 		SetRole( new NoneRole() );
-
 		IsMissingInAction = false;
-
-		using ( Prediction.Off() )
-		{
-			RPCs.ClientOnPlayerSpawned( this );
-			SendClientRole();
-		}
+		DeleteItems();
+		SendClientRole();
+		RPCs.ClientOnPlayerSpawned( this );
 
 		if ( !IsForcedSpectator )
 		{
@@ -96,7 +68,6 @@ public partial class Player : Sandbox.Player
 			MakeSpectator( false );
 		}
 
-		DeleteItems();
 		Game.Current.Round.OnPlayerSpawn( this );
 	}
 
@@ -109,24 +80,19 @@ public partial class Player : Sandbox.Player
 
 		Inventory.DropAll();
 		DeleteItems();
-
 		IsMissingInAction = true;
 
-		using ( Prediction.Off() )
+		RPCs.ClientOnPlayerDied( this );
+		Role?.OnKilled( _lastDamageInfo.Attacker as Player );
+
+		if ( Game.Current.Round is InProgressRound )
 		{
-			RPCs.ClientOnPlayerDied( this );
-			Role?.OnKilled( _lastDamageInfo.Attacker as Player );
-
-			if ( Game.Current.Round is InProgressRound )
-			{
-				SyncMIA();
-			}
-			else if ( Game.Current.Round is PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
-			{
-				PlayerCorpse.IsIdentified = true;
-
-				RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.ClassInfo.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
-			}
+			SyncMIA();
+		}
+		else if ( Game.Current.Round is PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
+		{
+			PlayerCorpse.IsIdentified = true;
+			RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.ClassInfo.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
 		}
 	}
 
@@ -146,7 +112,6 @@ public partial class Player : Sandbox.Player
 		if ( LifeState != LifeState.Alive )
 		{
 			TickPlayerChangeSpectateCamera();
-
 			return;
 		}
 
@@ -161,7 +126,6 @@ public partial class Player : Sandbox.Player
 		TickPerkSimulate();
 		TickPlayerUse();
 		TickPlayerDropCarriable();
-		// TickPlayerShop();
 		TickLogicButtonActivate();
 
 		PawnController controller = GetActiveController();

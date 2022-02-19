@@ -22,6 +22,17 @@ public class PostRound : BaseRound
 		player.MakeSpectator();
 	}
 
+	public override void OnPlayerJoin( Player playerJoined )
+	{
+		foreach ( Player player in Utils.GetPlayers() )
+		{
+			if ( player.IsConfirmed )
+			{
+				player.SendClientRole( To.Single( playerJoined ) );
+			}
+		}
+	}
+
 	protected override void OnStart()
 	{
 		if ( Host.IsServer )
