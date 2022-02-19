@@ -17,7 +17,6 @@ public partial class Player
 	}
 
 	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
-
 	public bool IsSpectator => Camera is IObservationCamera;
 
 

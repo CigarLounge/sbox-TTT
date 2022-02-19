@@ -41,7 +41,10 @@ public partial class Player : Sandbox.Player
 		Components.GetOrCreate<Perks>();
 
 		bool isPostRound = Game.Current.Round is PostRound;
-		IsForcedSpectator = isPostRound || Game.Current.Round is InProgressRound;
+		if ( isPostRound || Game.Current.Round is InProgressRound )
+		{
+			MakeSpectator( false );
+		}
 
 		Respawn();
 
@@ -95,20 +98,6 @@ public partial class Player : Sandbox.Player
 
 		DeleteItems();
 		Game.Current.Round.OnPlayerSpawn( this );
-
-		switch ( Game.Current.Round )
-		{
-			// hacky
-			// TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
-			// TODO spawn player as spectator instantly
-			case PreRound:
-				IsConfirmed = false;
-				CorpseConfirmer = null;
-
-				Client.SetValue( "forcedspectator", false );
-
-				break;
-		}
 	}
 
 	// Let's clean this up at some point, it's poorly written.
