@@ -20,8 +20,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Called everytime the round changes.
-		/// <para>Event is passed the <strong><see cref="TTT.Rounds.BaseRound"/></strong> instance of the old round.</para>
-		/// <para>Event is passed the <strong><see cref="TTT.Rounds.BaseRound"/></strong> instance of the new round.</para>
+		/// <para>Event is passed the <strong><see cref="TTT.BaseRound"/></strong> instance of the old round.</para>
+		/// <para>Event is passed the <strong><see cref="TTT.BaseRound"/></strong> instance of the new round.</para>
 		/// </summary>
 		public class RoundChangedAttribute : EventAttribute
 		{
