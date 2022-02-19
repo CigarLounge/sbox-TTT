@@ -94,7 +94,7 @@
 ]
 
 //
-// TTT.TTTAmmoRandom
+// TTT.AmmoRandom
 //
 @PointClass base(BaseProperties_matt_ttt) = ttt_ammo_random : ""
 [
@@ -111,7 +111,7 @@
 ]
 
 //
-// TTT.TTTWeaponRandom
+// TTT.WeaponRandom
 //
 @PointClass base(BaseProperties_matt_ttt) 
 metadata
