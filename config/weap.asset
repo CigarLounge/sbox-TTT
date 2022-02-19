@@ -14,6 +14,7 @@
 	bulletsperfire(integer) { group = "Stats" } : "Bullets Per Fire" : 1 : ""
 	clipsize(integer) { group = "Stats" } : "Clip Size" : 30 : ""
 	damage(float) { group = "Stats" } : "Damage" : 20 : ""
+	spread(float) { group = "Stats" } : "Spread" : "0" : ""
 	primaryrate(float) { group = "Stats" } : "Primary Rate" : 0 : ""
 	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : 0 : ""
 	reloadtime(float) { group = "Stats" } : "Reload Time" : "2" : ""

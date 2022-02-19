@@ -1,0 +1,28 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = "p250_fire-1"
+		dryfiresound = "dryfire_pistol-1"
+		firemode = "1"
+		bulletsperfire = 1
+		clipsize = 30
+		damage = 20.0
+		primaryrate = 0.0
+		secondaryrate = 0.0
+		reloadtime = 2.0
+		reserveammo = 0
+		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
+		muzzleflashparticle = resource:"particles/pistol_muzzleflash.vpcf"
+		slot = "1"
+		spawnable = true
+		viewmodel = resource:"models/weapons/v_p250.vmdl"
+		deploytime = 0.6
+		buyable = false
+		price = 0
+		icon = ""
+		worldmodel = resource:"models/weapons/w_p250.vmdl"
+		libraryname = "ttt_weapon_p250"
+		title = "P250"
+	}
+}

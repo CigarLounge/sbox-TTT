@@ -21,6 +21,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public int BulletsPerFire { get; set; } = 1;
 	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
 	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
+	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; }
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; }
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
@@ -147,7 +148,7 @@ public abstract partial class Weapon : Carriable
 		ShootEffects();
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
 		{
-			ShootBullet( 0.05f, 1.5f, Info.Damage, 3.0f );
+			ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f );
 		}
 	}
 

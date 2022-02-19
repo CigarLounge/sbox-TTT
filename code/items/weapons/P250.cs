@@ -3,8 +3,8 @@
 namespace TTT;
 
 [Hammer.EditorModel( "weapons/rust_pistol/rust_pistol.vmdl" )]
-[Library( "ttt_pistol", Title = "Pistol", Spawnable = true )]
-public partial class Pistol : Weapon
+[Library( "ttt_weapon_p250", Title = "P250", Spawnable = true )]
+public partial class P250 : Weapon
 {
 	public override void SimulateAnimator( PawnAnimator anim )
 	{

@@ -70,6 +70,7 @@ public partial class InProgressRound : BaseRound
 
 	private static void GiveFixedLoadout( Player player )
 	{
+		player.Inventory.Add( new P250(), true );
 		Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
 	}
 
