@@ -4,9 +4,9 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class TTTMenu : Panel
+public class SettingsMenu : Panel
 {
-	public static TTTMenu Instance;
+	public static SettingsMenu Instance;
 
 	public Panel ActivePage { get; private set; }
 
@@ -23,7 +23,7 @@ public class TTTMenu : Panel
 	private Button BackButton { get; set; }
 	private Button HomeButton { get; set; }
 
-	public TTTMenu()
+	public SettingsMenu()
 	{
 		Instance = this;
 

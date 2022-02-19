@@ -10,12 +10,12 @@ public partial class HomePage : Panel
 
 	public void GoToKeyBindingsPage()
 	{
-		TTTMenu.Instance.AddPage( new KeyBindingsPage() );
+		SettingsMenu.Instance.AddPage( new KeyBindingsPage() );
 	}
 
 	public void GoToComponentTesting()
 	{
-		TTTMenu.Instance.AddPage( new ComponentTestingPage() );
+		SettingsMenu.Instance.AddPage( new ComponentTestingPage() );
 	}
 
 	public override void Tick()

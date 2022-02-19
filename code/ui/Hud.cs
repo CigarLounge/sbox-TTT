@@ -65,7 +65,7 @@ public partial class Hud : HudEntity<RootPanel>
 			AddChild<FullScreenHintMenu>();
 			AddChild<PostRoundMenu>();
 			AddChild<Scoreboard>();
-			AddChild<TTTMenu>();
+			AddChild<SettingsMenu>();
 		}
 
 		public void AddChildToAliveHud( Panel panel )
