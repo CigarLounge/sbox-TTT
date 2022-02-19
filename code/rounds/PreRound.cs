@@ -22,10 +22,10 @@ public class PreRound : BaseRound
 
 	protected override void OnStart()
 	{
+		Game.Current.MapHandler.CleanUp();
+
 		if ( !Host.IsServer )
 			return;
-
-		Game.Current.MapHandler.CleanUp();
 
 		foreach ( Client client in Client.All )
 		{
