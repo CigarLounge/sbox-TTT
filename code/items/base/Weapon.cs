@@ -2,7 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-namespace TTT.Items;
+
+namespace TTT;
 
 public enum FireMode
 {
@@ -17,13 +18,15 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Sounds" )] public string FireSound { get; set; } = "";
 	[Property, Category( "Sounds" )] public string DryFireSound { get; set; } = "";
 	[Property, Category( "Important" )] public FireMode FireMode { get; set; }
+	[Property, Category( "Stats" )] public int BulletsPerFire { get; set; } = 1;
 	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
+	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; }
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; }
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
 	[Property, Category( "Stats" )] public int ReserveAmmo { get; set; }
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; } = "particles/pistol_ejectbrass.vpcf";
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; } = "particles/swb/muzzle/flash_medium.vpcf";
+	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; }
 }
 
 public abstract partial class Weapon : Carriable
@@ -134,7 +137,19 @@ public abstract partial class Weapon : Carriable
 		return TimeSinceSecondaryAttack > (1 / rate);
 	}
 
-	public void AttackPrimary() { }
+	public void AttackPrimary()
+	{
+		TimeSincePrimaryAttack = 0;
+		TimeSinceSecondaryAttack = 0;
+
+		Rand.SetSeed( Time.Tick );
+
+		ShootEffects();
+		for ( int i = 0; i < Info.BulletsPerFire; i++ )
+		{
+			ShootBullet( 0.05f, 1.5f, Info.Damage, 3.0f );
+		}
+	}
 
 	public void AttackSecondary() { }
 
@@ -170,7 +185,7 @@ public abstract partial class Weapon : Carriable
 	[ClientRpc]
 	protected virtual void ShootEffects()
 	{
-		// Particles.Create( "particles/impact.generic.smokering.vpcf", EffectEntity, "muzzle" );
+		Particles.Create( Info.EjectParticle, EffectEntity, "muzzle" );
 
 		if ( IsLocalPawn )
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
@@ -185,11 +200,62 @@ public abstract partial class Weapon : Carriable
 		ViewModelEntity?.SetAnimBool( "reload", true );
 	}
 
+	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
+	{
+		var forward = Owner.EyeRotation.Forward;
+		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
+		forward = forward.Normal;
+
+		foreach ( var trace in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 20000f, bulletSize ) )
+		{
+			trace.Surface.DoBulletImpact( trace );
+
+			var fullEndPos = trace.EndPos + trace.Direction * bulletSize;
+			/*
+			if ( !string.IsNullOrEmpty( TracerEffect ) )
+			{
+				var tracer = Particles.Create( TracerEffect, GetEffectEntity(), MuzzleAttachment );
+				tracer?.SetPosition( 1, fullEndPos );
+				tracer?.SetPosition( 2, trace.Distance );
+			}
+
+			if ( !string.IsNullOrEmpty( ImpactEffect ) )
+			{
+				var impact = Particles.Create( ImpactEffect, fullEndPos );
+				impact?.SetForward( 0, trace.Normal );
+			}
+			*/
+			if ( !IsServer )
+				continue;
+
+			//WeaponUtil.PlayFlybySounds( Owner, trace.Entity, trace.StartPos, trace.EndPos, bulletSize * 2f, bulletSize * 50f, FlybySounds );
+
+			if ( trace.Entity.IsValid() )
+			{
+				using ( Prediction.Off() )
+				{
+					var damageInfo = new DamageInfo()
+						.WithPosition( trace.EndPos )
+						.WithFlag( DamageFlags.Bullet )
+						.WithForce( forward * 100f * force )
+						.UsingTraceResult( trace )
+						.WithAttacker( Owner )
+						.WithWeapon( this );
+
+					damageInfo.Damage = Info.Damage;
+					//GetDamageFalloff( trace.Distance, damage, trace.StartPos, trace.EndPos );
+
+					trace.Entity.TakeDamage( damageInfo );
+				}
+			}
+		}
+	}
+
 	/// <summary>
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple
 	/// hits, like if you're going through layers or ricocet'ing or something.
 	/// </summary>
-	public virtual IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
+	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
 		bool InWater = Physics.TestPointContents( start, CollisionLayer.Water );
 
@@ -218,5 +284,28 @@ public abstract partial class Weapon : Carriable
 		ReserveAmmo -= available;
 
 		return available;
+	}
+
+	public static float GetDamageFalloff( float distance, float damage, float start, float end )
+	{
+		if ( end > 0f )
+		{
+			if ( start > 0f )
+			{
+				if ( distance < start )
+				{
+					return damage;
+				}
+
+				var falloffRange = end - start;
+				var difference = (distance - start);
+
+				return Math.Max( damage - (damage / falloffRange) * difference, 0f );
+			}
+
+			return Math.Max( damage - (damage / end) * distance, 0f );
+		}
+
+		return damage;
 	}
 }
