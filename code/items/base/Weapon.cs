@@ -187,6 +187,7 @@ public abstract partial class Weapon : Carriable
 
 	public virtual void OnReloadFinish()
 	{
+		Log.Debug();
 		IsReloading = false;
 		AmmoClip += TakeAmmo( Info.ClipSize - AmmoClip );
 	}

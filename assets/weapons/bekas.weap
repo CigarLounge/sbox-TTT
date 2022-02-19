@@ -1,0 +1,30 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = "bekas_fire-1"
+		dryfiresound = "dryfire_rifle-1"
+		firemode = "1"
+		bulletsperfire = 5
+		clipsize = 30
+		damage = 20.0
+		spread = 0.2
+		primaryrate = 0.0
+		secondaryrate = 0.0
+		reloadtime = 2.0
+		reserveammo = 0
+		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
+		muzzleflashparticle = resource:"particles/pistol_muzzleflash.vpcf"
+		slot = "0"
+		spawnable = true
+		viewmodel = resource:"models/weapons/v_bekas.vmdl"
+		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
+		deploytime = 0.6
+		buyable = false
+		price = 0
+		icon = ""
+		worldmodel = resource:"models/weapons/w_bekas.vmdl"
+		libraryname = "ttt_weapon_bekas"
+		title = "Bekas-M"
+	}
+}

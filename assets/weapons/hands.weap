@@ -12,7 +12,7 @@
 		reserveammo = 0
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
-		slot = "0"
+		slot = "4"
 		spawnable = false
 		viewmodel = resource:""
 		deploytime = 0.6
@@ -22,5 +22,9 @@
 		worldmodel = resource:""
 		libraryname = "ttt_equipment_hands"
 		title = "Hands"
+		bulletsperfire = 1
+		damage = 20.0
+		spread = 0.0
+		handsmodel = resource:""
 	}
 }
