@@ -1,17 +1,12 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-
-using TTT.Player;
-using TTT.Roles;
 
 namespace TTT.UI;
 
 public class Nameplate : EntityHintPanel
 {
-	public TTTPlayer Player;
+	public Player Player;
 
 	private readonly Panel _labelHolder;
 	private readonly Label _nameLabel;
@@ -40,7 +35,7 @@ public class Nameplate : EntityHintPanel
 			new HealthGroup("Near Death", Color.FromBytes(252, 42, 42), 0)
 	};
 
-	public Nameplate( TTTPlayer player ) : base()
+	public Nameplate( Player player ) : base()
 	{
 		Player = player;
 

@@ -3,28 +3,23 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Map;
-using TTT.Player;
-using TTT.Roles;
-
-namespace TTT.Rounds;
+namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
 	public override string RoundName => "In Progress";
 
 	[Net]
-	public List<TTTPlayer> Players { get; set; }
+	public List<Player> Players { get; set; }
 
 	[Net]
-	public List<TTTPlayer> Spectators { get; set; }
+	public List<Player> Spectators { get; set; }
 
 	private List<LogicButton> _logicButtons;
 
-	public override int RoundDuration { get => Gamemode.Game.InProgressRoundTime; }
+	public override int RoundDuration { get => Game.InProgressRoundTime; }
 
-	public override void OnPlayerKilled( TTTPlayer player )
+	public override void OnPlayerKilled( Player player )
 	{
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
@@ -33,12 +28,12 @@ public partial class InProgressRound : BaseRound
 		ChangeRoundIfOver();
 	}
 
-	public override void OnPlayerJoin( TTTPlayer player )
+	public override void OnPlayerJoin( Player player )
 	{
 		Spectators.AddIfDoesNotContain( player );
 	}
 
-	public override void OnPlayerLeave( TTTPlayer player )
+	public override void OnPlayerLeave( Player player )
 	{
 		Players.Remove( player );
 		Spectators.Remove( player );
@@ -55,7 +50,7 @@ public partial class InProgressRound : BaseRound
 		// a fixed weapon loadout.
 		if ( MapHandler.RandomWeaponCount == 0 )
 		{
-			foreach ( TTTPlayer player in Players )
+			foreach ( Player player in Players )
 			{
 				GiveFixedLoadout( player );
 			}
@@ -65,7 +60,7 @@ public partial class InProgressRound : BaseRound
 		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( LogicButton ) ).Select( x => x as LogicButton ).ToList();
 	}
 
-	private static void GiveFixedLoadout( TTTPlayer player )
+	private static void GiveFixedLoadout( Player player )
 	{
 		Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
 	}
@@ -81,7 +76,7 @@ public partial class InProgressRound : BaseRound
 	{
 		List<Team> aliveTeams = new();
 
-		foreach ( TTTPlayer player in Players )
+		foreach ( Player player in Players )
 		{
 			if ( !aliveTeams.Contains( player.Team ) )
 			{
@@ -99,8 +94,8 @@ public partial class InProgressRound : BaseRound
 
 	public static void LoadPostRound( Team winningTeam )
 	{
-		Gamemode.Game.Current.MapSelection.TotalRoundsPlayed++;
-		Gamemode.Game.Current.ForceRoundChange( new PostRound() );
+		Game.Current.MapSelection.TotalRoundsPlayed++;
+		Game.Current.ForceRoundChange( new PostRound() );
 		RPCs.ClientOpenAndSetPostRoundMenu(
 			winningTeam.GetName(),
 			winningTeam.GetColor()
@@ -111,7 +106,7 @@ public partial class InProgressRound : BaseRound
 	{
 		if ( Host.IsServer )
 		{
-			if ( !Gamemode.Game.PreventWin )
+			if ( !Game.PreventWin )
 			{
 				base.OnSecond();
 			}
@@ -124,7 +119,7 @@ public partial class InProgressRound : BaseRound
 
 			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
 			{
-				Gamemode.Game.Current.ForceRoundChange( new WaitingRound() );
+				Game.Current.ForceRoundChange( new WaitingRound() );
 			}
 		}
 	}
@@ -133,7 +128,7 @@ public partial class InProgressRound : BaseRound
 	{
 		Team result = IsRoundOver();
 
-		if ( result != Team.None && !Gamemode.Game.PreventWin )
+		if ( result != Team.None && !Game.PreventWin )
 		{
 			LoadPostRound( result );
 
@@ -144,14 +139,14 @@ public partial class InProgressRound : BaseRound
 	}
 
 	[TTTEvent.Player.Role.Selected]
-	private static void OnPlayerRoleChange( TTTPlayer player )
+	private static void OnPlayerRoleChange( Player player )
 	{
 		if ( Host.IsClient )
 		{
 			return;
 		}
 
-		if ( Gamemode.Game.Current.Round is InProgressRound inProgressRound )
+		if ( Game.Current.Round is InProgressRound inProgressRound )
 		{
 			inProgressRound.ChangeRoundIfOver();
 		}

@@ -4,7 +4,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTT.UI.Menu;
+namespace TTT.UI;
 
 public partial class KeyBindingsPage : Panel
 {

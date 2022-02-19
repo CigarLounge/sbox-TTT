@@ -1,8 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.UI.Menu;
-
 namespace TTT.UI;
 
 [UseTemplate]

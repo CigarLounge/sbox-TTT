@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using Sandbox;
 
-namespace TTT.Player;
+namespace TTT;
 
 public partial class BaseClothing : ModelEntity
 {
-	public TTTPlayer Wearer => Parent as TTTPlayer;
+	public Player Wearer => Parent as Player;
 	public virtual void Attached() { }
 	public virtual void Detatched() { }
 }
 
-public partial class TTTPlayer
+public partial class Player
 {
 	protected List<BaseClothing> Clothing { get; set; } = new();
 

@@ -6,9 +6,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Items;
-using TTT.Player;
-
 namespace TTT.UI;
 
 public class InventorySelection : Panel
@@ -41,7 +38,7 @@ public class InventorySelection : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -115,7 +112,7 @@ public class InventorySelection : Panel
 	[Event.BuildInput]
 	private void ProcessClientInventorySelectionInput( InputBuilder input )
 	{
-		if ( Local.Pawn is not TTTPlayer player || player.IsSpectatingPlayer )
+		if ( Local.Pawn is not Player player || player.IsSpectatingPlayer )
 		{
 			return;
 		}
@@ -230,7 +227,7 @@ public class InventorySelection : Panel
 
 			_ammoLabel = Add.Label();
 
-			if ( Local.Pawn is TTTPlayer player )
+			if ( Local.Pawn is Player player )
 			{
 				if ( carriable.Info.Slot != SlotType.Melee && carriable is Carriable weapon )
 				{
@@ -246,7 +243,7 @@ public class InventorySelection : Panel
 		{
 			base.Tick();
 
-			if ( Local.Pawn is TTTPlayer player )
+			if ( Local.Pawn is Player player )
 			{
 				SlotLabel.Style.BackgroundColor = player.Role.Info.Color;
 			}

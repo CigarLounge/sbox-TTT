@@ -1,10 +1,6 @@
 using Sandbox;
 
-using TTT.Player;
-using TTT.Rounds;
-using TTT.Roles;
-
-namespace TTT.Map;
+namespace TTT;
 
 [Library( "ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input." )]
 public partial class ForceWin : Entity
@@ -31,7 +27,7 @@ public partial class ForceWin : Entity
 	[Input]
 	public void ActivateForceWin( Entity activator )
 	{
-		if ( UseActivatorsTeam && activator is TTTPlayer player )
+		if ( UseActivatorsTeam && activator is Player player )
 		{
 			ForceEndRound( player.Team );
 		}
@@ -41,7 +37,7 @@ public partial class ForceWin : Entity
 
 	private static void ForceEndRound( Team team )
 	{
-		if ( Gamemode.Game.Current.Round is InProgressRound )
+		if ( Game.Current.Round is InProgressRound )
 		{
 			InProgressRound.LoadPostRound( team );
 		}

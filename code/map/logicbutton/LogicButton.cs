@@ -1,10 +1,6 @@
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Player;
-using TTT.Roles;
-
-namespace TTT.Map;
+namespace TTT;
 
 [Library( "ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate." )]
 public partial class LogicButton : Entity
@@ -85,7 +81,7 @@ public partial class LogicButton : Entity
 	}
 
 	[Input]
-	public void Press( TTTPlayer activator )
+	public void Press( Player activator )
 	{
 		Host.AssertServer();
 

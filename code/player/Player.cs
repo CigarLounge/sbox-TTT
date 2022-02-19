@@ -1,11 +1,8 @@
 using Sandbox;
 
-using TTT.Player.Camera;
-using TTT.Roles;
+namespace TTT;
 
-namespace TTT.Player;
-
-public partial class TTTPlayer : Sandbox.Player
+public partial class Player : Sandbox.Player
 {
 	[BindComponent]
 	public Perks Perks { get; }
@@ -31,7 +28,7 @@ public partial class TTTPlayer : Sandbox.Player
 	private static int CarriableDropVelocity { get; set; } = 300;
 	private DamageInfo _lastDamageInfo;
 
-	public TTTPlayer()
+	public Player()
 	{
 		Inventory = new Inventory( this );
 	}
@@ -43,14 +40,14 @@ public partial class TTTPlayer : Sandbox.Player
 		Role = new NoneRole();
 		Components.GetOrCreate<Perks>();
 
-		bool isPostRound = Gamemode.Game.Current.Round is Rounds.PostRound;
-		IsForcedSpectator = isPostRound || Gamemode.Game.Current.Round is Rounds.InProgressRound;
+		bool isPostRound = Game.Current.Round is PostRound;
+		IsForcedSpectator = isPostRound || Game.Current.Round is InProgressRound;
 
 		Respawn();
 
 		using ( Prediction.Off() )
 		{
-			foreach ( TTTPlayer player in Utils.GetPlayers() )
+			foreach ( Player player in Utils.GetPlayers() )
 			{
 				if ( isPostRound || player.IsConfirmed )
 				{
@@ -97,14 +94,14 @@ public partial class TTTPlayer : Sandbox.Player
 		}
 
 		DeleteItems();
-		Gamemode.Game.Current.Round.OnPlayerSpawn( this );
+		Game.Current.Round.OnPlayerSpawn( this );
 
-		switch ( Gamemode.Game.Current.Round )
+		switch ( Game.Current.Round )
 		{
 			// hacky
 			// TODO use a spectator flag, otherwise, no player can respawn during round with an item etc.
 			// TODO spawn player as spectator instantly
-			case Rounds.PreRound:
+			case PreRound:
 				IsConfirmed = false;
 				CorpseConfirmer = null;
 
@@ -129,13 +126,13 @@ public partial class TTTPlayer : Sandbox.Player
 		using ( Prediction.Off() )
 		{
 			RPCs.ClientOnPlayerDied( this );
-			Role?.OnKilled( _lastDamageInfo.Attacker as TTTPlayer );
+			Role?.OnKilled( _lastDamageInfo.Attacker as Player );
 
-			if ( Gamemode.Game.Current.Round is Rounds.InProgressRound )
+			if ( Game.Current.Round is InProgressRound )
 			{
 				SyncMIA();
 			}
-			else if ( Gamemode.Game.Current.Round is Rounds.PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
+			else if ( Game.Current.Round is PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
 			{
 				PlayerCorpse.IsIdentified = true;
 

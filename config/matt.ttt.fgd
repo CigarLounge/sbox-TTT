@@ -14,7 +14,94 @@
 ]
 
 //
-// TTT.Items.Pistol
+// TTT.CreditAdjust
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
+[
+	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
+
+	input ExchangeCredits(void) : ""
+
+	output OnSuccess(void) : "Fires when credits are successfully added or removed from activator."
+	output OnFailure(void) : "Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits."
+]
+
+//
+// TTT.FeedEntry
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+[
+	message(string) : "Message" : "" : ""
+	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
+	[
+		0 : "All"
+		1 : "Activator"
+		2 : "Innocents"
+		3 : "Traitors"
+	]
+	text_color(color255) : "Color" :  : ""
+	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : "Use this ONLY if you're using a custom team name not listed in the `Receiver` list."
+
+	input DisplayMessage(void) : ""
+]
+
+//
+// TTT.ForceWin
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+[
+	team(choices) : "Team" : 0 : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams." =
+	[
+		0 : "None"
+		1 : "Innocents"
+		2 : "Traitors"
+	]
+	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
+
+	input InnocentsWin(void) : ""
+	input TraitorsWin(void) : ""
+	input ActivateForceWin(void) : ""
+]
+
+//
+// TTT.LogicAssigned
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
+[
+	check_value(choices) : "Check Team" : 0 : "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`." =
+	[
+		0 : "None"
+		1 : "Innocents"
+		2 : "Traitors"
+	]
+
+	input Activate(void) : ""
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+]
+
+//
+// TTT.MapSettings
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_map_settings : ""
+[
+
+	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
+	output RoundPreparation(void) : "Fired once Preround begins."
+	output RoundStart(void) : "Fired once round starts and roles are assigned."
+	output RoundEnd(void) : "Fired once a win condition is met."
+]
+
+//
+// TTT.TTTAmmoRandom
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_ammo_random : ""
+[
+]
+
+//
+// TTT.Pistol
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "weapons/rust_pistol/rust_pistol.vmdl" ) = ttt_pistol : ""
 [
@@ -24,7 +111,7 @@
 ]
 
 //
-// TTT.Items.TTTWeaponRandom
+// TTT.TTTWeaponRandom
 //
 @PointClass base(BaseProperties_matt_ttt) 
 metadata
@@ -40,14 +127,32 @@ metadata
 ]
 
 //
-// TTT.Items.TTTAmmoRandom
+// TTT.LogicButton
 //
-@PointClass base(BaseProperties_matt_ttt) = ttt_ammo_random : ""
+@PointClass base(BaseProperties_matt_ttt) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
 [
+	check_value(choices) : "Check Team" : 2 : "Note that teams are often plural. For example, check the `Team` for `Traitors`, but check the `Role` for `Traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team." =
+	[
+		0 : "None"
+		1 : "Innocents"
+		2 : "Traitors"
+	]
+	description(string) : "Description" :  : "On screen tooltip shown on button"
+	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 uniques."
+	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
+	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."
+	locked(boolean) : "Locked" : 0 : "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input."
+
+	input Press(void) : ""
+	input Lock(void) : ""
+	input Unlock(void) : ""
+	input Toggle(void) : ""
+
+	output OnPressed(void) : ""
 ]
 
 //
-// TTT.Items.HealthStationEntity
+// TTT.HealthStationEntity
 //
 @PointClass base(BaseProperties_matt_ttt) tags( Physics ) model() = ttt_equipment_healthstation_ent : ""
 [
@@ -72,110 +177,5 @@ metadata
 
 	output OnDamaged(void) : "Fired when the entity gets damaged."
 	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.Map.CreditAdjust
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_credit_adjust : "Changes the amount of credits upon the activator."
-[
-	credits(integer) : "Credits" : 1 : "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default."
-
-	input ExchangeCredits(void) : ""
-
-	output OnSuccess(void) : "Fires when credits are successfully added or removed from activator."
-	output OnFailure(void) : "Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits."
-]
-
-//
-// TTT.Map.FeedEntry
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_feed_entry : "Add text entry to the game feed when input fired."
-[
-	message(string) : "Message" : "" : ""
-	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
-	[
-		0 : "All"
-		1 : "Activator"
-		2 : "Innocents"
-		3 : "Traitors"
-	]
-	text_color(color255) : "Color" :  : ""
-	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : "Use this ONLY if you're using a custom team name not listed in the `Receiver` list."
-
-	input DisplayMessage(void) : ""
-]
-
-//
-// TTT.Map.ForceWin
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
-[
-	team(choices) : "Team" : 0 : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
-	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
-
-	input InnocentsWin(void) : ""
-	input TraitorsWin(void) : ""
-	input ActivateForceWin(void) : ""
-]
-
-//
-// TTT.Map.LogicAssigned
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
-[
-	check_value(choices) : "Check Team" : 0 : "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
-
-	input Activate(void) : ""
-
-	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
-	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
-]
-
-//
-// TTT.Map.MapSettings
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_map_settings : ""
-[
-
-	output SettingsSpawned(void) : "Fired after PostLevelLoaded runs and MapSettings entity is found."
-	output RoundPreparation(void) : "Fired once Preround begins."
-	output RoundStart(void) : "Fired once round starts and roles are assigned."
-	output RoundEnd(void) : "Fired once a win condition is met."
-]
-
-//
-// TTT.Map.LogicButton
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
-[
-	check_value(choices) : "Check Team" : 2 : "Note that teams are often plural. For example, check the `Team` for `Traitors`, but check the `Role` for `Traitor`. It's recommended to use teams instead of roles in order to support upcoming roles of the same team." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
-	description(string) : "Description" :  : "On screen tooltip shown on button"
-	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 uniques."
-	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
-	remove_on_press(boolean) : "Remove On Press" : 0 : "Only allows button to be pressed once per round."
-	locked(boolean) : "Locked" : 0 : "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input."
-
-	input Press(void) : ""
-	input Lock(void) : ""
-	input Unlock(void) : ""
-	input Toggle(void) : ""
-
-	output OnPressed(void) : ""
 ]
 

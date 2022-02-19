@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Player;
-
 namespace TTT.UI;
 
 public class PlayerInfoDisplay : Panel
@@ -36,12 +34,12 @@ public class PlayerInfoDisplay : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
 
-		this.Enabled( Local.Pawn is TTTPlayer || (player.IsSpectator && player.IsSpectatingPlayer) );
+		this.Enabled( Local.Pawn is Player || (player.IsSpectator && player.IsSpectatingPlayer) );
 
 		_healthLabel.SetClass( "hidden", player.CurrentPlayer.LifeState == LifeState.Alive );
 		_healthLabel.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";

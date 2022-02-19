@@ -1,6 +1,6 @@
 using Sandbox.UI;
 
-namespace TTT.UI.Menu;
+namespace TTT.UI;
 
 [UseTemplate]
 public partial class ComponentTestingPage : Panel

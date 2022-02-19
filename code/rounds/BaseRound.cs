@@ -1,8 +1,6 @@
 using Sandbox;
 
-using TTT.Player;
-
-namespace TTT.Rounds;
+namespace TTT;
 
 public abstract partial class BaseRound : BaseNetworkable
 {
@@ -29,13 +27,13 @@ public abstract partial class BaseRound : BaseNetworkable
 		OnFinish();
 	}
 
-	public virtual void OnPlayerSpawn( TTTPlayer player ) { }
+	public virtual void OnPlayerSpawn( Player player ) { }
 
-	public virtual void OnPlayerKilled( TTTPlayer player ) { }
+	public virtual void OnPlayerKilled( Player player ) { }
 
-	public virtual void OnPlayerJoin( TTTPlayer player ) { }
+	public virtual void OnPlayerJoin( Player player ) { }
 
-	public virtual void OnPlayerLeave( TTTPlayer player ) { }
+	public virtual void OnPlayerLeave( Player player ) { }
 
 	public virtual void OnTick() { }
 

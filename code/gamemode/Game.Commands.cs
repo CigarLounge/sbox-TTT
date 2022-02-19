@@ -2,15 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
-using TTT.Player;
-using TTT.Roles;
-using TTT.Rounds;
 
-namespace TTT.Gamemode;
+namespace TTT;
 
 public partial class Game
 {
-	private static TTTPlayer GetPlayerById( int id )
+	private static Player GetPlayerById( int id )
 	{
 		List<Client> playerList = Client.All.ToList();
 
@@ -19,7 +16,7 @@ public partial class Game
 			return null;
 		}
 
-		if ( playerList[id].Pawn is TTTPlayer player && player.IsValid() )
+		if ( playerList[id].Pawn is Player player && player.IsValid() )
 		{
 			return player;
 		}
@@ -33,11 +30,11 @@ public partial class Game
 		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
 			return;
 
-		TTTPlayer player = null;
+		Player player = null;
 
 		if ( id == null )
 		{
-			player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+			player = ConsoleSystem.Caller.Pawn as Player;
 		}
 		else
 		{
@@ -83,20 +80,20 @@ public partial class Game
 		if ( string.IsNullOrEmpty( libraryName ) )
 			return;
 
-		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 		{
 			return;
 		}
 
-		var itemInfo = Items.ItemInfo.Collection[libraryName] as Items.ItemInfo;
+		var itemInfo = AssetInfo.Collection[libraryName] as ItemInfo;
 		if ( !itemInfo.Buyable )
 			return;
 
-		if ( itemInfo is Items.CarriableInfo )
-			player.Inventory.Add( Library.Create<Items.Carriable>( libraryName ) );
-		else if ( itemInfo is Items.PerkInfo )
-			player.Perks.Add( Library.Create<Items.Perk>( libraryName ) );
+		if ( itemInfo is CarriableInfo )
+			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+		else if ( itemInfo is PerkInfo )
+			player.Perks.Add( Library.Create<Perk>( libraryName ) );
 	}
 
 	[ServerCmd( Name = "ttt_giveitem" )]
@@ -108,18 +105,18 @@ public partial class Game
 		if ( string.IsNullOrEmpty( libraryName ) )
 			return;
 
-		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Items.ItemInfo.Collection[libraryName] as Items.ItemInfo;
+		var itemInfo = AssetInfo.Collection[libraryName] as ItemInfo;
 		if ( !itemInfo.Buyable )
 			return;
 
-		if ( itemInfo is Items.CarriableInfo )
-			player.Inventory.Add( Library.Create<Items.Carriable>( libraryName ) );
-		else if ( itemInfo is Items.PerkInfo )
-			player.Perks.Add( Library.Create<Items.Perk>( libraryName ) );
+		if ( itemInfo is CarriableInfo )
+			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+		else if ( itemInfo is PerkInfo )
+			player.Perks.Add( Library.Create<Perk>( libraryName ) );
 	}
 
 	[ServerCmd( Name = "ttt_setrole" )]
@@ -130,7 +127,7 @@ public partial class Game
 			return;
 		}
 
-		if ( TTT.Gamemode.Game.Current.Round is not TTT.Rounds.InProgressRound )
+		if ( Game.Current.Round is not InProgressRound )
 		{
 			if ( id == null )
 			{
@@ -160,11 +157,11 @@ public partial class Game
 			return;
 		}
 
-		TTTPlayer player = null;
+		Player player = null;
 
 		if ( id == null )
 		{
-			player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+			player = ConsoleSystem.Caller.Pawn as Player;
 		}
 		else
 		{
@@ -190,7 +187,7 @@ public partial class Game
 	[ServerCmd( Name = "ttt_forcespec" )]
 	public static void ToggleForceSpectator()
 	{
-		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
@@ -205,7 +202,7 @@ public partial class Game
 			return;
 		}
 
-		TTT.Gamemode.Game.Current.ChangeRound( new PreRound() );
+		Game.Current.ChangeRound( new PreRound() );
 
 		Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
 	}

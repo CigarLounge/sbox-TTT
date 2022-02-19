@@ -3,19 +3,13 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Globals;
-using TTT.Map;
-using TTT.Roles;
-using TTT.UI;
+namespace TTT;
 
-namespace TTT.Player;
-
-public partial class TTTPlayer
+public partial class Player
 {
 	public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
-	public static Dictionary<int, LogicButtonPoint> LogicButtonPoints = new(); // UI display
-	public static LogicButtonPoint FocusedButton;
+	public static Dictionary<int, UI.LogicButtonPoint> LogicButtonPoints = new(); // UI display
+	public static UI.LogicButtonPoint FocusedButton;
 	public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
 	public void SendLogicButtonsToClient()
@@ -47,7 +41,7 @@ public partial class TTTPlayer
 			return;
 		}
 
-		foreach ( TTTPlayer player in Utils.GetPlayers() )
+		foreach ( Player player in Utils.GetPlayers() )
 		{
 			player.SendLogicButtonsToClient();
 		}
@@ -60,7 +54,7 @@ public partial class TTTPlayer
 
 		foreach ( KeyValuePair<int, TTTLogicButtonData> keyValuePair in LogicButtons )
 		{
-			LogicButtonPoints.Add( keyValuePair.Key, new LogicButtonPoint( keyValuePair.Value ) );
+			LogicButtonPoints.Add( keyValuePair.Key, new UI.LogicButtonPoint( keyValuePair.Value ) );
 		}
 	}
 
@@ -74,7 +68,7 @@ public partial class TTTPlayer
 
 		// Index our data table by the Logic buttons network identity so we can find it later if need be.
 		LogicButtons = buttons.ToDictionary( k => k.NetworkIdent, v => v );
-		LogicButtonPoints = buttons.ToDictionary( k => k.NetworkIdent, v => new LogicButtonPoint( v ) );
+		LogicButtonPoints = buttons.ToDictionary( k => k.NetworkIdent, v => new UI.LogicButtonPoint( v ) );
 	}
 
 	// Clear logic buttons, called before player respawns.
@@ -86,7 +80,7 @@ public partial class TTTPlayer
 
 	private void Clear()
 	{
-		foreach ( LogicButtonPoint logicButtonPoint in LogicButtonPoints.Values )
+		foreach ( UI.LogicButtonPoint logicButtonPoint in LogicButtonPoints.Values )
 		{
 			logicButtonPoint.Delete( true );
 		}
@@ -100,7 +94,7 @@ public partial class TTTPlayer
 	[ServerCmd( "ttt_debug_sendrb" )]
 	public static void ForceRBSend()
 	{
-		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		Player player = ConsoleSystem.Caller.Pawn as Player;
 
 		if ( !player.IsValid() )
 		{
@@ -118,7 +112,7 @@ public partial class TTTPlayer
 	[ServerCmd]
 	public static void ActivateLogicButton( int networkIdent )
 	{
-		if ( ConsoleSystem.Caller.Pawn is not TTTPlayer player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 		{
 			Log.Warning( "Server received call from null player to activate logic button." );
 
@@ -143,7 +137,7 @@ public partial class TTTPlayer
 	// Client keybinding for activating button within focus.
 	public void TickLogicButtonActivate()
 	{
-		if ( !IsClient || Local.Pawn is not TTTPlayer player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
+		if ( !IsClient || Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
 		{
 			return;
 		}

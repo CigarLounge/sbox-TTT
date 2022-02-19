@@ -2,8 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Player;
-
 namespace TTT.UI;
 
 public class PlayerRoleDisplay : Panel
@@ -22,25 +20,25 @@ public class PlayerRoleDisplay : Panel
 		_roleLabel.AddClass( "centered" );
 		_roleLabel.AddClass( "role-label" );
 
-		OnRoleUpdate( Local.Pawn as TTTPlayer );
+		OnRoleUpdate( Local.Pawn as Player );
 	}
 
 	public override void Tick()
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
 
-		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Gamemode.Game.Current.Round is Rounds.InProgressRound );
+		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Game.Current.Round is InProgressRound );
 	}
 
-	[Events.TTTEvent.Player.Role.Selected]
-	private void OnRoleUpdate( TTTPlayer player )
+	[TTTEvent.Player.Role.Selected]
+	private void OnRoleUpdate( Player player )
 	{
-		if ( player == null || player != Local.Pawn as TTTPlayer )
+		if ( player == null || player != Local.Pawn as Player )
 		{
 			return;
 		}

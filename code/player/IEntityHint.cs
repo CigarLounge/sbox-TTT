@@ -1,7 +1,6 @@
-using TTT.Player;
 using TTT.UI;
 
-namespace Sandbox.player;
+namespace TTT;
 
 public interface IEntityHint
 {
@@ -23,15 +22,15 @@ public interface IEntityHint
 	/// <summary>
 	/// Whether or not we can show the UI hint.
 	/// </summary>
-	bool CanHint( TTTPlayer player );
+	bool CanHint( Player player );
 
 	/// <summary>
 	/// The hint we should display.
 	/// </summary>
-	EntityHintPanel DisplayHint( TTTPlayer player );
+	EntityHintPanel DisplayHint( Player player );
 
 	/// <summary>
 	/// Occurs on each tick if the hint is active.
 	/// </summary>
-	void Tick( TTTPlayer player );
+	void Tick( Player player );
 }

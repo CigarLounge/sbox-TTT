@@ -4,8 +4,6 @@ using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Player;
-
 namespace TTT.UI;
 
 public partial class Scoreboard : Panel
@@ -210,7 +208,7 @@ public partial class Scoreboard : Panel
 		{
 			group = DefaultScoreboardGroup.Spectator.ToString();
 		}
-		else if ( client.PlayerId != 0 && client.Pawn is TTTPlayer player )
+		else if ( client.PlayerId != 0 && client.Pawn is Player player )
 		{
 			if ( player.IsConfirmed )
 			{

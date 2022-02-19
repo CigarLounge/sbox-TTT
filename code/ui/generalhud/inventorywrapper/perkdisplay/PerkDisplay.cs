@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using TTT.Items;
-using TTT.Player;
 
 namespace TTT.UI;
 
@@ -20,7 +18,7 @@ public class PerkDisplay : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}

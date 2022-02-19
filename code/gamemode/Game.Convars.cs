@@ -1,4 +1,4 @@
-namespace TTT.Gamemode;
+namespace TTT;
 
 public partial class Game
 {

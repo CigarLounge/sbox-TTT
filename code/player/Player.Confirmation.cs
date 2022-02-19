@@ -1,10 +1,6 @@
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Items;
-using TTT.UI;
-
-namespace TTT.Player;
+namespace TTT;
 
 public struct ConfirmationData
 {
@@ -15,7 +11,7 @@ public struct ConfirmationData
 	public float Distance;
 }
 
-public partial class TTTPlayer
+public partial class Player
 {
 	public PlayerCorpse PlayerCorpse { get; set; }
 
@@ -26,7 +22,7 @@ public partial class TTTPlayer
 
 	public bool IsMissingInAction = false;
 
-	public TTTPlayer CorpseConfirmer = null;
+	public Player CorpseConfirmer = null;
 
 	public void RemovePlayerCorpse()
 	{

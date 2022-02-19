@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Hammer.EntityTool( "Random Weapon", "TTT", "TODO" )]
 [Library( "ttt_weapon_random" )]
-public class TTTWeaponRandom : Entity
+public class WeaponRandom : Entity
 {
 	private static readonly int AMMO_DISTANCE_UP = 24;
 

@@ -4,9 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Map;
-using TTT.Player;
-
 namespace TTT.UI;
 
 public class LogicButtonPoint : Panel
@@ -36,7 +33,7 @@ public class LogicButtonPoint : Panel
 
 		StyleSheet.Load( "/map/logicbutton/LogicButtonPoint.scss" );
 
-		Hud.Current.RootPanel.AddChild( this );
+		Local.Hud.AddChild( this );
 
 		_entity = Entity.FindByIndex( Data.NetworkIdent ) as LogicButton;
 
@@ -48,7 +45,7 @@ public class LogicButtonPoint : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -62,9 +59,9 @@ public class LogicButtonPoint : Panel
 			Style.Display = DisplayMode.None;
 
 			// Make sure our client is no longer tracking this element.
-			if ( TTTPlayer.FocusedButton == this )
+			if ( Player.FocusedButton == this )
 			{
-				TTTPlayer.FocusedButton = null;
+				Player.FocusedButton = null;
 			}
 
 			this.Enabled( false );
@@ -80,16 +77,16 @@ public class LogicButtonPoint : Panel
 			Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
 
 			// Update our 'focus' CSS look if our player currently is looking near this point.
-			SetClass( "focus", TTTPlayer.FocusedButton == this );
+			SetClass( "focus", Player.FocusedButton == this );
 
 			// Check if point is within 10% of the crosshair.
 			if ( IsLengthWithinCamerasFocus() && player.Position.Distance( Position ) <= _maxViewDistance )
 			{
-				TTTPlayer.FocusedButton ??= this; // If the current focused button is null, update it to this.
+				Player.FocusedButton ??= this; // If the current focused button is null, update it to this.
 			}
-			else if ( TTTPlayer.FocusedButton == this ) // If we are the current focused button, but we are out of focus, set to null
+			else if ( Player.FocusedButton == this ) // If we are the current focused button, but we are out of focus, set to null
 			{
-				TTTPlayer.FocusedButton = null;
+				Player.FocusedButton = null;
 			}
 		}
 	}
@@ -111,7 +108,7 @@ public class LogicButtonPoint : Panel
 
 	// Check to make sure player is within range and our button is not disabled.
 	// Called when client calls for button to be activated. A simple double check.
-	public bool IsUsable( TTTPlayer player )
+	public bool IsUsable( Player player )
 	{
 		return player.Position.Distance( Position ) <= Data.Range && !Data.IsDisabled;
 	}

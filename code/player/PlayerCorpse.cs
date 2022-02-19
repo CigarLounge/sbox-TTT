@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 
 using Sandbox;
-using Sandbox.player;
-using TTT.Items;
-using TTT.Roles;
-using TTT.UI;
 
-namespace TTT.Player;
+namespace TTT;
 
 public struct ClientData
 {
@@ -17,7 +13,7 @@ public struct ClientData
 public partial class PlayerCorpse : ModelEntity, IEntityHint
 {
 	public ClientData DeadPlayerClientData { get; set; }
-	public TTTPlayer DeadPlayer { get; set; }
+	public Player DeadPlayer { get; set; }
 	public List<Particles> Ropes = new();
 	public List<PhysicsJoint> RopeSprings = new();
 	public CarriableInfo KillerWeapon { get; set; }
@@ -40,7 +36,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 		KilledTime = Time.Now;
 	}
 
-	public void CopyFrom( TTTPlayer player )
+	public void CopyFrom( Player player )
 	{
 		ClientData clientData = new()
 		{
@@ -148,25 +144,25 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 		};
 	}
 
-	public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
+	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
 											 : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
 
-	public bool CanHint( TTTPlayer client ) => true;
+	public bool CanHint( Player client ) => true;
 
-	public EntityHintPanel DisplayHint( TTTPlayer client )
+	public UI.EntityHintPanel DisplayHint( Player client )
 	{
-		return new Hint( TextOnTick );
+		return new UI.Hint( TextOnTick );
 	}
 
-	public void Tick( TTTPlayer confirmingPlayer )
+	public void Tick( Player confirmingPlayer )
 	{
 		using ( Prediction.Off() )
 		{
 			if ( IsClient && !Input.Down( InputButton.Use ) )
 			{
-				FullScreenHintMenu.Instance?.Close();
+				UI.FullScreenHintMenu.Instance?.Close();
 				return;
 			}
 
@@ -194,7 +190,7 @@ public partial class PlayerCorpse : ModelEntity, IEntityHint
 			{
 				if ( IsClient )
 				{
-					FullScreenHintMenu.Instance?.Open( new InspectMenu( this ) );
+					UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 				}
 			}
 		}

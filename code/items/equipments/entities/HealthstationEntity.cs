@@ -1,11 +1,8 @@
 using System;
 
 using Sandbox;
-using Sandbox.player;
-using TTT.Player;
-using TTT.UI;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Library( "ttt_equipment_healthstation_ent", Title = "Health Station" )]
 public partial class HealthStationEntity : Prop, IEntityHint
@@ -28,7 +25,7 @@ public partial class HealthStationEntity : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	private bool HealPlayer( TTTPlayer player )
+	private bool HealPlayer( Player player )
 	{
 		float healthNeeded = player.MaxHealth - player.Health;
 
@@ -46,21 +43,21 @@ public partial class HealthStationEntity : Prop, IEntityHint
 		return false;
 	}
 
-	public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
+	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station ({StoredHealth} charges)";
 
-	public bool CanHint( TTTPlayer client )
+	public bool CanHint( Player client )
 	{
 		return true;
 	}
 
-	public EntityHintPanel DisplayHint( TTTPlayer client )
+	public UI.EntityHintPanel DisplayHint( Player client )
 	{
-		return new Hint( TextOnTick );
+		return new UI.Hint( TextOnTick );
 	}
 
-	public void Tick( TTTPlayer player )
+	public void Tick( Player player )
 	{
 		if ( IsClient )
 		{

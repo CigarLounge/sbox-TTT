@@ -1,31 +1,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
-using TTT.Map;
-using TTT.Player;
 
-namespace TTT.Rounds;
+namespace TTT;
 
 public class MapSelectionRound : BaseRound
 {
 	public override string RoundName => "Map Selection";
-	public override int RoundDuration => Gamemode.Game.MapSelectionTime;
+	public override int RoundDuration => Game.MapSelectionTime;
 
 	protected override void OnTimeUp()
 	{
 		base.OnTimeUp();
 
-		IDictionary<string, string> maps = Gamemode.Game.Current.MapSelection.MapImages;
+		IDictionary<string, string> maps = Game.Current.MapSelection.MapImages;
 
 		// We failed to fetch TTT maps, fall back to default map.
 		if ( maps.Count == 0 )
 		{
 			Log.Warning( "No viable TTT-support maps found on server. Restarting game on default map." );
-			Global.ChangeLevel( Gamemode.Game.DefaultMap );
+			Global.ChangeLevel( Game.DefaultMap );
 			return;
 		}
 
-		IDictionary<long, string> playerIdMapVote = Gamemode.Game.Current.MapSelection.PlayerIdMapVote;
+		IDictionary<long, string> playerIdMapVote = Game.Current.MapSelection.PlayerIdMapVote;
 		IDictionary<string, int> mapToVoteCount = MapSelectionHandler.GetTotalVotesPerMap( playerIdMapVote );
 
 		// Nobody voted, so let's change to a random map.
@@ -39,7 +37,7 @@ public class MapSelectionRound : BaseRound
 		Global.ChangeLevel( mapToVoteCount.OrderByDescending( x => x.Value ).First().Key );
 	}
 
-	public override void OnPlayerKilled( TTTPlayer player )
+	public override void OnPlayerKilled( Player player )
 	{
 		player.MakeSpectator();
 	}

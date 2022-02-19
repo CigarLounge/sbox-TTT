@@ -2,11 +2,7 @@ using System;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Globals;
-using TTT.Items;
-
-namespace TTT.Player;
+namespace TTT;
 
 public enum HitboxIndex
 {
@@ -44,7 +40,7 @@ public enum HitboxGroup
 	Special = 11,
 }
 
-public partial class TTTPlayer
+public partial class Player
 {
 	[Net]
 	public float MaxHealth { get; set; } = 100f;
@@ -80,11 +76,11 @@ public partial class TTTPlayer
 
 		To client = To.Single( this );
 
-		if ( info.Attacker is TTTPlayer attacker && attacker != this )
+		if ( info.Attacker is Player attacker && attacker != this )
 		{
 			LastDistanceToAttacker = Utils.SourceUnitsToMeters( Position.Distance( attacker.Position ) );
 
-			if ( Gamemode.Game.Current.Round is not (Rounds.InProgressRound or Rounds.PostRound) )
+			if ( Game.Current.Round is not (InProgressRound or PostRound) )
 			{
 				return;
 			}

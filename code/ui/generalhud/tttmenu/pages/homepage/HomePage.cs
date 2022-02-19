@@ -1,8 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
-using TTT.Player;
 
-namespace TTT.UI.Menu;
+namespace TTT.UI;
 
 [UseTemplate]
 public partial class HomePage : Panel
@@ -21,7 +20,7 @@ public partial class HomePage : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -31,6 +30,6 @@ public partial class HomePage : Panel
 
 	public void ToggleForceSpectator()
 	{
-		Gamemode.Game.ToggleForceSpectator();
+		Game.ToggleForceSpectator();
 	}
 }

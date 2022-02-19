@@ -4,21 +4,18 @@ using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
-using TTT.Gamemode;
-using TTT.Player;
-using TTT.Roles;
 
-namespace TTT.Globals;
+namespace TTT;
 
 public static partial class Utils
 {
-	public static List<Client> GetClients( Func<TTTPlayer, bool> predicate = null )
+	public static List<Client> GetClients( Func<Player, bool> predicate = null )
 	{
 		List<Client> clients = new();
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
 			{
 				clients.Add( client );
 			}
@@ -27,13 +24,13 @@ public static partial class Utils
 		return clients;
 	}
 
-	public static List<TTTPlayer> GetPlayers( Func<TTTPlayer, bool> predicate = null )
+	public static List<Player> GetPlayers( Func<Player, bool> predicate = null )
 	{
-		List<TTTPlayer> players = new();
+		List<Player> players = new();
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is TTTPlayer player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
 			{
 				players.Add( player );
 			}
@@ -42,7 +39,7 @@ public static partial class Utils
 		return players;
 	}
 
-	public static List<TTTPlayer> GetAlivePlayers() => GetPlayers( ( pl ) => pl.LifeState == LifeState.Alive );
+	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.LifeState == LifeState.Alive );
 
 	public static List<Client> GiveAliveDetectivesCredits( int credits )
 	{
@@ -50,7 +47,7 @@ public static partial class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive && player.Role is DetectiveRole )
+			if ( client.Pawn is Player player && player.LifeState == LifeState.Alive && player.Role is DetectiveRole )
 			{
 				player.Credits += credits;
 				players.Add( client );
@@ -60,7 +57,7 @@ public static partial class Utils
 		return players;
 	}
 
-	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Gamemode.Game.MinPlayers;
+	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Game.MinPlayers;
 
 	/// <summary>
 	/// Loops through every type derived from the given type and collects non-abstract types.

@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT.Player;
+namespace TTT;
 
 public partial class Duck : Sandbox.Duck
 {

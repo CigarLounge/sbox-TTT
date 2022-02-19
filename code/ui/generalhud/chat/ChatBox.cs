@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Player;
-using TTT.Roles;
-
 namespace TTT.UI;
 
 public partial class ChatBox : Panel
@@ -63,7 +60,7 @@ public partial class ChatBox : Panel
 
 	public void OnTab()
 	{
-		if ( Local.Pawn is not TTTPlayer player || player.LifeState != LifeState.Alive )
+		if ( Local.Pawn is not Player player || player.LifeState != LifeState.Alive )
 		{
 			return;
 		}
@@ -80,7 +77,7 @@ public partial class ChatBox : Panel
 
 		bool isAlive = Local.Pawn.LifeState == LifeState.Alive;
 
-		if ( isAlive && Local.Pawn is TTTPlayer player && IsTeamChatting )
+		if ( isAlive && Local.Pawn is Player player && IsTeamChatting )
 		{
 			_inputTeamIndicator.Style.BackgroundColor = player.Role.Info.Color;
 			_inputPanel.Style.BorderColor = player.Role.Info.Color;
@@ -132,7 +129,7 @@ public partial class ChatBox : Panel
 
 		string msg = _inputField.Text.Trim();
 
-		if ( !string.IsNullOrWhiteSpace( msg ) && Local.Pawn is TTTPlayer )
+		if ( !string.IsNullOrWhiteSpace( msg ) && Local.Pawn is Player )
 		{
 			if ( wasTeamChatting )
 			{
@@ -147,7 +144,7 @@ public partial class ChatBox : Panel
 		Close();
 	}
 
-	public void AddEntry( string header, string content, Channel channel, string avatar = null, Roles.Team team = Roles.Team.None )
+	public void AddEntry( string header, string content, Channel channel, string avatar = null, Team team = Team.None )
 	{
 		_lastChatFocus = 0f;
 
@@ -219,13 +216,13 @@ public partial class ChatBox : Panel
 
 		Messages.Add( chatEntry );
 	}
-	public static bool CanUseTeamChat( TTTPlayer player )
+	public static bool CanUseTeamChat( Player player )
 	{
-		return player.LifeState == LifeState.Alive && player.Team == Roles.Team.Traitors;
+		return player.LifeState == LifeState.Alive && player.Team == Team.Traitors;
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
-	public static void AddChatEntry( string name, string message, Channel channel, string avatar = null, Roles.Team team = Roles.Team.None )
+	public static void AddChatEntry( string name, string message, Channel channel, string avatar = null, Team team = Team.None )
 	{
 		Instance?.AddEntry( name, message, channel, avatar, team );
 
@@ -257,7 +254,7 @@ public partial class ChatBox : Panel
 
 		LifeState lifeState = ConsoleSystem.Caller.Pawn.LifeState;
 
-		if ( Gamemode.Game.Current?.Round is Rounds.InProgressRound && lifeState == LifeState.Dead )
+		if ( Game.Current?.Round is InProgressRound && lifeState == LifeState.Dead )
 		{
 			AddChatEntry( To.Multiple( Utils.GetClients( ( pl ) => pl.LifeState == LifeState.Dead ) ), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.PlayerId}" );
 		}
@@ -273,7 +270,7 @@ public partial class ChatBox : Panel
 		Assert.NotNull( ConsoleSystem.Caller );
 
 		// TODO: Consider RegEx to remove any messed up user chat messages.
-		if ( ConsoleSystem.Caller.Pawn is not TTTPlayer player || !CanUseTeamChat( player ) || message.Contains( '\n' ) || message.Contains( '\r' ) )
+		if ( ConsoleSystem.Caller.Pawn is not Player player || !CanUseTeamChat( player ) || message.Contains( '\n' ) || message.Contains( '\r' ) )
 		{
 			return;
 		}

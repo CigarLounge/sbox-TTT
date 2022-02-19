@@ -1,9 +1,8 @@
 using Sandbox;
-using Sandbox.player;
 
-namespace TTT.Player;
+namespace TTT;
 
-partial class TTTPlayer
+partial class Player
 {
 	// Similar to "IsLookingAtType" but with an extra check ensuring we are within the range
 	// of the "HintDistance".
@@ -13,7 +12,7 @@ partial class TTTPlayer
 
 		if ( IsClient )
 		{
-			Sandbox.Camera camera = Camera as Sandbox.Camera;
+			Camera camera = Camera as Camera;
 
 			trace = Trace.Ray( camera.Position, camera.Position + camera.Rotation.Forward * maxHintDistance );
 		}

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-namespace TTT.Map;
+namespace TTT;
 
 public partial class MapSelectionHandler : BaseNetworkable
 {

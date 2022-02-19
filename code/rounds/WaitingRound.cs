@@ -2,9 +2,7 @@ using System;
 
 using Sandbox;
 
-using TTT.Player;
-
-namespace TTT.Rounds;
+namespace TTT;
 
 public class WaitingRound : BaseRound
 {
@@ -14,11 +12,11 @@ public class WaitingRound : BaseRound
 	{
 		if ( Host.IsServer && Utils.HasMinimumPlayers() )
 		{
-			Gamemode.Game.Current.ForceRoundChange( new PreRound() );
+			Game.Current.ForceRoundChange( new PreRound() );
 		}
 	}
 
-	public override void OnPlayerKilled( TTTPlayer player )
+	public override void OnPlayerKilled( Player player )
 	{
 		StartRespawnTimer( player );
 
@@ -29,25 +27,25 @@ public class WaitingRound : BaseRound
 
 	protected override void OnStart()
 	{
-		if ( Host.IsServer )
+		if ( !Host.IsServer )
+			return;
+
+		foreach ( Client client in Client.All )
 		{
-			foreach ( Client client in Client.All )
+			if ( client.Pawn is Player player )
 			{
-				if ( client.Pawn is TTTPlayer player )
-				{
-					player.Respawn();
-				}
+				player.Respawn();
 			}
 		}
 	}
 
-	private static async void StartRespawnTimer( TTTPlayer player )
+	private static async void StartRespawnTimer( Player player )
 	{
 		try
 		{
 			await GameTask.DelaySeconds( 1 );
 
-			if ( player.IsValid() && Gamemode.Game.Current.Round is WaitingRound )
+			if ( player.IsValid() && Game.Current.Round is WaitingRound )
 			{
 				player.Respawn();
 			}

@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Sandbox;
-using TTT.Items;
-using TTT.Player;
 
-namespace TTT.Roles;
+namespace TTT;
 
 [Library( "ttt_role_detective" )]
 public class DetectiveRole : BaseRole
 {
-	public override void OnSelect( TTTPlayer player )
+	public override void OnSelect( Player player )
 	{
 		if ( !Host.IsServer || player.Team != Info.Team )
 			return;
 
 		if ( player.Team == Info.Team )
 		{
-			foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
+			foreach ( Player otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
 			{
 				player.SendClientRole( To.Single( otherPlayer ) );
 			}
@@ -29,7 +27,7 @@ public class DetectiveRole : BaseRole
 		base.OnSelect( player );
 	}
 
-	public override void OnKilled( TTTPlayer killer )
+	public override void OnKilled( Player killer )
 	{
 		if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role.Info.Team == Team.Traitors )
 		{

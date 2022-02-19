@@ -1,11 +1,6 @@
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Player;
-using TTT.Rounds;
-using TTT.Roles;
-
-namespace TTT.Map;
+namespace TTT;
 
 [Library( "ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator." )]
 public partial class LogicAssigned : Entity
@@ -33,7 +28,7 @@ public partial class LogicAssigned : Entity
 	[Input]
 	public void Activate( Entity activator )
 	{
-		if ( activator is TTTPlayer player && Gamemode.Game.Current.Round is InProgressRound )
+		if ( activator is Player player && Game.Current.Round is InProgressRound )
 		{
 			if ( player.Role.Info.Team == CheckTeam )
 			{

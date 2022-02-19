@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Sandbox;
-using TTT.Items;
-using TTT.Player;
-using TTT.Roles;
 
-namespace TTT.Rounds;
+namespace TTT;
 
 public class PreRound : BaseRound
 {
 	public override string RoundName => "Preparing";
-	public override int RoundDuration => Gamemode.Game.PreRoundTime;
+	public override int RoundDuration => Game.PreRoundTime;
 
-	public override void OnPlayerKilled( TTTPlayer player )
+	public override void OnPlayerKilled( Player player )
 	{
 		StartRespawnTimer( player );
 
@@ -28,11 +25,11 @@ public class PreRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		Gamemode.Game.Current.MapHandler.CleanUp();
+		Game.Current.MapHandler.CleanUp();
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is TTTPlayer player )
+			if ( client.Pawn is Player player )
 			{
 				player.RemoveLogicButtons();
 				player.Respawn();
@@ -45,10 +42,10 @@ public class PreRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		List<TTTPlayer> players = new();
-		List<TTTPlayer> spectators = new();
+		List<Player> players = new();
+		List<Player> spectators = new();
 
-		foreach ( TTTPlayer player in Utils.GetPlayers() )
+		foreach ( Player player in Utils.GetPlayers() )
 		{
 			player.Client.SetValue( RawStrings.ForcedSpectator, player.IsForcedSpectator );
 
@@ -65,20 +62,20 @@ public class PreRound : BaseRound
 
 		AssignRolesAndRespawn( players );
 
-		Gamemode.Game.Current.ChangeRound( new InProgressRound
+		Game.Current.ChangeRound( new InProgressRound
 		{
 			Players = players,
 			Spectators = spectators
 		} );
 	}
 
-	private static void AssignRolesAndRespawn( List<TTTPlayer> players )
+	private static void AssignRolesAndRespawn( List<Player> players )
 	{
 		int traitorCount = (int)Math.Max( players.Count * 0.25f, 1f );
 
 		for ( int i = 0; i < traitorCount; i++ )
 		{
-			List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
+			List<Player> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
 			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
 
 			if ( unassignedPlayers[randomId].Role is NoneRole )
@@ -91,7 +88,7 @@ public class PreRound : BaseRound
 
 		for ( int i = 0; i < detectiveCount; i++ )
 		{
-			List<TTTPlayer> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
+			List<Player> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
 			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
 
 			if ( unassignedPlayers[randomId].Role is NoneRole )
@@ -100,7 +97,7 @@ public class PreRound : BaseRound
 			}
 		}
 
-		foreach ( TTTPlayer player in players )
+		foreach ( Player player in players )
 		{
 			if ( player.Role is NoneRole )
 			{
@@ -123,13 +120,13 @@ public class PreRound : BaseRound
 		}
 	}
 
-	private static async void StartRespawnTimer( TTTPlayer player )
+	private static async void StartRespawnTimer( Player player )
 	{
 		try
 		{
 			await GameTask.DelaySeconds( 1 );
 
-			if ( player.IsValid() && Gamemode.Game.Current.Round is PreRound )
+			if ( player.IsValid() && Game.Current.Round is PreRound )
 			{
 				player.Respawn();
 			}
@@ -145,7 +142,7 @@ public class PreRound : BaseRound
 		}
 	}
 
-	public override void OnPlayerSpawn( TTTPlayer player )
+	public override void OnPlayerSpawn( Player player )
 	{
 		player.Inventory.Add( new Hands() );
 		base.OnPlayerSpawn( player );

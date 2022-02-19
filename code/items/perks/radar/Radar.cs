@@ -4,11 +4,7 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Player;
-using TTT.Roles;
-using TTT.UI;
-
-namespace TTT.Items;
+namespace TTT;
 
 [Library( "ttt_perk_radar", Title = "Radar" )]
 public partial class Radar : Perk
@@ -30,13 +26,13 @@ public partial class Radar : Perk
 	{
 		// Create radar hud here, it cleans itself up inside.
 		if ( Host.IsClient )
-			Hud.Current?.GeneralHudPanel?.AddChildToAliveHud( new RadarDisplay() );
+			UI.Hud.GeneralHud.Instance.AddChildToAliveHud( new RadarDisplay() );
 
 		// We should execute as soon as the perk is equipped.
 		_timeUntilExecution = 0;
 	}
 
-	public override void Simulate( TTTPlayer player )
+	public override void Simulate( Player player )
 	{
 		if ( Math.Round( _timeUntilExecution ) < 0f )
 		{
@@ -47,13 +43,13 @@ public partial class Radar : Perk
 
 	public override string ActiveText() { return $"{Math.Abs( Math.Round( _timeUntilExecution ) )}"; }
 
-	private void UpdatePositions( TTTPlayer owner )
+	private void UpdatePositions( Player owner )
 	{
 		if ( Host.IsServer )
 		{
 			List<RadarPointData> pointData = new();
 
-			foreach ( TTTPlayer player in Utils.GetAlivePlayers() )
+			foreach ( Player player in Utils.GetAlivePlayers() )
 			{
 				if ( player.Client.PlayerId == owner.Client.PlayerId )
 				{
@@ -111,7 +107,7 @@ public partial class Radar : Perk
 	}
 
 	[ClientRpc]
-	public static void ClientSendRadarPositions( TTTPlayer player, RadarPointData[] points )
+	public static void ClientSendRadarPositions( Player player, RadarPointData[] points )
 	{
 		if ( !player.IsValid() || player != Local.Pawn )
 		{

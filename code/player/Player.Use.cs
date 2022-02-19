@@ -1,8 +1,8 @@
 ﻿using Sandbox;
 
-namespace TTT.Player;
+namespace TTT;
 
-public partial class TTTPlayer
+public partial class Player
 {
 	[Net, Predicted]
 	public new Entity Using { get; set; }

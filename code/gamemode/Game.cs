@@ -2,19 +2,15 @@ using System;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Map;
-using TTT.Player;
-using TTT.Rounds;
+namespace TTT;
 
-namespace TTT.Gamemode;
-
+[Hammer.Skip]
 public partial class Game : Sandbox.Game
 {
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
-	public BaseRound Round { get; private set; } = new TTT.Rounds.WaitingRound();
+	public BaseRound Round { get; private set; }
 
 	[Net]
 	public MapSelectionHandler MapSelection { get; set; } = new();
@@ -56,7 +52,7 @@ public partial class Game : Sandbox.Game
 	{
 		Host.AssertServer();
 
-		Round.Finish();
+		Round?.Finish();
 		BaseRound oldRound = Round;
 		Round = round;
 		Round.Start();
@@ -69,7 +65,7 @@ public partial class Game : Sandbox.Game
 
 	public override void DoPlayerSuicide( Client client )
 	{
-		if ( client.Pawn is TTTPlayer player && player.LifeState == LifeState.Alive )
+		if ( client.Pawn is Player player && player.LifeState == LifeState.Alive )
 		{
 			base.DoPlayerSuicide( client );
 		}
@@ -77,7 +73,7 @@ public partial class Game : Sandbox.Game
 
 	public override void OnKilled( Entity entity )
 	{
-		if ( entity is TTTPlayer player )
+		if ( entity is Player player )
 		{
 			Round.OnPlayerKilled( player );
 		}
@@ -87,8 +83,8 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
-		Round.OnPlayerJoin( client.Pawn as TTTPlayer );
-		TTTPlayer player = new();
+		Round.OnPlayerJoin( client.Pawn as Player );
+		Player player = new();
 		client.Pawn = player;
 
 		base.ClientJoined( client );
@@ -98,7 +94,7 @@ public partial class Game : Sandbox.Game
 	{
 		Log.Info( client.Name + " left, checking minimum player count..." );
 
-		Round.OnPlayerLeave( client.Pawn as TTTPlayer );
+		Round.OnPlayerLeave( client.Pawn as Player );
 
 		Log.Info( $"\"{client.Name}\" has left the game ({reason})" );
 		UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
@@ -116,7 +112,7 @@ public partial class Game : Sandbox.Game
 	{
 		Host.AssertServer();
 
-		if ( source.Name.Equals( dest.Name ) || source.Pawn is not TTTPlayer sourcePlayer || dest.Pawn is not TTTPlayer destPlayer )
+		if ( source.Name.Equals( dest.Name ) || source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
 		{
 			return false;
 		}
@@ -157,7 +153,7 @@ public partial class Game : Sandbox.Game
 			return;
 		}
 
-		if ( client.Pawn is TTTPlayer player )
+		if ( client.Pawn is Player player )
 		{
 			player.IsSpeaking = true;
 		}

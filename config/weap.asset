@@ -1,5 +1,5 @@
 //
-// TTT.Items.WeaponInfo
+// TTT.WeaponInfo
 //
 @BaseClass = weap : ""
 [
@@ -11,13 +11,15 @@
 		1 : "Semi"
 		2 : "Burst"
 	]
+	bulletsperfire(integer) { group = "Stats" } : "Bullets Per Fire" : 1 : ""
 	clipsize(integer) { group = "Stats" } : "Clip Size" : 30 : ""
+	damage(float) { group = "Stats" } : "Damage" : 20 : ""
 	primaryrate(float) { group = "Stats" } : "Primary Rate" : 0 : ""
 	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : 0 : ""
 	reloadtime(float) { group = "Stats" } : "Reload Time" : "2" : ""
 	reserveammo(integer) { group = "Stats" } : "Reserve Ammo" : 0 : ""
 	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" : "particles/pistol_ejectbrass.vpcf" : ""
-	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" : "particles/swb/muzzle/flash_medium.vpcf" : ""
+	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" :  : ""
 	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
 	[
 		0 : "Primary"

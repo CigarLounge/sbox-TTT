@@ -2,12 +2,9 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Roles;
-using TTT.Rounds;
+namespace TTT;
 
-namespace TTT.Player;
-
-public partial class TTTPlayer
+public partial class Player
 {
 	public BaseRole Role { get; set; }
 
@@ -37,9 +34,9 @@ public partial class TTTPlayer
 			SendLogicButtonsToClient();
 	}
 
-	public void SyncMIA( TTTPlayer player = null )
+	public void SyncMIA( Player player = null )
 	{
-		if ( Gamemode.Game.Current.Round is not InProgressRound )
+		if ( Game.Current.Round is not InProgressRound )
 			return;
 
 		if ( player == null )
@@ -48,7 +45,7 @@ public partial class TTTPlayer
 
 			foreach ( Client client in Client.All )
 			{
-				if ( (client.Pawn as TTTPlayer).Team == Team.Traitors )
+				if ( (client.Pawn as Player).Team == Team.Traitors )
 				{
 					traitors.Add( client );
 				}

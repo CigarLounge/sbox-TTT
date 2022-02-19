@@ -4,15 +4,13 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Items;
-
-namespace TTT.Player;
+namespace TTT;
 
 public partial class Inventory : BaseInventory
 {
-	public new TTTPlayer Owner
+	public new Player Owner
 	{
-		get => (TTTPlayer)base.Owner;
+		get => base.Owner as Player;
 		private init => base.Owner = value;
 	}
 
@@ -21,7 +19,7 @@ public partial class Inventory : BaseInventory
 	private const int DROPPOSITIONOFFSET = 50;
 	private const int DROPVELOCITY = 500;
 
-	public Inventory( TTTPlayer player ) : base( player ) { }
+	public Inventory( Player player ) : base( player ) { }
 
 	public override void Pickup( Entity entity )
 	{
@@ -30,14 +28,28 @@ public partial class Inventory : BaseInventory
 		if ( base.Add( entity, Active == null ) ) { }
 	}
 
+	public Carriable Swap( Carriable carriable )
+	{
+		// TODO: return null if the player can carry more 
+		// than 1 weapons with the same slot
+
+		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
+		bool wasActive = ent?.IsActiveChild() ?? false;
+
+		Drop( ent );
+		Add( carriable, wasActive );
+
+		return ent as Carriable;
+	}
+
 	public bool HasFreeSlot( SlotType slotType )
 	{
 		return SlotCapacity[(int)slotType] > 0;
 	}
 
-	public bool IsCarryingType( Type t )
+	public bool IsCarrying( string libraryName )
 	{
-		return List.Any( x => x.GetType() == t );
+		return List.Any( x => x.ClassInfo?.Name == libraryName );
 	}
 
 	public void DropAll()
@@ -50,6 +62,7 @@ public partial class Inventory : BaseInventory
 		}
 	}
 
+	// What?
 	public void DropEntity( Entity self, Type entity )
 	{
 		List.Remove( self );

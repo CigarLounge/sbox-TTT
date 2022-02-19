@@ -1,8 +1,8 @@
 using Sandbox;
 
-namespace TTT.Player.Camera;
+namespace TTT;
 
-public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCamera
+public partial class ThirdPersonSpectateCamera : Camera, IObservationCamera
 {
 	private Vector3 DefaultPosition { get; set; }
 
@@ -22,7 +22,7 @@ public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCam
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -41,7 +41,7 @@ public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCam
 
 	private Vector3 GetSpectatePoint()
 	{
-		if ( Local.Pawn is not TTTPlayer player || !player.IsSpectatingPlayer )
+		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
 		{
 			return DefaultPosition;
 		}
@@ -59,7 +59,7 @@ public partial class ThirdPersonSpectateCamera : Sandbox.Camera, IObservationCam
 
 	public override void Deactivated()
 	{
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}

@@ -4,9 +4,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Player;
-using TTT.Roles;
-
 namespace TTT.UI;
 
 public class VoiceChatEntry : Panel
@@ -48,7 +45,7 @@ public class VoiceChatEntry : Panel
 		Name.Text = Friend.Name;
 		_targetVoiceLevel = level;
 
-		if ( Client != null && Client.IsValid() && Client.Pawn is TTTPlayer player )
+		if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
 		{
 			SetClass( "background-color-spectator", player.LifeState == LifeState.Dead );
 

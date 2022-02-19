@@ -2,10 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Items;
-using TTT.Player;
-
-namespace TTT.UI;
+namespace TTT;
 
 public class RadarPoint : Panel
 {
@@ -45,7 +42,7 @@ public class RadarPoint : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -78,7 +75,7 @@ public class RadarDisplay : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not TTTPlayer player || !player.Perks.Has( typeof( Radar ) ) )
+		if ( Local.Pawn is not Player player || !player.Perks.Has( typeof( Radar ) ) )
 		{
 			Delete();
 		}

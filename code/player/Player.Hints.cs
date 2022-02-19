@@ -1,16 +1,13 @@
 using Sandbox;
-using Sandbox.player;
-using TTT.Player.Camera;
-using TTT.UI;
 
-namespace TTT.Player;
+namespace TTT;
 
-public partial class TTTPlayer
+public partial class Player
 {
 	public const float INTERACT_DISTANCE = 80f;
 	private const float MAX_HINT_DISTANCE = 20480f;
 
-	private EntityHintPanel _currentHintPanel;
+	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
 
 	private void TickEntityHints()
@@ -53,7 +50,7 @@ public partial class TTTPlayer
 			}
 
 			_currentHintPanel = hint.DisplayHint( this );
-			_currentHintPanel.Parent = HintDisplay.Instance;
+			_currentHintPanel.Parent = UI.HintDisplay.Instance;
 			_currentHintPanel.Enabled( true );
 		}
 
@@ -71,7 +68,7 @@ public partial class TTTPlayer
 
 			_currentHintPanel?.Delete( true );
 			_currentHintPanel = null;
-			FullScreenHintMenu.Instance?.Close();
+			UI.FullScreenHintMenu.Instance?.Close();
 		}
 
 		_currentHint = null;

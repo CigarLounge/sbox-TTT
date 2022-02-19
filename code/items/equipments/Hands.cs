@@ -2,15 +2,13 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTT.Player;
-
-namespace TTT.Items;
+namespace TTT;
 
 public interface IGrabbable
 {
 	bool IsHolding { get; }
 	void Drop();
-	void Update( TTTPlayer player );
+	void Update( Player player );
 	void SecondaryAction();
 }
 
@@ -44,7 +42,7 @@ public partial class Hands : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( Owner is not TTTPlayer player )
+		if ( Owner is not Player player )
 			return;
 
 		using ( Prediction.Off() )
@@ -76,7 +74,7 @@ public partial class Hands : Carriable
 		}
 	}
 
-	private void PushEntity( TTTPlayer player )
+	private void PushEntity( Player player )
 	{
 		if ( IsPushingEntity )
 		{
@@ -110,7 +108,7 @@ public partial class Hands : Carriable
 		IsPushingEntity = false;
 	}
 
-	private void TryGrabEntity( TTTPlayer player )
+	private void TryGrabEntity( Player player )
 	{
 		if ( IsHoldingEntity )
 		{

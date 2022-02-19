@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT.Player.Camera;
+namespace TTT;
 
 public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
 {
@@ -10,7 +10,7 @@ public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCa
 	{
 		base.Deactivated();
 
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -21,7 +21,7 @@ public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCa
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not TTTPlayer player )
+		if ( Local.Pawn is not Player player )
 		{
 			return;
 		}
@@ -40,7 +40,7 @@ public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCa
 		}
 	}
 
-	public void OnUpdateObservatedPlayer( TTTPlayer oldObservatedPlayer, TTTPlayer newObservatedPlayer )
+	public void OnUpdateObservatedPlayer( Player oldObservatedPlayer, Player newObservatedPlayer )
 	{
 		if ( oldObservatedPlayer != null )
 		{

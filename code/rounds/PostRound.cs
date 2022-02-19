@@ -1,12 +1,11 @@
 using Sandbox;
-using TTT.Player;
 
-namespace TTT.Rounds;
+namespace TTT;
 
 public class PostRound : BaseRound
 {
 	public override string RoundName => "Post";
-	public override int RoundDuration { get => Gamemode.Game.PostRoundTime; }
+	public override int RoundDuration => Game.PostRoundTime;
 
 	protected override void OnTimeUp()
 	{
@@ -14,11 +13,11 @@ public class PostRound : BaseRound
 
 		RPCs.ClientClosePostRoundMenu();
 
-		bool shouldChangeMap = Gamemode.Game.Current.MapSelection.TotalRoundsPlayed >= Gamemode.Game.RoundLimit;
-		Gamemode.Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
+		bool shouldChangeMap = Game.Current.MapSelection.TotalRoundsPlayed >= Game.RoundLimit;
+		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 
-	public override void OnPlayerKilled( TTTPlayer player )
+	public override void OnPlayerKilled( Player player )
 	{
 		player.MakeSpectator();
 	}
@@ -29,7 +28,7 @@ public class PostRound : BaseRound
 		{
 			using ( Prediction.Off() )
 			{
-				foreach ( TTTPlayer player in Utils.GetPlayers() )
+				foreach ( Player player in Utils.GetPlayers() )
 				{
 					if ( player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified )
 					{

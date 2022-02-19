@@ -2,15 +2,12 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Player.Camera;
+namespace TTT;
 
-namespace TTT.Player;
-
-public partial class TTTPlayer
+public partial class Player
 {
-	private TTTPlayer _spectatingPlayer;
-	public TTTPlayer CurrentPlayer
+	private Player _spectatingPlayer;
+	public Player CurrentPlayer
 	{
 		get => _spectatingPlayer ?? this;
 		set
@@ -19,39 +16,30 @@ public partial class TTTPlayer
 		}
 	}
 
-	public bool IsSpectatingPlayer
-	{
-		get => _spectatingPlayer != null;
-	}
+	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
 
-	public bool IsSpectator
-	{
-		get => (Camera is IObservationCamera);
-	}
+	public bool IsSpectator => Camera is IObservationCamera;
+
 
 	private int _targetIdx = 0;
 
 	[TTTEvent.Player.Died]
-	private static void OnPlayerDied( TTTPlayer deadPlayer )
+	private static void OnPlayerDied( Player deadPlayer )
 	{
-		if ( !Host.IsClient || Local.Pawn is not TTTPlayer player )
-		{
+		if ( !Host.IsClient || Local.Pawn is not Player player )
 			return;
-		}
 
 		if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
-		{
 			player.UpdateObservatedPlayer();
-		}
 	}
 
 	public void UpdateObservatedPlayer()
 	{
-		TTTPlayer oldObservatedPlayer = CurrentPlayer;
+		Player oldObservatedPlayer = CurrentPlayer;
 
 		CurrentPlayer = null;
 
-		List<TTTPlayer> players = Utils.GetAlivePlayers();
+		List<Player> players = Utils.GetAlivePlayers();
 
 		if ( players.Count > 0 )
 		{

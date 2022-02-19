@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System.ComponentModel;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Hammer.Skip]
 public abstract partial class ItemInfo : AssetInfo

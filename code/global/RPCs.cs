@@ -1,16 +1,11 @@
 using Sandbox;
 
-using TTT.Events;
-using TTT.Player;
-using TTT.Roles;
-using TTT.UI;
-
-namespace TTT.Globals;
+namespace TTT;
 
 public partial class RPCs
 {
 	[ClientRpc]
-	public static void ClientOnPlayerDied( TTTPlayer player )
+	public static void ClientOnPlayerDied( Player player )
 	{
 		if ( !player.IsValid() )
 		{
@@ -21,7 +16,7 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientOnPlayerSpawned( TTTPlayer player )
+	public static void ClientOnPlayerSpawned( Player player )
 	{
 		if ( !player.IsValid() )
 		{
@@ -36,7 +31,7 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientSetRole( TTTPlayer player, string roleName )
+	public static void ClientSetRole( Player player, string roleName )
 	{
 		if ( !player.IsValid() )
 		{
@@ -44,12 +39,12 @@ public partial class RPCs
 		}
 
 		player.SetRole( roleName );
-		Scoreboard.Instance?.UpdateClient( player.Client );
+		UI.Scoreboard.Instance?.UpdateClient( player.Client );
 	}
 
 	// Someone refactor this mess.
 	[ClientRpc]
-	public static void ClientConfirmPlayer( TTTPlayer confirmPlayer, PlayerCorpse playerCorpse, TTTPlayer deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
+	public static void ClientConfirmPlayer( Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
 	{
 		if ( !deadPlayer.IsValid() )
 			return;
@@ -61,7 +56,7 @@ public partial class RPCs
 		if ( playerCorpse.IsValid() )
 		{
 			playerCorpse.DeadPlayer = deadPlayer;
-			playerCorpse.KillerWeapon = Items.ItemInfo.Collection[killerWeapon] as Items.CarriableInfo;
+			playerCorpse.KillerWeapon = AssetInfo.Collection[killerWeapon] as CarriableInfo;
 			playerCorpse.Perks = perks;
 
 			playerCorpse.DeadPlayerClientData = new ClientData()
@@ -75,7 +70,7 @@ public partial class RPCs
 
 		Client deadClient = deadPlayer.Client;
 
-		Scoreboard.Instance.UpdateClient( deadClient );
+		UI.Scoreboard.Instance.UpdateClient( deadClient );
 
 		if ( !confirmPlayer.IsValid() )
 		{
@@ -84,7 +79,7 @@ public partial class RPCs
 
 		Client confirmClient = confirmPlayer.Client;
 
-		InfoFeed.Current?.AddEntry(
+		UI.InfoFeed.Current?.AddEntry(
 			confirmClient,
 			playerCorpse.DeadPlayerClientData.Name,
 			deadPlayer.Role.Info.Color,
@@ -92,9 +87,9 @@ public partial class RPCs
 			$"({deadPlayer.Role.Info.Name})"
 		);
 
-		if ( confirmPlayer == Local.Pawn as TTTPlayer && deadPlayer.CorpseCredits > 0 )
+		if ( confirmPlayer == Local.Pawn as Player && deadPlayer.CorpseCredits > 0 )
 		{
-			InfoFeed.Current?.AddEntry(
+			UI.InfoFeed.Current?.AddEntry(
 				confirmClient,
 				$"found $ {deadPlayer.CorpseCredits} credits!"
 			);
@@ -102,7 +97,7 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientAddMissingInAction( TTTPlayer missingInActionPlayer )
+	public static void ClientAddMissingInAction( Player missingInActionPlayer )
 	{
 		if ( !missingInActionPlayer.IsValid() )
 		{
@@ -111,13 +106,13 @@ public partial class RPCs
 
 		missingInActionPlayer.IsMissingInAction = true;
 
-		Scoreboard.Instance.UpdateClient( missingInActionPlayer.Client );
+		UI.Scoreboard.Instance.UpdateClient( missingInActionPlayer.Client );
 	}
 
 	[ClientRpc]
 	public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
 	{
-		PostRoundMenu.Instance.OpenAndSetPostRoundMenu( new PostRoundStats(
+		UI.PostRoundMenu.Instance.OpenAndSetPostRoundMenu( new UI.PostRoundStats(
 			winningRole: winningTeam,
 			winningColor: winningColor
 		) );
@@ -126,18 +121,18 @@ public partial class RPCs
 	[ClientRpc]
 	public static void ClientClosePostRoundMenu()
 	{
-		PostRoundMenu.Instance.ClosePostRoundMenu();
+		UI.PostRoundMenu.Instance.ClosePostRoundMenu();
 	}
 
 	[ClientRpc]
 	public static void ClientOpenMapSelectionMenu()
 	{
-		FullScreenHintMenu.Instance?.ForceOpen( new MapSelectionMenu() );
+		UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapSelectionMenu() );
 	}
 
 	[ClientRpc]
 	public static void ClientDisplayMessage( string message, Color color )
 	{
-		InfoFeed.Current?.AddEntry( message, color );
+		UI.InfoFeed.Current?.AddEntry( message, color );
 	}
 }

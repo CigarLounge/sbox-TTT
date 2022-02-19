@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using Sandbox;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Library( "ttt_ammo_random" )]
-public class TTTAmmoRandom : Entity
+public class AmmoRandom : Entity
 {
 	public void Activate()
 	{

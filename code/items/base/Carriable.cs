@@ -1,11 +1,8 @@
 using Sandbox;
-using Sandbox.player;
 using System;
 using System.ComponentModel;
-using TTT.Player;
-using TTT.UI;
 
-namespace TTT.Items;
+namespace TTT;
 
 public enum SlotType
 {
@@ -43,9 +40,9 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	public TimeSince TimeSinceDeployed { get; set; }
 
 	public CarriableInfo Info { get; set; }
-	public new TTTPlayer Owner
+	public new Player Owner
 	{
-		get => base.Owner as TTTPlayer;
+		get => base.Owner as Player;
 		set => base.Owner = value;
 	}
 	string IEntityHint.TextOnTick => throw new NotImplementedException();
@@ -67,7 +64,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 			return;
 		}
 
-		Info = ItemInfo.Collection[ClassInfo.Name] as CarriableInfo;
+		Info = AssetInfo.Collection[ClassInfo.Name] as CarriableInfo;
 		SetModel( Info.WorldModel );
 	}
 
@@ -76,7 +73,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		base.ClientSpawn();
 
 		if ( !string.IsNullOrEmpty( ClassInfo.Name ) )
-			Info = CarriableInfo.Collection[ClassInfo?.Name] as CarriableInfo;
+			Info = AssetInfo.Collection[ClassInfo?.Name] as CarriableInfo;
 	}
 
 	public override void Simulate( Client cl )
@@ -108,7 +105,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 
 	public override bool CanCarry( Entity carrier )
 	{
-		if ( Owner != null || carrier is not TTTPlayer player )
+		if ( Owner != null || carrier is not Player player )
 			return false;
 
 		// TODO: @mzegar
@@ -132,20 +129,20 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	{
 		base.OnCarryDrop( dropper );
 
-		(dropper as TTTPlayer).Inventory.SlotCapacity[(int)Info.Slot]++;
+		(dropper as Player).Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
 
-	bool IEntityHint.CanHint( TTTPlayer player )
+	bool IEntityHint.CanHint( Player player )
 	{
 		throw new NotImplementedException();
 	}
 
-	EntityHintPanel IEntityHint.DisplayHint( TTTPlayer player )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
 		throw new NotImplementedException();
 	}
 
-	void IEntityHint.Tick( TTTPlayer player )
+	void IEntityHint.Tick( Player player )
 	{
 		throw new NotImplementedException();
 	}

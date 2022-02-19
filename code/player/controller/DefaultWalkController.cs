@@ -2,7 +2,7 @@ using System;
 
 using Sandbox;
 
-namespace TTT.Player;
+namespace TTT;
 
 public partial class DefaultWalkController : WalkController
 {

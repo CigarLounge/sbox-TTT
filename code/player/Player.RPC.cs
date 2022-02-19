@@ -1,13 +1,8 @@
 using Sandbox;
 
-using TTT.Events;
-using TTT.Globals;
-using TTT.Items;
-using TTT.UI;
+namespace TTT;
 
-namespace TTT.Player;
-
-public partial class TTTPlayer
+public partial class Player
 {
 	[ClientRpc]
 	public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
@@ -20,6 +15,6 @@ public partial class TTTPlayer
 	[ClientRpc]
 	public void ClientTookDamage( Vector3 position, float damage )
 	{
-		DamageIndicator.Instance?.OnHit( position );
+		UI.DamageIndicator.Instance?.OnHit( position );
 	}
 }

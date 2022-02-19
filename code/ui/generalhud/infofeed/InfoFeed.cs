@@ -1,9 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Player;
-using TTT.Roles;
-
 namespace TTT.UI;
 
 public partial class InfoFeed : Panel
@@ -23,7 +20,7 @@ public partial class InfoFeed : Panel
 
 		bool isLeftLocal = leftClient == Local.Client;
 
-		TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
+		Player leftPlayer = leftClient.Pawn as Player;
 
 		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Info.Color;
@@ -50,7 +47,7 @@ public partial class InfoFeed : Panel
 		bool isLeftLocal = leftClient == Local.Client;
 		bool isRightLocal = rightClientName == Local.Client.Name;
 
-		TTTPlayer leftPlayer = leftClient.Pawn as TTTPlayer;
+		Player leftPlayer = leftClient.Pawn as Player;
 
 		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Info.Color;

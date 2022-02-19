@@ -1,13 +1,11 @@
 using Sandbox;
 using Sandbox.Joints;
 
-using TTT.Player;
-
-namespace TTT.Items;
+namespace TTT;
 
 public class GrabbableCorpse : IGrabbable
 {
-	private readonly TTTPlayer _owner;
+	private readonly Player _owner;
 	private readonly PlayerCorpse _corpse;
 	private PhysicsBody _handPhysicsBody;
 	private readonly PhysicsBody _corpsePhysicsBody;
@@ -19,7 +17,7 @@ public class GrabbableCorpse : IGrabbable
 		get => _holdJoint.IsValid;
 	}
 
-	public GrabbableCorpse( TTTPlayer player, PlayerCorpse corpse, PhysicsBody physicsBodyCorpse, int corpseBone )
+	public GrabbableCorpse( Player player, PlayerCorpse corpse, PhysicsBody physicsBodyCorpse, int corpseBone )
 	{
 		_owner = player;
 		_corpse = corpse;
@@ -49,7 +47,7 @@ public class GrabbableCorpse : IGrabbable
 		_handPhysicsBody = null;
 	}
 
-	public void Update( TTTPlayer player )
+	public void Update( Player player )
 	{
 		if ( _handPhysicsBody == null )
 		{

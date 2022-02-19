@@ -3,10 +3,7 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Player;
-
-namespace TTT.Roles;
+namespace TTT;
 
 [Library( "role" ), AutoGenerate]
 public partial class RoleInfo : AssetInfo
@@ -26,21 +23,19 @@ public abstract class BaseRole : LibraryClass
 		Info = AssetInfo.Collection[ClassInfo?.Name] as RoleInfo;
 	}
 
-	public virtual void OnSelect( TTTPlayer player )
+	public virtual void OnSelect( Player player )
 	{
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 
-		if ( Host.IsServer )
-		{
+		if ( Host.IsServer )	
 			player.ServerUpdateShop();
-		}
 
 		Event.Run( TTTEvent.Player.Role.Selected, player );
 	}
 
-	public virtual void OnDeselect( TTTPlayer player ) { }
+	public virtual void OnDeselect( Player player ) { }
 
-	public virtual void OnKilled( TTTPlayer killer ) { }
+	public virtual void OnKilled( Player killer ) { }
 
 	// serverside function
 	public virtual void InitShop()

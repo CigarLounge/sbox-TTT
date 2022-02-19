@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT.Roles;
+namespace TTT;
 
 [Library( "ttt_role_none" )]
 public class NoneRole : BaseRole

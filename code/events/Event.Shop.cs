@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT.Events;
+namespace TTT;
 
 public static partial class TTTEvent
 {

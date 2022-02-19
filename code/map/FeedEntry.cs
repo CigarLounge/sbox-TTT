@@ -1,8 +1,6 @@
 using Sandbox;
 
-using TTT.Roles;
-
-namespace TTT.Map;
+namespace TTT;
 
 public enum FeedEntryType
 {

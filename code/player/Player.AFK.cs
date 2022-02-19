@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-namespace TTT.Player;
+namespace TTT;
 
-public partial class TTTPlayer
+public partial class Player
 {
 	public readonly static List<InputButton> Buttons = Enum.GetValues( typeof( InputButton ) ).Cast<InputButton>().ToList();
 
@@ -35,9 +35,9 @@ public partial class TTTPlayer
 			return;
 		}
 
-		if ( _timeSinceLastAction > Gamemode.Game.AFKTimer )
+		if ( _timeSinceLastAction > Game.AFKTimer )
 		{
-			if ( Gamemode.Game.KickAFKPlayers )
+			if ( Game.KickAFKPlayers )
 			{
 				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was kicked from the server for being AFK." );
 

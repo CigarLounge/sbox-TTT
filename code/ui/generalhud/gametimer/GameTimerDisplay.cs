@@ -1,8 +1,6 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Gamemode;
-
 namespace TTT.UI;
 
 public class GameTimerDisplay : Panel
@@ -39,7 +37,7 @@ public class GameTimerDisplay : Panel
 
 		_roundLabel.Text = $"{Game.Current.Round.RoundName.ToUpper()}";
 
-		_timerLabel.SetClass( "disabled", Game.Current.Round is Rounds.WaitingRound );
+		_timerLabel.SetClass( "disabled", Game.Current.Round is WaitingRound );
 		_timerLabel.Text = Game.Current.Round.TimeLeftFormatted;
 	}
 }

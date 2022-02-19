@@ -1,11 +1,8 @@
 using System;
 using System.ComponentModel;
 using Sandbox;
-using Sandbox.player;
-using TTT.Player;
-using TTT.UI;
 
-namespace TTT.Items;
+namespace TTT;
 
 public enum AmmoType : byte
 {
@@ -22,12 +19,6 @@ public partial class AmmoInfo : ItemInfo
 {
 	[Property, Category( "Important" )] public AmmoType Type { get; set; }
 	[Property, Category( "Important" )] public int Amount { get; set; }
-
-
-	protected override void PostLoad()
-	{
-		base.PostLoad();
-	}
 }
 
 // TODO: Kole add hammer property for different world models.
@@ -38,19 +29,21 @@ public abstract partial class Ammo : Prop, IEntityHint
 	string IEntityHint.TextOnTick => throw new NotImplementedException();
 
 	public Ammo() { }
-	public Ammo( AmmoType Type ) { }
+	public Ammo( AmmoType Type )
+	{
+	}
 
-	bool IEntityHint.CanHint( TTTPlayer player )
+	bool IEntityHint.CanHint( Player player )
 	{
 		throw new NotImplementedException();
 	}
 
-	EntityHintPanel IEntityHint.DisplayHint( TTTPlayer player )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
 		throw new NotImplementedException();
 	}
 
-	void IEntityHint.Tick( TTTPlayer player )
+	void IEntityHint.Tick( Player player )
 	{
 		throw new NotImplementedException();
 	}

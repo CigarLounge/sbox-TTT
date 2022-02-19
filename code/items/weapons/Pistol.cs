@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Hammer.EditorModel( "weapons/rust_pistol/rust_pistol.vmdl" )]
 [Library( "ttt_pistol", Title = "Pistol", Spawnable = true )]

@@ -2,9 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-using TTT.Player;
-using TTT.Roles;
-
 namespace TTT.UI;
 
 public class ScoreboardEntry : Panel
@@ -46,7 +43,7 @@ public class ScoreboardEntry : Panel
 
 		SetClass( "me", Client == Local.Client );
 
-		if ( Client.Pawn is not TTTPlayer player )
+		if ( Client.Pawn is not Player player )
 		{
 			return;
 		}

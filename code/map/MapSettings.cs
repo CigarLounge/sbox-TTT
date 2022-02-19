@@ -1,9 +1,6 @@
 using Sandbox;
 
-using TTT.Events;
-using TTT.Rounds;
-
-namespace TTT.Map;
+namespace TTT;
 
 [Library( "ttt_map_settings" )]
 public partial class MapSettings : Entity

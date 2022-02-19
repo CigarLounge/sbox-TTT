@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Items;
-using TTT.Player;
-
-namespace TTT.Map;
+namespace TTT;
 
 public partial class MapHandler
 {
@@ -20,7 +14,7 @@ public partial class MapHandler
 		if ( Host.IsClient )
 			return;
 
-		RandomWeaponCount = Entity.All.OfType<TTTWeaponRandom>().Count();
+		RandomWeaponCount = Entity.All.OfType<WeaponRandom>().Count();
 	}
 
 	public void CleanUp()

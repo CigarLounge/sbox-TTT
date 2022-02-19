@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT.Player.Camera;
+namespace TTT;
 
 public partial class FreeSpectateCamera : Sandbox.Camera, IObservationCamera
 {

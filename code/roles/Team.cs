@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using TTT.Player;
-
-namespace TTT.Roles;
+namespace TTT;
 
 public enum Team : byte
 {
@@ -36,24 +34,24 @@ public static class TeamExtensions
 	}
 
 	// TODO: Koley ;), cache this. Maybe in a dictionary at run time?
-	public static IEnumerable<TTTPlayer> GetOthers( this Team team, TTTPlayer player )
+	public static IEnumerable<Player> GetOthers( this Team team, Player player )
 	{
-		return Entity.All.OfType<TTTPlayer>().Where( e => e.Team == team && player != e );
+		return Entity.All.OfType<Player>().Where( e => e.Team == team && player != e );
 	}
 
-	public static IEnumerable<TTTPlayer> GetAll( this Team team )
+	public static IEnumerable<Player> GetAll( this Team team )
 	{
-		return Entity.All.OfType<TTTPlayer>().Where( e => e.Team == team );
+		return Entity.All.OfType<Player>().Where( e => e.Team == team );
 	}
 
 	public static int GetCount( this Team team )
 	{
-		return Entity.All.OfType<TTTPlayer>().Where( e => e.Team == team ).Count();
+		return Entity.All.OfType<Player>().Where( e => e.Team == team ).Count();
 	}
 
 	public static To ToClients( this Team team )
 	{
-		return To.Multiple( Client.All.Where( x => (x.Pawn as TTTPlayer).Role.Info.Team == team ) );
+		return To.Multiple( Client.All.Where( x => (x.Pawn as Player).Role.Info.Team == team ) );
 	}
 }
 

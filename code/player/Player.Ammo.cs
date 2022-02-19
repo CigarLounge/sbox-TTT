@@ -1,11 +1,10 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
-using TTT.Items;
 
-namespace TTT.Player;
+namespace TTT;
 
-public partial class TTTPlayer
+public partial class Player
 {
 	[Net]
 	public List<int> Ammo { get; set; } = new();

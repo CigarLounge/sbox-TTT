@@ -2,19 +2,17 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Roles;
 
-namespace TTT.Player;
+namespace TTT;
 
-public partial class TTTPlayer
+public partial class Player
 {
 	public bool IsTeamVoiceChatEnabled { get; private set; } = false;
 
 	// clientside-only
 	public bool IsSpeaking { get; internal set; } = false;
 
-	private static readonly Dictionary<TTTPlayer, List<Client>> OldReceiveClients = new();
+	private static readonly Dictionary<Player, List<Client>> OldReceiveClients = new();
 
 	private void TickPlayerVoiceChat()
 	{
@@ -24,7 +22,7 @@ public partial class TTTPlayer
 
 			if ( Input.Pressed( InputButton.Walk ) )
 			{
-				if ( Local.Pawn is TTTPlayer player && CanUseTeamVoiceChat( player ) )
+				if ( Local.Pawn is Player player && CanUseTeamVoiceChat( player ) )
 				{
 					RequestTeamChat( true );
 				}
@@ -46,7 +44,7 @@ public partial class TTTPlayer
 	[ServerCmd( Name = "ttt_requestteamchat" )]
 	public static void RequestTeamChat( bool toggle )
 	{
-		TTTPlayer player = ConsoleSystem.Caller.Pawn as TTTPlayer;
+		Player player = ConsoleSystem.Caller.Pawn as Player;
 
 		if ( !player.IsValid() || toggle && !CanUseTeamVoiceChat( player ) )
 		{
@@ -56,7 +54,7 @@ public partial class TTTPlayer
 		ToggleTeamChat( player, toggle );
 	}
 
-	private static void ToggleTeamChat( TTTPlayer player, bool toggle )
+	private static void ToggleTeamChat( Player player, bool toggle )
 	{
 		player.IsTeamVoiceChatEnabled = toggle;
 
@@ -66,7 +64,7 @@ public partial class TTTPlayer
 		{
 			foreach ( Client client in Client.All )
 			{
-				if ( client.Pawn is TTTPlayer pawnPlayer && player.Team == pawnPlayer.Team )
+				if ( client.Pawn is Player pawnPlayer && player.Team == pawnPlayer.Team )
 				{
 					clients.Add( client );
 				}
@@ -97,13 +95,13 @@ public partial class TTTPlayer
 		ClientToggleTeamVoiceChat( To.Multiple( clients ), player, toggle );
 	}
 
-	private static bool CanUseTeamVoiceChat( TTTPlayer player )
+	private static bool CanUseTeamVoiceChat( Player player )
 	{
 		return player.LifeState == LifeState.Alive && player.Team == Team.Traitors;
 	}
 
 	[ClientRpc]
-	public static void ClientToggleTeamVoiceChat( TTTPlayer player, bool toggle )
+	public static void ClientToggleTeamVoiceChat( Player player, bool toggle )
 	{
 		if ( !player.IsValid() )
 		{
@@ -112,7 +110,7 @@ public partial class TTTPlayer
 
 		player.IsTeamVoiceChatEnabled = toggle;
 
-		if ( Local.Pawn is TTTPlayer localPlayer && localPlayer != player )
+		if ( Local.Pawn is Player localPlayer && localPlayer != player )
 		{
 			return;
 		}
@@ -122,7 +120,7 @@ public partial class TTTPlayer
 	}
 
 	[TTTEvent.Player.Role.Selected]
-	private static void OnSelectRole( TTTPlayer player )
+	private static void OnSelectRole( Player player )
 	{
 		if ( !Host.IsServer )
 		{
@@ -140,7 +138,7 @@ public partial class TTTPlayer
 		// sync already talking other players with the current player
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is TTTPlayer pawnPlayer && player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled )
+			if ( client.Pawn is Player pawnPlayer && player != pawnPlayer && pawnPlayer.IsTeamVoiceChatEnabled )
 			{
 				bool activateTalking = player.Team == pawnPlayer.Team;
 

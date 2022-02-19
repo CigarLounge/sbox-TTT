@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 using Sandbox;
 
-using TTT.Player;
-
-namespace TTT.Roles;
+namespace TTT;
 
 [Library( "ttt_role_traitor" )]
 public class TraitorRole : BaseRole
 {
-	public override void OnSelect( TTTPlayer player )
+	public override void OnSelect( Player player )
 	{
 		if ( Host.IsServer && player.Team == Team.None )
 		{
-			foreach ( TTTPlayer otherPlayer in player.Team.GetAll() )
+			foreach ( Player otherPlayer in player.Team.GetAll() )
 			{
 				if ( otherPlayer == player )
 				{
@@ -25,7 +23,7 @@ public class TraitorRole : BaseRole
 				otherPlayer.SendClientRole( To.Single( player ) );
 			}
 
-			foreach ( TTTPlayer otherPlayer in Utils.GetPlayers() )
+			foreach ( Player otherPlayer in Utils.GetPlayers() )
 			{
 				if ( otherPlayer.IsMissingInAction )
 				{
@@ -37,7 +35,7 @@ public class TraitorRole : BaseRole
 		base.OnSelect( player );
 	}
 
-	public override void OnKilled( TTTPlayer killer )
+	public override void OnKilled( Player killer )
 	{
 		var clients = Utils.GiveAliveDetectivesCredits( 100 );
 		RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );

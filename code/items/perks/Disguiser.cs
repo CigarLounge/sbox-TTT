@@ -1,8 +1,7 @@
 using Sandbox;
-using TTT.Player;
 using System.Threading.Tasks;
 
-namespace TTT.Items;
+namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_perk_disguiser", Title = "Disguiser" )]
@@ -13,7 +12,7 @@ public partial class Disguiser : Perk
 	private readonly float _lockOutSeconds = 1f;
 	private bool _isLocked = false;
 
-	public override void Simulate( TTTPlayer player )
+	public override void Simulate( Player player )
 	{
 		if ( Input.Down( InputButton.Grenade ) && !_isLocked )
 		{

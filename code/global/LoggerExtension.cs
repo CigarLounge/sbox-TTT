@@ -1,12 +1,12 @@
 using Sandbox;
 
-namespace TTT.Globals;
+namespace TTT;
 
 public static class LoggerExtension
 {
 	public static void Debug( this Logger log, object obj = null )
 	{
-		if ( !Gamemode.Game.Current.Debug )
+		if ( !Game.Current.Debug )
 			return;
 
 		string host = Host.IsServer ? "SERVER" : "CLIENT";

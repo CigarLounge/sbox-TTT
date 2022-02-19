@@ -2,19 +2,17 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-using TTT.Player;
-
-namespace TTT.Items;
+namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
 	public const float THROW_FORCE = 500;
 	public Entity GrabbedEntity { get; set; }
-	public TTTPlayer _owner;
+	public Player _owner;
 
 	public bool IsHolding => GrabbedEntity != null;
 
-	public GrabbableProp( TTTPlayer player, Entity ent )
+	public GrabbableProp( Player player, Entity ent )
 	{
 		_owner = player;
 
@@ -34,7 +32,7 @@ public class GrabbableProp : IGrabbable
 		GrabbedEntity = null;
 	}
 
-	public void Update( TTTPlayer player )
+	public void Update( Player player )
 	{
 		// If the entity is destroyed drop it.
 		if ( !GrabbedEntity?.IsValid ?? true )

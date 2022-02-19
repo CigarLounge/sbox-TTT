@@ -2,7 +2,7 @@ using System;
 
 using Sandbox;
 
-namespace TTT.Items;
+namespace TTT;
 
 partial class ViewModel : BaseViewModel
 {

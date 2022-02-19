@@ -1,5 +1,5 @@
 //
-// TTT.Items.CarriableInfo
+// TTT.CarriableInfo
 //
 @BaseClass = carri : ""
 [

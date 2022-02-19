@@ -1,8 +1,8 @@
-namespace TTT.Player.Camera;
+namespace TTT;
 
 public interface IObservationCamera
 {
-	void OnUpdateObservatedPlayer( TTTPlayer oldObservatedPlayer, TTTPlayer newObservatedPlayer )
+	void OnUpdateObservatedPlayer( Player oldObservatedPlayer, Player newObservatedPlayer )
 	{
 
 	}

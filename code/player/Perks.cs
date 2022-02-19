@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-using TTT.Items;
-
-namespace TTT.Player;
+namespace TTT;
 
 public partial class Perks : EntityComponent
 {
