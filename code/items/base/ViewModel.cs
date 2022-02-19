@@ -28,7 +28,7 @@ partial class ViewModel : BaseViewModel
 			_walkBob += Time.Delta * 25.0f * speed;
 		}
 
-		Position += up * MathF.Sin( _walkBob ) * speed * -1;
-		Position += left * MathF.Sin( _walkBob * 0.6f ) * speed * -0.5f;
+		Position += up * MathF.Sin( _walkBob ) * speed * -0.5f;
+		Position += left * MathF.Sin( _walkBob * 0.6f ) * speed * -0.2f;
 	}
 }

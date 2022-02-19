@@ -140,12 +140,20 @@ public abstract partial class Weapon : Carriable
 
 	public void AttackPrimary()
 	{
+		if ( AmmoClip == 0 )
+		{
+			PlaySound( Info.DryFireSound );
+			return;
+		}
+
 		TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
+		AmmoClip -= 1;
 
 		Rand.SetSeed( Time.Tick );
 
 		ShootEffects();
+		PlaySound( Info.FireSound );
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
 		{
 			ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f );
