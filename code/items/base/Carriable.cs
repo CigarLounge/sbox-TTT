@@ -22,6 +22,7 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Important" )] public SlotType Slot { get; set; }
 	[Property, Category( "Important" )] public bool Spawnable { get; set; }
 	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
+	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
@@ -39,13 +40,15 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	[Net, Predicted]
 	public TimeSince TimeSinceDeployed { get; set; }
 
-	public CarriableInfo Info { get; set; }
 	public new Player Owner
 	{
 		get => base.Owner as Player;
 		set => base.Owner = value;
 	}
+
+	public CarriableInfo Info { get; set; }
 	string IEntityHint.TextOnTick => throw new NotImplementedException();
+	public BaseViewModel HandsModelEntity;
 
 	public Carriable() { }
 
@@ -88,7 +91,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	{
 		Host.AssertClient();
 
-		if ( string.IsNullOrEmpty( Info.ViewModel ) )
+		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
 			return;
 
 		ViewModelEntity = new ViewModel
@@ -97,8 +100,15 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 			Owner = Owner,
 			EnableViewmodelRendering = true
 		};
-
 		ViewModelEntity.SetModel( Info.ViewModel );
+
+		HandsModelEntity = new BaseViewModel
+		{
+			Owner = Owner,
+			EnableViewmodelRendering = true
+		};
+		HandsModelEntity.SetModel( Info.HandsModel );
+		HandsModelEntity.SetParent( ViewModelEntity, true );
 	}
 
 	public override void CreateHudElements() { }

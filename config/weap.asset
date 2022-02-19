@@ -32,6 +32,7 @@
 	]
 	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
 	viewmodel(resource:vmdl) { group = "Models" } : "View Model" : "" : ""
+	handsmodel(resource:vmdl) { group = "Models" } : "Hands Model" : "" : ""
 	deploytime(float) { group = "Stats" } : "Deploy Time" : "0.6" : ""
 	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
 	price(integer) { group = "Stats" } : "Price" : 0 : ""

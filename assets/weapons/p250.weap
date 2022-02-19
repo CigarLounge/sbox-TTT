@@ -24,5 +24,7 @@
 		worldmodel = resource:"models/weapons/w_p250.vmdl"
 		libraryname = "ttt_weapon_p250"
 		title = "P250"
+		spread = 0.0
+		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 	}
 }
