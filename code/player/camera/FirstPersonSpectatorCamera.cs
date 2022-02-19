@@ -15,7 +15,7 @@ public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCa
 			return;
 		}
 
-		player.CurrentPlayer.RenderColor = Color.White;
+		Viewer = Local.Pawn;
 		player.CurrentPlayer = null;
 	}
 
@@ -42,14 +42,6 @@ public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCa
 
 	public void OnUpdateObservatedPlayer( Player oldObservatedPlayer, Player newObservatedPlayer )
 	{
-		if ( oldObservatedPlayer != null )
-		{
-			oldObservatedPlayer.RenderColor = Color.White;
-		}
-
-		if ( newObservatedPlayer != null )
-		{
-			newObservatedPlayer.RenderColor = Color.Transparent;
-		}
+		Viewer = newObservatedPlayer;
 	}
 }
