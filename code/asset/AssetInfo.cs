@@ -4,11 +4,21 @@ using System.Collections.Generic;
 namespace TTT;
 
 [Hammer.Skip]
-public partial class AssetInfo : Asset
+public partial class Asset : Sandbox.Asset
 {
-	public static Dictionary<string, AssetInfo> Collection { get; set; } = new();
+	private static Dictionary<string, Asset> Collection { get; set; } = new();
 	[Property] public string LibraryName { get; set; }
 	[Property] public string Title { get; set; } = "";
+
+	public static T GetInfo<T>( string libraryName ) where T : Asset
+	{
+		if ( string.IsNullOrEmpty( libraryName ) || !Collection.ContainsKey( libraryName ) )
+		{
+			return null;
+		}
+
+		return Collection[libraryName] as T;
+	}
 
 	protected override void PostLoad()
 	{

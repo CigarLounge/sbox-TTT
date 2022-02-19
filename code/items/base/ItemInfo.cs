@@ -4,7 +4,7 @@ using System.ComponentModel;
 namespace TTT;
 
 [Hammer.Skip]
-public abstract partial class ItemInfo : AssetInfo
+public abstract partial class ItemInfo : Asset
 {
 	public Model CachedWorldModel { get; set; }
 	[Property, Category( "Important" )] public bool Buyable { get; set; }

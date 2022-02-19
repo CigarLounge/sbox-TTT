@@ -86,8 +86,8 @@ public partial class Game
 			return;
 		}
 
-		var itemInfo = AssetInfo.Collection[libraryName] as ItemInfo;
-		if ( !itemInfo.Buyable )
+		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+		if ( !itemInfo?.Buyable ?? true )
 			return;
 
 		if ( itemInfo is CarriableInfo )
@@ -109,8 +109,8 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = AssetInfo.Collection[libraryName] as ItemInfo;
-		if ( !itemInfo.Buyable )
+		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+		if ( !itemInfo?.Buyable ?? true )
 			return;
 
 		if ( itemInfo is CarriableInfo )

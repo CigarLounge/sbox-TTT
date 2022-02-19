@@ -43,7 +43,7 @@ public partial class Player
 			Rotation = Rotation
 		};
 
-		corpse.KillerWeapon = CarriableInfo.Collection[LastDamageWeapon.ClassInfo.Title] as CarriableInfo;
+		corpse.KillerWeapon = CarriableInfo.GetInfo<CarriableInfo>( LastDamageWeapon?.ClassInfo?.Title );
 		corpse.WasHeadshot = LastDamageWasHeadshot;
 		corpse.Distance = LastDistanceToAttacker;
 		corpse.DamageFlag = _lastDamageInfo.Flags;

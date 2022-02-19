@@ -6,7 +6,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "role" ), AutoGenerate]
-public partial class RoleInfo : AssetInfo
+public partial class RoleInfo : Asset
 {
 	[Property] public Team Team { get; set; } = Team.None;
 	[Property] public Color Color { get; set; }
@@ -20,14 +20,14 @@ public abstract class BaseRole : LibraryClass
 
 	public BaseRole()
 	{
-		Info = AssetInfo.Collection[ClassInfo?.Name] as RoleInfo;
+		Info = Asset.GetInfo<RoleInfo>( ClassInfo.Name );
 	}
 
 	public virtual void OnSelect( Player player )
 	{
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 
-		if ( Host.IsServer )	
+		if ( Host.IsServer )
 			player.ServerUpdateShop();
 
 		Event.Run( TTTEvent.Player.Role.Selected, player );
