@@ -41,17 +41,7 @@ public partial class Player
 
 		if ( player == null )
 		{
-			List<Client> traitors = new();
-
-			foreach ( Client client in Client.All )
-			{
-				if ( (client.Pawn as Player).Team == Team.Traitors )
-				{
-					traitors.Add( client );
-				}
-			}
-
-			RPCs.ClientAddMissingInAction( To.Multiple( traitors ), this );
+			RPCs.ClientAddMissingInAction( Team.Traitors.ToClients(), this );
 		}
 		else
 		{

@@ -51,7 +51,6 @@ public partial class Player
 
 	public float ArmorReductionPercentage { get; private set; } = 0.7f;
 
-
 	public void SetHealth( float health )
 	{
 		Health = Math.Min( health, MaxHealth );
@@ -73,8 +72,6 @@ public partial class Player
 			info.Damage *= ArmorReductionPercentage;
 		}
 
-		To client = To.Single( this );
-
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 
@@ -83,10 +80,10 @@ public partial class Player
 				return;
 			}
 
-			ClientAnotherPlayerDidDamage( client, info.Position, Health.LerpInverse( 100, 0 ) );
+			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
 		}
 
-		ClientTookDamage( client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
+		ClientTookDamage( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
 
 		// Play pain sounds
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
