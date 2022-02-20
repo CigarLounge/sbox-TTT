@@ -14,9 +14,6 @@ public partial class Player
 
 	protected override void TickPlayerUse()
 	{
-		if ( LifeState != LifeState.Alive )
-			return;
-
 		if ( Input.Pressed( InputButton.Use ) )
 		{
 			Using = FindUsable();
@@ -52,6 +49,9 @@ public partial class Player
 	{
 		if ( IsUseDisabled() )
 			return null;
+
+		var position = IsSpectator ? EyePosition : (Camera as Camera).Position;
+		var rotation = IsSpectator ? EyeRotation : (Camera as Camera).Rotation;
 
 		// First try a direct 0 width line
 		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (105 * Scale) )

@@ -46,7 +46,7 @@ public partial class CarriableInfo : ItemInfo
 }
 
 [Hammer.Skip]
-public abstract partial class Carriable : BaseCarriable, IEntityHint
+public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 {
 	[Net, Predicted]
 	public TimeSince TimeSinceDeployed { get; set; }
@@ -58,7 +58,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 	}
 
 	public CarriableInfo Info { get; set; }
-	string IEntityHint.TextOnTick => throw new NotImplementedException();
+	string IEntityHint.TextOnTick => Info.Title;
 	public BaseViewModel HandsModelEntity;
 
 	public Carriable() { }
@@ -155,16 +155,29 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 
 	bool IEntityHint.CanHint( Player player )
 	{
-		throw new NotImplementedException();
+		return Owner == null;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
-		throw new NotImplementedException();
+		return new UI.Hint( (this as IEntityHint).TextOnTick );
 	}
 
-	void IEntityHint.Tick( Player player )
+	void IEntityHint.Tick( Player player ) { }
+
+	bool IUse.OnUse( Entity user )
 	{
-		throw new NotImplementedException();
+		if ( IsServer && user is Player player )
+			player.Inventory.Swap( this );	
+
+		return false;
+	}
+
+	bool IUse.IsUsable( Entity user )
+	{
+		if ( Owner != null || user is not Player )
+			return false;
+
+		return true;
 	}
 }

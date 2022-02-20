@@ -33,6 +33,17 @@ public partial class Inventory : BaseInventory
 		return SlotCapacity[(int)slotType] > 0;
 	}
 
+	public Carriable Swap( Carriable carriable )
+	{
+		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
+		bool wasActive = ent?.IsActiveChild() ?? false;
+
+		Drop( ent );
+		Add( carriable, wasActive );
+
+		return ent as Carriable;
+	}
+
 	public bool IsCarrying( string libraryName )
 	{
 		return List.Any( x => x.ClassInfo?.Name == libraryName );

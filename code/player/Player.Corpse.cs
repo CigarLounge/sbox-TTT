@@ -221,7 +221,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && !IsIdentified )
+		if ( IsServer && !IsIdentified && user.LifeState == LifeState.Alive )
 		{
 			Confirmer = user as Player;
 			Confirm();

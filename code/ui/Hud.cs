@@ -23,6 +23,7 @@ public partial class Hud : HudEntity<RootPanel>
 	[Event.Hotload]
 	public static void OnReload()
 	{
+		return;
 		if ( Host.IsClient )
 			return;
 
