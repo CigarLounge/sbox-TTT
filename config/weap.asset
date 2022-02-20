@@ -58,6 +58,5 @@
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
 	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
 	libraryname(string) : "Library Name" :  : ""
-	title(string) : "Title" : "" : ""
 ]
 

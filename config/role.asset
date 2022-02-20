@@ -12,6 +12,5 @@
 	color(color255) : "Color" :  : ""
 	defaultcredits(integer) : "Default Credits" : 0 : ""
 	libraryname(string) : "Library Name" :  : ""
-	title(string) : "Title" : "" : ""
 ]
 

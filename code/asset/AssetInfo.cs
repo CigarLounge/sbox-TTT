@@ -8,7 +8,7 @@ public partial class Asset : Sandbox.Asset
 {
 	private static Dictionary<string, Asset> Collection { get; set; } = new();
 	[Property] public string LibraryName { get; set; }
-	[Property] public string Title { get; set; } = "";
+	public string Title { get; set; } = "";
 
 	public static T GetInfo<T>( string libraryName ) where T : Asset
 	{
@@ -33,5 +33,6 @@ public partial class Asset : Sandbox.Asset
 			return;
 
 		Collection[LibraryName] = this;
+		Title = attribute.Title;
 	}
 }
