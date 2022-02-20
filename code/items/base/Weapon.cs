@@ -148,6 +148,7 @@ public abstract partial class Weapon : Carriable
 
 		Rand.SetSeed( Time.Tick );
 
+		Owner.SetAnimBool( "b_attack", true );
 		ShootEffects();
 		PlaySound( Info.FireSound );
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
@@ -190,7 +191,7 @@ public abstract partial class Weapon : Carriable
 	[ClientRpc]
 	protected virtual void ShootEffects()
 	{
-		Particles.Create( Info.EjectParticle, EffectEntity, "muzzle" );
+		Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		if ( IsLocalPawn )
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
