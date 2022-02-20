@@ -11,7 +11,7 @@ namespace TTT.Items
 		public int Price { get; set; } = 0;
 		public SlotType? SlotType = null;
 		public Type Type = null;
-		public bool IsLimited { get; set; } = true;
+		public bool IsLimited { get; set; } = false;
 
 		public void CopyFrom( ShopItemData shopItemData )
 		{

@@ -67,11 +67,6 @@ namespace TTT.Player
 				return BuyError.NotAvailable;
 			}
 
-			if ( itemData.IsLimited && BoughtItemsSet.Contains( itemData.Name ) )
-			{
-				return BuyError.LimitReached;
-			}
-
 			return BuyError.None;
 		}
 
