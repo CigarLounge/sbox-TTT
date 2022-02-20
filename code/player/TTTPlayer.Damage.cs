@@ -65,12 +65,6 @@ namespace TTT.Player
 		public override void TakeDamage( DamageInfo info )
 		{
 			LastDamageWasHeadshot = GetHitboxGroup( info.HitboxIndex ) == (int)HitboxGroup.Head;
-
-			if ( LastDamageWasHeadshot )
-			{
-				info.Damage *= 2.0f;
-			}
-
 			if ( Perks.Has( typeof( BodyArmor ) ) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 			{
 				info.Damage *= ArmorReductionPercentage;
