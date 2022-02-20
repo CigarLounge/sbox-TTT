@@ -26,8 +26,11 @@ public partial class Hud : HudEntity<RootPanel>
 		if ( Host.IsClient )
 			return;
 
-		Game.Current.Hud?.Delete();
-		Game.Current.Hud = new Hud();
+		Local.Hud?.Delete();
+		_ = new Hud
+		{
+			Parent = Game.Current
+		};
 	}
 
 	public class GeneralHud : Panel
