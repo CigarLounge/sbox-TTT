@@ -94,12 +94,9 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
 			return;
 
-		ViewModelEntity = new ViewModel
-		{
-			Position = Position,
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
+		ViewModelEntity = new ViewModel();
+		ViewModelEntity.Owner = Owner;
+		ViewModelEntity.EnableViewmodelRendering = true;
 		ViewModelEntity.SetModel( Info.ViewModel );
 
 		HandsModelEntity = new BaseViewModel
