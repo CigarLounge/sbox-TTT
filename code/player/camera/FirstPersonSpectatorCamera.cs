@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FirstPersonSpectatorCamera : Sandbox.Camera, IObservationCamera
+public partial class FirstPersonSpectatorCamera : Camera, IObservationCamera
 {
 	private const float SMOOTH_SPEED = 25f;
 

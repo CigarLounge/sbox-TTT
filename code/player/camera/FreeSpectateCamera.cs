@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FreeSpectateCamera : Sandbox.Camera, IObservationCamera
+public partial class FreeSpectateCamera : Camera, IObservationCamera
 {
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
