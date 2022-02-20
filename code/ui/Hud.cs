@@ -20,6 +20,16 @@ public partial class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<GeneralHud>();
 	}
 
+	[Event.Hotload]
+	public static void OnReload()
+	{
+		if ( Host.IsClient )
+			return;
+
+		Game.Current.Hud?.Delete();
+		Game.Current.Hud = new Hud();
+	}
+
 	public class GeneralHud : Panel
 	{
 		public static GeneralHud Instance;

@@ -7,6 +7,8 @@ namespace TTT;
 [Hammer.Skip]
 public partial class Game : Sandbox.Game
 {
+	public UI.Hud Hud { get; set; }
+
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
@@ -23,10 +25,7 @@ public partial class Game : Sandbox.Game
 
 		if ( IsServer )
 		{
-			_ = new UI.Hud
-			{
-				Parent = this
-			};
+			Hud = new UI.Hud();
 		}
 	}
 
