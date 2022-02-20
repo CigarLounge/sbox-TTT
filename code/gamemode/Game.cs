@@ -72,21 +72,19 @@ public partial class Game : Sandbox.Game
 
 	public override void OnKilled( Entity entity )
 	{
-		if ( entity is Player player )
-		{
-			Round.OnPlayerKilled( player );
-		}
+		if ( entity is Player player )	
+			Round.OnPlayerKilled( player );	
 
 		base.OnKilled( entity );
 	}
 
 	public override void ClientJoined( Client client )
 	{
-		Round.OnPlayerJoin( client.Pawn as Player );
 		Player player = new();
 		client.Pawn = player;
 
 		base.ClientJoined( client );
+		Round.OnPlayerJoin( client.Pawn as Player );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )

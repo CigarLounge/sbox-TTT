@@ -11,6 +11,21 @@ public partial class RoleInfo : Asset
 	[Property] public Team Team { get; set; } = Team.None;
 	[Property] public Color Color { get; set; }
 	[Property] public int DefaultCredits { get; set; }
+	[Property] public string[] ExclusiveItems { get; set; }
+
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		if ( LibraryName == "ttt_role_none" )
+			Color = Color.Black;
+		else if ( LibraryName == "ttt_role_innocent" )
+			Color = Color.Green;
+		else if ( LibraryName == "ttt_role_traitor" )
+			Color = Color.Red;
+		else if ( LibraryName == "ttt_role_detective" )
+			Color = Color.Blue;
+	}
 }
 
 [Hammer.Skip]

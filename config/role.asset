@@ -11,6 +11,7 @@
 	]
 	color(color255) : "Color" :  : ""
 	defaultcredits(integer) : "Default Credits" : 0 : ""
+	exclusiveitems(array:string) : "Exclusive Items" :  : ""
 	libraryname(string) : "Library Name" :  : ""
 ]
 
