@@ -41,13 +41,22 @@
 		5 : "Grenade"
 	]
 	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
-	viewmodel(resource:vmdl) { group = "Models" } : "View Model" : "" : ""
-	handsmodel(resource:vmdl) { group = "Models" } : "Hands Model" : "" : ""
+	viewmodel(resource:vmdl) { group = "ViewModels" } : "View Model" : "" : ""
+	handsmodel(resource:vmdl) { group = "ViewModels" } : "Hands Model" : "" : ""
+	holdtype(choices) { group = "WorldModels" } : "Hold Type" : 0 : "" =
+	[
+		0 : "None"
+		1 : "Pistol"
+		2 : "Rifle"
+		3 : "Shotgun"
+		4 : "Carry"
+		5 : "Fists"
+	]
 	deploytime(float) { group = "Stats" } : "Deploy Time" : "0.6" : ""
 	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
 	price(integer) { group = "Stats" } : "Price" : 0 : ""
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
-	worldmodel(resource:vmdl) { group = "Models" } : "World Model" : "" : ""
+	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
 	libraryname(string) : "Library Name" :  : ""
 	title(string) : "Title" : "" : ""
 ]

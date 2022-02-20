@@ -26,5 +26,8 @@
 		spread = 0.02
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		ammotype = "1"
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		holdtype = "1"
 	}
 }

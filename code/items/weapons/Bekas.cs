@@ -52,11 +52,6 @@ public partial class Bekas : Weapon
 		_attackedDuringReload = false;
 	}
 
-	public override void SimulateAnimator( PawnAnimator anim )
-	{
-		anim.SetParam( "holdtype", 3 );
-	}
-
 	[ClientRpc]
 	public void FinishReload()
 	{

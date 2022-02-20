@@ -6,7 +6,7 @@
 	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
 	price(integer) { group = "Stats" } : "Price" : 0 : ""
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
-	worldmodel(resource:vmdl) { group = "Models" } : "World Model" : "" : ""
+	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
 	libraryname(string) : "Library Name" :  : ""
 	title(string) : "Title" : "" : ""
 ]

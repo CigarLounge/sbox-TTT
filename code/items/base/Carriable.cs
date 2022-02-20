@@ -14,6 +14,16 @@ public enum SlotType
 	Grenade,
 }
 
+public enum HoldType
+{
+	None,
+	Pistol,
+	Rifle,
+	Shotgun,
+	Carry,
+	Fists
+}
+
 [Library( "carri" ), AutoGenerate]
 public partial class CarriableInfo : ItemInfo
 {
@@ -21,8 +31,9 @@ public partial class CarriableInfo : ItemInfo
 
 	[Property, Category( "Important" )] public SlotType Slot { get; set; }
 	[Property, Category( "Important" )] public bool Spawnable { get; set; }
-	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
-	[Property, Category( "Models" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
+	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; }
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
@@ -99,11 +110,9 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		ViewModelEntity.EnableViewmodelRendering = true;
 		ViewModelEntity.SetModel( Info.ViewModel );
 
-		HandsModelEntity = new BaseViewModel
-		{
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
+		HandsModelEntity = new BaseViewModel();
+		HandsModelEntity.Owner = Owner;
+		HandsModelEntity.EnableViewmodelRendering = true;
 		HandsModelEntity.SetModel( Info.HandsModel );
 		HandsModelEntity.SetParent( ViewModelEntity, true );
 	}
@@ -137,6 +146,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint
 		base.OnCarryDrop( dropper );
 
 		(dropper as Player).Inventory.SlotCapacity[(int)Info.Slot]++;
+	}
+
+	public override void SimulateAnimator( PawnAnimator anim )
+	{
+		anim.SetParam( "holdtype", (int)Info.HoldType );
 	}
 
 	bool IEntityHint.CanHint( Player player )

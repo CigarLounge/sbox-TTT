@@ -26,5 +26,8 @@
 		libraryname = "ttt_weapon_bekas"
 		title = "Bekas-M"
 		ammotype = "2"
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		holdtype = "3"
 	}
 }
