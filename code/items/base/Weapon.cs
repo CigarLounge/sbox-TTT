@@ -21,6 +21,8 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public int BulletsPerFire { get; set; } = 1;
 	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
 	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
+	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; }
+	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; }
 	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; }
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; }
@@ -249,7 +251,7 @@ public abstract partial class Weapon : Carriable
 						.WithWeapon( this );
 
 					damageInfo.Damage = Info.Damage;
-					//GetDamageFalloff( trace.Distance, damage, trace.StartPos, trace.EndPos );
+					GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
 
 					trace.Entity.TakeDamage( damageInfo );
 				}
