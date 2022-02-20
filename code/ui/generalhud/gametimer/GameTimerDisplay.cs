@@ -37,7 +37,7 @@ public class GameTimerDisplay : Panel
 
 		_roundLabel.Text = $"{Game.Current.Round.RoundName.ToUpper()}";
 
-		_timerLabel.SetClass( "disabled", Game.Current.Round is WaitingRound );
+		_timerLabel.Enabled( Game.Current.Round is not WaitingRound );
 		_timerLabel.Text = Game.Current.Round.TimeLeftFormatted;
 	}
 }
