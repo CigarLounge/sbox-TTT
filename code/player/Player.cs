@@ -126,6 +126,19 @@ public partial class Player : Sandbox.Player
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 
+	public override void StartTouch( Entity other )
+	{
+		if ( other is PickupTrigger )
+		{
+			StartTouch( other.Parent );
+
+			return;
+		}
+
+		if ( IsServer )
+			Inventory.Pickup( other );
+	}
+
 	public void DeleteItems()
 	{
 		Perks.Clear();
