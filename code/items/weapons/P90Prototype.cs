@@ -30,7 +30,7 @@ namespace TTT.Items
 				ClipSize = 50,
 
 				BulletSize = 4f,
-				Damage = 6f,
+				Damage = 20f,
 				Force = 1f,
 				Spread = 0.03f,
 				Recoil = 1f,
