@@ -139,7 +139,7 @@ public partial class Hands : Carriable
 
 		switch ( tr.Entity )
 		{
-			case PlayerCorpse corpse:
+			case Corpse corpse:
 				GrabbedEntity = new GrabbableCorpse( player, corpse, tr.Body, tr.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.

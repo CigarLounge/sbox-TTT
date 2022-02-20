@@ -26,7 +26,6 @@ public partial class Player : Sandbox.Player
 	}
 
 	private static int CarriableDropVelocity { get; set; } = 300;
-	private DamageInfo _lastDamageInfo;
 
 	public Player()
 	{
@@ -76,24 +75,19 @@ public partial class Player : Sandbox.Player
 	{
 		base.OnKilled();
 
-		BecomePlayerCorpseOnServer( _lastDamageInfo.Force, GetHitboxBone( _lastDamageInfo.HitboxIndex ) );
+		BecomePlayerCorpseOnServer();
 
 		Inventory.DropAll();
 		DeleteItems();
 		IsMissingInAction = true;
 
 		RPCs.ClientOnPlayerDied( this );
-		Role?.OnKilled( _lastDamageInfo.Attacker as Player );
+		Role?.OnKilled( LastAttacker as Player );
 
 		if ( Game.Current.Round is InProgressRound )
-		{
 			SyncMIA();
-		}
-		else if ( Game.Current.Round is PostRound && PlayerCorpse != null && !PlayerCorpse.IsIdentified )
-		{
-			PlayerCorpse.IsIdentified = true;
-			RPCs.ClientConfirmPlayer( null, PlayerCorpse, this, PlayerCorpse.DeadPlayerClientData.Name, PlayerCorpse.DeadPlayerClientData.PlayerId, Role.ClassInfo.Name, PlayerCorpse.GetConfirmationData(), PlayerCorpse.KillerWeapon.LibraryName, PlayerCorpse.Perks );
-		}
+		else if ( Game.Current.Round is PostRound && Corpse != null && !Corpse.IsIdentified )
+			Corpse.Confirm();
 	}
 
 	public override void Simulate( Client client )

@@ -6,7 +6,7 @@ namespace TTT;
 public class GrabbableCorpse : IGrabbable
 {
 	private readonly Player _owner;
-	private readonly PlayerCorpse _corpse;
+	private readonly Corpse _corpse;
 	private PhysicsBody _handPhysicsBody;
 	private readonly PhysicsBody _corpsePhysicsBody;
 	private readonly int _corpseBone;
@@ -17,7 +17,7 @@ public class GrabbableCorpse : IGrabbable
 		get => _holdJoint.IsValid;
 	}
 
-	public GrabbableCorpse( Player player, PlayerCorpse corpse, PhysicsBody physicsBodyCorpse, int corpseBone )
+	public GrabbableCorpse( Player player, Corpse corpse, PhysicsBody physicsBodyCorpse, int corpseBone )
 	{
 		_owner = player;
 		_corpse = corpse;

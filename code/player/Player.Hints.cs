@@ -12,6 +12,9 @@ public partial class Player
 
 	private void TickEntityHints()
 	{
+		if ( !IsClient )
+			return;
+
 		if ( Camera is ThirdPersonSpectateCamera )
 		{
 			DeleteHint();
@@ -31,46 +34,59 @@ public partial class Player
 		{
 			hint.Tick( this );
 
-			if ( IsClient )
-			{
-				_currentHintPanel.UpdateHintPanel( hint.TextOnTick );
-			}
+			_currentHintPanel.UpdateHintPanel( hint.TextOnTick );
 
 			return;
 		}
 
 		DeleteHint();
 
-		if ( IsClient )
+		if ( hint.ShowGlow && hint is ModelEntity model && model.IsValid() )
 		{
-			if ( hint.ShowGlow && hint is ModelEntity model && model.IsValid() )
-			{
-				model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
-				model.GlowActive = true;
-			}
-
-			_currentHintPanel = hint.DisplayHint( this );
-			_currentHintPanel.Parent = UI.HintDisplay.Instance;
-			_currentHintPanel.Enabled( true );
+			model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
+			model.GlowActive = true;
 		}
+
+		_currentHintPanel = hint.DisplayHint( this );
+		_currentHintPanel.Parent = UI.HintDisplay.Instance;
+		_currentHintPanel.Enabled( true );
 
 		_currentHint = hint;
 	}
 
 	private void DeleteHint()
 	{
-		if ( IsClient )
+		if ( _currentHint != null && _currentHint is ModelEntity model && model.IsValid() )
 		{
-			if ( _currentHint != null && _currentHint is ModelEntity model && model.IsValid() )
-			{
-				model.GlowActive = false;
-			}
-
-			_currentHintPanel?.Delete( true );
-			_currentHintPanel = null;
-			UI.FullScreenHintMenu.Instance?.Close();
+			model.GlowActive = false;
 		}
 
+		_currentHintPanel?.Delete( true );
+		_currentHintPanel = null;
+		UI.FullScreenHintMenu.Instance?.Close();
+
 		_currentHint = null;
+	}
+
+	// Similar to "IsLookingAtType" but with an extra check ensuring we are within the range
+	// of the "HintDistance".
+	private IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
+	{
+		Camera camera = Camera as Camera;
+
+		var trace = Trace.Ray( camera.Position, camera.Position + camera.Rotation.Forward * maxHintDistance );
+		trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( CurrentPlayer );
+
+		/*
+		if ( IsSpectatingPlayer )
+			trace = trace.Ignore( CurrentPlayer );
+		*/
+
+		TraceResult tr = trace.UseHitboxes().Run();
+
+		if ( tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance( tr.EndPos ) <= hint.HintDistance )
+			return hint;
+
+		return null;
 	}
 }

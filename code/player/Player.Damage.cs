@@ -45,13 +45,12 @@ public partial class Player
 	[Net]
 	public float MaxHealth { get; set; } = 100f;
 
-	public Carriable LastDamageWeapon { get; private set; }
-
-	public bool LastDamageWasHeadshot { get; private set; } = false;
+	public DamageInfo LastDamageInfo { get; private set; }
 
 	public float LastDistanceToAttacker { get; private set; } = 0f;
 
 	public float ArmorReductionPercentage { get; private set; } = 0.7f;
+
 
 	public void SetHealth( float health )
 	{
@@ -60,25 +59,24 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		LastDamageWasHeadshot = GetHitboxGroup( info.HitboxIndex ) == (int)HitboxGroup.Head;
+		LastDamageInfo = info;
 
-		if ( LastDamageWasHeadshot )
+		var isHeadshot = GetHitboxGroup( info.HitboxIndex ) == (int)HitboxGroup.Head;
+
+		if ( isHeadshot )
 		{
 			info.Damage *= 2.0f;
 		}
 
-		if ( Perks.Has( typeof( BodyArmor ) ) && !LastDamageWasHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
+		if ( Perks.Has( typeof( BodyArmor ) ) && !isHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{
 			info.Damage *= ArmorReductionPercentage;
 		}
-
-		LastDamageWeapon = info.Weapon.IsValid() ? info.Weapon as Carriable : null;
 
 		To client = To.Single( this );
 
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-			LastDistanceToAttacker = Utils.SourceUnitsToMeters( Position.Distance( attacker.Position ) );
 
 			if ( Game.Current.Round is not (InProgressRound or PostRound) )
 			{
@@ -86,10 +84,6 @@ public partial class Player
 			}
 
 			ClientAnotherPlayerDidDamage( client, info.Position, Health.LerpInverse( 100, 0 ) );
-		}
-		else
-		{
-			LastDistanceToAttacker = 0f;
 		}
 
 		ClientTookDamage( client, info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
@@ -105,7 +99,7 @@ public partial class Player
 			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
 		}
 
-		_lastDamageInfo = info;
+		LastDamageInfo = info;
 
 		base.TakeDamage( info );
 	}

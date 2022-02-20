@@ -2,61 +2,41 @@ using Sandbox;
 
 namespace TTT;
 
-public struct ConfirmationData
-{
-	public bool Identified;
-	public bool Headshot;
-	public DamageFlags DamageFlag;
-	public float Time;
-	public float Distance;
-}
-
 public partial class Player
 {
-	public PlayerCorpse PlayerCorpse { get; set; }
+	public new Corpse Corpse { get; set; }
 
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
-	public bool IsConfirmed = false;
+	public bool IsConfirmed { get; set; } = false;
 
-	public bool IsMissingInAction = false;
+	public bool IsMissingInAction { get; set; } = false;
 
-	public Player CorpseConfirmer = null;
+	public Player CorpseConfirmer { get; set; } = null;
 
 	public void RemovePlayerCorpse()
 	{
-		if ( PlayerCorpse == null || !PlayerCorpse.IsValid() )
+		if ( !Corpse.IsValid() )
 		{
 			return;
 		}
 
-		PlayerCorpse.Delete();
-		PlayerCorpse = null;
+		Corpse.Delete();
+		Corpse = null;
 	}
 
-	private void BecomePlayerCorpseOnServer( Vector3 force, int forceBone )
+	private void BecomePlayerCorpseOnServer()
 	{
-		PlayerCorpse corpse = new()
+		Corpse corpse = new()
 		{
 			Position = Position,
 			Rotation = Rotation
 		};
 
-		corpse.KillerWeapon = CarriableInfo.GetInfo<CarriableInfo>( LastDamageWeapon?.ClassInfo?.Title );
-		corpse.WasHeadshot = LastDamageWasHeadshot;
-		corpse.Distance = LastDistanceToAttacker;
-		corpse.DamageFlag = _lastDamageInfo.Flags;
-		corpse.Perks = new string[Perks.Count];
-
-		for ( int i = 0; i < Perks.Count; i++ )
-		{
-			corpse.Perks[i] = Perks.Get( i ).Info.Title;
-		}
-
 		corpse.CopyFrom( this );
-		corpse.ApplyForceToBone( force, forceBone );
+		corpse.ApplyForceToBone( LastDamageInfo.Force, GetHitboxBone( LastDamageInfo.HitboxIndex ) );
 
-		PlayerCorpse = corpse;
+		Corpse = corpse;
 	}
 }

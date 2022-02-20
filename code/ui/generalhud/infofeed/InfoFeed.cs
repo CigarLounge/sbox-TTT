@@ -5,18 +5,18 @@ namespace TTT.UI;
 
 public partial class InfoFeed : Panel
 {
-	public static InfoFeed Current;
+	public static InfoFeed Instance;
 
 	public InfoFeed() : base()
 	{
-		Current = this;
+		Instance = this;
 
 		StyleSheet.Load( "/ui/generalhud/infofeed/InfoFeed.scss" );
 	}
 
 	public virtual Panel AddEntry( Client leftClient, string method )
 	{
-		InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
 
 		bool isLeftLocal = leftClient == Local.Client;
 
@@ -32,7 +32,7 @@ public partial class InfoFeed : Panel
 
 	public virtual Panel AddEntry( string method, Color? color = null )
 	{
-		InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
 
 		Label label = e.AddLabel( method, "method" );
 		label.Style.FontColor = color ?? Color.White;
@@ -42,7 +42,7 @@ public partial class InfoFeed : Panel
 
 	public virtual Panel AddEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string postfix = "" )
 	{
-		InfoFeedEntry e = Current.AddChild<InfoFeedEntry>();
+		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
 
 		bool isLeftLocal = leftClient == Local.Client;
 		bool isRightLocal = rightClientName == Local.Client.Name;

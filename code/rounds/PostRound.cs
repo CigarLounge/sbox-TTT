@@ -35,24 +35,15 @@ public class PostRound : BaseRound
 
 	protected override void OnStart()
 	{
-		if ( Host.IsServer )
-		{
-			using ( Prediction.Off() )
-			{
-				foreach ( Player player in Utils.GetPlayers() )
-				{
-					if ( player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified )
-					{
-						player.PlayerCorpse.IsIdentified = true;
+		if ( !Host.IsServer )
+			return;
 
-						RPCs.ClientConfirmPlayer( null, player.PlayerCorpse, player, player.PlayerCorpse.DeadPlayerClientData.Name, player.PlayerCorpse.DeadPlayerClientData.PlayerId, player.Role.ClassInfo.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon.LibraryName, player.PlayerCorpse.Perks );
-					}
-					else
-					{
-						player.SendClientRole( To.Everyone );
-					}
-				}
-			}
+		foreach ( Player player in Utils.GetPlayers() )
+		{
+			if ( player.Corpse.IsValid() && !player.Corpse.IsIdentified )
+				player.Corpse.Confirm();
+			else
+				player.SendClientRole( To.Everyone );
 		}
 	}
 }

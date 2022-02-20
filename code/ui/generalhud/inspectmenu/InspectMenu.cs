@@ -8,8 +8,7 @@ namespace TTT.UI;
 
 public class InspectMenu : Panel
 {
-	private readonly PlayerCorpse _playerCorpse;
-	private ConfirmationData _confirmationData;
+	private readonly Corpse _playerCorpse;
 	private InspectEntry _selectedInspectEntry;
 
 	private readonly List<InspectEntry> _inspectionEntries = new();
@@ -26,7 +25,7 @@ public class InspectMenu : Panel
 	private readonly Panel _inspectIconsPanel;
 	private readonly Label _inspectDetailsLabel;
 
-	public InspectMenu( PlayerCorpse playerCorpse )
+	public InspectMenu( Corpse playerCorpse )
 	{
 		if ( playerCorpse.DeadPlayer == null )
 		{
@@ -79,18 +78,17 @@ public class InspectMenu : Panel
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
 		_playerCorpse = playerCorpse;
-		_confirmationData = _playerCorpse.GetConfirmationData();
 		SetConfirmationData( _playerCorpse.KillerWeapon.Title, _playerCorpse.Perks );
 	}
 
 	private void SetConfirmationData( string killerWeapon, string[] perks )
 	{
-		_avatarImage.SetTexture( $"avatar:{_playerCorpse.DeadPlayerClientData.PlayerId}" );
-		_playerLabel.Text = _playerCorpse.DeadPlayerClientData.Name;
+		_avatarImage.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
+		_playerLabel.Text = _playerCorpse.PlayerName;
 		_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Info.Name;
 		_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Info.Color;
 
-		_headshotEntry.Enabled( _confirmationData.Headshot );
+		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
 		_headshotEntry.SetImageText( "Headshot" );
 		_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
@@ -101,10 +99,10 @@ public class InspectMenu : Panel
 		_deathCauseEntry.SetImageText( imageText );
 		_deathCauseEntry.SetActiveText( activeText );
 
-		_distanceEntry.Enabled( _confirmationData.DamageFlag != DamageFlags.Generic );
+		_distanceEntry.Enabled( _playerCorpse.KillInfo.Flags != DamageFlags.Generic );
 		_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
-		_distanceEntry.SetImageText( $"{_confirmationData.Distance:n0}m" );
-		_distanceEntry.SetActiveText( $"They were killed from approximately {_confirmationData.Distance:n0}m away." );
+		_distanceEntry.SetImageText( $"{_playerCorpse.Distance:n0}m" );
+		_distanceEntry.SetActiveText( $"They were killed from approximately {_playerCorpse.Distance:n0}m away." );
 
 		_weaponEntry.Enabled( !string.IsNullOrEmpty( killerWeapon ) );
 
@@ -161,7 +159,7 @@ public class InspectMenu : Panel
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _confirmationData.DamageFlag switch
+		return _playerCorpse.KillInfo.Flags switch
 		{
 			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
 			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
@@ -180,7 +178,7 @@ public class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		string timeSinceDeath = Utils.TimerString( Time.Now - _confirmationData.Time );
+		string timeSinceDeath = Utils.TimerString( Time.Now - _playerCorpse.KilledTime );
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 

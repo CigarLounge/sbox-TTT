@@ -1,0 +1,237 @@
+using System.Collections.Generic;
+
+using Sandbox;
+
+namespace TTT;
+
+public struct ClientData
+{
+
+}
+
+public partial class Corpse : ModelEntity, IEntityHint, IUse
+{
+	public long PlayerId { get; set; }
+	public string PlayerName { get; set; }
+	public Player DeadPlayer { get; set; }
+	public Player Confirmer { get; set; }
+	public DamageInfo KillInfo { get; set; }
+	public List<Particles> Ropes = new();
+	public List<PhysicsJoint> RopeSprings = new();
+	public CarriableInfo KillerWeapon { get; set; }
+	public bool IsIdentified { get; set; } = false;
+	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
+	public float Distance { get; private set; } = 0f;
+	public float KilledTime { get; private set; }
+	public string[] Perks { get; set; }
+
+	public Corpse() { }
+
+	public override void Spawn()
+	{
+		base.Spawn();
+
+		MoveType = MoveType.Physics;
+		UsePhysicsCollision = true;
+
+		SetInteractsAs( CollisionLayer.Debris );
+		SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
+		SetInteractsExclude( CollisionLayer.Player );
+
+		KilledTime = Time.Now;
+	}
+
+	public void CopyFrom( Player player )
+	{
+		DeadPlayer = player;
+		PlayerName = player.Client.Name;
+		PlayerId = player.Client.PlayerId;
+		KillInfo = player.LastDamageInfo;
+		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon.ClassInfo.Name );
+		Distance = Utils.SourceUnitsToMeters( Position.Distance( KillInfo.Position ) );
+		player.Corpse = this;
+
+		SetModel( player.GetModelName() );
+		TakeDecalsFrom( player );
+
+		this.CopyBonesFrom( player );
+		this.SetRagdollVelocityFrom( player );
+
+		List<Entity> attachedEnts = new();
+		foreach ( Entity child in player.Children )
+		{
+			// TODO: MZEGAR revert this back.
+			// if ( child is ThrownKnife k )
+			// {
+			// 	attachedEnts.Add( k );
+			// 	continue;
+			// }
+
+			if ( child is BaseClothing e )
+			{
+				var model = e.GetModelName();
+				var clothing = new ModelEntity();
+				clothing.RenderColor = e.RenderColor;
+				clothing.SetModel( model );
+				clothing.SetParent( this, true );
+			}
+		}
+
+		Perks = new string[DeadPlayer.Perks.Count];
+
+		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
+		{
+			Perks[i] = DeadPlayer.Perks.Get( i ).Info.Title;
+		}
+
+		foreach ( Entity entity in attachedEnts )
+		{
+			entity.SetParent( this, false );
+		}
+	}
+
+	public void ApplyForceToBone( Vector3 force, int forceBone )
+	{
+		PhysicsGroup.AddVelocity( force );
+
+		if ( forceBone < 0 )
+			return;
+
+		PhysicsBody corpse = GetBonePhysicsBody( forceBone );
+
+		if ( corpse != null )
+			corpse.ApplyForce( force * 1000 );
+		else
+			PhysicsGroup.AddVelocity( force );
+	}
+
+	public void ClearAttachments()
+	{
+		foreach ( Particles rope in Ropes )
+		{
+			rope.Destroy( true );
+		}
+
+		foreach ( PhysicsJoint spring in RopeSprings )
+		{
+			spring.Remove();
+		}
+
+		Ropes.Clear();
+		RopeSprings.Clear();
+	}
+
+	protected override void OnDestroy()
+	{
+		ClearAttachments();
+	}
+
+	[ClientRpc]
+	public void GetDamageInfo( Entity attacker, string weapon, int hitboxIndex, float damage, DamageFlags damageFlag )
+	{
+		var info = new DamageInfo()
+			.WithAttacker( attacker )
+			.WithHitbox( hitboxIndex )
+			.WithFlag( damageFlag );
+
+		info.Damage = damage;
+		KillInfo = info;
+		LastAttacker = info.Attacker;
+		KillerWeapon = Asset.GetInfo<CarriableInfo>( weapon );
+	}
+
+	[ClientRpc]
+	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name, int credits = 0 )
+	{
+		DeadPlayer = deadPlayer;
+		DeadPlayer.IsConfirmed = true;
+		Confirmer = confirmer;
+		KilledTime = killedTime;
+		Distance = distance;
+		PlayerId = playerId;
+		PlayerName = name;
+		IsIdentified = true;
+
+		UI.Scoreboard.Instance.UpdateClient( DeadPlayer.Client );
+		UI.InfoFeed.Instance.AddEntry
+		(
+			Confirmer.Client,
+			PlayerName,
+			deadPlayer.Role.Info.Color,
+			"found the body of",
+			$"({deadPlayer.Role.Info.Name})"
+		);
+
+		if ( Confirmer == Local.Pawn && credits > 0 )
+		{
+			UI.InfoFeed.Instance?.AddEntry
+			(
+				Confirmer.Client,
+				$"found $ {credits} credits!"
+			);
+		}
+	}
+
+	public void Confirm()
+	{
+		Host.AssertServer();
+
+		DeadPlayer.IsConfirmed = true;
+		IsIdentified = true;
+		DeadPlayer.SendClientRole( To.Everyone );
+
+		int credits = 0;
+		if ( DeadPlayer.Credits > 0 && Confirmer.Role is not InnocentRole )
+		{
+			Confirmer.Credits += DeadPlayer.Credits;
+			credits = DeadPlayer.Credits;
+			DeadPlayer.Credits = 0;
+			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
+		}
+
+		GetPlayerData( DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName, credits );
+		GetDamageInfo( KillInfo.Attacker, KillerWeapon.LibraryName, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
+	}
+
+	public float HintDistance => Player.INTERACT_DISTANCE;
+
+	public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
+											 : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
+
+	public bool CanHint( Player client ) => true;
+
+	public UI.EntityHintPanel DisplayHint( Player client )
+	{
+		return new UI.Hint( TextOnTick );
+	}
+
+	public void Tick( Player player )
+	{
+		if ( player.Using != this )
+		{
+			UI.FullScreenHintMenu.Instance?.Close();
+			return;
+		}
+		else if ( IsIdentified )
+		{
+			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
+			return;
+		}
+	}
+
+	bool IUse.OnUse( Entity user )
+	{
+		if ( IsServer && !IsIdentified )
+		{
+			Confirmer = user as Player;
+			Confirm();
+		}
+
+		return true;
+	}
+
+	bool IUse.IsUsable( Entity user )
+	{
+		return user is Player;
+	}
+}

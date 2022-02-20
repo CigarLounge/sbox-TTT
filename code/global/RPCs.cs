@@ -42,60 +42,6 @@ public partial class RPCs
 		UI.Scoreboard.Instance?.UpdateClient( player.Client );
 	}
 
-	// Someone refactor this mess.
-	[ClientRpc]
-	public static void ClientConfirmPlayer( Player confirmPlayer, PlayerCorpse playerCorpse, Player deadPlayer, string deadPlayerName, long deadPlayerId, string roleName, ConfirmationData confirmationData, string killerWeapon, string[] perks )
-	{
-		if ( !deadPlayer.IsValid() )
-			return;
-
-		deadPlayer.SetRole( roleName );
-		deadPlayer.IsConfirmed = true;
-		deadPlayer.CorpseConfirmer = confirmPlayer;
-
-		if ( playerCorpse.IsValid() )
-		{
-			playerCorpse.DeadPlayer = deadPlayer;
-			playerCorpse.KillerWeapon = Asset.GetInfo<CarriableInfo>( killerWeapon );
-			playerCorpse.Perks = perks;
-
-			playerCorpse.DeadPlayerClientData = new ClientData()
-			{
-				Name = deadPlayerName,
-				PlayerId = deadPlayerId
-			};
-
-			playerCorpse.CopyConfirmationData( confirmationData );
-		}
-
-		Client deadClient = deadPlayer.Client;
-
-		UI.Scoreboard.Instance.UpdateClient( deadClient );
-
-		if ( !confirmPlayer.IsValid() )
-		{
-			return;
-		}
-
-		Client confirmClient = confirmPlayer.Client;
-
-		UI.InfoFeed.Current?.AddEntry(
-			confirmClient,
-			playerCorpse.DeadPlayerClientData.Name,
-			deadPlayer.Role.Info.Color,
-			"found the body of",
-			$"({deadPlayer.Role.Info.Name})"
-		);
-
-		if ( confirmPlayer == Local.Pawn as Player && deadPlayer.CorpseCredits > 0 )
-		{
-			UI.InfoFeed.Current?.AddEntry(
-				confirmClient,
-				$"found $ {deadPlayer.CorpseCredits} credits!"
-			);
-		}
-	}
-
 	[ClientRpc]
 	public static void ClientAddMissingInAction( Player missingInActionPlayer )
 	{
@@ -133,6 +79,6 @@ public partial class RPCs
 	[ClientRpc]
 	public static void ClientDisplayMessage( string message, Color color )
 	{
-		UI.InfoFeed.Current?.AddEntry( message, color );
+		UI.InfoFeed.Instance?.AddEntry( message, color );
 	}
 }

@@ -7,6 +7,8 @@ namespace TTT;
 [Hammer.Skip]
 public partial class Game : Sandbox.Game
 {
+	public UI.Hud Hud { get; set; }
+
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
@@ -23,7 +25,7 @@ public partial class Game : Sandbox.Game
 
 		if ( IsServer )
 		{
-			_ = new UI.Hud
+			Hud = new UI.Hud
 			{
 				Parent = this
 			};
@@ -98,11 +100,9 @@ public partial class Game : Sandbox.Game
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
-		if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )
-		{
+		if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )	
 			client.Pawn.Delete();
-			client.Pawn = null;
-		}
+		client.Pawn = null;
 	}
 
 	public override bool CanHearPlayerVoice( Client source, Client dest )
