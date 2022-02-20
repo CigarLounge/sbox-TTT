@@ -45,11 +45,11 @@ namespace TTT.Items
 
 				Bullets = 8,
 				BulletSize = 2f,
-				Damage = 7f,
+				Damage = 11f,
 				Force = 3f,
-				Spread = 0.3f,
-				Recoil = 2f,
-				RPM = 70,
+				Spread = 0.09f,
+				Recoil = 7f,
+				RPM = 43,
 				FiringType = FiringType.semi,
 				ScreenShake = new ScreenShake
 				{

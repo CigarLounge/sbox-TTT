@@ -43,16 +43,16 @@ namespace TTT.Items
 
 			Primary = new ClipInfo
 			{
-				Ammo = 30,
+				Ammo = 10,
 				AmmoType = AmmoType.Rifle,
-				ClipSize = 30,
+				ClipSize = 10,
 
 				BulletSize = 4f,
-				Damage = 10f,
+				Damage = 37f,
 				Force = 1f,
-				Spread = 0.01f,
-				Recoil = 0.7f,
-				RPM = 600,
+				Spread = 0.0001f,
+				Recoil = 5f,
+				RPM = 141,
 				FiringType = FiringType.auto,
 				ScreenShake = new ScreenShake
 				{

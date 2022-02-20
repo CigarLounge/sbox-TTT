@@ -48,11 +48,11 @@ namespace TTT.Items
 				ClipSize = 30,
 
 				BulletSize = 4f,
-				Damage = 6f,
+				Damage = 14f,
 				Force = 1f,
-				Spread = 0.03f,
-				Recoil = 1f,
-				RPM = 700,
+				Spread = 0.045f,
+				Recoil = 1.5f,
+				RPM = 857,
 				FiringType = FiringType.auto,
 				ScreenShake = new ScreenShake
 				{
