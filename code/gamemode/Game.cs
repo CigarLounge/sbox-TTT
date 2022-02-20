@@ -17,9 +17,6 @@ public partial class Game : Sandbox.Game
 
 	public MapHandler MapHandler { get; private set; }
 
-	// [ConVar.Replicated("ttt_debug")]
-	public bool Debug { get; set; } = true;
-
 	public Game()
 	{
 		_ = MapSelection.Load();

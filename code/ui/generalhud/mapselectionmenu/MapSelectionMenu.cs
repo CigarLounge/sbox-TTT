@@ -98,6 +98,5 @@ public class MapSelectionMenu : Panel
 		IDictionary<long, string> nextMapVotes = Game.Current.MapSelection.PlayerIdMapVote;
 
 		nextMapVotes[callerPlayerId] = name;
-		Log.Debug( $"{callerPlayerId} voting for map {name}" );
 	}
 }
