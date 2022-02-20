@@ -129,6 +129,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetDamageInfo( Entity attacker, string weapon, int hitboxIndex, float damage, DamageFlags damageFlag )
 	{
+		Assert.False( IsIdentified );
+
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
 			.WithHitbox( hitboxIndex )
@@ -143,6 +145,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name, int credits = 0 )
 	{
+		Assert.False( IsIdentified );
+
 		DeadPlayer = deadPlayer;
 		DeadPlayer.IsConfirmed = true;
 		Confirmer = confirmer;
@@ -153,6 +157,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		IsIdentified = true;
 
 		UI.Scoreboard.Instance.UpdateClient( DeadPlayer.Client );
+
+		if ( confirmer == null )
+			return;
+
 		UI.InfoFeed.Instance.AddEntry
 		(
 			Confirmer.Client,

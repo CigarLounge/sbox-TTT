@@ -109,7 +109,8 @@ public partial class InProgressRound : BaseRound
 	{
 		Game.Current.MapSelection.TotalRoundsPlayed++;
 		Game.Current.ForceRoundChange( new PostRound() );
-		RPCs.ClientOpenAndSetPostRoundMenu(
+		RPCs.ClientOpenAndSetPostRoundMenu
+		(
 			winningTeam.GetName(),
 			winningTeam.GetColor()
 		);
@@ -155,9 +156,7 @@ public partial class InProgressRound : BaseRound
 	private static void OnPlayerRoleChange( Player player )
 	{
 		if ( Host.IsClient )
-		{
 			return;
-		}
 
 		if ( Game.Current.Round is InProgressRound inProgressRound )
 		{

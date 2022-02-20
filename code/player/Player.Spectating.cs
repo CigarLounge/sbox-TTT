@@ -32,6 +32,24 @@ public partial class Player
 			player.UpdateObservatedPlayer();
 	}
 
+	private void TickPlayerChangeSpectateCamera()
+	{
+		if ( !Input.Pressed( InputButton.Jump ) )
+			return;
+
+		using ( Prediction.Off() )
+		{
+			Camera = Camera switch
+			{
+				RagdollSpectateCamera => new FreeSpectateCamera(),
+				FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+				ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+				FirstPersonSpectatorCamera => new FreeSpectateCamera(),
+				_ => Camera
+			};
+		}
+	}
+
 	public void UpdateObservatedPlayer()
 	{
 		Player oldObservatedPlayer = CurrentPlayer;

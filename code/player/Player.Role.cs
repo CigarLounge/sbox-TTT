@@ -33,19 +33,4 @@ public partial class Player
 		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
 			SendLogicButtonsToClient();
 	}
-
-	public void SyncMIA( Player player = null )
-	{
-		if ( Game.Current.Round is not InProgressRound )
-			return;
-
-		if ( player == null )
-		{
-			RPCs.ClientAddMissingInAction( Team.Traitors.ToClients(), this );
-		}
-		else
-		{
-			RPCs.ClientAddMissingInAction( To.Single( player ), this );
-		}
-	}
 }

@@ -16,6 +16,13 @@ public class WaitingRound : BaseRound
 		}
 	}
 
+	public override void OnPlayerJoin( Player player )
+	{
+		base.OnPlayerJoin( player );
+
+		player.Respawn();
+	}
+
 	public override void OnPlayerKilled( Player player )
 	{
 		StartRespawnTimer( player );

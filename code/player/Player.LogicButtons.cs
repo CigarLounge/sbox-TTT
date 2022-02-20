@@ -47,7 +47,7 @@ public partial class Player
 		}
 	}
 
-	[Event( TTTEvent.UI.Reloaded )]
+	[TTTEvent.UI.Reloaded]
 	public static void OnUIReloaded()
 	{
 		LogicButtonPoints = new();
@@ -137,7 +137,7 @@ public partial class Player
 	// Client keybinding for activating button within focus.
 	public void TickLogicButtonActivate()
 	{
-		if ( !IsClient || Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
+		if ( Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
 		{
 			return;
 		}

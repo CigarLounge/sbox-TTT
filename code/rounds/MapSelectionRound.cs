@@ -44,6 +44,7 @@ public class MapSelectionRound : BaseRound
 
 	protected override void OnStart()
 	{
-		RPCs.ClientOpenMapSelectionMenu();
+		if ( Host.IsClient )
+			UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapSelectionMenu() );
 	}
 }

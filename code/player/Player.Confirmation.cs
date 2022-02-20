@@ -13,14 +13,10 @@ public partial class Player
 
 	public bool IsMissingInAction { get; set; } = false;
 
-	public Player CorpseConfirmer { get; set; } = null;
-
 	public void RemovePlayerCorpse()
 	{
 		if ( !Corpse.IsValid() )
-		{
 			return;
-		}
 
 		Corpse.Delete();
 		Corpse = null;
@@ -38,5 +34,24 @@ public partial class Player
 		corpse.ApplyForceToBone( LastDamageInfo.Force, GetHitboxBone( LastDamageInfo.HitboxIndex ) );
 
 		Corpse = corpse;
+	}
+
+	public void SyncMIA( Player player = null )
+	{
+		if ( Game.Current.Round is not InProgressRound )
+			return;
+
+		if ( player == null )
+			AddMIA( Team.Traitors.ToClients() );
+		else
+			AddMIA( To.Single( player ) );
+	}
+
+	[ClientRpc]
+	public void AddMIA()
+	{
+		IsMissingInAction = true;
+
+		UI.Scoreboard.Instance.UpdateClient( Client );
 	}
 }

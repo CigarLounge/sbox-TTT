@@ -35,15 +35,14 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		base.Spawn();
+
+		SetModel( "models/citizen/citizen.vmdl" );
 		Components.GetOrCreate<Perks>();
-		Respawn();
 	}
 
 	public override void Respawn()
 	{
 		base.Respawn();
-
-		SetModel( "models/citizen/citizen.vmdl" );
 
 		Animator = new StandardPlayerAnimator();
 		EnableHideInFirstPerson = true;
@@ -53,8 +52,7 @@ public partial class Player : Sandbox.Player
 		SetRole( new NoneRole() );
 		IsMissingInAction = false;
 		DeleteItems();
-		SendClientRole();
-		RPCs.ClientOnPlayerSpawned( this );
+		ClientRespawn();
 
 		if ( !IsForcedSpectator )
 		{
@@ -68,6 +66,15 @@ public partial class Player : Sandbox.Player
 		}
 
 		Game.Current.Round.OnPlayerSpawn( this );
+	}
+
+	[ClientRpc]
+	private void ClientRespawn()
+	{
+		IsMissingInAction = false;
+		IsConfirmed = false;
+
+		SetRole( new NoneRole() );
 	}
 
 	// Let's clean this up at some point, it's poorly written.
@@ -86,27 +93,31 @@ public partial class Player : Sandbox.Player
 
 		if ( Game.Current.Round is InProgressRound )
 			SyncMIA();
-		else if ( Game.Current.Round is PostRound && Corpse != null && !Corpse.IsIdentified )
+		else if ( Game.Current.Round is PostRound )
 			Corpse.Confirm();
 	}
 
 	public override void Simulate( Client client )
 	{
+		TickPerkSimulate();
+		TickPlayerUse();
+		TickPlayerDropCarriable();
+
 		if ( IsClient )
 		{
 			TickPlayerVoiceChat();
+			TickEntityHints();
+			TickLogicButtonActivate();
 		}
 		else
 		{
 			TickAFKSystem();
-		}
 
-		TickEntityHints();
-
-		if ( LifeState != LifeState.Alive )
-		{
-			TickPlayerChangeSpectateCamera();
-			return;
+			if ( LifeState != LifeState.Alive )
+			{
+				TickPlayerChangeSpectateCamera();
+				return;
+			}
 		}
 
 		// Input requested a carriable entity switch
@@ -116,11 +127,6 @@ public partial class Player : Sandbox.Player
 		}
 
 		SimulateActiveChild( client, ActiveChild );
-
-		TickPerkSimulate();
-		TickPlayerUse();
-		TickPlayerDropCarriable();
-		TickLogicButtonActivate();
 
 		PawnController controller = GetActiveController();
 		controller?.Simulate( client, this, GetActiveAnimator() );
@@ -149,7 +155,7 @@ public partial class Player : Sandbox.Player
 
 	private void TickPlayerDropCarriable()
 	{
-		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) && ActiveChild != null && Inventory != null )
+		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
 			Entity droppedEntity = Inventory.DropActive();
 
@@ -160,26 +166,6 @@ public partial class Player : Sandbox.Player
 					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
 				}
 			}
-		}
-	}
-
-	private void TickPlayerChangeSpectateCamera()
-	{
-		if ( !Input.Pressed( InputButton.Jump ) || !IsServer )
-		{
-			return;
-		}
-
-		using ( Prediction.Off() )
-		{
-			Camera = Camera switch
-			{
-				RagdollSpectateCamera => new FreeSpectateCamera(),
-				FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-				ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
-				FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-				_ => Camera
-			};
 		}
 	}
 

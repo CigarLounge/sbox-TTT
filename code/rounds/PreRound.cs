@@ -11,6 +11,13 @@ public class PreRound : BaseRound
 	public override string RoundName => "Preparing";
 	public override int RoundDuration => Game.PreRoundTime;
 
+	public override void OnPlayerJoin( Player player )
+	{
+		base.OnPlayerJoin( player );
+
+		player.Respawn();
+	}
+
 	public override void OnPlayerKilled( Player player )
 	{
 		StartRespawnTimer( player );
