@@ -133,7 +133,7 @@ public class InventorySelection : Panel
 			{
 				if ( childrenList[i] is InventorySlot slot )
 				{
-					if ( (int)slot.Carriable.Info.Slot == keyboardIndexPressed )
+					if ( (int)slot.Carriable.Info.Slot == keyboardIndexPressed - 1 )
 					{
 						// Using the keyboard index the user pressed, find all carriables that
 						// have the same slot type as the index.
@@ -217,7 +217,7 @@ public class InventorySelection : Panel
 
 			AddClass( "background-color-primary" );
 
-			SlotLabel = Add.Label( ((int)carriable.Info.Slot).ToString() );
+			SlotLabel = Add.Label( ((int)carriable.Info.Slot + 1).ToString() );
 			SlotLabel.AddClass( "slot-label" );
 
 			Add.Label( carriable.Info.Title );
