@@ -46,10 +46,8 @@ public partial class LogicButton : Entity
 	{
 		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
-		if ( IsServer )
-		{
+		if ( IsServer )	
 			Cleanup();
-		}
 	}
 
 	public override void Spawn()

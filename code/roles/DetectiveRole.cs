@@ -23,7 +23,6 @@ public class DetectiveRole : BaseRole
 		player.Perks.Add( new BodyArmor() );
 		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 
-
 		base.OnSelect( player );
 	}
 
