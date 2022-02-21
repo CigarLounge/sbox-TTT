@@ -5,7 +5,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = ""
+		icon = "ui/icons/ttt_perk_bodyarmor.png"
 		worldmodel = resource:""
 		libraryname = "ttt_perk_bodyarmor"
 	}
