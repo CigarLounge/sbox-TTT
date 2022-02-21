@@ -9,7 +9,7 @@ namespace TTT;
 public partial class RoleInfo : Asset
 {
 	[Property] public Team Team { get; set; } = Team.None;
-	[Property] public Color Color { get; set; }
+	[Property] public Color Color { get; set; } // https://github.com/Facepunch/sbox-issues/issues/928
 	[Property] public int DefaultCredits { get; set; }
 	[Property] public string[] ExclusiveItems { get; set; }
 
@@ -17,14 +17,16 @@ public partial class RoleInfo : Asset
 	{
 		base.PostLoad();
 
+		// Blame s&box
+		// https://github.com/Facepunch/sbox-issues/issues/928
 		if ( LibraryName == "ttt_role_none" )
-			Color = Color.Black;
-		else if ( LibraryName == "ttt_role_innocent" )
-			Color = Color.Green;
+			Color = Color.Transparent;
 		else if ( LibraryName == "ttt_role_traitor" )
-			Color = Color.Red;
+			Color = Color.FromBytes( 223, 41, 53 );
+		else if ( LibraryName == "ttt_role_innocent" )
+			Color = Color.FromBytes( 27, 197, 78 );
 		else if ( LibraryName == "ttt_role_detective" )
-			Color = Color.Blue;
+			Color = Color.FromBytes( 25, 102, 255 );
 	}
 }
 

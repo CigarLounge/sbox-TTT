@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_role_traitor" )]
+[Library( "ttt_role_traitor", Title = "Traitor" )]
 public class TraitorRole : BaseRole
 {
 	public override void OnSelect( Player player )
