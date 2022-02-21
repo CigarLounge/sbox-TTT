@@ -59,6 +59,19 @@ public partial class Inventory : BaseInventory
 		}
 	}
 
+	public override void DeleteContents()
+	{
+		Host.AssertServer();
+
+		foreach ( var item in List.ToArray() )
+		{
+			item.OnCarryDrop( Owner );
+			item.Delete();
+		}
+
+		List.Clear();
+	}
+
 	public void DropEntity( Entity self, Type entity )
 	{
 		List.Remove( self );
