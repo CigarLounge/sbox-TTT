@@ -19,9 +19,9 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	public new DefaultWalkController Controller
+	public new WalkController Controller
 	{
-		get => base.Controller as DefaultWalkController;
+		get => base.Controller as WalkController;
 		private set => base.Controller = value;
 	}
 
@@ -56,7 +56,7 @@ public partial class Player : Sandbox.Player
 
 		if ( !IsForcedSpectator )
 		{
-			Controller = new DefaultWalkController();
+			Controller = new WalkController();
 			Camera = new FirstPersonCamera();
 			EnableAllCollisions = true;
 		}
