@@ -72,8 +72,8 @@ public partial class Game : Sandbox.Game
 
 	public override void OnKilled( Entity entity )
 	{
-		if ( entity is Player player )	
-			Round.OnPlayerKilled( player );	
+		if ( entity is Player player )
+			Round.OnPlayerKilled( player );
 
 		base.OnKilled( entity );
 	}
@@ -98,7 +98,7 @@ public partial class Game : Sandbox.Game
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
-		if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )	
+		if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )
 			client.Pawn.Delete();
 		client.Pawn = null;
 	}

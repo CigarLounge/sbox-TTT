@@ -240,6 +240,7 @@ public class InventorySelection : Panel
 
 			if ( Local.Pawn is Player player )
 			{
+				Log.Info( player.Role );
 				SlotLabel.Style.BackgroundColor = player.Role.Info.Color;
 			}
 		}
