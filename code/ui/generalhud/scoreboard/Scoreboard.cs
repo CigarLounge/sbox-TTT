@@ -66,9 +66,7 @@ public partial class Scoreboard : Panel
 	private void Initialize()
 	{
 		if ( Host.IsServer )
-		{
 			return;
-		}
 
 		foreach ( DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues( typeof( DefaultScoreboardGroup ) ) )
 		{
@@ -92,14 +90,10 @@ public partial class Scoreboard : Panel
 	public void UpdateClient( Client client )
 	{
 		if ( client == null )
-		{
 			return;
-		}
 
-		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
-		{
-			return;
-		}
+		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )	
+			return;	
 
 		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
 
@@ -120,17 +114,13 @@ public partial class Scoreboard : Panel
 
 	public void RemoveClient( Client client )
 	{
-		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
-		{
-			return;
-		}
+		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )	
+			return;	
 
 		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup );
 
-		if ( scoreboardGroup != null )
-		{
-			scoreboardGroup.GroupMembers--;
-		}
+		if ( scoreboardGroup != null )	
+			scoreboardGroup.GroupMembers--;	
 
 		scoreboardGroup.UpdateLabel();
 
@@ -145,10 +135,8 @@ public partial class Scoreboard : Panel
 		SetClass( "fade-in", Input.Down( InputButton.Score ) );
 		_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
 
-		if ( !HasClass( "fade-in" ) )
-		{
+		if ( !HasClass( "fade-in" ) )		
 			return;
-		}
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324

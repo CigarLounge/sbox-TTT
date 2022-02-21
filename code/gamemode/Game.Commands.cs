@@ -49,11 +49,6 @@ public partial class Game
 			return;
 
 		if ( Game.Current.Round is not InProgressRound )
-			return;	
-
-		BaseRole role = Library.Create<BaseRole>();
-
-		if ( role == null )
 			return;
 
 		_ = id == 0 ? ConsoleSystem.Caller.Pawn.NetworkIdent : id;
@@ -62,7 +57,7 @@ public partial class Game
 		if ( player == null )
 			return;
 
-		player.SetRole( role );
+		player.SetRole( roleName );
 		player.SendClientRole();
 	}
 
