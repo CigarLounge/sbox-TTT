@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -12,6 +12,8 @@ public partial class RoleInfo : Asset
 	[Property] public Color Color { get; set; } // https://github.com/Facepunch/sbox-issues/issues/928
 	[Property] public int DefaultCredits { get; set; }
 	[Property] public string[] ExclusiveItems { get; set; }
+
+	public HashSet<string> AvailableItems { get; set; }
 
 	protected override void PostLoad()
 	{
@@ -27,6 +29,10 @@ public partial class RoleInfo : Asset
 			Color = Color.FromBytes( 27, 197, 78 );
 		else if ( LibraryName == "ttt_role_detective" )
 			Color = Color.FromBytes( 25, 102, 255 );
+
+		// TODO: Dummy data.
+		ExclusiveItems = new string[] { "ttt_weapon_p250", "ttt_weapon_bekas" };
+		AvailableItems = new HashSet<string>( ExclusiveItems );
 	}
 }
 

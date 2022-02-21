@@ -1,42 +1,37 @@
 using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-// MZEGAR REWORK THIS!
 namespace TTT.UI;
 
 public partial class QuickShop : Panel
 {
-	public static QuickShop Instance;
+	private readonly Player _player;
 
-	// public static ShopItemData _selectedItemData;
+	private readonly Panel _backgroundPanel;
+	private readonly Panel _quickshopContainer;
+	private readonly Label _creditLabel;
+	private readonly Panel _itemPanel;
+	private readonly Label _itemDescriptionLabel;
+	private static ItemInfo _selectedItemInfo;
+	private readonly List<QuickShopItem> _items = new();
 
-	// private readonly List<QuickShopItem> _items = new();
-	private Panel _backgroundPanel;
-	private Panel _quickshopContainer;
-	private Label _creditLabel;
-	private Panel _itemPanel;
-	private Label _itemDescriptionLabel;
-
-	private int _credits = 0;
-
-	public bool Enabled
+	public enum BuyError
 	{
-		get => this.IsEnabled();
-		set
-		{
-			this.Enabled( value );
-
-			SetClass( "fade-in", this.IsEnabled() );
-			_quickshopContainer.SetClass( "pop-in", this.IsEnabled() );
-		}
+		None,
+		InventoryBlocked,
+		NotEnoughCredits,
+		NotAvailable,
+		LimitReached
 	}
 
 	public QuickShop() : base()
 	{
-		Instance = this;
+		if ( Local.Pawn is not Player player )
+			return;
+
+		_player = player;
 
 		StyleSheet.Load( "/ui/alivehud/quickshop/QuickShop.scss" );
 
@@ -59,132 +54,66 @@ public partial class QuickShop : Panel
 		_itemDescriptionLabel = _quickshopContainer.Add.Label();
 		_itemDescriptionLabel.AddClass( "item-description-label" );
 
-		Reload();
-
-		Enabled = false;
+		Init();
 	}
 
-	public void Reload()
+	private void Init()
 	{
-		_itemPanel?.DeleteChildren( true );
-
-		// _selectedItemData = null;
-
-		if ( Local.Pawn is not Player player )
+		foreach ( var libraryName in _player.Role.Info.AvailableItems )
 		{
-			return;
+			var weapon = Asset.GetInfo<ItemInfo>( libraryName );
+			AddItem( weapon );
 		}
-
-		// Shop shop = player.Shop;
-
-		// if ( shop == null )
-		// {
-		// 	return;
-		// }
-
-		// foreach ( ShopItemData itemData in shop.Items )
-		// {
-		// 	AddItem( itemData );
-		// }
 	}
 
-	// private void AddItem( ShopItemData itemData )
-	// {
-	// 	QuickShopItem item = new( _itemPanel );
-	// 	item.SetItem( itemData );
-
-	// 	item.AddEventListener( "onmouseover", () =>
-	// 	 {
-	// 		 _selectedItemData = itemData;
-
-	// 		 Update();
-	// 	 } );
-
-	// 	item.AddEventListener( "onmouseout", () =>
-	// 	 {
-	// 		 _selectedItemData = null;
-
-	// 		 Update();
-	// 	 } );
-
-	// 	item.AddEventListener( "onclick", () =>
-	// 	 {
-	// 		 if ( item.IsDisabled )
-	// 		 {
-	// 			 return;
-	// 		 }
-
-	// 		 if ( _selectedItemData?.IsBuyable( Local.Pawn as TTTPlayer ) ?? false )
-	// 		 {
-	// 			 TTTPlayer.RequestItem( item.ItemData?.Name );
-
-	// 			 // The item was purchased, let's deselect it from the UI.
-	// 			 _selectedItemData = null;
-	// 		 }
-
-	// 		 Update();
-	// 	 } );
-
-	// 	_items.Add( item );
-	// }
-
-	// public void Update()
-	// {
-	// 	_creditLabel.Text = $"You have ${_credits}";
-
-	// 	foreach ( QuickShopItem item in _items )
-	// 	{
-	// 		item.Update();
-	// 	}
-
-	// 	_itemDescriptionLabel.SetClass( "fade-in", _selectedItemData != null );
-
-	// 	if ( _selectedItemData != null )
-	// 	{
-	// 		_itemDescriptionLabel.Text = $"The description for the {_selectedItemData?.Name ?? ""} will go here.";
-	// 	}
-	// }
-
-	// [Event( TTTEvent.Shop.Change )]
-	// public static void OnShopChanged()
-	// {
-	// 	QuickShop.Instance?.Reload();
-	// }
-
-	// [Event( TTTEvent.Player.Role.Select )]
-	// public static void OnRoleChanged( TTTPlayer player )
-	// {
-	// 	QuickShop quickShop = QuickShop.Instance;
-
-	// 	if ( quickShop != null )
-	// 	{
-	// 		if ( player.Shop == null || !player.Shop.Accessable() )
-	// 		{
-	// 			quickShop.Enabled = false;
-	// 		}
-	// 		else if ( quickShop.Enabled )
-	// 		{
-	// 			quickShop.Update();
-	// 		}
-	// 	}
-	// }
-
-	public override void Tick()
+	private void AddItem( ItemInfo itemInfo )
 	{
-		base.Tick();
+		QuickShopItem item = new( _itemPanel );
+		item.InitItem( itemInfo );
 
-		if ( !Enabled )
+		item.AddEventListener( "onmouseover", () =>
 		{
-			return;
+			_selectedItemInfo = itemInfo;
+
+			Update();
+		} );
+
+		item.AddEventListener( "onmouseout", () =>
+		{
+			_selectedItemInfo = null;
+
+			Update();
+		} );
+
+		item.AddEventListener( "onclick", () =>
+		{
+			if ( item.IsDisabled )
+			{
+				return;
+			}
+
+			// TODO: DO PURCHASE HERE.
+
+			Update();
+		} );
+
+		_items.Add( item );
+	}
+
+	public void Update()
+	{
+		_creditLabel.Text = $"You have ${_player.Credits}";
+
+		foreach ( QuickShopItem item in _items )
+		{
+			item.Update();
 		}
 
-		int newCredits = (Local.Pawn as Player).Credits;
+		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
 
-		if ( _credits != newCredits )
+		if ( _selectedItemInfo != null )
 		{
-			_credits = newCredits;
-
-			// Update();
+			_itemDescriptionLabel.Text = $"The description for the {_selectedItemInfo?.Name ?? ""} will go here.";
 		}
 	}
 }
