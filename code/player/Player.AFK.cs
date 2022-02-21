@@ -13,15 +13,12 @@ public partial class Player
 
 	private void TickAFKSystem()
 	{
-		if ( Client == null || Client.IsBot )
-		{
+		if ( Client.IsBot )
 			return;
-		}
 
 		if ( IsForcedSpectator || IsSpectator )
 		{
 			_timeSinceLastAction = 0;
-
 			return;
 		}
 
@@ -31,7 +28,6 @@ public partial class Player
 		if ( isAnyKeyPressed || isMouseMoving )
 		{
 			_timeSinceLastAction = 0f;
-
 			return;
 		}
 
@@ -40,13 +36,11 @@ public partial class Player
 			if ( Game.KickAFKPlayers )
 			{
 				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was kicked from the server for being AFK." );
-
 				Client.Kick();
 			}
 			else
 			{
 				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was moved to spectating for being AFK." );
-
 				ToggleForcedSpectator();
 			}
 		}

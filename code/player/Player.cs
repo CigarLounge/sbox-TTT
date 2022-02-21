@@ -19,12 +19,6 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	public new WalkController Controller
-	{
-		get => base.Controller as WalkController;
-		private set => base.Controller = value;
-	}
-
 	private static int CarriableDropVelocity { get; set; } = 300;
 
 	public Player()
@@ -100,7 +94,6 @@ public partial class Player : Sandbox.Player
 	public override void Simulate( Client client )
 	{
 		TickPerkSimulate();
-		TickPlayerUse();
 		TickPlayerDropCarriable();
 
 		if ( IsClient )
@@ -111,9 +104,10 @@ public partial class Player : Sandbox.Player
 		}
 		else
 		{
+			TickPlayerUse();
 			TickAFKSystem();
 
-			if ( LifeState != LifeState.Alive )
+			if ( this.IsAlive() )
 			{
 				TickPlayerChangeSpectateCamera();
 				return;

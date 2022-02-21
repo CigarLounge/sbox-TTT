@@ -137,5 +137,5 @@ public static partial class Utils
 		return arr == null || arr.Length == 0;
 	}
 
-	public static bool Alive( this Entity entity ) => entity.LifeState == LifeState.Alive;
+	public static bool IsAlive( this Entity entity ) => entity.LifeState == LifeState.Alive;
 }
