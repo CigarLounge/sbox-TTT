@@ -15,20 +15,27 @@ public partial class Player
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() || player.PurchasedShopItems.IsNullOrEmpty() || player.PurchasedShopItems.Contains( libraryName ) )
+		if ( !player.IsValid() )
 			return;
 
 		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
 		if ( itemInfo == null )
 			return;
 
-		if ( itemInfo.Buyable )
+		if ( !player.Role.Info.AvailableItems.Contains( libraryName ) )
 			return;
 
-		// TODO: We need to handle perk here.
-		// TODO: we need to handle credits here.
-		// TODO: we need to handle the case the inventory is filled.
+		if ( !itemInfo.Buyable || (itemInfo.IsLimited && player.PurchasedShopItems.Contains( libraryName )) )
+			return;
+
+		if ( player.Credits < itemInfo.Price )
+			return;
+
+		player.Credits -= itemInfo.Price;
 		player.PurchasedShopItems.Add( libraryName );
-		player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+		if ( itemInfo is CarriableInfo )
+			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+		else if ( itemInfo is PerkInfo )
+			player.Perks.Add( Library.Create<Perk>( libraryName ) );
 	}
 }

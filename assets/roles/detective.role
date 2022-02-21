@@ -5,13 +5,10 @@
 		team = "1"
 		defaultcredits = 100
 		libraryname = "ttt_role_detective"
-		_color = 
-		{
-			r = "25"
-			g = "102"
-			b = "255"
-			a = "255"
-		}
-		exclusiveitems = [  ]
+		exclusiveitems = 
+		[
+			"ttt_perk_bodyarmor",
+		]
+		color = [ 65, 105, 225 ]
 	}
 }

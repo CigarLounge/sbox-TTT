@@ -50,7 +50,6 @@ public partial class QuickShop : Panel
 
 	public void AddRoleShopItems( Player player )
 	{
-		_shopItems.Clear();
 		foreach ( var libraryName in player.Role.Info.AvailableItems )
 		{
 			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
@@ -104,5 +103,11 @@ public partial class QuickShop : Panel
 				shopItem.UpdateAvailability( true );
 			}
 		}
+	}
+
+	[TTTEvent.Player.Role.Selected]
+	private void OnRoleChange()
+	{
+		_shopItems.Clear();
 	}
 }

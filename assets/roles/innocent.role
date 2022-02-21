@@ -5,13 +5,7 @@
 		team = "1"
 		defaultcredits = 0
 		libraryname = "ttt_role_innocent"
-		_color = 
-		{
-			r = "27"
-			g = "197"
-			b = "78"
-			a = "255"
-		}
 		exclusiveitems = [  ]
+		color = [ 34, 139, 34 ]
 	}
 }

@@ -2,13 +2,11 @@
 {
 	data = 
 	{
-		team = "2"
-		defaultcredits = 100
-		libraryname = "ttt_role_traitor"
-		exclusiveitems = 
-		[
-			"ttt_perk_bodyarmor",
-		]
-		color = [ 220, 20, 60 ]
+		buyable = true
+		islimited = true
+		price = 100
+		icon = ""
+		worldmodel = resource:""
+		libraryname = "ttt_perk_bodyarmor"
 	}
 }

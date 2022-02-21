@@ -11,9 +11,9 @@ public partial class RoleInfo : Asset
 	[Property] public Team Team { get; set; } = Team.None;
 	[Property] public Color Color { get; set; } // https://github.com/Facepunch/sbox-issues/issues/928
 	[Property] public int DefaultCredits { get; set; }
-	[Property] private string[] ExclusiveItems { get; set; }
+	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	public HashSet<string> AvailableItems { get; set; }
+	public List<string> AvailableItems { get; set; }
 
 	protected override void PostLoad()
 	{
@@ -30,8 +30,7 @@ public partial class RoleInfo : Asset
 		else if ( LibraryName == "ttt_role_detective" )
 			Color = Color.FromBytes( 25, 102, 255 );
 
-		ExclusiveItems = new string[] { "ttt_weapon_p250", "ttt_weapon_bekas" };
-		AvailableItems = new HashSet<string>( ExclusiveItems );
+		AvailableItems = ExclusiveItems?.Distinct().ToList() ?? new List<string>();
 	}
 }
 
@@ -47,7 +46,12 @@ public abstract class BaseRole : LibraryClass
 
 	public virtual void OnSelect( Player player )
 	{
-		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
+		if ( Host.IsServer )
+		{
+			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
+			player.PurchasedShopItems.Clear();
+		}
+
 		Event.Run( TTTEvent.Player.Role.Selected, player );
 	}
 
