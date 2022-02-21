@@ -60,49 +60,6 @@ public static partial class Utils
 	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Game.MinPlayers;
 
 	/// <summary>
-	/// Loops through every type derived from the given type and collects non-abstract types.
-	/// </summary>
-	/// <returns>List of all available types of the given type</returns>
-	public static List<Type> GetTypes<T>() => GetTypes<T>( null );
-
-	/// <summary>
-	/// Loops through every type derived from the given type and collects non-abstract types that matches the given predicate.
-	/// </summary>
-	/// <param name="predicate">a filter function to limit the scope</param>
-	/// <returns>List of all available and matching types of the given type</returns>
-	public static List<Type> GetTypes<T>( Func<Type, bool> predicate )
-	{
-		IEnumerable<Type> types = Library.GetAll<T>().Where( t => !t.IsAbstract && !t.ContainsGenericParameters );
-
-		if ( predicate != null )
-		{
-			types = types.Where( predicate );
-		}
-
-		return types.ToList();
-	}
-
-	public static List<Type> GetTypesWithAttribute<T, U>( bool inherit = false ) where U : Attribute => GetTypes<T>( ( t ) => HasAttribute<U>( t, inherit ) );
-
-	/// <summary>
-	/// Get a derived `Type` of the given type by it's name (`Sandbox.LibraryAttribute`).
-	/// </summary>
-	/// <param name="name">The name of the `Sandbox.LibraryAttribute`</param>
-	/// <returns>Derived `Type` of given type</returns>
-	public static Type GetTypeByLibraryTitle<T>( string name )
-	{
-		foreach ( Type type in GetTypes<T>() )
-		{
-			if ( GetLibraryTitle( type ).Equals( name ) )
-			{
-				return type;
-			}
-		}
-
-		return null;
-	}
-
-	/// <summary>
 	/// Returns an instance of the given type by the given type `Type`.
 	/// </summary>
 	/// <param name="type">A derived `Type` of the given type</param>
@@ -110,33 +67,18 @@ public static partial class Utils
 	public static T GetObjectByType<T>( Type type ) => Library.Create<T>( type );
 
 	/// <summary>
-	/// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `Type`.
+	/// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `LibraryClass`.
 	/// </summary>
-	/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
+	/// <param name="libraryClass">A `Type` that has a `Sandbox.LibraryAttribute`</param>
 	/// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-	public static string GetLibraryName( Type type ) => Library.GetAttribute( type ).Name;
+	public static string GetLibraryName( this LibraryClass libraryClass ) => libraryClass.ClassInfo.Name;
 
 	/// <summary>
 	/// Returns the `Sandbox.LibraryAttribute`'s `Title` of the given `Type`.
 	/// </summary>
-	/// <param name="type">A `Type` that has a `Sandbox.LibraryAttribute`</param>
+	/// <param name="libraryClass">A `Type` that has a `Sandbox.LibraryAttribute`</param>
 	/// <returns>`Sandbox.LibraryAttribute`'s `Title`</returns>
-	public static string GetLibraryTitle( Type type ) => Library.GetAttribute( type ).Title;
-
-	public static T GetAttribute<T>( Type type ) where T : Attribute
-	{
-		foreach ( object obj in type.GetCustomAttributes( false ) )
-		{
-			if ( obj is T t )
-			{
-				return t;
-			}
-		}
-
-		return default;
-	}
-
-	public static bool HasAttribute<T>( Type type, bool inherit = false ) where T : Attribute => type.IsDefined( typeof( T ), inherit );
+	public static string GetLibraryTitle( this LibraryClass libraryClass ) => libraryClass.ClassInfo.Title;
 
 	/// <summary>
 	/// Returns an approximate value for meters given the Source engine units (for distances)
@@ -174,14 +116,6 @@ public static partial class Utils
 		image.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 	}
 
-	public static string GetTypeName( Type type ) => type.FullName.Replace( type.Namespace, "" ).TrimStart( '.' );
-
-	public enum Realm
-	{
-		Client,
-		Server
-	}
-
 	public static bool HasGreatorOrEqualAxis( this Vector3 local, Vector3 other )
 	{
 		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
@@ -198,6 +132,19 @@ public static partial class Utils
 		}
 	}
 
+	public static void Shuffle<T>( this IList<T> list )
+	{
+		int n = list.Count;
+		while ( n > 1 )
+		{
+			n--;
+			int k = Rand.Int( 0, n );
+			T value = list[k];
+			list[k] = list[n];
+			list[n] = value;
+		}
+	}
+
 	public static bool IsNullOrEmpty<T>( this IList<T> list )
 	{
 		return list == null || list.Count == 0;
@@ -210,4 +157,6 @@ public static partial class Utils
 	{
 		return arr == null || arr.Length == 0;
 	}
+
+	public static bool Alive( this Entity entity ) => entity.LifeState == LifeState.Alive;
 }

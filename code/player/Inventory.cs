@@ -72,12 +72,12 @@ public partial class Inventory : BaseInventory
 		List.Clear();
 	}
 
-	public void DropEntity( Entity self, Type entity )
+	public void DropEntity( Entity self, string libraryName )
 	{
 		List.Remove( self );
 		self.Delete();
 
-		Entity droppedEntity = Utils.GetObjectByType<Entity>( entity );
+		Entity droppedEntity = Library.Create<Entity>( libraryName );
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
 		droppedEntity.Rotation = Owner.EyeRotation;
 		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
