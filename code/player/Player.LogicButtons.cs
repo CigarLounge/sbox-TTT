@@ -101,11 +101,10 @@ public partial class Player
 			return;
 		}
 
-		// TODO: MZEGAR Return this back. 
 		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
-		// IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckValue.Equals( Teams.TeamFunctions.GetTeam( typeof( Teams.TraitorTeam ) ) ) || x.CheckValue.Equals( Utils.GetLibraryTitle( typeof( TraitorRole ) ) ) );
+		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckTeam == Team.Traitors );
 
-		// player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
+		player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
 	}
 
 	// Handle client telling server to activate a specific button
