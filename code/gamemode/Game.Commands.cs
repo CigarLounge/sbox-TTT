@@ -10,10 +10,8 @@ public partial class Game
 		if ( !ConsoleSystem.Caller.HasPermission( "respawn" ) )
 			return;
 
-		_ = id == 0 ? ConsoleSystem.Caller.Pawn.NetworkIdent : id;
-		Player player = Entity.FindByIndex( id ) as Player;
-
-		if ( player == null || player.Client.GetValue<bool>( RawStrings.ForcedSpectator, false ) )
+		Player player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
+		if ( !player.IsValid() || player.Client.GetValue<bool>( RawStrings.ForcedSpectator, false ) )
 			return;
 
 		player.Respawn();
@@ -51,10 +49,8 @@ public partial class Game
 		if ( Game.Current.Round is not InProgressRound )
 			return;
 
-		_ = id == 0 ? ConsoleSystem.Caller.Pawn.NetworkIdent : id;
-		Player player = Entity.FindByIndex( id ) as Player;
-
-		if ( player == null )
+		Player player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
+		if ( !player.IsValid() )
 			return;
 
 		player.SetRole( roleName );
