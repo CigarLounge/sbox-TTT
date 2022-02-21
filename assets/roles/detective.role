@@ -3,9 +3,15 @@
 	data = 
 	{
 		team = "1"
-		color = [ 25, 102, 255 ]
 		defaultcredits = 100
 		libraryname = "ttt_role_detective"
-		title = "Detective"
+		_color = 
+		{
+			r = "25"
+			g = "102"
+			b = "255"
+			a = "255"
+		}
+		exclusiveitems = [  ]
 	}
 }
