@@ -107,7 +107,7 @@ public partial class Player : Sandbox.Player
 			TickPlayerUse();
 			TickAFKSystem();
 
-			if ( this.IsAlive() )
+			if ( !this.IsAlive() )
 			{
 				TickPlayerChangeSpectateCamera();
 				return;
