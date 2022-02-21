@@ -35,16 +35,4 @@ public class DetectiveRole : BaseRole
 			RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
 		}
 	}
-
-	// serverside function
-	public override void CreateDefaultShop()
-	{
-		base.CreateDefaultShop();
-	}
-
-	// serverside function
-	public override void UpdateDefaultShop( List<Type> newItemsList )
-	{
-		base.UpdateDefaultShop( newItemsList );
-	}
 }

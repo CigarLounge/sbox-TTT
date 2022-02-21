@@ -10,7 +10,7 @@ public partial class KeyBindingsPage : Panel
 {
 	public KeyBindingsPage()
 	{
-		StyleSheet.Load( "/ui/generalhud/tttmenu/pages/KeyBindingsPage/KeyBindingsPage.scss" );
+		StyleSheet.Load( "/ui/generalhud/settingsmenu/pages/KeyBindingsPage/KeyBindingsPage.scss" );
 
 		Add.Label( "You can change your bindings in the s&box options menu or through console." );
 		Add.Label( "" );

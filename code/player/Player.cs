@@ -108,12 +108,6 @@ public partial class Player : Sandbox.Player
 			TickPlayerVoiceChat();
 			TickEntityHints();
 			TickLogicButtonActivate();
-
-			// TODO: Remove this and move it somewhere else.
-			if ( IsClient && Input.Pressed( InputButton.View ) )
-			{
-				UI.FullScreenHintMenu.Instance?.Open( new UI.QuickShop() );
-			}
 		}
 		else
 		{

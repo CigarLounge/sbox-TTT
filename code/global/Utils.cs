@@ -198,6 +198,11 @@ public static partial class Utils
 		}
 	}
 
+	public static bool IsNullOrEmpty<T>( this IList<T> list )
+	{
+		return list == null || list.Count == 0;
+	}
+
 	/// <summary>
 	/// Checks if a C# array is null or empty
 	/// </summary>

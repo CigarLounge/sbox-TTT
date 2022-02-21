@@ -7,15 +7,13 @@ namespace TTT.UI;
 
 public partial class QuickShop : Panel
 {
-	private readonly Player _player;
-
 	private readonly Panel _backgroundPanel;
 	private readonly Panel _quickshopContainer;
 	private readonly Label _creditLabel;
 	private readonly Panel _itemPanel;
 	private readonly Label _itemDescriptionLabel;
 	private static ItemInfo _selectedItemInfo;
-	private readonly List<QuickShopItem> _items = new();
+	private readonly Dictionary<string, QuickShopItem> _shopItems = new();
 
 	public enum BuyError
 	{
@@ -28,11 +26,6 @@ public partial class QuickShop : Panel
 
 	public QuickShop() : base()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
-		_player = player;
-
 		StyleSheet.Load( "/ui/alivehud/quickshop/QuickShop.scss" );
 
 		AddClass( "text-shadow" );
@@ -53,67 +46,63 @@ public partial class QuickShop : Panel
 
 		_itemDescriptionLabel = _quickshopContainer.Add.Label();
 		_itemDescriptionLabel.AddClass( "item-description-label" );
-
-		Init();
 	}
 
-	private void Init()
+	public void AddRoleShopItems( Player player )
 	{
-		foreach ( var libraryName in _player.Role.Info.AvailableItems )
+		_shopItems.Clear();
+		foreach ( var libraryName in player.Role.Info.AvailableItems )
 		{
-			var weapon = Asset.GetInfo<ItemInfo>( libraryName );
-			AddItem( weapon );
+			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+			if ( itemInfo == null )
+				return;
+
+			AddRoleShopItem( itemInfo );
 		}
 	}
 
-	private void AddItem( ItemInfo itemInfo )
+	private void AddRoleShopItem( ItemInfo itemInfo )
 	{
-		QuickShopItem item = new( _itemPanel );
-		item.InitItem( itemInfo );
+		QuickShopItem item = new( _itemPanel, itemInfo );
 
-		item.AddEventListener( "onmouseover", () =>
-		{
-			_selectedItemInfo = itemInfo;
-
-			Update();
-		} );
-
-		item.AddEventListener( "onmouseout", () =>
-		{
-			_selectedItemInfo = null;
-
-			Update();
-		} );
+		item.AddEventListener( "onmouseover", () => { _selectedItemInfo = itemInfo; } );
+		item.AddEventListener( "onmouseout", () => { _selectedItemInfo = null; } );
 
 		item.AddEventListener( "onclick", () =>
 		{
 			if ( item.IsDisabled )
-			{
 				return;
-			}
 
-			// TODO: DO PURCHASE HERE.
-
-			Update();
+			Player.PurchaseItem( itemInfo.LibraryName );
 		} );
 
-		_items.Add( item );
+		_shopItems.Add( itemInfo.LibraryName, item );
 	}
 
-	public void Update()
+	public override void Tick()
 	{
-		_creditLabel.Text = $"You have ${_player.Credits}";
+		SetClass( "fade-in", Input.Down( InputButton.View ) );
 
-		foreach ( QuickShopItem item in _items )
-		{
-			item.Update();
-		}
+		if ( !HasClass( "fade-in" ) )
+			return;
 
+		if ( Local.Pawn is not Player player || player.Role.Info.AvailableItems.Count == 0 )
+			return;
+
+		_creditLabel.Text = $"You have ${player.Credits}";
 		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
-
 		if ( _selectedItemInfo != null )
-		{
 			_itemDescriptionLabel.Text = $"The description for the {_selectedItemInfo?.Name ?? ""} will go here.";
+
+		if ( _shopItems.Count == 0 )
+			AddRoleShopItems( player );
+
+		foreach ( var libraryName in player.PurchasedShopItems )
+		{
+			if ( _shopItems.TryGetValue( libraryName, out QuickShopItem shopItem ) )
+			{
+				shopItem.UpdateAvailability( true );
+			}
 		}
 	}
 }

@@ -1,73 +1,34 @@
-using System;
 using System.Collections.Generic;
-using System.Text.Json;
-
 using Sandbox;
 
 namespace TTT;
 
 public partial class Player
 {
-	public HashSet<string> BoughtItemsSet = new();
+	[Net, Local]
+	public IList<string> PurchasedShopItems { get; set; }
 
-	[TTTEvent.Game.RoundChanged]
-	private void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
+	[ServerCmd]
+	public static void PurchaseItem( string libraryName )
 	{
-		if ( newRound is not PreRound )
+		if ( string.IsNullOrEmpty( libraryName ) )
 			return;
 
-		BoughtItemsSet.Clear();
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() || player.PurchasedShopItems.IsNullOrEmpty() || player.PurchasedShopItems.Contains( libraryName ) )
+			return;
+
+		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+		if ( itemInfo == null )
+			return;
+
+		if ( itemInfo.Buyable )
+			return;
+
+		// TODO: We need to handle perk here.
+		// TODO: we need to handle credits here.
+		// TODO: we need to handle the case the inventory is filled.
+		player.PurchasedShopItems.Add( libraryName );
+		player.Inventory.Add( Library.Create<Weapon>( libraryName ) );
 	}
-
-	[ClientRpc]
-	public static void ClientBoughtItem( string itemName )
-	{
-		(Local.Pawn as Player).BoughtItemsSet.Add( itemName );
-
-		UpdateQuickShop();
-	}
-
-	[ClientRpc]
-	public static void ClientSendQuickShopUpdate()
-	{
-		UpdateQuickShop();
-	}
-
-	private static void UpdateQuickShop()
-	{
-		// if ( QuickShop.Instance?.Enabled ?? false )
-		// {
-		// 	QuickShop.Instance.Update();
-		// }
-	}
-
-	public void ServerUpdateShop()
-	{
-
-	}
-
-	// public void TickPlayerShop()
-	// {
-	// 	if ( !IsClient || QuickShop.Instance == null )
-	// 	{
-	// 		return;
-	// 	}
-
-	// 	if ( Input.Released( InputButton.View ) )
-	// 	{
-	// 		QuickShop.Instance.Enabled = false;
-	// 		QuickShop.Instance.Update();
-	// 	}
-	// 	else if ( Input.Pressed( InputButton.View ) && Local.Pawn is TTTPlayer player )
-	// 	{
-	// 		if ( !(player.Shop?.Accessable() ?? false) )
-	// 		{
-	// 			return;
-	// 		}
-
-	// 		QuickShop.Instance.Enabled = true;
-	// 		QuickShop.Instance.Update();
-	// 	}
-	// }
-
 }

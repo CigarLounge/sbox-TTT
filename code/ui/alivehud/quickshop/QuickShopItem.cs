@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -6,13 +5,13 @@ namespace TTT.UI;
 
 public partial class QuickShopItem : Panel
 {
-	public bool IsDisabled = false;
+	public bool IsDisabled { get; private set; }
 
 	private readonly Image _itemIcon;
 	private readonly Label _itemNameLabel;
 	private readonly Label _itemPriceLabel;
 
-	public QuickShopItem( Panel parent ) : base( parent )
+	public QuickShopItem( Panel parent, ItemInfo itemInfo ) : base( parent )
 	{
 		AddClass( "rounded" );
 		AddClass( "text-shadow" );
@@ -27,22 +26,15 @@ public partial class QuickShopItem : Panel
 
 		_itemNameLabel = Add.Label();
 		_itemNameLabel.AddClass( "item-name-label" );
-	}
 
-	public void InitItem( ItemInfo itemInfo )
-	{
 		_itemNameLabel.Text = itemInfo.Title;
 		_itemPriceLabel.Text = $"${itemInfo.Price}";
-
 		_itemIcon.SetImage( itemInfo.Icon );
 	}
 
-	public void Update()
+	public void UpdateAvailability( bool isDisabled )
 	{
-		QuickShop.BuyError buyError = QuickShop.BuyError.None;
-
-		// Decrease the opacity to show that the item cannot be purchased
-		// ex. lack of credits
-		SetClass( "cannot-purchase", buyError != QuickShop.BuyError.None );
+		SetClass( "cannot-purchase", isDisabled );
+		IsDisabled = isDisabled;
 	}
 }
