@@ -3,15 +3,16 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public partial class QuickShopItem : Panel
+public partial class ShopItem : Panel
 {
+	public ItemInfo ItemInfo { get; init; }
 	public bool IsDisabled { get; private set; }
 
 	private readonly Image _itemIcon;
 	private readonly Label _itemNameLabel;
 	private readonly Label _itemPriceLabel;
 
-	public QuickShopItem( Panel parent, ItemInfo itemInfo ) : base( parent )
+	public ShopItem( Panel parent, ItemInfo itemInfo ) : base( parent )
 	{
 		AddClass( "rounded" );
 		AddClass( "text-shadow" );
@@ -30,11 +31,13 @@ public partial class QuickShopItem : Panel
 		_itemNameLabel.Text = itemInfo.Title;
 		_itemPriceLabel.Text = $"${itemInfo.Price}";
 		_itemIcon.SetImage( itemInfo.Icon );
+
+		ItemInfo = itemInfo;
 	}
 
-	public void UpdateAvailability( bool isDisabled )
+	public void UpdateAvailability( Player.BuyError buyError )
 	{
-		SetClass( "cannot-purchase", isDisabled );
-		IsDisabled = isDisabled;
+		SetClass( "cannot-purchase", buyError != Player.BuyError.None );
+		IsDisabled = buyError != Player.BuyError.None;
 	}
 }

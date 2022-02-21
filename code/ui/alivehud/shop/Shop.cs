@@ -5,28 +5,19 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public partial class QuickShop : Panel
+public partial class Shop : Panel
 {
 	private readonly Panel _backgroundPanel;
-	private readonly Panel _quickshopContainer;
+	private readonly Panel _shopContainer;
 	private readonly Label _creditLabel;
 	private readonly Panel _itemPanel;
 	private readonly Label _itemDescriptionLabel;
 	private static ItemInfo _selectedItemInfo;
-	private readonly Dictionary<string, QuickShopItem> _shopItems = new();
+	private readonly List<ShopItem> _shopItems = new();
 
-	public enum BuyError
+	public Shop() : base()
 	{
-		None,
-		InventoryBlocked,
-		NotEnoughCredits,
-		NotAvailable,
-		LimitReached
-	}
-
-	public QuickShop() : base()
-	{
-		StyleSheet.Load( "/ui/alivehud/quickshop/QuickShop.scss" );
+		StyleSheet.Load( "/ui/alivehud/shop/Shop.scss" );
 
 		AddClass( "text-shadow" );
 
@@ -35,16 +26,16 @@ public partial class QuickShop : Panel
 		_backgroundPanel.AddClass( "opacity-medium" );
 		_backgroundPanel.AddClass( "fullscreen" );
 
-		_quickshopContainer = new Panel( this );
-		_quickshopContainer.AddClass( "quickshop-container" );
+		_shopContainer = new Panel( this );
+		_shopContainer.AddClass( "shop-container" );
 
-		_creditLabel = _quickshopContainer.Add.Label();
+		_creditLabel = _shopContainer.Add.Label();
 		_creditLabel.AddClass( "credit-label" );
 
-		_itemPanel = new Panel( _quickshopContainer );
+		_itemPanel = new Panel( _shopContainer );
 		_itemPanel.AddClass( "item-panel" );
 
-		_itemDescriptionLabel = _quickshopContainer.Add.Label();
+		_itemDescriptionLabel = _shopContainer.Add.Label();
 		_itemDescriptionLabel.AddClass( "item-description-label" );
 	}
 
@@ -62,11 +53,10 @@ public partial class QuickShop : Panel
 
 	private void AddRoleShopItem( ItemInfo itemInfo )
 	{
-		QuickShopItem item = new( _itemPanel, itemInfo );
+		ShopItem item = new( _itemPanel, itemInfo );
 
 		item.AddEventListener( "onmouseover", () => { _selectedItemInfo = itemInfo; } );
 		item.AddEventListener( "onmouseout", () => { _selectedItemInfo = null; } );
-
 		item.AddEventListener( "onclick", () =>
 		{
 			if ( item.IsDisabled )
@@ -75,7 +65,7 @@ public partial class QuickShop : Panel
 			Player.PurchaseItem( itemInfo.LibraryName );
 		} );
 
-		_shopItems.Add( itemInfo.LibraryName, item );
+		_shopItems.Add( item );
 	}
 
 	public override void Tick()
@@ -85,7 +75,7 @@ public partial class QuickShop : Panel
 		if ( !HasClass( "fade-in" ) )
 			return;
 
-		if ( Local.Pawn is not Player player || player.Role.Info.AvailableItems.Count == 0 )
+		if ( Local.Pawn is not Player player )
 			return;
 
 		_creditLabel.Text = $"You have ${player.Credits}";
@@ -93,15 +83,16 @@ public partial class QuickShop : Panel
 		if ( _selectedItemInfo != null )
 			_itemDescriptionLabel.Text = $"The description for the {_selectedItemInfo?.Name ?? ""} will go here.";
 
+		// TODO: Let's show "EMPTY" or something here.
+		if ( player.Role.Info.AvailableItems.Count == 0 )
+			return;
+
 		if ( _shopItems.Count == 0 )
 			AddRoleShopItems( player );
 
-		foreach ( var libraryName in player.PurchasedShopItems )
+		foreach ( var shopItem in _shopItems )
 		{
-			if ( _shopItems.TryGetValue( libraryName, out QuickShopItem shopItem ) )
-			{
-				shopItem.UpdateAvailability( true );
-			}
+			shopItem.UpdateAvailability( player.CanPurchase( shopItem.ItemInfo ) );
 		}
 	}
 

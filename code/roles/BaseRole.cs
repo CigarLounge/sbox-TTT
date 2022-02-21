@@ -49,7 +49,7 @@ public abstract class BaseRole : LibraryClass
 		if ( Host.IsServer )
 		{
 			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
-			player.PurchasedShopItems.Clear();
+			player.PurchasedLimitedShopItems.Clear();
 		}
 
 		Event.Run( TTTEvent.Player.Role.Selected, player );
