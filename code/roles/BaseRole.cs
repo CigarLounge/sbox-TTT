@@ -13,7 +13,7 @@ public partial class RoleInfo : Asset
 	[Property] public int DefaultCredits { get; set; }
 	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	public List<string> AvailableItems { get; set; }
+	public HashSet<string> AvailableItems { get; set; }
 
 	protected override void PostLoad()
 	{
@@ -30,7 +30,7 @@ public partial class RoleInfo : Asset
 		else if ( LibraryName == "ttt_role_detective" )
 			Color = Color.FromBytes( 25, 102, 255 );
 
-		AvailableItems = ExclusiveItems?.Distinct().ToList() ?? new List<string>();
+		AvailableItems = ExclusiveItems == null ? new HashSet<string>() : new HashSet<string>( ExclusiveItems );
 	}
 }
 
