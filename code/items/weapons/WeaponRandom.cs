@@ -35,7 +35,7 @@ public class WeaponRandom : Entity
 			var weaponNames = WeaponsToSpawn.Split( ',' ).Select( ( w ) => w.Trim() );
 			foreach ( var name in weaponNames )
 			{
-				var weaponType = Utils.GetTypeByLibraryTitle<Type>( name );
+				var weaponType = Library.GetType( name );
 				if ( weaponType != null ) wepTypes.Add( weaponType );
 			}
 		}

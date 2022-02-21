@@ -60,27 +60,6 @@ public static partial class Utils
 	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Game.MinPlayers;
 
 	/// <summary>
-	/// Returns an instance of the given type by the given type `Type`.
-	/// </summary>
-	/// <param name="type">A derived `Type` of the given type</param>
-	/// <returns>Instance of the given type object</returns>
-	public static T GetObjectByType<T>( Type type ) => Library.Create<T>( type );
-
-	/// <summary>
-	/// Returns the `Sandbox.LibraryAttribute`'s `Name` of the given `LibraryClass`.
-	/// </summary>
-	/// <param name="libraryClass">A `Type` that has a `Sandbox.LibraryAttribute`</param>
-	/// <returns>`Sandbox.LibraryAttribute`'s `Name`</returns>
-	public static string GetLibraryName( this LibraryClass libraryClass ) => libraryClass.ClassInfo.Name;
-
-	/// <summary>
-	/// Returns the `Sandbox.LibraryAttribute`'s `Title` of the given `Type`.
-	/// </summary>
-	/// <param name="libraryClass">A `Type` that has a `Sandbox.LibraryAttribute`</param>
-	/// <returns>`Sandbox.LibraryAttribute`'s `Title`</returns>
-	public static string GetLibraryTitle( this LibraryClass libraryClass ) => libraryClass.ClassInfo.Title;
-
-	/// <summary>
 	/// Returns an approximate value for meters given the Source engine units (for distances)
 	/// based on https://developer.valvesoftware.com/wiki/Dimensions
 	/// </summary>
