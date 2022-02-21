@@ -24,7 +24,8 @@ $button-size: 50px;
 
 @import "/ui/components/linebreak/linebreak.scss";
 
-Panel, .panel {
+Panel, .panel
+{
     font-family: Poppins;
     flex-shrink: 0;
     color: #fafafa;
@@ -32,17 +33,20 @@ Panel, .panel {
 }
 
 .iconpanel,
-.icon {
+.icon
+{
     font-size: 21px;
     font-family: MaterialIcons;
 }
 
-.window {
+.window
+{
     flex-direction: column;
     justify-content: space-between;
     pointer-events: all;
 
-    .header {
+    .header
+    {
         width: 100%;
         min-height: 50px;
         top: 0;
@@ -53,11 +57,13 @@ Panel, .panel {
         font-weight: 500;
     }
 
-    .content {
+    .content
+    {
         flex-grow: 1;
     }
 
-    .footer {
+    .footer
+    {
         width: 100%;
         min-height: 40px;
         bottom: 0;
@@ -68,58 +74,71 @@ Panel, .panel {
     }
 }
 
-.disabled {
+.disabled
+{
     display: none;
     pointer-events: none;
 }
 
-.fade-in {
+.fade-in
+{
     opacity: 0.75;
 }
 
-.fade-out {
+.fade-out
+{
     opacity: 0;
 }
 
-.rounded {
+.rounded
+{
     border-radius: 8px;
 }
 
-.rounded-top-left {
+.rounded-top-left
+{
     border-top-left-radius: 8px;
 }
 
-.rounded-bottom-left {
+.rounded-bottom-left
+{
     border-bottom-left-radius: 8px;
 }
 
-.rounded-top {
+.rounded-top
+{
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
 
-.rounded-bottom {
+.rounded-bottom
+{
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
 
-.circular {
+.circular
+{
     border-radius: 50%;
 }
 
-.opacity-0 {
+.opacity-0
+{
     opacity: 0;
 }
 
-.opacity-heavy {
+.opacity-heavy
+{
     opacity: 0.9;
 }
 
-.opacity-medium {
+.opacity-medium
+{
     opacity: 0.75;
 }
 
-.centered-flex {
+.centered-flex
+{
     left: 0;
     right: 0;
     position: absolute;
@@ -128,121 +147,145 @@ Panel, .panel {
     align-self: center;
 }
 
-.centered {
+.centered
+{
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.centered-vertical-75 {
+.centered-vertical-75
+{
     position: absolute;
     left: 50%;
     top: 75%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.centered-vertical-10 {
+.centered-vertical-10
+{
     position: absolute;
     left: 50%;
     top: 10%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.centered-horizontal {
+.centered-horizontal
+{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.button {
+.button
+{
     cursor: pointer;
 }
 
-.text-shadow {
+.text-shadow
+{
     text-shadow: 0px 0px 2px black, 0px 0px 2px black;
 }
 
-.text-shadow-light {
+.text-shadow-light
+{
     text-shadow: 0px 0px 1px black, 0px 0px 0px black;
 }
 
-.box-shadow {
+.box-shadow
+{
     box-shadow: 0px 0px 10px black;
 }
 
-.fullscreen {
+.fullscreen
+{
     position: absolute;
     width: 100%;
     height: 100%;
 }
 
-.text-color-alive {
+.text-color-alive
+{
     color: $alive;
 }
 
-.text-color-spectator {
+.text-color-spectator
+{
     color: $spectator;
 }
 
-.text-color-info {
+.text-color-info
+{
     color: $info;
 }
 
-.background-color-primary {
+.background-color-primary
+{
     background-color: $primary;
 }
 
-.background-color-alive {
+.background-color-alive
+{
     background-color: $alive;
 }
 
-.background-color-spectator {
+.background-color-spectator
+{
     background-color: $spectator;
 }
 
-.background-color-secondary {
+.background-color-secondary
+{
     background-color: $secondary;
 }
 
-.border-color-alive {
+.border-color-alive
+{
     border-color: $alive;
 }
 
-.border-color-spectator {
+.border-color-spectator
+{
     border-color: $spectator;
 }
 
-.h1 {
+.h1
+{
     color: white;
     font-weight: bold;
     font-family: Poppins;
     text-decoration: underline;
     margin-bottom: 5px;
 
-    &.label {
+    &.label
+    {
         font-size: 25px;
     }
 }
 
-.h2 {
+.h2
+{
     color: white;
     font-weight: normal;
     font-family: Poppins;
     margin-bottom: 5px;
 
-    &.label {
+    &.label
+    {
         font-size: 20px;
     }
 }
 
-.h3 {
+.h3
+{
     color: white;
     font-weight: normal;
     font-family: Poppins;
     margin-bottom: 5px;
 
-    &.label {
+    &.label
+    {
         font-size: 15px;
     }
 }

@@ -1,56 +1,65 @@
 @import "../../Hud.scss";
 
-Scoreboard {
+Scoreboard
+{
     position: absolute;
     width: 100%;
-    height: 100%;      
+    height: 100%;
     opacity: 0;
     transition: all 0.15s ease-out;
     justify-content: center;
     pointer-events: all;
     z-index: 3;
 
-    .scoreboard-container {
+    .scoreboard-container
+    {
         width: 50%;
         flex-direction: column;
         justify-content: center;
         transition: transform 0.25s ease-out;
         transform: scale(0.9);
 
-        &.pop-in {
+        &.pop-in
+        {
             transform: scale(1);
         }
 
-        .column-label-panel {
+        .column-label-panel
+        {
             flex-direction: row;
             justify-content: flex-end;
             padding: 4px;
         }
 
-        .scoreboard-content {
+        .scoreboard-content
+        {
             flex-direction: column;
             padding: 8px;
             max-height: 66%;
             overflow: scroll;
         }
 
-        .scoreboard-footer {
+        .scoreboard-footer
+        {
             height: 25px;
         }
     }
 
-    &.fade-in {
+    &.fade-in
+    {
         opacity: 1;
     }
 }
 
-ScoreboardHeader {
+ScoreboardHeader
+{
     flex-direction: row;
     max-height: 100px;
     justify-content: space-between;
     padding: 16px;
 
-    .game-logo {
+    .game-logo
+    {
         background-image: url("/ui/ttt-logo.png");
         background-repeat: no-repeat;
         background-size: contain;
@@ -58,7 +67,8 @@ ScoreboardHeader {
         height: 75px;
     }
 
-    .server-information-panel {
+    .server-information-panel
+    {
         display: flex;
         flex-grow: 1;
         flex-direction: column;
@@ -67,44 +77,52 @@ ScoreboardHeader {
         margin-right: 12px;
     }
 
-    .server-name-label {
+    .server-name-label
+    {
         font-size: 20px;
         font-weight: 600;
     }
 
-    .server-description-label {
+    .server-description-label
+    {
         font-weight: 400;
     }
 
-    .server-data-panel {
+    .server-data-panel
+    {
         display: flex;
         flex-direction: column;
         justify-content: center;
         text-align: right;
     }
 
-    .server-map-label {
+    .server-map-label
+    {
         font-size: 16px;
         font-weight: 500;
     }
 
-    .server-players-label {
+    .server-players-label
+    {
         font-weight: 500;
     }
 }
 
-ScoreboardGroup {
+ScoreboardGroup
+{
     display: flex;
     flex-direction: column;
     margin-top: 15px;
     flex-shrink: 0;
     flex-grow: 0;
 
-    &:first-child {
+    &:first-child
+    {
         margin-top: 0;
     }
 
-    .group-title-panel {
+    .group-title-panel
+    {
         height: 25px;
         display: flex;
         justify-content: space-between;
@@ -113,55 +131,69 @@ ScoreboardGroup {
         padding: 8px;
     }
 
-    .group-title-label {
+    .group-title-label
+    {
         font-size: 14px;
         flex-grow: 1;
     }
-        
+
     .group-karma-label,
-    .group-ping-label {
+    .group-ping-label
+    {
         text-align: center;
         width: 125px;
     }
 
-    &:not(:first-child) {
+    &:not(:first-child)
+    {
         .group-karma-label,
-        .group-ping-label {
+        .group-ping-label
+        {
             display: none;
         }
     }
 
-    .group-content-panel {
+    .group-content-panel
+    {
         display: flex;
         flex-direction: column;
     }
 
-    &.alive {
-        .group-title-panel {
+    &.alive
+    {
+        .group-title-panel
+        {
             background-color: $alive;
         }
     }
 
-    &.dead {
-        .group-title-panel {
+    &.dead
+    {
+        .group-title-panel
+        {
             background-color: $dead;
         }
     }
 
-    &.missing {
-        .group-title-panel {
+    &.missing
+    {
+        .group-title-panel
+        {
             background-color: $missing;
         }
     }
 
-    &.spectator {
-        .group-title-panel {
+    &.spectator
+    {
+        .group-title-panel
+        {
             background-color: $spectator;
         }
     }
 }
 
-ScoreboardEntry {
+ScoreboardEntry
+{
     width: 100%;
     height: 40px;
     align-items: center;
@@ -171,12 +203,14 @@ ScoreboardEntry {
     display: flex;
     padding: 8px;
 
-    .avatar {
+    .avatar
+    {
         height: 25px;
         width: 25px;
     }
 
-    .name-label {
+    .name-label
+    {
         margin-left: 8px;
         font-size: 16px;
         font-weight: 600;
@@ -184,7 +218,8 @@ ScoreboardEntry {
     }
 
     .karma,
-    .ping {
+    .ping
+    {
         width: 125px;
         text-align: center;
         font-weight: 700;
@@ -192,19 +227,23 @@ ScoreboardEntry {
         padding-right: 25px;
     }
 
-    &:nth-child( odd ) {
+    &:nth-child( odd )
+    {
         background-color: #0a0a0a66;
     }
 
-    &:nth-child( even ) {
+    &:nth-child( even )
+    {
         background-color: #4b4b4b15;
     }
 
-    &.me:nth-child(1) {
+    &.me:nth-child(1)
+    {
         background-color: #f2b42d1a;
     }
 
-    &:last-child {
+    &:last-child
+    {
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
     }

@@ -134,9 +134,9 @@ public partial class LogicButton : Entity
 	public bool CanUse() => !IsDisabled;
 
 	// Convert starter data to struct to network to clients for UI display.
-	public TTTLogicButtonData PackageData()
+	public LogicButtonData PackageData()
 	{
-		return new TTTLogicButtonData()
+		return new LogicButtonData()
 		{
 			NetworkIdent = NetworkIdent,
 			Range = Range,
@@ -147,7 +147,7 @@ public partial class LogicButton : Entity
 }
 
 // Package up our data nice and neat for transmission to the client.
-public struct TTTLogicButtonData
+public struct LogicButtonData
 {
 	public int NetworkIdent;
 	public int Range;

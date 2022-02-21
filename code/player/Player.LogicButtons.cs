@@ -7,19 +7,16 @@ namespace TTT;
 
 public partial class Player
 {
-	public static Dictionary<int, TTTLogicButtonData> LogicButtons = new();
+	public static Dictionary<int, LogicButtonData> LogicButtons = new();
 	public static Dictionary<int, UI.LogicButtonPoint> LogicButtonPoints = new(); // UI display
 	public static UI.LogicButtonPoint FocusedButton;
 	public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
 	public void SendLogicButtonsToClient()
 	{
-		if ( IsClient )
-		{
-			return;
-		}
+		Host.AssertServer();
 
-		List<TTTLogicButtonData> logicButtonDataList = new();
+		List<LogicButtonData> logicButtonDataList = new();
 
 		foreach ( Entity entity in All )
 		{
@@ -52,7 +49,7 @@ public partial class Player
 	{
 		LogicButtonPoints = new();
 
-		foreach ( KeyValuePair<int, TTTLogicButtonData> keyValuePair in LogicButtons )
+		foreach ( KeyValuePair<int, LogicButtonData> keyValuePair in LogicButtons )
 		{
 			LogicButtonPoints.Add( keyValuePair.Key, new UI.LogicButtonPoint( keyValuePair.Value ) );
 		}
@@ -60,7 +57,7 @@ public partial class Player
 
 	// Receive data of player's buttons from client.
 	[ClientRpc]
-	public void ClientStoreLogicButton( TTTLogicButtonData[] buttons )
+	public void ClientStoreLogicButton( LogicButtonData[] buttons )
 	{
 		Clear();
 

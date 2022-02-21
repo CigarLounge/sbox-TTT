@@ -9,7 +9,7 @@ namespace TTT.UI;
 public class LogicButtonPoint : Panel
 {
 	// Our data we received initially from the server during creation.
-	public TTTLogicButtonData Data { get; private set; }
+	public LogicButtonData Data { get; private set; }
 
 	// Our specific assigned Entity.
 	private LogicButton _entity;
@@ -24,7 +24,7 @@ public class LogicButtonPoint : Panel
 	// Past this distance, the button is unusuable.
 	private readonly int _maxViewDistance = 1024;
 
-	public LogicButtonPoint( TTTLogicButtonData data )
+	public LogicButtonPoint( LogicButtonData data )
 	{
 		Data = data;
 		Position = data.Position;
