@@ -243,7 +243,7 @@ public abstract partial class Weapon : Carriable
 				using ( Prediction.Off() )
 				{
 					var damageInfo = new DamageInfo()
-						.WithPosition( Owner.Position )
+						.WithPosition( trace.EndPos )
 						.WithFlag( DamageFlags.Bullet )
 						.WithForce( forward * 100f * force )
 						.UsingTraceResult( trace )
