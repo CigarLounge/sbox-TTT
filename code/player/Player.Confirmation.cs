@@ -48,7 +48,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void AddMIA()
+	private void AddMIA()
 	{
 		IsMissingInAction = true;
 

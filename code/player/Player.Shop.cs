@@ -29,6 +29,6 @@ public partial class Player
 		// TODO: we need to handle credits here.
 		// TODO: we need to handle the case the inventory is filled.
 		player.PurchasedShopItems.Add( libraryName );
-		player.Inventory.Add( Library.Create<Weapon>( libraryName ) );
+		player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
 	}
 }

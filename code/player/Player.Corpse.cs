@@ -179,7 +179,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public void Confirm()
 	{
 		Host.AssertServer();
-		Assert.False( IsIdentified );
 
 		DeadPlayer.IsConfirmed = true;
 		IsIdentified = true;
@@ -213,15 +212,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public void Tick( Player player )
 	{
 		if ( player.Using != this )
-		{
 			UI.FullScreenHintMenu.Instance?.Close();
-			return;
-		}
 		else if ( IsIdentified )
-		{
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
-			return;
-		}
 	}
 
 	bool IUse.OnUse( Entity user )
