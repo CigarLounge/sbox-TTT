@@ -31,8 +31,6 @@ public partial class Game
 			return;
 
 		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
-		if ( !itemInfo?.Buyable ?? true )
-			return;
 
 		if ( itemInfo is CarriableInfo )
 			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
