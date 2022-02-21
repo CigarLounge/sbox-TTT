@@ -117,11 +117,6 @@ public partial class Game : Sandbox.Game
 			return false;
 		}
 
-		if ( sourcePlayer.IsTeamVoiceChatEnabled && destPlayer.Team != sourcePlayer.Team )
-		{
-			return false;
-		}
-
 		return true;
 	}
 
@@ -146,11 +141,6 @@ public partial class Game : Sandbox.Game
 		if ( client == null || !client.IsValid() )
 		{
 			return;
-		}
-
-		if ( client.Pawn is Player player )
-		{
-			player.IsSpeaking = true;
 		}
 
 		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client, level );

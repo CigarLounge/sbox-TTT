@@ -48,11 +48,6 @@ public class VoiceChatEntry : Panel
 		if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
 		{
 			SetClass( "background-color-spectator", player.LifeState == LifeState.Dead );
-
-			if ( player.IsTeamVoiceChatEnabled && player.Role is not NoneRole )
-			{
-				Style.BackgroundColor = player.Role.Info.Color;
-			}
 		}
 	}
 
@@ -71,7 +66,6 @@ public class VoiceChatEntry : Panel
 		if ( timeoutInv <= 0 )
 		{
 			Delete();
-
 			return;
 		}
 
