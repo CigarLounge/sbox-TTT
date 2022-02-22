@@ -4,7 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	[Net, Predicted]
+	[Net]
 	public new Entity Using { get; set; }
 
 	public bool IsUseDisabled()

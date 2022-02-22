@@ -218,7 +218,7 @@ public partial class ChatBox : Panel
 	}
 	public static bool CanUseTeamChat( Player player )
 	{
-		return player.LifeState == LifeState.Alive && player.Team == Team.Traitors;
+		return player.IsAlive() && player.Team == Team.Traitors;
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]

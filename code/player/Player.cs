@@ -94,7 +94,6 @@ public partial class Player : Sandbox.Player
 	public override void Simulate( Client client )
 	{
 		TickPerkSimulate();
-		TickPlayerDropCarriable();
 
 		if ( IsClient )
 		{
@@ -106,6 +105,7 @@ public partial class Player : Sandbox.Player
 		{
 			TickPlayerUse();
 			TickAFKSystem();
+			TickPlayerDropCarriable();
 
 			if ( !this.IsAlive() )
 			{

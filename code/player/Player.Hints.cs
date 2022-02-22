@@ -12,9 +12,6 @@ public partial class Player
 
 	private void TickEntityHints()
 	{
-		if ( !IsClient )
-			return;
-
 		if ( Camera is ThirdPersonSpectateCamera )
 		{
 			DeleteHint();
