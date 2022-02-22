@@ -3,7 +3,7 @@
 namespace TTT;
 
 [Hammer.EditorModel( "weapons/rust_pistol/rust_pistol.vmdl" )]
-[Library( "ttt_weapon_bekas", Title = "Bekas-M", Spawnable = true )]
+[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
 public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;
