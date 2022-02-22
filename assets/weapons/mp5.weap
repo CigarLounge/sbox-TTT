@@ -6,12 +6,12 @@
 		dryfiresound = "dryfire_pistol-1"
 		firemode = "0"
 		bulletsperfire = 1
-		clipsize = 30
+		clipsize = 900
 		damage = 20.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
-		spread = 0.0
-		primaryrate = 1.0
+		spread = 0.02
+		primaryrate = 12.0
 		secondaryrate = 0.0
 		reloadtime = 2.0
 		ammotype = "0"
@@ -29,5 +29,8 @@
 		icon = ""
 		worldmodel = resource:"models/weapons/w_mp5.vmdl"
 		libraryname = "ttt_weapon_mp5"
+		verticalrecoil = 15.0
+		horizontalrecoilrange = 2.0
+		recoilrecoveryscale = 10.0
 	}
 }
