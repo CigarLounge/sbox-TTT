@@ -6,6 +6,6 @@
 		defaultcredits = 0
 		libraryname = "ttt_role_none"
 		exclusiveitems = [  ]
-		color = [ 186, 186, 186 ]
+		color = [ 0.113725, 0.113725, 0.113725, 1.0 ]
 	}
 }

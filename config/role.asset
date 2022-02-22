@@ -9,7 +9,7 @@
 		1 : "Innocents"
 		2 : "Traitors"
 	]
-	color(color255) : "Color" :  : ""
+	color(color1) : "Color" :  : ""
 	defaultcredits(integer) : "Default Credits" : 0 : ""
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
 	libraryname(string) : "Library Name" :  : ""
