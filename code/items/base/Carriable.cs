@@ -50,6 +50,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 {
 	[Net, Predicted]
 	public TimeSince TimeSinceDeployed { get; set; }
+	public TimeSince TimeSinceDropped { get; protected set; }
 
 	public new Player Owner
 	{
@@ -124,9 +125,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( Owner != null || carrier is not Player player )
 			return false;
 
-		// TODO: @mzegar
-		//if ( Info.ExclusiveFor != Team.None && player.Team != Info.ExclusiveFor )
-		//return false;
+		if ( TimeSinceDropped < 1f )
+			return false;
 
 		if ( !player.Inventory.HasFreeSlot( Info.Slot ) )
 			return false;
@@ -145,6 +145,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.OnCarryDrop( dropper );
 
+		TimeSinceDropped = 0;
 		(dropper as Player).Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
 
