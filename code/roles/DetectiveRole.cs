@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -9,19 +7,17 @@ public class DetectiveRole : BaseRole
 {
 	public override void OnSelect( Player player )
 	{
-		if ( !Host.IsServer || player.Team != Info.Team )
-			return;
 
-		if ( player.Team == Info.Team )
+		if ( Host.IsServer )
 		{
 			foreach ( Player otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
 			{
 				player.SendClientRole( To.Single( otherPlayer ) );
 			}
-		}
 
-		player.Perks.Add( new BodyArmor() );
-		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+			player.Perks.Add( new BodyArmor() );
+			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+		}
 
 		base.OnSelect( player );
 	}
