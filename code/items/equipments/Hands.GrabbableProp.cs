@@ -55,7 +55,7 @@ public class GrabbableProp : IGrabbable
 
 	public void SecondaryAction()
 	{
-		_owner.SetAnimBool( "b_attack", true );
+		_owner.SetAnimParameter( "b_attack", true );
 
 		GrabbedEntity.SetParent( null );
 		GrabbedEntity.EnableHideInFirstPerson = true;

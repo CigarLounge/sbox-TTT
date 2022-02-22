@@ -6,6 +6,19 @@ namespace TTT;
 
 public partial class Player
 {
+	public CameraMode Camera
+	{
+		get => Components.Get<CameraMode>();
+		set
+		{
+			var current = CameraMode;
+			if ( current == value ) return;
+
+			Components.RemoveAny<CameraMode>();
+			Components.Add( value );
+		}
+	}
+
 	private Player _spectatingPlayer;
 	public Player CurrentPlayer
 	{

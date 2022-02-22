@@ -55,6 +55,6 @@ public partial class Bekas : Weapon
 	[ClientRpc]
 	public void FinishReload()
 	{
-		ViewModelEntity?.SetAnimBool( "reload_finished", true );
+		ViewModelEntity?.SetAnimParameter( "reload_finished", true );
 	}
 }

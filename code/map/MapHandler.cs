@@ -17,9 +17,9 @@ public partial class MapHandler
 		RandomWeaponCount = Entity.All.OfType<WeaponRandom>().Count();
 	}
 
-	public void CleanUp()
+	public static void CleanUp()
 	{
+		Map.Reset( Game.DefaultCleanupFilter );
 		Sandbox.Internal.Decals.RemoveFromWorld();
-		EntityManager.CleanUpMap( Game.DefaultCleanupFilter );
 	}
 }

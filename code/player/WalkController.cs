@@ -47,12 +47,12 @@ public partial class WalkController : Sandbox.WalkController
 
 		if ( Pawn.LifeState != LifeState.Dead
 			&& fallVelocity >= FallPunchThreshold
-			&& !Pawn.WaterLevel.IsInWater )
+			&& Pawn.WaterLevel == 0f )
 		{
 			float punchStrength = fallVelocity.LerpInverse( FallPunchThreshold, FallPunchThreshold * 3 );
 			_ = new Sandbox.ScreenShake.Perlin( 1, 1, punchStrength, 1 );
 
-			if ( GroundEntity.WaterLevel.IsInWater )
+			if ( GroundEntity.WaterLevel > 0f )
 			{
 				FallVelocity -= PlayerLandOnFloatingObject;
 			}
