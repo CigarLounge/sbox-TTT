@@ -38,12 +38,6 @@ public partial class Player
 
 		DeleteHint();
 
-		if ( hint.ShowGlow && hint is ModelEntity model && model.IsValid() )
-		{
-			model.GlowColor = Color.White; // TODO: Let's let people change this in their settings.
-			model.GlowActive = true;
-		}
-
 		_currentHintPanel = hint.DisplayHint( this );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
@@ -53,11 +47,6 @@ public partial class Player
 
 	private void DeleteHint()
 	{
-		if ( _currentHint != null && _currentHint is ModelEntity model && model.IsValid() )
-		{
-			model.GlowActive = false;
-		}
-
 		_currentHintPanel?.Delete( true );
 		_currentHintPanel = null;
 		UI.FullScreenHintMenu.Instance?.Close();
@@ -69,19 +58,12 @@ public partial class Player
 	// of the "HintDistance".
 	private IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
 	{
-		Camera camera = Camera as Camera;
-
-		var trace = Trace.Ray( camera.Position, camera.Position + camera.Rotation.Forward * maxHintDistance );
+		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * maxHintDistance );
 		trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( CurrentPlayer );
-
-		/*
-		if ( IsSpectatingPlayer )
-			trace = trace.Ignore( CurrentPlayer );
-		*/
 
 		TraceResult tr = trace.UseHitboxes().Run();
 
-		if ( tr.Hit && tr.Entity is IEntityHint hint && tr.StartPos.Distance( tr.EndPos ) <= hint.HintDistance )
+		if ( tr.Hit && tr.Entity is IEntityHint hint && tr.StartPosition.Distance( tr.EndPosition ) <= hint.HintDistance )
 			return hint;
 
 		return null;

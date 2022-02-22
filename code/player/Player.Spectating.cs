@@ -19,7 +19,6 @@ public partial class Player
 		}
 	}
 
-
 	private Player _spectatingPlayer;
 	public Player CurrentPlayer
 	{

@@ -121,8 +121,7 @@ public class InventorySelection : Panel
 
 		List<Panel> childrenList = Children.ToList();
 
-		var activeCarriable = Local.Pawn.ActiveChild as Carriable;
-
+		var activeCarriable = player.ActiveChild as Carriable;
 		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
 		if ( keyboardIndexPressed != -1 )
 		{

@@ -35,8 +35,8 @@ public partial class Inventory : BaseInventory
 
 	public Carriable Swap( Carriable carriable )
 	{
-		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot ) as BaseCarriable;
-		bool wasActive = ent?.IsAc ?? false;
+		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
+		bool wasActive = Owner.ActiveChild == ent;
 
 		Drop( ent );
 		Add( carriable, wasActive );

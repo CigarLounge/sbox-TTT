@@ -218,7 +218,7 @@ public abstract partial class Weapon : Carriable
 		{
 			trace.Surface.DoBulletImpact( trace );
 
-			var fullEndPos = trace.EndPos + trace.Direction * bulletSize;
+			var fullEndPos = trace.EndPosition + trace.Direction * bulletSize;
 			/*
 			if ( !string.IsNullOrEmpty( TracerEffect ) )
 			{
@@ -243,7 +243,7 @@ public abstract partial class Weapon : Carriable
 				using ( Prediction.Off() )
 				{
 					var damageInfo = new DamageInfo()
-						.WithPosition( trace.EndPos )
+						.WithPosition( trace.EndPosition )
 						.WithFlag( DamageFlags.Bullet )
 						.WithForce( forward * 100f * force )
 						.UsingTraceResult( trace )
@@ -265,8 +265,11 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
+		bool InWater = Map.Physics.IsPointWater( start );
+
 		var tr = Trace.Ray( start, end )
 				.UseHitboxes()
+				.HitLayer( CollisionLayer.Water, !InWater )
 				.HitLayer( CollisionLayer.Debris )
 				.Ignore( Owner )
 				.Ignore( this )
