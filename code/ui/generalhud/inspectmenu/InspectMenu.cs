@@ -78,7 +78,7 @@ public class InspectMenu : Panel
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
 		_playerCorpse = playerCorpse;
-		SetConfirmationData( _playerCorpse.KillerWeapon.Title, _playerCorpse.Perks );
+		SetConfirmationData( _playerCorpse.KillerWeapon?.Title, _playerCorpse.Perks );
 	}
 
 	private void SetConfirmationData( string killerWeapon, string[] perks )
@@ -105,7 +105,6 @@ public class InspectMenu : Panel
 		_distanceEntry.SetActiveText( $"They were killed from approximately {_playerCorpse.Distance:n0}m away." );
 
 		_weaponEntry.Enabled( !string.IsNullOrEmpty( killerWeapon ) );
-
 		if ( _weaponEntry.IsEnabled() )
 		{
 			_weaponEntry.SetImage( $"/ui/icons/{killerWeapon}.png" );

@@ -47,7 +47,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
-		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon.ClassInfo.Name );
+		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon?.ClassInfo?.Name );
 		Distance = Utils.SourceUnitsToMeters( Position.Distance( KillInfo.Position ) );
 		player.Corpse = this;
 
@@ -194,7 +194,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		GetPlayerData( DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName, credits );
-		GetDamageInfo( KillInfo.Attacker, KillerWeapon.LibraryName, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
+		GetDamageInfo( KillInfo.Attacker, KillerWeapon?.LibraryName, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
 	}
 
 	public float HintDistance => Player.INTERACT_DISTANCE;
