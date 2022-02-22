@@ -21,12 +21,15 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public int BulletsPerFire { get; set; } = 1;
 	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
 	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
-	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; }
-	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; }
+	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float PrimaryRate { get; set; }
-	[Property, Category( "Stats" )] public float SecondaryRate { get; set; }
+	[Property, Category( "Stats" )] public float PrimaryRate { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float SecondaryRate { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
+	[Property, Category( "Stats" )] public float VerticalRecoil { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float HorizontalRecoilRange { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float RecoilRecoveryScale { get; set; } = 0f;
 	[Property, Category( "Stats" )] public AmmoType AmmoType { get; set; }
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; } = "particles/pistol_ejectbrass.vpcf";
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; }
@@ -48,6 +51,9 @@ public abstract partial class Weapon : Carriable
 
 	[Net, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
+
+	public virtual Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
+	public Vector3 CurrentRecoilAmount { get; set; } = Vector3.Zero;
 
 	public new WeaponInfo Info
 	{
@@ -152,6 +158,7 @@ public abstract partial class Weapon : Carriable
 
 		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
+		PerformRecoil();
 		PlaySound( Info.FireSound );
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
 		{
@@ -206,6 +213,12 @@ public abstract partial class Weapon : Carriable
 	protected virtual void ReloadEffects()
 	{
 		ViewModelEntity?.SetAnimParameter( "reload", true );
+	}
+
+	[ClientRpc]
+	protected virtual void PerformRecoil()
+	{
+		CurrentRecoilAmount += RecoilOnShot;
 	}
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )

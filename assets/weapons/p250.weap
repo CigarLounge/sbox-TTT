@@ -29,5 +29,8 @@
 		damagefalloffend = 0.0
 		holdtype = "1"
 		islimited = false
+		verticalrecoil = 10.0
+		horizontalrecoilrange = 10.0
+		recoilrecoveryscale = 10.0
 	}
 }
