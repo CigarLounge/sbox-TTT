@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
-using TTT.Events;
-using TTT.Player;
-
 namespace TTT.UI;
 
 public partial class Hud : HudEntity<RootPanel>
 {
-	public static Hud Current { set; get; }
-
-	public GeneralHud GeneralHudPanel;
-
 	public Hud()
 	{
 		if ( Host.IsServer )
@@ -21,16 +14,24 @@ public partial class Hud : HudEntity<RootPanel>
 			return;
 		}
 
-		Current = this;
-
 		RootPanel.StyleSheet.Load( "/ui/Hud.scss" );
 		RootPanel.AddClass( "panel" );
 
-		GeneralHudPanel = RootPanel.AddChild<GeneralHud>();
+		RootPanel.AddChild<GeneralHud>();
+	}
+
+	[Event.Hotload]
+	private void OnHotReload()
+	{
+		if ( !IsClient ) return;
+
+		RootPanel.DeleteChildren( true );
+		RootPanel.AddChild<GeneralHud>();
 	}
 
 	public class GeneralHud : Panel
 	{
+		public static GeneralHud Instance;
 		private List<Panel> _aliveHud = new();
 		public bool AliveHudEnabled
 		{
@@ -53,6 +54,8 @@ public partial class Hud : HudEntity<RootPanel>
 
 		public GeneralHud()
 		{
+			Instance = this;
+
 			AddClass( "fullscreen" );
 			AddChild<WIPDisclaimer>();
 
@@ -71,7 +74,7 @@ public partial class Hud : HudEntity<RootPanel>
 			AddChild<FullScreenHintMenu>();
 			AddChild<PostRoundMenu>();
 			AddChild<Scoreboard>();
-			AddChild<TTTMenu>();
+			AddChild<SettingsMenu>();
 		}
 
 		public void AddChildToAliveHud( Panel panel )
@@ -86,10 +89,8 @@ public partial class Hud : HudEntity<RootPanel>
 			_aliveHud = new()
 			{
 				AddChild<Crosshair>(),
-				AddChild<BreathIndicator>(),
-				AddChild<StaminaIndicator>(),
-				AddChild<QuickShop>(),
-				AddChild<SWB_Base.DamageIndicator>()
+				AddChild<Shop>(),
+				AddChild<DamageIndicator>()
 			};
 		}
 
@@ -102,14 +103,14 @@ public partial class Hud : HudEntity<RootPanel>
 
 		public override void Tick()
 		{
-			if ( Local.Pawn is not TTTPlayer player )
+			if ( Local.Pawn is not Player player )
 			{
 				return;
 			}
 
-			if ( Current.GeneralHudPanel != null )
+			if ( Instance != null )
 			{
-				Current.GeneralHudPanel.AliveHudEnabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
+				Instance.AliveHudEnabled = player.LifeState == LifeState.Alive && !player.IsForcedSpectator;
 			}
 		}
 

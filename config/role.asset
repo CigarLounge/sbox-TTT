@@ -1,0 +1,17 @@
+//
+// TTT.RoleInfo
+//
+@BaseClass = role : ""
+[
+	team(choices) : "Team" : 0 : "" =
+	[
+		0 : "None"
+		1 : "Innocents"
+		2 : "Traitors"
+	]
+	color(color255) : "Color" :  : ""
+	defaultcredits(integer) : "Default Credits" : 0 : ""
+	exclusiveitems(array:string) : "Exclusive Items" :  : ""
+	libraryname(string) : "Library Name" :  : ""
+]
+

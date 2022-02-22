@@ -1,73 +1,40 @@
-using System;
-using System.Collections.Generic;
-
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Player;
-using TTT.Teams;
+namespace TTT;
 
-namespace TTT.Roles
+[Library( "ttt_role_traitor", Title = "Traitor" )]
+public class TraitorRole : BaseRole
 {
-	[Role( "Traitor" )]
-	public class TraitorRole : TTTRole
+	public override void OnSelect( Player player )
 	{
-		public override Color Color => Color.FromBytes( 223, 41, 53 );
-		public override int DefaultCredits => 200;
-		public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( TraitorTeam ) );
-
-		public TraitorRole() : base()
+		if ( Host.IsServer && player.Team == Team.None )
 		{
-
-		}
-
-		public override void OnSelect( TTTPlayer player )
-		{
-			if ( Host.IsServer && player.Team == DefaultTeam )
+			foreach ( Player otherPlayer in player.Team.GetAll() )
 			{
-				foreach ( TTTPlayer otherPlayer in player.Team.Members )
+				if ( otherPlayer == player )
 				{
-					if ( otherPlayer == player )
-					{
-						continue;
-					}
-
-					player.SendClientRole( To.Single( otherPlayer ) );
-					otherPlayer.SendClientRole( To.Single( player ) );
+					continue;
 				}
 
-				foreach ( TTTPlayer otherPlayer in Utils.GetPlayers() )
-				{
-					if ( otherPlayer.IsMissingInAction )
-					{
-						otherPlayer.SyncMIA( player );
-					}
-				}
+				player.SendClientRole( To.Single( otherPlayer ) );
+				otherPlayer.SendClientRole( To.Single( player ) );
 			}
 
-			base.OnSelect( player );
+			foreach ( Player otherPlayer in Utils.GetPlayers() )
+			{
+				if ( otherPlayer.IsMissingInAction )
+				{
+					otherPlayer.SyncMIA( player );
+				}
+			}
 		}
 
-		public override void OnKilled( TTTPlayer killer )
-		{
-			var clients = Utils.GiveAliveDetectivesCredits( 100 );
-			RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );
-		}
+		base.OnSelect( player );
+	}
 
-		// serverside function
-		public override void CreateDefaultShop()
-		{
-			Shop.AddItemsForRole( this );
-
-			base.CreateDefaultShop();
-		}
-
-		// serverside function
-		public override void UpdateDefaultShop( List<Type> newItemsList )
-		{
-			Shop.AddNewItems( newItemsList );
-
-			base.UpdateDefaultShop( newItemsList );
-		}
+	public override void OnKilled( Player player )
+	{
+		var clients = Utils.GiveAliveDetectivesCredits( 100 );
+		RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );
 	}
 }

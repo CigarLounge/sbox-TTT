@@ -1,4 +1,5 @@
-Nameplate {
+Nameplate
+{
     position: absolute;
     left: 50%;
     top: 55%;
@@ -6,27 +7,32 @@ Nameplate {
     transition: opacity 0.15s ease-out;
     opacity: 0;
 
-    &.fade-in {
+    &.fade-in
+    {
         transition: opacity 0.15s ease-out;
         opacity: 1;
     }
 
-    .label-holder {
+    .label-holder
+    {
         display: flex;
         flex-direction: column;
         text-align: center;
         font-weight: 600;
 
-        .name-holder {
+        .name-holder
+        {
             justify-content: center;
             width: 100%;
 
-            .name {
+            .name
+            {
                 font-size: 14px;
             }
         }
 
-        .damage-indicator {
+        .damage-indicator
+        {
             font-size: 12px;
         }
     }

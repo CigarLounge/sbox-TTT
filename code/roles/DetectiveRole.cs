@@ -1,68 +1,34 @@
-using System;
-using System.Collections.Generic;
-
 using Sandbox;
 
-using TTT.Items;
-using TTT.Player;
-using TTT.Teams;
+namespace TTT;
 
-namespace TTT.Roles
+[Library( "ttt_role_detective", Title = "Detective" )]
+public class DetectiveRole : BaseRole
 {
-	[Role( "Detective" )]
-	public class DetectiveRole : TTTRole
+	public override void OnSelect( Player player )
 	{
-		public override Color Color => Color.FromBytes( 25, 102, 255 );
-		public override int DefaultCredits => 100;
-		public override TTTTeam DefaultTeam { get; } = TeamFunctions.GetTeam( typeof( InnocentTeam ) );
-
-		public DetectiveRole() : base()
+		if ( Host.IsServer )
 		{
-
-		}
-
-		public override void OnSelect( TTTPlayer player )
-		{
-			if ( Host.IsServer && player.Team == DefaultTeam )
+			foreach ( Player otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
 			{
-				if ( player.Team == DefaultTeam )
-				{
-					foreach ( TTTPlayer otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
-					{
-						player.SendClientRole( To.Single( otherPlayer ) );
-					}
-				}
-
-				player.Perks.Add( new BodyArmor() );
-				player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+				player.SendClientRole( To.Single( otherPlayer ) );
 			}
 
-			base.OnSelect( player );
+			player.Perks.Add( new BodyArmor() );
+			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 		}
 
-		public override void OnKilled( TTTPlayer killer )
+		base.OnSelect( player );
+	}
+
+	public override void OnKilled( Player player )
+	{
+		var killer = player.LastAttacker as Player;
+
+		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
 		{
-			if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role is TraitorRole )
-			{
-				killer.Credits += 100;
-				RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
-			}
-		}
-
-		// serverside function
-		public override void CreateDefaultShop()
-		{
-			Shop.AddItemsForRole( this );
-
-			base.CreateDefaultShop();
-		}
-
-		// serverside function
-		public override void UpdateDefaultShop( List<Type> newItemsList )
-		{
-			Shop.AddNewItems( newItemsList );
-
-			base.UpdateDefaultShop( newItemsList );
+			killer.Credits += 100;
+			RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );
 		}
 	}
 }

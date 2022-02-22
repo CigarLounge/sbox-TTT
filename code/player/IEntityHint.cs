@@ -1,37 +1,36 @@
 using TTT.UI;
 
-namespace TTT.Player
+namespace TTT;
+
+public interface IEntityHint
 {
-	public interface IEntityHint
-	{
-		/// <summary>
-		/// The max viewable distance of the hint.
-		/// </summary>
-		float HintDistance => 2048f;
+	/// <summary>
+	/// The max viewable distance of the hint.
+	/// </summary>
+	float HintDistance => 2048f;
 
-		/// <summary>
-		/// If we should show a glow around the entity.
-		/// </summary>
-		bool ShowGlow => true;
+	/// <summary>
+	/// If we should show a glow around the entity.
+	/// </summary>
+	bool ShowGlow => true;
 
-		/// <summary>
-		/// The text to display on the hint each tick.
-		/// </summary>
-		string TextOnTick { get; }
+	/// <summary>
+	/// The text to display on the hint each tick.
+	/// </summary>
+	string TextOnTick { get; }
 
-		/// <summary>
-		/// Whether or not we can show the UI hint.
-		/// </summary>
-		bool CanHint( TTTPlayer player );
+	/// <summary>
+	/// Whether or not we can show the UI hint.
+	/// </summary>
+	bool CanHint( Player player );
 
-		/// <summary>
-		/// The hint we should display.
-		/// </summary>
-		EntityHintPanel DisplayHint( TTTPlayer player );
+	/// <summary>
+	/// The hint we should display.
+	/// </summary>
+	EntityHintPanel DisplayHint( Player player );
 
-		/// <summary>
-		/// Occurs on each tick if the hint is active.
-		/// </summary>
-		void Tick( TTTPlayer player );
-	}
+	/// <summary>
+	/// Occurs on each tick if the hint is active.
+	/// </summary>
+	void Tick( Player player );
 }

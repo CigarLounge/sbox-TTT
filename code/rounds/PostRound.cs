@@ -1,58 +1,49 @@
-using System.Collections.Generic;
-
 using Sandbox;
 
-using TTT.Globals;
-using TTT.Player;
-using TTT.Settings;
+namespace TTT;
 
-namespace TTT.Rounds
+public class PostRound : BaseRound
 {
-	public class PostRound : BaseRound
+	public override string RoundName => "Post";
+	public override int RoundDuration => Game.PostRoundTime;
+
+	protected override void OnTimeUp()
 	{
-		public override string RoundName => "Post";
-		public override int RoundDuration
+		base.OnTimeUp();
+
+		RPCs.ClientClosePostRoundMenu();
+
+		bool shouldChangeMap = Game.Current.MapSelection.TotalRoundsPlayed >= Game.RoundLimit;
+		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
+	}
+
+	public override void OnPlayerKilled( Player player )
+	{
+		player.MakeSpectator();
+	}
+
+	public override void OnPlayerJoin( Player playerJoined )
+	{
+		foreach ( Player player in Utils.GetPlayers() )
 		{
-			get => ServerSettings.Instance.Round.PostRoundTime;
-		}
-
-		protected override void OnTimeUp()
-		{
-			base.OnTimeUp();
-
-			// TODO: Allow users to close the menu themselves using mouse cursor.
-			RPCs.ClientClosePostRoundMenu();
-
-			bool shouldChangeMap = Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed >= ServerSettings.Instance.Round.TotalRounds;
-			Gamemode.Game.Instance.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
-		}
-
-		public override void OnPlayerKilled( TTTPlayer player )
-		{
-			player.MakeSpectator();
-		}
-
-		protected override void OnStart()
-		{
-			if ( Host.IsServer )
+			if ( player.IsConfirmed )
 			{
-				using ( Prediction.Off() )
-				{
-					foreach ( TTTPlayer player in Utils.GetPlayers() )
-					{
-						if ( player.PlayerCorpse != null && player.PlayerCorpse.IsValid() && player.LifeState == LifeState.Dead && !player.PlayerCorpse.IsIdentified )
-						{
-							player.PlayerCorpse.IsIdentified = true;
-
-							RPCs.ClientConfirmPlayer( null, player.PlayerCorpse, player, player.PlayerCorpse.DeadPlayerClientData.Name, player.PlayerCorpse.DeadPlayerClientData.PlayerId, player.Role.Name, player.Team.Name, player.PlayerCorpse.GetConfirmationData(), player.PlayerCorpse.KillerWeapon, player.PlayerCorpse.Perks );
-						}
-						else
-						{
-							player.SendClientRole( To.Everyone );
-						}
-					}
-				}
+				player.SendClientRole( To.Single( playerJoined ) );
 			}
+		}
+	}
+
+	protected override void OnStart()
+	{
+		if ( !Host.IsServer )
+			return;
+
+		foreach ( Player player in Utils.GetPlayers() )
+		{
+			if ( player.Corpse.IsValid() && !player.Corpse.IsIdentified )
+				player.Corpse.Confirm();
+			else
+				player.SendClientRole( To.Everyone );
 		}
 	}
 }

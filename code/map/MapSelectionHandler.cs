@@ -3,60 +3,59 @@ using System.Threading.Tasks;
 
 using Sandbox;
 
-namespace TTT.Map
+namespace TTT;
+
+public partial class MapSelectionHandler : BaseNetworkable
 {
-	public partial class MapSelectionHandler : BaseNetworkable
+	// Player Id (long) -> Map name (string)
+	[Net]
+	public IDictionary<long, string> PlayerIdMapVote { get; set; }
+
+	// Map name (string) -> Map image (string)
+	[Net]
+	public IDictionary<string, string> MapImages { get; set; }
+
+	public int TotalRoundsPlayed = 0;
+
+	public async Task Load()
 	{
-		// Player Id (long) -> Map name (string)
-		[Net]
-		public IDictionary<long, string> PlayerIdMapVote { get; set; }
+		List<string> mapNames = await GetTTTMapNames();
+		List<string> mapImages = await GetTTTMapImages( mapNames );
 
-		// Map name (string) -> Map image (string)
-		[Net]
-		public IDictionary<string, string> MapImages { get; set; }
-
-		public int TotalRoundsPlayed = 0;
-
-		public async Task Load()
+		for ( int i = 0; i < mapNames.Count; ++i )
 		{
-			List<string> mapNames = await GetTTTMapNames();
-			List<string> mapImages = await GetTTTMapImages( mapNames );
+			MapImages[mapNames[i]] = mapImages[i];
+		}
+	}
 
-			for ( int i = 0; i < mapNames.Count; ++i )
-			{
-				MapImages[mapNames[i]] = mapImages[i];
-			}
+	private static async Task<List<string>> GetTTTMapNames()
+	{
+		Package result = await Package.Fetch( Global.GameTitle, true );
+		return result?.GameConfiguration?.MapList ?? new List<string>();
+	}
+
+	private static async Task<List<string>> GetTTTMapImages( List<string> mapNames )
+	{
+		List<string> mapPanels = new();
+
+		for ( int i = 0; i < mapNames.Count; ++i )
+		{
+			Package result = await Package.Fetch( mapNames[i], true );
+			mapPanels.Add( result.Thumb );
 		}
 
-		private static async Task<List<string>> GetTTTMapNames()
+		return mapPanels;
+	}
+
+	public static IDictionary<string, int> GetTotalVotesPerMap( IDictionary<long, string> mapVotes )
+	{
+		IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
+
+		foreach ( string mapName in mapVotes.Values )
 		{
-			Package result = await Package.Fetch( Global.GameName, true );
-			return result.GameConfiguration.MapList;
+			indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey( mapName ) ? 1 : indexToVoteCount[mapName] + 1;
 		}
 
-		private static async Task<List<string>> GetTTTMapImages( List<string> mapNames )
-		{
-			List<string> mapPanels = new();
-
-			for ( int i = 0; i < mapNames.Count; ++i )
-			{
-				Package result = await Package.Fetch( mapNames[i], true );
-				mapPanels.Add( result.Thumb );
-			}
-
-			return mapPanels;
-		}
-
-		public static IDictionary<string, int> GetTotalVotesPerMap( IDictionary<long, string> mapVotes )
-		{
-			IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
-
-			foreach ( string mapName in mapVotes.Values )
-			{
-				indexToVoteCount[mapName] = !indexToVoteCount.ContainsKey( mapName ) ? 1 : indexToVoteCount[mapName] + 1;
-			}
-
-			return indexToVoteCount;
-		}
+		return indexToVoteCount;
 	}
 }

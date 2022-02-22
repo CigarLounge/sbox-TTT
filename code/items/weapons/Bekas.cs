@@ -1,85 +1,60 @@
-using System;
-using Sandbox;
-using SWB_Base;
-using TTT.Player;
-using TTT.UI;
+﻿using Sandbox;
 
-namespace TTT.Items
+namespace TTT;
+
+[Hammer.EditorModel( "weapons/rust_pistol/rust_pistol.vmdl" )]
+[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
+public partial class Bekas : Weapon
 {
-	[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
-	[Shop( SlotType.Primary, 100 )]
-	[Spawnable]
-	[Precached( "models/weapons/v_bekas.vmdl", "models/weapons/w_bekas.vmdl" )]
-	[Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
-	public class Bekas : WeaponBaseShotty, ICarriableItem, IEntityHint
+	private bool _attackedDuringReload = false;
+
+	public override void ActiveStart( Entity entity )
 	{
-		public ItemData GetItemData() { return _data; }
-		private readonly ItemData _data = new( typeof( Bekas ) );
-		public Type DroppedType => typeof( ShotgunAmmo );
+		base.ActiveStart( entity );
 
-		public override int Bucket => 2;
-		public override HoldType HoldType => HoldType.Shotgun;
-		public override string HandsModelPath => "models/weapons/v_arms_ter.vmdl";
-		public override string ViewModelPath => "models/weapons/v_bekas.vmdl";
-		public override string WorldModelPath => "models/weapons/w_bekas.vmdl";
-		public override int FOV => 75;
-		public override int ZoomFOV => 75;
-		public override float WalkAnimationSpeedMod => 0.9f;
+		_attackedDuringReload = false;
+		TimeSinceReload = 0f;
+	}
 
-		public override float ShellReloadTimeStart => 0.33f;
-		public override float ShellReloadTimeInsert => 0.54f;
-		public override float ShellEjectDelay => 0.3f;
+	public override bool CanReload()
+	{
+		if ( !base.CanReload() )
+			return false;
 
-		public Bekas()
-		{
-			General = new WeaponInfo
-			{
-				DrawTime = 1f,
-			};
+		var rate = Info.PrimaryRate;
+		if ( rate <= 0 )
+			return true;
 
-			Primary = new ClipInfo
-			{
-				Ammo = 6,
-				AmmoType = AmmoType.Shotgun,
-				ClipSize = 6,
+		return TimeSincePrimaryAttack > (1 / rate);
+	}
 
-				Bullets = 8,
-				BulletSize = 2f,
-				Damage = 11f,
-				Force = 3f,
-				Spread = 0.09f,
-				Recoil = 7f,
-				RPM = 43,
-				FiringType = FiringType.semi,
-				ScreenShake = new ScreenShake
-				{
-					Length = 0.5f,
-					Speed = 4.0f,
-					Size = 1.0f,
-					Rotation = 0.5f
-				},
+	public override void Simulate( Client owner )
+	{
+		base.Simulate( owner );
 
-				DryFireSound = "dryfire_rifle-1",
-				ShootSound = "bekas_fire-1",
+		if ( IsReloading && Input.Pressed( InputButton.Attack1 ) )
+			_attackedDuringReload = true;
+	}
 
-				BulletEjectParticle = "particles/pistol_ejectbrass.vpcf",
-				MuzzleFlashParticle = "particles/swb/muzzle/flash_medium.vpcf",
+	public override void OnReloadFinish()
+	{
+		IsReloading = false;
 
-				InfiniteAmmo = 0
-			};
-		}
+		TimeSincePrimaryAttack = 0;
 
-		public override void Simulate( Client client )
-		{
-			WeaponGenerics.Simulate( client, Primary, DroppedType );
-			base.Simulate( client );
-		}
+		AmmoClip += TakeAmmo( 1 );
 
-		public float HintDistance => TTTPlayer.INTERACT_DISTANCE;
-		public string TextOnTick => WeaponGenerics.PickupText( _data.Library.Title );
-		bool ICarriableItem.CanDrop() { return true; }
-		public bool CanHint( TTTPlayer player ) { return true; }
-		public EntityHintPanel DisplayHint( TTTPlayer player ) { return new Hint( TextOnTick ); }
-		public void Tick( TTTPlayer player ) { WeaponGenerics.Tick( player, this ); }
+		if ( !_attackedDuringReload && AmmoClip < Info.ClipSize && (UnlimitedAmmo || Owner.AmmoCount( Info.AmmoType ) != 0) )
+			Reload();
+		else
+			FinishReload();
+
+		_attackedDuringReload = false;
+	}
+
+	[ClientRpc]
+	public void FinishReload()
+	{
+		ViewModelEntity?.SetAnimBool( "reload_finished", true );
 	}
 }

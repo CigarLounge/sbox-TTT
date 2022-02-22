@@ -1,16 +1,15 @@
 using Sandbox.UI;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public class HintDisplay : Panel
 {
-	public class HintDisplay : Panel
+	public static HintDisplay Instance { get; set; }
+
+	public HintDisplay() : base()
 	{
-		public static HintDisplay Instance { get; set; }
+		Instance = this;
 
-		public HintDisplay() : base()
-		{
-			Instance = this;
-
-			AddClass( "fullscreen" );
-		}
+		AddClass( "fullscreen" );
 	}
 }

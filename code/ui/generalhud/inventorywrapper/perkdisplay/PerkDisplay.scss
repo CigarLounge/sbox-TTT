@@ -1,34 +1,40 @@
-PerkDisplay {
+PerkDisplay
+{
     display: flex;
     align-items: flex-end;
     flex-direction: column-reverse;
     margin-bottom: 15px;
 }
 
-PerkSlot {
+PerkSlot
+{
     flex-direction: column;
     width: 100px;
     height: 100px;
     align-items: center;
     margin-bottom: 10px;
 
-    .name {
+    .name
+    {
         font-size: 12px;
     }
 
-    .active {
+    .active
+    {
         font-size: 25px;
         font-weight: bold;
         z-index: 1;
         margin-left: 1px;
     }
 
-    .icon-panel {
+    .icon-panel
+    {
         width: 90px;
         height: 90px;
     }
 
-    Image {
+    Image
+    {
         height: 100%;
         width: 100%;
         opacity: 0.65;

@@ -1,31 +1,30 @@
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public partial class ChatEntry : Panel
 {
-	public partial class ChatEntry : Panel
+	public readonly Panel Message;
+	public readonly Image Avatar;
+	public readonly Label Header;
+	public readonly Label Content;
+	public ChatBox.Channel Channel;
+
+	public ChatEntry() : base()
 	{
-		public readonly Panel Message;
-		public readonly Image Avatar;
-		public readonly Label Header;
-		public readonly Label Content;
-		public ChatBox.Channel Channel;
+		Avatar = Add.Image();
+		Avatar.AddClass( "avatar" );
+		Avatar.AddClass( "circular" );
 
-		public ChatEntry() : base()
-		{
-			Avatar = Add.Image();
-			Avatar.AddClass( "avatar" );
-			Avatar.AddClass( "circular" );
+		Message = Add.Panel( "message" );
 
-			Message = Add.Panel( "message" );
+		Header = Message.Add.Label();
+		Header.AddClass( "header" );
+		Header.AddClass( "text-shadow" );
 
-			Header = Message.Add.Label();
-			Header.AddClass( "header" );
-			Header.AddClass( "text-shadow" );
-
-			Content = Message.Add.Label();
-			Content.AddClass( "content" );
-			Content.AddClass( "text-shadow" );
-		}
+		Content = Message.Add.Label();
+		Content.AddClass( "content" );
+		Content.AddClass( "text-shadow" );
 	}
 }

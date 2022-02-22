@@ -3,179 +3,163 @@ using System.Linq;
 
 using Sandbox;
 
-using TTT.Events;
-using TTT.Items;
-using TTT.Map;
-using TTT.Player;
-using TTT.Settings;
-using TTT.Teams;
+namespace TTT;
 
-namespace TTT.Rounds
+public partial class InProgressRound : BaseRound
 {
-	public partial class InProgressRound : BaseRound
+	public override string RoundName => "In Progress";
+
+	[Net]
+	public List<Player> Players { get; set; }
+
+	[Net]
+	public List<Player> Spectators { get; set; }
+
+	private List<LogicButton> _logicButtons;
+
+	public override int RoundDuration { get => Game.InProgressRoundTime; }
+
+	public override void OnPlayerKilled( Player player )
 	{
-		public override string RoundName => "In Progress";
+		Players.Remove( player );
+		Spectators.AddIfDoesNotContain( player );
 
-		[Net]
-		public List<TTTPlayer> Players { get; set; }
+		player.MakeSpectator();
+		ChangeRoundIfOver();
+	}
 
-		[Net]
-		public List<TTTPlayer> Spectators { get; set; }
+	public override void OnPlayerJoin( Player playerJoined )
+	{
+		Spectators.AddIfDoesNotContain( playerJoined );
 
-		private List<TTTLogicButton> _logicButtons;
-
-		public override int RoundDuration
+		foreach ( Player player in Utils.GetPlayers() )
 		{
-			get => ServerSettings.Instance.Round.RoundTime;
-		}
-
-		public override void OnPlayerKilled( TTTPlayer player )
-		{
-			Players.Remove( player );
-			Spectators.AddIfDoesNotContain( player );
-
-			player.MakeSpectator();
-			ChangeRoundIfOver();
-		}
-
-		public override void OnPlayerJoin( TTTPlayer player )
-		{
-			Spectators.AddIfDoesNotContain( player );
-		}
-
-		public override void OnPlayerLeave( TTTPlayer player )
-		{
-			Players.Remove( player );
-			Spectators.Remove( player );
-
-			ChangeRoundIfOver();
-		}
-
-		protected override void OnStart()
-		{
-			if ( Host.IsServer )
+			if ( player.IsConfirmed )
 			{
-				// For now, if the RandomWeaponCount of the map is zero, let's just give the players
-				// a fixed weapon loadout.
-				if ( Gamemode.Game.Instance.MapHandler.RandomWeaponCount == 0 )
-				{
-					foreach ( TTTPlayer player in Players )
-					{
-						GiveFixedLoadout( player );
-					}
-				}
+				player.SendClientRole( To.Single( playerJoined ) );
+			}
+		}
+	}
 
-				// Cache buttons for OnSecond tick.
-				_logicButtons = Entity.All.Where( x => x.GetType() == typeof( TTTLogicButton ) ).Select( x => x as TTTLogicButton ).ToList();
+	public override void OnPlayerLeave( Player player )
+	{
+		Players.Remove( player );
+		Spectators.Remove( player );
+
+		ChangeRoundIfOver();
+	}
+
+	protected override void OnStart()
+	{
+		if ( !Host.IsServer )
+			return;
+
+		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
+		// a fixed weapon loadout.
+		if ( MapHandler.RandomWeaponCount == 0 )
+		{
+			foreach ( Player player in Players )
+			{
+				GiveFixedLoadout( player );
 			}
 		}
 
-		private static void GiveFixedLoadout( TTTPlayer player )
+		// Cache buttons for OnSecond tick.
+		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( LogicButton ) ).Select( x => x as LogicButton ).ToList();
+	}
+
+	private static void GiveFixedLoadout( Player player )
+	{
+		player.Inventory.Add( new Bekas(), true );
+		player.Inventory.Add( new P250() );
+		player.GiveAmmo( AmmoType.PistolSMG, 5000 );
+		player.GiveAmmo( AmmoType.Shotgun, 5000 );
+		player.GiveAmmo( AmmoType.Rifle, 5000 );
+		player.GiveAmmo( AmmoType.Magnum, 5000 );
+	}
+
+	protected override void OnTimeUp()
+	{
+		LoadPostRound( Team.Innocents );
+
+		base.OnTimeUp();
+	}
+
+	private Team IsRoundOver()
+	{
+		List<Team> aliveTeams = new();
+
+		foreach ( Player player in Players )
 		{
-			Log.Debug( $"Added Fixed Loadout to {player.Client.Name}" );
-
-			player.AddItem( new P250() );
-			player.GiveAmmo( SWB_Base.AmmoType.SMG, 100 );
-
-			player.AddItem( new M4() );
-			player.GiveAmmo( SWB_Base.AmmoType.Rifle, 60 );
-		}
-
-		protected override void OnTimeUp()
-		{
-			LoadPostRound( TeamFunctions.GetTeam( typeof( InnocentTeam ) ) );
-
-			base.OnTimeUp();
-		}
-
-		private TTTTeam IsRoundOver()
-		{
-			List<TTTTeam> aliveTeams = new();
-
-			foreach ( TTTPlayer player in Players )
+			if ( !aliveTeams.Contains( player.Team ) )
 			{
-				if ( player.Team != null && !aliveTeams.Contains( player.Team ) )
-				{
-					aliveTeams.Add( player.Team );
-				}
-			}
-
-			if ( aliveTeams.Count == 0 )
-			{
-				return TeamFunctions.GetTeam( typeof( NoneTeam ) );
-			}
-
-			return aliveTeams.Count == 1 ? aliveTeams[0] : null;
-		}
-
-		public static void LoadPostRound( TTTTeam winningTeam )
-		{
-			Gamemode.Game.Instance.MapSelection.TotalRoundsPlayed++;
-			Gamemode.Game.Instance.ForceRoundChange( new PostRound() );
-			RPCs.ClientOpenAndSetPostRoundMenu(
-				winningTeam.Name,
-				winningTeam.Color
-			);
-		}
-
-		public override void OnSecond()
-		{
-			if ( Host.IsServer )
-			{
-				if ( !ServerSettings.Instance.Debug.PreventWin )
-				{
-					base.OnSecond();
-				}
-				else
-				{
-					TimeUntilRoundEnd += 1f;
-				}
-
-				_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
-
-				if ( !Utils.HasMinimumPlayers() && IsRoundOver() == null )
-				{
-					Gamemode.Game.Instance.ForceRoundChange( new WaitingRound() );
-				}
+				aliveTeams.Add( player.Team );
 			}
 		}
 
-		private bool ChangeRoundIfOver()
+		if ( aliveTeams.Count == 0 )
 		{
-			TTTTeam result = IsRoundOver();
-
-			if ( result != null && !Settings.ServerSettings.Instance.Debug.PreventWin )
-			{
-				LoadPostRound( result );
-
-				return true;
-			}
-
-			return false;
+			return Team.None;
 		}
 
-		[Event( TTTEvent.Player.Role.Select )]
-		private static void OnPlayerRoleChange( TTTPlayer player )
+		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
+	}
+
+	public static void LoadPostRound( Team winningTeam )
+	{
+		Game.Current.MapSelection.TotalRoundsPlayed++;
+		Game.Current.ForceRoundChange( new PostRound() );
+		RPCs.ClientOpenAndSetPostRoundMenu
+		(
+			winningTeam.GetName(),
+			winningTeam.GetColor()
+		);
+	}
+
+	public override void OnSecond()
+	{
+		if ( Host.IsServer )
 		{
-			if ( Host.IsClient )
+			if ( !Game.PreventWin )
 			{
-				return;
+				base.OnSecond();
+			}
+			else
+			{
+				TimeUntilRoundEnd += 1f;
 			}
 
-			if ( Gamemode.Game.Instance.Round is InProgressRound inProgressRound )
+			_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
+
+			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
 			{
-				inProgressRound.ChangeRoundIfOver();
+				Game.Current.ForceRoundChange( new WaitingRound() );
 			}
 		}
+	}
 
-		[Event( TTTEvent.Settings.Change )]
-		private static void OnChangeSettings()
+	private bool ChangeRoundIfOver()
+	{
+		Team result = IsRoundOver();
+
+		if ( result != Team.None && !Game.PreventWin )
 		{
-			if ( Gamemode.Game.Instance.Round is not InProgressRound inProgressRound )
-			{
-				return;
-			}
+			LoadPostRound( result );
 
+			return true;
+		}
+
+		return false;
+	}
+
+	[TTTEvent.Player.Role.Selected]
+	private static void OnPlayerRoleChange( Player player )
+	{
+		if ( Host.IsClient )
+			return;
+
+		if ( Game.Current.Round is InProgressRound inProgressRound )
+		{
 			inProgressRound.ChangeRoundIfOver();
 		}
 	}

@@ -2,65 +2,69 @@ using System;
 
 using Sandbox;
 
-using TTT.Player;
+namespace TTT;
 
-namespace TTT.Rounds
+public class WaitingRound : BaseRound
 {
-	public class WaitingRound : BaseRound
+	public override string RoundName => "Waiting";
+
+	public override void OnSecond()
 	{
-		public override string RoundName => "Waiting";
-
-		public override void OnSecond()
+		if ( Host.IsServer && Utils.HasMinimumPlayers() )
 		{
-			if ( Host.IsServer && Utils.HasMinimumPlayers() )
+			Game.Current.ForceRoundChange( new PreRound() );
+		}
+	}
+
+	public override void OnPlayerJoin( Player player )
+	{
+		base.OnPlayerJoin( player );
+
+		player.Respawn();
+	}
+
+	public override void OnPlayerKilled( Player player )
+	{
+		StartRespawnTimer( player );
+
+		player.MakeSpectator();
+
+		base.OnPlayerKilled( player );
+	}
+
+	protected override void OnStart()
+	{
+		if ( !Host.IsServer )
+			return;
+
+		foreach ( Client client in Client.All )
+		{
+			if ( client.Pawn is Player player )
 			{
-				Gamemode.Game.Instance.ForceRoundChange( new PreRound() );
+				player.Respawn();
 			}
 		}
+	}
 
-		public override void OnPlayerKilled( TTTPlayer player )
+	private static async void StartRespawnTimer( Player player )
+	{
+		try
 		{
-			StartRespawnTimer( player );
+			await GameTask.DelaySeconds( 1 );
 
-			player.MakeSpectator();
-
-			base.OnPlayerKilled( player );
-		}
-
-		protected override void OnStart()
-		{
-			if ( Host.IsServer )
+			if ( player.IsValid() && Game.Current.Round is WaitingRound )
 			{
-				foreach ( Client client in Client.All )
-				{
-					if ( client.Pawn is TTTPlayer player )
-					{
-						player.Respawn();
-					}
-				}
+				player.Respawn();
 			}
 		}
-
-		private static async void StartRespawnTimer( TTTPlayer player )
+		catch ( Exception e )
 		{
-			try
+			if ( e.Message.Trim() == "A task was canceled." )
 			{
-				await GameTask.DelaySeconds( 1 );
-
-				if ( player.IsValid() && Gamemode.Game.Instance.Round is WaitingRound )
-				{
-					player.Respawn();
-				}
+				return;
 			}
-			catch ( Exception e )
-			{
-				if ( e.Message.Trim() == "A task was canceled." )
-				{
-					return;
-				}
 
-				Log.Error( $"[TASK] {e.Message}: {e.StackTrace}" );
-			}
+			Log.Error( $"[TASK] {e.Message}: {e.StackTrace}" );
 		}
 	}
 }

@@ -4,39 +4,38 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public partial class InfoFeedEntry : Panel
 {
-	public partial class InfoFeedEntry : Panel
+	private readonly List<Label> _labels = new();
+
+	private readonly RealTimeSince _timeSinceBorn = 0;
+
+	public InfoFeedEntry()
 	{
-		private readonly List<Label> _labels = new();
+		AddClass( "background-color-primary" );
+		AddClass( "text-shadow" );
+		AddClass( "opacity-heavy" );
+		AddClass( "rounded" );
+	}
 
-		private readonly RealTimeSince _timeSinceBorn = 0;
+	public Label AddLabel( string text, string classname )
+	{
+		Label label = Add.Label( text, classname );
 
-		public InfoFeedEntry()
+		_labels.Add( label );
+
+		return label;
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		if ( _timeSinceBorn > 6 )
 		{
-			AddClass( "background-color-primary" );
-			AddClass( "text-shadow" );
-			AddClass( "opacity-heavy" );
-			AddClass( "rounded" );
-		}
-
-		public Label AddLabel( string text, string classname )
-		{
-			Label label = Add.Label( text, classname );
-
-			_labels.Add( label );
-
-			return label;
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			if ( _timeSinceBorn > 6 )
-			{
-				Delete();
-			}
+			Delete();
 		}
 	}
 }

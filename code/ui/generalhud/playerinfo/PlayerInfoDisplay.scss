@@ -1,4 +1,5 @@
-PlayerInfoDisplay {
+PlayerInfoDisplay
+{
     position: absolute;
     flex-direction: row;
     justify-content: space-around;
@@ -9,7 +10,8 @@ PlayerInfoDisplay {
     width: 225px;
     height: 50px;
 
-    .info {
+    .info
+    {
         width: 100%;
         font-size: 30px;
         font-weight: bold;

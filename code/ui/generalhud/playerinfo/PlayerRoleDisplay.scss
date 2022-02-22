@@ -1,4 +1,5 @@
-PlayerRoleDisplay {
+PlayerRoleDisplay
+{
     position: absolute;
     text-align: center;
     bottom: 85px;
@@ -7,7 +8,8 @@ PlayerRoleDisplay {
     padding: 8px 20px;
     height: 50px;
 
-    .role-label {
+    .role-label
+    {
         position: relative;
         text-transform: uppercase;
         font-weight: bold;
