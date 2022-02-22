@@ -16,7 +16,6 @@ public partial class Hud : HudEntity<RootPanel>
 
 		RootPanel.StyleSheet.Load( "/ui/Hud.scss" );
 		RootPanel.AddClass( "panel" );
-
 		RootPanel.AddChild<GeneralHud>();
 	}
 
@@ -24,7 +23,6 @@ public partial class Hud : HudEntity<RootPanel>
 	private void OnHotReload()
 	{
 		if ( !IsClient ) return;
-
 		RootPanel.DeleteChildren( true );
 		RootPanel.AddChild<GeneralHud>();
 	}
@@ -73,8 +71,7 @@ public partial class Hud : HudEntity<RootPanel>
 			AddChild<InfoFeed>();
 			AddChild<FullScreenHintMenu>();
 			AddChild<PostRoundMenu>();
-			AddChild<Scoreboard>();
-			AddChild<SettingsMenu>();
+			AddChild<TabMenu>();
 		}
 
 		public void AddChildToAliveHud( Panel panel )

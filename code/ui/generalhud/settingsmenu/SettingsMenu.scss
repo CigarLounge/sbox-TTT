@@ -1,9 +1,16 @@
-.background-panel
-{
-    display: flex;
-    pointer-events: all;
-    height: 700px;
-    width: 1200px;
-    padding: 25px;
+@import "../../Hud.scss";
+
+SettingsMenu {
     flex-direction: column;
+    width: 1000px;
+    transition: all 0.20s ease-out;
+
+    .background-panel
+    {
+        pointer-events: all;
+        width: 1000px;
+        height: 550px;
+        padding: 25px;
+        flex-direction: column;
+    }
 }

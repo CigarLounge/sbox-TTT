@@ -23,13 +23,13 @@ public class SettingsMenu : Panel
 	private Button BackButton { get; set; }
 	private Button HomeButton { get; set; }
 
-	public SettingsMenu()
+	public SettingsMenu( Panel parent, Button onSwap )
 	{
+		Parent = parent;
 		Instance = this;
 
 		AddPage( new HomePage() );
-
-		BackgroundPanel.AddClass( "disabled" );
+		AddChild( onSwap );
 	}
 
 	/// <summary>
@@ -78,15 +78,6 @@ public class SettingsMenu : Panel
 		while ( HasPreviousPages )
 		{
 			PopPage();
-		}
-	}
-
-	[Event.BuildInput]
-	private void MenuInput( InputBuilder input )
-	{
-		if ( input.Pressed( InputButton.Menu ) )
-		{
-			BackgroundPanel.SetClass( "disabled", !BackgroundPanel.HasClass( "disabled" ) );
 		}
 	}
 }
