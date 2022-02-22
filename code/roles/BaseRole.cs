@@ -57,5 +57,5 @@ public abstract class BaseRole : LibraryClass
 
 	public virtual void OnDeselect( Player player ) { }
 
-	public virtual void OnKilled( Player killer ) { }
+	public virtual void OnKilled( Player player ) { }
 }

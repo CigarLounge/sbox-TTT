@@ -81,9 +81,10 @@ public partial class Player : Sandbox.Player
 		Inventory.DropAll();
 		DeleteItems();
 		IsMissingInAction = true;
-
-		RPCs.ClientOnPlayerDied( this );
+	
+		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( LastAttacker as Player );
+		RPCs.ClientOnPlayerDied( this );
 
 		if ( Game.Current.Round is InProgressRound )
 			SyncMIA();

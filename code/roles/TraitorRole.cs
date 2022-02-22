@@ -32,7 +32,7 @@ public class TraitorRole : BaseRole
 		base.OnSelect( player );
 	}
 
-	public override void OnKilled( Player killer )
+	public override void OnKilled( Player player )
 	{
 		var clients = Utils.GiveAliveDetectivesCredits( 100 );
 		RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );

@@ -7,7 +7,6 @@ public class DetectiveRole : BaseRole
 {
 	public override void OnSelect( Player player )
 	{
-
 		if ( Host.IsServer )
 		{
 			foreach ( Player otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
@@ -22,9 +21,11 @@ public class DetectiveRole : BaseRole
 		base.OnSelect( player );
 	}
 
-	public override void OnKilled( Player killer )
+	public override void OnKilled( Player player )
 	{
-		if ( killer.IsValid() && killer.LifeState == LifeState.Alive && killer.Role.Info.Team == Team.Traitors )
+		var killer = player.LastAttacker as Player;
+
+		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
 		{
 			killer.Credits += 100;
 			RPCs.ClientDisplayMessage( To.Single( killer.Client ), "You have received 100 credits for killing a Detective", Color.White );

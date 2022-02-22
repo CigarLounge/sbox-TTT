@@ -64,18 +64,8 @@ public partial class Game : Sandbox.Game
 
 	public override void DoPlayerSuicide( Client client )
 	{
-		if ( client.Pawn is Player player && player.LifeState == LifeState.Alive )
-		{
-			base.DoPlayerSuicide( client );
-		}
-	}
-
-	public override void OnKilled( Entity entity )
-	{
-		if ( entity is Player player )
-			Round.OnPlayerKilled( player );
-
-		base.OnKilled( entity );
+		if ( client.Pawn is Player player && player.IsAlive() )
+			base.DoPlayerSuicide( client );	
 	}
 
 	public override void ClientJoined( Client client )
@@ -98,7 +88,7 @@ public partial class Game : Sandbox.Game
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
-		if ( client.Pawn.IsValid() && client.Pawn.LifeState == LifeState.Alive )
+		if ( client.Pawn.IsValid() && client.Pawn.IsAlive() )
 			client.Pawn.Delete();
 		client.Pawn = null;
 	}
@@ -108,14 +98,10 @@ public partial class Game : Sandbox.Game
 		Host.AssertServer();
 
 		if ( source.Name.Equals( dest.Name ) || source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
-		{
 			return false;
-		}
 
-		if ( Round is InProgressRound && sourcePlayer.LifeState == LifeState.Dead && destPlayer.LifeState == LifeState.Alive )
-		{
+		if ( Round is InProgressRound && !sourcePlayer.IsAlive() && destPlayer.IsAlive() )
 			return false;
-		}
 
 		return true;
 	}
