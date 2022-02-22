@@ -151,7 +151,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void SimulateAnimator( PawnAnimator anim )
 	{
-		anim.SetParam( "holdtype", (int)Info.HoldType );
+		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
 	}
 
 	bool IEntityHint.CanHint( Player player )
@@ -169,7 +169,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	bool IUse.OnUse( Entity user )
 	{
 		if ( IsServer && user is Player player )
-			player.Inventory.Swap( this );	
+			player.Inventory.Swap( this );
 
 		return false;
 	}

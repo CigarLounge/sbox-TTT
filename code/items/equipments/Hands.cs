@@ -93,9 +93,9 @@ public partial class Hands : Carriable
 
 		IsPushingEntity = true;
 
-		player.SetAnimBool( "b_attack", true );
-		player.SetAnimInt( "holdtype", 4 );
-		player.SetAnimInt( "holdtype_handedness", 0 );
+		player.SetAnimParameter( "b_attack", true );
+		player.SetAnimParameter( "holdtype", 4 );
+		player.SetAnimParameter( "holdtype_handedness", 0 );
 
 		tr.Entity.Velocity += player.EyeRotation.Forward * PUSHING_FORCE;
 
@@ -176,12 +176,12 @@ public partial class Hands : Carriable
 
 		if ( IsHoldingEntity )
 		{
-			anim.SetParam( "holdtype", 4 );
-			anim.SetParam( "holdtype_handedness", 0 );
+			anim.SetAnimParameter( "holdtype", 4 );
+			anim.SetAnimParameter( "holdtype_handedness", 0 );
 		}
 		else
 		{
-			anim.SetParam( "holdtype", 0 );
+			anim.SetAnimParameter( "holdtype", 0 );
 		}
 	}
 }

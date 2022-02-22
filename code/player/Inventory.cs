@@ -35,8 +35,8 @@ public partial class Inventory : BaseInventory
 
 	public Carriable Swap( Carriable carriable )
 	{
-		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
-		bool wasActive = ent?.IsActiveChild() ?? false;
+		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot ) as BaseCarriable;
+		bool wasActive = ent?.IsAc ?? false;
 
 		Drop( ent );
 		Add( carriable, wasActive );
@@ -65,7 +65,7 @@ public partial class Inventory : BaseInventory
 
 		foreach ( var item in List.ToArray() )
 		{
-			item.OnCarryDrop( Owner );
+			item.OnChildRemoved( Owner );
 			item.Delete();
 		}
 

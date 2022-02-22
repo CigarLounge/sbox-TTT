@@ -81,7 +81,7 @@ public partial class Player : Sandbox.Player
 		Inventory.DropAll();
 		DeleteItems();
 		IsMissingInAction = true;
-	
+
 		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( LastAttacker as Player );
 		RPCs.ClientOnPlayerDied( this );

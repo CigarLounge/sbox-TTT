@@ -10,11 +10,11 @@ public class GrabbableCorpse : IGrabbable
 	private PhysicsBody _handPhysicsBody;
 	private readonly PhysicsBody _corpsePhysicsBody;
 	private readonly int _corpseBone;
-	private WeldJoint _holdJoint;
+	private FixedJoint _joint;
 
 	public bool IsHolding
 	{
-		get => _holdJoint.IsValid;
+		get => _joint.IsValid();
 	}
 
 	public GrabbableCorpse( Player player, Corpse corpse, PhysicsBody physicsBodyCorpse, int corpseBone )
@@ -31,7 +31,7 @@ public class GrabbableCorpse : IGrabbable
 		_handPhysicsBody.Position = attachment.Position;
 		_handPhysicsBody.Rotation = attachment.Rotation;
 
-		_holdJoint = PhysicsJoint.Weld
+		_joint = PhysicsJoint.Weld
 			.From( _handPhysicsBody )
 			.To( physicsBodyCorpse )
 			.Create();
@@ -39,9 +39,9 @@ public class GrabbableCorpse : IGrabbable
 
 	public void Drop()
 	{
-		if ( _holdJoint.IsValid )
+		if ( _joint.IsValid() )
 		{
-			_holdJoint.Remove();
+			_joint.Remove();
 		}
 
 		_handPhysicsBody = null;

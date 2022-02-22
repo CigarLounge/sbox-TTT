@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class ThirdPersonSpectateCamera : Camera, IObservationCamera
+public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 {
 	private Vector3 DefaultPosition { get; set; }
 

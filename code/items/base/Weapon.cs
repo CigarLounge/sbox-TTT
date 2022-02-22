@@ -150,7 +150,7 @@ public abstract partial class Weapon : Carriable
 
 		Rand.SetSeed( Time.Tick );
 
-		Owner.SetAnimBool( "b_attack", true );
+		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
 		PlaySound( Info.FireSound );
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
@@ -180,7 +180,7 @@ public abstract partial class Weapon : Carriable
 		TimeSinceReload = 0;
 		IsReloading = true;
 
-		Owner.SetAnimBool( "b_reload", true );
+		Owner.SetAnimParameter( "b_reload", true );
 		ReloadEffects();
 	}
 
@@ -198,14 +198,14 @@ public abstract partial class Weapon : Carriable
 		if ( IsLocalPawn )
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
 
-		ViewModelEntity?.SetAnimBool( "fire", true );
+		ViewModelEntity?.SetAnimParameter( "fire", true );
 		CrosshairPanel?.CreateEvent( "fire" );
 	}
 
 	[ClientRpc]
 	protected virtual void ReloadEffects()
 	{
-		ViewModelEntity?.SetAnimBool( "reload", true );
+		ViewModelEntity?.SetAnimParameter( "reload", true );
 	}
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
@@ -265,11 +265,8 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
-		bool InWater = Physics.TestPointContents( start, CollisionLayer.Water );
-
 		var tr = Trace.Ray( start, end )
 				.UseHitboxes()
-				.HitLayer( CollisionLayer.Water, !InWater )
 				.HitLayer( CollisionLayer.Debris )
 				.Ignore( Owner )
 				.Ignore( this )
