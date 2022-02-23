@@ -47,7 +47,7 @@ public partial class Player
 
 	public DamageInfo LastDamageInfo { get; private set; }
 
-	public float LastDistanceToAttacker { get; private set; } = 0f;
+	public float LastDistanceToAttacker { get; set; } = 0f;
 
 	public float ArmorReductionPercentage { get; private set; } = 0.7f;
 
@@ -60,15 +60,14 @@ public partial class Player
 	{
 		LastDamageInfo = info;
 
-		var isHeadshot = GetHitboxGroup( info.HitboxIndex ) == (int)HitboxGroup.Head;
-		if ( isHeadshot )
+		HitboxGroup hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
+		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon?.ClassInfo?.Name );
 			if ( weaponInfo != null )
 				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}
-
-		if ( Perks.Has( typeof( BodyArmor ) ) && !isHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
+		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{
 			info.Damage *= ArmorReductionPercentage;
 		}
@@ -77,9 +76,7 @@ public partial class Player
 		{
 
 			if ( Game.Current.Round is not (InProgressRound or PostRound) )
-			{
 				return;
-			}
 
 			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
 		}

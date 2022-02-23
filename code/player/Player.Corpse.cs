@@ -48,7 +48,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon?.ClassInfo?.Name );
-		Distance = Utils.SourceUnitsToMeters( Position.Distance( KillInfo.Position ) );
+		Distance = player.LastDistanceToAttacker;
 		player.Corpse = this;
 
 		SetModel( player.GetModelName() );
@@ -129,6 +129,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetDamageInfo( Entity attacker, string weapon, int hitboxIndex, float damage, DamageFlags damageFlag )
 	{
+		if ( IsIdentified )
+			return;
+
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
 			.WithHitbox( hitboxIndex )
@@ -143,6 +146,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name, int credits = 0 )
 	{
+		if ( IsIdentified )
+			return;
+
 		DeadPlayer = deadPlayer;
 		DeadPlayer.IsConfirmed = true;
 		Confirmer = confirmer;
