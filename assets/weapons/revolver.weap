@@ -7,7 +7,7 @@
 		firemode = "1"
 		bulletsperfire = 1
 		clipsize = 6
-		damage = 30.0
+		damage = 42.0
 		primaryrate = 3.0
 		secondaryrate = 0.0
 		reloadtime = 1.5
@@ -32,6 +32,6 @@
 		verticalrecoil = 150.0
 		horizontalrecoilrange = 20.0
 		recoilrecoveryscale = 50.0
-		headshotmultiplier = 1.5
+		headshotmultiplier = 2.5
 	}
 }

@@ -13,7 +13,7 @@
 		reloadtime = 1.5
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_small.vpcf"
-		slot = "1"
+		slot = "3"
 		spawnable = false
 		viewmodel = resource:"models/weapons/v_vertec-silenced.vmdl"
 		deploytime = 1.1

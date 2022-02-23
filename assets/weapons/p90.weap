@@ -14,10 +14,10 @@
 		primaryrate = 12.0
 		secondaryrate = 0.0
 		reloadtime = 3.2
-		ammotype = "1"
+		ammotype = "0"
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
-		slot = "0"
+		slot = "3"
 		spawnable = false
 		viewmodel = resource:"models/weapons/v_p90.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
