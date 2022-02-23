@@ -154,6 +154,7 @@ public abstract partial class Weapon : Carriable
 	{
 		if ( AmmoClip == 0 )
 		{
+			DryFireEffects();
 			PlaySound( Info.DryFireSound );
 			return;
 		}
@@ -215,6 +216,12 @@ public abstract partial class Weapon : Carriable
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
 		CrosshairPanel?.CreateEvent( "fire" );
+	}
+
+	[ClientRpc]
+	protected virtual void DryFireEffects()
+	{
+		ViewModelEntity?.SetAnimParameter( "dryfire", true );
 	}
 
 	[ClientRpc]
