@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TTT;
 
 [Hammer.Skip]
-public partial class Asset : Sandbox.Asset
+public abstract partial class Asset : Sandbox.Asset
 {
 	private static Dictionary<string, Asset> Collection { get; set; } = new();
 	[Property] public string LibraryName { get; set; }
