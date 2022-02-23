@@ -111,6 +111,16 @@
 ]
 
 //
+// TTT.HK417
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_hk417.wmdl" ) = ttt_weapon_hk417 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
 // TTT.M4
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_m4.wmdl" ) = ttt_weapon_m4 : ""
@@ -164,6 +174,16 @@
 // TTT.P90
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_p90.wmdl" ) = ttt_weapon_p90 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Revolver
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_revolver.wmdl" ) = ttt_weapon_revolver : ""
 [
 	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
 
