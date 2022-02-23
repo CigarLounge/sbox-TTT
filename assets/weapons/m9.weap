@@ -2,12 +2,12 @@
 {
 	data = 
 	{
-		firesound = "p250_fire-1"
+		firesound = "vertec_fire-1"
 		dryfiresound = "dryfire_pistol-1"
 		firemode = "1"
 		bulletsperfire = 1
-		clipsize = 13
-		damage = 17.0
+		clipsize = 15
+		damage = 16.0
 		primaryrate = 0.0
 		secondaryrate = 0.0
 		reloadtime = 1.5
@@ -15,13 +15,13 @@
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_small.vpcf"
 		slot = "1"
 		spawnable = true
-		viewmodel = resource:"models/weapons/v_p250.vmdl"
-		deploytime = 0.8
+		viewmodel = resource:"models/weapons/v_vertec.vmdl"
+		deploytime = 1.1
 		buyable = false
 		price = 0
 		icon = ""
-		worldmodel = resource:"models/weapons/w_p250.vmdl"
-		libraryname = "ttt_weapon_p250"
+		worldmodel = resource:"models/weapons/w_vertec.vmdl"
+		libraryname = "ttt_weapon_m9"
 		spread = 0.03
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		ammotype = "1"

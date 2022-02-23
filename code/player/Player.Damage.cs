@@ -61,10 +61,11 @@ public partial class Player
 		LastDamageInfo = info;
 
 		var isHeadshot = GetHitboxGroup( info.HitboxIndex ) == (int)HitboxGroup.Head;
-
 		if ( isHeadshot )
 		{
-			info.Damage *= 2.0f;
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon?.ClassInfo?.Name );
+			if ( weaponInfo != null )
+				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}
 
 		if ( Perks.Has( typeof( BodyArmor ) ) && !isHeadshot && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
@@ -85,7 +86,6 @@ public partial class Player
 
 		ClientTookDamage( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
 
-		// Play pain sounds
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 		{
 			var volume = 0.05f * info.Damage;

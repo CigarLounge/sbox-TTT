@@ -9,7 +9,6 @@
 		primaryrate = 0.0
 		secondaryrate = 0.0
 		reloadtime = 2.0
-		reserveammo = 0
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		slot = "4"
@@ -21,10 +20,18 @@
 		icon = ""
 		worldmodel = resource:""
 		libraryname = "ttt_equipment_hands"
-		title = "Hands"
 		bulletsperfire = 1
 		damage = 20.0
 		spread = 0.0
 		handsmodel = resource:""
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		headshotmultiplier = 1.0
+		verticalrecoil = 0.0
+		horizontalrecoilrange = 0.0
+		recoilrecoveryscale = 0.0
+		ammotype = "0"
+		holdtype = "0"
+		islimited = false
 	}
 }

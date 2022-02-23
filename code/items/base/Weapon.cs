@@ -23,6 +23,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
 	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float HeadshotMultiplier { get; set; } = 1f;
 	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; } = 0f;
@@ -31,7 +32,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float HorizontalRecoilRange { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float RecoilRecoveryScale { get; set; } = 0f;
 	[Property, Category( "Stats" )] public AmmoType AmmoType { get; set; }
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; } = "particles/pistol_ejectbrass.vpcf";
+	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; }
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; }
 }
 
@@ -68,6 +69,13 @@ public abstract partial class Weapon : Carriable
 		base.Spawn();
 
 		AmmoClip = Info.ClipSize;
+	}
+
+	public override void ActiveStart( Entity ent )
+	{
+		base.ActiveStart( ent );
+
+		TimeSinceDeployed = 0;
 	}
 
 	public override void Simulate( Client owner )
@@ -223,6 +231,9 @@ public abstract partial class Weapon : Carriable
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
 	{
+		// Seed rand so bullet holes matchup on server and client
+		Rand.SetSeed( Time.Tick );
+
 		var forward = Owner.EyeRotation.Forward;
 		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 		forward = forward.Normal;
@@ -232,24 +243,9 @@ public abstract partial class Weapon : Carriable
 			trace.Surface.DoBulletImpact( trace );
 
 			var fullEndPos = trace.EndPosition + trace.Direction * bulletSize;
-			/*
-			if ( !string.IsNullOrEmpty( TracerEffect ) )
-			{
-				var tracer = Particles.Create( TracerEffect, GetEffectEntity(), MuzzleAttachment );
-				tracer?.SetPosition( 1, fullEndPos );
-				tracer?.SetPosition( 2, trace.Distance );
-			}
 
-			if ( !string.IsNullOrEmpty( ImpactEffect ) )
-			{
-				var impact = Particles.Create( ImpactEffect, fullEndPos );
-				impact?.SetForward( 0, trace.Normal );
-			}
-			*/
 			if ( !IsServer )
 				continue;
-
-			//WeaponUtil.PlayFlybySounds( Owner, trace.Entity, trace.StartPos, trace.EndPos, bulletSize * 2f, bulletSize * 50f, FlybySounds );
 
 			if ( trace.Entity.IsValid() )
 			{

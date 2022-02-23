@@ -2,7 +2,7 @@
 {
 	data = 
 	{
-		firesound = "mp5_fire-1"
+		firesound = "mp7_fire-1"
 		dryfiresound = "dryfire_pistol-1"
 		firemode = "0"
 		bulletsperfire = 1
@@ -13,22 +13,22 @@
 		spread = 0.05
 		primaryrate = 12.0
 		secondaryrate = 0.0
-		reloadtime = 2.8
+		reloadtime = 2.45
 		ammotype = "1"
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		slot = "0"
 		spawnable = true
-		viewmodel = resource:"models/weapons/v_mp5.vmdl"
+		viewmodel = resource:"models/weapons/v_mp7.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		holdtype = "2"
-		deploytime = 1.0
+		deploytime = 1.2
 		buyable = false
 		islimited = false
 		price = 0
 		icon = ""
-		worldmodel = resource:"models/weapons/w_mp5.vmdl"
-		libraryname = "ttt_weapon_mp5"
+		worldmodel = resource:"models/weapons/w_mp7.vmdl"
+		libraryname = "ttt_weapon_mp7"
 		verticalrecoil = 8.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0

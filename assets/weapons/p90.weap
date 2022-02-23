@@ -2,36 +2,36 @@
 {
 	data = 
 	{
-		firesound = "mp5_fire-1"
+		firesound = "p90_fire-1"
 		dryfiresound = "dryfire_pistol-1"
 		firemode = "0"
 		bulletsperfire = 1
-		clipsize = 30
-		damage = 23.0
+		clipsize = 50
+		damage = 29.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		spread = 0.05
 		primaryrate = 12.0
 		secondaryrate = 0.0
-		reloadtime = 2.8
+		reloadtime = 3.2
 		ammotype = "1"
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		slot = "0"
-		spawnable = true
-		viewmodel = resource:"models/weapons/v_mp5.vmdl"
+		spawnable = false
+		viewmodel = resource:"models/weapons/v_p90.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		holdtype = "2"
-		deploytime = 1.0
-		buyable = false
-		islimited = false
-		price = 0
+		deploytime = 0.8
+		buyable = true
+		islimited = true
+		price = 100
 		icon = ""
-		worldmodel = resource:"models/weapons/w_mp5.vmdl"
-		libraryname = "ttt_weapon_mp5"
-		verticalrecoil = 8.0
+		worldmodel = resource:"models/weapons/w_p90.vmdl"
+		libraryname = "ttt_weapon_p90"
+		verticalrecoil = 15.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.3
+		headshotmultiplier = 1.5
 	}
 }
