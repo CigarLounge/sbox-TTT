@@ -124,6 +124,17 @@ public abstract partial class Weapon : Carriable
 			OnReloadFinish();
 	}
 
+	public override void BuildInput( InputBuilder input )
+	{
+		base.BuildInput( input );
+
+		var oldPitch = input.ViewAngles.pitch;
+		var oldYaw = input.ViewAngles.yaw;
+		input.ViewAngles.pitch -= CurrentRecoilAmount.y * Time.Delta;
+		input.ViewAngles.yaw -= CurrentRecoilAmount.x * Time.Delta;
+		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
+	}
+
 	public virtual bool CanPrimaryAttack()
 	{
 		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.Attack1 ) )
@@ -169,6 +180,7 @@ public abstract partial class Weapon : Carriable
 		ShootEffects();
 		PerformRecoil();
 		PlaySound( Info.FireSound );
+
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
 		{
 			ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f );
