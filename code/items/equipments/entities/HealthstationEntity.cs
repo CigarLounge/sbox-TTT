@@ -28,7 +28,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		if ( StoredHealth < 200 && _nextRecharge && _nextHeal )
+		if ( StoredHealth < 200f && _nextRecharge && _nextHeal )
 		{
 			StoredHealth += Math.Min( StoredHealth + 0.5f, 200f );
 			_nextRecharge = 1;

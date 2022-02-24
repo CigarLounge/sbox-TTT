@@ -15,6 +15,7 @@ public partial class Inventory : BaseInventory
 	}
 
 	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0 };
 
 	private const int DROPPOSITIONOFFSET = 50;
 	private const int DROPVELOCITY = 500;
@@ -31,6 +32,11 @@ public partial class Inventory : BaseInventory
 	public bool HasFreeSlot( SlotType slotType )
 	{
 		return SlotCapacity[(int)slotType] > 0;
+	}
+
+	public bool HasWeaponOfAmmoType( AmmoType ammoType )
+	{
+		return WeaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
 	public Carriable Swap( Carriable carriable )
@@ -66,7 +72,9 @@ public partial class Inventory : BaseInventory
 		foreach ( var item in List.ToArray() )
 		{
 			item.OnChildRemoved( Owner );
-			SlotCapacity[(int)( item as Carriable).Info.Slot]++;
+			SlotCapacity[(int)(item as Carriable).Info.Slot]++;
+			if ( item is Weapon weapon )
+				WeaponsOfAmmoType[(int)weapon.Info.AmmoType]--;
 			item.Delete();
 		}
 

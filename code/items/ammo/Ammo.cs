@@ -1,12 +1,9 @@
-using System;
-using System.ComponentModel;
 using Sandbox;
 
 namespace TTT;
 
 public enum AmmoType : byte
 {
-	None,
 	PistolSMG,
 	Shotgun,
 	Sniper,
@@ -14,38 +11,93 @@ public enum AmmoType : byte
 	Rifle
 }
 
-[Library( "ammo" ), AutoGenerate]
-public partial class AmmoInfo : ItemInfo
-{
-	[Property, Category( "Important" )] public AmmoType Type { get; set; }
-	[Property, Category( "Important" )] public int Amount { get; set; }
-}
-
 // TODO: Kole add hammer property for different world models.
 [Hammer.Skip]
-public abstract partial class Ammo : Prop, IEntityHint
+public partial class Ammo : Prop, IEntityHint, IUse
 {
-	public AmmoInfo Info { get; set; }
-	string IEntityHint.TextOnTick => throw new NotImplementedException();
+	[Net, Property]
+	public AmmoType Type { get; set; }
+	[Net]
+	public int AmmoCount { get; set; }
 
-	public Ammo() { }
-	public Ammo( AmmoType Type )
+	public Ammo() : base() { }
+	public Ammo( AmmoType type ) : base()
 	{
+		Type = type;
+
+		SetModel( GetModel() );
+		SetAmmoCount();
+		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		CollisionGroup = CollisionGroup.Weapon;
+		SetInteractsAs( CollisionLayer.Debris );
 	}
+
+	public override void StartTouch( Entity other )
+	{
+		base.StartTouch( other );
+
+		if ( other is Player player )
+			GiveAmmo( player );
+	}
+
+	private void GiveAmmo( Player player )
+	{
+		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
+			return;
+
+		player.GiveAmmo( Type, AmmoCount );
+
+		Delete();
+	}
+
+	private string GetModel()
+	{
+		return Type switch
+		{
+			AmmoType.PistolSMG => "models/ammo/ammo_smg/ammo_smg.vmdl",
+			AmmoType.Shotgun => "models/ammo/ammo_shotgun/ammo_shotgun.vmdl",
+			AmmoType.Sniper => "models/ammo/ammo_sniper/ammo_sniper.vmdl",
+			AmmoType.Magnum => "models/ammo/ammo_magnum/ammo_magnum.vmdl",
+			AmmoType.Rifle => "models/ammo/ammo_rfile/ammo_rifle.vmdl",
+			_ => string.Empty,
+		};
+	}
+
+	private void SetAmmoCount()
+	{
+		AmmoCount = Type switch
+		{
+			AmmoType.PistolSMG => 30,
+			AmmoType.Shotgun => 5,
+			AmmoType.Sniper => 5,
+			AmmoType.Magnum => 5,
+			AmmoType.Rifle => 30,
+			_ => 0,
+		};
+	}
+
+	string IEntityHint.TextOnTick => $"Press {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to pickup {Type}";
 
 	bool IEntityHint.CanHint( Player player )
 	{
-		throw new NotImplementedException();
+		return true;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
-		throw new NotImplementedException();
+		return new UI.Hint( (this as IEntityHint).TextOnTick );
 	}
 
-	void IEntityHint.Tick( Player player )
+	bool IUse.OnUse( Entity user )
 	{
-		throw new NotImplementedException();
+		GiveAmmo( user as Player );
+
+		return false;
+	}
+
+	bool IUse.IsUsable( Entity user )
+	{
+		return user.IsAlive() && user is Player player;
 	}
 }
 

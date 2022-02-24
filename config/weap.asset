@@ -26,12 +26,11 @@
 	recoilrecoveryscale(float) { group = "Stats" } : "Recoil Recovery Scale" : "0" : ""
 	ammotype(choices) { group = "Stats" } : "Ammo Type" : 0 : "" =
 	[
-		0 : "None"
-		1 : "Pistol SMG"
-		2 : "Shotgun"
-		3 : "Sniper"
-		4 : "Magnum"
-		5 : "Rifle"
+		0 : "Pistol SMG"
+		1 : "Shotgun"
+		2 : "Sniper"
+		3 : "Magnum"
+		4 : "Rifle"
 	]
 	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" :  : ""
 	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" :  : ""

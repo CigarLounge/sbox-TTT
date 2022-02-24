@@ -16,6 +16,4 @@ public partial class HealthStation : Carriable
 			Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
 		}
 	}
-
-	public bool CanDrop() { return false; }
 }
