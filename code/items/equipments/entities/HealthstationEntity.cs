@@ -12,10 +12,10 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	private const string _worldModel = "models/health_station/health_station.vmdl";
 	private TimeUntil _nextHeal = 0;
+	private TimeUntil _nextRecharge = 0;
 
 	private const int HEALAMOUNT = 5;
 	private const int HEALFREQUENCY = 1; // seconds
-	private const int DELAYIFFAILED = 2; // Multiplied by HealFrequency if HealthPlayer returns false
 
 	public override void Spawn()
 	{
@@ -23,6 +23,16 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 		SetModel( _worldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+	}
+
+	[Event.Tick.Server]
+	private void ServerTick()
+	{
+		if ( StoredHealth < 200 && _nextRecharge && _nextHeal )
+		{
+			StoredHealth += Math.Min( StoredHealth + 0.5f, 200f );
+			_nextRecharge = 1;
+		}
 	}
 
 	private void HealPlayer( Player player )

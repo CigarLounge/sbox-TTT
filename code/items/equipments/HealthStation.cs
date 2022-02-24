@@ -11,12 +11,9 @@ public partial class HealthStation : Carriable
 		if ( !IsServer )
 			return;
 
-		using ( Prediction.Off() )
+		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			if ( Input.Pressed( InputButton.Attack1 ) )
-			{
-				Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
-			}
+			Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
 		}
 	}
 
