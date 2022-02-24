@@ -22,6 +22,9 @@ tools_thumbnail_cache.bin
 *.mdl
 *.tga
 *.phy
+weapons/**/*.png
+materials/**/*.png
+models/**/*.png
 
 # vscode
 .vscode
