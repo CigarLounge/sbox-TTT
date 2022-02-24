@@ -66,6 +66,7 @@ public partial class Inventory : BaseInventory
 		foreach ( var item in List.ToArray() )
 		{
 			item.OnChildRemoved( Owner );
+			SlotCapacity[(int)( item as Carriable).Info.Slot]++;
 			item.Delete();
 		}
 
