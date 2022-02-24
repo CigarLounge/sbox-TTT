@@ -22,7 +22,6 @@ tools_thumbnail_cache.bin
 *.mdl
 *.tga
 *.phy
-*.png
 
 # vscode
 .vscode
