@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -13,23 +12,32 @@ public class TabMenu : Panel
 	{
 		StyleSheet.Load( "/ui/generalhud/tabmenu/TabMenu.scss" );
 
-		_scoreboard = new Scoreboard( this, new Button( "Settings", "settings", () =>
+		var scoreboardButton = new Button( "Settings", "settings", () =>
 		{
 			_scoreboard.EnableFade( false );
 			_settingsMenu.EnableFade( true );
-		} ) );
+		} );
+		scoreboardButton.AddClass( "scoreboard-button" );
+
+		_scoreboard = new Scoreboard( this, scoreboardButton );
 		_scoreboard.AddClass( "scoreboard" );
 
-		_settingsMenu = new SettingsMenu( this, new Button( "Scoreboard", "people", () =>
+		var settingsMenuButton = new Button( "Scoreboard", "people", () =>
 		{
 			_scoreboard.EnableFade( true );
 			_settingsMenu.EnableFade( false );
-		} ) );
+		} );
+		settingsMenuButton.AddClass( "settings-button" );
+
+		_settingsMenu = new SettingsMenu( this, settingsMenuButton );
 		_settingsMenu.AddClass( "settings" );
+		_scoreboard.EnableFade( true );
+		_settingsMenu.EnableFade( false );
 	}
 
-	public override void Tick()
+	[Event.BuildInput]
+	private void MenuInput( InputBuilder input )
 	{
-
+		SetClass( "show", input.Down( InputButton.Score ) );
 	}
 }

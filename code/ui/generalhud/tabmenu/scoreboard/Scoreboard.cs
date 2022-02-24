@@ -130,11 +130,8 @@ public partial class Scoreboard : Panel
 	{
 		base.Tick();
 
-		// SetClass( "fade-in", Input.Down( InputButton.Score ) );
-		// _scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
-
-		// if ( !HasClass( "fade-in" ) )
-		// 	return;
+		if ( !HasClass( "fade-in" ) )
+			return;
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324

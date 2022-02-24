@@ -21,9 +21,7 @@ public partial class HomePage : Panel
 	public override void Tick()
 	{
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
 		ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
 	}

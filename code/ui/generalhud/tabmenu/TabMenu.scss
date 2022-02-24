@@ -6,14 +6,33 @@ TabMenu
     width: 100%;
     height: 100%;
     justify-content: center;
+    opacity: 0;
 
-    .fade-in {
-        &.settings {
+    &.show
+    {
+        opacity: 1;
+    }
+    
+    .fade-in 
+    {
+        &.settings 
+        {
             opacity: 0.9;
         }
 
-        &.scoreboard {
+        &.scoreboard 
+        {
             opacity: 0.96;
         }
+    }
+
+    .scoreboard-button
+    {
+        width: 140px;
+    }
+
+    .settings-button 
+    {
+        width: 170px;
     }
 }

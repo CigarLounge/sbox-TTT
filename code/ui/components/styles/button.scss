@@ -5,7 +5,7 @@ button
 	font-weight: 600;
 	font-size: 16px;
 	cursor: pointer;
-	background-color: $button-primary;
+	background-color: transparent;
 	padding: 8px 16px;
 	border-radius: 8px;
 	color: $button-primary-fg;
@@ -41,13 +41,11 @@ button
 
 	&:hover
 	{
-		background-color: $button-secondary;
 		color: $button-secondary-fg;
 	}
 
 	&:active
 	{
-		background-color: $button-primary;
 		color: $button-primary-fg;
 	}
 
