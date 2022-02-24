@@ -28,8 +28,6 @@ public partial class Hands : Carriable
 	private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
 	private bool IsPushingEntity = false;
 
-	public bool CanDrop() { return false; }
-
 	public override void Spawn()
 	{
 		base.Spawn();
