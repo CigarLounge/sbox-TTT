@@ -1,28 +1,20 @@
-@import "../../Hud.scss";
+@import "../../../Hud.scss";
 
 Scoreboard
 {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: all 0.15s ease-out;
+    display: flex;
     justify-content: center;
-    pointer-events: all;
-    z-index: 3;
+    align-self: center;
+    width: 40%;
+    flex-direction: column;
+    transition: all 0.2s ease-in;
 
     .scoreboard-container
     {
-        width: 50%;
+        width: 100%;
         flex-direction: column;
         justify-content: center;
-        transition: transform 0.25s ease-out;
-        transform: scale(0.9);
-
-        &.pop-in
-        {
-            transform: scale(1);
-        }
 
         .column-label-panel
         {
@@ -41,13 +33,8 @@ Scoreboard
 
         .scoreboard-footer
         {
-            height: 25px;
+            height: 10%;
         }
-    }
-
-    &.fade-in
-    {
-        opacity: 1;
     }
 }
 

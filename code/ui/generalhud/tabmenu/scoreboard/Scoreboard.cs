@@ -28,15 +28,14 @@ public partial class Scoreboard : Panel
 	private readonly Panel _scoreboardContent;
 	private readonly Panel _scoreboardFooter;
 
-	public Scoreboard() : base()
+	public Scoreboard( Panel parent, Button swapButton ) : base()
 	{
+		Parent = parent;
 		Instance = this;
 
-		StyleSheet.Load( "/ui/generalhud/scoreboard/Scoreboard.scss" );
+		StyleSheet.Load( "/ui/generalhud/tabmenu/scoreboard/Scoreboard.scss" );
 
 		_backgroundPanel = new( this );
-		_backgroundPanel.AddClass( "background-color-secondary" );
-		_backgroundPanel.AddClass( "opacity-medium" );
 		_backgroundPanel.AddClass( "fullscreen" );
 
 		_scoreboardContainer = new( this );
@@ -45,19 +44,18 @@ public partial class Scoreboard : Panel
 
 		_scoreboardHeader = new( _scoreboardContainer );
 		_scoreboardHeader.AddClass( "background-color-secondary" );
-		_scoreboardHeader.AddClass( "opacity-heavy" );
 		_scoreboardHeader.AddClass( "rounded-top" );
 
 		_scoreboardContent = new( _scoreboardContainer );
 		_scoreboardContent.AddClass( "background-color-primary" );
 		_scoreboardContent.AddClass( "scoreboard-content" );
-		_scoreboardContent.AddClass( "opacity-heavy" );
 
 		_scoreboardFooter = new( _scoreboardContainer );
 		_scoreboardFooter.AddClass( "background-color-secondary" );
 		_scoreboardFooter.AddClass( "scoreboard-footer" );
 		_scoreboardFooter.AddClass( "rounded-bottom" );
-		_scoreboardFooter.AddClass( "opacity-heavy" );
+
+		AddChild( swapButton );
 
 		Initialize();
 	}
@@ -132,11 +130,11 @@ public partial class Scoreboard : Panel
 	{
 		base.Tick();
 
-		SetClass( "fade-in", Input.Down( InputButton.Score ) );
-		_scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
+		// SetClass( "fade-in", Input.Down( InputButton.Score ) );
+		// _scoreboardContainer.SetClass( "pop-in", Input.Down( InputButton.Score ) );
 
-		if ( !HasClass( "fade-in" ) )
-			return;
+		// if ( !HasClass( "fade-in" ) )
+		// 	return;
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324
