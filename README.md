@@ -17,3 +17,8 @@ If you'd like to contribute, please check out our [document](https://github.com/
 You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg).
 
 Latest video: https://youtu.be/G9ghFjVx-Wc
+
+## CREDITS
+
+- [Contributors](https://github.com/mzegar/sbox-TTT/graphs/contributors)
+- [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
