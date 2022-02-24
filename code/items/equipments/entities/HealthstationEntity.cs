@@ -5,15 +5,15 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_equipment_healthstation_ent", Title = "Health Station" )]
-public partial class HealthStationEntity : Prop, IEntityHint
+public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {
 	[Net]
 	public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
 
 	private const string _worldModel = "models/health_station/health_station.vmdl";
-	private RealTimeUntil NextHeal = 0;
+	private TimeUntil _nextHeal = 0;
 
-	private const int HEALAMOUNT = 1;
+	private const int HEALAMOUNT = 5;
 	private const int HEALFREQUENCY = 1; // seconds
 	private const int DELAYIFFAILED = 2; // Multiplied by HealFrequency if HealthPlayer returns false
 
@@ -25,59 +25,54 @@ public partial class HealthStationEntity : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	private bool HealPlayer( Player player )
+	private void HealPlayer( Player player )
 	{
+		if ( !_nextHeal || StoredHealth <= 0 )
+			return;
+
 		float healthNeeded = player.MaxHealth - player.Health;
 
-		if ( StoredHealth > 0 && healthNeeded > 0 )
-		{
-			float healAmount = Math.Min( HEALAMOUNT, healthNeeded );
+		if ( healthNeeded <= 0 )
+			return;
 
-			player.SetHealth( player.Health + healAmount );
+		float healAmount = Math.Min( StoredHealth, Math.Min( HEALAMOUNT, healthNeeded ) );
 
-			StoredHealth -= healAmount;
+		player.SetHealth( player.Health + healAmount );
 
-			return true;
-		}
-
-		return false;
+		StoredHealth -= healAmount;
+		_nextHeal = HEALFREQUENCY;
 	}
 
-	public float HintDistance => Player.INTERACT_DISTANCE;
+	float IEntityHint.HintDistance => Player.INTERACT_DISTANCE;
 
-	public string TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station ({StoredHealth} charges)";
+	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station ({StoredHealth} charges)";
 
-	public bool CanHint( Player client )
+	bool IEntityHint.CanHint( Player client )
 	{
 		return true;
 	}
 
-	public UI.EntityHintPanel DisplayHint( Player client )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
-		return new UI.Hint( TextOnTick );
+		return new UI.Hint( (this as IEntityHint).TextOnTick );
 	}
 
-	public void Tick( Player player )
+	bool IUse.OnUse( Entity user )
 	{
-		if ( IsClient )
-		{
-			return;
-		}
+		var player = user as Player;
+		HealPlayer( player );
 
-		if ( player.LifeState != LifeState.Alive )
-		{
-			return;
-		}
+		return player.Health < player.MaxHealth;
+	}
 
-		using ( Prediction.Off() )
-		{
-			if ( Input.Down( InputButton.Use ) )
-			{
-				if ( player.Health < player.MaxHealth && NextHeal <= 0 )
-				{
-					NextHeal = HealPlayer( player ) ? HEALFREQUENCY : HEALFREQUENCY * DELAYIFFAILED;
-				}
-			}
-		}
+	bool IUse.IsUsable( Entity user )
+	{
+		if ( StoredHealth <= 0 || !user.IsAlive() )
+			return false;
+
+		if ( user is not Player player || player.Health >= player.MaxHealth )
+			return false;
+
+		return true;
 	}
 }

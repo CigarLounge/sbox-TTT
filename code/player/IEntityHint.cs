@@ -32,5 +32,5 @@ public interface IEntityHint
 	/// <summary>
 	/// Occurs on each tick if the hint is active.
 	/// </summary>
-	void Tick( Player player );
+	void Tick( Player player ) { }
 }
