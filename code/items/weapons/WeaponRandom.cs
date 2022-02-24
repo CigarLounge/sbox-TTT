@@ -5,7 +5,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Random Weapon", "TTT", "TODO" )]
+[Hammer.EntityTool( "Random Weapon", "TTT", "Place where a random weapon will spawn in the beginning of the round." )]
 [Library( "ttt_weapon_random" )]
 public class WeaponRandom : Entity
 {
