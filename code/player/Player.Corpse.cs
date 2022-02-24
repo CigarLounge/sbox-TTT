@@ -180,6 +180,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
+		if ( IsIdentified )
+			return;
+
 		DeadPlayer.IsConfirmed = true;
 		IsIdentified = true;
 		DeadPlayer.SendClientRole( To.Everyone );
@@ -192,7 +195,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.Credits = 0;
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
-		
+
 		GetDamageInfo( KillInfo.Attacker, KillerWeapon?.LibraryName, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
 		GetPlayerData( DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName, credits );
 	}
