@@ -23,11 +23,11 @@ public static partial class TTTEvent
 			/// Occurs when a player selects their role.
 			/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> instance of the player whose role was set.</para>
 			/// </summary>
-			public const string Selected = "ttt.player.role.selected";
+			public const string Changed = "ttt.player.role.changed";
 
-			public class SelectedAttribute : EventAttribute
+			public class ChangedAttribute : EventAttribute
 			{
-				public SelectedAttribute() : base( Selected ) { }
+				public ChangedAttribute() : base( Changed ) { }
 			}
 		}
 	}
