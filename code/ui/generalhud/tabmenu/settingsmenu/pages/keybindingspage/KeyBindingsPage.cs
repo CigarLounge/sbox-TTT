@@ -30,6 +30,7 @@ public partial class KeyBindingsPage : Panel
 		CreateBinding( this, "Reload", new() { InputButton.Reload } );
 		CreateBinding( this, "Drop Weapon", new() { InputButton.Drop } );
 		CreateBinding( this, "Drop Ammo", new() { InputButton.Run, InputButton.Drop } );
+		CreateBinding( this, "Weapon Swap", new() { InputButton.Menu } );
 		Add.Label( "" );
 
 		Add.Label( "Actions", "h1" );
@@ -45,8 +46,7 @@ public partial class KeyBindingsPage : Panel
 		Add.Label( "" );
 
 		Add.Label( "Menus", "h1" );
-		CreateBinding( this, "Scorebard", new() { InputButton.Score } );
-		CreateBinding( this, "Options Menu", new() { InputButton.Menu } );
+		CreateBinding( this, "Scoreboard & Settings", new() { InputButton.Score } );
 		CreateBinding( this, "Quick Shop", new() { InputButton.View } );
 		Add.Label( "" );
 	}
