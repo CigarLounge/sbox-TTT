@@ -12,7 +12,6 @@ Scoreboard
 
     .scoreboard-container
     {
-        width: 100%;
         flex-direction: column;
         justify-content: center;
 
@@ -33,7 +32,7 @@ Scoreboard
 
         .scoreboard-footer
         {
-            height: 10%;
+            height: 41px;
         }
     }
 }
