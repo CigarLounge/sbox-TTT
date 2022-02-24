@@ -11,15 +11,15 @@ public struct ClientData
 
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
-	public long PlayerId { get; set; }
-	public string PlayerName { get; set; }
-	public Player DeadPlayer { get; set; }
-	public Player Confirmer { get; set; }
+	public long PlayerId { get; private set; }
+	public string PlayerName { get; private set; }
+	public Player DeadPlayer { get; private set; }
+	public Player Confirmer { get; private set; }
 	public DamageInfo KillInfo { get; set; }
 	public List<Particles> Ropes = new();
 	public List<PhysicsJoint> RopeSprings = new();
-	public CarriableInfo KillerWeapon { get; set; }
-	public bool IsIdentified { get; set; } = false;
+	public CarriableInfo KillerWeapon { get; private set; }
+	public bool IsIdentified { get; private set; } = false;
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
@@ -129,9 +129,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetDamageInfo( Entity attacker, string weapon, int hitboxIndex, float damage, DamageFlags damageFlag )
 	{
-		if ( IsIdentified )
-			return;
-
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
 			.WithHitbox( hitboxIndex )
@@ -146,9 +143,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name, int credits = 0 )
 	{
-		if ( IsIdentified )
-			return;
-
 		DeadPlayer = deadPlayer;
 		DeadPlayer.IsConfirmed = true;
 		Confirmer = confirmer;
@@ -198,9 +192,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.Credits = 0;
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
-
-		GetPlayerData( DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName, credits );
+		
 		GetDamageInfo( KillInfo.Attacker, KillerWeapon?.LibraryName, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
+		GetPlayerData( DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName, credits );
 	}
 
 	public float HintDistance => Player.INTERACT_DISTANCE;
@@ -225,7 +219,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && !IsIdentified && user.LifeState == LifeState.Alive )
+		if ( IsServer && !IsIdentified && user.IsAlive() )
 		{
 			Confirmer = user as Player;
 			Confirm();
