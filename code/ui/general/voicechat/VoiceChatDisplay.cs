@@ -22,4 +22,11 @@ public class VoiceChatDisplay : Panel
 
 		entry.Update( level );
 	}
+
+	[Event.BuildInput]
+	private void BuildInput( InputBuilder input )
+	{
+		if ( input.Down( InputButton.Voice ) )
+			OnVoicePlayed( Local.Client, 1f );
+	}
 }

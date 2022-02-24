@@ -97,7 +97,6 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
-			DisplayPlayerVoiceChat();
 			DisplayEntityHints();
 			LogicButtonActivate();
 		}
