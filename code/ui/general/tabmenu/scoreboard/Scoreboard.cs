@@ -55,7 +55,7 @@ public partial class Scoreboard : Panel
 		_scoreboardFooter.AddClass( "scoreboard-footer" );
 		_scoreboardFooter.AddClass( "rounded-bottom" );
 
-		AddChild( swapButton );
+		_scoreboardContainer.AddChild( swapButton );
 
 		Initialize();
 	}
