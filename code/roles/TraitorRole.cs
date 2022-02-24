@@ -11,10 +11,8 @@ public class TraitorRole : BaseRole
 		{
 			foreach ( Player otherPlayer in player.Team.GetAll() )
 			{
-				if ( otherPlayer == player )
-				{
-					continue;
-				}
+				if ( otherPlayer == player )		
+					continue;			
 
 				player.SendClientRole( To.Single( otherPlayer ) );
 				otherPlayer.SendClientRole( To.Single( player ) );
