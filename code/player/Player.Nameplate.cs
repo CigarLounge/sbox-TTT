@@ -16,9 +16,4 @@ public partial class Player : IEntityHint
 	{
 		return new UI.Nameplate( this );
 	}
-
-	public void Tick( Player player )
-	{
-
-	}
 }

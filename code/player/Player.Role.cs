@@ -26,6 +26,9 @@ public partial class Player
 
 	public void SetRole( BaseRole role )
 	{
+		if ( role == Role )
+			return;
+
 		Role?.OnDeselect( this );
 		Role = role;
 		Role.OnSelect( this );

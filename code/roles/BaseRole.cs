@@ -41,7 +41,7 @@ public abstract class BaseRole : LibraryClass
 			player.PurchasedLimitedShopItems.Clear();
 		}
 
-		Event.Run( TTTEvent.Player.Role.Selected, player );
+		Event.Run( TTTEvent.Player.Role.Changed, player );
 	}
 
 	public virtual void OnDeselect( Player player ) { }

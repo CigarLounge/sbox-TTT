@@ -152,7 +152,7 @@ public partial class InProgressRound : BaseRound
 		return false;
 	}
 
-	[TTTEvent.Player.Role.Selected]
+	[TTTEvent.Player.Role.Changed]
 	private static void OnPlayerRoleChange( Player player )
 	{
 		if ( Host.IsClient )

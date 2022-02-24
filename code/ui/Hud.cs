@@ -9,10 +9,8 @@ public partial class Hud : HudEntity<RootPanel>
 {
 	public Hud()
 	{
-		if ( Host.IsServer )
-		{
+		if ( !Host.IsClient )
 			return;
-		}
 
 		RootPanel.StyleSheet.Load( "/ui/Hud.scss" );
 		RootPanel.AddClass( "panel" );

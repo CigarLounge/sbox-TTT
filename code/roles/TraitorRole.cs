@@ -7,7 +7,7 @@ public class TraitorRole : BaseRole
 {
 	public override void OnSelect( Player player )
 	{
-		if ( Host.IsServer && player.Team == Team.None )
+		if ( Host.IsServer )
 		{
 			foreach ( Player otherPlayer in player.Team.GetAll() )
 			{
