@@ -10,7 +10,7 @@ public partial class Player
 	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
 
-	private void TickEntityHints()
+	private void DisplayEntityHints()
 	{
 		if ( Camera is ThirdPersonSpectateCamera )
 		{

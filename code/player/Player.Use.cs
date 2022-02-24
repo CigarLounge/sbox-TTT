@@ -12,7 +12,7 @@ public partial class Player
 		return ActiveChild is IUse use && use.IsUsable( this );
 	}
 
-	protected override void TickPlayerUse()
+	protected override void PlayerUse()
 	{
 		if ( Input.Pressed( InputButton.Use ) )
 		{

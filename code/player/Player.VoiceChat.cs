@@ -6,7 +6,7 @@ namespace TTT;
 
 public partial class Player
 {
-	private void TickPlayerVoiceChat()
+	private void DisplayPlayerVoiceChat()
 	{
 		if ( Input.Down( InputButton.Voice ) )
 		{

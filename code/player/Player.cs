@@ -4,6 +4,9 @@ namespace TTT;
 
 public partial class Player : Sandbox.Player
 {
+	[Net, Predicted]
+	public Entity LastActiveChild { get; set; }
+
 	[BindComponent]
 	public Perks Perks { get; }
 
@@ -67,11 +70,9 @@ public partial class Player : Sandbox.Player
 	{
 		IsMissingInAction = false;
 		IsConfirmed = false;
-
 		SetRole( new NoneRole() );
 	}
 
-	// Let's clean this up at some point, it's poorly written.
 	public override void OnKilled()
 	{
 		base.OnKilled();
@@ -94,33 +95,33 @@ public partial class Player : Sandbox.Player
 
 	public override void Simulate( Client client )
 	{
-		TickPerkSimulate();
-
 		if ( IsClient )
 		{
-			TickPlayerVoiceChat();
-			TickEntityHints();
-			TickLogicButtonActivate();
+			DisplayPlayerVoiceChat();
+			DisplayEntityHints();
+			LogicButtonActivate();
 		}
 		else
 		{
-			TickPlayerUse();
-			TickAFKSystem();
-			TickPlayerDropCarriable();
+			PlayerUse();
+			CheckAFK();
+			CheckPlayerDropCarriable();
 
 			if ( !this.IsAlive() )
 			{
-				TickPlayerChangeSpectateCamera();
+				ChangeSpectateCamera();
 				return;
 			}
 		}
 
-		// Input requested a carriable entity switch
-		if ( Input.ActiveChild != null )
+		if ( Input.Pressed( InputButton.Menu ) )
 		{
-			ActiveChild = Input.ActiveChild;
+			if ( ActiveChild.IsValid() && LastActiveChild.IsValid() )
+				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
+		SimulateCarriableSwitch();
+		SimulatePerks();
 		SimulateActiveChild( client, ActiveChild );
 
 		PawnController controller = GetActiveController();
@@ -148,7 +149,7 @@ public partial class Player : Sandbox.Player
 		RemoveClothing();
 	}
 
-	private void TickPlayerDropCarriable()
+	private void CheckPlayerDropCarriable()
 	{
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
@@ -164,7 +165,16 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
-	private void TickPerkSimulate()
+	private void SimulateCarriableSwitch()
+	{
+		if ( Input.ActiveChild != null )
+		{
+			LastActiveChild = ActiveChild;
+			ActiveChild = Input.ActiveChild;
+		}
+	}
+
+	private void SimulatePerks()
 	{
 		for ( int i = 0; i < Perks.Count; ++i )
 		{

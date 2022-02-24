@@ -11,7 +11,7 @@ public partial class Player
 
 	private TimeSince _timeSinceLastAction = 0f;
 
-	private void TickAFKSystem()
+	private void CheckAFK()
 	{
 		if ( Client.IsBot )
 			return;

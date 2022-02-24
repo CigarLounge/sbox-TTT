@@ -45,7 +45,7 @@ public partial class Player
 			player.UpdateObservatedPlayer();
 	}
 
-	private void TickPlayerChangeSpectateCamera()
+	private void ChangeSpectateCamera()
 	{
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;

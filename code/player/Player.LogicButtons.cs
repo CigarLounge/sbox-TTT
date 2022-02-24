@@ -131,7 +131,7 @@ public partial class Player
 	}
 
 	// Client keybinding for activating button within focus.
-	public void TickLogicButtonActivate()
+	public void LogicButtonActivate()
 	{
 		if ( Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
 		{
