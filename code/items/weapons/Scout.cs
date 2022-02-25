@@ -41,14 +41,18 @@ public partial class Scout : Weapon
 	{
 		base.ActiveStart( ent );
 
-		if ( Owner is Player player )
+		if ( ent is Player player )
 			_defaultFOV = player.Camera.FieldOfView;
 	}
 
 	public override void ActiveEnd( Entity ent, bool dropped )
 	{
-		base.ActiveEnd( ent, dropped );
+		if ( ent is Player player )
+			OnScopeEnd( player );
+
 		_sniperScopePanel?.Delete();
+
+		base.ActiveEnd( ent, dropped );
 	}
 
 	private void OnScopeStart( Player player )
@@ -58,8 +62,8 @@ public partial class Scout : Weapon
 		if ( IsServer )
 			return;
 
-		ViewModelEntity.RenderColor = Color.Transparent;
-		HandsModelEntity.RenderColor = Color.Transparent;
+		ViewModelEntity.EnableDrawing = false;
+		HandsModelEntity.EnableDrawing = false;
 		_isScoped = true;
 		_sniperScopePanel.Show();
 	}
@@ -71,8 +75,8 @@ public partial class Scout : Weapon
 		if ( IsServer )
 			return;
 
-		ViewModelEntity.RenderColor = Color.White;
-		HandsModelEntity.RenderColor = Color.White;
+		ViewModelEntity.EnableDrawing = true;
+		HandsModelEntity.EnableDrawing = true;
 		_isScoped = false;
 		_sniperScopePanel.Hide();
 	}
