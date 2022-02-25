@@ -1,5 +1,4 @@
 using Sandbox;
-using Sandbox.UI;
 using TTT.UI;
 
 namespace TTT;
@@ -14,13 +13,12 @@ public partial class Scout : Weapon
 
 	public override void Simulate( Client owner )
 	{
-		if ( owner.Pawn is Player player )
+		if ( TimeSinceDeployed >= Info.DeployTime && Input.Pressed( InputButton.Attack2 ) )
 		{
-			if ( Input.Pressed( InputButton.Attack2 ) )
-				OnScopeStart( player );
-
-			if ( Input.Released( InputButton.Attack2 ) )
-				OnScopeEnd( player );
+			if ( _isScoped )
+				OnScopeEnd( Owner );
+			else
+				OnScopeStart( Owner );
 		}
 
 		base.Simulate( owner );
@@ -41,14 +39,12 @@ public partial class Scout : Weapon
 	{
 		base.ActiveStart( ent );
 
-		if ( ent is Player player )
-			_defaultFOV = player.CameraMode.FieldOfView;
+		_defaultFOV = Owner.CameraMode.FieldOfView;
 	}
 
 	public override void ActiveEnd( Entity ent, bool dropped )
 	{
-		if ( ent is Player player )
-			OnScopeEnd( player );
+		OnScopeEnd( Owner );
 
 		_sniperScopePanel?.Delete();
 
@@ -57,7 +53,7 @@ public partial class Scout : Weapon
 
 	private void OnScopeStart( Player player )
 	{
-		player.CameraMode.FieldOfView = player.CameraMode.FieldOfView = 10f;
+		player.CameraMode.FieldOfView = 10f;
 
 		if ( IsServer )
 			return;
@@ -70,7 +66,7 @@ public partial class Scout : Weapon
 
 	private void OnScopeEnd( Player player )
 	{
-		player.CameraMode.FieldOfView = player.CameraMode.FieldOfView = _defaultFOV;
+		player.CameraMode.FieldOfView = _defaultFOV;
 
 		if ( IsServer )
 			return;
