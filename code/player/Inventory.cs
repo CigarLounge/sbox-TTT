@@ -15,7 +15,7 @@ public partial class Inventory : BaseInventory
 	}
 
 	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0 };
+	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
 	private const int DROPPOSITIONOFFSET = 50;
 	private const int DROPVELOCITY = 500;
@@ -36,7 +36,7 @@ public partial class Inventory : BaseInventory
 
 	public bool HasWeaponOfAmmoType( AmmoType ammoType )
 	{
-		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType - 1] > 0;
+		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
 	public Carriable Swap( Carriable carriable )

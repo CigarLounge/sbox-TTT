@@ -22,7 +22,7 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	private static int CarriableDropVelocity { get; set; } = 300;
+	public static int DropVelocity { get; set; } = 300;
 
 	public Player()
 	{
@@ -158,7 +158,7 @@ public partial class Player : Sandbox.Player
 			{
 				if ( droppedEntity.PhysicsGroup != null )
 				{
-					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * CarriableDropVelocity;
+					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * DropVelocity;
 				}
 			}
 		}

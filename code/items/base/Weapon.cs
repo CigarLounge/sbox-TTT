@@ -119,6 +119,19 @@ public abstract partial class Weapon : Carriable
 					AttackSecondary();
 				}
 			}
+
+			if ( IsServer && Input.Down( InputButton.Run ) && Input.Pressed( InputButton.Drop ) )
+			{
+				if ( AmmoClip > 0 )
+				{
+
+					var ammoCrate = Ammo.Create( Info.AmmoType );
+					ammoCrate.CurrentCount = Math.Min( ammoCrate.MaxAmmoCount, AmmoClip );
+					AmmoClip = 0;
+					ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
+					ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + (Owner.EyeRotation.Forward + Owner.EyeRotation.Up) * Player.DropVelocity;
+				}
+			}
 		}
 		else if ( IsReloading && TimeSinceReload > Info.ReloadTime )
 			OnReloadFinish();
