@@ -20,8 +20,10 @@ public enum AmmoType : byte
 [Hammer.Skip]
 public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
+	[Net]
+	public int CurrentCount { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
-	public virtual int AmmoCount => 30;
+	public virtual int MaxAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
 
 	public override void Spawn()
@@ -32,6 +34,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
+		CurrentCount = MaxAmmoCount;
 	}
 
 	public override void StartTouch( Entity other )
@@ -43,11 +46,11 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	}
 
 	private void GiveAmmo( Player player )
-	{
+	{	
 		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		player.GiveAmmo( Type, AmmoCount );
+		player.GiveAmmo( Type, CurrentCount );
 
 		Delete();
 	}
@@ -87,7 +90,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user.IsAlive() && user is Player player;
+		return user.IsAlive() && user is Player;
 	}
 }
 

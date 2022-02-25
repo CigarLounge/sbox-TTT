@@ -7,6 +7,6 @@ namespace TTT;
 public partial class ShotgunAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Shotgun;
-	public override int AmmoCount => 5;
+	public override int MaxAmmoCount => 5;
 	protected override string WorldModelPath => "models/ammo/ammo_shotgun/ammo_shotgun.vmdl";
 }
