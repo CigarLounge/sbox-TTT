@@ -14,7 +14,7 @@
 		primaryrate = 0.75
 		secondaryrate = 0.0
 		reloadtime = 3.1
-		ammotype = "5"
+		ammotype = "3"
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		slot = "0"
