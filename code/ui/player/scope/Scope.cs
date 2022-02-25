@@ -4,34 +4,35 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+/// <summary>
+/// Pass in a scope texture that will fill the entire player's screen when `Show()` is called.
+/// </summary>
 public class Scope : Panel
 {
-	private readonly Carriable _carriable;
 	private readonly Image _lens;
 
-	public Scope( Carriable carriable, string scopeTexture )
+	public Scope( string scopeTexture )
 	{
 		StyleSheet.Load( "/ui/player/scope/Scope.scss" );
-		_carriable = carriable;
 
 		Add.Panel( "leftBar" );
 		_lens = Add.Image( scopeTexture, "lens" );
 		Add.Panel( "rightBar" );
+
+		Style.Opacity = 0f;
 	}
 
-	public override void Tick()
+	public void Show()
 	{
-		base.Tick();
-
-		if ( Local.Pawn is not Player player || player.ActiveChild != _carriable )
-			return;
-
-		Style.Opacity = Input.Down( InputButton.Attack2 ) ? 1 : 0;
-		if ( Style.Opacity != 1 )
-			return;
-
+		Style.Opacity = 1f;
 		var scopeSize = Screen.Height * ScaleFromScreen;
 		_lens.Style.Width = Length.Pixels( scopeSize );
 		_lens.Style.Height = Length.Pixels( scopeSize );
+
+	}
+
+	public void Hide()
+	{
+		Style.Opacity = 0f;
 	}
 }
