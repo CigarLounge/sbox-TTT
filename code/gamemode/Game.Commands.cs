@@ -11,7 +11,7 @@ public partial class Game
 			return;
 
 		Player player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
-		if ( !player.IsValid() || player.Client.GetValue<bool>( RawStrings.ForcedSpectator, false ) )
+		if ( !player.IsValid() || player.Client.GetValue( RawStrings.Spectator, false ) )
 			return;
 
 		player.Respawn();

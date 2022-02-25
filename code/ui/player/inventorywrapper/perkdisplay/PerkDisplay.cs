@@ -19,9 +19,7 @@ public class PerkDisplay : Panel
 		base.Tick();
 
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
 		for ( int i = 0; i < player.Perks.Count; ++i )
 		{

@@ -35,15 +35,13 @@ public class PlayerInfoDisplay : Panel
 		base.Tick();
 
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
-		this.Enabled( Local.Pawn is Player || (player.IsSpectator && player.IsSpectatingPlayer) );
+		this.Enabled( player.IsAlive() || player.IsSpectatingPlayer );
+		if ( !this.IsEnabled() )
+			return;
 
-		_healthLabel.SetClass( "hidden", player.CurrentPlayer.LifeState == LifeState.Alive );
 		_healthLabel.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
-
 		_creditLabel.Text = $"$ {player.CurrentPlayer.Credits}";
 	}
 }

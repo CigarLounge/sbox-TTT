@@ -13,9 +13,6 @@ public partial class Player : Sandbox.Player
 	[Net, Local]
 	public int Credits { get; set; } = 0;
 
-	[Net]
-	public bool IsForcedSpectator { get; set; } = false;
-
 	public new Inventory Inventory
 	{
 		get => base.Inventory as Inventory;
@@ -31,20 +28,24 @@ public partial class Player : Sandbox.Player
 
 	public override void Spawn()
 	{
-		base.Spawn();
+		Components.GetOrCreate<Perks>();
 
 		SetModel( "models/citizen/citizen.vmdl" );
-		Components.GetOrCreate<Perks>();
+		Animator = new StandardPlayerAnimator();
+		EnableAllCollisions = false;
+		EnableDrawing = false;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
+
+		base.Spawn();
 	}
 
 	public override void Respawn()
 	{
 		base.Respawn();
 
-		Animator = new StandardPlayerAnimator();
-		EnableHideInFirstPerson = true;
-		EnableShadowInFirstPerson = true;
 		EnableDrawing = true;
+		EnableAllCollisions = true;
 		Credits = 0;
 		SetRole( new NoneRole() );
 		IsMissingInAction = false;
@@ -56,6 +57,7 @@ public partial class Player : Sandbox.Player
 			Controller = new WalkController();
 			CameraMode = new FirstPersonCamera();
 			EnableAllCollisions = true;
+			Client.SetValue( RawStrings.Spectator, false );
 		}
 		else
 		{

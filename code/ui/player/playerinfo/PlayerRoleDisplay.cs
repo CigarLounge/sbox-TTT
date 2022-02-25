@@ -28,11 +28,9 @@ public class PlayerRoleDisplay : Panel
 		base.Tick();
 
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
-		this.Enabled( !player.IsSpectator && !player.IsSpectatingPlayer && Game.Current.Round is InProgressRound );
+		this.Enabled( (player.IsAlive() || player.IsSpectatingPlayer) && player.CurrentPlayer.Role is not NoneRole );
 	}
 
 	[TTTEvent.Player.Role.Changed]

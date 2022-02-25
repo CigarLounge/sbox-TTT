@@ -65,16 +65,17 @@ public partial class Game : Sandbox.Game
 	public override void DoPlayerSuicide( Client client )
 	{
 		if ( client.Pawn is Player player && player.IsAlive() )
-			base.DoPlayerSuicide( client );	
+			base.DoPlayerSuicide( client );
 	}
 
 	public override void ClientJoined( Client client )
 	{
 		Player player = new();
 		client.Pawn = player;
+		client.SetValue( RawStrings.Spectator, true );
+		Round.OnPlayerJoin( client.Pawn as Player );
 
 		base.ClientJoined( client );
-		Round.OnPlayerJoin( client.Pawn as Player );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
@@ -119,15 +120,12 @@ public partial class Game : Sandbox.Game
 			if ( loopClient.PlayerId == playerId )
 			{
 				client = loopClient;
-
 				break;
 			}
 		}
 
 		if ( client == null || !client.IsValid() )
-		{
 			return;
-		}
 
 		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client, level );
 	}

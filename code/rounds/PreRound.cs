@@ -54,7 +54,7 @@ public class PreRound : BaseRound
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{
-			player.Client.SetValue( RawStrings.ForcedSpectator, player.IsForcedSpectator );
+			player.Client.SetValue( RawStrings.Spectator, player.IsForcedSpectator );
 
 			if ( player.IsForcedSpectator )
 			{

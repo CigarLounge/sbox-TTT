@@ -153,7 +153,7 @@ public partial class Scoreboard : Panel
 		// Due to not having a `client.GetValue` change callback, we have to handle it differently
 		foreach ( Client client in Client.All )
 		{
-			bool newIsForcedSpectator = client.GetValue<bool>( RawStrings.ForcedSpectator );
+			bool newIsForcedSpectator = client.GetValue<bool>( RawStrings.Spectator );
 
 			if ( !_forcedSpecList.TryGetValue( client, out bool isForcedSpectator ) )
 			{
@@ -187,7 +187,7 @@ public partial class Scoreboard : Panel
 	{
 		string group = DefaultScoreboardGroup.Alive.ToString();
 
-		if ( client.GetValue<bool>( RawStrings.ForcedSpectator ) )
+		if ( client.GetValue<bool>( RawStrings.Spectator ) )
 		{
 			group = DefaultScoreboardGroup.Spectator.ToString();
 		}

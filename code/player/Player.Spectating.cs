@@ -6,6 +6,9 @@ namespace TTT;
 
 public partial class Player
 {
+	[Net, Local]
+	public bool IsForcedSpectator { get; set; } = false;
+
 	private Player _spectatingPlayer;
 	public Player CurrentPlayer
 	{
@@ -17,8 +20,6 @@ public partial class Player
 	}
 
 	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
-	public bool IsSpectator => CameraMode is IObservationCamera;
-
 
 	private int _targetIdx = 0;
 
@@ -100,11 +101,7 @@ public partial class Player
 		if ( IsForcedSpectator && LifeState == LifeState.Alive )
 		{
 			TakeDamage( DamageInfo.Generic( 1000 ) );
-
-			if ( !Client.GetValue( RawStrings.ForcedSpectator, false ) )
-			{
-				Client.SetValue( RawStrings.ForcedSpectator, true );
-			}
+			Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 		}
 	}
 }

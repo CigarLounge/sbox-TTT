@@ -16,7 +16,7 @@ public partial class Player
 		if ( Client.IsBot )
 			return;
 
-		if ( IsForcedSpectator || IsSpectator )
+		if ( IsForcedSpectator || !this.IsAlive() )
 		{
 			_timeSinceLastAction = 0;
 			return;
