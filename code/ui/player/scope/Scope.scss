@@ -1,0 +1,28 @@
+scope {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: margin 0.2s ease-out 0s;
+  overflow: visible;
+  z-index: 200;
+
+  .lens {
+      height: 100%;
+      width: 100%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+  }
+
+  .leftBar {
+      background-color: black;
+      height: 100%;
+      flex-grow: 1;
+  }
+
+  .rightBar {
+      background-color: black;
+      height: 100%;
+      flex-grow: 1;
+  }
+}
