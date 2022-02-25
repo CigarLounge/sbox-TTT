@@ -12,7 +12,7 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		if ( Camera is ThirdPersonSpectateCamera )
+		if ( CameraMode is ThirdPersonSpectateCamera )
 		{
 			DeleteHint();
 
@@ -58,7 +58,7 @@ public partial class Player
 	// of the "HintDistance".
 	private IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
 	{
-		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * maxHintDistance );
+		var trace = Trace.Ray( CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * maxHintDistance );
 		trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( CurrentPlayer );
 
 		TraceResult tr = trace.UseHitboxes().Run();

@@ -42,7 +42,7 @@ public partial class Scout : Weapon
 		base.ActiveStart( ent );
 
 		if ( ent is Player player )
-			_defaultFOV = player.Camera.FieldOfView;
+			_defaultFOV = player.CameraMode.FieldOfView;
 	}
 
 	public override void ActiveEnd( Entity ent, bool dropped )
@@ -57,7 +57,7 @@ public partial class Scout : Weapon
 
 	private void OnScopeStart( Player player )
 	{
-		player.Camera.FieldOfView = player.Camera.FieldOfView = 10f;
+		player.CameraMode.FieldOfView = player.CameraMode.FieldOfView = 10f;
 
 		if ( IsServer )
 			return;
@@ -70,7 +70,7 @@ public partial class Scout : Weapon
 
 	private void OnScopeEnd( Player player )
 	{
-		player.Camera.FieldOfView = player.Camera.FieldOfView = _defaultFOV;
+		player.CameraMode.FieldOfView = player.CameraMode.FieldOfView = _defaultFOV;
 
 		if ( IsServer )
 			return;

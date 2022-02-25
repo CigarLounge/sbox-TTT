@@ -54,7 +54,7 @@ public partial class Player : Sandbox.Player
 		if ( !IsForcedSpectator )
 		{
 			Controller = new WalkController();
-			Camera = new FirstPersonCamera();
+			CameraMode = new FirstPersonCamera();
 			EnableAllCollisions = true;
 		}
 		else

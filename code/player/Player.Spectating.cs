@@ -6,19 +6,6 @@ namespace TTT;
 
 public partial class Player
 {
-	public CameraMode Camera
-	{
-		get => Components.Get<CameraMode>();
-		set
-		{
-			var current = CameraMode;
-			if ( current == value ) return;
-
-			Components.RemoveAny<CameraMode>();
-			Components.Add( value );
-		}
-	}
-
 	private Player _spectatingPlayer;
 	public Player CurrentPlayer
 	{
@@ -30,7 +17,7 @@ public partial class Player
 	}
 
 	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
-	public bool IsSpectator => Camera is IObservationCamera;
+	public bool IsSpectator => CameraMode is IObservationCamera;
 
 
 	private int _targetIdx = 0;
@@ -47,18 +34,15 @@ public partial class Player
 
 	private void ChangeSpectateCamera()
 	{
-		if ( !Input.Pressed( InputButton.Jump ) )
-			return;
-
-		using ( Prediction.Off() )
+		if ( Input.Pressed( InputButton.Jump ) )
 		{
-			Camera = Camera switch
+			CameraMode = CameraMode switch
 			{
 				RagdollSpectateCamera => new FreeSpectateCamera(),
 				FreeSpectateCamera => new ThirdPersonSpectateCamera(),
 				ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
 				FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-				_ => Camera
+				_ => CameraMode
 			};
 		}
 	}
@@ -81,7 +65,7 @@ public partial class Player
 			CurrentPlayer = players[_targetIdx];
 		}
 
-		if ( Camera is IObservationCamera camera )
+		if ( CameraMode is IObservationCamera camera )
 		{
 			camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
 		}
@@ -92,9 +76,21 @@ public partial class Player
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		Controller = null;
-		Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+		CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 		LifeState = LifeState.Dead;
 		Health = 0f;
+
+		DelayedDeathCameraChange();
+	}
+
+	private async void DelayedDeathCameraChange()
+	{
+		// If the player is still watching their ragdoll, automatically
+		// move them to a free spectate camera.
+		await Task.DelaySeconds( 2 );
+
+		if ( CameraMode is RagdollSpectateCamera )
+			CameraMode = new FreeSpectateCamera();
 	}
 
 	public void ToggleForcedSpectator()
