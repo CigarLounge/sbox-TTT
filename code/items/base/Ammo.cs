@@ -4,6 +4,11 @@ namespace TTT;
 
 public enum AmmoType : byte
 {
+	/// <summary>
+	/// Use this for weapons that cannot have more ammo
+	/// than what they spawned with.
+	/// </summary>
+	None,
 	PistolSMG,
 	Shotgun,
 	Sniper,
@@ -13,20 +18,17 @@ public enum AmmoType : byte
 
 // TODO: Kole add hammer property for different world models.
 [Hammer.Skip]
-public partial class Ammo : Prop, IEntityHint, IUse
+public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
-	[Net, Property]
-	public AmmoType Type { get; set; }
-	[Net]
-	public int AmmoCount { get; set; }
+	public virtual AmmoType Type => AmmoType.None;
+	public virtual int AmmoCount => 30;
+	protected virtual string WorldModelPath => string.Empty;
 
-	public Ammo() : base() { }
-	public Ammo( AmmoType type ) : base()
+	public override void Spawn()
 	{
-		Type = type;
+		base.Spawn();
 
-		SetModel( GetModel() );
-		SetAmmoCount();
+		SetModel( WorldModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
@@ -50,29 +52,17 @@ public partial class Ammo : Prop, IEntityHint, IUse
 		Delete();
 	}
 
-	private string GetModel()
+	public static Ammo Create( AmmoType ammoType )
 	{
-		return Type switch
+		return ammoType switch
 		{
-			AmmoType.PistolSMG => "models/ammo/ammo_smg/ammo_smg.vmdl",
-			AmmoType.Shotgun => "models/ammo/ammo_shotgun/ammo_shotgun.vmdl",
-			AmmoType.Sniper => "models/ammo/ammo_sniper/ammo_sniper.vmdl",
-			AmmoType.Magnum => "models/ammo/ammo_magnum/ammo_magnum.vmdl",
-			AmmoType.Rifle => "models/ammo/ammo_rfile/ammo_rifle.vmdl",
-			_ => string.Empty,
-		};
-	}
-
-	private void SetAmmoCount()
-	{
-		AmmoCount = Type switch
-		{
-			AmmoType.PistolSMG => 30,
-			AmmoType.Shotgun => 5,
-			AmmoType.Sniper => 5,
-			AmmoType.Magnum => 5,
-			AmmoType.Rifle => 30,
-			_ => 0,
+			AmmoType.None => null,
+			AmmoType.PistolSMG => new SMGAmmo(),
+			AmmoType.Shotgun => new ShotgunAmmo(),
+			AmmoType.Sniper => new SniperAmmo(),
+			AmmoType.Magnum => new MagnumAmmo(),
+			AmmoType.Rifle => new RifleAmmo(),
+			_ => null,
 		};
 	}
 

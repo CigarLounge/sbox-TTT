@@ -36,7 +36,7 @@ public partial class Inventory : BaseInventory
 
 	public bool HasWeaponOfAmmoType( AmmoType ammoType )
 	{
-		return WeaponsOfAmmoType[(int)ammoType] > 0;
+		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType - 1] > 0;
 	}
 
 	public Carriable Swap( Carriable carriable )

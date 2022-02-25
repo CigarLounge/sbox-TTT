@@ -47,7 +47,7 @@ public class VoiceChatEntry : Panel
 
 		if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
 		{
-			SetClass( "background-color-spectator", player.LifeState == LifeState.Dead );
+			SetClass( "background-color-spectator", !player.IsAlive() );
 		}
 	}
 

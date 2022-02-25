@@ -10,10 +10,8 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 	{
 		base.Deactivated();
 
-		if ( Local.Pawn is not Player player )
-		{
-			return;
-		}
+		if ( Local.Pawn is not Player player )	
+			return;		
 
 		Viewer = Local.Pawn;
 		player.CurrentPlayer = null;
@@ -21,10 +19,8 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not Player player )
-		{
-			return;
-		}
+		if ( Local.Pawn is not Player player )	
+			return;	
 
 		if ( !player.IsSpectatingPlayer || Input.Pressed( InputButton.Attack1 ) )
 		{

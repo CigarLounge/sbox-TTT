@@ -60,15 +60,11 @@ public partial class ChatBox : Panel
 
 	public void OnTab()
 	{
-		if ( Local.Pawn is not Player player || player.LifeState != LifeState.Alive )
-		{
-			return;
-		}
+		if ( Local.Pawn is not Player player || player.LifeState != LifeState.Alive )	
+			return;	
 
-		if ( CanUseTeamChat( player ) )
-		{
-			IsTeamChatting = !IsTeamChatting;
-		}
+		if ( CanUseTeamChat( player ) )	
+			IsTeamChatting = !IsTeamChatting;	
 	}
 
 	public override void Tick()
@@ -93,10 +89,8 @@ public partial class ChatBox : Panel
 		_inputPanel.SetClass( "border-color-alive", isAlive );
 		_inputPanel.SetClass( "border-color-spectator", !isAlive );
 
-		if ( IsOpened )
-		{
-			_lastChatFocus = 0f;
-		}
+		if ( IsOpened )		
+			_lastChatFocus = 0f;		
 
 		_canvas.SetClass( "fadeOut", _lastChatFocus > MAX_DISPLAY_TIME );
 	}

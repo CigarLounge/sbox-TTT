@@ -30,8 +30,8 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	{
 		if ( StoredHealth < 200f && _nextRecharge && _nextHeal )
 		{
-			StoredHealth += Math.Min( StoredHealth + 0.5f, 200f );
-			_nextRecharge = 1;
+			StoredHealth++;
+			_nextRecharge = 2f;
 		}
 	}
 
