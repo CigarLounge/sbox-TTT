@@ -192,7 +192,6 @@ public abstract partial class Weapon : Carriable
 
 		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
-		PerformRecoil();
 		PlaySound( Info.FireSound );
 
 		for ( int i = 0; i < Info.BulletsPerFire; i++ )
@@ -242,6 +241,8 @@ public abstract partial class Weapon : Carriable
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
 		CrosshairPanel?.CreateEvent( "fire" );
+
+		CurrentRecoilAmount += RecoilOnShot;
 	}
 
 	[ClientRpc]
@@ -254,12 +255,6 @@ public abstract partial class Weapon : Carriable
 	protected virtual void ReloadEffects()
 	{
 		ViewModelEntity?.SetAnimParameter( "reload", true );
-	}
-
-	[ClientRpc]
-	protected virtual void PerformRecoil()
-	{
-		CurrentRecoilAmount += RecoilOnShot;
 	}
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
