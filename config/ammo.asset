@@ -1,0 +1,23 @@
+//
+// TTT.AmmoInfo
+//
+@BaseClass = ammo : ""
+[
+	type(choices) { group = "Important" } : "Type" : 0 : "" =
+	[
+		0 : "None"
+		1 : "Pistol SMG"
+		2 : "Shotgun"
+		3 : "Sniper"
+		4 : "Magnum"
+		5 : "Rifle"
+	]
+	amount(integer) { group = "Important" } : "Amount" : 0 : ""
+	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
+	islimited(boolean) { group = "Important" } : "Is Limited" : 0 : ""
+	price(integer) { group = "Stats" } : "Price" : 0 : ""
+	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
+	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
+	libraryname(string) : "Library Name" :  : ""
+]
+

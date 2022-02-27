@@ -1,0 +1,14 @@
+//
+// TTT.PerkInfo
+//
+@BaseClass = perk : ""
+[
+	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
+	islimited(boolean) { group = "Important" } : "Is Limited" : 0 : ""
+	price(integer) { group = "Stats" } : "Price" : 0 : ""
+	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
+	description(string) { group = "UI" } : "Description" :  : ""
+	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
+	libraryname(string) : "Library Name" :  : ""
+]
+

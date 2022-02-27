@@ -1,0 +1,19 @@
+PlayerRoleDisplay
+{
+    position: absolute;
+    text-align: center;
+    bottom: 85px;
+    left: 25px;
+    width: 225px;
+    padding: 8px 20px;
+    height: 50px;
+
+    .role-label
+    {
+        position: relative;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 24px;
+        color: white;
+    }
+}

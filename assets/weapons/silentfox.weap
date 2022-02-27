@@ -1,0 +1,38 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = "mp7_fire_silenced-1"
+		dryfiresound = "dryfire_pistol-1"
+		firemode = "0"
+		bulletsperfire = 1
+		clipsize = 30
+		damage = 26.0
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		spread = 0.05
+		primaryrate = 12.0
+		secondaryrate = 0.0
+		reloadtime = 2.45
+		ammotype = "0"
+		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
+		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		slot = "3"
+		spawnable = false
+		viewmodel = resource:"models/weapons/v_mp7-silenced.vmdl"
+		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
+		holdtype = "2"
+		deploytime = 1.2
+		buyable = true
+		islimited = true
+		price = 100
+		icon = "ui/icons/weapons/ttt_weapon_silentfox.png"
+		worldmodel = resource:"models/weapons/w_mp7-silenced.vmdl"
+		libraryname = "ttt_weapon_silentfox"
+		verticalrecoil = 8.0
+		horizontalrecoilrange = 2.0
+		recoilrecoveryscale = 10.0
+		headshotmultiplier = 1.5
+		candrop = true
+	}
+}
