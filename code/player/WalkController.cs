@@ -4,11 +4,35 @@ using Sandbox;
 
 namespace TTT;
 
+
+public class DuckSpeed : Duck
+{
+	// The default Duck speed is 64 as of writing.
+	// Due to what I asume is friction, that makes you move like a SNAIL.
+	// It's also hardcoded so it requires a custom class override.
+
+	public float Speed = 80.0f;
+
+	public DuckSpeed( BasePlayerController controller, float fSpeed ) : base( controller )
+	{
+		Speed = fSpeed;
+	}
+
+	public override float GetWishSpeed()
+	{
+		if ( !IsActive ) return -1;
+		return Speed;
+	}
+
+}
+
+
 public partial class WalkController : Sandbox.WalkController
 {
+
 	public WalkController() : base()
 	{
-		Duck = new Duck( this );
+		Duck = new DuckSpeed( this, 90f );
 		DefaultSpeed = 237f;
 		WalkSpeed = 110f;
 		GroundFriction = 7.0f;
