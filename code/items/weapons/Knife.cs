@@ -136,7 +136,7 @@ public partial class Knife : Carriable
 
 		var trace = Trace.Ray( Position, newPosition )
 			.Ignore( _thrower )
-			.Radius( 0.5f )
+			.Radius( 0f )
 			.WorldAndEntities()
 			.Run();
 
@@ -164,12 +164,12 @@ public partial class Knife : Carriable
 		else if ( trace.Entity.IsWorld && Vector3.GetAngle( trace.Normal, trace.Direction ) > 115 )
 		{
 			trace.Surface.DoBulletImpact( trace );
-			Position -= trace.Direction * 6f;
+			Position -= trace.Direction * 4f;
 			MoveType = MoveType.None;
 		}
 		else
 		{
-			Position = oldPosition;
+			Position = oldPosition - trace.Direction * 10;
 			MoveType = MoveType.Physics;
 			PhysicsEnabled = true;
 			Velocity = trace.Direction * 500f;
