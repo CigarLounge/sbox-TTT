@@ -21,6 +21,14 @@ public class DetectiveRole : BaseRole
 		base.OnSelect( player );
 	}
 
+	public override void OnDeselect( Player player )
+	{
+		if ( Host.IsServer )
+			player.RemoveClothing();
+
+		base.OnSelect( player );
+	}
+
 	public override void OnKilled( Player killer )
 	{
 		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
