@@ -52,7 +52,6 @@ public partial class Game
 			return;
 
 		player.SetRole( roleName );
-		player.SendClientRole();
 	}
 
 	[ServerCmd( Name = "ttt_forcespec" )]
