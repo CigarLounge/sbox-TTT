@@ -26,12 +26,15 @@ public partial class Player
 
 	public void SetRole( BaseRole role )
 	{
-		if ( role == Role )
+		if ( role == null )
 			return;
 
 		Role?.OnDeselect( this );
 		Role = role;
 		Role.OnSelect( this );
+
+		if ( IsServer )
+			SendClientRole();
 	}
 
 	public void SetRole( string libraryName )

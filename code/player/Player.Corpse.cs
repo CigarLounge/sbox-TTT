@@ -218,7 +218,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( player.Using != this )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( IsIdentified )
+		else if ( IsIdentified && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 

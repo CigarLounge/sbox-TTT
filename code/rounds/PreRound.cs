@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using Sandbox;
 
@@ -77,53 +76,14 @@ public class PreRound : BaseRound
 
 	private static void AssignRolesAndRespawn( List<Player> players )
 	{
-		int traitorCount = (int)Math.Max( players.Count * 0.25f, 1f );
+		int traitorCount = Math.Max( players.Count / 4, 1 );
+		int detectiveCount = players.Count / 8;
+		players.Shuffle();
 
-		for ( int i = 0; i < traitorCount; i++ )
-		{
-			List<Player> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
-			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
-
-			if ( unassignedPlayers[randomId].Role is NoneRole )
-			{
-				unassignedPlayers[randomId].SetRole( new TraitorRole() );
-			}
-		}
-
-		int detectiveCount = (int)(players.Count * 0.125f);
-
-		for ( int i = 0; i < detectiveCount; i++ )
-		{
-			List<Player> unassignedPlayers = players.Where( p => p.Role is NoneRole ).ToList();
-			int randomId = Rand.Int( 0, unassignedPlayers.Count - 1 );
-
-			if ( unassignedPlayers[randomId].Role is NoneRole )
-			{
-				unassignedPlayers[randomId].SetRole( new DetectiveRole() );
-			}
-		}
-
-		foreach ( Player player in players )
-		{
-			if ( player.Role is NoneRole )
-			{
-				player.SetRole( new InnocentRole() );
-			}
-
-			using ( Prediction.Off() )
-			{
-				player.SendClientRole();
-			}
-
-			if ( player.LifeState == LifeState.Dead )
-			{
-				player.Respawn();
-			}
-			else
-			{
-				player.SetHealth( player.MaxHealth );
-			}
-		}
+		int index = 0;
+		while ( traitorCount-- > 0 ) players[index++].SetRole( new TraitorRole() );
+		while ( detectiveCount-- > 0 ) players[index++].SetRole( new DetectiveRole() );
+		while ( index < players.Count ) players[index++].SetRole( new InnocentRole() );
 	}
 
 	private static async void StartRespawnTimer( Player player )

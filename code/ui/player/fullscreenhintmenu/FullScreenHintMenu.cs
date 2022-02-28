@@ -5,8 +5,10 @@ namespace TTT.UI;
 public class FullScreenHintMenu : Panel
 {
 	public static FullScreenHintMenu Instance;
-	public Panel ActivePanel { get; private set; }
-	public bool IsForcedOpen { get; set; } = false;
+	public bool IsOpen { get => _activePanel != null; }
+
+	private Panel _activePanel;
+	private bool _isForcedOpen = false;
 
 	public FullScreenHintMenu()
 	{
@@ -24,31 +26,34 @@ public class FullScreenHintMenu : Panel
 
 	public void ForceOpen( Panel panel )
 	{
-		IsForcedOpen = true;
-		ActivePanel = null;
+		_isForcedOpen = true;
+		_activePanel = null;
 
 		Open( panel );
 	}
 
+	/// <summary>
+	/// Ensure that the panel parameter isn't being created on each tick.
+	/// </summary>
 	public void Open( Panel panel )
 	{
-		if ( ActivePanel != null )
+		if ( _activePanel != null )
 		{
 			return;
 		}
 
 		DeleteChildren( true );
-		ActivePanel = panel;
+		_activePanel = panel;
 		AddChild( panel );
 		this.EnableFade( true );
 	}
 
 	public void Close()
 	{
-		if ( ActivePanel == null || IsForcedOpen ) return;
+		if ( _activePanel == null || _isForcedOpen ) return;
 		this.EnableFade( false );
 		DeleteChildren( true );
-		ActivePanel = null;
-		IsForcedOpen = false;
+		_activePanel = null;
+		_isForcedOpen = false;
 	}
 }
