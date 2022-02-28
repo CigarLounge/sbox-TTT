@@ -7,6 +7,8 @@ namespace TTT;
 public partial class SniperAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Sniper;
-	public override int DefaultAmmoCount => 5;
+	public override int DefaultAmmoCount => 10;
+	public override int MaxPlayerAmmo => 20;
+	public override int MinAmmoToRemain => 4;
 	protected override string WorldModelPath => "models/ammo/ammo_sniper/ammo_sniper.vmdl";
 }

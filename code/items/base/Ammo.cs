@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -15,13 +17,23 @@ public enum AmmoType : byte
 	Rifle
 }
 
+
+
 [Hammer.Skip]
 public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
-	[Net]
-	public int CurrentCount { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
+
+	///<summary>How much ammo is left in this box.</summary>
+	[Net] public int CurrentCount { get; set; }
+
+	///<summary>The ammo box will spawn with this much in it.</summary>
 	public virtual int DefaultAmmoCount => 30;
+	///<summary>The player can only carry this much of this type.</summary>
+	public virtual int MaxPlayerAmmo => 60;
+	///<summary>The box will remain if this much is left in it.</summary>
+	public virtual int MinAmmoToRemain => 5;
+	///<summary>The model for the ammo box.</summary>
 	protected virtual string WorldModelPath => string.Empty;
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
@@ -72,10 +84,22 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		player.GiveAmmo( Type, CurrentCount );
+		int iAdd = Math.Min( CurrentCount, MaxPlayerAmmo - player.AmmoCount( Type ) );
+		if ( iAdd <= 0 ) return;
+
+		player.GiveAmmo( Type, iAdd );
 		PlaySound( RawStrings.AmmoPickupSound );
 
-		Delete();
+		// int iPrevAmmo = CurrentCount;
+		CurrentCount -= iAdd;
+		// Log.Info( "[" + this.ToString() + "] picked up. Previous: " + iPrevAmmo + ". (Current: " + CurrentCount + ")" );
+
+		// Delete empty/nearly empty ammo boxes.
+		if ( CurrentCount < MinAmmoToRemain )
+		{
+			// Log.Info( "[" + this.ToString() + "] was consumed. Remaining: " + CurrentCount + " (Min: " + MinAmmoToRemain + ")" );
+			Delete();
+		}
 	}
 
 	string IEntityHint.TextOnTick => $"{Type} Ammo";
