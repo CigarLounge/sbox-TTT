@@ -6,11 +6,12 @@ namespace TTT;
 [Library( "ttt_weapon_knife", Title = "Knife" )]
 public partial class Knife : Carriable
 {
-	[Net, Predicted] public TimeSince TimeSinceStab { get; set; }
-	private Vector3 _thrownFrom;
-	private bool _hasLanded = true;
-	private Player _thrower;
+	[Net, Predicted]
+	public TimeSince TimeSinceStab { get; set; }
+
 	private bool _isThrown = false;
+	private Player _thrower;
+	private Vector3 _thrownFrom;
 	private float _gravityModifier;
 
 	public override void Simulate( Client owner )
@@ -36,13 +37,7 @@ public partial class Knife : Carriable
 
 	public override bool CanCarry( Entity carrier )
 	{
-		return _hasLanded && base.CanCarry( carrier );
-	}
-
-	public override void OnCarryStart( Entity carrier )
-	{
-		base.OnCarryStart( carrier );
-		_isThrown = false;
+		return !_isThrown && base.CanCarry( carrier );
 	}
 
 	protected void MeleeAttack( float damage, float range, float radius )
@@ -94,7 +89,6 @@ public partial class Knife : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition ).Ignore( Owner ).Run();
 		_thrower = Owner;
 		_isThrown = true;
-		_hasLanded = false;
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
 
@@ -122,9 +116,9 @@ public partial class Knife : Carriable
 	}
 
 	[Event.Tick.Server]
-	public void ServerTick()
+	private void ServerTick()
 	{
-		if ( !_isThrown || _hasLanded )
+		if ( !_isThrown )
 			return;
 
 		var oldPosition = Position;
@@ -136,7 +130,7 @@ public partial class Knife : Carriable
 
 		var trace = Trace.Ray( Position, newPosition )
 			.Ignore( _thrower )
-			.Radius( 0.5f )
+			.Radius( 0 )
 			.WorldAndEntities()
 			.Run();
 
@@ -176,7 +170,6 @@ public partial class Knife : Carriable
 		}
 
 		_isThrown = false;
-		_hasLanded = true;
 		EnableTouch = true;
 	}
 }

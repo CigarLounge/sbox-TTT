@@ -24,7 +24,7 @@ public partial class Inventory : BaseInventory
 
 	public override void Pickup( Entity entity )
 	{
-		if ( base.Add( entity, Active == null ) )
+		if ( base.Add( entity ) )
 			Sound.FromEntity( RawStrings.WeaponPickupSound, Owner );
 	}
 
