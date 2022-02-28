@@ -28,9 +28,7 @@ public class InspectMenu : Panel
 	public InspectMenu( Corpse playerCorpse )
 	{
 		if ( playerCorpse.DeadPlayer == null )
-		{
 			return;
-		}
 
 		StyleSheet.Load( "/ui/player/inspectmenu/InspectMenu.scss" );
 
