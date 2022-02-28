@@ -45,7 +45,7 @@ public static partial class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && player.LifeState == LifeState.Alive && player.Role is DetectiveRole )
+			if ( client.Pawn is Player player && player.IsAlive() && player.Role is DetectiveRole )
 			{
 				player.Credits += credits;
 				players.Add( client );

@@ -23,7 +23,7 @@ public partial class RoleInfo : Asset
 }
 
 [Hammer.Skip]
-public abstract class BaseRole : LibraryClass
+public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<string>
 {
 	public RoleInfo Info { get; set; }
 
@@ -46,4 +46,47 @@ public abstract class BaseRole : LibraryClass
 	public virtual void OnDeselect( Player player ) { }
 
 	public virtual void OnKilled( Player player ) { }
+
+	public static bool operator ==( BaseRole left, BaseRole right )
+	{
+		if ( left is null )
+		{
+			if ( right is null )
+				return true;
+
+			return false;
+		}
+
+		return left.Equals( right );
+	}
+	public static bool operator !=( BaseRole left, BaseRole right ) => !(left == right);
+
+	public static bool operator ==( BaseRole left, string right )
+	{
+		if ( left is null || right is null )
+			return false;
+
+		return left.Equals( right );
+	}
+	public static bool operator !=( BaseRole left, string right ) => !(left == right);
+
+	public bool Equals( BaseRole other )
+	{
+		if ( other is null )
+			return false;
+
+		if ( Object.ReferenceEquals( this, other ) )
+			return true;
+
+		return Info.Id == other.Info.Id;
+	}
+
+	// maybe make it case-insensitive?
+	public bool Equals( string other )
+	{
+		return Info.LibraryName == other || Info.Title == other;
+	}
+
+	public override bool Equals( object obj ) => Equals( obj as BaseRole );
+	public override int GetHashCode() => Info.Id.GetHashCode();
 }

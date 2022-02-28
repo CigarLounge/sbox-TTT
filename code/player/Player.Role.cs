@@ -8,7 +8,7 @@ public partial class Player
 	{
 		get
 		{
-			if ( _role == null )
+			if ( _role is null )
 			{
 				_role = new NoneRole();
 			}
@@ -26,7 +26,7 @@ public partial class Player
 
 	public void SetRole( BaseRole role )
 	{
-		if ( role == null )
+		if ( role == Role )
 			return;
 
 		Role?.OnDeselect( this );
