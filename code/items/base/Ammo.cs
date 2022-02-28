@@ -78,7 +78,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		Delete();
 	}
 
-	string IEntityHint.TextOnTick => $"{Type} Ammo";
+	public string TextOnTick => $"{Type} Ammo";
 	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player player )
@@ -88,7 +88,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
+		return new UI.Hint( TextOnTick );
 	}
 
 	bool IUse.OnUse( Entity user )
