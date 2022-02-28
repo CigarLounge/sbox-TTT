@@ -21,10 +21,8 @@ public class DetectiveRole : BaseRole
 		base.OnSelect( player );
 	}
 
-	public override void OnKilled( Player player )
+	public override void OnKilled( Player killer )
 	{
-		var killer = player.LastAttacker as Player;
-
 		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
 		{
 			killer.Credits += 100;
