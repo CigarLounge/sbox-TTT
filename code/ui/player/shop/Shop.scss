@@ -18,6 +18,21 @@ Shop {
         transition: transform 0.25s ease-out;
         transform: scale(0.9);
 
+        .title-container 
+        {
+            flex-direction: row;
+
+            Label 
+            {
+                font-size: 50px;
+            }
+
+            .role-label 
+            {
+                padding-right: 20px;
+            }
+        }
+
         &.pop-in {
             transform: scale(1);
         }

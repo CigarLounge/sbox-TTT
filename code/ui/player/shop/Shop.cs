@@ -9,6 +9,7 @@ public partial class Shop : Panel
 {
 	private readonly Panel _backgroundPanel;
 	private readonly Panel _shopContainer;
+	private readonly Label _roleLabel;
 	private readonly Label _creditLabel;
 	private readonly Panel _itemPanel;
 	private readonly Label _itemDescriptionLabel;
@@ -28,6 +29,10 @@ public partial class Shop : Panel
 
 		_shopContainer = new Panel( this );
 		_shopContainer.AddClass( "shop-container" );
+
+		var titleContainer = _shopContainer.Add.Panel( "title-container" );
+		_roleLabel = titleContainer.Add.Label( "", "role-label" );
+		titleContainer.Add.Label( "Shop" );
 
 		_creditLabel = _shopContainer.Add.Label();
 		_creditLabel.AddClass( "credit-label" );
@@ -96,8 +101,11 @@ public partial class Shop : Panel
 	}
 
 	[TTTEvent.Player.Role.Changed]
-	private void OnRoleChange()
+	private void OnRoleChange( Player player )
 	{
+		_shopItems.ForEach( ( item ) => item.Delete( true ) );
 		_shopItems.Clear();
+		_roleLabel.Text = player.Role.Info.Title;
+		_roleLabel.Style.FontColor = player.Role.Info.Color;
 	}
 }
