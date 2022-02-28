@@ -29,19 +29,3 @@ models/**/*.png
 # vscode
 .vscode
 */.vs/*
-*.dll
-.addon
-.vs/output/base.pdb
-.vs/output/base.xml
-.vs/output/Sandbox.Engine.xml
-.vs/output/Sandbox.Event.xml
-.vs/output/Sandbox.Game.xml
-.vs/output/Sandbox.Hotload.xml
-.vs/output/Sandbox.Reflection.xml
-.vs/output/Sandbox.SolutionGenerator.xml
-.vs/output/Sandbox.System.xml
-.vs/output/Topten.RichTextKit.xml
-.vs/output/ttt.deps.json
-.vs/output/ttt.pdb
-.vs/output/Zio.xml
-.vs/output/ttt.xml
