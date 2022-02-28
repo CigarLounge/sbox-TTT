@@ -33,6 +33,7 @@ public partial class Player
 		Role = role;
 		Role.OnSelect( this );
 
+		// Always send the role to this player's client
 		if ( IsServer )
 			SendClientRole();
 	}

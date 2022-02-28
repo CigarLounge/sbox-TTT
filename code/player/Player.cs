@@ -64,7 +64,7 @@ public partial class Player : Sandbox.Player
 			MakeSpectator( false );
 		}
 
-		Game.Current.Round.OnPlayerSpawn( this );
+		Game.Current.Round.OnPlayerSpawned( this );
 	}
 
 	[ClientRpc]
@@ -80,6 +80,7 @@ public partial class Player : Sandbox.Player
 		base.OnKilled();
 
 		BecomePlayerCorpseOnServer();
+		RemoveAllDecals();
 
 		Inventory.DropAll();
 		DeleteItems();
