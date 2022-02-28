@@ -11,7 +11,7 @@ public class DuckSpeed : Duck
 
 	public override float GetWishSpeed()
 	{
-		return IsActive ? 80.0f : -1;
+		return IsActive ? 90.0f : -1;
 	}
 }
 
