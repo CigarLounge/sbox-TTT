@@ -10,6 +10,7 @@ public abstract partial class BaseRound : BaseNetworkable
 	public virtual int RoundDuration => 0;
 	public virtual string RoundName => string.Empty;
 	public string TimeLeftFormatted { get { return Utils.TimerString( TimeUntilRoundEnd.Relative ); } }
+	private RealTimeUntil _nextSecondTime = 0f;
 
 	public void Start()
 	{
@@ -27,7 +28,7 @@ public abstract partial class BaseRound : BaseNetworkable
 		OnFinish();
 	}
 
-	public virtual void OnPlayerSpawn( Player player ) { }
+	public virtual void OnPlayerSpawned( Player player ) { }
 
 	public virtual void OnPlayerKilled( Player player ) { }
 
@@ -35,11 +36,17 @@ public abstract partial class BaseRound : BaseNetworkable
 
 	public virtual void OnPlayerLeave( Player player ) { }
 
-	public virtual void OnTick() { }
+	public virtual void OnTick()
+	{
+		if ( _nextSecondTime )
+		{
+			OnSecond();
+			_nextSecondTime = 1f;
+		}
+	}
 
 	public virtual void OnSecond()
 	{
-		// no reason not to be called on the client
 		if ( Host.IsServer && TimeUntilRoundEnd )
 			OnTimeUp();
 	}

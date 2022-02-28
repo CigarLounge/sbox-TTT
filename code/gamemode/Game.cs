@@ -7,8 +7,6 @@ namespace TTT;
 [Hammer.Skip]
 public partial class Game : Sandbox.Game
 {
-	public UI.Hud Hud { get; set; }
-
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
@@ -25,11 +23,18 @@ public partial class Game : Sandbox.Game
 
 		if ( IsServer )
 		{
-			Hud = new UI.Hud
+			new UI.Hud
 			{
 				Parent = this
 			};
 		}
+	}
+
+	public override void Simulate( Client cl )
+	{
+		Round.OnTick();
+
+		base.Simulate( cl );
 	}
 
 	/// <summary>
@@ -91,6 +96,7 @@ public partial class Game : Sandbox.Game
 		// Keep the dead body otherwise on disconnect.
 		if ( client.Pawn.IsValid() && client.Pawn.IsAlive() )
 			client.Pawn.Delete();
+
 		client.Pawn = null;
 	}
 
@@ -132,40 +138,10 @@ public partial class Game : Sandbox.Game
 
 	public override void PostLevelLoaded()
 	{
-		StartGameTimer();
-
 		base.PostLevelLoaded();
 
-		MapHandler = new();
-	}
-
-	private async void StartGameTimer()
-	{
 		ForceRoundChange( new WaitingRound() );
-
-		while ( true )
-		{
-			try
-			{
-				OnGameSecond();
-
-				await GameTask.DelaySeconds( 1 );
-			}
-			catch ( Exception e )
-			{
-				if ( e.Message.Trim() == "A task was canceled." )
-				{
-					return;
-				}
-
-				Log.Error( $"[TASK] {e.Message}: {e.StackTrace}" );
-			}
-		}
-	}
-
-	private void OnGameSecond()
-	{
-		Round?.OnSecond();
+		MapHandler = new();
 	}
 
 	public void OnRoundChanged( BaseRound oldRound, BaseRound newRound )

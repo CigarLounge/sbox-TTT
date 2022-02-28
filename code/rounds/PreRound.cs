@@ -108,9 +108,9 @@ public class PreRound : BaseRound
 		}
 	}
 
-	public override void OnPlayerSpawn( Player player )
+	public override void OnPlayerSpawned( Player player )
 	{
 		player.Inventory.Add( new Hands() );
-		base.OnPlayerSpawn( player );
+		base.OnPlayerSpawned( player );
 	}
 }
