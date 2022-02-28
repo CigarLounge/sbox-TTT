@@ -58,7 +58,7 @@ public partial class Inventory : BaseInventory
 
 	public override bool Drop( Entity ent )
 	{
-		var carriableInfo = Asset.GetInfo<CarriableInfo>( ent.ClassInfo.Name );
+		var carriableInfo = Asset.GetInfo<CarriableInfo>( ent );
 		if ( !carriableInfo.CanDrop )
 			return false;
 

@@ -15,12 +15,18 @@ public abstract partial class Asset : Sandbox.Asset
 		return Library.Create<T>( FromId<Asset>( id ).LibraryName );
 	}
 
+	public static T GetInfo<T>( LibraryClass libraryClass ) where T : Asset
+	{
+		if ( libraryClass is null || !Collection.ContainsKey( libraryClass.ClassInfo.Name ) )	
+			return null;		
+
+		return Collection[libraryClass.ClassInfo.Name] as T;
+	}
+
 	public static T GetInfo<T>( string libraryName ) where T : Asset
 	{
 		if ( string.IsNullOrEmpty( libraryName ) || !Collection.ContainsKey( libraryName ) )
-		{
 			return null;
-		}
 
 		return Collection[libraryName] as T;
 	}

@@ -47,7 +47,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
-		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon?.ClassInfo?.Name );
+		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
 		Distance = player.LastDistanceToAttacker;
 		player.Corpse = this;
 
@@ -207,14 +207,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string TextOnTick => IsIdentified ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
 											 : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
 
-	public bool CanHint( Player client ) => true;
+	bool IEntityHint.CanHint( Player client ) => true;
 
-	public UI.EntityHintPanel DisplayHint( Player client )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
 		return new UI.Hint( TextOnTick );
 	}
 
-	public void Tick( Player player )
+	void IEntityHint.Tick( Player player )
 	{
 		if ( player.Using != this )
 			UI.FullScreenHintMenu.Instance?.Close();

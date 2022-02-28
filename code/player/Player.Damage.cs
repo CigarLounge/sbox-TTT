@@ -63,7 +63,7 @@ public partial class Player
 		HitboxGroup hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
 		if ( hitboxGroup == HitboxGroup.Head )
 		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon?.ClassInfo?.Name );
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
 			if ( weaponInfo != null )
 				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}

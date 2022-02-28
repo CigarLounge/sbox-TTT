@@ -16,6 +16,6 @@ public abstract class Perk : BaseNetworkable
 
 	public Perk()
 	{
-		Info = Asset.GetInfo<PerkInfo>( ClassInfo.Name );
+		Info = Asset.GetInfo<PerkInfo>( this );
 	}
 }

@@ -29,7 +29,7 @@ public abstract class BaseRole : LibraryClass
 
 	public BaseRole()
 	{
-		Info = Asset.GetInfo<RoleInfo>( ClassInfo.Name );
+		Info = Asset.GetInfo<RoleInfo>( this );
 	}
 
 	public virtual void OnSelect( Player player )
