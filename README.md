@@ -15,10 +15,6 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 
 Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` do NOT fall under the GPL-3.0 License. These are compiled files which I am forced to distribute whenever a client downloads the game (therefore they might as well exist in the repo). I do have permission to use everything found within those folders. Everything else outside of those folders are is GPL-3.0 License, so go wild.
 
-## Contributing
-
-If you'd like to contribute, please check out our [document](https://github.com/mzegar/sbox-TTT/blob/main/CONTRIBUTING.md) which runs through the process of how to setup and contribute to our repo.
-
 ## Development
 
 You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg).
