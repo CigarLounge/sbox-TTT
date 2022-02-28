@@ -110,7 +110,7 @@ public partial class Knife : Carriable
 		MoveType = MoveType.None;
 		Rotation = owner.EyeRotation;
 		Position = trace.EndPosition;
-		Velocity = owner.EyeRotation.Forward * 1000f;
+		Velocity = owner.EyeRotation.Forward * (1000f + owner.Velocity.Length);
 		EnableTouch = false;
 	}
 
@@ -136,7 +136,7 @@ public partial class Knife : Carriable
 
 		var trace = Trace.Ray( Position, newPosition )
 			.Ignore( _thrower )
-			.Radius( 0 )
+			.Radius( 0.5f )
 			.WorldAndEntities()
 			.Run();
 
@@ -172,7 +172,7 @@ public partial class Knife : Carriable
 			Position = oldPosition;
 			MoveType = MoveType.Physics;
 			PhysicsEnabled = true;
-			ApplyLocalImpulse( (trace.Normal - trace.Direction) * 50f );
+			Velocity = trace.Direction * 500f;
 		}
 
 		_isThrown = false;
