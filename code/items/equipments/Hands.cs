@@ -21,7 +21,7 @@ public partial class Hands : Carriable
 
 	private const float MAX_PICKUP_MASS = 205;
 	private Vector3 MAX_PICKUP_SIZE = new( 75, 75, 75 );
-	private const float PUSHING_FORCE = 200f;
+	private const float PUSHING_FORCE = 350f;
 
 	private IGrabbable GrabbedEntity;
 	private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
