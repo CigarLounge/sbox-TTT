@@ -2,7 +2,7 @@
 {
 	data = 
 	{
-		firesound = "deagle.fire"
+		firesound = "mr96_fire-3"
 		dryfiresound = "dryfire_pistol-1"
 		firemode = "1"
 		bulletsperfire = 1
