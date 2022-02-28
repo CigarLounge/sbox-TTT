@@ -51,7 +51,6 @@ public partial class Player
 
 		return true;
 	}
-	
 	public bool GiveAmmo( AmmoType type, int amount )
 	{
 		if ( !Host.IsServer ) return false;
