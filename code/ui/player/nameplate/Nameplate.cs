@@ -27,12 +27,13 @@ public class Nameplate : EntityHintPanel
 		}
 	}
 
-	// Pay attention when adding new values! The highest health-based entry has to be the first item, etc.
 	private HealthGroup[] HealthGroupList = new HealthGroup[]
 	{
-			new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 66),
-			new HealthGroup("Injured", Color.FromBytes(233, 135, 44), 33),
-			new HealthGroup("Near Death", Color.FromBytes(252, 42, 42), 0)
+			new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 80),
+			new HealthGroup("Hurt", Color.FromBytes(171, 231, 3), 60),
+			new HealthGroup("Wounded", Color.FromBytes(213, 202, 4), 40),
+			new HealthGroup("Badly Wounded", Color.FromBytes(234, 129, 4), 20),
+			new HealthGroup("Near Death", Color.FromBytes(246, 6, 6), 0)
 	};
 
 	public Nameplate( Player player ) : base()
