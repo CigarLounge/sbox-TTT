@@ -59,6 +59,8 @@ public partial class Game : Sandbox.Game
 		BaseRound oldRound = Round;
 		Round = round;
 		Round.Start();
+
+		Event.Run( TTTEvent.Game.RoundChanged, oldRound, Round );
 	}
 
 	public override void DoPlayerNoclip( Client client )
