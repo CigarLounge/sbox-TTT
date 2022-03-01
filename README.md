@@ -10,6 +10,7 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 - [Kole](https://github.com/kolexxx) - Co-Programmer 
 - [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
 - Every [contributor](https://github.com/mzegar/sbox-TTT/graphs/contributors) listed here
+- (and more to be added!)
 
 ## License
 
