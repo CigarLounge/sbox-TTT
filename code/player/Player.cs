@@ -36,6 +36,7 @@ public partial class Player : Sandbox.Player
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
+		CameraMode = new FreeSpectateCamera();
 
 		base.Spawn();
 	}
