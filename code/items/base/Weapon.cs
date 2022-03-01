@@ -329,13 +329,17 @@ public partial class Weapon : Carriable
 
 	protected void DropAmmo()
 	{
-		if ( !IsServer || Info.AmmoType == AmmoType.None || AmmoClip <= 0 )
+		if ( Info.AmmoType == AmmoType.None || AmmoClip <= 0 )
 			return;
 
-		var ammoCrate = Ammo.Create( Info.AmmoType, AmmoClip );
-		ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
-		ammoCrate.Rotation = Owner.EyeRotation;
-		ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + Owner.EyeRotation.Forward * Player.DropVelocity;
+		if ( IsServer )
+		{
+			var ammoCrate = Ammo.Create( Info.AmmoType, AmmoClip );
+			ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
+			ammoCrate.Rotation = Owner.EyeRotation;
+			ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + Owner.EyeRotation.Forward * Player.DropVelocity;
+		}
+
 		AmmoClip = 0;
 	}
 
