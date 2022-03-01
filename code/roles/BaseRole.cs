@@ -11,6 +11,7 @@ public partial class RoleInfo : Asset
 	[Property] public Color Color { get; set; }
 	[Property] public int DefaultCredits { get; set; }
 	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
+	[Property] public bool RevealToEveryone { get; set; }
 
 	public HashSet<string> AvailableItems { get; set; }
 
@@ -38,6 +39,16 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		{
 			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 			player.PurchasedLimitedShopItems.Clear();
+
+			if ( Info.RevealToEveryone )
+			{
+				player.IsConfirmed = true;
+
+				foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
+				{
+					player.SendClientRole( To.Single( otherPlayer ) );
+				}
+			}
 		}
 	}
 
@@ -57,6 +68,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 		return left.Equals( right );
 	}
+
 	public static bool operator !=( BaseRole left, BaseRole right ) => !(left == right);
 
 	public static bool operator ==( BaseRole left, string right )

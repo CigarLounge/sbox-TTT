@@ -12,6 +12,7 @@
 	color(color1) : "Color" :  : ""
 	defaultcredits(integer) : "Default Credits" : 0 : ""
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
+	revealtoeveryone(boolean) : "Reveal To Everyone" : 0 : ""
 	libraryname(string) : "Library Name" :  : ""
 ]
 

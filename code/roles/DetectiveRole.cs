@@ -11,11 +11,6 @@ public class DetectiveRole : BaseRole
 
 		if ( Host.IsServer )
 		{
-			foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
-			{
-				player.SendClientRole( To.Single( otherPlayer ) );
-			}
-
 			player.Perks.Add( new BodyArmor() );
 			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 		}
