@@ -190,7 +190,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.SendClientRole( To.Everyone );
 
 		int credits = 0;
-		if ( DeadPlayer.Credits > 0 && Confirmer.IsValid() && Confirmer.Role is not InnocentRole )
+		if ( DeadPlayer.Credits > 0 && Confirmer.IsValid() && Confirmer.Role.Info.RetrieveCredits )
 		{
 			Confirmer.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;

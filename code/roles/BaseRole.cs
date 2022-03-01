@@ -9,8 +9,18 @@ public partial class RoleInfo : Asset
 {
 	[Property] public Team Team { get; set; } = Team.None;
 	[Property] public Color Color { get; set; }
+	/// <summary>
+	/// The amount of credits player's spawn with.
+	/// </summary>
 	[Property] public int DefaultCredits { get; set; }
 	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
+	/// <summary>
+	/// Players can retrieve credits from corpses.
+	/// </summary>
+	[Property] public bool RetrieveCredits { get; set; }
+	/// <summary>
+	/// Player's role will always be revealed to other players.
+	/// </summary>
 	[Property] public bool RevealToEveryone { get; set; }
 
 	public HashSet<string> AvailableItems { get; set; }
