@@ -18,6 +18,7 @@ public partial class Player
 		private set
 		{
 			_role = value;
+			Event.Run( TTTEvent.Player.Role.Changed, this );
 		}
 	}
 	private BaseRole _role;

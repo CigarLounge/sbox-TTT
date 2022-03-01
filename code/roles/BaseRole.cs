@@ -39,8 +39,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 			player.PurchasedLimitedShopItems.Clear();
 		}
-
-		Event.Run( TTTEvent.Player.Role.Changed, player );
 	}
 
 	public virtual void OnDeselect( Player player ) { }
