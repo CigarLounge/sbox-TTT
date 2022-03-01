@@ -74,9 +74,9 @@ public partial class Player
 		new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 80)
 	};
 
-	public static HealthGroup GetHealthGroup( float health )
+	public HealthGroup GetHealthGroup( float health )
 	{
-		int index = (int)(health - 1) / 20;
+		int index = (int)((health - 1f) / (MaxHealth / 5f));
 		return HealthGroupList[index];
 	}
 

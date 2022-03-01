@@ -43,7 +43,7 @@ public partial class Player : Sandbox.Player
 
 	public override void Respawn()
 	{
-		base.Respawn();
+		Host.AssertServer();
 
 		EnableDrawing = true;
 		EnableAllCollisions = true;
@@ -66,6 +66,16 @@ public partial class Player : Sandbox.Player
 		}
 
 		Game.Current.Round.OnPlayerSpawned( this );
+
+		LifeState = LifeState.Alive;
+		Health = MaxHealth;
+		Velocity = Vector3.Zero;
+		WaterLevel = 0;
+
+		CreateHull();
+
+		Game.Current?.MoveToSpawnpoint( this );
+		ResetInterpolation();
 	}
 
 	[ClientRpc]
