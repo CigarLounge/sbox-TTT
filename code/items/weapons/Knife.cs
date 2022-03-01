@@ -155,7 +155,7 @@ public partial class Knife : Carriable
 
 			Delete();
 		}
-		else if ( trace.Entity.IsWorld && Vector3.GetAngle( trace.Normal, trace.Direction ) > 115 )
+		else if ( trace.Entity.IsWorld && Vector3.GetAngle( trace.Normal, trace.Direction ) > 120 )
 		{
 			trace.Surface.DoBulletImpact( trace );
 			Position -= trace.Direction * 4f;
