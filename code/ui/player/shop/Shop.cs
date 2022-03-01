@@ -86,7 +86,7 @@ public partial class Shop : Panel
 		if ( !HasClass( "fade-in" ) )
 			return;
 
-		_creditLabel.Text = $"You have ${player.Credits}";
+		_creditLabel.Text = $"You have {player.Credits} credits";
 		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
 		if ( _selectedItemInfo != null )
 			_itemDescriptionLabel.Text = $"The description for the {_selectedItemInfo?.Name ?? ""} will go here.";
