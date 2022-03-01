@@ -136,7 +136,6 @@ public partial class Knife : Carriable
 			.Ignore( this )
 			.Run();
 
-		DebugOverlay.TraceResult( trace, 1 );
 		Position = trace.EndPosition;
 		Rotation = Rotation.From( trace.Direction.EulerAngles ) * Rotation.From( new Angles( 90, 0, 0 ) );
 
