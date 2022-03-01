@@ -59,6 +59,10 @@ public partial class Player : Sandbox.Player
 			CameraMode = new FirstPersonCamera();
 			EnableAllCollisions = true;
 			Client.SetValue( RawStrings.Spectator, false );
+			AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
+			AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
+			AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
+			AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
 		}
 		else
 		{
