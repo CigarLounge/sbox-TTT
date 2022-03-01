@@ -100,10 +100,10 @@ public partial class Knife : Carriable
 
 		var owner = Owner;
 		Owner.Inventory.DropActive();
-		PhysicsEnabled = false;
-		MoveType = MoveType.None;
-		Rotation = owner.EyeRotation;
+		Rotation = owner.EyeRotation * Rotation.From( new Angles( 90, 0, 0 ) );
 		Position = trace.EndPosition;
+		MoveType = MoveType.None;
+		PhysicsEnabled = false;
 		Velocity = owner.EyeRotation.Forward * (1000f + owner.Velocity.Length);
 		EnableTouch = false;
 	}
@@ -136,8 +136,9 @@ public partial class Knife : Carriable
 			.Ignore( this )
 			.Run();
 
+		DebugOverlay.TraceResult( trace, 1 );
 		Position = trace.EndPosition;
-		Rotation = Rotation.From( trace.Direction.EulerAngles );
+		Rotation = Rotation.From( trace.Direction.EulerAngles ) * Rotation.From( new Angles( 90, 0, 0 ) );
 
 		if ( !trace.Hit )
 			return;
