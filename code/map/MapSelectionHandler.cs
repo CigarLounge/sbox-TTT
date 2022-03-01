@@ -30,7 +30,7 @@ public partial class MapSelectionHandler : BaseNetworkable
 
 	private static async Task<List<string>> GetTTTMapNames()
 	{
-		Package result = await Package.Fetch( Global.GameTitle, true );
+		Package result = await Package.Fetch( "matt.ttt", true );
 		return result?.GameConfiguration?.MapList ?? new List<string>();
 	}
 

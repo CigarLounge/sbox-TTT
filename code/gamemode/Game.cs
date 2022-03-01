@@ -9,6 +9,7 @@ public partial class Game : Sandbox.Game
 
 	[Net, Change]
 	public BaseRound Round { get; private set; }
+	private BaseRound _lastRound { get; set; }
 
 	[Net]
 	public MapSelectionHandler MapSelection { get; set; } = new();
@@ -144,6 +145,10 @@ public partial class Game : Sandbox.Game
 
 	public void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
 	{
+		_lastRound?.Finish();
+		_lastRound = newRound;
+		_lastRound.Start();
+
 		Event.Run( TTTEvent.Game.RoundChanged, oldRound, newRound );
 	}
 }
