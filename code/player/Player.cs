@@ -63,6 +63,8 @@ public partial class Player : Sandbox.Player
 			AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 			AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 			AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
+			AttachClothing( "models/citizen_clothes/shoes/shoes.smartbrown.vmdl" );
+			AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
 		}
 		else
 		{
