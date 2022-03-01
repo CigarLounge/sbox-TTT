@@ -81,10 +81,15 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		return Info.Id == other.Info.Id;
 	}
 
-	// maybe make it case-insensitive?
 	public bool Equals( string other )
 	{
-		return Info.LibraryName == other || Info.Title == other;
+		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+			return true;
+
+		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+			return true;
+
+		return false;
 	}
 
 	public override bool Equals( object obj ) => Equals( obj as BaseRole );
