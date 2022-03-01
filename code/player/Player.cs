@@ -98,7 +98,7 @@ public partial class Player : Sandbox.Player
 		IsMissingInAction = true;
 
 		Game.Current.Round.OnPlayerKilled( this );
-		Role?.OnKilled( LastAttacker as Player );
+		Role?.OnKilled( this );
 		RPCs.ClientOnPlayerDied( this );
 
 		if ( Game.Current.Round is InProgressRound )

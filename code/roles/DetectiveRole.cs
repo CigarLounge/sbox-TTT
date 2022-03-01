@@ -7,9 +7,11 @@ public class DetectiveRole : BaseRole
 {
 	public override void OnSelect( Player player )
 	{
+		base.OnSelect( player );
+
 		if ( Host.IsServer )
 		{
-			foreach ( Player otherPlayer in Utils.GetPlayers( ( pl ) => pl != player ) )
+			foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
 			{
 				player.SendClientRole( To.Single( otherPlayer ) );
 			}
@@ -17,20 +19,22 @@ public class DetectiveRole : BaseRole
 			player.Perks.Add( new BodyArmor() );
 			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 		}
-
-		base.OnSelect( player );
 	}
 
 	public override void OnDeselect( Player player )
 	{
+		base.OnDeselect( player );
+
 		if ( Host.IsServer )
 			player.RemoveClothing();
-
-		base.OnSelect( player );
 	}
 
-	public override void OnKilled( Player killer )
+	public override void OnKilled( Player player )
 	{
+		base.OnKilled( player );
+
+		var killer = player.LastAttacker as Player;
+
 		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
 		{
 			killer.Credits += 100;
