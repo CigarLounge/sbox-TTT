@@ -34,5 +34,6 @@
 		recoilrecoveryscale = 10.0
 		headshotmultiplier = 1.3
 		candrop = true
+		description = ""
 	}
 }

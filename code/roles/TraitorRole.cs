@@ -7,12 +7,14 @@ public class TraitorRole : BaseRole
 {
 	public override void OnSelect( Player player )
 	{
+		base.OnSelect( player );
+
 		if ( Host.IsServer )
 		{
 			foreach ( Player otherPlayer in player.Team.GetAll() )
 			{
-				if ( otherPlayer == player )		
-					continue;			
+				if ( otherPlayer == player )
+					continue;
 
 				player.SendClientRole( To.Single( otherPlayer ) );
 				otherPlayer.SendClientRole( To.Single( player ) );
@@ -26,12 +28,12 @@ public class TraitorRole : BaseRole
 				}
 			}
 		}
-
-		base.OnSelect( player );
 	}
 
 	public override void OnKilled( Player player )
 	{
+		base.OnKilled( player );
+
 		var clients = Utils.GiveAliveDetectivesCredits( 100 );
 		RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );
 	}
