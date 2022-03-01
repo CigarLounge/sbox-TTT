@@ -129,9 +129,11 @@ public partial class Knife : Carriable
 		newPosition -= new Vector3( 0f, 0f, _gravityModifier * Time.Delta );
 
 		var trace = Trace.Ray( Position, newPosition )
-			.Ignore( _thrower )
 			.Radius( 0f )
-			.WorldAndEntities()
+			.UseHitboxes()
+			.HitLayer( CollisionLayer.Debris )
+			.Ignore( _thrower )
+			.Ignore( this )
 			.Run();
 
 		Position = trace.EndPosition;
