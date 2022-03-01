@@ -14,6 +14,16 @@ public partial class Player
 {
 	protected List<BaseClothing> Clothing { get; set; } = new();
 
+	private void DressPlayer()
+	{
+		AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
+		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
+		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
+		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
+		AttachClothing( "models/citizen_clothes/shoes/smartshoes/smartshoes.vmdl" );
+		AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
+	}
+
 	public BaseClothing AttachClothing( string modelName )
 	{
 		var entity = new BaseClothing();
