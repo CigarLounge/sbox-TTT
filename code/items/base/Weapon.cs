@@ -58,7 +58,7 @@ public partial class Weapon : Carriable
 	[Net, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
-	public virtual Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
+	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; set; } = Vector3.Zero;
 
 	public new WeaponInfo Info

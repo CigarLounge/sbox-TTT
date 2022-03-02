@@ -165,7 +165,7 @@ public partial class Knife : Carriable
 		}
 		else
 		{
-			Position = oldPosition - trace.Direction * 10;
+			Position = oldPosition - trace.Direction * 5;
 			MoveType = MoveType.Physics;
 			PhysicsEnabled = true;
 			Velocity = trace.Direction * 500f;
