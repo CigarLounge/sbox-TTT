@@ -49,6 +49,8 @@ public partial class Player : Sandbox.Player
 		EnableAllCollisions = true;
 		Credits = 0;
 		SetRole( new NoneRole() );
+		IsConfirmedDead = false;
+		IsRoleKnown = false;
 		IsMissingInAction = false;
 		DeleteItems();
 		ClientRespawn();
@@ -83,7 +85,8 @@ public partial class Player : Sandbox.Player
 	private void ClientRespawn()
 	{
 		IsMissingInAction = false;
-		IsConfirmed = false;
+		IsConfirmedDead = false;
+		IsRoleKnown = false;
 		SetRole( new NoneRole() );
 	}
 

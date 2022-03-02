@@ -9,8 +9,8 @@ public partial class Player
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
-	public bool IsConfirmed { get; set; } = false;
-
+	public bool IsRoleKnown { get; set; } = false;
+	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
 	public void RemovePlayerCorpse()

@@ -193,7 +193,7 @@ public partial class Scoreboard : Panel
 		}
 		else if ( client.PlayerId != 0 && client.Pawn is Player player )
 		{
-			if ( player.IsConfirmed )
+			if ( player.IsConfirmedDead )
 			{
 				group = DefaultScoreboardGroup.Dead.ToString();
 			}
