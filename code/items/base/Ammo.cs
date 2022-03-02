@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -20,7 +22,9 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
 	[Net]
 	public int CurrentCount { get; set; }
+
 	public virtual AmmoType Type => AmmoType.None;
+
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
 
@@ -72,10 +76,16 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		player.GiveAmmo( Type, CurrentCount );
+		int ammoLimit = Inventory.GetAmmoLimit( Type );
+		int playerAmmo = player.AmmoCount( Type );
+		int addAmmo = Math.Min( CurrentCount, ammoLimit - playerAmmo );
+		if ( addAmmo <= 0 ) return;
+
+		player.GiveAmmo( Type, addAmmo );
 		PlaySound( RawStrings.AmmoPickupSound );
 
-		Delete();
+		CurrentCount -= addAmmo;
+		if ( CurrentCount <= 0 ) Delete();
 	}
 
 	public string TextOnTick => $"{Type} Ammo";
