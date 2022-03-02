@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -20,6 +22,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
 	[Net]
 	public int CurrentCount { get; set; }
+
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
@@ -69,16 +72,22 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	private void GiveAmmo( Player player )
 	{
-		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
+		if ( !this.IsValid() || !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		player.GiveAmmo( Type, CurrentCount );
+		int ammoPickedUp = Math.Min( CurrentCount, player.AmmoCap[(int)Type] - player.AmmoCount( Type ) );
+		if ( ammoPickedUp <= 0 )
+			return;
+
+		player.GiveAmmo( Type, ammoPickedUp );
 		PlaySound( RawStrings.AmmoPickupSound );
 
-		Delete();
+		CurrentCount -= ammoPickedUp;
+		if ( CurrentCount <= 0 )
+			Delete();
 	}
 
-	public string TextOnTick => $"{Type} Ammo";
+	public string TextOnTick => $"{Type} Ammo x{CurrentCount}";
 	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player player )

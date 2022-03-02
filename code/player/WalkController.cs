@@ -4,6 +4,16 @@ using Sandbox;
 
 namespace TTT;
 
+public class Duck : Sandbox.Duck
+{
+	public Duck( BasePlayerController controller ) : base( controller ) { }
+
+	public override float GetWishSpeed()
+	{
+		return IsActive ? 90.0f : -1;
+	}
+}
+
 public partial class WalkController : Sandbox.WalkController
 {
 	public WalkController() : base()
