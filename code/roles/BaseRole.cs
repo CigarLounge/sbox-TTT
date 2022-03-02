@@ -18,10 +18,6 @@ public partial class RoleInfo : Asset
 	/// Players can retrieve credits from corpses.
 	/// </summary>
 	[Property] public bool RetrieveCredits { get; set; }
-	/// <summary>
-	/// Player's role will always be revealed to other players.
-	/// </summary>
-	[Property] public bool RevealToEveryone { get; set; }
 
 	public HashSet<string> AvailableItems { get; set; }
 
@@ -49,16 +45,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		{
 			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 			player.PurchasedLimitedShopItems.Clear();
-
-			if ( Info.RevealToEveryone )
-			{
-				player.IsConfirmed = true;
-
-				foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
-				{
-					player.SendClientRole( To.Single( otherPlayer ) );
-				}
-			}
 		}
 	}
 

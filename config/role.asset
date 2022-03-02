@@ -13,7 +13,6 @@
 	defaultcredits(integer) : "Default Credits" : 0 : "The amount of credits player's spawn with."
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
 	retrievecredits(boolean) : "Retrieve Credits" : 0 : "Players can retrieve credits from corpses."
-	revealtoeveryone(boolean) : "Reveal To Everyone" : 0 : "Player's role will always be revealed to other players."
 	libraryname(string) : "Library Name" :  : ""
 ]
 
