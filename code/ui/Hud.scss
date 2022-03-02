@@ -6,7 +6,7 @@ $dead: #e12c3b;
 $spectator: #fcdb38;
 $info: #ffae00;
 
-$button-primary: #455a64 !default;
+$button-primary: #fdc418 !default;
 $button-primary-bottom: $button-primary !default;
 $button-primary-fg: white !default;
 $button-secondary: #708690 !default;
@@ -163,6 +163,14 @@ Panel, .panel
     transform: translateX(-50%) translateY(-50%);
 }
 
+.centered-vertical-90
+{
+    position: absolute;
+    left: 50%;
+    top: 95%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
 .centered-vertical-10
 {
     position: absolute;
@@ -217,7 +225,7 @@ Panel, .panel
 
 .text-color-info
 {
-    color: $info;
+    color: $button-primary;
 }
 
 .background-color-primary
