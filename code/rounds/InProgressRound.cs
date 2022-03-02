@@ -34,10 +34,9 @@ public partial class InProgressRound : BaseRound
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{
-			// TODO: KOLE Have a different way of sending down confirm status.
 			if ( player.IsConfirmedDead )
 			{
-				player.Corpse.Confirm();
+				player.Corpse.Confirm( To.Single( playerJoined ) );
 			}
 			else if ( player.IsRoleKnown )
 			{
