@@ -64,7 +64,7 @@ public partial class Hud : HudEntity<RootPanel>
 			AddChild<ChatBox>();
 
 			AddChild<VoiceChatDisplay>();
-			AddChild<GameTimerDisplay>();
+			AddChild<RoundTimer>();
 
 			AddChild<VoiceList>();
 
