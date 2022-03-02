@@ -82,7 +82,6 @@ public partial class Weapon : Carriable
 
 		IsReloading = false;
 		TimeSinceReload = 0;
-		TimeSinceDeployed = 0;
 	}
 
 	public override void Simulate( Client owner )

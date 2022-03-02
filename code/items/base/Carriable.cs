@@ -90,6 +90,13 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
+	public override void ActiveStart( Entity ent )
+	{
+		base.ActiveStart( ent );
+
+		TimeSinceDeployed = 0;
+	}
+
 	public override void Simulate( Client cl )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime )
