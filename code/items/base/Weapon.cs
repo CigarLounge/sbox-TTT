@@ -19,7 +19,7 @@ public partial class WeaponInfo : CarriableInfo
 	public string FireSound { get; set; } = "";
 	[Property, Category( "Sounds" )] 
 	public string DryFireSound { get; set; } = "";
-	[Property( "ammotype", "The ammo type. Set this to None if want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]
+	[Property( "ammotype", "The ammo type. Set this to None if you want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]
 	public AmmoType AmmoType { get; set; }
 	[Property, Category( "Important" )] 
 	public FireMode FireMode { get; set; }
