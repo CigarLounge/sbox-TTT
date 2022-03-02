@@ -19,7 +19,7 @@ public class RoundTimer : Panel
 		AddClass( "text-shadow" );
 
 		var roundWrapper = Add.Panel( "Round" );
-		_currentRound = roundWrapper.Add.Label();
+		_currentRound = roundWrapper.Add.Label( "", "text-color-info" );
 
 		var timerWrapper = Add.Panel( "Timer" );
 		_currentTime = timerWrapper.Add.Label();
@@ -32,7 +32,7 @@ public class RoundTimer : Panel
 		if ( Game.Current.Round == null )
 			return;
 
-		_currentRound.Text = Game.Current.Round.RoundName.ToUpper();
+		_currentRound.Text = Game.Current.Round.RoundName;
 		_currentTime.Text = Game.Current?.Round is not WaitingRound ?
 							$"{Game.Current?.Round?.TimeLeftFormatted}" :
 							$"{Client.All.Count} / {Game.MinPlayers}";
