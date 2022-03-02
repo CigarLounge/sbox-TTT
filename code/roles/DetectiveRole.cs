@@ -11,6 +11,8 @@ public class DetectiveRole : BaseRole
 
 		if ( Host.IsServer )
 		{
+			player.IsRoleKnown = true;
+
 			foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
 			{
 				player.SendClientRole( To.Single( otherPlayer ) );

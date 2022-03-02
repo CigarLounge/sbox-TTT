@@ -26,7 +26,11 @@ public class PostRound : BaseRound
 	{
 		foreach ( Player player in Utils.GetPlayers() )
 		{
-			if ( player.IsConfirmed )
+			if ( player.IsConfirmedDead )
+			{
+				player.Corpse.Confirm( To.Single( playerJoined ) );
+			}
+			else if ( player.IsRoleKnown )
 			{
 				player.SendClientRole( To.Single( playerJoined ) );
 			}
@@ -40,8 +44,8 @@ public class PostRound : BaseRound
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{
-			if ( player.Corpse.IsValid() && !player.Corpse.IsIdentified )
-				player.Corpse.Confirm();
+			if ( player.Corpse.IsValid() && !player.IsConfirmedDead )
+				player.Corpse.Confirm( To.Everyone );
 			else
 				player.SendClientRole( To.Everyone );
 		}
