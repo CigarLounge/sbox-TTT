@@ -34,5 +34,6 @@
 		recoilrecoveryscale = 50.0
 		headshotmultiplier = 2.0
 		candrop = true
+		description = "Low-noise handgun which prevents victims from screaming when killed."
 	}
 }

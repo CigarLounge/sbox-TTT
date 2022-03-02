@@ -8,5 +8,6 @@
 		icon = "ui/icons/ttt_perk_bodyarmor.png"
 		worldmodel = resource:""
 		libraryname = "ttt_perk_bodyarmor"
+		description = "Reduces bullet damage by 30% when you get hit in the body."
 	}
 }

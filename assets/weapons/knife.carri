@@ -13,7 +13,7 @@
 		islimited = true
 		price = 100
 		icon = "ui/icons/weapons/knife.png"
-		description = ""
+		description = "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire."
 		worldmodel = resource:"models/weapons/w_knife.vmdl"
 		libraryname = "ttt_weapon_knife"
 	}

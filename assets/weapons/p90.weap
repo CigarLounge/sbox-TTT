@@ -34,5 +34,6 @@
 		recoilrecoveryscale = 10.0
 		headshotmultiplier = 1.5
 		candrop = true
+		description = "Large capacity SMG which fills Traitors with bullet holes."
 	}
 }

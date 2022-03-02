@@ -8,5 +8,6 @@
 		icon = ""
 		worldmodel = resource:""
 		libraryname = "ttt_perk_disguiser"
+		description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
 	}
 }

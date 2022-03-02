@@ -89,7 +89,7 @@ public partial class Shop : Panel
 		_creditLabel.Text = $"You have {player.Credits} credits";
 		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
 		if ( _selectedItemInfo != null )
-			_itemDescriptionLabel.Text = $"The description for the {_selectedItemInfo?.Name ?? ""} will go here.";
+			_itemDescriptionLabel.Text = _selectedItemInfo.Description;
 
 		if ( _shopItems.Count == 0 )
 			AddRoleShopItems( player );
