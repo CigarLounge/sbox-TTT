@@ -5,13 +5,22 @@
 [
 	firesound(string) { group = "Sounds" } : "Fire Sound" : "" : ""
 	dryfiresound(string) { group = "Sounds" } : "Dry Fire Sound" : "" : ""
+	ammotype(choices) { group = "Important" } : "Ammo Type" : 0 : "The ammo type. Set this to None if want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." =
+	[
+		0 : "None"
+		1 : "Pistol SMG"
+		2 : "Shotgun"
+		3 : "Sniper"
+		4 : "Magnum"
+		5 : "Rifle"
+	]
 	firemode(choices) { group = "Important" } : "Fire Mode" : 0 : "" =
 	[
 		0 : "Automatic"
 		1 : "Semi"
 		2 : "Burst"
 	]
-	bulletsperfire(integer) { group = "Stats" } : "Bullets Per Fire" : 1 : ""
+	bulletsperfire(integer) { group = "Stats" } : "Bullets Per Fire" : 1 : "The amount of bullets that come out in one shot."
 	clipsize(integer) { group = "Stats" } : "Clip Size" : 30 : ""
 	damage(float) { group = "Stats" } : "Damage" : 20 : ""
 	damagefalloffstart(float) { group = "Stats" } : "Damage Fall Off Start" : "0" : ""
@@ -24,15 +33,6 @@
 	verticalrecoil(float) { group = "Stats" } : "Vertical Recoil" : "0" : ""
 	horizontalrecoilrange(float) { group = "Stats" } : "Horizontal Recoil Range" : "0" : ""
 	recoilrecoveryscale(float) { group = "Stats" } : "Recoil Recovery Scale" : "0" : ""
-	ammotype(choices) { group = "Stats" } : "Ammo Type" : 0 : "" =
-	[
-		0 : "None"
-		1 : "Pistol SMG"
-		2 : "Shotgun"
-		3 : "Sniper"
-		4 : "Magnum"
-		5 : "Rifle"
-	]
 	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" :  : ""
 	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" :  : ""
 	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
@@ -64,6 +64,6 @@
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
 	description(string) { group = "UI" } : "Description" :  : ""
 	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
-	libraryname(string) : "Library Name" :  : ""
+	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."
 ]
 

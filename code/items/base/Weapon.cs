@@ -15,10 +15,16 @@ public enum FireMode
 [Library( "weap" ), AutoGenerate]
 public partial class WeaponInfo : CarriableInfo
 {
-	[Property, Category( "Sounds" )] public string FireSound { get; set; } = "";
-	[Property, Category( "Sounds" )] public string DryFireSound { get; set; } = "";
-	[Property, Category( "Important" )] public FireMode FireMode { get; set; }
-	[Property, Category( "Stats" )] public int BulletsPerFire { get; set; } = 1;
+	[Property, Category( "Sounds" )] 
+	public string FireSound { get; set; } = "";
+	[Property, Category( "Sounds" )] 
+	public string DryFireSound { get; set; } = "";
+	[Property( "ammotype", "The ammo type. Set this to None if want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]
+	public AmmoType AmmoType { get; set; }
+	[Property, Category( "Important" )] 
+	public FireMode FireMode { get; set; }
+	[Property( "bulletsperfire", "The amount of bullets that come out in one shot." ), Category( "Stats" )]
+	public int BulletsPerFire { get; set; } = 1;
 	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
 	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
 	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; } = 0f;
@@ -30,8 +36,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
 	[Property, Category( "Stats" )] public float VerticalRecoil { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float HorizontalRecoilRange { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float RecoilRecoveryScale { get; set; } = 0f;
-	[Property, Category( "Stats" )] public AmmoType AmmoType { get; set; }
+	[Property, Category( "Stats" )] public float RecoilRecoveryScale { get; set; } = 0f;	
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; }
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; }
 }
