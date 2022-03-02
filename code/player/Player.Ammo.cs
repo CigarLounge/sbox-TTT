@@ -14,6 +14,7 @@ public partial class Player
 		Ammo.Clear();
 	}
 
+	// Testing
 	public int AmmoCount( AmmoType type )
 	{
 		var iType = (int)type;

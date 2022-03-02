@@ -20,15 +20,12 @@ public enum AmmoType : byte
 [Hammer.Skip]
 public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
-	///<summary>How much ammo is left in this box.</summary>
 	[Net]
 	public int CurrentCount { get; set; }
 
 	public virtual AmmoType Type => AmmoType.None;
 
-	///<summary>The ammo box will spawn with this much in it.</summary>
 	public virtual int DefaultAmmoCount => 30;
-	///<summary>The model for the ammo box.</summary>
 	protected virtual string WorldModelPath => string.Empty;
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
@@ -79,18 +76,16 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		int iMaxAmmo = Inventory.GetAmmoLimit( Type );
-		int iAdd = Math.Min( CurrentCount, iMaxAmmo - player.AmmoCount( Type ) );
-		if ( iAdd <= 0 ) return;
+		int ammoLimit = Inventory.GetAmmoLimit( Type );
+		int playerAmmo = player.AmmoCount( Type );
+		int addAmmo = Math.Min( CurrentCount, ammoLimit - playerAmmo );
+		if ( addAmmo <= 0 ) return;
 
-		player.GiveAmmo( Type, iAdd );
+		player.GiveAmmo( Type, addAmmo );
 		PlaySound( RawStrings.AmmoPickupSound );
 
-		CurrentCount -= iAdd;
-
-		// Delete empty/nearly empty ammo boxes.
-		if ( CurrentCount < Math.Ceiling( DefaultAmmoCount * 0.25f ) )
-			Delete();
+		CurrentCount -= addAmmo;
+		if ( CurrentCount <= 0 ) Delete();
 	}
 
 	string IEntityHint.TextOnTick => $"{Type} Ammo";

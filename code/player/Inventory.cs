@@ -15,16 +15,16 @@ public partial class Inventory : BaseInventory
 	}
 
 	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 }; 
 
-	public static readonly Dictionary<AmmoType, int> AmmoLimits = new()
+	static readonly List<int> AmmoLimits = new()
 	{
-		{ AmmoType.None, 0 },
-		{ AmmoType.PistolSMG, 60 },
-		{ AmmoType.Shotgun, 16 },
-		{ AmmoType.Sniper, 20 },
-		{ AmmoType.Magnum, 12 },
-		{ AmmoType.Rifle, 40 }
+		[(int)AmmoType.None] = 0,
+		[(int)AmmoType.PistolSMG] = 60,
+		[(int)AmmoType.Shotgun] = 16,
+		[(int)AmmoType.Sniper] = 20,
+		[(int)AmmoType.Magnum] = 12,
+		[(int)AmmoType.Rifle] = 40
 	};
 
 	private const int DROPPOSITIONOFFSET = 50;
@@ -50,7 +50,7 @@ public partial class Inventory : BaseInventory
 
 	public static int GetAmmoLimit( AmmoType ammoType )
 	{
-		return AmmoLimits.GetValueOrDefault( ammoType, 0 );
+		return AmmoLimits.ElementAtOrDefault( ammoType, 0 );
 	}
 
 	public Carriable Swap( Carriable carriable )

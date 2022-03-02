@@ -5,9 +5,9 @@ using Sandbox;
 namespace TTT;
 
 
-public class DuckSpeed : Duck
+public class Duck : Sandbox.Duck
 {
-	public DuckSpeed( BasePlayerController controller ) : base( controller ) { }
+	public Duck( BasePlayerController controller ) : base( controller ) { }
 
 	public override float GetWishSpeed()
 	{
@@ -20,7 +20,7 @@ public partial class WalkController : Sandbox.WalkController
 
 	public WalkController() : base()
 	{
-		Duck = new DuckSpeed( this );
+		Duck = new Duck( this );
 		DefaultSpeed = 237f;
 		WalkSpeed = 110f;
 		GroundFriction = 7.0f;
