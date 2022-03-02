@@ -33,8 +33,8 @@ public class RoundTimer : Panel
 			return;
 
 		_currentRound.Text = Game.Current.Round.RoundName;
-		_currentTime.Text = Game.Current?.Round is not WaitingRound ?
-							$"{Game.Current?.Round?.TimeLeftFormatted}" :
+		_currentTime.Text = Game.Current.Round is not WaitingRound ?
+							$"{Game.Current.Round.TimeLeftFormatted}" :
 							$"{Client.All.Count} / {Game.MinPlayers}";
 	}
 }
