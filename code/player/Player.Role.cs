@@ -60,9 +60,4 @@ public partial class Player
 		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
 			SendLogicButtonsToClient();
 	}
-
-	public void SendClientConfirmed( To? to = null )
-	{
-		RPCs.ClientSetConfirm( to ?? To.Single( this ), this, Role.Info.Id );
-	}
 }

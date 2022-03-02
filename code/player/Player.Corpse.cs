@@ -180,9 +180,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
-		if ( DeadPlayer.IsConfirmedDead )
-			return;
-
 		DeadPlayer.IsConfirmedDead = true;
 		DeadPlayer.IsRoleKnown = true;
 		DeadPlayer.IsMissingInAction = false;

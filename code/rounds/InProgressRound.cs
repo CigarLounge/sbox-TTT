@@ -34,13 +34,14 @@ public partial class InProgressRound : BaseRound
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{
-			if ( player.IsRoleKnown )
-			{
-				player.SendClientRole( To.Single( playerJoined ) );
-			}
-			else if ( player.IsConfirmedDead )
+			// TODO: KOLE Have a different way of sending down confirm status.
+			if ( player.IsConfirmedDead )
 			{
 				player.Corpse.Confirm();
+			}
+			else if ( player.IsRoleKnown )
+			{
+				player.SendClientRole( To.Single( playerJoined ) );
 			}
 		}
 	}
