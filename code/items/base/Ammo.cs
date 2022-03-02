@@ -75,13 +75,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !this.IsValid() || !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		int ammoPickedUp = Math.Min( CurrentCount, player.AmmoCap[(int)Type] - player.AmmoCount( Type ) );
-		if ( ammoPickedUp <= 0 )
-			return;
-
-		player.GiveAmmo( Type, ammoPickedUp );
-		PlaySound( RawStrings.AmmoPickupSound );
-
+		var ammoPickedUp = player.GiveAmmo( Type, CurrentCount );
 		CurrentCount -= ammoPickedUp;
 		if ( CurrentCount <= 0 )
 			Delete();

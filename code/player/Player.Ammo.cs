@@ -54,13 +54,17 @@ public partial class Player
 		return true;
 	}
 
-	public bool GiveAmmo( AmmoType type, int amount )
+	public int GiveAmmo( AmmoType type, int amount )
 	{
-		if ( !Host.IsServer ) return false;
-		if ( Ammo == null ) return false;
+		if ( !Host.IsServer || Ammo == null ) return 0;
 
-		SetAmmo( type, AmmoCount( type ) + amount );
-		return true;
+		var ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
+		if ( ammoPickedUp > 0 )
+		{
+			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
+			PlaySound( RawStrings.AmmoPickupSound );
+		}
+		return ammoPickedUp;
 	}
 
 	public int TakeAmmo( AmmoType type, int amount )
