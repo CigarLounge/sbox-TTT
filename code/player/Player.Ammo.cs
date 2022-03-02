@@ -9,6 +9,8 @@ public partial class Player
 	[Net]
 	public List<int> Ammo { get; set; } = new();
 
+	public int[] AmmoCap = new int[] { 0, 60, 16, 20, 12, 40 };
+
 	public void ClearAmmo()
 	{
 		Ammo.Clear();

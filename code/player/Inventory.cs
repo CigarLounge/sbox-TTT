@@ -15,17 +15,7 @@ public partial class Inventory : BaseInventory
 	}
 
 	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 }; 
-
-	static readonly List<int> AmmoLimits = new()
-	{
-		[(int)AmmoType.None] = 0,
-		[(int)AmmoType.PistolSMG] = 60,
-		[(int)AmmoType.Shotgun] = 16,
-		[(int)AmmoType.Sniper] = 20,
-		[(int)AmmoType.Magnum] = 12,
-		[(int)AmmoType.Rifle] = 40
-	};
+	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
 	private const int DROPPOSITIONOFFSET = 50;
 	private const int DROPVELOCITY = 500;
@@ -46,11 +36,6 @@ public partial class Inventory : BaseInventory
 	public bool HasWeaponOfAmmoType( AmmoType ammoType )
 	{
 		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
-	}
-
-	public static int GetAmmoLimit( AmmoType ammoType )
-	{
-		return AmmoLimits.ElementAtOrDefault( ammoType, 0 );
 	}
 
 	public Carriable Swap( Carriable carriable )
