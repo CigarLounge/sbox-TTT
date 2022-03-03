@@ -150,13 +150,6 @@ public partial class Player : Sandbox.Player
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 
-	public override void FrameSimulate( Client cl )
-	{
-		base.FrameSimulate( cl );
-
-		CurrentPlayer.Flashlight.FrameSimulate();
-	}
-
 	public override void StartTouch( Entity other )
 	{
 		if ( other is PickupTrigger )

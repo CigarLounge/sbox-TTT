@@ -19,8 +19,7 @@ public partial class Player
 		}
 	}
 
-	public bool IsCurrentPlayer => this == (Local.Pawn as Player).CurrentPlayer;
-	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();	
+	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
 
 	private int _targetIdx = 0;
 

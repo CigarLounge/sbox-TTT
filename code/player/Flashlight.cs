@@ -64,12 +64,16 @@ public partial class Flashlight : EntityComponent
 		viewLight?.Delete();
 	}
 
-	public void FrameSimulate()
+	[Event.Frame]
+	public void Frame()
 	{
 		if ( !viewLight.IsValid() )
 			return;
 
-		viewLight.Enabled = Player.IsCurrentPlayer && LightEnabled;
+		viewLight.Enabled = Player.IsFirstPersonMode && LightEnabled;
+		if ( !viewLight.Enabled )
+			return;
+
 		var transform = new Transform( Player.EyePosition + Player.EyeRotation.Forward * 10, Player.EyeRotation );
 		viewLight.Transform = (Player.ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
