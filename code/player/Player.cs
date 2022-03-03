@@ -8,9 +8,6 @@ public partial class Player : Sandbox.Player
 	public Entity LastActiveChild { get; set; }
 
 	[BindComponent]
-	public Flashlight Flashlight { get; }
-
-	[BindComponent]
 	public Perks Perks { get; }
 
 	[Net, Local]
@@ -32,7 +29,6 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		Components.GetOrCreate<Perks>();
-		Components.GetOrCreate<Flashlight>();
 
 		base.Spawn();
 
@@ -43,6 +39,14 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
+		ActivateFlashlight();
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		ActivateFlashlight();
 	}
 
 	public override void Respawn()
@@ -141,7 +145,7 @@ public partial class Player : Sandbox.Player
 				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
-		Flashlight.Simulate();
+		SimulateFlashlight();
 		SimulateCarriableSwitch();
 		SimulatePerks();
 		SimulateActiveChild( client, ActiveChild );
@@ -207,6 +211,7 @@ public partial class Player : Sandbox.Player
 	protected override void OnDestroy()
 	{
 		RemovePlayerCorpse();
+		DeactivateFlashlight();
 
 		base.OnDestroy();
 	}

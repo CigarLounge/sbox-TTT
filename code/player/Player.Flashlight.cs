@@ -2,32 +2,34 @@
 
 namespace TTT;
 
-public partial class Flashlight : EntityComponent
+public partial class Player
 {
-	public Player Player => Entity as Player;
 	private SpotLightEntity worldLight;
 	private SpotLightEntity viewLight;
 
-	[Net, Local, Predicted]
+	[Net, Predicted]
 	private bool LightEnabled { get; set; } = false;
 
 	TimeSince timeSinceLightToggled;
 
-	public void Simulate()
+	public void SimulateFlashlight()
 	{
 		bool toggle = Input.Pressed( InputButton.Flashlight );
 
 		if ( worldLight.IsValid() )
 		{
-			var transform = new Transform( Player.EyePosition + Player.EyeRotation.Forward * 20, Player.EyeRotation );
-			worldLight.Transform = (Player.ActiveChild as Carriable)?.GetAttachment( "muzzle" ) ?? transform;
+			var transform = new Transform( EyePosition + EyeRotation.Forward * 20, EyeRotation );
+			worldLight.Transform = transform;
+
+			if ( ActiveChild.IsValid() )
+				worldLight.Transform = (ActiveChild as Carriable).GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( timeSinceLightToggled > 0.1f && toggle )
 		{
 			LightEnabled = !LightEnabled;
 
-			Entity.PlaySound( LightEnabled ? "flashlight-on" : "flashlight-off" );
+			PlaySound( LightEnabled ? "flashlight-on" : "flashlight-off" );
 
 			if ( worldLight.IsValid() )
 				worldLight.Enabled = LightEnabled;
@@ -36,30 +38,26 @@ public partial class Flashlight : EntityComponent
 		}
 	}
 
-	protected override void OnActivate()
+	protected void ActivateFlashlight()
 	{
-		base.OnActivate();
-
 		if ( Host.IsServer )
 		{
 			worldLight = CreateLight();
-			worldLight.SetParent( Entity );
+			worldLight.SetParent( this );
 			worldLight.EnableHideInFirstPerson = true;
 			worldLight.Enabled = false;
 		}
 		else
 		{
 			viewLight = CreateLight();
-			viewLight.SetParent( Entity );
+			viewLight.SetParent( this );
 			viewLight.EnableViewmodelRendering = true;
 			viewLight.Enabled = LightEnabled;
 		}
 	}
 
-	protected override void OnDeactivate()
+	protected void DeactivateFlashlight()
 	{
-		base.OnDeactivate();
-
 		worldLight?.Delete();
 		viewLight?.Delete();
 	}
@@ -70,12 +68,13 @@ public partial class Flashlight : EntityComponent
 		if ( !viewLight.IsValid() )
 			return;
 
-		viewLight.Enabled = Player.IsFirstPersonMode && LightEnabled;
+		viewLight.Enabled = IsFirstPersonMode && LightEnabled;
+
 		if ( !viewLight.Enabled )
 			return;
 
-		var transform = new Transform( Player.EyePosition + Player.EyeRotation.Forward * 10, Player.EyeRotation );
-		viewLight.Transform = (Player.ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
+		viewLight.Transform = (ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
 
 	private SpotLightEntity CreateLight()
@@ -93,7 +92,7 @@ public partial class Flashlight : EntityComponent
 			InnerConeAngle = 20,
 			OuterConeAngle = 40,
 			FogStength = 1.0f,
-			Owner = Entity,
+			Owner = this,
 			LightCookie = Texture.Load( "materials/effects/lightcookie.vtex" )
 		};
 
