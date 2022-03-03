@@ -1,0 +1,35 @@
+PlayerInfo
+{
+    position: absolute;
+    flex-direction: column;
+    bottom: 25px;
+    left: 25px;
+    width: 200px;
+
+    .role-container
+    {
+        padding: 2px 20px;
+        border-radius: 8 8 0 0;
+        justify-content: center;
+
+        Label
+        {
+            font-size: 30px;
+            font-weight: bold;
+        }
+    }
+
+    .health-container
+    {
+        padding: 2px 20px;
+        border-radius: 0 0 8 8;
+        justify-content: center;
+
+        Label
+        {
+            font-size: 30px;
+            font-weight: bold;
+            padding-right: 20px;
+        }
+    }
+}
