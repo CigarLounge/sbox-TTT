@@ -4,11 +4,6 @@ using Sandbox;
 
 namespace TTT;
 
-public struct ClientData
-{
-
-}
-
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
 	public long PlayerId { get; private set; }
