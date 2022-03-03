@@ -145,6 +145,8 @@ public partial class Knife : Carriable
 		if ( trace.Entity is Player player && player != _thrower )
 		{
 			var damageInfo = new DamageInfo()
+					.WithPosition( trace.EndPosition )
+					.UsingTraceResult( trace )
 					.WithFlag( DamageFlags.Slash )
 					.WithAttacker( _thrower )
 					.WithWeapon( this );
