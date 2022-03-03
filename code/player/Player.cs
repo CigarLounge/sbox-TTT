@@ -8,6 +8,9 @@ public partial class Player : Sandbox.Player
 	public Entity LastActiveChild { get; set; }
 
 	[BindComponent]
+	public Flashlight Flashlight { get; }
+
+	[BindComponent]
 	public Perks Perks { get; }
 
 	[Net, Local]
@@ -29,6 +32,9 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		Components.GetOrCreate<Perks>();
+		Components.GetOrCreate<Flashlight>();
+
+		base.Spawn();
 
 		SetModel( "models/citizen/citizen.vmdl" );
 		Animator = new StandardPlayerAnimator();
@@ -37,8 +43,6 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
-
-		base.Spawn();
 	}
 
 	public override void Respawn()
@@ -137,12 +141,20 @@ public partial class Player : Sandbox.Player
 				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
+		Flashlight.Simulate();
 		SimulateCarriableSwitch();
 		SimulatePerks();
 		SimulateActiveChild( client, ActiveChild );
 
 		PawnController controller = GetActiveController();
 		controller?.Simulate( client, this, GetActiveAnimator() );
+	}
+
+	public override void FrameSimulate( Client cl )
+	{
+		base.FrameSimulate( cl );
+
+		CurrentPlayer.Flashlight.FrameSimulate();
 	}
 
 	public override void StartTouch( Entity other )
