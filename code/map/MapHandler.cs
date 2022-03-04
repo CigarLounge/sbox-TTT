@@ -15,14 +15,7 @@ public partial class MapHandler
 		if ( Host.IsClient )
 			return;
 
-		foreach ( var ent in Entity.All )
-		{
-			if ( ent is Weapon || ent is Ammo || ent is WeaponRandom )
-			{
-				RandomWeaponCount += 1;
-				ent.Delete();
-			}
-		}
+		RandomWeaponCount = Entity.All.OfType<WeaponRandom>().Count();
 	}
 
 	public static void CleanUp()
