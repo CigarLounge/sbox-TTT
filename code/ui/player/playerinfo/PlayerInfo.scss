@@ -4,6 +4,7 @@ PlayerInfo
     flex-direction: row;
     bottom: 25px;
     left: 25px;
+    transition: all 0.1s ease-out;
 
     .role-container
     {
@@ -29,6 +30,17 @@ PlayerInfo
         {
             font-size: 30px;
             font-weight: bold;
+        }
+    }
+
+    &.hit 
+    {
+        .health-container
+        {
+            Label
+            {
+                color: rgb(255, 189, 189);
+            }
         }
     }
 }

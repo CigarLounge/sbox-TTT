@@ -139,5 +139,6 @@ public partial class Player
 	public void ClientTookDamage( Vector3 position, float damage )
 	{
 		UI.DamageIndicator.Instance?.OnHit( position );
+		UI.PlayerInfo.Instance?.OnHit();
 	}
 }

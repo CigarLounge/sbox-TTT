@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -6,6 +7,8 @@ namespace TTT.UI;
 
 public class PlayerInfo : Panel
 {
+	public static PlayerInfo Instance;
+
 	private readonly Panel _roleContainer;
 	private readonly Label _role;
 
@@ -14,6 +17,8 @@ public class PlayerInfo : Panel
 
 	public PlayerInfo()
 	{
+		Instance = this;
+
 		StyleSheet.Load( "/ui/player/playerinfo/PlayerInfo.scss" );
 
 		AddClass( "opacity-heavy" );
@@ -24,6 +29,21 @@ public class PlayerInfo : Panel
 
 		_healthContainer = Add.Panel( "health-container background-color-primary" );
 		_health = _healthContainer.Add.Label();
+	}
+
+	public void OnHit()
+	{
+		if ( !this.IsEnabled() )
+			return;
+
+		_ = TakeHit();
+	}
+
+	private async Task TakeHit()
+	{
+		AddClass( "hit" );
+		await Task.Delay( 200 );
+		RemoveClass( "hit" );
 	}
 
 	public override void Tick()
