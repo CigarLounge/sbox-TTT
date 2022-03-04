@@ -63,13 +63,7 @@ public partial class Weapon : Carriable
 
 	public new WeaponInfo Info
 	{
-		get
-		{
-			if ( base.Info == null )
-				base.Info = Asset.GetInfo<WeaponInfo>( ClassInfo.Name );
-			return base.Info as WeaponInfo;
-		}
-		set => base.Info = value;
+		get => Asset.GetInfo<WeaponInfo>( ClassInfo.Name );
 	}
 
 	public bool UnlimitedAmmo { get; set; }
