@@ -58,8 +58,7 @@ public partial class Hud : HudEntity<RootPanel>
 			AddChild<WIPDisclaimer>();
 
 			AddChild<HintDisplay>();
-			AddChild<PlayerRoleDisplay>();
-			AddChild<PlayerInfoDisplay>();
+			AddChild<PlayerInfo>();
 			AddChild<InventoryWrapper>();
 			AddChild<ChatBox>();
 
