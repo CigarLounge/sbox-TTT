@@ -55,8 +55,8 @@ ChatEntry {
     }
 
     .avatar {
-        width: 25px;
-        height: 25px;
+        max-height: 25px;
+        max-width: 25px;
         margin-right: 10px;
     }
 
@@ -80,7 +80,8 @@ ChatEntry {
         margin-top: 8px;
 
         .avatar {
-            height: 25px;
+            max-height: 25px;
+            max-width: 25px;
         }
 
         .header {
