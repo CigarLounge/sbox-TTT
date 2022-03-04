@@ -14,10 +14,7 @@ public partial class CrosshairPage : Panel
 	public int Gap { get; set; } = 3;
 	public int OutlineThickness { get; set; } = 0;
 
-	public int R { get; set; } = 255;
-	public int G { get; set; } = 255;
-	public int B { get; set; } = 255;
-	public int A { get; set; } = 255;
+	public Color SelectedColor { get; set; } = Color.White;
 
 	public CrosshairPage()
 	{
@@ -31,10 +28,7 @@ public partial class CrosshairPage : Panel
 		Thickness = crosshairConfig.Thickness;
 		Gap = crosshairConfig.Gap;
 		OutlineThickness = crosshairConfig.OutlineThickness;
-		R = (int)crosshairConfig.Color.r * 255;
-		G = (int)crosshairConfig.Color.g * 255;
-		B = (int)crosshairConfig.Color.b * 255;
-		A = (int)crosshairConfig.Color.a * 255;
+		SelectedColor = crosshairConfig.Color;
 	}
 
 	public void SaveCrosshairData()
@@ -53,7 +47,7 @@ public partial class CrosshairPage : Panel
 			Thickness,
 			OutlineThickness,
 			Gap,
-			Color.FromBytes( R, G, B, A )
+			SelectedColor
 		) );
 	}
 }
