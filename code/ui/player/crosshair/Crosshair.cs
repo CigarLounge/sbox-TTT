@@ -9,7 +9,6 @@ public class Crosshair : Panel
 	{
 		public bool ShowTop { get; private set; }
 		public bool ShowDot { get; private set; }
-		public bool ShowOutline { get; private set; }
 
 		public int Size { get; private set; }
 		public int Thickness { get; private set; }
@@ -20,18 +19,16 @@ public class Crosshair : Panel
 		public Color Color { get; private set; }
 
 		public Properties(
-			bool showTop = false,
-			bool showDot = true,
-			bool showOutline = false,
-			int size = 0,
-			int thickness = 4,
-			int outlineThickness = 2,
-			int gap = 2,
+			bool showTop = true,
+			bool showDot = false,
+			int size = 7,
+			int thickness = 2,
+			int outlineThickness = 0,
+			int gap = -5,
 			Color? color = null )
 		{
 			ShowTop = showTop;
 			ShowDot = showDot;
-			ShowOutline = showOutline;
 			Size = size;
 			Thickness = thickness;
 			OutlineThickness = outlineThickness;
@@ -41,6 +38,7 @@ public class Crosshair : Panel
 	}
 
 	public static Crosshair Instance;
+	public Properties Config { get; set; }
 
 	private readonly List<Panel> _lines = new();
 	private readonly Panel _topLine;
@@ -80,6 +78,8 @@ public class Crosshair : Panel
 				? crosshairProperties.Size
 				: crosshairProperties.Thickness;
 			crosshairLine.Style.Height = isHorizontal ? crosshairProperties.Thickness : crosshairProperties.Size;
+			crosshairLine.Style.BorderColor = Color.Black;
+			crosshairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
 
 			switch ( i )
 			{
@@ -95,12 +95,6 @@ public class Crosshair : Panel
 				case 3: // Top element
 					crosshairLine.Style.Top = Length.Pixels( -crosshairProperties.Size - crosshairProperties.Gap );
 					break;
-			}
-
-			if ( crosshairProperties.ShowOutline )
-			{
-				crosshairLine.Style.BorderColor = Color.Black;
-				crosshairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
 			}
 		}
 
@@ -119,5 +113,7 @@ public class Crosshair : Panel
 		}
 
 		_topLine.Style.Opacity = crosshairProperties.ShowTop ? crosshairProperties.Color.a : 0;
+
+		Config = crosshairProperties;
 	}
 }

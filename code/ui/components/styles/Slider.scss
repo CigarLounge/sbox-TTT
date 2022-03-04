@@ -1,6 +1,6 @@
 .slider
 {
-	flex-grow: 1;
+	min-height: 30px;
 	cursor: pointer;
 	min-height: $form-control-height;
 	align-items: center;
@@ -53,6 +53,8 @@
 
 .sliderentry
 {
+	min-height: 30px;
+
 	> .slider
 	{
 		flex-grow: 1;
@@ -95,10 +97,6 @@
 		transition: all 0.2s ease-out;
 		transform: translateX( -50% ) translateY( -50% );
 		border: 2px solid rgba( white, 1 );
-
-		&:hover
-		{
-		}
 	}
 
 	&:active
