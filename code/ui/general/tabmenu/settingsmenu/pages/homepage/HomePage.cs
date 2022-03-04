@@ -13,6 +13,11 @@ public partial class HomePage : Panel
 		SettingsMenu.Instance.AddPage( new KeyBindingsPage() );
 	}
 
+	public void GoToCrosshairPage()
+	{
+		SettingsMenu.Instance.AddPage( new CrosshairPage() );
+	}
+
 	public void GoToComponentTesting()
 	{
 		SettingsMenu.Instance.AddPage( new ComponentTestingPage() );

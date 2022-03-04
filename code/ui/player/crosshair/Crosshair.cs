@@ -1,148 +1,118 @@
+using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
 public class Crosshair : Panel
 {
+	public class Properties
+	{
+		public bool ShowTop { get; set; }
+		public bool ShowDot { get; set; }
+		public int Size { get; set; }
+		public int Thickness { get; set; }
+		public int OutlineThickness { get; set; }
+		public int Gap { get; set; }
+		public Color Color { get; set; }
+
+		public Properties(
+			bool ShowTop,
+			bool ShowDot,
+			int Size,
+			int Thickness,
+			int OutlineThickness,
+			int Gap,
+			Color Color )
+		{
+			this.ShowTop = ShowTop;
+			this.ShowDot = ShowDot;
+			this.Size = Size;
+			this.Thickness = Thickness;
+			this.OutlineThickness = OutlineThickness;
+			this.Gap = Gap;
+			this.Color = Color;
+		}
+	}
+
 	public static Crosshair Instance;
+	public Properties Config { get; set; }
 
-	public bool ShowDot
-	{
-		get => _showDot;
-		set { _showDot = value; UpdateCrosshair(); }
-	}
-	private bool _showDot = true;
-	public bool ShowTop
-	{
-		get => _showTop;
-		set { _showTop = value; UpdateCrosshair(); }
-	}
-	private bool _showTop = true;
-	public bool ShowOutline
-	{
-		get => _showOutline;
-		set { _showOutline = value; UpdateCrosshair(); }
-	}
-	private bool _showOutline = true;
-	public int Thickness
-	{
-		get => _thickness;
-		set { _thickness = value; UpdateCrosshair(); }
-	}
-	private int _thickness = 4;
-	public int Size
-	{
-		get => _size;
-		set { _size = value; UpdateCrosshair(); }
-	}
-	private int _size = 0;
-	public int OutlineThickness
-	{
-		get => _outlineThickness;
-		set { _outlineThickness = value; UpdateCrosshair(); }
-	}
-	private int _outlineThickness = 0;
-	public int OutlineBlur
-	{
-		get => _outlineBlur;
-		set { _outlineBlur = value; UpdateCrosshair(); }
-	}
-	private int _outlineBlur = 4;
-	public int Gap
-	{
-		get => _gap;
-		set { _gap = value; UpdateCrosshair(); }
-	}
-	private int _gap = 6;
-	public Color Color
-	{
-		get => _color;
-		set { _color = value; UpdateCrosshair(); }
-	}
-	private Color _color = Color.White;
-
-	private Panel _crosshairDot;
-	private Panel[] _crosshairLines;
+	private readonly List<Panel> _lines = new();
+	private readonly Panel _topLine;
+	private readonly Panel _leftLine;
+	private readonly Panel _rightLine;
+	private readonly Panel _bottomLine;
+	private readonly Panel _dot;
 
 	public Crosshair()
 	{
 		Instance = this;
+		StyleSheet.Load( "/ui/player/crosshair/Crosshair.scss" );
 
-		AddClass( "centered" );
+		_topLine = Add.Panel( "line" );
+		_leftLine = Add.Panel( "line" );
+		_rightLine = Add.Panel( "line" );
+		_bottomLine = Add.Panel( "line" );
+		_dot = Add.Panel( "dot" );
 
-		_crosshairDot = new Panel( this );
-		_crosshairDot.AddClass( "circular" );
+		_lines.Add( _leftLine );
+		_lines.Add( _bottomLine );
+		_lines.Add( _rightLine );
+		_lines.Add( _topLine );
 
-		_crosshairLines = new Panel[4];
-
-		for ( int i = 0; i < _crosshairLines.Length; i++ )
-		{
-			_crosshairLines[i] = new Panel( this );
-			_crosshairLines[i].AddClass( "centered" );
-		}
-
-		Style.ZIndex = -1;
-
-		UpdateCrosshair();
+		var crosshairConfig = FileSystem.Data.ReadJson<Properties>( "crosshair.json" );
+		SetupCrosshair( crosshairConfig ?? new Properties( true, false, 4, 3, 0, 3, Color.White ) );
 	}
 
-	public void UpdateCrosshair()
+	public void SetupCrosshair( Properties crosshairProperties )
 	{
-		Shadow shadow = new Shadow();
-		shadow.OffsetX = 0;
-		shadow.OffsetY = 0;
-		shadow.Blur = OutlineBlur;
-		shadow.Spread = OutlineThickness;
-		shadow.Color = Color.Black;
-
-		#region Update Crosshair Dot
-		_crosshairDot.Enabled( ShowDot );
-
-		if ( ShowDot )
+		for ( int i = 0; i < _lines.Count; ++i )
 		{
-			_crosshairDot.Style.BackgroundColor = Color;
+			var isHorizontal = i % 2 == 0;
+			var crosshairLine = _lines[i];
 
-			_crosshairDot.Style.Width = Thickness;
-			_crosshairDot.Style.Height = Thickness;
-
-			if ( ShowOutline )
-			{
-				_crosshairDot.Style.BoxShadow.Add( shadow );
-			}
-		}
-		#endregion
-
-		#region Update Crosshair Lines
-		for ( int i = 0; i < _crosshairLines.Length; i++ )
-		{
-			bool isHorizontal = i % 2 == 0;
-
-			_crosshairLines[i].Style.BackgroundColor = Color;
-			_crosshairLines[i].Style.Width = isHorizontal ? Size : Thickness;
-			_crosshairLines[i].Style.Height = isHorizontal ? Thickness : Size;
+			crosshairLine.Style.BackgroundColor = crosshairProperties.Color;
+			crosshairLine.Style.Width = isHorizontal
+				? crosshairProperties.Size
+				: crosshairProperties.Thickness;
+			crosshairLine.Style.Height = isHorizontal ? crosshairProperties.Thickness : crosshairProperties.Size;
+			crosshairLine.Style.BorderColor = Color.Black;
+			crosshairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
 
 			switch ( i )
 			{
-				case 0: // Left
-					_crosshairLines[i].Style.MarginLeft = -(Size / 2 + Gap);
+				case 0: // Left element
+					crosshairLine.Style.Left = Length.Pixels( crosshairProperties.Size + crosshairProperties.Gap );
 					break;
-				case 1: // Bottom
-					_crosshairLines[i].Style.MarginTop = (Size / 2 + Gap);
+				case 1: // Bottom element
+					crosshairLine.Style.Top = Length.Pixels( crosshairProperties.Size + crosshairProperties.Gap );
 					break;
-				case 2: // Right
-					_crosshairLines[i].Style.MarginLeft = (Size / 2 + Gap);
+				case 2: // Right element
+					crosshairLine.Style.Left = Length.Pixels( -crosshairProperties.Size - crosshairProperties.Gap );
 					break;
-				case 3: // Top
-					_crosshairLines[i].Enabled( ShowTop );
-					_crosshairLines[i].Style.MarginTop = -(Size / 2 + Gap);
+				case 3: // Top element
+					crosshairLine.Style.Top = Length.Pixels( -crosshairProperties.Size - crosshairProperties.Gap );
 					break;
-			}
-
-			if ( ShowOutline && Size > 0 )
-			{
-				_crosshairLines[i].Style.BoxShadow.Add( shadow );
 			}
 		}
-		#endregion
+
+		if ( crosshairProperties.ShowDot )
+		{
+			_dot.Style.BackgroundColor = crosshairProperties.Color;
+			_dot.Style.Width = crosshairProperties.Thickness;
+			_dot.Style.Height = crosshairProperties.Thickness;
+			_dot.Style.Opacity = crosshairProperties.Color.a;
+			_dot.Style.BorderColor = Color.Black;
+			_dot.Style.BorderWidth = crosshairProperties.OutlineThickness;
+		}
+		else
+		{
+			_dot.Style.Opacity = 0;
+		}
+
+		_topLine.Style.Opacity = crosshairProperties.ShowTop ? crosshairProperties.Color.a : 0;
+
+		Config = crosshairProperties;
 	}
 }
