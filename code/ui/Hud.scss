@@ -4,13 +4,13 @@ $alive: #009e07;
 $missing: #c6793a;
 $dead: #e12c3b;
 $spectator: #fcdb38;
-$info: #ffae00;
+$info: #fdc418;
 
-$button-primary: #fdc418 !default;
+$button-primary: #ffffff !default;
 $button-primary-bottom: $button-primary !default;
-$button-primary-fg: white !default;
-$button-secondary: #708690 !default;
-$button-secondary-fg: #dddddd !default;
+$button-primary-fg: #ffffff !default;
+$button-secondary: #282828 !default;
+$button-secondary-fg: #bbbbbb !default;
 $button-dark: #1b3039 !default;
 $button-size: 45px;
 
@@ -225,7 +225,7 @@ Panel, .panel
 
 .text-color-info
 {
-    color: $button-primary;
+    color: $info;
 }
 
 .background-color-primary

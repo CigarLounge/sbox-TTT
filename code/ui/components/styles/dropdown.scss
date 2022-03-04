@@ -4,7 +4,7 @@ dropdown
     font-weight: 600;
     font-size: 16px;
     cursor: pointer;
-    background-color: $button-primary;
+    background-color: $button-secondary;
     padding: 8px 16px;
     border-radius: 8px;
     color: $button-primary-fg;
@@ -32,8 +32,7 @@ dropdown
 
     &:active
     {
-        background-color: $button-secondary-fg;
-        color: $button-secondary;
+        color: $button-primary;
     }
 
     &.inactive
@@ -49,6 +48,7 @@ popup
     flex-direction: column;
     transition: all 0.1s ease-out;
     z-index: 200;
+    background-color: $button-secondary;
 
     &:intro
     {

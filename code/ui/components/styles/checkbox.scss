@@ -12,13 +12,14 @@ checkbox
     {
         font-family: Poppins;
         pointer-events: none;
+        color: $button-primary;
     }
 
     > .checkmark
     {
         padding: 1px;
         font-size: 22px;
-        border: 3px solid $button-secondary;
+        border: 3px solid $button-secondary-fg; 
         border-radius: 4px;
         text-align: center;
         justify-content: center;
@@ -34,18 +35,17 @@ checkbox
         > .checkmark
         {
             color: white;
-            background-color: $button-secondary;
         }
     }
 
     &:active
     {
-        color: white;
+        color: $button-primary;
     }
 
     &:hover
     {
-        color: white;
+        color: $button-secondary;
     }
 
     &.inactive
