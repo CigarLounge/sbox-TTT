@@ -26,6 +26,8 @@ public partial class Scout : Weapon
 
 	public override void CreateHudElements()
 	{
+		base.CreateHudElements();
+
 		if ( Hud.GeneralHud.Instance == null )
 			return;
 
@@ -44,12 +46,17 @@ public partial class Scout : Weapon
 
 	public override void ActiveEnd( Entity ent, bool dropped )
 	{
-		if ( ent is Player player )
-			OnScopeEnd( player );
-
-		_sniperScopePanel?.Delete();
-
 		base.ActiveEnd( ent, dropped );
+
+		_isScoped = false;
+	}
+
+	public override void DestroyHudElements()
+	{
+		base.DestroyHudElements();
+
+		(Local.Pawn as Player).CameraMode.FieldOfView = _defaultFOV;
+		_sniperScopePanel?.Delete( true );
 	}
 
 	private void OnScopeStart( Player player )

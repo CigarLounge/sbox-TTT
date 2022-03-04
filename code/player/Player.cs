@@ -30,6 +30,8 @@ public partial class Player : Sandbox.Player
 	{
 		Components.GetOrCreate<Perks>();
 
+		base.Spawn();
+
 		SetModel( "models/citizen/citizen.vmdl" );
 		Animator = new StandardPlayerAnimator();
 		EnableAllCollisions = false;
@@ -37,16 +39,20 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
+		ActivateFlashlight();
+	}
 
-		base.Spawn();
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		ActivateFlashlight();
 	}
 
 	public override void Respawn()
 	{
 		Host.AssertServer();
 
-		EnableDrawing = true;
-		EnableAllCollisions = true;
 		Credits = 0;
 		SetRole( new NoneRole() );
 		IsConfirmedDead = false;
@@ -60,6 +66,7 @@ public partial class Player : Sandbox.Player
 			Controller = new WalkController();
 			CameraMode = new FirstPersonCamera();
 			EnableAllCollisions = true;
+			EnableDrawing = true;
 			Client.SetValue( RawStrings.Spectator, false );
 			DressPlayer();
 		}
@@ -137,6 +144,7 @@ public partial class Player : Sandbox.Player
 				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
+		SimulateFlashlight();
 		SimulateCarriableSwitch();
 		SimulatePerks();
 		SimulateActiveChild( client, ActiveChild );
@@ -202,6 +210,7 @@ public partial class Player : Sandbox.Player
 	protected override void OnDestroy()
 	{
 		RemovePlayerCorpse();
+		DeactivateFlashlight();
 
 		base.OnDestroy();
 	}

@@ -342,6 +342,7 @@ public partial class Weapon : Carriable
 			ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
 			ammoCrate.Rotation = Owner.EyeRotation;
 			ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + Owner.EyeRotation.Forward * Player.DropVelocity;
+			ammoCrate.Dropper = Owner;
 		}
 
 		AmmoClip = 0;

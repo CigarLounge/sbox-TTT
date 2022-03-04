@@ -58,6 +58,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		get => base.Owner as Player;
 		set => base.Owner = value;
 	}
+	public Player PreviousOwner { get; set; }
 
 	public CarriableInfo Info { get; set; }
 	string IEntityHint.TextOnTick => Info.Title;
@@ -112,26 +113,40 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
 			return;
 
-		ViewModelEntity = new ViewModel();
-		ViewModelEntity.Owner = Owner;
-		ViewModelEntity.EnableViewmodelRendering = true;
+		ViewModelEntity = new ViewModel
+		{
+			Position = Position,
+			Owner = Owner,
+			EnableViewmodelRendering = true
+		};
 		ViewModelEntity.SetModel( Info.ViewModel );
 
-		HandsModelEntity = new BaseViewModel();
-		HandsModelEntity.Owner = Owner;
-		HandsModelEntity.EnableViewmodelRendering = true;
+		HandsModelEntity = new BaseViewModel
+		{
+			Position = Position,
+			Owner = Owner,
+			EnableViewmodelRendering = true
+		};
 		HandsModelEntity.SetModel( Info.HandsModel );
 		HandsModelEntity.SetParent( ViewModelEntity, true );
 	}
 
 	public override void CreateHudElements() { }
 
+	public override void DestroyViewModel()
+	{
+		base.DestroyViewModel();
+
+		HandsModelEntity?.Delete();
+		HandsModelEntity = null;
+	}
+
 	public override bool CanCarry( Entity carrier )
 	{
 		if ( Owner != null || carrier is not Player player )
 			return false;
 
-		if ( TimeSinceDropped < 1f )
+		if ( carrier == PreviousOwner && TimeSinceDropped < 1f )
 			return false;
 
 		if ( !player.Inventory.HasFreeSlot( Info.Slot ) )
@@ -145,6 +160,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryStart( carrier );
 
 		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
+		PreviousOwner = Owner;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
@@ -152,20 +168,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
-		(dropper as Player).Inventory.SlotCapacity[(int)Info.Slot]++;
+		PreviousOwner.Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )
 	{
 		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
-	}
-
-	public override void DestroyViewModel()
-	{
-		ViewModelEntity?.Delete();
-		ViewModelEntity = null;
-		HandsModelEntity?.Delete();
-		HandsModelEntity = null;
 	}
 
 	public float HintDistance => Player.INTERACT_DISTANCE;

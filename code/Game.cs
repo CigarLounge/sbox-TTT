@@ -68,12 +68,6 @@ public partial class Game : Sandbox.Game
 		// Do nothing. The player can't noclip in this mode.
 	}
 
-	public override void DoPlayerSuicide( Client client )
-	{
-		if ( client.Pawn is Player player && player.IsAlive() )
-			base.DoPlayerSuicide( client );
-	}
-
 	public override void ClientJoined( Client client )
 	{
 		Player player = new();
@@ -145,7 +139,7 @@ public partial class Game : Sandbox.Game
 		MapHandler = new();
 	}
 
-	public void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
+	private void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
 	{
 		_lastRound?.Finish();
 		_lastRound = newRound;
