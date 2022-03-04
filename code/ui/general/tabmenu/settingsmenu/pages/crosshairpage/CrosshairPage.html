@@ -1,0 +1,23 @@
+<link rel="stylesheet" href="CrosshairPage.scss">
+
+<div class="root">
+
+    <checkbox @checked="ShowTop">Show Top</checkbox>
+    <br />
+
+    <checkbox @checked="ShowDot">Show Dot</checkbox>
+    <br />
+
+    <label>Size</label>
+    <SliderEntry min="0" max="100" @value="Size"></SliderEntry>
+    <br />
+
+    <label>Thickness</label>
+    <SliderEntry min="0" max="100" @value="Thickness"></SliderEntry>
+    <br />
+
+    <label>Gap</label>
+    <SliderEntry min="0" max="100" @value="Gap"></SliderEntry>
+    <br />
+
+</div>
