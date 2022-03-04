@@ -113,14 +113,20 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
 			return;
 
-		ViewModelEntity = new ViewModel();
-		ViewModelEntity.Owner = Owner;
-		ViewModelEntity.EnableViewmodelRendering = true;
+		ViewModelEntity = new ViewModel
+		{
+			Position = Position,
+			Owner = Owner,
+			EnableViewmodelRendering = true
+		};
 		ViewModelEntity.SetModel( Info.ViewModel );
 
-		HandsModelEntity = new BaseViewModel();
-		HandsModelEntity.Owner = Owner;
-		HandsModelEntity.EnableViewmodelRendering = true;
+		HandsModelEntity = new BaseViewModel
+		{
+			Position = Position,
+			Owner = Owner,
+			EnableViewmodelRendering = true
+		};
 		HandsModelEntity.SetModel( Info.HandsModel );
 		HandsModelEntity.SetParent( ViewModelEntity, true );
 	}
