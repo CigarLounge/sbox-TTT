@@ -17,12 +17,9 @@ public partial class MapHandler
 
 		foreach ( var ent in Entity.All )
 		{
-			if ( ent is WeaponRandom )
+			if ( ent is Weapon || ent is Ammo || ent is WeaponRandom )
 			{
 				RandomWeaponCount += 1;
-			}
-			else if ( ent is Weapon || ent is Ammo )
-			{
 				ent.Delete();
 			}
 		}
