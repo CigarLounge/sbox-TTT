@@ -6,11 +6,11 @@ namespace TTT.UI;
 
 public class PlayerInfo : Panel
 {
-	private Panel _roleContainer;
-	private Label _role;
+	private readonly Panel _roleContainer;
+	private readonly Label _role;
 
-	private Panel _healthContainer;
-	private Label _health;
+	private readonly Panel _healthContainer;
+	private readonly Label _health;
 
 	public PlayerInfo()
 	{
@@ -42,7 +42,7 @@ public class PlayerInfo : Panel
 		{
 			_roleContainer.Enabled( false );
 			_healthContainer.Style.BorderTopLeftRadius = 8;
-			_healthContainer.Style.BorderTopRightRadius = 8;
+			_healthContainer.Style.BorderBottomLeftRadius = 8;
 		}
 		else
 		{
@@ -51,7 +51,7 @@ public class PlayerInfo : Panel
 			_role.Text = player.CurrentPlayer.Role.Info.Title;
 
 			_healthContainer.Style.BorderTopLeftRadius = 0;
-			_healthContainer.Style.BorderTopRightRadius = 0;
+			_healthContainer.Style.BorderBottomLeftRadius = 0;
 		}
 
 		_health.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
