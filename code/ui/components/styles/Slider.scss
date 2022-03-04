@@ -18,7 +18,7 @@
 
 		&:hover
 		{
-			background-color: $primary-alt;
+			background-color: $button-primary;
 		}
 	}
 
@@ -74,7 +74,7 @@
 		border-color: transparent;
 		text-align: center;
 		background-color: rgba( black, 0.5 );
-		color: $primary-alt;
+		color: $button-primary;
 	}
 }
 
