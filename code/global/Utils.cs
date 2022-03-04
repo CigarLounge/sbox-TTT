@@ -57,6 +57,8 @@ public static partial class Utils
 
 	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Game.MinPlayers;
 
+	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
+
 	/// <summary>
 	/// Returns an approximate value for meters given the Source engine units (for distances)
 	/// based on https://developer.valvesoftware.com/wiki/Dimensions
