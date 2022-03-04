@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -7,33 +8,30 @@ public class Crosshair : Panel
 {
 	public class Properties
 	{
-		public bool ShowTop { get; private set; }
-		public bool ShowDot { get; private set; }
-
-		public int Size { get; private set; }
-		public int Thickness { get; private set; }
-		public int OutlineThickness { get; private set; }
-
-		public int Gap { get; private set; }
-
-		public Color Color { get; private set; }
+		public bool ShowTop { get; set; }
+		public bool ShowDot { get; set; }
+		public int Size { get; set; }
+		public int Thickness { get; set; }
+		public int OutlineThickness { get; set; }
+		public int Gap { get; set; }
+		public Color Color { get; set; }
 
 		public Properties(
-			bool showTop = true,
-			bool showDot = false,
-			int size = 7,
-			int thickness = 2,
-			int outlineThickness = 0,
-			int gap = -5,
-			Color? color = null )
+			bool ShowTop,
+			bool ShowDot,
+			int Size,
+			int Thickness,
+			int OutlineThickness,
+			int Gap,
+			Color Color )
 		{
-			ShowTop = showTop;
-			ShowDot = showDot;
-			Size = size;
-			Thickness = thickness;
-			OutlineThickness = outlineThickness;
-			Gap = gap;
-			Color = color ?? Color.White;
+			this.ShowTop = ShowTop;
+			this.ShowDot = ShowDot;
+			this.Size = Size;
+			this.Thickness = Thickness;
+			this.OutlineThickness = OutlineThickness;
+			this.Gap = Gap;
+			this.Color = Color;
 		}
 	}
 
@@ -63,7 +61,8 @@ public class Crosshair : Panel
 		_lines.Add( _rightLine );
 		_lines.Add( _topLine );
 
-		SetupCrosshair( new Properties() );
+		var crosshairConfig = FileSystem.Data.ReadJson<Properties>( "crosshair.json" );
+		SetupCrosshair( crosshairConfig ?? new Properties( true, false, 4, 3, 0, 3, Color.White ) );
 	}
 
 	public void SetupCrosshair( Properties crosshairProperties )
