@@ -26,7 +26,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
-	private TimeSince _timeSinceCreated = 0;
+	private TimeSince _timeSinceDropped = 0;
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
 	{
@@ -67,7 +67,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	{
 		base.StartTouch( other );
 
-		if ( other is Player player && (player != Dropper || _timeSinceCreated >= 1f) )
+		if ( other is Player player && (player != Dropper || _timeSinceDropped >= 1f) )
 			GiveAmmo( player );
 	}
 
