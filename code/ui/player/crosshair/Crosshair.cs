@@ -110,6 +110,8 @@ public class Crosshair : Panel
 			_dot.Style.Width = crosshairProperties.Thickness;
 			_dot.Style.Height = crosshairProperties.Thickness;
 			_dot.Style.Opacity = crosshairProperties.Color.a;
+			_dot.Style.BorderColor = Color.Black;
+			_dot.Style.BorderWidth = crosshairProperties.OutlineThickness;
 		}
 		else
 		{

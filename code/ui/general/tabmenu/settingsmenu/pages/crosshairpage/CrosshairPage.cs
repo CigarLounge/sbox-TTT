@@ -11,6 +11,7 @@ public partial class CrosshairPage : Panel
 	public int Size { get; set; } = 0;
 	public int Thickness { get; set; } = 0;
 	public int Gap { get; set; } = 0;
+	public int OutlineThickness { get; set; } = 0;
 
 	public CrosshairPage()
 	{
@@ -21,10 +22,10 @@ public partial class CrosshairPage : Panel
 		Crosshair.Instance?.SetupCrosshair( new UI.Crosshair.Properties(
 			ShowTop,
 			ShowDot,
-			false,
+			true,
 			Size,
 			Thickness,
-			0,
+			OutlineThickness,
 			Gap
 		) );
 	}
