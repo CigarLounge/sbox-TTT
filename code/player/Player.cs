@@ -53,8 +53,6 @@ public partial class Player : Sandbox.Player
 	{
 		Host.AssertServer();
 
-		EnableDrawing = true;
-		EnableAllCollisions = true;
 		Credits = 0;
 		SetRole( new NoneRole() );
 		IsConfirmedDead = false;
@@ -68,6 +66,7 @@ public partial class Player : Sandbox.Player
 			Controller = new WalkController();
 			CameraMode = new FirstPersonCamera();
 			EnableAllCollisions = true;
+			EnableDrawing = true;
 			Client.SetValue( RawStrings.Spectator, false );
 			DressPlayer();
 		}
