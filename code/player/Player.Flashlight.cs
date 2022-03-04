@@ -43,14 +43,14 @@ public partial class Player
 		if ( Host.IsServer )
 		{
 			worldLight = CreateLight();
-			worldLight.SetParent( this );
+			worldLight.Parent = this;
 			worldLight.EnableHideInFirstPerson = true;
 			worldLight.Enabled = false;
 		}
 		else
 		{
 			viewLight = CreateLight();
-			viewLight.SetParent( this );
+			viewLight.Parent = this;
 			viewLight.EnableViewmodelRendering = true;
 			viewLight.Enabled = LightEnabled;
 		}
@@ -68,13 +68,15 @@ public partial class Player
 		if ( !viewLight.IsValid() )
 			return;
 
-		viewLight.Enabled = IsFirstPersonMode && LightEnabled;
+		viewLight.Enabled = viewLight.IsFirstPersonMode && LightEnabled;
 
 		if ( !viewLight.Enabled )
 			return;
 
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
-		viewLight.Transform = (ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		viewLight.Transform = transform;
+		if ( ActiveChild.IsValid() )
+			viewLight.Transform = (ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
 
 	private SpotLightEntity CreateLight()
