@@ -59,7 +59,27 @@ public partial class ChatBox : Panel
 	{
 		base.Tick();
 
-		if ( !IsOpen ) return;
+		if ( Local.Pawn is not Player player )
+			return;
+
+		if ( !IsOpen )
+			return;
+
+		if ( !player.IsAlive() )
+			CurrentChannel = Channel.Spectator;
+
+		switch ( CurrentChannel )
+		{
+			case Channel.All:
+				Input.Style.BorderColor = _allChatColor;
+				return;
+			case Channel.Spectator:
+				Input.Style.BorderColor = _spectatorChatColor;
+				return;
+			case Channel.Role:
+				Input.Style.BorderColor = player.Role.Info.Color;
+				return;
+		}
 
 		Input.Placeholder = string.Empty;
 	}
