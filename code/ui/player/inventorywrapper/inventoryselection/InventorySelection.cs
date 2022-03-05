@@ -51,7 +51,7 @@ public class InventorySelection : Panel
 			{
 				if ( !_entries.ContainsKey( carriable ) && item.Owner != null )
 				{
-					_entries[carriable] = CarriableItemPickup( carriable );
+					_entries[carriable] = AddInventorySlot( carriable );
 				}
 			}
 		}
@@ -95,7 +95,7 @@ public class InventorySelection : Panel
 		this.Enabled( Children.Any() );
 	}
 
-	private InventorySlot CarriableItemPickup( Carriable carriable )
+	private InventorySlot AddInventorySlot( Carriable carriable )
 	{
 		var inventorySlot = new InventorySlot( this, carriable );
 		AddChild( inventorySlot );
