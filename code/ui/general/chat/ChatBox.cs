@@ -1,279 +1,165 @@
-using System.Collections.Generic;
-
+﻿
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public partial class ChatBox : Panel
 {
-	public enum Channel { Info, Player, Spectator, Team };
-	public static ChatBox Instance { get; private set; }
+	public enum Channel
+	{
+		All,
+		Role,
+		Spectator
+	}
 
-	public readonly List<ChatEntry> Messages = new();
+	private static readonly Color _allChatColor = Color.FromBytes( 26, 196, 77 );
+	private static readonly Color _spectatorChatColor = Color.FromBytes( 252, 219, 56 );
 
-	public const int MAX_MESSAGES_COUNT = 200;
-	public const float MAX_DISPLAY_TIME = 8f;
+	public static ChatBox Instance;
 
-	public bool IsOpened { get; private set; } = false;
-	public bool IsTeamChatting { get; private set; } = false;
+	public Panel EntryCanvas { get; set; }
+	public TabTextEntry Input { get; set; }
+	public Channel CurrentChannel { get; private set; } = Channel.All;
 
-	private TimeSince _lastChatFocus = 0f;
+	public bool IsOpen
+	{
+		get => HasClass( "open" );
+		set
+		{
+			SetClass( "open", value );
+			if ( value )
+			{
+				Input.Focus();
+				Input.Text = string.Empty;
+				Input.Label.SetCaretPosition( 0 );
+			}
+		}
+	}
 
-	private readonly Panel _canvas;
-	private readonly Panel _inputPanel;
-	private readonly Panel _inputTeamIndicator;
-	private readonly ChatBoxTextEntry _inputField;
-
-	public ChatBox() : base()
+	public ChatBox()
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/general/chat/ChatBox.scss" );
+		Sandbox.Hooks.Chat.OnOpenChat += () =>
+		{
+			IsOpen = !IsOpen;
+		};
 
-		_canvas = new Panel( this );
-		_canvas.AddClass( "chat-canvas" );
-		_canvas.AddClass( "rounded" );
-		_canvas.PreferScrollToBottom = true;
+		EntryCanvas.PreferScrollToBottom = true;
+		EntryCanvas.TryScrollToBottom();
 
-		_inputPanel = new Panel( this );
-		_inputPanel.AddClass( "input-panel" );
-		_inputPanel.AddClass( "background-color-primary" );
-		_inputPanel.AddClass( "opacity-zero" );
-		_inputPanel.AddClass( "rounded" );
-
-		_inputTeamIndicator = new Panel( _inputPanel );
-		_inputTeamIndicator.AddClass( "input-team-indicator" );
-		_inputTeamIndicator.AddClass( "circular" );
-
-		_inputField = new( _inputPanel );
-		_inputField.CaretColor = Color.White;
-		_inputField.AcceptsFocus = true;
-		_inputField.AllowEmojiReplace = true;
-		_inputField.Text = "";
-		_inputField.AddClass( "input-field" );
-		_inputField.AddEventListener( "onsubmit", Submit );
-		_inputField.AddEventListener( "onblur", Close );
-
-		Sandbox.Hooks.Chat.OnOpenChat += Open;
-	}
-
-	public void OnTab()
-	{
-		if ( Local.Pawn is not Player player || player.LifeState != LifeState.Alive )
-			return;
-
-		if ( CanUseTeamChat( player ) )
-			IsTeamChatting = !IsTeamChatting;
+		Input.AddEventListener( "onsubmit", Submit );
+		Input.AddEventListener( "onblur", () => IsOpen = false );
+		Input.OnTabPressed += OnTabPressed;
 	}
 
 	public override void Tick()
 	{
 		base.Tick();
 
-		bool isAlive = Local.Pawn.LifeState == LifeState.Alive;
+		if ( Local.Pawn is not Player player )
+			return;
 
-		if ( isAlive && Local.Pawn is Player player && IsTeamChatting )
+		if ( !IsOpen )
+			return;
+
+		if ( !player.IsAlive() )
+			CurrentChannel = Channel.Spectator;
+
+		switch ( CurrentChannel )
 		{
-			_inputTeamIndicator.Style.BackgroundColor = player.Role.Info.Color;
-			_inputPanel.Style.BorderColor = player.Role.Info.Color;
+			case Channel.All:
+				Input.Style.BorderColor = _allChatColor;
+				return;
+			case Channel.Spectator:
+				Input.Style.BorderColor = _spectatorChatColor;
+				return;
+			case Channel.Role:
+				Input.Style.BorderColor = player.Role.Info.Color;
+				return;
 		}
-		else
-		{
-			_inputTeamIndicator.Style.BackgroundColor = null;
-			_inputPanel.Style.BorderColor = null;
-		}
 
-		_inputTeamIndicator.SetClass( "background-color-alive", isAlive );
-		_inputTeamIndicator.SetClass( "background-color-spectator", !isAlive );
-		_inputPanel.SetClass( "border-color-alive", isAlive );
-		_inputPanel.SetClass( "border-color-spectator", !isAlive );
-
-		if ( IsOpened )
-			_lastChatFocus = 0f;
-
-		_canvas.SetClass( "fadeOut", _lastChatFocus > MAX_DISPLAY_TIME );
+		Input.Placeholder = string.Empty;
 	}
 
-	private void Open()
+	public void AddEntry( string name, string message, string c = "" )
 	{
-		IsOpened = true;
-
-		_inputPanel.SetClass( "opacity-medium", true );
-		_inputPanel.SetClass( "open", true );
-
-		_inputField.Focus();
+		var entry = new ChatEntry( name, message );
+		if ( !string.IsNullOrEmpty( c ) ) entry.AddClass( c );
+		EntryCanvas.AddChild( entry );
 	}
 
-	private void Close()
+	public void AddEntry( string name, string message, Color? color )
 	{
-		IsTeamChatting = false;
-		IsOpened = false;
-
-		_inputPanel.SetClass( "opacity-medium", false );
-		_inputPanel.SetClass( "open", false );
-
-		_inputField.Text = "";
-		_inputField.Blur();
+		var entry = new ChatEntry( name, message, color );
+		EntryCanvas.AddChild( entry );
 	}
 
 	private void Submit()
 	{
-		bool wasTeamChatting = IsTeamChatting;
+		if ( string.IsNullOrWhiteSpace( Input.Text ) ) return;
 
-		string msg = _inputField.Text.Trim();
-
-		if ( !string.IsNullOrWhiteSpace( msg ) && Local.Pawn is Player )
-		{
-			if ( wasTeamChatting )
-			{
-				SayTeam( msg );
-			}
-			else
-			{
-				Say( msg );
-			}
-		}
-
-		Close();
+		SendChat( Input.Text, CurrentChannel );
 	}
 
-	public void AddEntry( string header, string content, Channel channel, string avatar = null, Team team = Team.None )
+	[ServerCmd]
+	public static void SendChat( string message, Channel channel )
 	{
-		_lastChatFocus = 0f;
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
 
-		if ( channel == Channel.Team )
+		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+			return;
+
+		if ( !player.IsAlive() )
 		{
-			Log.Error( "Cannot add chat entry to Team channel without a team name." );
-
+			AddChat( To.Multiple( Utils.GetDeadClients() ), ConsoleSystem.Caller.Name, message, Channel.Spectator );
 			return;
 		}
 
-		header ??= "";
-
-		#region Cleanup Old Messages
-		if ( Messages.Count > MAX_MESSAGES_COUNT )
-		{
-			ChatEntry entry = Messages[0];
-			Messages.RemoveAt( 0 );
-			entry.Delete();
-		}
-		#endregion
-
-		ChatEntry chatEntry = _canvas.AddChild<ChatEntry>();
-
-		chatEntry.Header.Text = header;
-		chatEntry.Content.Text = content;
-		chatEntry.Channel = channel;
-
-		chatEntry.Header.SetClass( "disable", string.IsNullOrEmpty( header ) );
-		chatEntry.Header.SetClass( "header", chatEntry.Channel != Channel.Info );
-		chatEntry.Content.SetClass( "disable", string.IsNullOrEmpty( content ) );
-		chatEntry.Content.SetClass( "header", chatEntry.Channel == Channel.Info );
-		chatEntry.Content.SetClass( "text-color-info", chatEntry.Channel == Channel.Info );
-
-		switch ( channel )
-		{
-			case Channel.Info:
-				chatEntry.Header.AddClass( "text-color-info" );
-
-				break;
-
-			case Channel.Player:
-				chatEntry.Header.AddClass( "text-color-alive" );
-
-				break;
-
-			case Channel.Spectator:
-				chatEntry.Header.AddClass( "text-color-spectator" );
-
-				break;
-
-			case Channel.Team:
-				chatEntry.Header.Style.FontColor = team.GetColor();
-
-				break;
-		}
-
-		bool showHeader =
-			Messages.Count == 0 ||
-			Messages[^1].Channel != chatEntry.Channel ||
-			!Messages[^1].Header.Text.Equals( chatEntry.Header.Text ) ||
-			chatEntry.Channel == Channel.Info;
-
-		if ( showHeader )
-		{
-			chatEntry.Avatar.SetTexture( avatar );
-		}
-
-		chatEntry.SetClass( "show-header", showHeader );
-
-		Messages.Add( chatEntry );
-	}
-	public static bool CanUseTeamChat( Player player )
-	{
-		return player.IsAlive() && player.Team == Team.Traitors;
+		if ( channel == Channel.All )
+			AddChat( To.Everyone, ConsoleSystem.Caller.Name, message, channel );
+		else if ( channel == Channel.Role && CanRoleChat( player ) )
+			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), ConsoleSystem.Caller.Name, message, channel, player.Role.Info.Id );
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
-	public static void AddChatEntry( string name, string message, Channel channel, string avatar = null, Team team = Team.None )
+	public static void AddChat( string name, string message, Channel channel, int roleId = -1 )
 	{
-		Instance?.AddEntry( name, message, channel, avatar, team );
-
-		// Only log clientside if we're not the listen server host
-		if ( !Global.IsListenServer )
+		switch ( channel )
 		{
-			Log.Info( $"{name}: {message}" );
+			case Channel.All:
+				Instance?.AddEntry( name, message, _allChatColor );
+				return;
+			case Channel.Spectator:
+				Instance?.AddEntry( name, message, _spectatorChatColor );
+				return;
+			case Channel.Role:
+				Instance?.AddEntry( name, message, Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color );
+				return;
 		}
 	}
 
-	[ClientCmd( "chat_addinfo", CanBeCalledFromServer = true )]
-	public static void AddInformation( string message, string avatar = null )
+	[ClientCmd( "chat_add_info", CanBeCalledFromServer = true )]
+	public static void AddInfo( string message )
 	{
-		Instance?.AddEntry( null, message, Channel.Info, avatar );
+		Instance?.AddEntry( message, "", "info" );
 	}
 
-	[ServerCmd( "say" )]
-	public static void Say( string message )
+	private void OnTabPressed()
 	{
-		Assert.NotNull( ConsoleSystem.Caller );
-
-		// TODO: Consider RegEx to remove any messed up user chat messages.
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
-		{
+		if ( Local.Pawn is not Player player || !player.IsAlive() )
 			return;
-		}
 
-		Log.Info( $"{ConsoleSystem.Caller}: {message}" );
-
-		LifeState lifeState = ConsoleSystem.Caller.Pawn.LifeState;
-
-		if ( Game.Current?.Round is InProgressRound && lifeState == LifeState.Dead )
-		{
-			AddChatEntry( To.Multiple( Utils.GetClients( ( pl ) => pl.LifeState == LifeState.Dead ) ), ConsoleSystem.Caller.Name, message, Channel.Spectator, $"avatar:{ConsoleSystem.Caller.PlayerId}" );
-		}
-		else
-		{
-			AddChatEntry( To.Everyone, ConsoleSystem.Caller.Name, message, Channel.Player, $"avatar:{ConsoleSystem.Caller.PlayerId}" );
-		}
+		if ( CanRoleChat( player ) )
+			CurrentChannel = CurrentChannel == Channel.All ? Channel.Role : Channel.All;
 	}
 
-	[ServerCmd( "sayteam" )]
-	public static void SayTeam( string message )
+	private static bool CanRoleChat( Player player )
 	{
-		Assert.NotNull( ConsoleSystem.Caller );
-
-		// TODO: Consider RegEx to remove any messed up user chat messages.
-		if ( ConsoleSystem.Caller.Pawn is not Player player || !CanUseTeamChat( player ) || message.Contains( '\n' ) || message.Contains( '\r' ) )
-		{
-			return;
-		}
-
-		Log.Info( $"{ConsoleSystem.Caller}: {message}" );
-
-		List<Client> clients = new();
-
-		AddChatEntry( player.Team.ToClients(), ConsoleSystem.Caller.Name, message, Channel.Team, $"avatar:{ConsoleSystem.Caller.PlayerId}", player.Team );
+		return player.Role is DetectiveRole || player.Role is TraitorRole;
 	}
 }
 
