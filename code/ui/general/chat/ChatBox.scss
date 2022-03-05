@@ -7,11 +7,9 @@ $innerbg: #1a1a23;
 $lightbg: #313344;
 $lighterbg: #3f4155;
 $blue: #2C3673;
-$radius: 12px;
-$smallradius: 4px;
+$radius: 8px;
+$smallradius: 8px;
 $padding: 15px;
-$stylefont: Poppins;
-$readingfont: Poppins;
 $green: #4cb74c;
 $red: #ba2828;
 
@@ -19,13 +17,13 @@ ChatBox {
     position: absolute;
     bottom: 140px;
     left: 25px;
-    width: 620px;
+    width: 450px;
     height: 570px;
     border-radius: $radius;
     flex-direction: column;
     justify-content: flex-end;
     z-index: 2;
-    font-size: 20px;
+    font-size: 16px;
 
     &.open {
         pointer-events: all;
@@ -83,7 +81,6 @@ ChatEntry {
         font-weight: 800;
         margin-right: 10px;
         color: $primary;
-        font-family: $stylefont;
         padding-top: 3px;
         letter-spacing: 1px;
     }

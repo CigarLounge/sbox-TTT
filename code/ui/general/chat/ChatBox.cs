@@ -55,7 +55,7 @@ public partial class ChatBox : Panel
 
 		if ( !IsOpen ) return;
 
-		Input.Placeholder = string.IsNullOrEmpty( Input.Text ) ? "say something nice" : string.Empty;
+		Input.Placeholder = string.Empty;
 	}
 
 	public void AddEntry( string name, string message, string c = default )

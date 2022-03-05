@@ -4,7 +4,6 @@ using Sandbox.UI;
 [UseTemplate]
 internal class ChatEntry : Panel
 {
-
 	public Label Name { get; set; }
 	public Label Message { get; set; }
 
@@ -25,6 +24,5 @@ internal class ChatEntry : Panel
 
 		AddClass( "faded" );
 	}
-
 }
 
