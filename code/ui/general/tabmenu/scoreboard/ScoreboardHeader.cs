@@ -26,7 +26,7 @@ public class ScoreboardHeader : Panel
 
 		_serverNameLabel = _serverInfoPanel.Add.Label();
 		_serverNameLabel.AddClass( "server-name-label" );
-		_serverNameLabel.Text = "TTT Server";
+		_serverNameLabel.Text = "TTT";
 
 		_serverDescriptionLabel = _serverInfoPanel.Add.Label();
 		_serverDescriptionLabel.AddClass( "server-description-label" );
