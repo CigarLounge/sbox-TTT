@@ -80,12 +80,10 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Log.Info( client.Name + " left, checking minimum player count..." );
-
 		Round.OnPlayerLeave( client.Pawn as Player );
 
-		Log.Info( $"\"{client.Name}\" has left the game ({reason})" );
-		UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
+		// MZEGAR REPLACE.
+		// UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
