@@ -37,7 +37,9 @@ public static partial class Utils
 		return players;
 	}
 
-	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.LifeState == LifeState.Alive );
+	public static List<Client> GetClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.Role == role );
+	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
+	public static List<Client> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );
 
 	public static List<Client> GiveAliveDetectivesCredits( int credits )
 	{

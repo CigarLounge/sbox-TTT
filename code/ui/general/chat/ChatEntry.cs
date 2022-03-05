@@ -9,11 +9,14 @@ internal class ChatEntry : Panel
 
 	private TimeSince timeSinceCreation;
 
-	public ChatEntry( string name, string message )
+	public ChatEntry( string name, string message, Color? color = null )
 	{
 		timeSinceCreation = 0;
 		Name.Text = name;
 		Message.Text = message;
+
+		if ( color != null )
+			Name.Style.FontColor = color;
 	}
 
 	public override void Tick()
