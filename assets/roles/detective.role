@@ -12,7 +12,6 @@
 			"ttt_equipment_healthstation",
 		]
 		color = [ 0.098039, 0.4, 1.0, 1.0 ]
-		revealtoeveryone = true
 		retrievecredits = true
 	}
 }
