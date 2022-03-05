@@ -12,9 +12,10 @@ InventorySelection {
 InventorySlot {
     height: 34px;
     font-size: 20px;
-    transition: height 0.15s linear;
     opacity: 0.5;
     align-items: center;
+    transition: opacity 0.2s ease-out;
+    transition: height 0.1s ease-in;
 
     .slot-label {
         height: 100%;
@@ -32,5 +33,17 @@ InventorySlot {
 
     &.active {
         opacity: 1;
+    }
+
+    &:outro
+    {
+        height: 0;
+        opacity: 0;
+    }
+
+    &:intro
+    {
+        height: 0;
+        opacity: 0;
     }
 }
