@@ -19,6 +19,7 @@ public partial class RPCs
 		if ( !player.IsValid() )
 			return;
 
+		player.IsRoleKnown = true;
 		player.SetRole( roleId );
 		UI.Scoreboard.Instance?.UpdateClient( player.Client );
 	}
