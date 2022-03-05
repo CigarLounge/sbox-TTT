@@ -115,14 +115,14 @@ public partial class ChatBox : Panel
 
 		if ( !player.IsAlive() )
 		{
-			AddChat( To.Multiple( Utils.GetDeadClients() ), ConsoleSystem.Caller.Name, message, Channel.Spectator );
+			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
 
 		if ( channel == Channel.All )
-			AddChat( To.Everyone, ConsoleSystem.Caller.Name, message, channel );
+			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
 		else if ( channel == Channel.Role && CanRoleChat( player ) )
-			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), ConsoleSystem.Caller.Name, message, channel, player.Role.Info.Id );
+			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.Id );
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
@@ -131,13 +131,11 @@ public partial class ChatBox : Panel
 		switch ( channel )
 		{
 			case Channel.All:
-				Instance?.AddEntry( name, message, _allChatColor );
+			case Channel.Role:
+				Instance?.AddEntry( name, message, roleId != -1 ? Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color : _allChatColor );
 				return;
 			case Channel.Spectator:
 				Instance?.AddEntry( name, message, _spectatorChatColor );
-				return;
-			case Channel.Role:
-				Instance?.AddEntry( name, message, Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color );
 				return;
 		}
 	}
@@ -159,7 +157,7 @@ public partial class ChatBox : Panel
 
 	private static bool CanRoleChat( Player player )
 	{
-		return player.Role is DetectiveRole || player.Role is TraitorRole;
+		return player.Role is TraitorRole;
 	}
 }
 
