@@ -1,6 +1,7 @@
-﻿$fontcolor: #FFF;
+﻿@import "/ui/Hud.scss";
+
+$fontcolor: #FFF;
 $fontcolorfaded: #b1b1b1;
-$primary: #55CCD9;
 $secondary: #F2BC1B;
 $bg: #1f202a;
 $innerbg: #1a1a23;
@@ -51,7 +52,6 @@ ChatBox {
 
         .placeholder {
             color: rgba(white .5);
-            font-style: italic;
         }
 
         textentry {
@@ -78,9 +78,9 @@ ChatEntry {
     }
 
     .name {
-        font-weight: 800;
+        font-weight: bold;
         margin-right: 10px;
-        color: $primary;
+        color: $alive;
         padding-top: 3px;
         letter-spacing: 1px;
     }
@@ -94,16 +94,6 @@ ChatEntry {
     &.info {
         .name {
             color: $secondary;
-        }
-    }
-
-    &.custom {
-        .name {
-            display: none;
-        }
-
-        &.timer-msg {
-            color: $primary;
         }
     }
 }

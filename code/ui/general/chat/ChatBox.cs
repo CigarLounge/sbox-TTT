@@ -2,6 +2,8 @@
 using Sandbox;
 using Sandbox.UI;
 
+namespace TTT.UI;
+
 [UseTemplate]
 public partial class ChatBox : Panel
 {
@@ -40,13 +42,6 @@ public partial class ChatBox : Panel
 
 		Input.AddEventListener( "onsubmit", Submit );
 		Input.AddEventListener( "onblur", () => IsOpen = false );
-	}
-
-	public override void OnHotloaded()
-	{
-		base.OnHotloaded();
-
-		EntryCanvas.TryScrollToBottom();
 	}
 
 	public override void Tick()

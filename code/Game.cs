@@ -75,6 +75,8 @@ public partial class Game : Sandbox.Game
 		client.SetValue( RawStrings.Spectator, true );
 		Round.OnPlayerJoin( client.Pawn as Player );
 
+		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
+
 		base.ClientJoined( client );
 	}
 
@@ -82,8 +84,7 @@ public partial class Game : Sandbox.Game
 	{
 		Round.OnPlayerLeave( client.Pawn as Player );
 
-		// MZEGAR REPLACE.
-		// UI.ChatBox.AddInformation( To.Everyone, $"{client.Name} has left ({reason})", $"avatar:{client.PlayerId}" );
+		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
