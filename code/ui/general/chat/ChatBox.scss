@@ -53,14 +53,6 @@ ChatBox {
         .placeholder {
             color: rgba(white .5);
         }
-
-        textentry {
-            flex-grow: 1;
-            padding: 8px;
-            background-color: rgba($bg .5);
-            border-radius: $smallradius;
-            align-items: center;
-        }
     }
 }
 

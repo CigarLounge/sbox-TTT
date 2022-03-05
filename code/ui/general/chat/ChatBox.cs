@@ -71,7 +71,6 @@ public partial class ChatBox : Panel
 	public static void SendChat( string message )
 	{
 		if ( !ConsoleSystem.Caller.IsValid() ) return;
-
 		AddChat( To.Everyone, ConsoleSystem.Caller.Name, message );
 	}
 
@@ -82,16 +81,9 @@ public partial class ChatBox : Panel
 	}
 
 	[ClientCmd( "chat_add_info", CanBeCalledFromServer = true )]
-	public static void AddInfo( string message, string name = "Server" )
+	public static void AddInfo( string message )
 	{
-		Current?.AddEntry( name, message, "info" );
+		Current?.AddEntry( message, "", "info" );
 	}
-
-	[ClientCmd( "chat_add_custom", CanBeCalledFromServer = true )]
-	public static void AddCustom( string message, string c = default )
-	{
-		Current?.AddEntry( string.Empty, message, "custom " + c );
-	}
-
 }
 
