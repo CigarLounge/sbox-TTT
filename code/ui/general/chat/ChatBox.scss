@@ -2,7 +2,6 @@
 
 $fontcolor: #FFF;
 $fontcolorfaded: #b1b1b1;
-$secondary: #F2BC1B;
 $bg: #1f202a;
 $innerbg: #1a1a23;
 $lightbg: #313344;
@@ -85,7 +84,7 @@ ChatEntry {
 
     &.info {
         .name {
-            color: $secondary;
+            color: $info;
         }
     }
 }

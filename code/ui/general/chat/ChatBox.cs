@@ -7,11 +7,18 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class ChatBox : Panel
 {
+	public enum Channel
+	{
+		Alive,
+		Spectator,
+		Role // For detectives & traitors
+	}
 
-	public static ChatBox Current;
+	public static ChatBox Instance;
 
 	public Panel EntryCanvas { get; set; }
-	public TextEntry Input { get; set; }
+	public TabTextEntry Input { get; set; }
+	public Channel CurrentChannel { get; private set; } = Channel.Alive;
 
 	public bool IsOpen
 	{
@@ -30,7 +37,7 @@ public partial class ChatBox : Panel
 
 	public ChatBox()
 	{
-		Current = this;
+		Instance = this;
 
 		Sandbox.Hooks.Chat.OnOpenChat += () =>
 		{
@@ -42,6 +49,7 @@ public partial class ChatBox : Panel
 
 		Input.AddEventListener( "onsubmit", Submit );
 		Input.AddEventListener( "onblur", () => IsOpen = false );
+		Input.OnTabPressed += OnTabPressed;
 	}
 
 	public override void Tick()
@@ -64,26 +72,58 @@ public partial class ChatBox : Panel
 	{
 		if ( string.IsNullOrWhiteSpace( Input.Text ) ) return;
 
-		SendChat( Input.Text );
+		SendChat( Input.Text, CurrentChannel );
 	}
 
 	[ServerCmd]
-	public static void SendChat( string message )
+	public static void SendChat( string message, Channel channel )
 	{
-		if ( !ConsoleSystem.Caller.IsValid() ) return;
-		AddChat( To.Everyone, ConsoleSystem.Caller.Name, message );
+		if ( ConsoleSystem.Caller.Pawn is not Player )
+			return;
+
+		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+			return;
+
+		switch ( channel )
+		{
+			case Channel.Alive:
+				AddChat( To.Everyone, ConsoleSystem.Caller.Name, message );
+				break;
+			case Channel.Role:
+				AddChat( To.Everyone, ConsoleSystem.Caller.Name, message );
+				break;
+			case Channel.Spectator:
+				AddChat( To.Everyone, ConsoleSystem.Caller.Name, message );
+				break;
+		}
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
 	public static void AddChat( string name, string message )
 	{
-		Current?.AddEntry( name, message );
+		Instance?.AddEntry( name, message );
 	}
 
 	[ClientCmd( "chat_add_info", CanBeCalledFromServer = true )]
 	public static void AddInfo( string message )
 	{
-		Current?.AddEntry( message, "", "info" );
+		Instance?.AddEntry( message, "", "info" );
+	}
+
+	private void OnTabPressed()
+	{
+		if ( Local.Pawn.IsAlive() && CanTeamChat() )
+		{
+			if ( CurrentChannel == Channel.Alive )
+				CurrentChannel = Channel.Role;
+			else if ( CurrentChannel == Channel.Role )
+				CurrentChannel = Channel.Alive;
+		}
+	}
+
+	private static bool CanTeamChat()
+	{
+		return Local.Pawn is Player player && (player.Role is DetectiveRole || player.Role is TraitorRole);
 	}
 }
 
