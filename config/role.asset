@@ -10,7 +10,7 @@
 		2 : "Traitors"
 	]
 	color(color1) : "Color" :  : ""
-	defaultcredits(integer) : "Default Credits" : 0 : "The amount of credits player's spawn with."
+	defaultcredits(integer) : "Default Credits" : 0 : "The amount of credits players spawn with."
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
 	retrievecredits(boolean) : "Retrieve Credits" : 0 : "Players can retrieve credits from corpses."
 	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."

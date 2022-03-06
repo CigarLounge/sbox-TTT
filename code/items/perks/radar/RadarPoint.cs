@@ -47,7 +47,7 @@ public class RadarPoint : Panel
 			return;
 		}
 
-		_distanceLabel.Text = $"{Utils.SourceUnitsToMeters( player.Position.Distance( _position ) ):n0}m";
+		_distanceLabel.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
 
 		Vector3 screenPos = _position.ToScreen();
 		this.Enabled( screenPos.z > 0f );

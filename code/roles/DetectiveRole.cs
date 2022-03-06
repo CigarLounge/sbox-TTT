@@ -15,7 +15,7 @@ public class DetectiveRole : BaseRole
 
 			foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
 			{
-				player.SendClientRole( To.Single( otherPlayer ) );
+				player.SendRoleToClient( To.Single( otherPlayer ) );
 			}
 
 			player.Perks.Add( new BodyArmor() );

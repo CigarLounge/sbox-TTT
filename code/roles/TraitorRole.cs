@@ -16,8 +16,8 @@ public class TraitorRole : BaseRole
 				if ( otherPlayer == player )
 					continue;
 
-				player.SendClientRole( To.Single( otherPlayer ) );
-				otherPlayer.SendClientRole( To.Single( player ) );
+				player.SendRoleToClient( To.Single( otherPlayer ) );
+				otherPlayer.SendRoleToClient( To.Single( player ) );
 			}
 
 			foreach ( Player otherPlayer in Utils.GetPlayers() )

@@ -42,7 +42,6 @@ public partial class CarriableInfo : ItemInfo
 		base.PostLoad();
 
 		CachedViewModel = Model.Load( ViewModel );
-		CachedWorldModel = Model.Load( WorldModel );
 	}
 }
 

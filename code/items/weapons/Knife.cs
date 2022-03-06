@@ -75,7 +75,7 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player player )
 		{
-			player.LastDistanceToAttacker = Utils.SourceUnitsToMeters( Owner.Position.Distance( player.Position ) );
+			player.LastDistanceToAttacker = 0;
 			PlaySound( RawStrings.FleshHit );
 			Owner.Inventory.DropActive();
 			Delete();
@@ -154,7 +154,7 @@ public partial class Knife : Carriable
 			trace.Surface.DoBulletImpact( trace );
 			Velocity = Vector3.Zero;
 			damageInfo.Damage = 100f;
-			player.LastDistanceToAttacker = Utils.SourceUnitsToMeters( _thrownFrom.Distance( player.Position ) );
+			player.LastDistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();
 			player.TakeDamage( damageInfo );
 
 			Delete();

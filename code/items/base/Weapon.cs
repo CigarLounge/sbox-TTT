@@ -12,7 +12,7 @@ public enum FireMode
 	Burst = 2
 }
 
-[Library( "weap" ), AutoGenerate]
+[Library( "weapon" ), AutoGenerate]
 public partial class WeaponInfo : CarriableInfo
 {
 	[Property, Category( "Sounds" )]
@@ -299,7 +299,7 @@ public partial class Weapon : Carriable
 					damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd ); ;
 
 					if ( trace.Entity is Player player )
-						player.LastDistanceToAttacker = Utils.SourceUnitsToMeters( Owner.Position.Distance( player.Position ) );
+						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
 
 					trace.Entity.TakeDamage( damageInfo );
 				}

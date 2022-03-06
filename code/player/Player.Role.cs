@@ -36,7 +36,15 @@ public partial class Player
 
 		// Always send the role to this player's client
 		if ( IsServer )
-			SendClientRole();
+			SendRoleToClient();
+	}
+
+	[ClientRpc]
+	private void ClientSetRole( int id )
+	{
+		IsRoleKnown = true;
+		SetRole( id );
+		UI.Scoreboard.Instance?.UpdateClient( Client );
 	}
 
 	public void SetRole( string libraryName )
@@ -53,9 +61,9 @@ public partial class Player
 	/// Sends the role + team and all connected additional data like logic buttons of the current Player to the given target or - if no target was provided - the player itself
 	/// </summary>
 	/// <param name="to">optional - The target</param>
-	public void SendClientRole( To? to = null )
+	public void SendRoleToClient( To? to = null )
 	{
-		RPCs.ClientSetRole( to ?? To.Single( this ), this, Role.Info.Id );
+		ClientSetRole( to ?? To.Single( this ), Role.Info.Id );
 
 		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
 			SendLogicButtonsToClient();

@@ -175,7 +175,7 @@ public class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		string timeSinceDeath = Utils.TimerString( Time.Now - _playerCorpse.KilledTime );
+		string timeSinceDeath = ( Time.Now - _playerCorpse.KilledTime ).TimerString();
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 

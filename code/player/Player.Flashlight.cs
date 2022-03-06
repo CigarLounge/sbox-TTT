@@ -62,8 +62,7 @@ public partial class Player
 		viewLight?.Delete();
 	}
 
-	[Event.Frame]
-	public void Frame()
+	public void FrameSimulateFlashlight()
 	{
 		if ( !viewLight.IsValid() )
 			return;
@@ -75,6 +74,7 @@ public partial class Player
 
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
 		viewLight.Transform = transform;
+
 		if ( ActiveChild.IsValid() )
 			viewLight.Transform = (ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}

@@ -143,7 +143,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			}
 		}
 
-		DeadPlayer.SendClientRole( to ?? To.Everyone );
+		DeadPlayer.SendRoleToClient( to ?? To.Everyone );
 		GetDamageInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
 		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName );
 		ClientConfirm( to ?? To.Everyone, credits, wasPreviouslyConfirmed );

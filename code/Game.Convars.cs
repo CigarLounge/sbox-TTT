@@ -1,3 +1,5 @@
+using Sandbox;
+
 namespace TTT;
 
 public partial class Game
@@ -31,7 +33,7 @@ public partial class Game
 	#endregion
 
 	#region Minimum Players
-	[ServerVar( "ttt_min_players", Help = "The minimum players to start the game.", Saved = true )]
+	[ConVar.Replicated( "ttt_min_players", Help = "The minimum players to start the game.", Saved = true )]
 	public static int MinPlayers { get; set; } = 2;
 	#endregion
 

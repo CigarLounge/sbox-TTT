@@ -40,7 +40,7 @@ public partial class InProgressRound : BaseRound
 			}
 			else if ( player.IsRoleKnown )
 			{
-				player.SendClientRole( To.Single( playerJoined ) );
+				player.SendRoleToClient( To.Single( playerJoined ) );
 			}
 		}
 	}

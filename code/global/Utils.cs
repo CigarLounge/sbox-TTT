@@ -67,14 +67,14 @@ public static partial class Utils
 	/// </summary>
 	/// <param name="sourceUnits"></param>
 	/// <returns>sourceUnits in meters</returns>
-	public static float SourceUnitsToMeters( float sourceUnits ) => sourceUnits / 39.37f;
+	public static float SourceUnitsToMeters( this float sourceUnits ) => sourceUnits / 39.37f;
 
 	/// <summary>
 	/// Returns seconds in the format mm:ss
 	/// </summary>
 	/// <param name="seconds"></param>
 	/// <returns>Seconds as a string in the format "mm:ss"</returns>
-	public static string TimerString( float seconds ) => TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
+	public static string TimerString( this float seconds ) => TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
 
 	public static void Enabled( this Panel panel, bool enabled )
 	{

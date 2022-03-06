@@ -14,17 +14,6 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientSetRole( Player player, int roleId )
-	{
-		if ( !player.IsValid() )
-			return;
-
-		player.IsRoleKnown = true;
-		player.SetRole( roleId );
-		UI.Scoreboard.Instance?.UpdateClient( player.Client );
-	}
-
-	[ClientRpc]
 	public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
 	{
 		UI.PostRoundMenu.Instance.OpenAndSetPostRoundMenu( new UI.PostRoundStats(

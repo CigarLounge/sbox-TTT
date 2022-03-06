@@ -7,7 +7,7 @@ namespace TTT;
 [Hammer.Skip]
 public abstract partial class Asset : Sandbox.Asset
 {
-	private static Dictionary<string, Asset> Collection { get; set; } = new();
+	private static Dictionary<string, Asset> _collection { get; set; } = new();
 
 	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
 	public string LibraryName { get; set; }
@@ -20,18 +20,18 @@ public abstract partial class Asset : Sandbox.Asset
 
 	public static T GetInfo<T>( LibraryClass libraryClass ) where T : Asset
 	{
-		if ( libraryClass is null || !Collection.ContainsKey( libraryClass.ClassInfo.Name ) )
+		if ( libraryClass is null || !_collection.ContainsKey( libraryClass.ClassInfo.Name ) )
 			return null;
 
-		return Collection[libraryClass.ClassInfo.Name] as T;
+		return _collection[libraryClass.ClassInfo.Name] as T;
 	}
 
 	public static T GetInfo<T>( string libraryName ) where T : Asset
 	{
-		if ( string.IsNullOrEmpty( libraryName ) || !Collection.ContainsKey( libraryName ) )
+		if ( string.IsNullOrEmpty( libraryName ) || !_collection.ContainsKey( libraryName ) )
 			return null;
 
-		return Collection[libraryName] as T;
+		return _collection[libraryName] as T;
 	}
 
 	protected override void PostLoad()
@@ -46,7 +46,7 @@ public abstract partial class Asset : Sandbox.Asset
 		if ( attribute == null )
 			return;
 
-		Collection[LibraryName] = this;
+		_collection[LibraryName] = this;
 		Title = attribute.Title;
 	}
 }

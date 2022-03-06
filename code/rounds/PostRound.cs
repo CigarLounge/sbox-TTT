@@ -32,7 +32,7 @@ public class PostRound : BaseRound
 			}
 			else if ( player.IsRoleKnown )
 			{
-				player.SendClientRole( To.Single( playerJoined ) );
+				player.SendRoleToClient( To.Single( playerJoined ) );
 			}
 		}
 	}
@@ -47,7 +47,7 @@ public class PostRound : BaseRound
 			if ( player.Corpse.IsValid() && !player.IsConfirmedDead )
 				player.Corpse.Confirm( To.Everyone );
 			else
-				player.SendClientRole( To.Everyone );
+				player.SendRoleToClient( To.Everyone );
 		}
 	}
 }
