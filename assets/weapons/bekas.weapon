@@ -8,7 +8,7 @@
 		bulletsperfire = 5
 		clipsize = 8
 		damage = 15.0
-		spread = 0.1
+		spread = 0.2
 		primaryrate = 1.2
 		secondaryrate = 0.0
 		reloadtime = 0.45
@@ -34,5 +34,6 @@
 		recoilrecoveryscale = 0.0
 		islimited = false
 		candrop = true
+		description = ""
 	}
 }
