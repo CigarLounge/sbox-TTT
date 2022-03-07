@@ -18,6 +18,9 @@ public partial class Teleporter : Carriable
 	[Net, Predicted]
 	public bool IsTeleporting { get; private set; }
 
+	[Net, Predicted]
+	public bool LocationIsSet { get; private set; }
+
 	private Vector3 _teleportLocation;
 
 	public override void ActiveStart( Entity ent )
@@ -79,7 +82,10 @@ public partial class Teleporter : Carriable
 
 		// Only set the location if it's on the ground
 		if ( trace.Normal.z <= 1f && trace.Normal.z >= 0.70710678118f )
+		{
+			LocationIsSet = true;
 			_teleportLocation = trace.EndPosition;
+		}
 
 		// TODO: maybe also check if the player doesn't get stuck
 		// when teleported to the target location
@@ -87,6 +93,9 @@ public partial class Teleporter : Carriable
 
 	private void StartTeleport()
 	{
+		if ( !LocationIsSet )
+			return;
+
 		IsTeleporting = true;
 		TimeSinceAction = 0;
 		TimeSinceStartedTeleporting = 0;
