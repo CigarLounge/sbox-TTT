@@ -251,7 +251,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string TextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
 																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse";
 
-	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Walk ).ToUpper()} to convert search"
+	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to convert search"
 																					 : "";
 
 	bool IEntityHint.CanHint( Player client ) => true;
@@ -276,7 +276,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( IsServer && user.IsAlive() && !DeadPlayer.IsConfirmedDead )
 		{
-			if ( !Input.Down( InputButton.Walk ) )
+			if ( !Input.Down( InputButton.Run ) )
 			{
 				Confirmer = user as Player;
 				Confirm();

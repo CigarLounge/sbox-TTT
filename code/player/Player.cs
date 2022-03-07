@@ -149,7 +149,7 @@ public partial class Player : Sandbox.Player
 		SimulatePerks();
 		SimulateActiveChild( client, ActiveChild );
 
-		PawnController controller = GetActiveController();
+		var controller = GetActiveController();
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 

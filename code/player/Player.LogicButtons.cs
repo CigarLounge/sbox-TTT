@@ -93,8 +93,8 @@ public partial class Player
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 
-		if ( !player.IsValid() )		
-			return;	
+		if ( !player.IsValid() )
+			return;
 
 		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
 		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckTeam == Team.Traitors );
@@ -122,22 +122,18 @@ public partial class Player
 			return;
 		}
 
-		if ( button.CanUse() )	
-			button.Press( player );	
+		if ( button.CanUse() )
+			button.Press( player );
 	}
 
 	// Client keybinding for activating button within focus.
 	public void LogicButtonActivate()
 	{
 		if ( Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
-		{
 			return;
-		}
 
 		// Double check all of our data that initially set `FocusedButton` to make sure nothing has changed or any fuckery is about.
 		if ( FocusedButton.IsLengthWithinCamerasFocus() && FocusedButton.IsUsable( player ) )
-		{
 			ActivateLogicButton( FocusedButton.Data.NetworkIdent );
-		}
 	}
 }

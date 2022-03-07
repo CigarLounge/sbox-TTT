@@ -21,7 +21,7 @@ public partial class RoleInfo : Asset
 	{
 		base.PostLoad();
 
-		AvailableItems = ExclusiveItems == null ? new HashSet<string>() : new HashSet<string>( ExclusiveItems );
+		AvailableItems = new HashSet<string>( ExclusiveItems );
 	}
 }
 
