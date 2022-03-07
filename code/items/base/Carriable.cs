@@ -49,8 +49,9 @@ public partial class CarriableInfo : ItemInfo
 public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 {
 	[Net, Predicted]
-	public TimeSince TimeSinceDeployed { get; set; }
-	public TimeSince TimeSinceDropped { get; protected set; }
+	public TimeSince TimeSinceDeployed { get; private set; }
+
+	public TimeSince TimeSinceDropped { get; private set; }
 
 	public new Player Owner
 	{

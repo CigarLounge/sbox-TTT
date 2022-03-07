@@ -13,6 +13,7 @@
 			"ttt_weapon_silentfox",
 			"ttt_weapon_silencedpistol",
 			"ttt_weapon_knife",
+			"ttt_equipment_teleporter",
 		]
 		color = [ 0.87451, 0.160784, 0.207843, 1.0 ]
 		retrievecredits = true

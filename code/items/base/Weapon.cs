@@ -59,7 +59,7 @@ public partial class Weapon : Carriable
 	public TimeSince TimeSinceReload { get; protected set; }
 
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
-	public Vector3 CurrentRecoilAmount { get; set; } = Vector3.Zero;
+	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
 	public new WeaponInfo Info
 	{
@@ -315,7 +315,7 @@ public partial class Weapon : Carriable
 	{
 		bool InWater = Map.Physics.IsPointWater( start );
 
-		var tr = Trace.Ray( start, end )
+		var trace = Trace.Ray( start, end )
 				.UseHitboxes()
 				.HitLayer( CollisionLayer.Water, !InWater )
 				.HitLayer( CollisionLayer.Debris )
@@ -324,7 +324,7 @@ public partial class Weapon : Carriable
 				.Size( radius )
 				.Run();
 
-		yield return tr;
+		yield return trace;
 
 		//
 		// Another trace, bullet going through thin material, penetrating water surface?
