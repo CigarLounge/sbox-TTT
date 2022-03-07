@@ -35,6 +35,6 @@ public class TraitorRole : BaseRole
 		base.OnKilled( player );
 
 		var clients = Utils.GiveAliveDetectivesCredits( 100 );
-		RPCs.ClientDisplayMessage( To.Multiple( clients ), "Detectives, you have been awarded 100 equipment credits for your performance.", Color.White );
+		RPCs.ClientDisplayRoleEntry( To.Multiple( clients ), new DetectiveRole().Info.Id, "you have been awarded 100 credits for your performance." );
 	}
 }

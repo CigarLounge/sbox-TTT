@@ -29,8 +29,20 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientDisplayMessage( string message, Color color )
+	public static void ClientDisplayEntry( string message, Color color )
 	{
 		UI.InfoFeed.Instance?.AddEntry( message, color );
+	}
+
+	[ClientRpc]
+	public static void ClientDisplayClientEntry( string message )
+	{
+		UI.InfoFeed.Instance?.AddClientEntry( Local.Client, message );
+	}
+
+	[ClientRpc]
+	public static void ClientDisplayRoleEntry( int roleId, string message )
+	{
+		UI.InfoFeed.Instance?.AddRoleEntry( roleId, message );
 	}
 }

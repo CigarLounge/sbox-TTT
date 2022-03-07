@@ -184,7 +184,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( Confirmer == null || wasPreviouslyConfirmed )
 			return;
 
-		UI.InfoFeed.Instance.AddEntry
+		UI.InfoFeed.Instance.AddClientToClientEntry
 		(
 			Confirmer.Client,
 			PlayerName,
@@ -195,7 +195,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( Confirmer.IsLocalPawn && credits > 0 )
 		{
-			UI.InfoFeed.Instance?.AddEntry
+			UI.InfoFeed.Instance?.AddClientEntry
 			(
 				Confirmer.Client,
 				$"found $ {credits} credits!"
@@ -212,7 +212,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( credits > 0 )
 		{
-			UI.InfoFeed.Instance?.AddEntry
+			UI.InfoFeed.Instance?.AddClientEntry
 			(
 				Local.Client,
 				$"found $ {credits} credits!"

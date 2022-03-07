@@ -31,19 +31,19 @@ public partial class FeedEntry : Entity
 		switch ( Receiver )
 		{
 			case FeedEntryType.Activator:
-				RPCs.ClientDisplayMessage( To.Single( activator ), Message, Color );
+				RPCs.ClientDisplayEntry( To.Single( activator ), Message, Color );
 				break;
 
 			case FeedEntryType.All:
-				RPCs.ClientDisplayMessage( To.Everyone, Message, Color );
+				RPCs.ClientDisplayEntry( To.Everyone, Message, Color );
 				break;
 
 			case FeedEntryType.Innocents:
-				RPCs.ClientDisplayMessage( Team.Innocents.ToClients(), Message, Color );
+				RPCs.ClientDisplayEntry( Team.Innocents.ToClients(), Message, Color );
 				break;
 
 			case FeedEntryType.Traitors:
-				RPCs.ClientDisplayMessage( Team.Traitors.ToClients(), Message, Color );
+				RPCs.ClientDisplayEntry( Team.Traitors.ToClients(), Message, Color );
 				break;
 		}
 	}
