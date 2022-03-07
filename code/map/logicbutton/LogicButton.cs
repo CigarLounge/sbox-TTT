@@ -8,8 +8,7 @@ public partial class LogicButton : Entity
 	[Property( "Check Value", "The team to check for." )]
 	public Team CheckTeam { get; set; } = Team.Traitors;
 
-	[Property( "Description", "On screen tooltip shown on button." )]
-	[Net]
+	[Net, Property( "Description", "On screen tooltip shown on button." )]
 	public string Description { get; private set; }
 
 	[Property( "Range", "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units." )]

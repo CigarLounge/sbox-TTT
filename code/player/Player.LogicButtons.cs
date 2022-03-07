@@ -93,10 +93,8 @@ public partial class Player
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 
-		if ( !player.IsValid() )
-		{
-			return;
-		}
+		if ( !player.IsValid() )		
+			return;	
 
 		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
 		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckTeam == Team.Traitors );
@@ -124,10 +122,8 @@ public partial class Player
 			return;
 		}
 
-		if ( button.CanUse() )
-		{
-			button.Press( player );
-		}
+		if ( button.CanUse() )	
+			button.Press( player );	
 	}
 
 	// Client keybinding for activating button within focus.

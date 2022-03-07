@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -30,6 +29,7 @@ public class WeaponRandom : Entity
 	public override void Spawn()
 	{
 		base.Spawn();
+
 		Transmit = TransmitType.Never;
 	}
 

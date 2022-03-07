@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -76,8 +74,9 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !this.IsValid() || !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		var ammoPickedUp = player.GiveAmmo( Type, CurrentCount );
+		int ammoPickedUp = player.GiveAmmo( Type, CurrentCount );
 		CurrentCount -= ammoPickedUp;
+
 		if ( CurrentCount <= 0 )
 			Delete();
 	}

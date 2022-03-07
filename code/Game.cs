@@ -9,7 +9,7 @@ public partial class Game : Sandbox.Game
 
 	[Net, Change]
 	public BaseRound Round { get; private set; }
-	private BaseRound _lastRound { get; set; }
+	private BaseRound _lastRound;
 
 	[Net]
 	public MapSelectionHandler MapSelection { get; set; } = new();
