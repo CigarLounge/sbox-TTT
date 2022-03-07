@@ -189,7 +189,6 @@ ScoreboardEntry
     font-weight: 500;
     display: flex;
     padding: 8px;
-    transition: height 0.1s ease-out;
 
     .avatar
     {
@@ -234,11 +233,5 @@ ScoreboardEntry
     {
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-    }
-
-    &:intro
-    {
-        height: 0;
-        opacity: 0;
     }
 }
