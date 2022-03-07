@@ -14,6 +14,12 @@ public interface IEntityHint
 	/// </summary>
 	string TextOnTick { get; }
 
+
+	/// <summary>
+	/// The sub text to display on the hint each tick.
+	/// </summary>
+	string SubTextOnTick => "";
+
 	/// <summary>
 	/// Whether or not we can show the UI hint.
 	/// </summary>

@@ -18,6 +18,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
 	public string[] Perks { get; set; }
+	private readonly HashSet<long> _playersWhoCovertConfirmed = new();
+
+	// Clientside
+	private bool _isCovertConfirmed = false;
 
 	public Corpse() { }
 
@@ -144,9 +148,30 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		DeadPlayer.SendRoleToClient( to ?? To.Everyone );
-		GetDamageInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
-		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName );
+		GetKillInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, PlayerId, PlayerName );
 		ClientConfirm( to ?? To.Everyone, credits, wasPreviouslyConfirmed );
+	}
+
+	public void CovertConfirm( Player player )
+	{
+		Host.AssertServer();
+
+		_playersWhoCovertConfirmed.Add( player.Client.PlayerId );
+
+		int credits = 0;
+		if ( DeadPlayer.Credits > 0 && player.IsValid() && player.Role.Info.RetrieveCredits )
+		{
+			player.Credits += DeadPlayer.Credits;
+			credits = DeadPlayer.Credits;
+			DeadPlayer.Credits = 0;
+			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
+		}
+
+		DeadPlayer.SendRoleToClient( To.Single( player ) );
+		GetKillInfo( To.Single( player ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+		GetPlayerData( To.Single( player ), DeadPlayer, Confirmer, PlayerId, PlayerName );
+		ClientCovertConfirm( To.Single( player ), credits );
 	}
 
 	[ClientRpc]
@@ -179,7 +204,24 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	public void GetDamageInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag )
+	private void ClientCovertConfirm( int credits = 0 )
+	{
+		DeadPlayer.IsRoleKnown = true;
+		DeadPlayer.IsMissingInAction = true;
+		_isCovertConfirmed = true;
+
+		if ( credits > 0 )
+		{
+			UI.InfoFeed.Instance?.AddEntry
+			(
+				Local.Client,
+				$"found $ {credits} credits!"
+			);
+		}
+	}
+
+	[ClientRpc]
+	public void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -190,15 +232,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillInfo = info;
 		LastAttacker = info.Attacker;
 		KillerWeapon = Asset.FromId<CarriableInfo>( weaponId );
+		Distance = distance;
+		KilledTime = killedTime;
 	}
 
 	[ClientRpc]
-	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name )
+	public void GetPlayerData( Player deadPlayer, Player confirmer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
 		Confirmer = confirmer;
-		KilledTime = killedTime;
-		Distance = distance;
 		PlayerId = playerId;
 		PlayerName = name;
 	}
@@ -206,30 +248,43 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick => DeadPlayer == null ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse"
-												   : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
+	public string TextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
+																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse";
+
+	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Walk ).ToUpper()} to convert search"
+																					 : "";
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
-		return new UI.Hint( TextOnTick );
+		return new UI.Hint(
+			TextOnTick,
+			SubTextOnTick
+		);
 	}
 
 	void IEntityHint.Tick( Player player )
 	{
 		if ( player.Using != this )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( DeadPlayer.IsConfirmedDead && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( (DeadPlayer.IsConfirmedDead || _isCovertConfirmed) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && !DeadPlayer.IsConfirmedDead && user.IsAlive() )
+		if ( IsServer && user.IsAlive() && !DeadPlayer.IsConfirmedDead )
 		{
-			Confirmer = user as Player;
-			Confirm();
+			if ( !Input.Down( InputButton.Walk ) )
+			{
+				Confirmer = user as Player;
+				Confirm();
+			}
+			else if ( !_playersWhoCovertConfirmed.Contains( user.Client.PlayerId ) )
+			{
+				CovertConfirm( user as Player );
+			}
 		}
 
 		return true;

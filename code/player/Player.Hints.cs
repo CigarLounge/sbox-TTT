@@ -31,7 +31,7 @@ public partial class Player
 		{
 			hint.Tick( this );
 
-			_currentHintPanel.UpdateHintPanel( hint.TextOnTick );
+			_currentHintPanel.UpdateHintPanel( hint.TextOnTick, hint.SubTextOnTick );
 
 			return;
 		}
