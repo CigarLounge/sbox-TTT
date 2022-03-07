@@ -251,8 +251,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string TextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
 																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse";
 
-	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to convert search"
-																					 : "";
+	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to convert search" : "";
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
@@ -274,24 +273,26 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && user.IsAlive() && !DeadPlayer.IsConfirmedDead )
-		{
-			if ( !Input.Down( InputButton.Run ) )
-			{
-				Confirmer = user as Player;
-				Confirm();
-			}
-			else if ( !_playersWhoCovertConfirmed.Contains( user.Client.PlayerId ) )
-			{
-				CovertConfirm( user as Player );
-			}
-		}
-
 		return true;
 	}
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user is Player;
+		var player = user as Player;
+
+		if ( player.IsAlive() && !DeadPlayer.IsConfirmedDead )
+		{
+			if ( !Input.Down( InputButton.Run ) )
+			{
+				Confirmer = player;
+				Confirm();
+			}
+			else if ( !_playersWhoCovertConfirmed.Contains( user.Client.PlayerId ) )
+			{
+				CovertConfirm( player );
+			}
+		}
+
+		return true;
 	}
 }
