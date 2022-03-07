@@ -18,6 +18,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
 	public string[] Perks { get; set; }
+	private HashSet<long> _covertConfirmed = new();
 
 	public Corpse() { }
 
@@ -144,9 +145,30 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		DeadPlayer.SendRoleToClient( to ?? To.Everyone );
-		GetDamageInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags );
-		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, KilledTime, Distance, PlayerId, PlayerName );
+		GetKillInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, PlayerId, PlayerName );
 		ClientConfirm( to ?? To.Everyone, credits, wasPreviouslyConfirmed );
+	}
+
+	public void CovertConfirm( Player player )
+	{
+		Host.AssertServer();
+
+		_covertConfirmed.Add( player.Client.PlayerId );
+
+		int credits = 0;
+		if ( DeadPlayer.Credits > 0 && player.IsValid() && player.Role.Info.RetrieveCredits )
+		{
+			player.Credits += DeadPlayer.Credits;
+			credits = DeadPlayer.Credits;
+			DeadPlayer.Credits = 0;
+			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
+		}
+
+		DeadPlayer.SendRoleToClient( To.Single( player ) );
+		GetKillInfo( To.Single( player ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+		GetPlayerData( To.Single( player ), DeadPlayer, Confirmer, PlayerId, PlayerName );
+		ClientCovertConfirm( To.Single( player ), credits );
 	}
 
 	[ClientRpc]
@@ -179,7 +201,23 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	public void GetDamageInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag )
+	private void ClientCovertConfirm( int credits = 0 )
+	{
+		DeadPlayer.IsRoleKnown = true;
+		DeadPlayer.IsMissingInAction = true;
+
+		if ( credits > 0 )
+		{
+			UI.InfoFeed.Instance?.AddEntry
+			(
+				Confirmer.Client,
+				$"found $ {credits} credits!"
+			);
+		}
+	}
+
+	[ClientRpc]
+	public void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -190,15 +228,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillInfo = info;
 		LastAttacker = info.Attacker;
 		KillerWeapon = Asset.FromId<CarriableInfo>( weaponId );
+		Distance = distance;
+		KilledTime = killedTime;
 	}
 
 	[ClientRpc]
-	public void GetPlayerData( Player deadPlayer, Player confirmer, float killedTime, float distance, long playerId, string name )
+	public void GetPlayerData( Player deadPlayer, Player confirmer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
 		Confirmer = confirmer;
-		KilledTime = killedTime;
-		Distance = distance;
 		PlayerId = playerId;
 		PlayerName = name;
 	}
@@ -226,10 +264,17 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && !DeadPlayer.IsConfirmedDead && user.IsAlive() )
+		if ( IsServer && user.IsAlive() )
 		{
-			Confirmer = user as Player;
-			Confirm();
+			if ( !DeadPlayer.IsConfirmedDead && !Input.Down( InputButton.Walk ) )
+			{
+				Confirmer = user as Player;
+				Confirm();
+			}
+			else if ( !_covertConfirmed.Contains( user.Client.PlayerId ) )
+			{
+				CovertConfirm( user as Player );
+			}
 		}
 
 		return true;
