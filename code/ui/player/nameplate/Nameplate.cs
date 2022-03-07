@@ -31,7 +31,7 @@ public class Nameplate : EntityHintPanel
 		this.Enabled( false );
 	}
 
-	public override void UpdateHintPanel( string text )
+	public override void UpdateHintPanel( string text, string subtext = "" )
 	{
 		SetClass( "disabled", !this.IsEnabled() );
 
