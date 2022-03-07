@@ -40,7 +40,7 @@ public partial class Knife : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	protected void MeleeAttack( float damage, float range, float radius )
+	private void MeleeAttack( float damage, float range, float radius )
 	{
 		TimeSinceStab = 0;
 
@@ -84,7 +84,7 @@ public partial class Knife : Carriable
 		trace.Entity.TakeDamage( info );
 	}
 
-	public void Throw()
+	private void Throw()
 	{
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition ).Ignore( Owner ).Run();
 		_thrower = Owner;

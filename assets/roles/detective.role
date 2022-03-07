@@ -10,6 +10,7 @@
 			"ttt_perk_radar",
 			"ttt_weapon_p90",
 			"ttt_equipment_healthstation",
+			"ttt_equipment_teleporter",
 		]
 		color = [ 0.098039, 0.4, 1.0, 1.0 ]
 		retrievecredits = true

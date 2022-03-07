@@ -153,9 +153,9 @@ public partial class Player : Sandbox.Player
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 
-	public override void FrameSimulate( Client cl )
+	public override void FrameSimulate( Client client )
 	{
-		base.FrameSimulate( cl );
+		base.FrameSimulate( client );
 
 		CurrentPlayer.FrameSimulateFlashlight();
 	}
