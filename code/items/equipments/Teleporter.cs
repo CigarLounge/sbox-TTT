@@ -48,14 +48,14 @@ public partial class Teleporter : Carriable
 			return;
 		}
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
+		if ( Input.Pressed( InputButton.Attack2 ) )
 		{
 			using ( LagCompensation() )
 			{
 				SetLocation();
 			}
 		}
-		else if ( Input.Pressed( InputButton.Attack2 ) )
+		else if ( Input.Pressed( InputButton.Attack1 ) )
 		{
 			StartTeleport();
 		}
@@ -74,18 +74,15 @@ public partial class Teleporter : Carriable
 
 		TimeSinceAction = 0;
 
-		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * 20000f )
+		var trace = Trace.Ray( Owner.Position, Owner.Position )
 				.WorldOnly()
 				.Ignore( Owner )
 				.Ignore( this )
 				.Run();
 
-		// Only set the location if it's on the ground
-		if ( trace.Normal.z <= 1f && trace.Normal.z >= 0.70710678118f )
-		{
-			LocationIsSet = true;
-			_teleportLocation = trace.EndPosition;
-		}
+		LocationIsSet = true;
+		_teleportLocation = trace.EndPosition;
+		UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
 
 		// TODO: maybe also check if the player doesn't get stuck
 		// when teleported to the target location

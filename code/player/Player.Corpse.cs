@@ -249,7 +249,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
 	public string TextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
-																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect the corpse";
+																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect {PlayerName}";
 
 	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to convert search" : "";
 

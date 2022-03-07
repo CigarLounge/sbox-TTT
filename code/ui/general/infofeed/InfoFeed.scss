@@ -19,9 +19,10 @@ InfoFeedEntry {
         opacity: 0;
     }
 
-    &:outro {
-        right: 10px;
+    &:outro
+    {
         opacity: 0;
+        margin-top: -38px;
     }
 
     .left, .right {
