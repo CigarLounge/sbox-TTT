@@ -197,16 +197,11 @@ public partial class Weapon : Carriable
 		TimeSinceSecondaryAttack = 0;
 		AmmoClip -= 1;
 
-		Rand.SetSeed( Time.Tick );
-
 		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		for ( int i = 0; i < Info.BulletsPerFire; i++ )
-		{
-			ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f );
-		}
+		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 	}
 
 	public void AttackSecondary() { }
@@ -266,39 +261,47 @@ public partial class Weapon : Carriable
 		ViewModelEntity?.SetAnimParameter( "reload", true );
 	}
 
-	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
+	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
-		var forward = Owner.EyeRotation.Forward;
-		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
-		forward = forward.Normal;
+		//
+		// Seed rand using the tick, so bullet cones match on client and server
+		//
+		Rand.SetSeed( Time.Tick );
 
-		foreach ( var trace in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 20000f, bulletSize ) )
+		while ( bulletCount-- > 0 )
 		{
-			trace.Surface.DoBulletImpact( trace );
+			var forward = Owner.EyeRotation.Forward;
+			forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
+			forward = forward.Normal;
 
-			var fullEndPos = trace.EndPosition + trace.Direction * bulletSize;
-
-			if ( !IsServer )
-				continue;
-
-			if ( trace.Entity.IsValid() )
+			foreach ( var trace in TraceBullet( Owner.EyePosition, Owner.EyePosition + forward * 20000f, bulletSize ) )
 			{
-				using ( Prediction.Off() )
+				trace.Surface.DoBulletImpact( trace );
+
+				var fullEndPos = trace.EndPosition + trace.Direction * bulletSize;
+
+				if ( !IsServer )
+					continue;
+
+				if ( trace.Entity.IsValid() )
 				{
-					var damageInfo = new DamageInfo()
-						.WithPosition( trace.EndPosition )
-						.WithFlag( DamageFlags.Bullet )
-						.WithForce( forward * 100f * force )
-						.UsingTraceResult( trace )
-						.WithAttacker( Owner )
-						.WithWeapon( this );
+					using ( Prediction.Off() )
+					{
+						var damageInfo = new DamageInfo()
+							.WithPosition( trace.EndPosition )
+							.WithFlag( DamageFlags.Bullet )
+							.WithForce( forward * 100f * force )
+							.UsingTraceResult( trace )
+							.WithAttacker( Owner )
+							.WithWeapon( this );
 
-					damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd ); ;
+						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd ); ;
 
-					if ( trace.Entity is Player player )
-						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
+						if ( trace.Entity is Player player )
+							player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
 
-					trace.Entity.TakeDamage( damageInfo );
+						trace.Entity.TakeDamage( damageInfo );
+					}
 				}
 			}
 		}
