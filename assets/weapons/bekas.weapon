@@ -5,10 +5,10 @@
 		firesound = "bekas_fire-1"
 		dryfiresound = "dryfire_rifle-1"
 		firemode = "1"
-		bulletsperfire = 5
+		bulletsperfire = 4
 		clipsize = 8
 		damage = 15.0
-		spread = 0.1
+		spread = 0.2
 		primaryrate = 1.2
 		secondaryrate = 0.0
 		reloadtime = 0.45
@@ -29,10 +29,11 @@
 		damagefalloffend = 0.0
 		holdtype = "3"
 		headshotmultiplier = 1.0
-		verticalrecoil = 0.0
+		verticalrecoil = 32.0
 		horizontalrecoilrange = 0.0
-		recoilrecoveryscale = 0.0
+		recoilrecoveryscale = 20.0
 		islimited = false
 		candrop = true
+		description = ""
 	}
 }

@@ -449,7 +449,7 @@ metadata
 //
 // TTT.HealthStationEntity
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/health_station/health_station.vmdl" ) model() = ttt_equipment_healthstation_ent : ""
+@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/health_station/health_station.vmdl" ) model() = ttt_entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

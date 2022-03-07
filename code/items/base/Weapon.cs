@@ -268,9 +268,6 @@ public partial class Weapon : Carriable
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize )
 	{
-		// Seed rand so bullet holes matchup on server and client
-		Rand.SetSeed( Time.Tick );
-
 		var forward = Owner.EyeRotation.Forward;
 		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
 		forward = forward.Normal;
