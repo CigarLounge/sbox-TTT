@@ -39,9 +39,9 @@ public partial class CarriableInfo : ItemInfo
 
 	protected override void PostLoad()
 	{
-		CachedViewModel = Model.Load( ViewModel );
-
 		base.PostLoad();
+
+		CachedViewModel = Model.Load( ViewModel );
 	}
 }
 
