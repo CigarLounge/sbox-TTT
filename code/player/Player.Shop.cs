@@ -34,36 +34,38 @@ public partial class Player
 		return BuyError.None;
 	}
 
-	[ServerCmd]
 	public static void PurchaseItem( string libraryName )
 	{
-		if ( string.IsNullOrEmpty( libraryName ) )
-			return;
+		PurchaseItem( Asset.GetInfo<ItemInfo>( libraryName ).Id );
+	}
 
+	[ServerCmd]
+	private static void PurchaseItem( int itemId )
+	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+		var itemInfo = Asset.FromId<ItemInfo>( itemId );
 		if ( itemInfo == null )
 			return;
 
-		if ( !player.Role.Info.AvailableItems.Contains( libraryName ) )
+		if ( !player.Role.Info.AvailableItems.Contains( itemInfo.LibraryName ) )
 			return;
 
-		if ( !itemInfo.Buyable || (itemInfo.IsLimited && player.PurchasedLimitedShopItems.Contains( libraryName )) )
+		if ( !itemInfo.Buyable || (itemInfo.IsLimited && player.PurchasedLimitedShopItems.Contains( itemInfo.LibraryName )) )
 			return;
 
 		if ( player.Credits < itemInfo.Price )
 			return;
 
 		if ( itemInfo.IsLimited )
-			player.PurchasedLimitedShopItems.Add( libraryName );
+			player.PurchasedLimitedShopItems.Add( itemInfo.LibraryName );
 
 		player.Credits -= itemInfo.Price;
 		if ( itemInfo is CarriableInfo )
-			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+			player.Inventory.Add( Library.Create<Carriable>( itemInfo.LibraryName ) );
 		else if ( itemInfo is PerkInfo )
-			player.Perks.Add( Library.Create<Perk>( libraryName ) );
+			player.Perks.Add( Library.Create<Perk>( itemInfo.LibraryName ) );
 	}
 }
