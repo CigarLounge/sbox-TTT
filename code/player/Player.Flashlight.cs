@@ -89,7 +89,7 @@ public partial class Player
 			Falloff = 1.0f,
 			LinearAttenuation = 0.0f,
 			QuadraticAttenuation = 1.0f,
-			Brightness = 1,
+			Brightness = 2,
 			Color = Color.White,
 			InnerConeAngle = 20,
 			OuterConeAngle = 40,

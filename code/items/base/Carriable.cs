@@ -159,8 +159,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.OnCarryStart( carrier );
 
-		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
 		PreviousOwner = Owner;
+		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
@@ -173,6 +173,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void SimulateAnimator( PawnAnimator anim )
 	{
+		base.SimulateAnimator( anim );
+
 		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
 	}
 

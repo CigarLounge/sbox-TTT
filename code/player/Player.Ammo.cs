@@ -18,18 +18,26 @@ public partial class Player
 
 	public int AmmoCount( AmmoType type )
 	{
-		var iType = (int)type;
-		if ( Ammo == null ) return 0;
-		if ( Ammo.Count <= iType ) return 0;
+		int iType = (int)type;
+
+		if ( Ammo == null ) 
+			return 0;
+
+		if ( Ammo.Count <= iType ) 
+			return 0;
 
 		return Ammo[(int)type];
 	}
 
 	public bool SetAmmo( AmmoType type, int amount )
 	{
-		var iType = (int)type;
-		if ( !Host.IsServer ) return false;
-		if ( Ammo == null ) return false;
+		int iType = (int)type;
+
+		if ( !Host.IsServer )
+			return false;
+
+		if ( Ammo == null )
+			return false;
 
 		while ( Ammo.Count <= iType )
 		{
@@ -43,8 +51,11 @@ public partial class Player
 
 	public bool GiveAll( int amount )
 	{
-		if ( !Host.IsServer ) return false;
-		if ( Ammo == null ) return false;
+		if ( !Host.IsServer )
+			return false;
+
+		if ( Ammo == null )
+			return false;
 
 		foreach ( AmmoType ammoType in Enum.GetValues( typeof( AmmoType ) ) )
 		{
@@ -56,7 +67,8 @@ public partial class Player
 
 	public int GiveAmmo( AmmoType type, int amount )
 	{
-		if ( !Host.IsServer || Ammo == null ) return 0;
+		if ( !Host.IsServer || Ammo == null )
+			return 0;
 
 		var ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
@@ -64,17 +76,20 @@ public partial class Player
 			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
 			PlaySound( RawStrings.AmmoPickupSound );
 		}
+
 		return ammoPickedUp;
 	}
 
 	public int TakeAmmo( AmmoType type, int amount )
 	{
-		if ( Ammo == null ) return 0;
+		if ( Ammo == null )
+			return 0;
 
 		var available = AmmoCount( type );
 		amount = Math.Min( available, amount );
 
 		SetAmmo( type, available - amount );
+
 		return amount;
 	}
 }

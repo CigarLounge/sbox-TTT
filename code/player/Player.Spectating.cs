@@ -59,9 +59,7 @@ public partial class Player
 		if ( players.Count > 0 )
 		{
 			if ( ++_targetIdx >= players.Count )
-			{
-				_targetIdx = 0;
-			}
+				_targetIdx = 0;		
 
 			CurrentPlayer = players[_targetIdx];
 		}
