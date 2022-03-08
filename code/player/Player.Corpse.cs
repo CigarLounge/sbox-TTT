@@ -18,12 +18,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
 	public string[] Perks { get; set; }
-	private readonly HashSet<long> _playersWhoCovertConfirmed = new();
 
-	// Clientside
-	private bool _isCovertConfirmed = false;
-
-	public Corpse() { }
+	// We need this so we don't send information to players multiple times
+	private readonly HashSet<int> _playersWhoCovertSearched = new();
 
 	public override void Spawn()
 	{
@@ -124,7 +121,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClearAttachments();
 	}
 
-	public void Confirm( To? to = null )
+	public void Confirm( To? _to = null )
 	{
 		Host.AssertServer();
 
@@ -147,38 +144,47 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			}
 		}
 
-		DeadPlayer.SendRoleToClient( to ?? To.Everyone );
-		GetKillInfo( to ?? To.Everyone, KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
-		GetPlayerData( to ?? To.Everyone, DeadPlayer, Confirmer, PlayerId, PlayerName );
-		ClientConfirm( to ?? To.Everyone, credits, wasPreviouslyConfirmed );
+		var to = _to ?? To.Everyone;
+		foreach ( var client in to ) // Don't send general data to players who covert searched
+		{
+			if ( _playersWhoCovertSearched.Contains( client.Pawn.NetworkIdent ) )
+				continue;
+
+			DeadPlayer.SendRoleToClient( To.Single( client ) );
+			GetKillInfo( To.Single( client ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+			GetPlayerData( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
+		}
+
+		ClientConfirm( to, Confirmer, credits, wasPreviouslyConfirmed );
 	}
 
-	public void CovertConfirm( Player player )
+	public void CovertSearch( Player searcher )
 	{
 		Host.AssertServer();
 
-		_playersWhoCovertConfirmed.Add( player.Client.PlayerId );
+		_playersWhoCovertSearched.Add( searcher.NetworkIdent );
 
 		int credits = 0;
-		if ( DeadPlayer.Credits > 0 && player.IsValid() && player.Role.Info.RetrieveCredits )
+
+		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && searcher.IsAlive() && searcher.Role.Info.RetrieveCredits )
 		{
-			player.Credits += DeadPlayer.Credits;
+			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
 			DeadPlayer.Credits = 0;
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		DeadPlayer.SendRoleToClient( To.Single( player ) );
-		GetKillInfo( To.Single( player ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
-		GetPlayerData( To.Single( player ), DeadPlayer, Confirmer, PlayerId, PlayerName );
-		ClientCovertConfirm( To.Single( player ), credits );
+		DeadPlayer.SendRoleToClient( To.Single( searcher ) );
+		GetKillInfo( To.Single( searcher ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
+		GetPlayerData( To.Single( searcher ), DeadPlayer, PlayerId, PlayerName );
+		ClientCovertSearch( To.Single( searcher ), credits );
 	}
 
 	[ClientRpc]
-	public void ClientConfirm( int credits = 0, bool wasPreviouslyConfirmed = false )
+	public void ClientConfirm( Player confirmer, int credits = 0, bool wasPreviouslyConfirmed = false )
 	{
+		Confirmer = confirmer;
 		DeadPlayer.IsConfirmedDead = true;
-		DeadPlayer.IsRoleKnown = true;
 		DeadPlayer.IsMissingInAction = false;
 
 		if ( Confirmer == null || wasPreviouslyConfirmed )
@@ -204,11 +210,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void ClientCovertConfirm( int credits = 0 )
+	private void ClientCovertSearch( int credits = 0 )
 	{
-		DeadPlayer.IsRoleKnown = true;
 		DeadPlayer.IsMissingInAction = true;
-		_isCovertConfirmed = true;
 
 		if ( credits > 0 )
 		{
@@ -237,12 +241,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	public void GetPlayerData( Player deadPlayer, Player confirmer, long playerId, string name )
+	public void GetPlayerData( Player deadPlayer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
-		Confirmer = confirmer;
 		PlayerId = playerId;
 		PlayerName = name;
+		DeadPlayer.Corpse = this;
 	}
 
 	public float HintDistance => Player.INTERACT_DISTANCE;
@@ -257,17 +261,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
-		return new UI.Hint(
-			TextOnTick,
-			SubTextOnTick
-		);
+		return new UI.Hint( TextOnTick, SubTextOnTick );
 	}
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( player.Using != this )
+		if ( !Input.Down( InputButton.Use ) )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( (DeadPlayer.IsConfirmedDead || _isCovertConfirmed) && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
@@ -280,16 +281,16 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		var player = user as Player;
 
-		if ( player.IsAlive() && !DeadPlayer.IsConfirmedDead )
+		if ( !DeadPlayer.IsConfirmedDead )
 		{
-			if ( !Input.Down( InputButton.Run ) )
+			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
 			{
 				Confirmer = player;
 				Confirm();
 			}
-			else if ( !_playersWhoCovertConfirmed.Contains( user.Client.PlayerId ) )
+			else if ( !_playersWhoCovertSearched.Contains( player.NetworkIdent ) )
 			{
-				CovertConfirm( player );
+				CovertSearch( player );
 			}
 		}
 

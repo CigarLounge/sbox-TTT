@@ -4,7 +4,11 @@ namespace TTT;
 
 public partial class Player
 {
-	public new Corpse Corpse { get; set; }
+	public new Corpse Corpse
+	{
+		get => base.Corpse as Corpse;
+		set => base.Corpse = value;
+	}
 
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
@@ -15,7 +19,7 @@ public partial class Player
 
 	public void RemovePlayerCorpse()
 	{
-		if ( !Corpse.IsValid() )
+		if ( !IsServer && !Corpse.IsValid() )
 			return;
 
 		Corpse.Delete();
