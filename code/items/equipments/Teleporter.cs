@@ -48,6 +48,10 @@ public partial class Teleporter : Carriable
 			return;
 		}
 
+		// We can't do anything if we aren't standing on the ground
+		if ( Owner.GroundEntity is not WorldEntity )
+			return;
+
 		if ( Input.Pressed( InputButton.Attack2 ) )
 		{
 			using ( LagCompensation() )
@@ -63,15 +67,17 @@ public partial class Teleporter : Carriable
 
 	public override void BuildInput( InputBuilder input )
 	{
-		if ( IsTeleporting )
-			input.InputDirection = 0;
+		base.BuildInput( input );
+
+		if ( !IsTeleporting )
+			return;
+
+		input.ClearButton( InputButton.Jump );
+		input.InputDirection = 0;
 	}
 
 	private void SetLocation()
 	{
-		if ( Owner.GroundEntity is not WorldEntity )
-			return;
-
 		TimeSinceAction = 0;
 
 		var trace = Trace.Ray( Owner.Position, Owner.Position )
@@ -83,9 +89,6 @@ public partial class Teleporter : Carriable
 		LocationIsSet = true;
 		_teleportLocation = trace.EndPosition;
 		UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
-
-		// TODO: maybe also check if the player doesn't get stuck
-		// when teleported to the target location
 	}
 
 	private void StartTeleport()
