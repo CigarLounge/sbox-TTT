@@ -10,7 +10,8 @@ public partial class Player
 	[Net, Predicted]
 	private bool LightEnabled { get; set; } = false;
 
-	TimeSince timeSinceLightToggled;
+	[Net, Local, Predicted]
+	public TimeSince TimeSinceLightToggled { get; set; }
 
 	public void SimulateFlashlight()
 	{
@@ -25,7 +26,7 @@ public partial class Player
 				worldLight.Transform = (ActiveChild as Carriable).GetAttachment( "muzzle" ) ?? transform;
 		}
 
-		if ( timeSinceLightToggled > 0.1f && toggle )
+		if ( TimeSinceLightToggled > 0.1f && toggle )
 		{
 			LightEnabled = !LightEnabled;
 
@@ -34,7 +35,10 @@ public partial class Player
 			if ( worldLight.IsValid() )
 				worldLight.Enabled = LightEnabled;
 
-			timeSinceLightToggled = 0;
+			if ( viewLight.IsValid() )
+				viewLight.Enabled = LightEnabled;
+
+			TimeSinceLightToggled = 0;
 		}
 	}
 
@@ -64,12 +68,7 @@ public partial class Player
 
 	public void FrameSimulateFlashlight()
 	{
-		if ( !viewLight.IsValid() )
-			return;
-
-		viewLight.Enabled = viewLight.IsFirstPersonMode && LightEnabled;
-
-		if ( !viewLight.Enabled )
+		if ( !viewLight.IsValid() || !viewLight.Enabled )
 			return;
 
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
