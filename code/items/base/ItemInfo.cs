@@ -3,7 +3,6 @@ using System.ComponentModel;
 
 namespace TTT;
 
-[Hammer.Skip]
 public abstract partial class ItemInfo : Asset
 {
 	public Model CachedWorldModel { get; set; }
@@ -16,8 +15,8 @@ public abstract partial class ItemInfo : Asset
 
 	protected override void PostLoad()
 	{
-		base.PostLoad();
-
 		CachedWorldModel = Model.Load( WorldModel );
+
+		base.PostLoad();
 	}
 }

@@ -19,9 +19,9 @@ public partial class RoleInfo : Asset
 
 	protected override void PostLoad()
 	{
-		base.PostLoad();
-
 		AvailableItems = new HashSet<string>( ExclusiveItems );
+
+		base.PostLoad();
 	}
 }
 

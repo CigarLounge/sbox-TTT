@@ -4,7 +4,6 @@ using System.ComponentModel;
 
 namespace TTT;
 
-[Hammer.Skip]
 public abstract partial class Asset : Sandbox.Asset
 {
 	private static Dictionary<string, Asset> _collection { get; set; } = new();
@@ -36,8 +35,6 @@ public abstract partial class Asset : Sandbox.Asset
 
 	protected override void PostLoad()
 	{
-		base.PostLoad();
-
 		if ( string.IsNullOrEmpty( LibraryName ) )
 			return;
 
@@ -48,5 +45,7 @@ public abstract partial class Asset : Sandbox.Asset
 
 		_collection[LibraryName] = this;
 		Title = attribute.Title;
+
+		base.PostLoad();
 	}
 }
