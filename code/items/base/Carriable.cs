@@ -45,7 +45,6 @@ public partial class CarriableInfo : ItemInfo
 	}
 }
 
-[Hammer.Skip]
 public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 {
 	[Net, Predicted]

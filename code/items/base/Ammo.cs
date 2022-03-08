@@ -15,7 +15,6 @@ public enum AmmoType : byte
 	Rifle
 }
 
-[Hammer.Skip]
 public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
 	[Net]

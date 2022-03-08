@@ -25,7 +25,6 @@ public partial class RoleInfo : Asset
 	}
 }
 
-[Hammer.Skip]
 public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<string>
 {
 	public RoleInfo Info { get; set; }

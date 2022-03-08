@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Skip]
 public partial class Game : Sandbox.Game
 {
 	public new static Game Current => Sandbox.Game.Current as Game;

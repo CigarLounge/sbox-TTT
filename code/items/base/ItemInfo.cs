@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace TTT;
 
-public partial class ItemInfo : Asset
+public abstract partial class ItemInfo : Asset
 {
 	public Model CachedWorldModel { get; set; }
 	[Property, Category( "Important" )] public bool Buyable { get; set; }

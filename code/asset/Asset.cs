@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace TTT;
 
-public partial class Asset : Sandbox.Asset
+public abstract partial class Asset : Sandbox.Asset
 {
 	private static Dictionary<string, Asset> Collection { get; set; } = new();
 

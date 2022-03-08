@@ -19,7 +19,7 @@ public partial class Player
 
 	public void RemovePlayerCorpse()
 	{
-		if ( !IsServer && !Corpse.IsValid() )
+		if ( !IsServer || !Corpse.IsValid() )
 			return;
 
 		Corpse.Delete();
