@@ -59,7 +59,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	}
 	public Player PreviousOwner { get; set; }
 
-	public CarriableInfo Info { get; set; }
+	public CarriableInfo Info => Asset.GetInfo<CarriableInfo>( ClassInfo.Name );
 	string IEntityHint.TextOnTick => Info.Title;
 	public BaseViewModel HandsModelEntity;
 
@@ -78,16 +78,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			return;
 		}
 
-		Info = Asset.GetInfo<CarriableInfo>( this );
 		SetModel( Info.WorldModel );
-	}
-
-	public override void ClientSpawn()
-	{
-		base.ClientSpawn();
-
-		if ( !string.IsNullOrEmpty( ClassInfo.Name ) )
-			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
 	public override void ActiveStart( Entity ent )
