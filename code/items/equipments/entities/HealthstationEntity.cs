@@ -56,7 +56,9 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	float IEntityHint.HintDistance => Player.INTERACT_DISTANCE;
 
-	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station ({StoredHealth} charges)";
+	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station";
+
+	string IEntityHint.SubTextOnTick => $"{StoredHealth} charges remaining";
 
 	bool IEntityHint.CanHint( Player client )
 	{
@@ -65,7 +67,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
+		return new UI.Hint( (this as IEntityHint).TextOnTick, (this as IEntityHint).SubTextOnTick );
 	}
 
 	bool IUse.OnUse( Entity user )
