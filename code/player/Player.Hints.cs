@@ -4,7 +4,6 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float INTERACT_DISTANCE = 80f;
 	private const float MAX_HINT_DISTANCE = 20480f;
 
 	private UI.EntityHintPanel _currentHintPanel;
