@@ -35,6 +35,8 @@ public partial class KeyBindingsPage : Panel
 
 		Add.Label( "Actions", "h1" );
 		CreateBinding( this, "Use", new() { InputButton.Use } );
+		CreateBinding( this, "Identify/Inspect Body", new() { InputButton.Use } );
+		CreateBinding( this, "Covert search Body", new() { InputButton.Use, InputButton.Run } );
 		CreateBinding( this, "Flashlight", new() { InputButton.Flashlight } );
 		CreateBinding( this, "Disguiser", new() { InputButton.Grenade } );
 		Add.Label( "" );
