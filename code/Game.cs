@@ -110,10 +110,6 @@ public partial class Game : Sandbox.Game
 		return true;
 	}
 
-	/// <summary>
-	/// Someone is speaking via voice chat. This might be someone in your game,
-	/// or in your party, or in your lobby.
-	/// </summary>
 	public override void OnVoicePlayed( long playerId, float level )
 	{
 		var client = Client.All.Where( x => x.PlayerId == playerId ).FirstOrDefault();
@@ -123,7 +119,7 @@ public partial class Game : Sandbox.Game
 			client.TimeSinceLastVoice = 0;
 		}
 
-		VoiceList.Current?.OnVoicePlayed( playerId, level );
+		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client, level );
 	}
 
 	public override void PostLevelLoaded()
