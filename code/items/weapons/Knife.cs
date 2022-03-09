@@ -104,7 +104,7 @@ public partial class Knife : Carriable
 		Position = trace.EndPosition;
 		MoveType = MoveType.None;
 		PhysicsEnabled = false;
-		Velocity = owner.EyeRotation.Forward * (1000f + owner.Velocity.Length);
+		Velocity = owner.EyeRotation.Forward * (1250f + owner.Velocity.Length);
 		EnableTouch = false;
 	}
 
