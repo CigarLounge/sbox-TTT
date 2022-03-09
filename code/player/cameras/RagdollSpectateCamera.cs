@@ -26,9 +26,7 @@ public class RagdollSpectateCamera : CameraMode, IObservationCamera
 	public virtual Vector3 GetSpectatePoint()
 	{
 		if ( Local.Pawn is Player player && player.Corpse.IsValid() )
-		{
 			return player.Corpse.Position;
-		}
 
 		return Local.Pawn.Position;
 	}

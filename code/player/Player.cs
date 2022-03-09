@@ -32,6 +32,7 @@ public partial class Player : Sandbox.Player
 
 		base.Spawn();
 
+		SetRole( new NoneRole() );
 		SetModel( "models/citizen/citizen.vmdl" );
 		Animator = new StandardPlayerAnimator();
 		EnableAllCollisions = false;
@@ -47,6 +48,7 @@ public partial class Player : Sandbox.Player
 		base.ClientSpawn();
 
 		ActivateFlashlight();
+		SetRole( new NoneRole() );
 	}
 
 	public override void Respawn()
@@ -54,45 +56,42 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		Credits = 0;
-		SetRole( new NoneRole() );
 		IsConfirmedDead = false;
-		IsRoleKnown = false;
 		IsMissingInAction = false;
+		IsRoleKnown = false;
 		DeleteItems();
+		SetRole( new NoneRole() );
 		ClientRespawn();
+
+		Velocity = Vector3.Zero;
+		WaterLevel = 0;
 
 		if ( !IsForcedSpectator )
 		{
-			Controller = new WalkController();
-			CameraMode = new FirstPersonCamera();
+			LifeState = LifeState.Alive;
+			Health = MaxHealth;
 			EnableAllCollisions = true;
 			EnableDrawing = true;
-			Client.SetValue( RawStrings.Spectator, false );
+			Controller = new WalkController();
+			CameraMode = new FirstPersonCamera();
 			DressPlayer();
+			CreateHull();
+			Client.SetValue( RawStrings.Spectator, false );
+			Game.Current.Round.OnPlayerSpawned( this );
+			ResetInterpolation();
+			Game.Current?.MoveToSpawnpoint( this );
 		}
 		else
 		{
 			MakeSpectator( false );
 		}
-
-		Game.Current.Round.OnPlayerSpawned( this );
-
-		LifeState = LifeState.Alive;
-		Health = MaxHealth;
-		Velocity = Vector3.Zero;
-		WaterLevel = 0;
-
-		CreateHull();
-
-		Game.Current?.MoveToSpawnpoint( this );
-		ResetInterpolation();
 	}
 
 	[ClientRpc]
 	private void ClientRespawn()
 	{
-		IsMissingInAction = false;
 		IsConfirmedDead = false;
+		IsMissingInAction = false;
 		IsRoleKnown = false;
 		SetRole( new NoneRole() );
 	}

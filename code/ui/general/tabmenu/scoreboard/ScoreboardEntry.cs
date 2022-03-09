@@ -34,9 +34,7 @@ public class ScoreboardEntry : Panel
 	public virtual void Update()
 	{
 		if ( Client == null )
-		{
 			return;
-		}
 
 		_playerName.Text = Client.Name;
 		_karma.Text = Client.GetInt( "karma" ).ToString();
@@ -44,18 +42,10 @@ public class ScoreboardEntry : Panel
 		SetClass( "me", Client == Local.Client );
 
 		if ( Client.Pawn is not Player player )
-		{
 			return;
-		}
 
 		if ( player.Role is not NoneRole && player.Role is not InnocentRole )
-		{
 			Style.BackgroundColor = player.Role.Info.Color.WithAlpha( 0.15f );
-		}
-		else
-		{
-			Style.BackgroundColor = null;
-		}
 
 		_playerAvatar.SetTexture( $"avatar:{Client.PlayerId}" );
 	}
@@ -65,8 +55,6 @@ public class ScoreboardEntry : Panel
 		base.Tick();
 
 		if ( Client != null )
-		{
 			_ping.Text = Client.Ping.ToString();
-		}
 	}
 }

@@ -5,7 +5,7 @@ namespace TTT;
 public partial class Player
 {
 	public BaseRole Role { get; set; }
-	public Team Team => Role.Info.Team;
+	public Team Team => Role.Info?.Team ?? Team.None;
 
 	public void SetRole( BaseRole role )
 	{
