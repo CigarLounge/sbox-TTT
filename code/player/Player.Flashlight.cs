@@ -8,7 +8,7 @@ public partial class Player
 	private SpotLightEntity viewLight;
 
 	[Net, Predicted]
-	private bool LightEnabled { get; set; } = false;
+	private bool FlashlightEnabled { get; set; } = false;
 
 	[Net, Local, Predicted]
 	public TimeSince TimeSinceLightToggled { get; set; }
@@ -28,15 +28,15 @@ public partial class Player
 
 		if ( TimeSinceLightToggled > 0.1f && toggle )
 		{
-			LightEnabled = !LightEnabled;
+			FlashlightEnabled = !FlashlightEnabled;
 
-			PlaySound( LightEnabled ? "flashlight-on" : "flashlight-off" );
+			PlaySound( FlashlightEnabled ? "flashlight-on" : "flashlight-off" );
 
 			if ( worldLight.IsValid() )
-				worldLight.Enabled = LightEnabled;
+				worldLight.Enabled = FlashlightEnabled;
 
 			if ( viewLight.IsValid() )
-				viewLight.Enabled = LightEnabled;
+				viewLight.Enabled = FlashlightEnabled;
 
 			TimeSinceLightToggled = 0;
 		}
@@ -56,7 +56,7 @@ public partial class Player
 			viewLight = CreateLight();
 			viewLight.Parent = this;
 			viewLight.EnableViewmodelRendering = true;
-			viewLight.Enabled = LightEnabled;
+			viewLight.Enabled = FlashlightEnabled;
 		}
 	}
 

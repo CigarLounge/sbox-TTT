@@ -107,6 +107,7 @@ public partial class Player : Sandbox.Player
 		Inventory.DropAll();
 		DeleteItems();
 		IsMissingInAction = true;
+		FlashlightEnabled = false;
 
 		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( this );
