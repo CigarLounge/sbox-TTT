@@ -4,25 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public BaseRole Role
-	{
-		get
-		{
-			if ( _role is null )
-			{
-				_role = new NoneRole();
-			}
-
-			return _role;
-		}
-		private set
-		{
-			_role = value;
-			Event.Run( TTTEvent.Player.Role.Changed, this );
-		}
-	}
-	private BaseRole _role;
-
+	public BaseRole Role { get; set; }
 	public Team Team => Role.Info.Team;
 
 	public void SetRole( BaseRole role )
@@ -33,6 +15,8 @@ public partial class Player
 		Role?.OnDeselect( this );
 		Role = role;
 		Role.OnSelect( this );
+
+		Event.Run( TTTEvent.Player.Role.Changed, this );
 
 		// Always send the role to this player's client
 		if ( IsServer )
