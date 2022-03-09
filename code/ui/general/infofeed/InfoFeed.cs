@@ -38,9 +38,9 @@ public partial class InfoFeed : Panel
 	{
 		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
 
-		var role = Asset.CreateFromAssetId<BaseRole>( roleId );
-		Label leftLabel = e.AddLabel( $"{role.Info.Title}s", "left" );
-		leftLabel.Style.FontColor = role.Info.Color;
+		var roleInfo = Asset.FromId<RoleInfo>( roleId );
+		Label leftLabel = e.AddLabel( $"{roleInfo.Title}s", "left" );
+		leftLabel.Style.FontColor = roleInfo.Color;
 
 		e.AddLabel( interaction, "method" );
 	}

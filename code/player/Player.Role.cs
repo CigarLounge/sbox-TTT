@@ -54,7 +54,7 @@ public partial class Player
 
 	public void SetRole( int id )
 	{
-		SetRole( Asset.CreateFromAssetId<BaseRole>( id ) );
+		SetRole( Asset.CreateFromId<BaseRole>( id ) );
 	}
 
 	/// <summary>

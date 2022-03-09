@@ -131,10 +131,10 @@ public partial class ChatBox : Panel
 		switch ( channel )
 		{
 			case Channel.All:
-				Instance?.AddEntry( name, message, roleId != -1 ? Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color : _allChatColor );
+				Instance?.AddEntry( name, message, roleId != -1 ? Asset.FromId<RoleInfo>( roleId ).Color : _allChatColor );
 				return;
 			case Channel.Role:
-				Instance?.AddEntry( $"(TEAM) {name}", message, Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color );
+				Instance?.AddEntry( $"(TEAM) {name}", message, Asset.FromId<RoleInfo>( roleId ).Color );
 				return;
 			case Channel.Spectator:
 				Instance?.AddEntry( name, message, _spectatorChatColor );

@@ -12,7 +12,7 @@ public abstract partial class Asset : Sandbox.Asset
 	public string LibraryName { get; set; }
 	public string Title { get; set; }
 
-	public static T CreateFromAssetId<T>( int id ) where T : LibraryClass
+	public static T CreateFromId<T>( int id ) where T : LibraryClass
 	{
 		return Library.Create<T>( FromId<Asset>( id ).LibraryName );
 	}
