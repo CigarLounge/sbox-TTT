@@ -17,5 +17,6 @@
 		]
 		color = [ 0.87451, 0.160784, 0.207843, 1.0 ]
 		retrievecredits = true
+		canrolechat = true
 	}
 }

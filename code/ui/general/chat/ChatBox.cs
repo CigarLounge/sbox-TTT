@@ -121,7 +121,7 @@ public partial class ChatBox : Panel
 
 		if ( channel == Channel.All )
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
-		else if ( channel == Channel.Role && CanRoleChat( player ) )
+		else if ( channel == Channel.Role && player.Role.Info.CanRoleChat )
 			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.Id );
 	}
 
@@ -131,8 +131,10 @@ public partial class ChatBox : Panel
 		switch ( channel )
 		{
 			case Channel.All:
-			case Channel.Role:
 				Instance?.AddEntry( name, message, roleId != -1 ? Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color : _allChatColor );
+				return;
+			case Channel.Role:
+				Instance?.AddEntry( $"(TEAM) {name}", message, Asset.CreateFromAssetId<BaseRole>( roleId ).Info.Color );
 				return;
 			case Channel.Spectator:
 				Instance?.AddEntry( name, message, _spectatorChatColor );
@@ -151,13 +153,8 @@ public partial class ChatBox : Panel
 		if ( Local.Pawn is not Player player || !player.IsAlive() )
 			return;
 
-		if ( CanRoleChat( player ) )
+		if ( player.Role.Info.CanRoleChat )
 			CurrentChannel = CurrentChannel == Channel.All ? Channel.Role : Channel.All;
-	}
-
-	private static bool CanRoleChat( Player player )
-	{
-		return player.Role is TraitorRole;
 	}
 }
 

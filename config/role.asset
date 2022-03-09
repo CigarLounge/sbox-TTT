@@ -13,6 +13,7 @@
 	defaultcredits(integer) : "Default Credits" : 0 : "The amount of credits players spawn with."
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
 	retrievecredits(boolean) : "Retrieve Credits" : 0 : "Players can retrieve credits from corpses."
+	canrolechat(boolean) : "Can Role Chat" : 0 : ""
 	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."
 ]
 
