@@ -18,7 +18,7 @@
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
 		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		slot = "0"
-		spawnable = true
+		spawnable = false
 		viewmodel = resource:"models/weapons/v_sg551.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		holdtype = "2"
@@ -34,5 +34,6 @@
 		recoilrecoveryscale = 30.0
 		headshotmultiplier = 1.4
 		candrop = true
+		description = ""
 	}
 }
