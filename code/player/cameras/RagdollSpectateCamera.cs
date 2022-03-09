@@ -27,7 +27,7 @@ public class RagdollSpectateCamera : CameraMode, IObservationCamera
 	{
 		if ( Local.Pawn is Player player && player.Corpse.IsValid() )
 		{
-			return player.Corpse.PhysicsGroup.MassCenter;
+			return player.Corpse.Position;
 		}
 
 		return Local.Pawn.Position;
