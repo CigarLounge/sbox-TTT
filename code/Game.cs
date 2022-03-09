@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -97,10 +98,13 @@ public partial class Game : Sandbox.Game
 	{
 		Host.AssertServer();
 
-		if ( source.Name.Equals( dest.Name ) || source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
-			return false;
+		var sourcePlayer = source.Pawn as Player;
+		var destinationPlayer = dest.Pawn as Player;
 
-		if ( Round is InProgressRound && !sourcePlayer.IsAlive() && destPlayer.IsAlive() )
+		if ( !sourcePlayer.IsAlive() && !destinationPlayer.IsAlive() )
+			return true;
+
+		if ( Round is InProgressRound && !sourcePlayer.IsAlive() && destinationPlayer.IsAlive() )
 			return false;
 
 		return true;
@@ -112,21 +116,14 @@ public partial class Game : Sandbox.Game
 	/// </summary>
 	public override void OnVoicePlayed( long playerId, float level )
 	{
-		Client client = null;
-
-		foreach ( Client loopClient in Client.All )
+		var client = Client.All.Where( x => x.PlayerId == playerId ).FirstOrDefault();
+		if ( client.IsValid() )
 		{
-			if ( loopClient.PlayerId == playerId )
-			{
-				client = loopClient;
-				break;
-			}
+			client.VoiceLevel = level;
+			client.TimeSinceLastVoice = 0;
 		}
 
-		if ( client == null || !client.IsValid() )
-			return;
-
-		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client, level );
+		VoiceList.Current?.OnVoicePlayed( playerId, level );
 	}
 
 	public override void PostLevelLoaded()
