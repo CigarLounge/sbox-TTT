@@ -93,7 +93,9 @@ public partial class Player : Sandbox.Player
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
-		SetRole( new NoneRole() );
+
+		if ( !IsLocalPawn )
+			SetRole( new NoneRole() );
 	}
 
 	public override void OnKilled()
@@ -122,6 +124,11 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
+			foreach ( var player in Utils.GetPlayers() )
+			{
+				Log.Info( player.Role.Info.Title );
+			}
+
 			DisplayEntityHints();
 			LogicButtonActivate();
 		}
