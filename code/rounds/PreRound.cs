@@ -53,7 +53,6 @@ public class PreRound : BaseRound
 		foreach ( Player player in Utils.GetPlayers() )
 		{
 			player.Client.SetValue( RawStrings.Spectator, player.IsForcedSpectator );
-
 			if ( player.IsForcedSpectator )
 			{
 				player.MakeSpectator( false );
@@ -61,6 +60,11 @@ public class PreRound : BaseRound
 			}
 			else
 			{
+				if ( player.IsAlive() )
+					player.Health = player.MaxHealth;
+				else
+					player.Respawn();
+
 				players.Add( player );
 			}
 		}
