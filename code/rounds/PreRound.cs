@@ -8,7 +8,7 @@ namespace TTT;
 public class PreRound : BaseRound
 {
 	public override string RoundName => "Preparing";
-	public override int RoundDuration => Game.PreRoundTime;
+	public override int RoundDuration => Game.Current.MapSelection.TotalRoundsPlayed == 0 ? Game.InitialPreRoundTime : Game.PreRoundTime;
 
 	public override void OnPlayerJoin( Player player )
 	{
