@@ -6,12 +6,22 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 {
 	private const float SMOOTH_SPEED = 25f;
 
+	public override void Activated()
+	{
+		base.Activated();
+
+		if ( Local.Pawn is not Player player )
+			return;
+
+		player.UpdateObservatedPlayer();
+	}
+
 	public override void Deactivated()
 	{
 		base.Deactivated();
 
-		if ( Local.Pawn is not Player player )	
-			return;		
+		if ( Local.Pawn is not Player player )
+			return;
 
 		Viewer = Local.Pawn;
 		player.CurrentPlayer = null;
@@ -19,21 +29,22 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not Player player )	
-			return;	
+		if ( Local.Pawn is not Player player )
+			return;
 
-		if ( !player.IsSpectatingPlayer || Input.Pressed( InputButton.Attack1 ) )
-		{
-			player.UpdateObservatedPlayer();
+		Position = Vector3.Lerp( Position, player.CurrentPlayer.EyePosition, SMOOTH_SPEED * Time.Delta );
+		Rotation = Rotation.Slerp( Rotation, player.CurrentPlayer.EyeRotation, SMOOTH_SPEED * Time.Delta );
+	}
 
-			Position = player.CurrentPlayer.EyePosition;
-			Rotation = player.CurrentPlayer.EyeRotation;
-		}
-		else
+	public override void BuildInput( InputBuilder input )
+	{
+		if ( Local.Pawn is Player player )
 		{
-			Position = Vector3.Lerp( Position, player.CurrentPlayer.EyePosition, SMOOTH_SPEED * Time.Delta );
-			Rotation = Rotation.Slerp( Rotation, player.CurrentPlayer.EyeRotation, SMOOTH_SPEED * Time.Delta );
+			if ( input.Pressed( InputButton.Attack1 ) )
+				player.UpdateObservatedPlayer();
 		}
+
+		base.BuildInput( input );
 	}
 
 	public void OnUpdateObservatedPlayer( Player oldObservatedPlayer, Player newObservatedPlayer )

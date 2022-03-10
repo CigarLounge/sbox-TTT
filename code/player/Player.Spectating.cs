@@ -51,23 +51,17 @@ public partial class Player
 	public void UpdateObservatedPlayer()
 	{
 		Player oldObservatedPlayer = CurrentPlayer;
-
-		CurrentPlayer = null;
-
 		List<Player> players = Utils.GetAlivePlayers();
-
 		if ( players.Count > 0 )
 		{
 			if ( ++_targetIdx >= players.Count )
-				_targetIdx = 0;		
+				_targetIdx = 0;
 
 			CurrentPlayer = players[_targetIdx];
 		}
 
 		if ( CameraMode is IObservationCamera camera )
-		{
 			camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
-		}
 	}
 
 	public void MakeSpectator( bool useRagdollCamera = true )

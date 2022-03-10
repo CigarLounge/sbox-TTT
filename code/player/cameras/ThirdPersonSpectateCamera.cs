@@ -5,8 +5,6 @@ namespace TTT;
 public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 {
 	private Vector3 DefaultPosition { get; set; }
-
-	private const float LERP_MODE = 0;
 	private const int CAMERA_DISTANCE = 120;
 
 	private Rotation _targetRot;
@@ -17,34 +15,34 @@ public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 	{
 		base.Activated();
 
-		Rotation = CurrentView.Rotation;
+		if ( Local.Pawn is not Player player )
+			return;
+
+		player.UpdateObservatedPlayer();
+	}
+
+	public override void Deactivated()
+	{
+		if ( Local.Pawn is not Player player )
+			return;
+
+		Viewer = Local.Pawn;
+		player.CurrentPlayer = null;
 	}
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not Player player )
-		{
-			return;
-		}
-
-		if ( !player.IsSpectatingPlayer || Input.Pressed( InputButton.Attack1 ) )
-		{
-			player.UpdateObservatedPlayer();
-		}
-
 		_targetRot = Rotation.From( _lookAngles );
-		Rotation = Rotation.Slerp( Rotation, _targetRot, 10 * RealTime.Delta * (1 - LERP_MODE) );
+		Rotation = Rotation.Slerp( Rotation, _targetRot, 25f * RealTime.Delta );
 
 		_targetPos = GetSpectatePoint() + Rotation.Forward * -CAMERA_DISTANCE;
-		Position = _targetPos;
+		Position = Vector3.Lerp( Position, _targetPos, 50f * RealTime.Delta );
 	}
 
 	private Vector3 GetSpectatePoint()
 	{
 		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-		{
 			return DefaultPosition;
-		}
 
 		return player.CurrentPlayer.EyePosition;
 	}
@@ -54,16 +52,12 @@ public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 		_lookAngles += input.AnalogLook;
 		_lookAngles.roll = 0;
 
-		base.BuildInput( input );
-	}
-
-	public override void Deactivated()
-	{
-		if ( Local.Pawn is not Player player )
+		if ( Local.Pawn is Player player )
 		{
-			return;
+			if ( input.Pressed( InputButton.Attack1 ) )
+				player.UpdateObservatedPlayer();
 		}
 
-		player.CurrentPlayer = null;
+		base.BuildInput( input );
 	}
 }
