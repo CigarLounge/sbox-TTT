@@ -5,8 +5,6 @@ namespace TTT;
 public partial class Game
 {
 	#region Round
-	[ServerVar( "ttt_initialpreround_time", Help = "The length of the initial preround time.", Saved = true )]
-	public static int InitialPreRoundTime { get; set; } = 40;
 
 	[ServerVar( "ttt_preround_time", Help = "The length of the preround time.", Saved = true )]
 	public static int PreRoundTime { get; set; } = 20;
