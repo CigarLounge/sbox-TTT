@@ -28,7 +28,6 @@ public partial class Player
 	{
 		IsRoleKnown = true;
 		SetRole( id );
-		UI.Scoreboard.Instance?.UpdateClient( Client );
 	}
 
 	public void SetRole( string libraryName )

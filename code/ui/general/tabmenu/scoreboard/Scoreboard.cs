@@ -72,20 +72,17 @@ public partial class Scoreboard : Panel
 		}
 	}
 
-	public ScoreboardEntry AddClient( Client client )
+	public void AddClient( Client client )
 	{
 		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
 		ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
-
+		scoreboardGroup.UpdateLabel();
 		scoreboardGroup.GroupMembers++;
 
 		_entries.Add( client, scoreboardEntry );
-
-		scoreboardGroup.UpdateLabel();
-		return scoreboardEntry;
 	}
 
-	public void UpdateClient( Client client )
+	private void UpdateClient( Client client )
 	{
 		if ( client == null )
 			return;
@@ -94,10 +91,8 @@ public partial class Scoreboard : Panel
 			return;
 
 		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
-
 		if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
 		{
-			// instead of remove and add, move the panel into the right parent
 			RemoveClient( client );
 			AddClient( client );
 		}
@@ -110,7 +105,7 @@ public partial class Scoreboard : Panel
 		UpdateScoreboardGroups();
 	}
 
-	public void RemoveClient( Client client )
+	private void RemoveClient( Client client )
 	{
 		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 			return;
@@ -133,8 +128,6 @@ public partial class Scoreboard : Panel
 		if ( !HasClass( "fade-in" ) )
 			return;
 
-		// This code sucks. I'm forced to due this because of...
-		// https://github.com/Facepunch/sbox-issues/issues/1324
 		foreach ( var client in Client.All.Except( _entries.Keys ) )
 		{
 			AddClient( client );
@@ -150,30 +143,14 @@ public partial class Scoreboard : Panel
 			}
 		}
 
-		// Due to not having a `client.GetValue` change callback, we have to handle it differently
 		foreach ( Client client in Client.All )
-		{
-			bool newIsForcedSpectator = client.GetValue<bool>( RawStrings.Spectator );
-
-			if ( !_forcedSpecList.TryGetValue( client, out bool isForcedSpectator ) )
-			{
-				_forcedSpecList.Add( client, newIsForcedSpectator );
-			}
-			else if ( isForcedSpectator != newIsForcedSpectator )
-			{
-				_forcedSpecList[client] = newIsForcedSpectator;
-			}
-
 			UpdateClient( client );
-		}
 	}
 
 	private ScoreboardGroup AddScoreboardGroup( string groupName )
 	{
 		if ( _scoreboardGroups.ContainsKey( groupName ) )
-		{
 			return _scoreboardGroups[groupName];
-		}
 
 		ScoreboardGroup scoreboardGroup = new( _scoreboardContent, groupName );
 		scoreboardGroup.UpdateLabel();
@@ -191,20 +168,15 @@ public partial class Scoreboard : Panel
 		{
 			group = DefaultScoreboardGroup.Spectator.ToString();
 		}
-		else if ( client.PlayerId != 0 && client.Pawn is Player player )
+		else if ( client.Pawn is Player player )
 		{
 			if ( player.IsConfirmedDead )
-			{
 				group = DefaultScoreboardGroup.Dead.ToString();
-			}
 			else if ( player.IsMissingInAction )
-			{
 				group = DefaultScoreboardGroup.Missing.ToString();
-			}
 		}
 
 		_scoreboardGroups.TryGetValue( group, out ScoreboardGroup scoreboardGroup );
-
 		return scoreboardGroup ?? AddScoreboardGroup( group );
 	}
 

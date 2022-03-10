@@ -124,11 +124,6 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
-			foreach ( var player in Utils.GetPlayers() )
-			{
-				Log.Info( player.Role.Info.Title );
-			}
-
 			DisplayEntityHints();
 			LogicButtonActivate();
 		}

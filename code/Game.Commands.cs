@@ -71,7 +71,5 @@ public partial class Game
 			return;
 
 		Game.Current.ChangeRound( new PreRound() );
-
-		Log.Info( $"{ConsoleSystem.Caller.Name} forced a restart." );
 	}
 }

@@ -55,7 +55,5 @@ public partial class Player
 	private void AddMIA()
 	{
 		IsMissingInAction = true;
-
-		UI.Scoreboard.Instance.UpdateClient( Client );
 	}
 }
