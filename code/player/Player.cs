@@ -61,7 +61,7 @@ public partial class Player : Sandbox.Player
 		IsRoleKnown = false;
 		DeleteItems();
 		SetRole( new NoneRole() );
-		ClientRespawn();
+		ClientRespawn( this );
 
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
@@ -88,7 +88,7 @@ public partial class Player : Sandbox.Player
 	}
 
 	[ClientRpc]
-	private void ClientRespawn()
+	private void ClientRespawn( Player player ) // s&box bug... remove down the line.
 	{
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
