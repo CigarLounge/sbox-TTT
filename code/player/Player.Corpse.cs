@@ -55,13 +55,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		List<Entity> attachedEnts = new();
 		foreach ( Entity child in player.Children )
 		{
-			// TODO: MZEGAR revert this back.
-			// if ( child is ThrownKnife k )
-			// {
-			// 	attachedEnts.Add( k );
-			// 	continue;
-			// }
-
 			if ( child is BaseClothing e )
 			{
 				var model = e.GetModelName();
