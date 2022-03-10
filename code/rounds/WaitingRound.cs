@@ -48,23 +48,9 @@ public class WaitingRound : BaseRound
 
 	private static async void StartRespawnTimer( Player player )
 	{
-		try
-		{
-			await GameTask.DelaySeconds( 1 );
+		await GameTask.DelaySeconds( 1 );
 
-			if ( player.IsValid() && Game.Current.Round is WaitingRound )
-			{
-				player.Respawn();
-			}
-		}
-		catch ( Exception e )
-		{
-			if ( e.Message.Trim() == "A task was canceled." )
-			{
-				return;
-			}
-
-			Log.Error( $"[TASK] {e.Message}: {e.StackTrace}" );
-		}
+		if ( player.IsValid() && Game.Current.Round is WaitingRound )
+			player.Respawn();
 	}
 }
