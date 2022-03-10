@@ -89,6 +89,6 @@ public partial class Scout : Weapon
 	private new void BuildInput( InputBuilder input )
 	{
 		if ( _isScoped )
-			input.AnalogLook *= 0.2f;
+			input.AnalogLook *= 0.1f;
 	}
 }
