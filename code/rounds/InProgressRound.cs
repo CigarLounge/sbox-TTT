@@ -15,7 +15,7 @@ public partial class InProgressRound : BaseRound
 	[Net]
 	public List<Player> Spectators { get; set; }
 
-	private List<LogicButton> _logicButtons;
+	private readonly List<LogicButton> _logicButtons = new();
 
 	public override int RoundDuration { get => Game.InProgressRoundTime; }
 
@@ -35,13 +35,9 @@ public partial class InProgressRound : BaseRound
 		foreach ( Player player in Utils.GetPlayers() )
 		{
 			if ( player.IsConfirmedDead )
-			{
 				player.Corpse.Confirm( To.Single( playerJoined ) );
-			}
 			else if ( player.IsRoleKnown )
-			{
 				player.SendRoleToClient( To.Single( playerJoined ) );
-			}
 		}
 	}
 
@@ -68,8 +64,13 @@ public partial class InProgressRound : BaseRound
 			}
 		}
 
-		// Cache buttons for OnSecond tick.
-		_logicButtons = Entity.All.Where( x => x.GetType() == typeof( LogicButton ) ).Select( x => x as LogicButton ).ToList();
+		foreach ( var ent in Entity.All )
+		{
+			if ( ent is LogicButton button )
+				_logicButtons.Add( button );
+			else if ( ent is Corpse corpse )
+				corpse.Delete();
+		}
 	}
 
 	private static void GiveFixedLoadout( Player player )
@@ -95,15 +96,11 @@ public partial class InProgressRound : BaseRound
 		foreach ( Player player in Players )
 		{
 			if ( !aliveTeams.Contains( player.Team ) )
-			{
 				aliveTeams.Add( player.Team );
-			}
 		}
 
 		if ( aliveTeams.Count == 0 )
-		{
 			return Team.None;
-		}
 
 		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
 	}
@@ -124,20 +121,14 @@ public partial class InProgressRound : BaseRound
 		if ( Host.IsServer )
 		{
 			if ( !Game.PreventWin )
-			{
 				base.OnSecond();
-			}
 			else
-			{
 				TimeUntilRoundEnd += 1f;
-			}
 
 			_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
 			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-			{
 				Game.Current.ForceRoundChange( new WaitingRound() );
-			}
 		}
 	}
 
@@ -148,7 +139,6 @@ public partial class InProgressRound : BaseRound
 		if ( result != Team.None && !Game.PreventWin )
 		{
 			LoadPostRound( result );
-
 			return true;
 		}
 
@@ -162,8 +152,6 @@ public partial class InProgressRound : BaseRound
 			return;
 
 		if ( Game.Current.Round is InProgressRound inProgressRound )
-		{
 			inProgressRound.ChangeRoundIfOver();
-		}
 	}
 }
