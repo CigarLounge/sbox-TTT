@@ -16,7 +16,8 @@ Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 - (and more to be added!)
 
 ## License
-This software is licensed under both the MIT License & GNU General Public License Version 3 simultaneously. Please refer to the LICENSE file for more detail. <b>NOTE</b> Anything within the "models", "materials", and "sounds" directories of this repository are NOT openly licensed and as such do not fall under either license! These files cannot be used in any derivative works without the permission as all rights for those files are reserved. (We have been granted limited permission to include the files within this repository for the sake of speeding up loading times.)
+This software is licensed under both the MIT License & GNU General Public License Version 3 simultaneously. Please refer to the LICENSE file for more detail. 
+<b>NOTE:</b> Anything within the "models", "materials", and "sounds" directories of this repository are NOT openly licensed and as such do not fall under either license! These files cannot be used in any derivative works without the permission as all rights for those files are reserved. (We have been granted limited permission to include the files within this repository for the sake of speeding up loading times.)
 
 ## Development
 
