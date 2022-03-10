@@ -67,9 +67,7 @@ public partial class Scoreboard : Panel
 			return;
 
 		foreach ( DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues( typeof( DefaultScoreboardGroup ) ) )
-		{
 			AddScoreboardGroup( defaultScoreboardGroup.ToString() );
-		}
 	}
 
 	public void AddClient( Client client )
@@ -162,22 +160,20 @@ public partial class Scoreboard : Panel
 
 	private ScoreboardGroup GetScoreboardGroup( Client client )
 	{
-		string group = DefaultScoreboardGroup.Alive.ToString();
+		string currentGroup = DefaultScoreboardGroup.Alive.ToString();
 
 		if ( client.GetValue<bool>( RawStrings.Spectator ) )
-		{
-			group = DefaultScoreboardGroup.Spectator.ToString();
-		}
+			currentGroup = DefaultScoreboardGroup.Spectator.ToString();
 		else if ( client.Pawn is Player player )
 		{
 			if ( player.IsConfirmedDead )
-				group = DefaultScoreboardGroup.Dead.ToString();
+				currentGroup = DefaultScoreboardGroup.Dead.ToString();
 			else if ( player.IsMissingInAction )
-				group = DefaultScoreboardGroup.Missing.ToString();
+				currentGroup = DefaultScoreboardGroup.Missing.ToString();
 		}
 
-		_scoreboardGroups.TryGetValue( group, out ScoreboardGroup scoreboardGroup );
-		return scoreboardGroup ?? AddScoreboardGroup( group );
+		_scoreboardGroups.TryGetValue( currentGroup, out ScoreboardGroup scoreboardGroup );
+		return scoreboardGroup ?? AddScoreboardGroup( currentGroup );
 	}
 
 	private void UpdateScoreboardGroups()
