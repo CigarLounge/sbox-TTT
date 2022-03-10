@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public class RagdollSpectateCamera : CameraMode, IObservationCamera
+public class RagdollSpectateCamera : CameraMode, ISpectatableCamera
 {
 	private Vector3 FocusPoint;
 

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
+public partial class ThirdPersonSpectateCamera : CameraMode, ISpectatableCamera
 {
 	private Vector3 DefaultPosition { get; set; }
 	private const int CAMERA_DISTANCE = 120;
@@ -18,7 +18,7 @@ public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		player.UpdateObservatedPlayer();
+		player.UpdateSpectatedPlayer();
 	}
 
 	public override void Deactivated()
@@ -55,7 +55,7 @@ public partial class ThirdPersonSpectateCamera : CameraMode, IObservationCamera
 		if ( Local.Pawn is Player player )
 		{
 			if ( input.Pressed( InputButton.Attack1 ) )
-				player.UpdateObservatedPlayer();
+				player.UpdateSpectatedPlayer();
 		}
 
 		base.BuildInput( input );

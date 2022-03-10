@@ -30,7 +30,7 @@ public partial class Player
 			return;
 
 		if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
-			player.UpdateObservatedPlayer();
+			player.UpdateSpectatedPlayer();
 	}
 
 	private void ChangeSpectateCamera()
@@ -48,9 +48,9 @@ public partial class Player
 		}
 	}
 
-	public void UpdateObservatedPlayer()
+	public void UpdateSpectatedPlayer()
 	{
-		Player oldObservatedPlayer = CurrentPlayer;
+		Player oldSpectatedPlayer = CurrentPlayer;
 		List<Player> players = Utils.GetAlivePlayers();
 		if ( players.Count > 0 )
 		{
@@ -60,8 +60,8 @@ public partial class Player
 			CurrentPlayer = players[_targetIdx];
 		}
 
-		if ( CameraMode is IObservationCamera camera )
-			camera.OnUpdateObservatedPlayer( oldObservatedPlayer, CurrentPlayer );
+		if ( CameraMode is ISpectatableCamera camera )
+			camera.OnUpdateSpectatedPlayer( oldSpectatedPlayer, CurrentPlayer );
 	}
 
 	public void MakeSpectator( bool useRagdollCamera = true )

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FreeSpectateCamera : CameraMode, IObservationCamera
+public partial class FreeSpectateCamera : CameraMode, ISpectatableCamera
 {
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
@@ -28,8 +28,8 @@ public partial class FreeSpectateCamera : CameraMode, IObservationCamera
 
 	public override void Update()
 	{
-		if ( Local.Client == null )	
-			return;	
+		if ( Local.Client == null )
+			return;
 
 		Vector3 mv = _moveInput.Normal * 300 * RealTime.Delta * Rotation * _moveSpeed;
 
@@ -46,11 +46,11 @@ public partial class FreeSpectateCamera : CameraMode, IObservationCamera
 
 		_moveSpeed = 1;
 
-		if ( input.Down( InputButton.Run ) )	
-			_moveSpeed = 5;	
+		if ( input.Down( InputButton.Run ) )
+			_moveSpeed = 5;
 
-		if ( input.Down( InputButton.Duck ) )	
-			_moveSpeed = 0.2f;	
+		if ( input.Down( InputButton.Duck ) )
+			_moveSpeed = 0.2f;
 
 		_lookAngles += input.AnalogLook;
 		_lookAngles.roll = 0;

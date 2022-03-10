@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
+public partial class FirstPersonSpectatorCamera : CameraMode, ISpectatableCamera
 {
 	private const float SMOOTH_SPEED = 25f;
 
@@ -13,7 +13,7 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		player.UpdateObservatedPlayer();
+		player.UpdateSpectatedPlayer();
 	}
 
 	public override void Deactivated()
@@ -41,14 +41,14 @@ public partial class FirstPersonSpectatorCamera : CameraMode, IObservationCamera
 		if ( Local.Pawn is Player player )
 		{
 			if ( input.Pressed( InputButton.Attack1 ) )
-				player.UpdateObservatedPlayer();
+				player.UpdateSpectatedPlayer();
 		}
 
 		base.BuildInput( input );
 	}
 
-	public void OnUpdateObservatedPlayer( Player oldObservatedPlayer, Player newObservatedPlayer )
+	public void OnUpdateSpectatedPlayer( Player oldSpectatedPlayer, Player newSpectatedPlayer )
 	{
-		Viewer = newObservatedPlayer;
+		Viewer = newSpectatedPlayer;
 	}
 }
