@@ -1,6 +1,6 @@
 namespace TTT;
 
-public interface ISpectatableCamera
+public interface ISpectateCamera
 {
 	void OnUpdateSpectatedPlayer( Player oldSpectatedPlayer, Player newSpectatedPlayer ) { }
 }

@@ -60,7 +60,7 @@ public partial class Player
 			CurrentPlayer = players[_targetIdx];
 		}
 
-		if ( CameraMode is ISpectatableCamera camera )
+		if ( CameraMode is ISpectateCamera camera )
 			camera.OnUpdateSpectatedPlayer( oldSpectatedPlayer, CurrentPlayer );
 	}
 

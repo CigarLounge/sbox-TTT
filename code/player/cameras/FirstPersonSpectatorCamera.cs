@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FirstPersonSpectatorCamera : CameraMode, ISpectatableCamera
+public partial class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 {
 	private const float SMOOTH_SPEED = 25f;
 
