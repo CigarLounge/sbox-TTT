@@ -66,7 +66,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		Perks = new string[DeadPlayer.Perks.Count];
-
 		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
 		{
 			Perks[i] = DeadPlayer.Perks.Get( i ).Info.Title;
@@ -272,8 +271,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		var player = user as Player;
+		// For now, let's not let people inspect outside of InProgressRound.
+		// we should probably create an "empty" corpse instead.
+		if ( Game.Current.Round is not InProgressRound )
+			return false;
 
+		var player = user as Player;
 		if ( !DeadPlayer.IsConfirmedDead )
 		{
 			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
