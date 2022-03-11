@@ -12,7 +12,7 @@
 		4 : "Utility Equipment"
 		5 : "Grenade"
 	]
-	spawnable(boolean) { group = "Important" } : "Spawnable" : 1 : ""
+	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
 	candrop(boolean) { group = "Important" } : "Can Drop" : 1 : ""
 	viewmodel(resource:vmdl) { group = "ViewModels" } : "View Model" : "" : ""
 	handsmodel(resource:vmdl) { group = "ViewModels" } : "Hands Model" : "" : ""

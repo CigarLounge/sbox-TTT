@@ -29,7 +29,7 @@ public partial class CarriableInfo : ItemInfo
 	public Model CachedViewModel { get; set; }
 
 	[Property, Category( "Important" )] public SlotType Slot { get; set; } = SlotType.Primary;
-	[Property, Category( "Important" )] public bool Spawnable { get; set; } = true;
+	[Property, Category( "Important" )] public bool Spawnable { get; set; } = false;
 	[Property, Category( "Important" )] public bool CanDrop { get; set; } = true;
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
