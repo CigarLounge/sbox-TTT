@@ -11,7 +11,7 @@
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		spread = 0.03
-		primaryrate = 12.0
+		primaryrate = 11.0
 		secondaryrate = 0.0
 		reloadtime = 3.1
 		ammotype = "5"
@@ -29,11 +29,12 @@
 		icon = ""
 		worldmodel = resource:"models/weapons/w_ak47.vmdl"
 		libraryname = "ttt_weapon_ak47"
-		verticalrecoil = 20.0
+		verticalrecoil = 24.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
 		headshotmultiplier = 1.3
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
