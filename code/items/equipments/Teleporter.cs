@@ -31,13 +31,6 @@ public partial class Teleporter : Carriable
 		IsTeleporting = false;
 	}
 
-	public override void ActiveEnd( Entity ent, bool dropped )
-	{
-		base.ActiveEnd( ent, dropped );
-
-		_particle?.Destroy( true );
-	}
-
 	public override void Simulate( Client cl )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceAction < 1f )
@@ -106,6 +99,13 @@ public partial class Teleporter : Carriable
 		LocationIsSet = true;
 		_teleportLocation = trace.EndPosition;
 		UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		_particle?.Destroy( true );
 	}
 
 	private void StartTeleport()
