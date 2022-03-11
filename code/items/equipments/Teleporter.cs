@@ -21,6 +21,7 @@ public partial class Teleporter : Carriable
 	[Net, Predicted]
 	public bool LocationIsSet { get; private set; }
 
+	public override string SlotText => Charges.ToString();
 	private Vector3 _teleportLocation;
 	private Particles _particle;
 
@@ -83,7 +84,7 @@ public partial class Teleporter : Carriable
 		input.ClearButton( InputButton.Jump );
 		input.ClearButton( InputButton.Drop );
 		input.ActiveChild = this;
-		input.InputDirection = 0;		
+		input.InputDirection = 0;
 	}
 
 	private void SetLocation()
@@ -116,6 +117,6 @@ public partial class Teleporter : Carriable
 		IsTeleporting = true;
 		TimeSinceAction = 0;
 		TimeSinceStartedTeleporting = 0;
-		Charges--;
+		Charges -= 1;
 	}
 }

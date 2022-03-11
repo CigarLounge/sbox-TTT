@@ -57,11 +57,14 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		get => base.Owner as Player;
 		set => base.Owner = value;
 	}
+
+	public BaseViewModel HandsModelEntity { get; protected set; }
 	public Player PreviousOwner { get; set; }
+
+	public virtual string SlotText => string.Empty;
 
 	public CarriableInfo Info => Asset.GetInfo<CarriableInfo>( ClassInfo.Name );
 	string IEntityHint.TextOnTick => Info.Title;
-	public BaseViewModel HandsModelEntity;
 
 	public Carriable() { }
 

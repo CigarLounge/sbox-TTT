@@ -75,10 +75,7 @@ public class InventorySelection : Panel
 			slot.SetClass( "active", slot.Carriable.Info.Title == activeItemTitle );
 			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItemTitle );
 
-			if ( slot.Carriable is Weapon weapon )
-			{
-				slot.UpdateAmmo( FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Info.AmmoType ) ) );
-			}
+			slot.UpdateAmmo( slot.Carriable.SlotText );
 		}
 
 		SortChildren( ( p1, p2 ) =>
@@ -221,15 +218,11 @@ public class InventorySelection : Panel
 
 			Add.Label( carriable.Info.Title );
 
-			_ammoLabel = Add.Label();
+			_ammoLabel = Add.Label( String.Empty, "ammo-label" );
 
-			if ( Local.Pawn is Player player )
+			if ( Local.Pawn is Player )
 			{
-				if ( Carriable is Weapon weapon )
-				{
-					_ammoLabel.Text = FormatAmmo( weapon, player.CurrentPlayer.AmmoCount( weapon.Info.AmmoType ) );
-					_ammoLabel.AddClass( "ammo-label" );
-				}
+				_ammoLabel.Text = Carriable.SlotText;
 			}
 		}
 
