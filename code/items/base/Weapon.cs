@@ -33,6 +33,8 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; } = 0f;
+	[Property( "reserveammo", "The amount of ammo this weapon spawns with if the ammo type is set to None." ), Category( "Stats" )]
+	public int ReserveAmmo { get; set; } = 0;
 	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
 	[Property, Category( "Stats" )] public float VerticalRecoil { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float HorizontalRecoilRange { get; set; } = 0f;
@@ -44,7 +46,10 @@ public partial class WeaponInfo : CarriableInfo
 public partial class Weapon : Carriable
 {
 	[Net, Predicted]
-	public int AmmoClip { get; set; }
+	public int AmmoClip { get; protected set; }
+
+	[Net, Predicted]
+	public int ReserveAmmo { get; protected set; }
 
 	[Net, Predicted]
 	public bool IsReloading { get; protected set; }
@@ -58,7 +63,7 @@ public partial class Weapon : Carriable
 	[Net, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
-	public override string SlotText => $"{AmmoClip} + {Owner?.AmmoCount( Info.AmmoType )}";
+	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
@@ -71,6 +76,9 @@ public partial class Weapon : Carriable
 		base.Spawn();
 
 		AmmoClip = Info.ClipSize;
+
+		if ( Info.AmmoType == AmmoType.None )
+			ReserveAmmo = Info.ReserveAmmo;
 	}
 
 	public override void ActiveStart( Entity ent )
@@ -205,7 +213,7 @@ public partial class Weapon : Carriable
 
 	public virtual bool CanReload()
 	{
-		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0) )
+		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0 && ReserveAmmo == 0) )
 			return false;
 
 		if ( !Owner.IsValid() || !Input.Down( InputButton.Reload ) )
@@ -350,8 +358,12 @@ public partial class Weapon : Carriable
 		if ( UnlimitedAmmo )
 			return ammo;
 
-		int available = Math.Min( Owner.AmmoCount( Info.AmmoType ), ammo );
-		Owner.TakeAmmo( Info.AmmoType, available );
+		int available = Math.Min( Info.AmmoType == AmmoType.None ? ReserveAmmo : Owner.AmmoCount( Info.AmmoType ), ammo );
+
+		if ( Info.AmmoType == AmmoType.None )
+			ReserveAmmo -= available;
+		else
+			Owner.TakeAmmo( Info.AmmoType, available );
 
 		return available;
 	}

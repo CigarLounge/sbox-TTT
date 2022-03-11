@@ -29,6 +29,7 @@
 	spread(float) { group = "Stats" } : "Spread" : "0" : ""
 	primaryrate(float) { group = "Stats" } : "Primary Rate" : "0" : ""
 	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : "0" : ""
+	reserveammo(integer) { group = "Stats" } : "Reserve Ammo" : 0 : "The amount of ammo this weapon spawns with if the ammo type is set to None."
 	reloadtime(float) { group = "Stats" } : "Reload Time" : "2" : ""
 	verticalrecoil(float) { group = "Stats" } : "Vertical Recoil" : "0" : ""
 	horizontalrecoilrange(float) { group = "Stats" } : "Horizontal Recoil Range" : "0" : ""
