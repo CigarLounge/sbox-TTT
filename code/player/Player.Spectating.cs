@@ -9,17 +9,17 @@ public partial class Player
 	[Net, Local]
 	public bool IsForcedSpectator { get; set; } = false;
 
-	private Player _spectatingPlayer;
+	private Player _spectatedPlayer;
 	public Player CurrentPlayer
 	{
-		get => _spectatingPlayer ?? this;
+		get => _spectatedPlayer ?? this;
 		set
 		{
-			_spectatingPlayer = value == this ? null : value;
+			_spectatedPlayer = value == this ? null : value;
 		}
 	}
 
-	public bool IsSpectatingPlayer => _spectatingPlayer.IsValid();
+	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 
 	private int _targetIdx = 0;
 

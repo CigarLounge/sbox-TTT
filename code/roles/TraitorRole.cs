@@ -11,21 +11,21 @@ public class TraitorRole : BaseRole
 
 		if ( Host.IsServer )
 		{
-			foreach ( Player otherPlayer in player.Team.GetAll() )
+			foreach ( var client in Client.All )
 			{
-				if ( otherPlayer == player )
+				if ( client == player.Client )
 					continue;
 
-				player.SendRoleToClient( To.Single( otherPlayer ) );
-				otherPlayer.SendRoleToClient( To.Single( player ) );
-			}
+				var otherPlayer = client.Pawn as Player;
 
-			foreach ( Player otherPlayer in Utils.GetPlayers() )
-			{
-				if ( otherPlayer.IsMissingInAction )
+				if ( otherPlayer.Team == Team.Traitors )
 				{
-					otherPlayer.SyncMIA( player );
+					player.SendRoleToClient( To.Single( otherPlayer ) );
+					otherPlayer.SendRoleToClient( To.Single( player ) );
 				}
+
+				if ( otherPlayer.IsMissingInAction )
+					otherPlayer.SyncMIA( player );
 			}
 		}
 	}

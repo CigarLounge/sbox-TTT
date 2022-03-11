@@ -1,6 +1,5 @@
-using System.Collections.Generic;
-
 using Sandbox;
+using System.Collections.Generic;
 
 namespace TTT;
 
@@ -137,8 +136,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		var to = _to ?? To.Everyone;
-		foreach ( var client in to ) // Don't send general data to players who covert searched
+		foreach ( var client in to )
 		{
+			// Don't send general data to players who covert searched
 			if ( _playersWhoCovertSearched.Contains( client.Pawn.NetworkIdent ) )
 				continue;
 
@@ -277,6 +277,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			return false;
 
 		var player = user as Player;
+
 		if ( !DeadPlayer.IsConfirmedDead )
 		{
 			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )

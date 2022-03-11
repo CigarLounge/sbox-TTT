@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+public enum BuyError
+{
+	None,
+	InventoryBlocked,
+	NotEnoughCredits,
+	LimitReached
+}
+
 public partial class Player
 {
 	[Net, Local]
 	public IList<string> PurchasedLimitedShopItems { get; set; }
-
-	public enum BuyError
-	{
-		None,
-		InventoryBlocked,
-		NotEnoughCredits,
-		LimitReached
-	}
 
 	/// <summary>
 	/// Local clientside check before server does exact same checks in "PurchaseItem(...)".

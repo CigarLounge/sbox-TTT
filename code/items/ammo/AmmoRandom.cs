@@ -10,13 +10,13 @@ public class AmmoRandom : Entity
 	public override void Spawn()
 	{
 		base.Spawn();
+
 		Transmit = TransmitType.Never;
 	}
 
 	public void Activate()
 	{
-		var ammoTypeToSpawn = (AmmoType)Rand.Int( 1, 5 );
-		var ent = Ammo.Create( ammoTypeToSpawn );
+		var ent = Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) );
 		ent.Position = Position;
 		ent.Rotation = Rotation;
 	}

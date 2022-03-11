@@ -9,6 +9,9 @@ public partial class Knife : Carriable
 	[Net, Predicted]
 	public TimeSince TimeSinceStab { get; set; }
 
+	private static readonly string s_swingSound = "knife_swing-1";
+	private static readonly string s_fleshHit = "knife_flesh_hit-1";
+
 	private bool _isThrown = false;
 	private Player _thrower;
 	private Vector3 _thrownFrom;
@@ -46,7 +49,7 @@ public partial class Knife : Carriable
 
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
-		PlaySound( RawStrings.SwingSound );
+		PlaySound( s_swingSound );
 
 		var endPos = Owner.EyePosition + Owner.EyeRotation.Forward * range;
 
@@ -76,7 +79,7 @@ public partial class Knife : Carriable
 		if ( trace.Entity is Player player )
 		{
 			player.LastDistanceToAttacker = 0;
-			PlaySound( RawStrings.FleshHit );
+			PlaySound( s_fleshHit );
 			Owner.Inventory.DropActive();
 			Delete();
 		}
@@ -162,7 +165,7 @@ public partial class Knife : Carriable
 		else if ( trace.Entity.IsWorld && Vector3.GetAngle( trace.Normal, trace.Direction ) > 120 )
 		{
 			trace.Surface.DoBulletImpact( trace );
-			Position -= trace.Direction * 4f;
+			Position -= trace.Direction * 4f; // Make the knife stuck in the terrain
 			MoveType = MoveType.None;
 		}
 		else

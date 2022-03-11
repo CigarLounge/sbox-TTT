@@ -34,8 +34,8 @@
 	verticalrecoil(float) { group = "Stats" } : "Vertical Recoil" : "0" : ""
 	horizontalrecoilrange(float) { group = "Stats" } : "Horizontal Recoil Range" : "0" : ""
 	recoilrecoveryscale(float) { group = "Stats" } : "Recoil Recovery Scale" : "0" : ""
-	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" :  : ""
-	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" :  : ""
+	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" : "" : ""
+	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" : "" : ""
 	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
 	[
 		0 : "Primary"
@@ -45,7 +45,7 @@
 		4 : "Utility Equipment"
 		5 : "Grenade"
 	]
-	spawnable(boolean) { group = "Important" } : "Spawnable" : 0 : ""
+	spawnable(boolean) { group = "Important" } : "Spawnable" : 1 : ""
 	candrop(boolean) { group = "Important" } : "Can Drop" : 1 : ""
 	viewmodel(resource:vmdl) { group = "ViewModels" } : "View Model" : "" : ""
 	handsmodel(resource:vmdl) { group = "ViewModels" } : "Hands Model" : "" : ""
@@ -63,7 +63,7 @@
 	islimited(boolean) { group = "Important" } : "Is Limited" : 0 : ""
 	price(integer) { group = "Stats" } : "Price" : 0 : ""
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
-	description(string) { group = "UI" } : "Description" :  : ""
+	description(string) { group = "UI" } : "Description" : "" : ""
 	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
 	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."
 ]

@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.ComponentModel;
 
 namespace TTT;
@@ -29,12 +28,12 @@ public partial class CarriableInfo : ItemInfo
 {
 	public Model CachedViewModel { get; set; }
 
-	[Property, Category( "Important" )] public SlotType Slot { get; set; }
-	[Property, Category( "Important" )] public bool Spawnable { get; set; }
+	[Property, Category( "Important" )] public SlotType Slot { get; set; } = SlotType.Primary;
+	[Property, Category( "Important" )] public bool Spawnable { get; set; } = true;
 	[Property, Category( "Important" )] public bool CanDrop { get; set; } = true;
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
-	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; }
+	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; } = HoldType.None;
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
@@ -61,8 +60,10 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	public BaseViewModel HandsModelEntity { get; protected set; }
 	public Player PreviousOwner { get; set; }
 
+	/// <summary>
+	/// The text that will show up in the inventory slot.
+	/// </summary>
 	public virtual string SlotText => string.Empty;
-
 	public CarriableInfo Info => Asset.GetInfo<CarriableInfo>( ClassInfo.Name );
 	string IEntityHint.TextOnTick => Info.Title;
 
@@ -203,8 +204,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		return new UI.Hint( (this as IEntityHint).TextOnTick );
 	}
 
-	void IEntityHint.Tick( Player player ) { }
-
 	bool IUse.OnUse( Entity user )
 	{
 		if ( IsServer && user is Player player )
@@ -215,9 +214,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		if ( Owner != null || user is not Player )
-			return false;
-
-		return true;
+		return Owner == null && user is Player;
 	}
 }

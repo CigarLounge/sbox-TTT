@@ -35,9 +35,9 @@ public partial class ShopItem : Panel
 		ItemInfo = itemInfo;
 	}
 
-	public void UpdateAvailability( Player.BuyError buyError )
+	public void UpdateAvailability( BuyError buyError )
 	{
-		SetClass( "cannot-purchase", buyError != Player.BuyError.None );
-		IsDisabled = buyError != Player.BuyError.None;
+		SetClass( "cannot-purchase", buyError != BuyError.None );
+		IsDisabled = buyError != BuyError.None;
 	}
 }

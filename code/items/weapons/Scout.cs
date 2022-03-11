@@ -1,5 +1,4 @@
 using Sandbox;
-using TTT.UI;
 
 namespace TTT;
 
@@ -9,7 +8,21 @@ public partial class Scout : Weapon
 {
 	private float _defaultFOV;
 	private bool _isScoped;
-	private Scope _sniperScopePanel;
+	private UI.Scope _sniperScopePanel;
+
+	public override void ActiveStart( Entity ent )
+	{
+		base.ActiveStart( ent );
+
+		_defaultFOV = Owner.CameraMode.FieldOfView;
+	}
+
+	public override void ActiveEnd( Entity ent, bool dropped )
+	{
+		base.ActiveEnd( ent, dropped );
+
+		_isScoped = false;
+	}
 
 	public override void Simulate( Client owner )
 	{
@@ -28,27 +41,13 @@ public partial class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		if ( Hud.GeneralHud.Instance == null )
+		if ( UI.Hud.GeneralHud.Instance == null )
 			return;
 
-		_sniperScopePanel = new Scope( "/ui/scout_scope.png" )
+		_sniperScopePanel = new UI.Scope( "/ui/scout_scope.png" )
 		{
-			Parent = Hud.GeneralHud.Instance
+			Parent = UI.Hud.GeneralHud.Instance
 		};
-	}
-
-	public override void ActiveStart( Entity ent )
-	{
-		base.ActiveStart( ent );
-
-		_defaultFOV = Owner.CameraMode.FieldOfView;
-	}
-
-	public override void ActiveEnd( Entity ent, bool dropped )
-	{
-		base.ActiveEnd( ent, dropped );
-
-		_isScoped = false;
 	}
 
 	public override void DestroyHudElements()

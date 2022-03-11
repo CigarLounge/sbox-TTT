@@ -13,9 +13,12 @@ public class DetectiveRole : BaseRole
 		{
 			player.IsRoleKnown = true;
 
-			foreach ( var otherPlayer in Utils.GetPlayers( x => x != player ) )
+			foreach ( var client in Client.All )
 			{
-				player.SendRoleToClient( To.Single( otherPlayer ) );
+				if ( client == player.Client )
+					continue;
+
+				player.SendRoleToClient( To.Single( client ) );
 			}
 
 			player.Perks.Add( new BodyArmor() );
