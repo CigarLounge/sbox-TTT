@@ -31,6 +31,13 @@ public partial class Teleporter : Carriable
 		IsTeleporting = false;
 	}
 
+	public override void ActiveEnd( Entity ent, bool dropped )
+	{
+		base.ActiveEnd( ent, dropped );
+
+		_particle?.Destroy( true );
+	}
+
 	public override void Simulate( Client cl )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceAction < 1f )
@@ -81,7 +88,9 @@ public partial class Teleporter : Carriable
 			return;
 
 		input.ClearButton( InputButton.Jump );
-		input.InputDirection = 0;
+		input.ClearButton( InputButton.Drop );
+		input.ActiveChild = this;
+		input.InputDirection = 0;		
 	}
 
 	private void SetLocation()
