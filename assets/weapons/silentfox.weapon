@@ -35,5 +35,6 @@
 		headshotmultiplier = 1.2
 		candrop = true
 		description = "Low-noise SMG which prevents victims from screaming when killed."
+		reserveammo = 60
 	}
 }

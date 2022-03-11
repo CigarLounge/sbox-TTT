@@ -20,10 +20,10 @@ public partial class Player
 	{
 		int iType = (int)type;
 
-		if ( Ammo == null ) 
+		if ( Ammo == null )
 			return 0;
 
-		if ( Ammo.Count <= iType ) 
+		if ( Ammo.Count <= iType )
 			return 0;
 
 		return Ammo[(int)type];
