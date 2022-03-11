@@ -37,12 +37,15 @@ public partial class Teleporter : Carriable
 
 		if ( IsTeleporting )
 		{
+			Particles.Create( "particles/teleport.vpcf", this, true );
+
 			if ( TimeSinceStartedTeleporting >= 2f )
 			{
 				if ( IsServer )
 					Owner.Position = _teleportLocation;
 
-				IsTeleporting = false;
+				if ( TimeSinceStartedTeleporting >= 4f )
+					IsTeleporting = false;
 			}
 
 			return;
@@ -93,7 +96,7 @@ public partial class Teleporter : Carriable
 
 	private void StartTeleport()
 	{
-		if ( !LocationIsSet )
+		if ( !LocationIsSet || IsTeleporting )
 			return;
 
 		IsTeleporting = true;
