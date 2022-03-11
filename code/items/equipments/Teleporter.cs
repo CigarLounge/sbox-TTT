@@ -22,6 +22,7 @@ public partial class Teleporter : Carriable
 	public bool LocationIsSet { get; private set; }
 
 	private Vector3 _teleportLocation;
+	private Particles _particle;
 
 	public override void ActiveStart( Entity ent )
 	{
@@ -37,7 +38,7 @@ public partial class Teleporter : Carriable
 
 		if ( IsTeleporting )
 		{
-			Particles.Create( "particles/teleport.vpcf", this, true );
+			_particle ??= Particles.Create( "particles/teleport.vpcf", this, true );
 
 			if ( TimeSinceStartedTeleporting >= 2f )
 			{
@@ -45,7 +46,11 @@ public partial class Teleporter : Carriable
 					Owner.Position = _teleportLocation;
 
 				if ( TimeSinceStartedTeleporting >= 4f )
+				{
 					IsTeleporting = false;
+					_particle?.Destroy( true );
+					_particle = null;
+				}
 			}
 
 			return;
