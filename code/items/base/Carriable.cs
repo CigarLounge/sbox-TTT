@@ -86,7 +86,27 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void ActiveStart( Entity ent )
 	{
-		base.ActiveStart( ent );
+		EnableDrawing = true;
+
+		if ( ent is Player player )
+		{
+			var animator = player.GetActiveAnimator();
+			if ( animator != null )
+			{
+				SimulateAnimator( animator );
+			}
+		}
+
+		if ( IsLocalPawn )
+		{
+			DestroyViewModel();
+			DestroyHudElements();
+
+			CreateViewModel();
+			CreateHudElements();
+
+			ViewModelEntity?.SetAnimParameter( "deploy", true );
+		}
 
 		TimeSinceDeployed = 0;
 	}

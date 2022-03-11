@@ -49,7 +49,7 @@ public partial class Teleporter : Carriable
 				if ( TimeSinceStartedTeleporting >= 4f )
 				{
 					IsTeleporting = false;
-					_particle?.Destroy( true );
+					_particle?.Destroy();
 					_particle = null;
 				}
 			}
@@ -111,7 +111,7 @@ public partial class Teleporter : Carriable
 
 	private void StartTeleport()
 	{
-		if ( !LocationIsSet || IsTeleporting )
+		if ( !LocationIsSet )
 			return;
 
 		IsTeleporting = true;
