@@ -58,6 +58,7 @@ public partial class Weapon : Carriable
 	[Net, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
+	public override string SlotText => $"{AmmoClip} + {Owner?.AmmoCount( Info.AmmoType )}";
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
