@@ -9,9 +9,13 @@ Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 
 ## Credits
 
+### Team
 - [Matthew Zegar](https://github.com/mzegar) - Programming, Assets, etc.
 - [Kole](https://github.com/kolexxx) - Co-Programmer 
+
+### Community Contributors
 - [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
+- [Timm Luyten](https://github.com/timmybo5) - Weapon particles from SWB
 - Every [contributor](https://github.com/mzegar/sbox-TTT/graphs/contributors) listed here
 - (and more to be added!)
 
