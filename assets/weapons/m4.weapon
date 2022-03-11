@@ -7,7 +7,7 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 30
-		damage = 27.0
+		damage = 24.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		spread = 0.03
@@ -29,10 +29,11 @@
 		icon = "ui/icons/weapons/ttt_weapon_m4.png"
 		worldmodel = resource:"models/weapons/w_m4.vmdl"
 		libraryname = "ttt_weapon_m4"
-		verticalrecoil = 13.0
+		verticalrecoil = 20.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.3
+		headshotmultiplier = 1.5
 		candrop = true
+		description = ""
 	}
 }

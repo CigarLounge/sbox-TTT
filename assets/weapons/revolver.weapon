@@ -29,9 +29,9 @@
 		damagefalloffend = 0.0
 		holdtype = "1"
 		islimited = false
-		verticalrecoil = 60.0
+		verticalrecoil = 50.0
 		horizontalrecoilrange = 10.0
-		recoilrecoveryscale = 30.0
+		recoilrecoveryscale = 20.0
 		headshotmultiplier = 2.5
 		candrop = true
 		description = ""

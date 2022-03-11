@@ -7,7 +7,7 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 50
-		damage = 29.0
+		damage = 20.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		spread = 0.05

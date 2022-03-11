@@ -32,7 +32,7 @@
 		verticalrecoil = 50.0
 		horizontalrecoilrange = 1.5
 		recoilrecoveryscale = 50.0
-		headshotmultiplier = 1.2
+		headshotmultiplier = 1.5
 		candrop = true
 		description = ""
 	}

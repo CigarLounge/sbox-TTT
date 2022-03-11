@@ -7,7 +7,7 @@
 		firemode = "1"
 		bulletsperfire = 4
 		clipsize = 8
-		damage = 15.0
+		damage = 25.0
 		spread = 0.2
 		primaryrate = 1.2
 		secondaryrate = 0.0
@@ -28,7 +28,7 @@
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		holdtype = "3"
-		headshotmultiplier = 1.0
+		headshotmultiplier = 1.2
 		verticalrecoil = 32.0
 		horizontalrecoilrange = 0.0
 		recoilrecoveryscale = 20.0

@@ -32,7 +32,7 @@
 		verticalrecoil = 8.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.5
+		headshotmultiplier = 1.2
 		candrop = true
 		description = "Low-noise SMG which prevents victims from screaming when killed."
 	}
