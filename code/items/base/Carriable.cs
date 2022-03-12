@@ -27,6 +27,7 @@ public enum HoldType
 public partial class CarriableInfo : ItemInfo
 {
 	public Model CachedViewModel { get; set; }
+	public Model CachedWorldModel { get; set; }
 
 	[Property, Category( "Important" )] public SlotType Slot { get; set; } = SlotType.Primary;
 	[Property, Category( "Important" )] public bool Spawnable { get; set; } = false;
@@ -34,6 +35,7 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
 	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; } = HoldType.None;
+	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )] public string WorldModel { get; set; } = "";
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
@@ -41,6 +43,7 @@ public partial class CarriableInfo : ItemInfo
 		base.PostLoad();
 
 		CachedViewModel = Model.Load( ViewModel );
+		CachedWorldModel = Model.Load( WorldModel );
 	}
 }
 

@@ -8,7 +8,6 @@
 	price(integer) { group = "Stats" } : "Price" : 0 : ""
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "" : ""
 	description(string) { group = "UI" } : "Description" : "" : ""
-	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
 	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."
 ]
 

@@ -6,7 +6,6 @@
 		islimited = true
 		price = 100
 		icon = "ui/icons/ttt_perk_radar.png"
-		worldmodel = resource:""
 		libraryname = "ttt_perk_radar"
 		description = "Allows you to scan for life signs."
 	}
