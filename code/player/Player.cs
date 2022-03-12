@@ -88,11 +88,11 @@ public partial class Player : Sandbox.Player
 	}
 
 	[ClientRpc]
-	private void ClientRespawn( Player player ) // s&box bug... remove down the line.
+	private void ClientRespawn( Player player )
 	{
-		IsConfirmedDead = false;
-		IsMissingInAction = false;
-		IsRoleKnown = false;
+		player.IsConfirmedDead = false;
+		player.IsMissingInAction = false;
+		player.IsRoleKnown = false;
 
 		if ( !IsLocalPawn )
 			SetRole( new NoneRole() );
