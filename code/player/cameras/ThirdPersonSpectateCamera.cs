@@ -36,7 +36,12 @@ public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		Rotation = Rotation.Slerp( Rotation, _targetRot, 25f * RealTime.Delta );
 
 		_targetPos = GetSpectatePoint() + Rotation.Forward * -CAMERA_DISTANCE;
-		Position = Vector3.Lerp( Position, _targetPos, 50f * RealTime.Delta );
+
+		var trace = Trace.Ray( GetSpectatePoint(), _targetPos )
+			.WorldOnly()
+			.Run();
+
+		Position = Vector3.Lerp( Position, trace.EndPosition, 50f * RealTime.Delta );
 	}
 
 	private Vector3 GetSpectatePoint()

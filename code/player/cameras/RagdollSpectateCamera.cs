@@ -11,16 +11,21 @@ public class RagdollSpectateCamera : CameraMode, ISpectateCamera
 		base.Activated();
 
 		FocusPoint = CurrentView.Position - GetViewOffset();
+
+		Viewer = null;
 	}
 
 	public override void Update()
 	{
 		FocusPoint = Vector3.Lerp( FocusPoint, GetSpectatePoint(), Time.Delta * 5.0f );
 
-		Position = FocusPoint + GetViewOffset();
 		Rotation = Input.Rotation;
 
-		Viewer = null;
+		var trace = Trace.Ray( GetSpectatePoint(), FocusPoint + GetViewOffset() )
+			.WorldOnly()
+			.Run();
+
+		Position = Vector3.Lerp( Position, trace.EndPosition, 50f * RealTime.Delta );
 	}
 
 	public virtual Vector3 GetSpectatePoint()
