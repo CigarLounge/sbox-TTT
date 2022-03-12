@@ -24,6 +24,6 @@ public partial class Huge : Weapon
 		// As we decrease ammo count, update the viewmodels "bullets" bodygroup.
 		if ( IsLocalPawn )
 			if ( AmmoClip <= MaxBulletsChoice )
-				ViewModelEntity.SetBodyGroup( "bullets", AmmoClip );
+				ViewModelEntity.SetBodyGroup( BulletsBodyGroup, AmmoClip );
 	}
 }
