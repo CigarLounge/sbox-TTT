@@ -43,7 +43,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; } = "";
 }
 
-public partial class Weapon : Carriable
+public abstract partial class Weapon : Carriable
 {
 	[Net, Predicted]
 	public int AmmoClip { get; protected set; }
