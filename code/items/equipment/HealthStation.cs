@@ -12,8 +12,6 @@ public partial class HealthStation : Carriable
 			return;
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );
-		}
+			Owner.Inventory.DropEntity( this, typeof( HealthStationEntity ) );		
 	}
 }

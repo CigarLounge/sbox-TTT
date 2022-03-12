@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -9,21 +10,11 @@ public partial class Huge : Weapon
 	private readonly string BulletsBodyGroup = "bullets";
 	private readonly int MaxBulletsChoice = 7;
 
-	public override void CreateViewModel()
-	{
-		base.CreateViewModel();
-
-		// Start the HUGE with bullets showing.
-		ViewModelEntity.SetBodyGroup( BulletsBodyGroup, MaxBulletsChoice );
-	}
-
 	public override void Simulate( Client owner )
 	{
 		base.Simulate( owner );
 
 		// As we decrease ammo count, update the viewmodels "bullets" bodygroup.
-		if ( IsLocalPawn )
-			if ( AmmoClip <= MaxBulletsChoice )
-				ViewModelEntity.SetBodyGroup( BulletsBodyGroup, AmmoClip );
+		ViewModelEntity?.SetBodyGroup( BulletsBodyGroup, Math.Min( AmmoClip, MaxBulletsChoice ) );
 	}
 }

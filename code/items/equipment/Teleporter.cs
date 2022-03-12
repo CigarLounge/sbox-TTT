@@ -58,7 +58,7 @@ public partial class Teleporter : Carriable
 		}
 
 		// We can't do anything if we aren't standing on the ground
-		if ( Owner.GroundEntity is not WorldEntity )
+		if ( Charges <= 0 || Owner.GroundEntity is not WorldEntity )
 			return;
 
 		if ( Input.Pressed( InputButton.Attack2 ) )

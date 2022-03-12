@@ -3,9 +3,9 @@ namespace TTT;
 // Any loose strings we need to keep track of.
 public static partial class RawStrings
 {
-	public static readonly string GameIndent = "matt.ttt";
-	public static readonly string Spectator = "spectator";
-	public static readonly string WeaponPickupSound = "pickup_weapon";
-	public static readonly string AmmoPickupSound = "pickup_ammo";
-	public static readonly string ScopeInSound = "scope_in";
+	public const string GameIndent = "matt.ttt";
+	public const string Spectator = "spectator";
+	public const string WeaponPickupSound = "pickup_weapon";
+	public const string AmmoPickupSound = "pickup_ammo";
+	public const string ScopeInSound = "scope_in";
 }

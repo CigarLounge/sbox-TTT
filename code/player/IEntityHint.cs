@@ -7,7 +7,7 @@ public interface IEntityHint
 	/// <summary>
 	/// The max viewable distance of the hint.
 	/// </summary>
-	float HintDistance => 2048f;
+	float HintDistance => Player.INTERACT_DISTANCE;
 
 	/// <summary>
 	/// The text to display on the hint each tick.

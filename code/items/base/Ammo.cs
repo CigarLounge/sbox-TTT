@@ -81,7 +81,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	}
 
 	public string TextOnTick => $"{Type} Ammo x{CurrentCount}";
-	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player player )
 	{

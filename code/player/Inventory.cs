@@ -84,8 +84,10 @@ public partial class Inventory : BaseInventory
 		{
 			item.OnChildRemoved( Owner );
 			SlotCapacity[(int)(item as Carriable).Info.Slot]++;
+
 			if ( item is Weapon weapon )
 				WeaponsOfAmmoType[(int)weapon.Info.AmmoType]--;
+
 			item.Delete();
 		}
 
@@ -94,7 +96,9 @@ public partial class Inventory : BaseInventory
 
 	public void DropEntity( Entity self, Type type )
 	{
-		List.Remove( self );
+		if ( !base.Drop( self ) )
+			return;
+
 		self.Delete();
 
 		Entity droppedEntity = Library.Create<Entity>( type );

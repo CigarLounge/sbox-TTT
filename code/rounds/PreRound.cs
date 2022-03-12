@@ -28,10 +28,10 @@ public class PreRound : BaseRound
 
 	protected override void OnStart()
 	{
-		MapHandler.CleanUp();
-
 		if ( !Host.IsServer )
 			return;
+
+		MapHandler.CleanUp();
 
 		foreach ( Client client in Client.All )
 		{

@@ -9,9 +9,9 @@ namespace TTT;
 public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {
 	[Net]
-	public float StoredHealth { get; set; } = 200f; // This number technically has to be a float for the methods to work, but it should stay a whole number the entire time.
+	public float StoredHealth { get; set; } = 200f;
 
-	private const string _worldModel = "models/health_station/health_station.vmdl";
+	private const string WorldModel = "models/health_station/health_station.vmdl";
 	private TimeUntil _nextHeal = 0;
 	private TimeUntil _nextRecharge = 0;
 
@@ -22,7 +22,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		SetModel( _worldModel );
+		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 

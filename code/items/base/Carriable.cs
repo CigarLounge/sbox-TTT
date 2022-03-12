@@ -88,11 +88,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		SetModel( Info.WorldModel );
 	}
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
 		EnableDrawing = true;
 
-		if ( ent is Player player )
+		if ( entity is Player player )
 		{
 			var animator = player.GetActiveAnimator();
 			if ( animator != null )
@@ -194,8 +194,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
 	}
-
-	public float HintDistance => Player.INTERACT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player player )
 	{
