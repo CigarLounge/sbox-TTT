@@ -8,7 +8,7 @@
 		bulletsperfire = 1
 		clipsize = 6
 		damage = 42.0
-		primaryrate = 3.0
+		primaryrate = 2.5
 		secondaryrate = 0.0
 		reloadtime = 2.2
 		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
@@ -31,9 +31,10 @@
 		islimited = false
 		verticalrecoil = 50.0
 		horizontalrecoilrange = 10.0
-		recoilrecoveryscale = 20.0
+		recoilrecoveryscale = 10.0
 		headshotmultiplier = 2.5
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
