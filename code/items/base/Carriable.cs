@@ -115,12 +115,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		TimeSinceDeployed = 0;
 	}
 
-	public override void Simulate( Client cl )
+	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
 
-		base.Simulate( cl );
+		base.Simulate( client );
 	}
 
 	public override void CreateViewModel()

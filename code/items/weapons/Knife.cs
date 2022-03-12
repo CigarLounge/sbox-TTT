@@ -9,15 +9,15 @@ public partial class Knife : Carriable
 	[Net, Predicted]
 	public TimeSince TimeSinceStab { get; set; }
 
-	private static readonly string s_swingSound = "knife_swing-1";
-	private static readonly string s_fleshHit = "knife_flesh_hit-1";
+	private const string SwingSound = "knife_swing-1";
+	private const string FleshHit = "knife_flesh_hit-1";
 
 	private bool _isThrown = false;
 	private Player _thrower;
 	private Vector3 _thrownFrom;
 	private float _gravityModifier;
 
-	public override void Simulate( Client owner )
+	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceStab < 1f )
 			return;
@@ -49,7 +49,7 @@ public partial class Knife : Carriable
 
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
-		PlaySound( s_swingSound );
+		PlaySound( SwingSound );
 
 		var endPos = Owner.EyePosition + Owner.EyeRotation.Forward * range;
 
@@ -79,7 +79,7 @@ public partial class Knife : Carriable
 		if ( trace.Entity is Player player )
 		{
 			player.LastDistanceToAttacker = 0;
-			PlaySound( s_fleshHit );
+			PlaySound( FleshHit );
 			Owner.Inventory.DropActive();
 			Delete();
 		}

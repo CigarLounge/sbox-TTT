@@ -24,7 +24,7 @@ public partial class Scout : Weapon
 		_isScoped = false;
 	}
 
-	public override void Simulate( Client owner )
+	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed >= Info.DeployTime && Input.Pressed( InputButton.Attack2 ) )
 		{
@@ -34,7 +34,7 @@ public partial class Scout : Weapon
 				OnScopeStart( Owner );
 		}
 
-		base.Simulate( owner );
+		base.Simulate( client );
 	}
 
 	public override void CreateHudElements()

@@ -19,34 +19,41 @@ public class PostRound : BaseRound
 
 	public override void OnPlayerKilled( Player player )
 	{
+		base.OnPlayerKilled( player );
+
 		player.MakeSpectator();
+		player.Corpse.Confirm();
 	}
 
-	public override void OnPlayerJoin( Player playerJoined )
+	public override void OnPlayerJoin( Player player )
 	{
-		foreach ( Player player in Utils.GetPlayers() )
+		base.OnPlayerJoin( player );
+
+		foreach ( var client in Client.All )
 		{
-			if ( player.IsConfirmedDead )
-			{
-				player.Corpse.Confirm( To.Single( playerJoined ) );
-			}
-			else if ( player.IsRoleKnown )
-			{
-				player.SendRoleToClient( To.Single( playerJoined ) );
-			}
+			var otherPlayer = client.Pawn as Player;
+
+			if ( otherPlayer.IsConfirmedDead )
+				otherPlayer.Corpse.Confirm( To.Single( player ) );
+			else if ( otherPlayer.IsRoleKnown )
+				otherPlayer.SendRoleToClient( To.Single( player ) );
 		}
 	}
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+
 		if ( !Host.IsServer )
 			return;
 
-		foreach ( Player player in Utils.GetPlayers() )
+		foreach ( var client in Client.All )
 		{
+			var player = client.Pawn as Player;
+
 			if ( player.Corpse.IsValid() && !player.IsConfirmedDead )
 				player.Corpse.Confirm( To.Everyone );
-			else
+			else if ( !player.IsRoleKnown )
 				player.SendRoleToClient( To.Everyone );
 		}
 	}

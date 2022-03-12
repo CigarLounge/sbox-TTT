@@ -10,9 +10,9 @@ public partial class Huge : Weapon
 	private readonly string BulletsBodyGroup = "bullets";
 	private readonly int MaxBulletsChoice = 7;
 
-	public override void Simulate( Client owner )
+	public override void Simulate( Client client )
 	{
-		base.Simulate( owner );
+		base.Simulate( client );
 
 		// As we decrease ammo count, update the viewmodels "bullets" bodygroup.
 		ViewModelEntity?.SetBodyGroup( BulletsBodyGroup, Math.Min( AmmoClip, MaxBulletsChoice ) );

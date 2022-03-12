@@ -1,7 +1,6 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
-
-using Sandbox;
 
 namespace TTT;
 
@@ -19,15 +18,17 @@ public class PreRound : BaseRound
 
 	public override void OnPlayerKilled( Player player )
 	{
+		base.OnPlayerKilled( player );
+
 		StartRespawnTimer( player );
 
 		player.MakeSpectator();
-
-		base.OnPlayerKilled( player );
 	}
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+
 		if ( !Host.IsServer )
 			return;
 
@@ -69,7 +70,7 @@ public class PreRound : BaseRound
 			}
 		}
 
-		AssignRolesAndRespawn( players );
+		AssignRoles( players );
 
 		Game.Current.ChangeRound( new InProgressRound
 		{
@@ -78,7 +79,7 @@ public class PreRound : BaseRound
 		} );
 	}
 
-	private static void AssignRolesAndRespawn( List<Player> players )
+	private static void AssignRoles( List<Player> players )
 	{
 		int traitorCount = Math.Max( players.Count / 4, 1 );
 		int detectiveCount = players.Count / 8;
@@ -100,7 +101,8 @@ public class PreRound : BaseRound
 
 	public override void OnPlayerSpawned( Player player )
 	{
-		player.Inventory.Add( new Hands() );
 		base.OnPlayerSpawned( player );
+
+		player.Inventory.Add( new Hands() );
 	}
 }

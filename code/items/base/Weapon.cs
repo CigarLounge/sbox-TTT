@@ -81,15 +81,15 @@ public abstract partial class Weapon : Carriable
 			ReserveAmmo = Info.ReserveAmmo;
 	}
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
-		base.ActiveStart( ent );
+		base.ActiveStart( entity );
 
 		IsReloading = false;
 		TimeSinceReload = 0;
 	}
 
-	public override void Simulate( Client owner )
+	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
@@ -97,9 +97,7 @@ public abstract partial class Weapon : Carriable
 		if ( !IsReloading )
 		{
 			if ( CanReload() )
-			{
-				Reload();
-			}
+				Reload();		
 
 			//
 			// Reload could have changed our owner

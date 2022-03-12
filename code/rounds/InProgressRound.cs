@@ -21,6 +21,8 @@ public partial class InProgressRound : BaseRound
 
 	public override void OnPlayerKilled( Player player )
 	{
+		base.OnPlayerKilled( player );
+
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
@@ -28,21 +30,27 @@ public partial class InProgressRound : BaseRound
 		ChangeRoundIfOver();
 	}
 
-	public override void OnPlayerJoin( Player playerJoined )
+	public override void OnPlayerJoin( Player player )
 	{
-		Spectators.AddIfDoesNotContain( playerJoined );
+		base.OnPlayerJoin( player );
 
-		foreach ( Player player in Utils.GetPlayers() )
+		Spectators.AddIfDoesNotContain( player );
+
+		foreach ( var client in Client.All )
 		{
-			if ( player.IsConfirmedDead )
-				player.Corpse.Confirm( To.Single( playerJoined ) );
-			else if ( player.IsRoleKnown )
-				player.SendRoleToClient( To.Single( playerJoined ) );
+			var otherPlayer = client.Pawn as Player;
+
+			if ( otherPlayer.IsConfirmedDead )
+				otherPlayer.Corpse.Confirm( To.Single( player ) );
+			else if ( otherPlayer.IsRoleKnown )
+				otherPlayer.SendRoleToClient( To.Single( player ) );
 		}
 	}
 
 	public override void OnPlayerLeave( Player player )
 	{
+		base.OnPlayerLeave( player );
+
 		Players.Remove( player );
 		Spectators.Remove( player );
 
@@ -73,7 +81,7 @@ public partial class InProgressRound : BaseRound
 		}
 	}
 
-	private static void GiveFixedLoadout( Player player )
+	private void GiveFixedLoadout( Player player )
 	{
 		if ( player.Inventory.Add( new MP5() ) )
 			player.GiveAmmo( AmmoType.PistolSMG, 120 );
@@ -84,9 +92,9 @@ public partial class InProgressRound : BaseRound
 
 	protected override void OnTimeUp()
 	{
-		LoadPostRound( Team.Innocents );
-
 		base.OnTimeUp();
+
+		LoadPostRound( Team.Innocents );
 	}
 
 	private Team IsRoundOver()

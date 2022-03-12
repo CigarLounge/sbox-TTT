@@ -11,9 +11,7 @@ public class WaitingRound : BaseRound
 	public override void OnSecond()
 	{
 		if ( Host.IsServer && Utils.HasMinimumPlayers() )
-		{
 			Game.Current.ForceRoundChange( new PreRound() );
-		}
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -40,9 +38,7 @@ public class WaitingRound : BaseRound
 		foreach ( Client client in Client.All )
 		{
 			if ( client.Pawn is Player player )
-			{
 				player.Respawn();
-			}
 		}
 	}
 
