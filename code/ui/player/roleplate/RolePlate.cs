@@ -4,23 +4,23 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public class TraitorTagComponent : EntityComponent<Player>
+public class RolePlateComponent : EntityComponent<Player>
 {
-	TraitorTag TraitorTag;
+	RolePlate _rolePlate;
 
 	protected override void OnActivate()
 	{
-		TraitorTag = new TraitorTag();
+		_rolePlate = new RolePlate();
 	}
 
 	protected override void OnDeactivate()
 	{
-		TraitorTag?.Delete();
-		TraitorTag = null;
+		_rolePlate?.Delete();
+		_rolePlate = null;
 	}
 
 	/// <summary>
-	/// Called for every tag, while it's active
+	/// Called for every plate, while it's active
 	/// </summary>
 	[Event.Frame]
 	private void FrameUpdate()
@@ -29,7 +29,7 @@ public class TraitorTagComponent : EntityComponent<Player>
 		tx.Position += Vector3.Up * 5.0f;
 		tx.Rotation = Rotation.LookAt( -CurrentView.Rotation.Forward );
 
-		TraitorTag.Transform = tx;
+		_rolePlate.Transform = tx;
 	}
 
 	[TTTEvent.Player.Role.Changed]
@@ -40,11 +40,12 @@ public class TraitorTagComponent : EntityComponent<Player>
 
 		if ( player.Team != Team.Traitors )
 		{
-			player.Components.RemoveAny<TraitorTagComponent>();
+			player.Components.RemoveAny<RolePlateComponent>();
 			return;
 		}
 
-		player.Components.GetOrCreate<TraitorTagComponent>();
+		if ( (Local.Pawn as Player).Team == Team.Traitors )
+			player.Components.GetOrCreate<RolePlateComponent>();	
 	}
 
 	[TTTEvent.Player.Died]
@@ -53,15 +54,15 @@ public class TraitorTagComponent : EntityComponent<Player>
 		if ( !Host.IsClient || player.IsLocalPawn || player.Team != Team.Traitors )
 			return;
 
-		player.Components.RemoveAny<TraitorTagComponent>();
+		player.Components.RemoveAny<RolePlateComponent>();
 	}
 }
 
-public partial class TraitorTag : WorldPanel
+public partial class RolePlate : WorldPanel
 {
-	public TraitorTag()
+	public RolePlate()
 	{
-		StyleSheet.Load( "/ui/player/traitortag/TraitorTag.scss" );
+		StyleSheet.Load( "/ui/player/roleplate/RolePlate.scss" );
 
 		Add.Image( "ui/traitor-icon.png", "icon" );
 	}

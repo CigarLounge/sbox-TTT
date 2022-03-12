@@ -14,13 +14,14 @@ public partial class Player
 
 		Role?.OnDeselect( this );
 		Role = role;
-		Role.OnSelect( this );
-
-		Event.Run( TTTEvent.Player.Role.Changed, this );
 
 		// Always send the role to this player's client
 		if ( IsServer )
 			SendRoleToClient();
+
+		Role.OnSelect( this );
+
+		Event.Run( TTTEvent.Player.Role.Changed, this );
 	}
 
 	[ClientRpc]
