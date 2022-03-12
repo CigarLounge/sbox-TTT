@@ -27,7 +27,6 @@ public partial class Game
 	public static bool PreventWin { get; set; } = false;
 	#endregion
 
-
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
