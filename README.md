@@ -26,5 +26,3 @@ Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` do
 ## Development
 
 You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg).
-
-Latest video: https://youtu.be/G9ghFjVx-Wc
