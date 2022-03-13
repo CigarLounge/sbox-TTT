@@ -112,30 +112,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClearAttachments();
 	}
 
-	public void Confirm( To? _to = null )
+	public void SendInfo( To to )
 	{
 		Host.AssertServer();
 
-		int credits = 0;
-		bool wasPreviouslyConfirmed = true;
-
-		if ( !DeadPlayer.IsConfirmedDead )
-		{
-			DeadPlayer.IsConfirmedDead = true;
-			DeadPlayer.IsRoleKnown = true;
-			DeadPlayer.IsMissingInAction = false;
-			wasPreviouslyConfirmed = false;
-
-			if ( DeadPlayer.Credits > 0 && Confirmer.IsValid() && Confirmer.Role.Info.RetrieveCredits )
-			{
-				Confirmer.Credits += DeadPlayer.Credits;
-				credits = DeadPlayer.Credits;
-				DeadPlayer.Credits = 0;
-				DeadPlayer.CorpseCredits = DeadPlayer.Credits;
-			}
-		}
-
-		var to = _to ?? To.Everyone;
 		foreach ( var client in to )
 		{
 			// Don't send general data to players who covert searched
@@ -144,19 +124,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
 
-			DeadPlayer.SendRoleToClient( To.Single( client ) );
 			GetKillInfo( To.Single( client ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
 			GetPlayerData( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
 		}
-
-		ClientConfirm( to, Confirmer, credits, wasPreviouslyConfirmed );
 	}
 
-	public void CovertSearch( Player searcher )
+	public void Search( Player searcher )
 	{
 		Host.AssertServer();
-
-		_playersWhoGotSentInfo.Add( searcher.NetworkIdent );
 
 		int credits = 0;
 
@@ -169,57 +144,27 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		DeadPlayer.SendRoleToClient( To.Single( searcher ) );
-		GetKillInfo( To.Single( searcher ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
-		GetPlayerData( To.Single( searcher ), DeadPlayer, PlayerId, PlayerName );
-		ClientCovertSearch( To.Single( searcher ), credits );
+		SendInfo( To.Single( searcher ) );
+		ClientSearch( To.Single( searcher ), credits );
 	}
 
 	[ClientRpc]
-	public void ClientConfirm( Player confirmer, int credits = 0, bool wasPreviouslyConfirmed = false )
-	{
-		Confirmer = confirmer;
-		DeadPlayer.IsConfirmedDead = true;
-		DeadPlayer.IsMissingInAction = false;
-
-		if ( Confirmer == null || wasPreviouslyConfirmed )
-			return;
-
-		UI.InfoFeed.Instance.AddClientToClientEntry
-		(
-			Confirmer.Client,
-			PlayerName,
-			DeadPlayer.Role.Info.Color,
-			"found the body of",
-			$"({DeadPlayer.Role.Info.Title})"
-		);
-
-		if ( Confirmer.IsLocalPawn && credits > 0 )
-		{
-			UI.InfoFeed.Instance?.AddClientEntry
-			(
-				Confirmer.Client,
-				$"found $ {credits} credits!"
-			);
-		}
-	}
-
-	[ClientRpc]
-	private void ClientCovertSearch( int credits = 0 )
+	private void ClientSearch( int credits = 0 )
 	{
 		DeadPlayer.IsMissingInAction = true;
 
-		if ( credits > 0 )
-		{
-			UI.InfoFeed.Instance?.AddClientEntry
-			(
-				Local.Client,
-				$"found $ {credits} credits!"
-			);
-		}
+		if ( credits <= 0 )
+			return;
+
+		UI.InfoFeed.Instance?.AddClientEntry
+		(
+			Local.Client,
+			$"found $ {credits} credits!"
+		);
 	}
 
 	[ClientRpc]
-	public void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
+	private void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -235,7 +180,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	public void GetPlayerData( Player deadPlayer, long playerId, string name )
+	private void GetPlayerData( Player deadPlayer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
@@ -282,14 +227,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( !DeadPlayer.IsConfirmedDead )
 		{
+			Search( player );
+
 			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
 			{
-				Confirmer = player;
-				Confirm();
-			}
-			else if ( !_playersWhoGotSentInfo.Contains( player.NetworkIdent ) )
-			{
-				CovertSearch( player );
+				DeadPlayer.Confirmer = player;
+				DeadPlayer.Confirm();
 			}
 		}
 

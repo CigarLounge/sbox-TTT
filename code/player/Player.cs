@@ -29,6 +29,7 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		Components.GetOrCreate<Perks>();
+		Transmit = TransmitType.Always;
 
 		base.Spawn();
 
@@ -117,7 +118,7 @@ public partial class Player : Sandbox.Player
 		if ( Game.Current.Round is InProgressRound )
 			SyncMIA();
 		else if ( Game.Current.Round is PostRound )
-			Corpse.Confirm();
+			Confirm();
 	}
 
 	public override void Simulate( Client client )

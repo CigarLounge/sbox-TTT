@@ -10,6 +10,11 @@ public partial class Player
 		set => base.Corpse = value;
 	}
 
+	/// <summary>
+	/// The player who confirmed this player's corpse.
+	/// </summary>
+	public Player Confirmer { get; set; }
+
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
@@ -49,6 +54,50 @@ public partial class Player
 			AddMIA( Team.Traitors.ToClients() );
 		else
 			AddMIA( To.Single( player ) );
+	}
+
+	public void Confirm( To? _to = null )
+	{
+		Host.AssertServer();
+
+		bool wasPreviouslyConfirmed = true;
+
+		if ( !IsConfirmedDead )
+		{
+			IsConfirmedDead = true;
+			IsRoleKnown = true;
+			IsMissingInAction = false;
+			wasPreviouslyConfirmed = false;
+		}
+
+		var to = _to ?? To.Everyone;
+
+		SendRoleToClient( to );
+
+		if ( Corpse.IsValid() )
+			Corpse.SendInfo( to );
+
+		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
+	}
+
+	[ClientRpc]
+	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
+	{
+		Confirmer = confirmer;
+		IsConfirmedDead = true;
+		IsMissingInAction = false;
+
+		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
+			return;
+
+		UI.InfoFeed.Instance.AddClientToClientEntry
+		(
+			Confirmer.Client,
+			Corpse.PlayerName,
+			Role.Info.Color,
+			"found the body of",
+			$"({Role.Info.Title})"
+		);
 	}
 
 	[ClientRpc]

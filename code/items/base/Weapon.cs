@@ -97,7 +97,7 @@ public abstract partial class Weapon : Carriable
 		if ( !IsReloading )
 		{
 			if ( CanReload() )
-				Reload();		
+				Reload();
 
 			//
 			// Reload could have changed our owner
@@ -232,7 +232,7 @@ public abstract partial class Weapon : Carriable
 		ReloadEffects();
 	}
 
-	public virtual void OnReloadFinish()
+	protected virtual void OnReloadFinish()
 	{
 		IsReloading = false;
 		AmmoClip += TakeAmmo( Info.ClipSize - AmmoClip );
@@ -241,7 +241,8 @@ public abstract partial class Weapon : Carriable
 	[ClientRpc]
 	protected virtual void ShootEffects()
 	{
-		Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
+		if ( !string.IsNullOrEmpty( Info.MuzzleFlashParticle ) )
+			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		if ( IsLocalPawn )
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
@@ -303,12 +304,15 @@ public abstract partial class Weapon : Carriable
 						if ( trace.Entity is Player player )
 							player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
 
+						OnHit( trace.Entity );
 						trace.Entity.TakeDamage( damageInfo );
 					}
 				}
 			}
 		}
 	}
+
+	protected virtual void OnHit( Entity entity ) { }
 
 	/// <summary>
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple
