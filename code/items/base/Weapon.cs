@@ -232,7 +232,7 @@ public abstract partial class Weapon : Carriable
 		ReloadEffects();
 	}
 
-	public virtual void OnReloadFinish()
+	protected virtual void OnReloadFinish()
 	{
 		IsReloading = false;
 		AmmoClip += TakeAmmo( Info.ClipSize - AmmoClip );

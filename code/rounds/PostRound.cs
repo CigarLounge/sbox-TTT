@@ -22,7 +22,7 @@ public class PostRound : BaseRound
 		base.OnPlayerKilled( player );
 
 		player.MakeSpectator();
-		player.Corpse.Confirm();
+		player.Confirm();
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -34,7 +34,7 @@ public class PostRound : BaseRound
 			var otherPlayer = client.Pawn as Player;
 
 			if ( otherPlayer.IsConfirmedDead )
-				otherPlayer.Corpse.Confirm( To.Single( player ) );
+				otherPlayer.Confirm( To.Single( player ) );
 			else if ( otherPlayer.IsRoleKnown )
 				otherPlayer.SendRoleToClient( To.Single( player ) );
 		}
@@ -52,7 +52,7 @@ public class PostRound : BaseRound
 			var player = client.Pawn as Player;
 
 			if ( player.Corpse.IsValid() && !player.IsConfirmedDead )
-				player.Corpse.Confirm( To.Everyone );
+				player.Confirm();
 			else if ( !player.IsRoleKnown )
 				player.SendRoleToClient( To.Everyone );
 		}

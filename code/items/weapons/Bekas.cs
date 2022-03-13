@@ -36,7 +36,7 @@ public partial class Bekas : Weapon
 			_attackedDuringReload = true;
 	}
 
-	public override void OnReloadFinish()
+	protected override void OnReloadFinish()
 	{
 		IsReloading = false;
 

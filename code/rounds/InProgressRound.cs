@@ -41,7 +41,7 @@ public partial class InProgressRound : BaseRound
 			var otherPlayer = client.Pawn as Player;
 
 			if ( otherPlayer.IsConfirmedDead )
-				otherPlayer.Corpse.Confirm( To.Single( player ) );
+				otherPlayer.Confirm( To.Single( player ) );
 			else if ( otherPlayer.IsRoleKnown )
 				otherPlayer.SendRoleToClient( To.Single( player ) );
 		}
