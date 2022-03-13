@@ -11,7 +11,7 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// The player who confirmed this player's body.
+	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; set; }
 

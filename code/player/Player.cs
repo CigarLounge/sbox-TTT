@@ -29,6 +29,7 @@ public partial class Player : Sandbox.Player
 	public override void Spawn()
 	{
 		Components.GetOrCreate<Perks>();
+		Transmit = TransmitType.Always;
 
 		base.Spawn();
 
