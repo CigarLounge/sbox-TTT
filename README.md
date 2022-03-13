@@ -4,20 +4,20 @@
 
 TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
 
-# Discord
-Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
-
 ## Credits
 
 ### Team
-- [Matthew Zegar](https://github.com/mzegar) - Programming, Assets, etc.
-- [Kole](https://github.com/kolexxx) - Co-Programmer 
+- [Matthew Zegar](https://github.com/mzegar) - Programmer
+- [Kole](https://github.com/kolexxx) - Programmer 
 
 ### Community Contributors
 - [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
 - [Timm Luyten](https://github.com/timmybo5) - Weapon particles from SWB
 - Every [contributor](https://github.com/mzegar/sbox-TTT/graphs/contributors) listed here
 - (and more to be added!)
+
+# Discord
+Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 
 ## License
 
