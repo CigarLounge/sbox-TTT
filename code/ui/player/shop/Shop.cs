@@ -67,7 +67,7 @@ public partial class Shop : Panel
 			if ( item.IsDisabled )
 				return;
 
-			Player.PurchaseItem( itemInfo.LibraryName );
+			Player.PurchaseItem( itemInfo.Id );
 		} );
 
 		_shopItems.Add( item );

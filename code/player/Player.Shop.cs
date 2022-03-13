@@ -40,7 +40,7 @@ public partial class Player
 	}
 
 	[ServerCmd]
-	private static void PurchaseItem( int itemId )
+	public static void PurchaseItem( int itemId )
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
