@@ -51,7 +51,7 @@ public class PostRound : BaseRound
 		{
 			var player = client.Pawn as Player;
 
-			if ( player.Corpse.IsValid() && !player.IsConfirmedDead )
+			if ( !player.IsAlive() && !player.IsConfirmedDead )
 				player.Confirm();
 			else if ( !player.IsRoleKnown )
 				player.SendRoleToClient( To.Everyone );

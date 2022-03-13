@@ -10,6 +10,9 @@ public partial class Player
 		set => base.Corpse = value;
 	}
 
+	/// <summary>
+	/// The player who confirmed this player's body.
+	/// </summary>
 	public Player Confirmer { get; set; }
 
 	[Net]

@@ -227,8 +227,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( !DeadPlayer.IsConfirmedDead )
 		{
-			if ( !_playersWhoGotSentInfo.Contains( player.NetworkIdent ) )
-				Search( player );
+			Search( player );
 
 			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
 			{
