@@ -62,7 +62,7 @@ public class Crosshair : Panel
 		_lines.Add( _topLine );
 
 		var crosshairConfig = FileSystem.Data.ReadJson<Properties>( "crosshair.json" );
-		SetupCrosshair( crosshairConfig ?? new Properties( true, false, 4, 3, 0, 3, Color.White ) );
+		SetupCrosshair( crosshairConfig ?? new Properties( false, true, 0, 5, 0, 0, Color.White ) );
 	}
 
 	public void SetupCrosshair( Properties crosshairProperties )

@@ -6,12 +6,12 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class CrosshairPage : Panel
 {
-	public bool ShowTop { get; set; } = true;
-	public bool ShowDot { get; set; } = false;
+	public bool ShowTop { get; set; } = false;
+	public bool ShowDot { get; set; } = true;
 
-	public int Size { get; set; } = 4;
-	public int Thickness { get; set; } = 3;
-	public int Gap { get; set; } = 3;
+	public int Size { get; set; } = 0;
+	public int Thickness { get; set; } = 5;
+	public int Gap { get; set; } = 0;
 	public int OutlineThickness { get; set; } = 0;
 
 	public Color SelectedColor { get; set; } = Color.White;
