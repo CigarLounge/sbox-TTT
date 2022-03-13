@@ -16,7 +16,7 @@
 		slot = "3"
 		spawnable = false
 		viewmodel = resource:"models/weapons/v_vertec-silenced.vmdl"
-		deploytime = 1.1
+		deploytime = 0.6
 		buyable = true
 		price = 100
 		icon = "ui/icons/weapons/ttt_weapon_silencedpistol.png"

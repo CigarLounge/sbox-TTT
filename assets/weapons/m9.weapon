@@ -16,7 +16,7 @@
 		slot = "1"
 		spawnable = true
 		viewmodel = resource:"models/weapons/v_vertec.vmdl"
-		deploytime = 1.1
+		deploytime = 0.6
 		buyable = false
 		price = 0
 		icon = "ui/icons/weapons/ttt_weapon_m9.png"
@@ -35,5 +35,6 @@
 		headshotmultiplier = 1.5
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
