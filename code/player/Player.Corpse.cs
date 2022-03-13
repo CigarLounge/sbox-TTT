@@ -19,7 +19,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string[] Perks { get; set; }
 
 	// We need this so we don't send information to players multiple times
-	private readonly HashSet<int> _playersWhoCovertSearched = new();
+	private readonly HashSet<int> _playersWhoGotSentInfo = new();
 
 	public override void Spawn()
 	{
@@ -139,8 +139,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		foreach ( var client in to )
 		{
 			// Don't send general data to players who covert searched
-			if ( _playersWhoCovertSearched.Contains( client.Pawn.NetworkIdent ) )
+			if ( _playersWhoGotSentInfo.Contains( client.Pawn.NetworkIdent ) )
 				continue;
+
+			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
 
 			DeadPlayer.SendRoleToClient( To.Single( client ) );
 			GetKillInfo( To.Single( client ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
@@ -154,7 +156,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
-		_playersWhoCovertSearched.Add( searcher.NetworkIdent );
+		_playersWhoGotSentInfo.Add( searcher.NetworkIdent );
 
 		int credits = 0;
 
@@ -285,7 +287,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				Confirmer = player;
 				Confirm();
 			}
-			else if ( !_playersWhoCovertSearched.Contains( player.NetworkIdent ) )
+			else if ( !_playersWhoGotSentInfo.Contains( player.NetworkIdent ) )
 			{
 				CovertSearch( player );
 			}

@@ -9,24 +9,24 @@ public class TraitorRole : BaseRole
 	{
 		base.OnSelect( player );
 
-		if ( Host.IsServer )
+		if ( !Host.IsServer )
+			return;
+
+		foreach ( var client in Client.All )
 		{
-			foreach ( var client in Client.All )
+			if ( client == player.Client )
+				continue;
+
+			var otherPlayer = client.Pawn as Player;
+
+			if ( otherPlayer.Team == Team.Traitors )
 			{
-				if ( client == player.Client )
-					continue;
-
-				var otherPlayer = client.Pawn as Player;
-
-				if ( otherPlayer.Team == Team.Traitors )
-				{
-					player.SendRoleToClient( To.Single( otherPlayer ) );
-					otherPlayer.SendRoleToClient( To.Single( player ) );
-				}
-
-				if ( otherPlayer.IsMissingInAction )
-					otherPlayer.SyncMIA( player );
+				player.SendRoleToClient( To.Single( otherPlayer ) );
+				otherPlayer.SendRoleToClient( To.Single( player ) );
 			}
+
+			if ( otherPlayer.IsMissingInAction )
+				otherPlayer.SyncMIA( player );
 		}
 	}
 
