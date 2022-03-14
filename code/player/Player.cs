@@ -57,6 +57,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		Credits = 0;
+		Confirmer = null;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
@@ -91,6 +92,7 @@ public partial class Player : Sandbox.Player
 	[ClientRpc]
 	private void ClientRespawn( Player player )
 	{
+		player.Confirmer = null;
 		player.IsConfirmedDead = false;
 		player.IsMissingInAction = false;
 		player.IsRoleKnown = false;
