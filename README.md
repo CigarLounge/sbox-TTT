@@ -1,6 +1,6 @@
 <h1><img src="ui/ttt-logo.png" alt="TTT logo" height="200"/></h1>
 
-# sbox TTT / s&box TTT
+# sbox TTT
 
 TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
 
