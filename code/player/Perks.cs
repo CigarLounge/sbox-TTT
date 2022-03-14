@@ -7,14 +7,25 @@ namespace TTT;
 
 public partial class Perks : EntityComponent
 {
-	[Net, Local]
-	private IList<Perk> _perks { get; set; }
+	public Player Owner { get; set; }
+	private List<Perk> _perks { get; set; } = new();
+	public int Count => _perks.Count;
 
-	public int Count { get => _perks.Count; }
+	public Perks( Player player )
+	{
+		Owner = player;
+	}
 
 	public void Add( Perk perk )
 	{
 		_perks.Add( perk );
+		Owner.Components.Add( perk );
+	}
+
+	public void Remove( Perk perk )
+	{
+		_perks.Remove( perk );
+		Owner.Components.Remove( perk );
 	}
 
 	public bool Has( Type t )
@@ -46,6 +57,9 @@ public partial class Perks : EntityComponent
 
 	public void Clear()
 	{
-		_perks.Clear();
+		foreach ( var perk in _perks.ToArray() )
+		{
+			Remove( perk );
+		}
 	}
 }

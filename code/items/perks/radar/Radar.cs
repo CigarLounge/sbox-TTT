@@ -110,15 +110,11 @@ public partial class Radar : Perk
 	public static void ClientSendRadarPositions( Player player, RadarPointData[] points )
 	{
 		if ( !player.IsValid() || player != Local.Pawn )
-		{
 			return;
-		}
 
 		Radar radar = player.Perks.Find<Radar>();
 		if ( radar == null )
-		{
 			return;
-		}
 
 		radar._lastPositions = points;
 		radar.UpdatePositions( player );

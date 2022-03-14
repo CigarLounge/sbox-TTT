@@ -7,8 +7,7 @@ public partial class Player : Sandbox.Player
 	[Net, Predicted]
 	public Entity LastActiveChild { get; set; }
 
-	[BindComponent]
-	public Perks Perks { get; }
+	public Perks Perks { get; init; }
 
 	[Net, Local]
 	public int Credits { get; set; } = 0;
@@ -23,12 +22,12 @@ public partial class Player : Sandbox.Player
 
 	public Player()
 	{
-		Inventory = new Inventory( this );
+		Inventory = new( this );
+		Perks = new( this );
 	}
 
 	public override void Spawn()
 	{
-		Components.GetOrCreate<Perks>();
 		Transmit = TransmitType.Always;
 
 		base.Spawn();

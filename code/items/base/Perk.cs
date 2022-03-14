@@ -8,9 +8,12 @@ public partial class PerkInfo : ItemInfo
 
 }
 
-public abstract class Perk : BaseNetworkable
+public abstract class Perk : EntityComponent<Player>
 {
 	public PerkInfo Info { get; init; }
+
+	// We need this because Entity is null OnDeactivate()
+	private Player _entity;
 
 	public Perk()
 	{
@@ -19,4 +22,22 @@ public abstract class Perk : BaseNetworkable
 
 	public virtual void Simulate( Player player ) { }
 	public virtual string ActiveText() { return string.Empty; }
+
+	protected override void OnActivate()
+	{
+		base.OnActivate();
+
+		_entity = Entity;
+
+		if ( Host.IsClient )
+			Entity.Perks.Add( this );
+	}
+
+	protected override void OnDeactivate()
+	{
+		base.OnDeactivate();
+
+		if ( Host.IsClient )
+			_entity.Perks.Remove( this );
+	}
 }
