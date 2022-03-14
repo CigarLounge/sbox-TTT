@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox;
 
 namespace TTT;
 
-public partial class Perks : EntityComponent
+public class Perks
 {
 	public Player Owner { get; set; }
-	private List<Perk> _perks { get; set; } = new();
+	private readonly List<Perk> _perks = new();
 	public int Count => _perks.Count;
 
 	public Perks( Player player )
