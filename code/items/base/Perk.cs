@@ -10,7 +10,7 @@ public partial class PerkInfo : ItemInfo
 
 public abstract class Perk : EntityComponent<Player>
 {
-	public PerkInfo Info { get; init; }
+	public PerkInfo Info { get; private set; }
 
 	// We need this because Entity is null OnDeactivate()
 	private Player _entity;
@@ -40,4 +40,12 @@ public abstract class Perk : EntityComponent<Player>
 		if ( Host.IsClient )
 			_entity.Perks.Remove( this );
 	}
+
+#if SANDBOX && DEBUG
+	[Event.Hotload]
+	private void OnHotReload()
+	{
+		Info = Asset.GetInfo<PerkInfo>( this );
+	}
+#endif
 }

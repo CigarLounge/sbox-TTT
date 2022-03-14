@@ -26,7 +26,7 @@ public partial class RoleInfo : Asset
 
 public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<string>
 {
-	public RoleInfo Info { get; init; }
+	public RoleInfo Info { get; private set; }
 
 	public BaseRole()
 	{
@@ -94,4 +94,12 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public override bool Equals( object obj ) => Equals( obj as BaseRole );
 	public override int GetHashCode() => Info.Id.GetHashCode();
+
+#if SANDBOX && DEBUG
+	[Event.Hotload]
+	private void OnHotReload()
+	{
+		Info = Asset.GetInfo<RoleInfo>( this );
+	}
+#endif
 }

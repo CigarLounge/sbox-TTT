@@ -226,4 +226,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		return Owner == null && user is Player;
 	}
+
+#if SANDBOX && DEBUG
+	[Event.Hotload]
+	private void OnHotReload()
+	{
+		Info = Asset.GetInfo<CarriableInfo>( this );
+	}
+#endif
 }
