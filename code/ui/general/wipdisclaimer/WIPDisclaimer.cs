@@ -19,7 +19,7 @@ public class WIPDisclaimer : Panel
 		wrapper.AddClass( "text-color-info" );
 		wrapper.AddClass( "text-shadow" );
 
-		wrapper.Add.Label( "TTT is work-in-progress! Checkout the project at github.com/mzegar/sbox-TTT or discord.gg/rrsrakF8N3" );
+		wrapper.Add.Label( "TTT is work-in-progress! Feel free to join discord.gg/rrsrakF8N3 for progress updates." );
 
 		AddClass( "fullscreen" );
 	}
