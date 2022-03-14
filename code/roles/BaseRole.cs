@@ -26,7 +26,12 @@ public partial class RoleInfo : Asset
 
 public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<string>
 {
-	public RoleInfo Info => Asset.GetInfo<RoleInfo>( ClassInfo.Name );
+	public RoleInfo Info { get; init; }
+
+	public BaseRole()
+	{
+		Info = Asset.GetInfo<RoleInfo>( this );
+	}
 
 	public virtual void OnSelect( Player player )
 	{

@@ -67,7 +67,7 @@ public abstract partial class Weapon : Carriable
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
-	public new WeaponInfo Info => Asset.GetInfo<WeaponInfo>( ClassInfo.Name );
+	public new WeaponInfo Info => base.Info as WeaponInfo;
 
 	public bool UnlimitedAmmo { get; set; }
 

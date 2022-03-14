@@ -60,14 +60,14 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		set => base.Owner = value;
 	}
 
-	public BaseViewModel HandsModelEntity { get; protected set; }
+	public BaseViewModel HandsModelEntity { get; private set; }
 	public Player PreviousOwner { get; set; }
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
-	public CarriableInfo Info => Asset.GetInfo<CarriableInfo>( ClassInfo.Name );
+	public CarriableInfo Info { get; protected set; }
 	string IEntityHint.TextOnTick => Info.Title;
 
 	public Carriable() { }
@@ -85,7 +85,16 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			return;
 		}
 
+		Info = Asset.GetInfo<CarriableInfo>( this );
 		SetModel( Info.WorldModel );
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		if ( !string.IsNullOrEmpty( ClassInfo?.Name ) )
+			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
 	public override void ActiveStart( Entity entity )
