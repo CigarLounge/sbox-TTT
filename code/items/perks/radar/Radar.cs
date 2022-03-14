@@ -65,17 +65,15 @@ public partial class Radar : Perk
 
 			if ( owner.Team != Team.Traitors )
 			{
-				// TODO: MZEGAR Change from HealthstationEntity => DecoyEntity.
-				// List<Vector3> decoyPositions = Entity.All.Where( x => x.GetType() == typeof( HealthStationEntity ) )?.Select( x => x.Position ).ToList();
-
-				// foreach ( Vector3 decoyPosition in decoyPositions )
-				// {
-				// 	pointData.Add( new RadarPointData
-				// 	{
-				// 		Position = decoyPosition + _radarPointOffset,
-				// 		Color = _defaultRadarColor
-				// 	} );
-				// }
+				List<Vector3> decoyPositions = Sandbox.Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
+				foreach ( Vector3 decoyPosition in decoyPositions )
+				{
+					pointData.Add( new RadarPointData
+					{
+						Position = decoyPosition,
+						Color = _defaultRadarColor
+					} );
+				}
 			}
 
 			ClientSendRadarPositions( To.Single( owner ), owner, pointData.ToArray() );

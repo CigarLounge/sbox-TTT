@@ -12,7 +12,7 @@
 		islimited = true
 		price = 100
 		icon = ""
-		worldmodel = resource:"models/health_station/health_station.vmdl"
+		worldmodel = resource:""
 		libraryname = "ttt_equipment_healthstation"
 		candrop = false
 		description = "A modified microwave which dispenses health to any injured players. "
