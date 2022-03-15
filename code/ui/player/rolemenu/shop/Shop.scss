@@ -1,22 +1,15 @@
 Shop {
-    position: absolute;
     width: 100%;
     height: 100%;
-    opacity: 0;
     transition: all 0.15s ease-out;
     pointer-events: all;
     text-align: center;
-    z-index: 100;
+    font-size: 10px;
 
     .shop-container {
-        position: absolute;
         width: 100%;
-        height: 100%;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        transition: transform 0.25s ease-out;
-        transform: scale(0.9);
 
         .title-container 
         {
@@ -38,17 +31,14 @@ Shop {
         }
 
         .credit-label {
-            margin: 25px;
-            font-size: 28px;
-            font-weight: bold;
+            font-size: 23px;
         }
 
         .item-panel {
             flex-wrap: wrap;
-            max-width: 680px;
             overflow: scroll;
+            max-height: 390px;
             justify-content: flex-start;
-            max-height: 700px;
         }
 
         .item-description-label {
@@ -63,18 +53,13 @@ Shop {
             }
         }
     }
-
-    &.fade-in {
-        opacity: 1;
-    }
 }
 
 ShopItem {
-    opacity: 1;
     flex-direction: column;
     width: 90px;
     height: 90px;
-    margin: 40px;
+    margin: 40 40 40 40;
     align-items: center;
     justify-content: center;
     padding: 8px;

@@ -18,21 +18,10 @@ public partial class Shop : Panel
 
 	public Shop() : base()
 	{
-		StyleSheet.Load( "/ui/player/shop/Shop.scss" );
-
-		AddClass( "text-shadow" );
-
-		_backgroundPanel = new Panel( this );
-		_backgroundPanel.AddClass( "background-color-secondary" );
-		_backgroundPanel.AddClass( "opacity-medium" );
-		_backgroundPanel.AddClass( "fullscreen" );
+		StyleSheet.Load( "/ui/player/rolemenu/shop/Shop.scss" );
 
 		_shopContainer = new Panel( this );
 		_shopContainer.AddClass( "shop-container" );
-
-		var titleContainer = _shopContainer.Add.Panel( "title-container" );
-		_roleLabel = titleContainer.Add.Label( "", "role-label" );
-		titleContainer.Add.Label( "Shop" );
 
 		_creditLabel = _shopContainer.Add.Label();
 		_creditLabel.AddClass( "credit-label" );
@@ -81,11 +70,6 @@ public partial class Shop : Panel
 		if ( player.Role.Info.AvailableItems.Count == 0 )
 			return;
 
-		SetClass( "fade-in", Input.Down( InputButton.View ) );
-
-		if ( !HasClass( "fade-in" ) )
-			return;
-
 		_creditLabel.Text = $"You have {player.Credits} credits";
 		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
 		if ( _selectedItemInfo != null )
@@ -105,7 +89,5 @@ public partial class Shop : Panel
 	{
 		_shopItems.ForEach( ( item ) => item.Delete( true ) );
 		_shopItems.Clear();
-		_roleLabel.Text = player.Role.Info.Title;
-		_roleLabel.Style.FontColor = player.Role.Info.Color;
 	}
 }

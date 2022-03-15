@@ -85,7 +85,7 @@ public partial class Hud : HudEntity<RootPanel>
 			_aliveHud = new()
 			{
 				AddChild<Crosshair>(),
-				AddChild<Shop>(),
+				AddChild<RoleMenu>(),
 				AddChild<DamageIndicator>()
 			};
 		}

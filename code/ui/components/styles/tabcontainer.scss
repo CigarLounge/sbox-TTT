@@ -53,16 +53,18 @@ tabcontainer
     }
 
     .tabs {
+        margin-left: 40px;
+
         .button
         {
             border: none;
-            padding: 5px 20px 20px 0px;
+            padding: 5px 20px 0px 0px;
             min-height: 0px;
             opacity: 0.1;
             transition: all 0.2s ease;
             background-color: transparent;
             mix-blend-mode: lighten;
-            font-size: 20px;
+            font-size: 30px;
             color: white;
             font-weight: normal;
             font-family: Poppins;
@@ -72,6 +74,7 @@ tabcontainer
             {
                 margin: 0;
                 margin-right: 5px;
+                font-size: 30px;
             }
     
             &.tight

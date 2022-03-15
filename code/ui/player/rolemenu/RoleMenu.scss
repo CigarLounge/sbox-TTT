@@ -1,0 +1,35 @@
+RoleMenu 
+{
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    pointer-events: all;
+    z-index: 100;
+
+    .container 
+    {
+        width: 680px;
+        max-height: 700px;
+        flex-direction: column;
+
+        .header
+        {
+            justify-content: center;
+
+            .title
+            {
+                font-size: 50px;
+                text-align: center;
+                font-weight: 500;
+            } 
+    
+            .role-title
+            {
+                padding-right: 20px;
+            }
+        }
+    }
+}
