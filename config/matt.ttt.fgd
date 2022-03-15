@@ -268,16 +268,6 @@ metadata
 ]
 
 //
-// TTT.HK417
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_hk417.vmdl" ) = ttt_weapon_hk417 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
 // TTT.Huge
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mg4.vmdl" ) = ttt_weapon_huge : ""
