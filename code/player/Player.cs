@@ -35,6 +35,8 @@ public partial class Player : Sandbox.Player
 		SetRole( new NoneRole() );
 		SetModel( "models/citizen/citizen.vmdl" );
 		Animator = new StandardPlayerAnimator();
+		Health = 0;
+		LifeState = LifeState.Dead;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
