@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -29,6 +30,22 @@ public partial class RoleMenu : Panel
 
 	public override void Tick()
 	{
+		if ( Local.Pawn is not Player player )
+			return;
 
+		if ( player.Role.Info.AvailableItems.Count == 0 )
+			return;
+
+		SetClass( "fade-in", Input.Down( InputButton.View ) );
+
+		if ( !HasClass( "fade-in" ) )
+			return;
+	}
+
+	[TTTEvent.Player.Role.Changed]
+	private void OnRoleChange( Player player )
+	{
+		RoleHeader.Text = player.Role.Info.Title;
+		RoleHeader.Style.FontColor = player.Role.Info.Color;
 	}
 }

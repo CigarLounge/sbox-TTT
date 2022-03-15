@@ -3,11 +3,11 @@ using TTT.UI;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
-[Library( "ttt_entity_decoy", Title = "Decoy" )]
-public partial class DecoyEntity : Prop, IEntityHint
+[Hammer.EditorModel( "models/radio/radio.vmdl" )]
+[Library( "ttt_entity_radio", Title = "Radio" )]
+public partial class RadioEntity : Prop, IEntityHint
 {
-	private const string WorldModel = "models/decoy/decoy.vmdl";
+	private const string WorldModel = "models/radio/radio.vmdl";
 
 	public override void Spawn()
 	{
@@ -17,7 +17,7 @@ public partial class DecoyEntity : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	string IEntityHint.TextOnTick => "Decoy";
+	string IEntityHint.TextOnTick => "Radio";
 
 	public bool CanHint( Player player )
 	{
