@@ -48,6 +48,7 @@ public partial class Shop : Panel
 	private void AddRoleShopItem( ItemInfo itemInfo )
 	{
 		ShopItem item = new( _itemPanel, itemInfo );
+		ShopItem item2 = new( _itemPanel, itemInfo );
 
 		item.AddEventListener( "onmouseover", () => { _selectedItemInfo = itemInfo; } );
 		item.AddEventListener( "onmouseout", () => { _selectedItemInfo = null; } );
