@@ -10,6 +10,7 @@ public partial class PerkInfo : ItemInfo
 
 public abstract class Perk : EntityComponent<Player>
 {
+	public virtual string ActiveText => string.Empty;
 	public PerkInfo Info { get; private set; }
 
 	// We need this because Entity is null OnDeactivate()
@@ -21,7 +22,6 @@ public abstract class Perk : EntityComponent<Player>
 	}
 
 	public virtual void Simulate( Player player ) { }
-	public virtual string ActiveText() { return string.Empty; }
 
 	protected override void OnActivate()
 	{

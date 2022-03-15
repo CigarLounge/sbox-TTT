@@ -7,6 +7,8 @@ namespace TTT;
 [Library( "ttt_perk_disguiser", Title = "Disguiser" )]
 public partial class Disguiser : Perk
 {
+	public override string ActiveText => IsEnabled ? "ON" : "OFF";
+
 	[Net, Local]
 	public bool IsEnabled { get; set; } = false;
 	private readonly float _lockOutSeconds = 1f;
@@ -24,11 +26,6 @@ public partial class Disguiser : Perk
 
 			_ = DisguiserLockout();
 		}
-	}
-
-	public override string ActiveText()
-	{
-		return IsEnabled ? "ON" : "OFF";
 	}
 
 	private async Task DisguiserLockout()

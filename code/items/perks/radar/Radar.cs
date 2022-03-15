@@ -1,8 +1,7 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Sandbox;
 
 namespace TTT;
 
@@ -15,6 +14,7 @@ public partial class Radar : Perk
 		public Vector3 Position;
 	}
 
+	public override string ActiveText => $"{Math.Abs( Math.Round( _timeUntilExecution ) )}";
 	private readonly float _timeToExecute = 20f;
 	private TimeUntil _timeUntilExecution;
 	private RadarPointData[] _lastPositions;
@@ -41,8 +41,6 @@ public partial class Radar : Perk
 		}
 	}
 
-	public override string ActiveText() { return $"{Math.Abs( Math.Round( _timeUntilExecution ) )}"; }
-
 	private void UpdatePositions( Player owner )
 	{
 		if ( Host.IsServer )
@@ -52,9 +50,7 @@ public partial class Radar : Perk
 			foreach ( Player player in Utils.GetAlivePlayers() )
 			{
 				if ( player.Client.PlayerId == owner.Client.PlayerId )
-				{
 					continue;
-				}
 
 				pointData.Add( new RadarPointData
 				{
