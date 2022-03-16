@@ -74,6 +74,13 @@ public partial class Teleporter : Carriable
 		}
 	}
 
+	public override void OnCarryDrop( Entity dropper )
+	{
+		base.OnCarryDrop( dropper );
+
+		_particle?.Destroy( true );
+	}
+
 	public override void BuildInput( InputBuilder input )
 	{
 		base.BuildInput( input );
