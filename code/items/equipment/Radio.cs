@@ -11,24 +11,23 @@ public partial class Radio : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( Client.Pawn is not Player player )
-			return;
-
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
 			var droppedRadio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) );
-			if ( droppedRadio == null )
+			if ( droppedRadio is null || droppedRadio is not RadioEntity radio )
 				return;
 
-			var radioComponent = player.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = droppedRadio as RadioEntity;
+			radio.RadioOwner = PreviousOwner;
+			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
+			radioComponent.Radio = radio;
 		}
 	}
 }
 
 public partial class RadioComponent : EntityComponent<Player>
 {
-	public RadioEntity Radio;
+	[Net, Local]
+	public RadioEntity Radio { get; set; }
 
 	protected override void OnActivate()
 	{

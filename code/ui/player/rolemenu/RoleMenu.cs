@@ -23,6 +23,7 @@ public partial class RoleMenu : Panel
 		AddClass( "text-shadow" );
 
 		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
+		// AddRadioTab();
 	}
 
 	public void AddRadioTab()

@@ -7,6 +7,7 @@ namespace TTT;
 [Library( "ttt_entity_radio", Title = "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint
 {
+	public Player RadioOwner { get; set; }
 	private const string WorldModel = "models/radio/radio.vmdl";
 
 	public override void Spawn()
@@ -19,7 +20,7 @@ public partial class RadioEntity : Prop, IEntityHint
 
 	protected override void OnDestroy()
 	{
-		Owner?.Components.RemoveAny<RadioComponent>();
+		RadioOwner?.Components.RemoveAny<RadioComponent>();
 		base.OnDestroy();
 	}
 
