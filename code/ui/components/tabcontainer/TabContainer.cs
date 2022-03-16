@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using Sandbox.Html;
 using Sandbox.UI;
@@ -87,9 +88,13 @@ public class TabContainer : Panel
 			if ( tab.Title == title )
 			{
 				tab.Page.Delete( true );
+				tab.Button.Delete( true );
 				Tabs.RemoveAt( i );
 			}
 		}
+
+		if ( !Tabs.IsNullOrEmpty() )
+			SwitchTab( Tabs.First() );
 	}
 
 	public override void OnTemplateSlot( INode element, string slotName, Panel panel )

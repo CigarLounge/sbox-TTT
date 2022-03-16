@@ -17,6 +17,12 @@ public partial class RadioEntity : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
+	protected override void OnDestroy()
+	{
+		Owner?.Components.RemoveAny<RadioComponent>();
+		base.OnDestroy();
+	}
+
 	string IEntityHint.TextOnTick => "Radio";
 
 	public bool CanHint( Player player )

@@ -23,14 +23,16 @@ public partial class RoleMenu : Panel
 		AddClass( "text-shadow" );
 
 		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
-
-		// TODO: Remove
-		AddRadioTab();
 	}
 
 	public void AddRadioTab()
 	{
 		TabContainer.AddTab( new RadioMenu(), "Radio", "radio" );
+	}
+
+	public void DeleteRadioTab()
+	{
+		TabContainer.DeleteTab( "Radio" );
 	}
 
 	public override void Tick()
