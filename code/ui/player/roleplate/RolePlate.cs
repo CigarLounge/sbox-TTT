@@ -38,7 +38,7 @@ public class RolePlateComponent : EntityComponent<Player>
 		if ( !Host.IsClient || !player.IsAlive() || player.IsLocalPawn )
 			return;
 
-		if ( oldRole is not null && oldRole.Info.Team == Team.Traitors )
+		if ( oldRole?.Info.Team == Team.Traitors )
 		{
 			player.Components.RemoveAny<RolePlateComponent>();
 			return;

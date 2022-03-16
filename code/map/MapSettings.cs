@@ -30,12 +30,6 @@ public partial class MapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
-	public override void Spawn()
-	{
-		base.Spawn();
-		Parent = Game.Current;
-	}
-
 	[TTTEvent.Game.RoundChanged]
 	private void FireRoundChange( BaseRound _, BaseRound newRound )
 	{
