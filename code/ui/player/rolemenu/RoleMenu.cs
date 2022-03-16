@@ -15,6 +15,11 @@ public partial class RoleMenu : Panel
 	{
 		Instance = this;
 
+		var backgroundPanel = Add.Panel( "background" );
+		backgroundPanel.AddClass( "background-color-secondary" );
+		backgroundPanel.AddClass( "opacity-medium" );
+		backgroundPanel.AddClass( "fullscreen" );
+
 		AddClass( "text-shadow" );
 
 		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
