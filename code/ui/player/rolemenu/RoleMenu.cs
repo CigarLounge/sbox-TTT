@@ -20,10 +20,7 @@ public partial class RoleMenu : Panel
 		backgroundPanel.AddClass( "opacity-medium" );
 		backgroundPanel.AddClass( "fullscreen" );
 
-		AddClass( "text-shadow" );
-
 		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
-		// AddRadioTab();
 	}
 
 	public void AddRadioTab()
@@ -48,11 +45,7 @@ public partial class RoleMenu : Panel
 
 		if ( !HasClass( "fade-in" ) )
 			return;
-	}
 
-	[TTTEvent.Player.Role.Changed]
-	private void OnRoleChange( Player player )
-	{
 		RoleHeader.Text = player.Role.Info.Title;
 		RoleHeader.Style.FontColor = player.Role.Info.Color;
 	}

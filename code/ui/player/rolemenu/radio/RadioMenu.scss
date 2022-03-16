@@ -1,13 +1,14 @@
 RadioMenu
 {
     flex-wrap: wrap;
+    min-width: 100%;
 
     button 
     {
         font-size: 25px;
         background-color: #282828ec;
         padding: 20px;
-        min-width: 200px;
+        min-width: 216px;
         min-height: 100px;
         justify-content: center;
         margin: 5px;

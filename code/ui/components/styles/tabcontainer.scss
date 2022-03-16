@@ -57,18 +57,16 @@ tabcontainer
 
         .button
         {
-            border: none;
             padding: 10px 35px 10px 0px;
             min-height: 0px;
             opacity: 0.1;
             transition: all 0.1s ease;
-            background-color: transparent;
-            mix-blend-mode: lighten;
             font-size: 25px;
             color: white;
             font-weight: normal;
             font-family: Poppins;
             margin-bottom: 5px;
+            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
     
             .iconpanel
             {
@@ -87,13 +85,11 @@ tabcontainer
     
             &:hover
             {
-                border: none;
                 opacity: 0.15;
             }
     
             &.active
             {
-                border: none;
                 opacity: 1;
             }
         }

@@ -12,6 +12,7 @@ public partial class Shop : Panel
 	private readonly Label _roleLabel;
 	private readonly Label _creditLabel;
 	private readonly Panel _itemPanel;
+	private readonly Panel _scrollIcon;
 	private readonly Label _itemDescriptionLabel;
 	private static ItemInfo _selectedItemInfo;
 	private readonly List<ShopItem> _shopItems = new();
@@ -23,11 +24,16 @@ public partial class Shop : Panel
 		_shopContainer = new Panel( this );
 		_shopContainer.AddClass( "shop-container" );
 
-		_creditLabel = _shopContainer.Add.Label();
-		_creditLabel.AddClass( "credit-label" );
+		var creditPanel = _shopContainer.Add.Panel();
+		creditPanel.Add.Label( "You have ", "credit-label" );
+		_creditLabel = creditPanel.Add.Label();
+		_creditLabel.AddClass( "credits" );
 
 		_itemPanel = new Panel( _shopContainer );
 		_itemPanel.AddClass( "item-panel" );
+
+		_scrollIcon = _shopContainer.Add.Icon( "south", "scroll-icon" );
+		_scrollIcon.EnableFade( false );
 
 		_itemDescriptionLabel = _shopContainer.Add.Label();
 		_itemDescriptionLabel.AddClass( "item-description-label" );
@@ -70,7 +76,7 @@ public partial class Shop : Panel
 		if ( player.Role.Info.AvailableItems.Count == 0 )
 			return;
 
-		_creditLabel.Text = $"You have {player.Credits} credits";
+		_creditLabel.Text = $"{player.Credits} credits";
 		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
 		if ( _selectedItemInfo != null )
 			_itemDescriptionLabel.Text = _selectedItemInfo.Description;
@@ -82,6 +88,8 @@ public partial class Shop : Panel
 		{
 			shopItem.UpdateAvailability( player.CanPurchase( shopItem.ItemInfo ) );
 		}
+
+		_scrollIcon.EnableFade( _itemPanel.ScrollOffset.y < 10 && _shopItems.Count > 8 );
 	}
 
 	[TTTEvent.Player.Role.Changed]
