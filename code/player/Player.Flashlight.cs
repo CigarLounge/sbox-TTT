@@ -4,14 +4,14 @@ namespace TTT;
 
 public partial class Player
 {
-	private SpotLightEntity worldLight;
-	private SpotLightEntity viewLight;
-
 	[Net, Predicted]
-	private bool FlashlightEnabled { get; set; } = false;
+	public bool FlashlightEnabled { get; private set; } = false;
 
 	[Net, Local, Predicted]
-	public TimeSince TimeSinceLightToggled { get; set; }
+	public TimeSince TimeSinceLightToggled { get; private set; }
+
+	private SpotLightEntity worldLight;
+	private SpotLightEntity viewLight;
 
 	public void SimulateFlashlight()
 	{
@@ -34,9 +34,6 @@ public partial class Player
 
 			if ( worldLight.IsValid() )
 				worldLight.Enabled = FlashlightEnabled;
-
-			if ( viewLight.IsValid() )
-				viewLight.Enabled = FlashlightEnabled;
 
 			TimeSinceLightToggled = 0;
 		}
@@ -68,7 +65,12 @@ public partial class Player
 
 	public void FrameSimulateFlashlight()
 	{
-		if ( !viewLight.IsValid() || !viewLight.Enabled )
+		if ( !viewLight.IsValid() )
+			return;
+
+		viewLight.Enabled = FlashlightEnabled;
+
+		if ( !viewLight.Enabled )
 			return;
 
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );

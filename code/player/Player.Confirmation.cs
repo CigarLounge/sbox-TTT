@@ -60,6 +60,9 @@ public partial class Player
 	{
 		Host.AssertServer();
 
+		if ( this.IsAlive() )
+			return;
+
 		bool wasPreviouslyConfirmed = true;
 
 		if ( !IsConfirmedDead )

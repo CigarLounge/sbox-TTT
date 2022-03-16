@@ -118,7 +118,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		foreach ( var client in to )
 		{
-			// Don't send general data to players who covert searched
+			// Don't send general data to players who already got info
 			if ( _playersWhoGotSentInfo.Contains( client.Pawn.NetworkIdent ) )
 				continue;
 
