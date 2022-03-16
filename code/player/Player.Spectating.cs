@@ -22,14 +22,16 @@ public partial class Player
 
 	private int _targetIdx = 0;
 
-	[TTTEvent.Player.Died]
-	private static void OnPlayerDied( Player deadPlayer )
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsClient || Local.Pawn is not Player player )
+		if ( !Host.IsClient )
 			return;
 
-		if ( player.IsSpectatingPlayer && player.CurrentPlayer == deadPlayer )
-			player.UpdateSpectatedPlayer();
+		var localPlayer = Local.Pawn as Player;
+
+		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
+			localPlayer.UpdateSpectatedPlayer();
 	}
 
 	private void ChangeSpectateCamera()

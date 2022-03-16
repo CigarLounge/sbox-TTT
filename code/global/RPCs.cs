@@ -10,7 +10,7 @@ public partial class RPCs
 		if ( !player.IsValid() )
 			return;
 
-		Event.Run( TTTEvent.Player.Died, player );
+		Event.Run( TTTEvent.Player.Killed, player );
 	}
 
 	[ClientRpc]
