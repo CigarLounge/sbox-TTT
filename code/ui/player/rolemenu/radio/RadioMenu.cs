@@ -53,7 +53,9 @@ public partial class RadioMenu : Panel
 
 		for ( int i = 0; i < timesToPlay; ++i )
 		{
-			_cachedRadio?.PlaySound( soundToPlay );
+			if ( _cachedRadio == null )
+				return;
+			_cachedRadio.PlaySound( soundToPlay );
 			await Task.Delay( 750 * Rand.Int( 1, 3 ) );
 		}
 

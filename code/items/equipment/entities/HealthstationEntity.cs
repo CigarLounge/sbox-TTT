@@ -24,6 +24,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		Health = 100f;
 	}
 
 	[Event.Tick.Server]

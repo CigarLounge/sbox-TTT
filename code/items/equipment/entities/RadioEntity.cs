@@ -16,6 +16,7 @@ public partial class RadioEntity : Prop, IEntityHint
 
 		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		Health = 100f;
 	}
 
 	protected override void OnDestroy()

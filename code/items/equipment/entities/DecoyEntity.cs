@@ -15,6 +15,7 @@ public partial class DecoyEntity : Prop, IEntityHint
 
 		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		Health = 100f;
 	}
 
 	string IEntityHint.TextOnTick => "Decoy";
