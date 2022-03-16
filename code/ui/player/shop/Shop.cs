@@ -101,7 +101,7 @@ public partial class Shop : Panel
 	}
 
 	[TTTEvent.Player.Role.Changed]
-	private void OnRoleChange( Player player )
+	private void OnRoleChange( Player player, BaseRole oldRole )
 	{
 		_shopItems.ForEach( ( item ) => item.Delete( true ) );
 		_shopItems.Clear();
