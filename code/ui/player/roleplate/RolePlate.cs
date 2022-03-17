@@ -33,23 +33,23 @@ public class RolePlateComponent : EntityComponent<Player>
 	}
 
 	[TTTEvent.Player.Role.Changed]
-	private static void OnRoleChanged( Player player )
+	private static void OnRoleChanged( Player player, BaseRole oldRole )
 	{
 		if ( !Host.IsClient || !player.IsAlive() || player.IsLocalPawn )
 			return;
 
-		if ( player.Team != Team.Traitors )
+		if ( oldRole is not null && oldRole.Info.Team == Team.Traitors )
 		{
 			player.Components.RemoveAny<RolePlateComponent>();
 			return;
 		}
 
 		if ( (Local.Pawn as Player).Team == Team.Traitors )
-			player.Components.GetOrCreate<RolePlateComponent>();	
+			player.Components.GetOrCreate<RolePlateComponent>();
 	}
 
-	[TTTEvent.Player.Died]
-	private static void OnPlayerDied( Player player )
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsClient || player.IsLocalPawn || player.Team != Team.Traitors )
 			return;

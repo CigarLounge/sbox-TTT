@@ -13,6 +13,7 @@ public partial class Player
 			return;
 
 		Role?.OnDeselect( this );
+		var oldRole = Role;
 		Role = role;
 
 		// Always send the role to this player's client
@@ -21,7 +22,7 @@ public partial class Player
 
 		Role.OnSelect( this );
 
-		Event.Run( TTTEvent.Player.Role.Changed, this );
+		Event.Run( TTTEvent.Player.Role.Changed, this, oldRole );
 	}
 
 	[ClientRpc]

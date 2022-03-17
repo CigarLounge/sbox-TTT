@@ -154,7 +154,7 @@ public partial class InProgressRound : BaseRound
 	}
 
 	[TTTEvent.Player.Role.Changed]
-	private static void OnPlayerRoleChange( Player player )
+	private static void OnPlayerRoleChange( Player player, BaseRole oldRole )
 	{
 		if ( Host.IsClient )
 			return;
