@@ -29,18 +29,16 @@ public class PreRound : BaseRound
 	{
 		base.OnStart();
 
+		MapHandler.CleanUp();
+
 		if ( !Host.IsServer )
 			return;
 
-		MapHandler.CleanUp();
-
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player )
-			{
-				player.RemoveLogicButtons();
-				player.Respawn();
-			}
+			var player = client.Pawn as Player;
+			player.RemoveLogicButtons();
+			player.Respawn();
 		}
 	}
 
@@ -51,9 +49,11 @@ public class PreRound : BaseRound
 		List<Player> players = new();
 		List<Player> spectators = new();
 
-		foreach ( Player player in Utils.GetPlayers() )
+		foreach ( var client in Client.All )
 		{
+			var player = client.Pawn as Player;
 			player.Client.SetValue( RawStrings.Spectator, player.IsForcedSpectator );
+
 			if ( player.IsForcedSpectator )
 			{
 				player.MakeSpectator( false );

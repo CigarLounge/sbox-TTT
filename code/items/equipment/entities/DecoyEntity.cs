@@ -1,7 +1,4 @@
-using System;
-
 using Sandbox;
-using TTT.UI;
 
 namespace TTT;
 
@@ -17,17 +14,18 @@ public partial class DecoyEntity : Prop, IEntityHint
 
 		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		Health = 100f;
 	}
 
 	string IEntityHint.TextOnTick => "Decoy";
 
-	public bool CanHint( Player player )
+	bool IEntityHint.CanHint( Player player )
 	{
 		return true;
 	}
 
-	public EntityHintPanel DisplayHint( Player player )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
-		return new Hint( (this as IEntityHint).TextOnTick );
+		return new UI.Hint( (this as IEntityHint).TextOnTick );
 	}
 }

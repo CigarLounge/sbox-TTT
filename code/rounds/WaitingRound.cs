@@ -1,5 +1,3 @@
-using System;
-
 using Sandbox;
 
 namespace TTT;
@@ -23,11 +21,11 @@ public class WaitingRound : BaseRound
 
 	public override void OnPlayerKilled( Player player )
 	{
+		base.OnPlayerKilled( player );
+
 		StartRespawnTimer( player );
 
 		player.MakeSpectator();
-
-		base.OnPlayerKilled( player );
 	}
 
 	protected override void OnStart()
@@ -37,8 +35,8 @@ public class WaitingRound : BaseRound
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player )
-				player.Respawn();
+			var player = client.Pawn as Player;
+			player.Respawn();
 		}
 	}
 

@@ -22,7 +22,7 @@
 		viewmodel = resource:"models/weapons/v_m4.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		holdtype = "2"
-		deploytime = 1.5
+		deploytime = 0.8
 		buyable = false
 		islimited = false
 		price = 0
@@ -35,5 +35,6 @@
 		headshotmultiplier = 1.5
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }

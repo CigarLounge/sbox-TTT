@@ -22,18 +22,15 @@ public partial class Game : Sandbox.Game
 
 		if ( IsServer )
 		{
-			new UI.Hud
-			{
-				Parent = this
-			};
+			_ = new UI.Hud();
 		}
 	}
 
-	public override void Simulate( Client cl )
+	public override void Simulate( Client client )
 	{
 		Round.OnTick();
 
-		base.Simulate( cl );
+		base.Simulate( client );
 	}
 
 	/// <summary>
@@ -98,13 +95,10 @@ public partial class Game : Sandbox.Game
 	{
 		Host.AssertServer();
 
-		var sourcePlayer = source.Pawn as Player;
-		var destinationPlayer = dest.Pawn as Player;
-
-		if ( !sourcePlayer.IsAlive() && !destinationPlayer.IsAlive() )
+		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
 			return true;
 
-		if ( Round is InProgressRound && !sourcePlayer.IsAlive() && destinationPlayer.IsAlive() )
+		if ( Round is InProgressRound && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
 			return false;
 
 		return true;

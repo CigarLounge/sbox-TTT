@@ -57,7 +57,7 @@ public static partial class Utils
 		return players;
 	}
 
-	public static bool HasMinimumPlayers() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count >= Game.MinPlayers;
+	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= Game.MinPlayers;
 
 	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
 

@@ -37,6 +37,14 @@ public partial class Scout : Weapon
 		base.Simulate( client );
 	}
 
+	public override void BuildInput( InputBuilder input )
+	{
+		if ( _isScoped )
+			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
+		
+		base.BuildInput( input );
+	}
+
 	public override void CreateHudElements()
 	{
 		base.CreateHudElements();
@@ -82,12 +90,5 @@ public partial class Scout : Weapon
 		HandsModelEntity.EnableDrawing = true;
 		_isScoped = false;
 		_sniperScopePanel.Hide();
-	}
-
-	[Event.BuildInput]
-	private new void BuildInput( InputBuilder input )
-	{
-		if ( _isScoped )
-			input.AnalogLook *= 0.1f;
 	}
 }

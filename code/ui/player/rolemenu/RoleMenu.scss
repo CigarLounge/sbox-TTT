@@ -1,0 +1,54 @@
+RoleMenu 
+{
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    pointer-events: all;
+    z-index: 100;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.15s ease-out;
+
+    .background
+    {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    .container 
+    {
+        justify-content: center;
+        align-self: center;
+        width: 680px;
+        min-height: 590px;
+        max-height: 700px;
+        flex-direction: column;
+
+        .header
+        {
+            justify-content: center;
+            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+
+            .title
+            {
+                font-size: 50px;
+                text-align: center;
+                font-weight: 500;
+            } 
+    
+            .role-title
+            {
+                padding-right: 20px;
+            }
+        }
+    }
+
+    &.fade-in {
+        opacity: 1;
+    }
+}
