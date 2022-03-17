@@ -17,6 +17,7 @@ tools_thumbnail_cache.bin
 *.mp3
 *.dmx
 *.fbx
+*.obj
 *.vtx
 *.vvd
 *.mdl
