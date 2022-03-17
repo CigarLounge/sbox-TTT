@@ -15,6 +15,6 @@
 		worldmodel = resource:""
 		libraryname = "ttt_equipment_decoy"
 		candrop = false
-		description = " Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
+		description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
 	}
 }

@@ -111,7 +111,7 @@ ShopItem {
     }
 
     &.cannot-purchase {
-        opacity: 0.35;
+        opacity: 0.5;
         transform: scale(1);
         cursor: none;
     }

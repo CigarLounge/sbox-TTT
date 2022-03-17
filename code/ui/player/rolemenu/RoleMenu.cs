@@ -39,7 +39,10 @@ public partial class RoleMenu : Panel
 			return;
 
 		if ( player.Role.Info.AvailableItems.Count == 0 )
+		{
+			SetClass( "fade-in", false );
 			return;
+		}
 
 		SetClass( "fade-in", Input.Down( InputButton.View ) );
 
