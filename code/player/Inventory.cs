@@ -94,10 +94,10 @@ public partial class Inventory : BaseInventory
 		List.Clear();
 	}
 
-	public void DropEntity( Entity self, Type type )
+	public Entity DropEntity( Entity self, Type type )
 	{
 		if ( !base.Drop( self ) )
-			return;
+			return null;
 
 		self.Delete();
 
@@ -105,5 +105,7 @@ public partial class Inventory : BaseInventory
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
 		droppedEntity.Rotation = Owner.EyeRotation;
 		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+
+		return droppedEntity;
 	}
 }

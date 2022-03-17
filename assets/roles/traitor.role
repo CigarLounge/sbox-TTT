@@ -15,6 +15,8 @@
 			"ttt_weapon_knife",
 			"ttt_equipment_teleporter",
 			"ttt_equipment_flaregun",
+			"ttt_equipment_decoy",
+			"ttt_equipment_radio",
 		]
 		color = [ 0.87451, 0.160784, 0.207843, 1.0 ]
 		retrievecredits = true
