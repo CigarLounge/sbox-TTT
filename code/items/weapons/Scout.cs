@@ -39,12 +39,10 @@ public partial class Scout : Weapon
 
 	public override void BuildInput( InputBuilder input )
 	{
+		if ( _isScoped )
+			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
+		
 		base.BuildInput( input );
-
-		if ( !_isScoped )
-			return;
-
-		input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
 	}
 
 	public override void CreateHudElements()
