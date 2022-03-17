@@ -169,7 +169,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override bool CanCarry( Entity carrier )
 	{
-		if ( Owner != null || carrier is not Player player )
+		if ( Owner is not null || carrier is not Player player )
 			return false;
 
 		if ( carrier == PreviousOwner && TimeSinceDropped < 1f )
@@ -206,7 +206,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	bool IEntityHint.CanHint( Player player )
 	{
-		return Owner == null;
+		return Owner is null;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
@@ -224,7 +224,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return Owner == null && user is Player;
+		return Owner is null && user is Player;
 	}
 
 #if SANDBOX && DEBUG
