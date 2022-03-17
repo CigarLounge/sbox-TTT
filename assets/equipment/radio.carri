@@ -13,8 +13,8 @@
 		price = 100
 		icon = ""
 		worldmodel = resource:""
-		libraryname = "ttt_equipment_decoy"
+		libraryname = "ttt_equipment_radio"
 		candrop = false
-		description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
+		description = "Place the radio somewhere, and then play sounds on it using the Radio tab in this menu."
 	}
 }

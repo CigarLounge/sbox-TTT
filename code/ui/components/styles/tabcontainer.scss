@@ -53,25 +53,26 @@ tabcontainer
     }
 
     .tabs {
+        margin-left: 40px;
+
         .button
         {
-            border: none;
-            padding: 5px 20px 20px 0px;
+            padding: 10px 35px 10px 0px;
             min-height: 0px;
             opacity: 0.1;
-            transition: all 0.2s ease;
-            background-color: transparent;
-            mix-blend-mode: lighten;
-            font-size: 20px;
+            transition: all 0.1s ease;
+            font-size: 25px;
             color: white;
             font-weight: normal;
             font-family: Poppins;
             margin-bottom: 5px;
+            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
     
             .iconpanel
             {
                 margin: 0;
                 margin-right: 5px;
+                font-size: 25px;
             }
     
             &.tight
@@ -84,13 +85,11 @@ tabcontainer
     
             &:hover
             {
-                border: none;
                 opacity: 0.15;
             }
     
             &.active
             {
-                border: none;
                 opacity: 1;
             }
         }
