@@ -158,7 +158,7 @@ public abstract partial class Weapon : Carriable
 	{
 		base.OnCarryDrop( dropper );
 
-		(dropper as Player).Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]--;
+		PreviousOwner.Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]--;
 	}
 
 	public virtual bool CanPrimaryAttack()
