@@ -157,7 +157,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int credits = 0 )
 	{
-		DeadPlayer.IsMissingInAction = true;
+		DeadPlayer.IsMissingInAction = !DeadPlayer.IsConfirmedDead;
 
 		if ( credits <= 0 )
 			return;
