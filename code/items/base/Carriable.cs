@@ -36,7 +36,6 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
 	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; } = HoldType.None;
 	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )] public string WorldModel { get; set; } = "";
-	[Property, Category( "WorldModels" )] public bool ShowWorldModelWhenActive { get; set; } = true;
 	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
@@ -100,7 +99,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void ActiveStart( Entity entity )
 	{
-		EnableDrawing = Info.ShowWorldModelWhenActive;
+		EnableDrawing = true;
 
 		if ( entity is Player player )
 		{
