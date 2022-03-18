@@ -29,6 +29,7 @@ public partial class Binoculars : Carriable
 		base.ActiveStart( entity );
 
 		_defaultFOV = Owner.CameraMode.FieldOfView;
+		_zoomLevel = Zoom.None;
 	}
 
 	public override void ActiveEnd( Entity entity, bool dropped )
@@ -52,7 +53,7 @@ public partial class Binoculars : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MAX_HINT_DISTANCE )
 				.Ignore( this )
 				.Ignore( Owner )
-				.WorldAndEntities()
+				.HitLayer( CollisionLayer.Debris )
 				.Run();
 
 		var lastCorpse = Corpse;
@@ -71,7 +72,10 @@ public partial class Binoculars : Carriable
 			Corpse.Search( Owner, false );
 
 			if ( !Input.Down( InputButton.Run ) )
+			{
+				Corpse.DeadPlayer.Confirmer = Owner;
 				Corpse.DeadPlayer.Confirm();
+			}
 		}
 	}
 
@@ -101,6 +105,7 @@ public partial class Binoculars : Carriable
 			return;
 		}
 
+		IsZoomed = true;
 		_zoomLevel++;
 		Owner.CameraMode.FieldOfView = 40f / (float)_zoomLevel;
 	}
