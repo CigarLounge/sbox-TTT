@@ -10,7 +10,7 @@
 		holdtype = "0"
 		worldmodel = resource:"models/binoculars/binoculars.vmdl"
 		deploytime = 0.0
-		buyable = false
+		buyable = true
 		islimited = false
 		price = 100
 		icon = ""
