@@ -202,9 +202,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		get
 		{
 			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse";
+				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to identify the corpse";
 			else
-				return $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect {PlayerName}";
+				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to inspect {PlayerName}";
 		}
 	}
 
@@ -213,7 +213,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		get
 		{
 			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly";
+				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly";
 			else
 				return "";
 		}
@@ -228,7 +228,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Input.Down( InputButton.Use ) )
+		if ( !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
@@ -260,5 +260,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		return true;
+	}
+
+	private static InputButton GetSearchButton()
+	{
+		return (Local.Pawn as Player).ActiveChild is Binoculars bino && bino.IsZoomed ? InputButton.Attack1 : InputButton.Use;
 	}
 }
