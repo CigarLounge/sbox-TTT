@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Collections.Generic;
 
 namespace TTT;
 
@@ -51,8 +50,8 @@ public partial class Player
 
 	public void UpdateSpectatedPlayer()
 	{
-		Player oldSpectatedPlayer = CurrentPlayer;
-		List<Player> players = Utils.GetAlivePlayers();
+		var oldSpectatedPlayer = CurrentPlayer;
+		var players = Utils.GetAlivePlayers();
 		if ( players.Count > 0 )
 		{
 			if ( ++_targetIdx >= players.Count )

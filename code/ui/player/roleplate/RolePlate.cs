@@ -44,7 +44,7 @@ public class RolePlateComponent : EntityComponent<Player>
 			return;
 		}
 
-		if ( (Local.Pawn as Player).Team == Team.Traitors && player.Team == Team.Traitors )
+		if ( (Local.Pawn as Player)?.Team == Team.Traitors && player?.Team == Team.Traitors )
 			player.Components.GetOrCreate<RolePlateComponent>();
 	}
 
