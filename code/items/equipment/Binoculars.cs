@@ -7,10 +7,10 @@ namespace TTT;
 public partial class Binoculars : Carriable
 {
 	[Net, Predicted]
-	public Corpse Corpse { get; set; }
+	private Corpse Corpse { get; set; }
 
 	[Net, Predicted]
-	public bool IsZoomed { get; private set; }
+	private bool IsZoomed { get; set; }
 
 	enum Zoom
 	{
@@ -29,6 +29,7 @@ public partial class Binoculars : Carriable
 		base.ActiveStart( entity );
 
 		_defaultFOV = Owner.CameraMode.FieldOfView;
+		IsZoomed = false;
 		_zoomLevel = Zoom.None;
 	}
 
@@ -36,7 +37,12 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveEnd( entity, dropped );
 
+		if ( Corpse.IsValid() )
+			Corpse.HintDistance = Player.INTERACT_DISTANCE;
+		Corpse = null;
+
 		IsZoomed = false;
+		_zoomLevel = Zoom.None;
 	}
 
 	public override void Simulate( Client client )
@@ -59,10 +65,13 @@ public partial class Binoculars : Carriable
 		var lastCorpse = Corpse;
 		Corpse = trace.Entity as Corpse;
 
-		if ( lastCorpse is not null )
-			lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
-		if ( Corpse is not null )
-			Corpse.HintDistance = Player.MAX_HINT_DISTANCE;
+		if ( lastCorpse != Corpse )
+		{
+			if ( lastCorpse.IsValid() )
+				lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
+			if ( Corpse.IsValid() )
+				Corpse.HintDistance = Player.MAX_HINT_DISTANCE;
+		}
 
 		if ( !IsServer || !Corpse.IsValid() )
 			return;
@@ -96,12 +105,13 @@ public partial class Binoculars : Carriable
 
 	private void ChangeZoomLevel()
 	{
+		PlaySound( RawStrings.ScopeInSound );
+
 		if ( _zoomLevel >= Zoom.Four )
 		{
 			IsZoomed = false;
 			_zoomLevel = Zoom.None;
 			Owner.CameraMode.FieldOfView = _defaultFOV;
-
 			return;
 		}
 
