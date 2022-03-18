@@ -7,6 +7,9 @@ namespace TTT;
 public partial class Binoculars : Carriable
 {
 	[Net, Predicted]
+	public Corpse Corpse { get; set; }
+
+	[Net, Predicted]
 	public bool IsZoomed { get; private set; }
 
 	enum Zoom
@@ -21,11 +24,18 @@ public partial class Binoculars : Carriable
 	private float _defaultFOV;
 	private Zoom _zoomLevel = Zoom.None;
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
-		base.ActiveStart( ent );
+		base.ActiveStart( entity );
 
 		_defaultFOV = Owner.CameraMode.FieldOfView;
+	}
+
+	public override void ActiveEnd( Entity entity, bool dropped )
+	{
+		base.ActiveEnd( entity, dropped );
+
+		IsZoomed = false;
 	}
 
 	public override void Simulate( Client client )
@@ -45,17 +55,53 @@ public partial class Binoculars : Carriable
 				.WorldAndEntities()
 				.Run();
 
-		if ( trace.Entity is not Corpse corpse )
+		var lastCorpse = Corpse;
+		Corpse = trace.Entity as Corpse;
+
+		if ( lastCorpse is not null )
+			lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
+		if ( Corpse is not null )
+			Corpse.HintDistance = Player.MAX_HINT_DISTANCE;
+
+		if ( !IsServer || !Corpse.IsValid() )
 			return;
+
+		if ( Input.Pressed( InputButton.Attack1 ) && !Corpse.DeadPlayer.IsConfirmedDead )
+		{
+			Corpse.Search( Owner, false );
+
+			if ( !Input.Down( InputButton.Run ) )
+				Corpse.DeadPlayer.Confirm();
+		}
 	}
 
 	public override void BuildInput( InputBuilder input )
 	{
 		base.BuildInput( input );
+
+		if ( IsZoomed )
+			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.4f / (float)_zoomLevel );
+	}
+
+	public override void DestroyHudElements()
+	{
+		base.DestroyHudElements();
+
+		(Local.Pawn as Player).CameraMode.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
 	{
+		if ( _zoomLevel >= Zoom.Four )
+		{
+			IsZoomed = false;
+			_zoomLevel = Zoom.None;
+			Owner.CameraMode.FieldOfView = _defaultFOV;
 
+			return;
+		}
+
+		_zoomLevel++;
+		Owner.CameraMode.FieldOfView = 40f / (float)_zoomLevel;
 	}
 }
