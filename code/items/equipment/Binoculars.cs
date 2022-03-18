@@ -10,27 +10,16 @@ public partial class Binoculars : Carriable
 	private Corpse Corpse { get; set; }
 
 	[Net, Predicted]
-	private bool IsZoomed { get; set; }
-
-	enum Zoom
-	{
-		None,
-		One,
-		Two,
-		Three,
-		Four
-	}
+	private float ZoomLevel { get; set; }
+	public bool IsZoomed => ZoomLevel > 0;
 
 	private float _defaultFOV;
-	private Zoom _zoomLevel = Zoom.None;
 
 	public override void ActiveStart( Entity entity )
 	{
 		base.ActiveStart( entity );
 
 		_defaultFOV = Owner.CameraMode.FieldOfView;
-		IsZoomed = false;
-		_zoomLevel = Zoom.None;
 	}
 
 	public override void ActiveEnd( Entity entity, bool dropped )
@@ -39,10 +28,9 @@ public partial class Binoculars : Carriable
 
 		if ( Corpse.IsValid() )
 			Corpse.HintDistance = Player.INTERACT_DISTANCE;
-		Corpse = null;
 
-		IsZoomed = false;
-		_zoomLevel = Zoom.None;
+		Corpse = null;
+		ZoomLevel = 0;
 	}
 
 	public override void Simulate( Client client )
@@ -93,7 +81,7 @@ public partial class Binoculars : Carriable
 		base.BuildInput( input );
 
 		if ( IsZoomed )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.4f / (float)_zoomLevel );
+			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.4f / ZoomLevel );
 	}
 
 	public override void DestroyHudElements()
@@ -105,18 +93,20 @@ public partial class Binoculars : Carriable
 
 	private void ChangeZoomLevel()
 	{
-		PlaySound( RawStrings.ScopeInSound );
-
-		if ( _zoomLevel >= Zoom.Four )
+		if ( ZoomLevel >= 4 )
 		{
-			IsZoomed = false;
-			_zoomLevel = Zoom.None;
+			if ( Corpse.IsValid() )
+				Corpse.HintDistance = Player.INTERACT_DISTANCE;
+
+			Corpse = null;
+			ZoomLevel = 0;
 			Owner.CameraMode.FieldOfView = _defaultFOV;
+
 			return;
 		}
 
-		IsZoomed = true;
-		_zoomLevel++;
-		Owner.CameraMode.FieldOfView = 40f / (float)_zoomLevel;
+		PlaySound( RawStrings.ScopeInSound );
+		ZoomLevel++;
+		Owner.CameraMode.FieldOfView = 40f / ZoomLevel;
 	}
 }
