@@ -18,15 +18,15 @@ public partial class ShopItem : Panel
 		AddClass( "text-shadow" );
 		AddClass( "background-color-primary" );
 
-		_itemPriceLabel = Add.Label();
-		_itemPriceLabel.AddClass( "item-price-label" );
-		_itemPriceLabel.AddClass( "text-color-info" );
-
 		_itemIcon = Add.Image();
 		_itemIcon.AddClass( "item-icon" );
 
 		_itemNameLabel = Add.Label();
 		_itemNameLabel.AddClass( "item-name-label" );
+
+		_itemPriceLabel = Add.Label();
+		_itemPriceLabel.AddClass( "item-price-label" );
+		_itemPriceLabel.AddClass( "text-color-info" );
 
 		_itemNameLabel.Text = itemInfo.Title;
 		_itemPriceLabel.Text = $"${itemInfo.Price}";
