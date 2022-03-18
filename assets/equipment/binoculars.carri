@@ -12,7 +12,7 @@
 		deploytime = 0.0
 		buyable = false
 		islimited = false
-		price = 0
+		price = 100
 		icon = ""
 		description = "Zoom in on corpses and identify them from a long distance away."
 		libraryname = "ttt_equipment_binoculars"
