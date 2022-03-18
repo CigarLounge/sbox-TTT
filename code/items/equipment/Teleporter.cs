@@ -25,11 +25,18 @@ public partial class Teleporter : Carriable
 	private Vector3 _teleportLocation;
 	private Particles _particle;
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
-		base.ActiveStart( ent );
+		base.ActiveStart( entity );
 
 		IsTeleporting = false;
+	}
+
+	public override void ActiveEnd( Entity entity, bool dropped )
+	{
+		base.ActiveEnd( entity, dropped );
+
+		_particle?.Destroy( true );
 	}
 
 	public override void Simulate( Client cl )
@@ -72,13 +79,6 @@ public partial class Teleporter : Carriable
 		{
 			StartTeleport();
 		}
-	}
-
-	public override void OnCarryDrop( Entity dropper )
-	{
-		base.OnCarryDrop( dropper );
-
-		_particle?.Destroy( true );
 	}
 
 	public override void BuildInput( InputBuilder input )

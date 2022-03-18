@@ -132,6 +132,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.Simulate( client );
 	}
 
+	public override void BuildInput( InputBuilder input )
+	{
+		base.BuildInput( input );
+	}
+
 	public override void CreateViewModel()
 	{
 		Host.AssertClient();

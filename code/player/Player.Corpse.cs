@@ -19,6 +19,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string[] Perks { get; set; }
 
 	// We need this so we don't send information to players multiple times
+	// The HashSet consists of NetworkIds
 	private readonly HashSet<int> _playersWhoGotSentInfo = new();
 
 	public override void Spawn()
@@ -129,13 +130,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 	}
 
-	public void Search( Player searcher )
+	public void Search( Player searcher, bool retrieveCredits = true )
 	{
 		Host.AssertServer();
 
 		int credits = 0;
+		retrieveCredits &= searcher.Role.Info.RetrieveCredits;
 
-		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && searcher.IsAlive() && searcher.Role.Info.RetrieveCredits )
+		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && searcher.IsAlive() && retrieveCredits )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
@@ -143,8 +145,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		DeadPlayer.SendRoleToClient( To.Single( searcher ) );
-		SendInfo( To.Single( searcher ) );
+		if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
+		{
+			DeadPlayer.SendRoleToClient( To.Single( searcher ) );
+			SendInfo( To.Single( searcher ) );
+		}
+
 		ClientSearch( To.Single( searcher ), credits );
 	}
 
@@ -188,13 +194,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance => Player.INTERACT_DISTANCE;
+	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
 
 	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
+	public string TextOnTick => DeadPlayer is null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to identify the corpse"
 																				  : $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to inspect {PlayerName}";
 
-	public string SubTextOnTick => DeadPlayer == null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly" : "";
+	public string SubTextOnTick => DeadPlayer is null || !DeadPlayer.IsConfirmedDead ? $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly" : "";
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
@@ -225,10 +231,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var player = user as Player;
 
+		Search( player, player.IsAlive() );
+
 		if ( !DeadPlayer.IsConfirmedDead )
 		{
-			Search( player );
-
 			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
 			{
 				DeadPlayer.Confirmer = player;

@@ -4,14 +4,14 @@ namespace TTT;
 
 public partial class Player
 {
-	private const float MAX_HINT_DISTANCE = 20480f;
+	public const float MAX_HINT_DISTANCE = 20480f;
 
 	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
 
 	private void DisplayEntityHints()
 	{
-		if ( CameraMode is ThirdPersonSpectateCamera )
+		if ( !IsFirstPersonMode )
 		{
 			DeleteHint();
 

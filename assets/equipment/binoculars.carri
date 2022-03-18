@@ -1,0 +1,20 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		slot = "4"
+		spawnable = false
+		candrop = true
+		viewmodel = resource:""
+		handsmodel = resource:""
+		holdtype = "0"
+		worldmodel = resource:"models/binoculars/binoculars.vmdl"
+		deploytime = 0.0
+		buyable = true
+		islimited = false
+		price = 100
+		icon = ""
+		description = "Zoom in on corpses and identify them from a long distance away."
+		libraryname = "ttt_equipment_binoculars"
+	}
+}
