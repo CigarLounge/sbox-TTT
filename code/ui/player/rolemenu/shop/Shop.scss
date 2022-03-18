@@ -71,7 +71,7 @@ ShopItem {
     flex-direction: column;
     width: 90px;
     height: 90px;
-    margin: 40 40 40 40;
+    margin: 18 40 40 40;
     align-items: center;
     justify-content: center;
     padding: 8px;
@@ -97,7 +97,7 @@ ShopItem {
 
     .item-name-label {
         position: absolute;
-        bottom: -28px;
+        bottom: -24px;
         text-align: center;
         font-weight: 600;
         font-size: 14px;
@@ -105,7 +105,7 @@ ShopItem {
 
     .item-price-label {
         position: absolute;
-        top: -32px;
+        top: 106px;
         font-weight: bold;
         font-size: 20px;
     }

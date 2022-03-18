@@ -10,9 +10,9 @@
 		holdtype = "0"
 		worldmodel = resource:"models/binoculars/binoculars.vmdl"
 		deploytime = 0.0
-		buyable = false
+		buyable = true
 		islimited = false
-		price = 0
+		price = 100
 		icon = ""
 		description = "Zoom in on corpses and identify them from a long distance away."
 		libraryname = "ttt_equipment_binoculars"
