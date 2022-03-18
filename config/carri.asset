@@ -26,7 +26,6 @@
 		5 : "Fists"
 	]
 	worldmodel(resource:vmdl) { group = "WorldModels" } : "World Model" : "" : ""
-	showworldmodelwhenactive(boolean) { group = "WorldModels" } : "Show World Model When Active" : 1 : ""
 	deploytime(float) { group = "Stats" } : "Deploy Time" : "0.6" : ""
 	buyable(boolean) { group = "Important" } : "Buyable" : 0 : ""
 	islimited(boolean) { group = "Important" } : "Is Limited" : 0 : ""

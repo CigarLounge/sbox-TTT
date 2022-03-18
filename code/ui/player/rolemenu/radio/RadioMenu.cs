@@ -2,7 +2,6 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace TTT.UI;
 
@@ -33,12 +32,12 @@ public partial class RadioMenu : Panel
 			Add.Button( sound.Key, () =>
 			{
 				if ( !_isPlayingSound )
-					_ = PlayRadioSound( sound.Value );
+					PlayRadioSound( sound.Value );
 			} );
 		}
 	}
 
-	private async Task PlayRadioSound( List<string> sounds )
+	private void PlayRadioSound( List<string> sounds )
 	{
 		if ( _cachedRadio == null )
 		{
@@ -48,17 +47,9 @@ public partial class RadioMenu : Panel
 
 		_isPlayingSound = true;
 
-		var timesToPlay = Rand.Int( 1, 5 );
 		var soundToPlay = sounds[Rand.Int( 0, sounds.Count - 1 )];
 
-		for ( int i = 0; i < timesToPlay; ++i )
-		{
-			if ( _cachedRadio == null )
-				return;
-			_cachedRadio.PlaySound( soundToPlay );
-			await Task.Delay( 750 * Rand.Int( 1, 3 ) );
-		}
-
+		_cachedRadio.PlaySound( soundToPlay );
 		_isPlayingSound = false;
 	}
 
