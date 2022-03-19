@@ -2,11 +2,11 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_logic_button", Description = "Used to provide an onscreen button for a team or special role to activate." )]
+[Library( "ttt_logic_button", Description = "Used to provide an onscreen button for a role to activate." )]
 public partial class LogicButton : Entity
 {
-	[Property( "Check Value", "The team to check for." )]
-	public Team CheckTeam { get; set; } = Team.Traitors;
+	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	public string Role { get; set; }
 
 	[Net, Property( "Description", "On screen tooltip shown on button." )]
 	public string Description { get; private set; }

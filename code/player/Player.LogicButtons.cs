@@ -20,7 +20,7 @@ public partial class Player
 
 		foreach ( Entity entity in All )
 		{
-			if ( entity is LogicButton logicButton && logicButton.CheckTeam == Role.Info.Team )
+			if ( entity is LogicButton logicButton && logicButton.Role.ToLower() == Role.Info.Title.ToLower() )
 			{
 				logicButtonDataList.Add( logicButton.PackageData() );
 			}
@@ -97,9 +97,7 @@ public partial class Player
 			return;
 
 		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
-		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => x.CheckTeam == Team.Traitors );
-
-		player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
+		player.ClientStoreLogicButton( To.Single( player ), logicButtons.Select( x => x.PackageData() ).ToArray() );
 	}
 
 	// Handle client telling server to activate a specific button

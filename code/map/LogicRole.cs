@@ -2,11 +2,11 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_logic_assigned", Description = "Used to test the assigned team or role of the activator." )]
-public partial class LogicAssigned : Entity
+[Library( "ttt_logic_role", Description = "Used to test the assigned role of the activator." )]
+public partial class LogicRole : Entity
 {
-	[Property( "Check Value", "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`." )]
-	public Team CheckTeam { get; set; }
+	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	public string Role { get; set; }
 
 	/// <summary>
 	/// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().
@@ -23,7 +23,7 @@ public partial class LogicAssigned : Entity
 	{
 		if ( activator is Player player && Game.Current.Round is InProgressRound )
 		{
-			if ( player.Role.Info.Team == CheckTeam )
+			if ( player.Role.Info.Title.ToLower() == Role.ToLower() )
 			{
 				_ = OnPass.Fire( this );
 				return;
@@ -33,7 +33,6 @@ public partial class LogicAssigned : Entity
 		}
 		else
 		{
-			Log.Warning( "ttt_logic_assigned: Activator is not player." );
 			_ = OnFail.Fire( this );
 		}
 	}

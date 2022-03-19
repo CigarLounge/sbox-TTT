@@ -6,8 +6,8 @@ namespace TTT;
 
 [Hammer.EntityTool( "Random Weapon", "TTT", "Place where a random weapon will spawn in the beginning of the round." )]
 [Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
-[Library( "ttt_weapon_random" )]
-public class WeaponRandom : Entity
+[Library( "ttt_random_weapon" )]
+public class RandomWeapon : Entity
 {
 	/// <summary>
 	/// Cached weapons list to use when `ExcludedWeapons` is NOT provided.

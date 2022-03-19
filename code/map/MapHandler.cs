@@ -15,9 +15,8 @@ public partial class MapHandler
 
 		foreach ( var ent in Entity.All )
 		{
-			if ( ent is Weapon || ent is Ammo || ent is WeaponRandom )
+			if ( ent is Weapon || ent is Ammo || ent is RandomWeapon )
 			{
-				// Delete all weapons and ammo since we need to wait for the assets to load.
 				RandomWeaponCount += 1;
 				ent.Delete();
 			}
