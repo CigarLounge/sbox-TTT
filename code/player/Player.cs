@@ -64,7 +64,7 @@ public partial class Player : Sandbox.Player
 		IsRoleKnown = false;
 		DeleteItems();
 		SetRole( new NoneRole() );
-		ClientRespawn( this );
+		ClientRespawn( To.Everyone, this );
 
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
@@ -91,15 +91,15 @@ public partial class Player : Sandbox.Player
 	}
 
 	[ClientRpc]
-	private void ClientRespawn( Player player )
+	public static void ClientRespawn( Player player )
 	{
 		player.Confirmer = null;
 		player.IsConfirmedDead = false;
 		player.IsMissingInAction = false;
 		player.IsRoleKnown = false;
 
-		if ( !IsLocalPawn )
-			SetRole( new NoneRole() );
+		if ( !player.IsLocalPawn )
+			player.SetRole( new NoneRole() );
 	}
 
 	public override void OnKilled()

@@ -115,6 +115,7 @@ public static partial class Utils
 
 	public static void Shuffle<T>( this IList<T> list )
 	{
+		Rand.SetSeed( Time.Tick );
 		int n = list.Count;
 		while ( n > 1 )
 		{
