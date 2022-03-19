@@ -6,7 +6,6 @@ namespace TTT;
 [Library( "ttt_equipment_binoculars", Title = "Binoculars" )]
 public partial class Binoculars : Carriable
 {
-	[Net, Predicted]
 	private Corpse Corpse { get; set; }
 
 	[Net, Predicted]
@@ -50,7 +49,7 @@ public partial class Binoculars : Carriable
 		var lastCorpse = Corpse;
 		Corpse = trace.Entity as Corpse;
 
-		if ( lastCorpse != Corpse )
+		if ( IsClient && lastCorpse != Corpse )
 		{
 			if ( lastCorpse.IsValid() )
 				lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
@@ -101,7 +100,7 @@ public partial class Binoculars : Carriable
 
 		PlaySound( RawStrings.ScopeInSound );
 		ZoomLevel++;
-		Owner.CameraMode.FieldOfView = 40f / ZoomLevel;
+		Owner.CameraMode.FieldOfView = 40f / (ZoomLevel * 2f);
 	}
 
 	private void StopLooking()

@@ -79,7 +79,7 @@ public class PreRound : BaseRound
 		} );
 	}
 
-	private static void AssignRoles( List<Player> players )
+	private void AssignRoles( List<Player> players )
 	{
 		int traitorCount = Math.Max( players.Count / 4, 1 );
 		int detectiveCount = players.Count / 8;
