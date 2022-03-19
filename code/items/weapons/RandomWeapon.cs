@@ -31,6 +31,34 @@ public class RandomWeapon : Entity
 		base.Spawn();
 
 		Transmit = TransmitType.Never;
+
+		if ( _cachedWeaponTypes.IsNullOrEmpty() )
+		{
+			var weapons = Library.GetAll<Weapon>();
+			foreach ( var weaponType in weapons )
+			{
+				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
+				if ( weaponInfo != null && weaponInfo.Spawnable )
+					_cachedWeaponTypes.Add( weaponType );
+			}
+		}
+
+		if ( SelectedAmmoType == AmmoType.None )
+		{
+			Activate( _cachedWeaponTypes );
+		}
+		else
+		{
+			var selectedAmmoWeaponTypes = new List<Type>();
+			foreach ( var type in _cachedWeaponTypes )
+			{
+				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( type ).Name );
+				if ( weaponInfo != null && weaponInfo.AmmoType == SelectedAmmoType )
+					selectedAmmoWeaponTypes.Add( type );
+			}
+
+			Activate( selectedAmmoWeaponTypes );
+		}
 	}
 
 	public void Activate( List<Type> weaponTypes )
@@ -53,42 +81,6 @@ public class RandomWeapon : Entity
 			var ammo = Ammo.Create( weapon.Info.AmmoType );
 			ammo.Position = Position;
 			ammo.Rotation = Rotation;
-		}
-	}
-
-	[Event.Entity.PostSpawn]
-	private void OnPostSpawn()
-	{
-		if ( _cachedWeaponTypes.IsNullOrEmpty() )
-		{
-			var weapons = Library.GetAll<Weapon>();
-			foreach ( var weaponType in weapons )
-			{
-				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
-				if ( weaponInfo != null && weaponInfo.Spawnable )
-					_cachedWeaponTypes.Add( weaponType );
-			}
-		}
-	}
-
-	[Event.Entity.PostCleanup]
-	private void OnCleanup()
-	{
-		if ( SelectedAmmoType == AmmoType.None )
-		{
-			Activate( _cachedWeaponTypes );
-		}
-		else
-		{
-			var selectedAmmoWeaponTypes = new List<Type>();
-			foreach ( var type in _cachedWeaponTypes )
-			{
-				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( type ).Name );
-				if ( weaponInfo != null && weaponInfo.AmmoType == SelectedAmmoType )
-					selectedAmmoWeaponTypes.Add( type );
-			}
-
-			Activate( selectedAmmoWeaponTypes );
 		}
 	}
 }

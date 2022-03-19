@@ -18,7 +18,6 @@ public partial class MapHandler
 			if ( ent is Weapon || ent is Ammo || ent is RandomWeapon )
 			{
 				RandomWeaponCount += 1;
-				ent.Delete();
 			}
 		}
 	}

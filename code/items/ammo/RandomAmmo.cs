@@ -12,18 +12,9 @@ public class RandomAmmo : Entity
 		base.Spawn();
 
 		Transmit = TransmitType.Never;
-	}
 
-	public void Activate()
-	{
 		var ent = Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) );
 		ent.Position = Position;
 		ent.Rotation = Rotation;
-	}
-
-	[Event.Entity.PostCleanup]
-	private void OnCleanup()
-	{
-		Activate();
 	}
 }
