@@ -8,19 +8,13 @@ namespace TTT.UI;
 
 public partial class Scoreboard : Panel
 {
-	public enum DefaultScoreboardGroup
-	{
-		Alive,
-		Missing,
-		Dead,
-		Spectator
-	}
-
-	public static Scoreboard Instance;
-
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
 	private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
-	private readonly Dictionary<Client, bool> _forcedSpecList = new();
+
+	private readonly string _alive = "Alive";
+	private readonly string _missingInAction = "Missing In Action";
+	private readonly string _confirmedDead = "Confirmed Dead";
+	private readonly string _spectator = "Spectator";
 
 	private readonly Panel _backgroundPanel;
 	private readonly Panel _scoreboardContainer;
@@ -31,7 +25,6 @@ public partial class Scoreboard : Panel
 	public Scoreboard( Panel parent, Button swapButton ) : base()
 	{
 		Parent = parent;
-		Instance = this;
 
 		StyleSheet.Load( "/ui/general/tabmenu/scoreboard/Scoreboard.scss" );
 
@@ -66,8 +59,10 @@ public partial class Scoreboard : Panel
 		if ( Host.IsServer )
 			return;
 
-		foreach ( DefaultScoreboardGroup defaultScoreboardGroup in Enum.GetValues( typeof( DefaultScoreboardGroup ) ) )
-			AddScoreboardGroup( defaultScoreboardGroup.ToString() );
+		AddScoreboardGroup( _alive );
+		AddScoreboardGroup( _missingInAction );
+		AddScoreboardGroup( _confirmedDead );
+		AddScoreboardGroup( _spectator );
 	}
 
 	public void AddClient( Client client )
@@ -100,7 +95,9 @@ public partial class Scoreboard : Panel
 		}
 
 		_scoreboardHeader.UpdateServerInfo();
-		UpdateScoreboardGroups();
+
+		foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
+			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
 	}
 
 	private void RemoveClient( Client client )
@@ -160,27 +157,15 @@ public partial class Scoreboard : Panel
 
 	private ScoreboardGroup GetScoreboardGroup( Client client )
 	{
-		string currentGroup = DefaultScoreboardGroup.Alive.ToString();
-
-		if ( client.GetValue<bool>( RawStrings.Spectator ) )
-			currentGroup = DefaultScoreboardGroup.Spectator.ToString();
-		else if ( client.Pawn is Player player )
+		if ( client.Pawn is Player player )
 		{
+			if ( player.IsMissingInAction )
+				return _scoreboardGroups[_missingInAction];
+
 			if ( player.IsConfirmedDead )
-				currentGroup = DefaultScoreboardGroup.Dead.ToString();
-			else if ( player.IsMissingInAction )
-				currentGroup = DefaultScoreboardGroup.Missing.ToString();
+				return _scoreboardGroups[_confirmedDead];
 		}
 
-		_scoreboardGroups.TryGetValue( currentGroup, out ScoreboardGroup scoreboardGroup );
-		return scoreboardGroup ?? AddScoreboardGroup( currentGroup );
-	}
-
-	private void UpdateScoreboardGroups()
-	{
-		foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
-		{
-			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
-		}
+		return _scoreboardGroups[client.GetValue<bool>( RawStrings.Spectator ) ? _spectator : _alive];
 	}
 }
