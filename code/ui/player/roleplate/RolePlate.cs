@@ -38,13 +38,13 @@ public class RolePlateComponent : EntityComponent<Player>
 		if ( !Host.IsClient || !player.IsAlive() || player.IsLocalPawn )
 			return;
 
-		if ( oldRole?.Info.Team == Team.Traitors )
+		if ( oldRole is TraitorRole )
 		{
 			player.Components.RemoveAny<RolePlateComponent>();
 			return;
 		}
 
-		if ( (Local.Pawn as Player)?.Team == Team.Traitors && player?.Team == Team.Traitors )
+		if ( (Local.Pawn as Player).Role is TraitorRole && player.Role is TraitorRole )
 			player.Components.GetOrCreate<RolePlateComponent>();
 	}
 
