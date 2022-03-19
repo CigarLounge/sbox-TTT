@@ -21,6 +21,9 @@ public partial class RoleMenu : Panel
 		backgroundPanel.AddClass( "fullscreen" );
 
 		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
+
+		// TEMP
+		AddDNATab();
 	}
 
 	public void AddRadioTab()
@@ -31,6 +34,16 @@ public partial class RoleMenu : Panel
 	public void DeleteRadioTab()
 	{
 		TabContainer.DeleteTab( "Radio" );
+	}
+
+	public void AddDNATab()
+	{
+		TabContainer.AddTab( new DNAMenu(), "DNA", "fingerprint" );
+	}
+
+	public void DeleteDNATab()
+	{
+		TabContainer.DeleteTab( "DNA" );
 	}
 
 	public override void Tick()

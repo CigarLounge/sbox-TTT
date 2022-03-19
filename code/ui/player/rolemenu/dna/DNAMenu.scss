@@ -1,0 +1,58 @@
+@import "/code/ui/Hud.scss";
+
+DNAMenu
+{
+    width: 100%;
+    justify-content: center;
+
+    .sample-container
+    {
+        max-height: 325px;
+        flex-direction: column;
+        overflow: scroll;
+    }
+
+    .info-container
+    {
+        padding: 20px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+
+        .charge
+        {
+            font-size: 50px;
+            font-weight: 600;
+        }
+
+        .charge-status
+        {
+            font-weight: 600;
+            color: $info;
+        }
+
+        .scan-button
+        {
+            justify-content: center;
+            height: 30px;
+        }
+    }
+
+    Sample 
+    {
+        margin: 0 10 10 10;
+        transition: transform 0.1s ease-in;
+        min-height: 45px;
+        min-width: 300px;
+        justify-content: center;
+
+        .delete-button
+        {
+            position: absolute;
+            left: -11px;
+            top: 10px;
+            font-size: 23px;
+            color: $info;
+        }
+    }
+}
