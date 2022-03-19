@@ -22,8 +22,8 @@ public partial class Player
 			var transform = new Transform( EyePosition + EyeRotation.Forward * 20, EyeRotation );
 			worldLight.Transform = transform;
 
-			if ( ActiveChild.IsValid() )
-				worldLight.Transform = (ActiveChild as Carriable)?.GetAttachment( "muzzle" ) ?? transform;
+			if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
+				worldLight.Transform = carriable.GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( TimeSinceLightToggled > 0.1f && toggle )
