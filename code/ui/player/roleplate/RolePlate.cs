@@ -32,7 +32,7 @@ public class RolePlateComponent : EntityComponent<Player>
 		_rolePlate.Transform = tx;
 	}
 
-	[TTTEvent.Player.Role.Changed]
+	[TTTEvent.Player.RoleChanged]
 	private static void OnRoleChanged( Player player, BaseRole oldRole )
 	{
 		if ( !Host.IsClient || !player.IsAlive() || player.IsLocalPawn )

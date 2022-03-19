@@ -6,16 +6,6 @@ public static partial class TTTEvent
 {
 	public static class Game
 	{
-		public const string Precache = "ttt.game.precache";
-
-		/// <summary>
-		/// Should be used to precache models and stuff.
-		/// </summary>
-		public class PrecacheAttribute : EventAttribute
-		{
-			public PrecacheAttribute() : base( Precache ) { }
-		}
-
 		public const string RoundChanged = "ttt.game.roundchanged";
 
 		/// <summary>

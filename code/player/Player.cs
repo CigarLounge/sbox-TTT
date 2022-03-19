@@ -64,8 +64,7 @@ public partial class Player : Sandbox.Player
 		IsRoleKnown = false;
 		DeleteItems();
 		SetRole( new NoneRole() );
-		ClientRespawn( To.Everyone, this );
-
+		
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
 
@@ -88,6 +87,8 @@ public partial class Player : Sandbox.Player
 		{
 			MakeSpectator( false );
 		}
+
+		ClientRespawn( this );
 	}
 
 	[ClientRpc]
@@ -116,12 +117,21 @@ public partial class Player : Sandbox.Player
 
 		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( this );
-		RPCs.ClientOnPlayerDied( this );
+		ClientOnKilled( this );
 
 		if ( Game.Current.Round is InProgressRound )
 			SyncMIA();
 		else if ( Game.Current.Round is PostRound )
 			Confirm();
+	}
+
+	[ClientRpc]
+	public static void ClientOnKilled( Player player )
+	{
+		if ( !player.IsValid() )
+			return;
+
+		Event.Run( TTTEvent.Player.Killed, player );
 	}
 
 	public override void Simulate( Client client )

@@ -22,7 +22,7 @@ public partial class Player
 
 		Role.OnSelect( this );
 
-		Event.Run( TTTEvent.Player.Role.Changed, this, oldRole );
+		Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
 	}
 
 	[ClientRpc]

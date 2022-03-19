@@ -4,14 +4,6 @@ namespace TTT;
 
 public partial class RPCs
 {
-	[ClientRpc]
-	public static void ClientOnPlayerDied( Player player )
-	{
-		if ( !player.IsValid() )
-			return;
-
-		Event.Run( TTTEvent.Player.Killed, player );
-	}
 
 	[ClientRpc]
 	public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
