@@ -64,6 +64,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				clothing.SetParent( this, true );
 			}
 		}
+		Player.SetClothingBodyGroups( this, 1 );
 
 		Perks = new string[DeadPlayer.Perks.Count];
 		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
