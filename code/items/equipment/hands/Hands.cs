@@ -181,4 +181,10 @@ public partial class Hands : Carriable
 			anim.SetAnimParameter( "holdtype", 0 );
 		}
 	}
+
+	[Event.Entity.PreCleanup]
+	private void OnPreCleanup()
+	{
+		GrabbedEntity?.Drop();
+	}
 }

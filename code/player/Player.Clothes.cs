@@ -20,8 +20,8 @@ public partial class Player
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
-		AttachClothing( "models/citizen_clothes/shoes/smartshoes/smartshoes.vmdl" );
 		AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
+		AttachClothing( "models/citizen_clothes/shoes/trainers/trainers.vmdl" );
 	}
 
 	public BaseClothing AttachClothing( string modelName )

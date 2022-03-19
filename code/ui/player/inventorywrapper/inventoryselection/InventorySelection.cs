@@ -56,8 +56,8 @@ public class InventorySelection : Panel
 			}
 		}
 
-		var activeItem = player?.CurrentPlayer?.ActiveChild;
-		var activeItemTitle = activeItem != null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
+		var activeItem = player?.CurrentPlayer.ActiveChild;
+		var activeItemTitle = activeItem is Carriable ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
 			if ( !player.CurrentPlayer.Children.Contains( slot.Carriable ) )
