@@ -75,7 +75,7 @@ public class InventorySelection : Panel
 			slot.SetClass( "active", slot.Carriable.Info.Title == activeItemTitle );
 			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItemTitle );
 
-			slot.UpdateAmmo( slot.Carriable.SlotText );
+			slot.UpdateSlotText( slot.Carriable.SlotText );
 		}
 
 		SortChildren( ( p1, p2 ) =>
@@ -195,16 +195,11 @@ public class InventorySelection : Panel
 		return -1;
 	}
 
-	private static string FormatAmmo( Weapon weapon, int ammoCount )
-	{
-		return $"{weapon.AmmoClip} + {ammoCount}";
-	}
-
 	private class InventorySlot : Panel
 	{
 		public Carriable Carriable { get; init; }
 		public Label SlotLabel;
-		private readonly Label _ammoLabel;
+		private readonly Label _slotText;
 
 		public InventorySlot( Panel parent, Carriable carriable ) : base( parent )
 		{
@@ -218,12 +213,10 @@ public class InventorySelection : Panel
 
 			Add.Label( carriable.Info.Title );
 
-			_ammoLabel = Add.Label( String.Empty, "ammo-label" );
+			_slotText = Add.Label( String.Empty, "slot-text" );
 
 			if ( Local.Pawn is Player )
-			{
-				_ammoLabel.Text = Carriable.SlotText;
-			}
+				_slotText.Text = Carriable.SlotText;
 		}
 
 		public override void Tick()
@@ -231,14 +224,12 @@ public class InventorySelection : Panel
 			base.Tick();
 
 			if ( Local.Pawn is Player player )
-			{
 				SlotLabel.Style.BackgroundColor = player.Role?.Info.Color;
-			}
 		}
 
-		public void UpdateAmmo( string ammoText )
+		public void UpdateSlotText( string slotText )
 		{
-			_ammoLabel.Text = ammoText;
+			_slotText.Text = slotText;
 		}
 	}
 }
