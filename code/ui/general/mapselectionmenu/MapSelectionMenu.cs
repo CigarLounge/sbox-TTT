@@ -31,15 +31,13 @@ public class MapSelectionMenu : Panel
 		InitMapPanels();
 	}
 
-	private void InitMapPanels()
+	public void InitMapPanels()
 	{
-		IDictionary<string, string> mapImages = Game.Current.MapSelection.MapImages;
+		IDictionary<string, string> mapImages = (Game.Current.Round as MapSelectionRound).MapImages;
 		foreach ( KeyValuePair<string, string> mapImage in mapImages )
 		{
 			if ( _mapPanels.Exists( ( mapPanel ) => mapPanel.MapName == mapImage.Key ) )
-			{
 				continue;
-			}
 
 			MapPanel panel = new( mapImage.Key, mapImage.Value )
 			{
@@ -52,9 +50,9 @@ public class MapSelectionMenu : Panel
 
 	public override void Tick()
 	{
-		IDictionary<long, string> playerIdMapVote = Game.Current.MapSelection.PlayerIdMapVote;
+		IDictionary<long, string> playerIdMapVote = (Game.Current.Round as MapSelectionRound).PlayerIdVote;
 
-		IDictionary<string, int> mapToVoteCount = MapSelectionHandler.GetTotalVotesPerMap( playerIdMapVote );
+		IDictionary<string, int> mapToVoteCount = MapSelectionRound.GetTotalVotesPerMap();
 
 		bool hasLocalClientVoted = playerIdMapVote.ContainsKey( Local.Client.PlayerId );
 
@@ -86,17 +84,8 @@ public class MapSelectionMenu : Panel
 
 			AddEventListener( "onclick", () =>
 			 {
-				 VoteNextMap( MapName );
+				 MapSelectionRound.SetVote( MapName );
 			 } );
 		}
-	}
-
-	[ServerCmd( Name = "vote_next_map" )]
-	public static void VoteNextMap( string name )
-	{
-		long callerPlayerId = ConsoleSystem.Caller.PlayerId;
-		IDictionary<long, string> nextMapVotes = Game.Current.MapSelection.PlayerIdMapVote;
-
-		nextMapVotes[callerPlayerId] = name;
 	}
 }

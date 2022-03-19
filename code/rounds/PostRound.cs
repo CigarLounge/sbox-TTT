@@ -13,7 +13,7 @@ public class PostRound : BaseRound
 
 		RPCs.ClientClosePostRoundMenu();
 
-		bool shouldChangeMap = Game.Current.MapSelection.TotalRoundsPlayed >= Game.RoundLimit;
+		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
 		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 
