@@ -1,5 +1,5 @@
-using System.Linq;
 using Sandbox;
+using System.Linq;
 
 namespace TTT;
 
@@ -11,15 +11,11 @@ public partial class Game : Sandbox.Game
 	public BaseRound Round { get; private set; }
 	private BaseRound _lastRound;
 
-	[Net]
-	public MapSelectionHandler MapSelection { get; set; } = new();
-
+	public int TotalRoundsPlayed { get; set; }
 	public MapHandler MapHandler { get; private set; }
 
 	public Game()
 	{
-		_ = MapSelection.Load();
-
 		if ( IsServer )	
 			_ = new UI.Hud();	
 	}

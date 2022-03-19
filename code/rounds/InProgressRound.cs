@@ -115,7 +115,7 @@ public partial class InProgressRound : BaseRound
 
 	public static void LoadPostRound( Team winningTeam )
 	{
-		Game.Current.MapSelection.TotalRoundsPlayed++;
+		Game.Current.TotalRoundsPlayed++;
 		Game.Current.ForceRoundChange( new PostRound() );
 		RPCs.ClientOpenAndSetPostRoundMenu
 		(

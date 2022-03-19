@@ -38,9 +38,7 @@ public class FullScreenHintMenu : Panel
 	public void Open( Panel panel )
 	{
 		if ( _activePanel != null )
-		{
 			return;
-		}
 
 		DeleteChildren( true );
 		_activePanel = panel;
