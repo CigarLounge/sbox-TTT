@@ -96,10 +96,7 @@ public partial class Knife : Carriable
 		_gravityModifier = 0;
 
 		if ( !IsServer )
-		{
-			Owner.Inventory.Active = null;
 			return;
-		}
 
 		var owner = Owner;
 		Owner.Inventory.DropActive();

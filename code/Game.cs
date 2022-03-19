@@ -20,10 +20,8 @@ public partial class Game : Sandbox.Game
 	{
 		_ = MapSelection.Load();
 
-		if ( IsServer )
-		{
-			_ = new UI.Hud();
-		}
+		if ( IsServer )	
+			_ = new UI.Hud();	
 	}
 
 	public override void Simulate( Client client )
@@ -73,8 +71,6 @@ public partial class Game : Sandbox.Game
 		Round.OnPlayerJoin( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
-
-		base.ClientJoined( client );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )

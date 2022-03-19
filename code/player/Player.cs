@@ -64,7 +64,7 @@ public partial class Player : Sandbox.Player
 		IsRoleKnown = false;
 		DeleteItems();
 		SetRole( new NoneRole() );
-		
+
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
 
@@ -94,6 +94,9 @@ public partial class Player : Sandbox.Player
 	[ClientRpc]
 	public static void ClientRespawn( Player player )
 	{
+		if ( !player.IsValid() )
+			return;
+
 		player.Confirmer = null;
 		player.IsConfirmedDead = false;
 		player.IsMissingInAction = false;
