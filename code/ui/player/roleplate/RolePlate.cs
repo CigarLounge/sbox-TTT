@@ -44,7 +44,8 @@ public class RolePlateComponent : EntityComponent<Player>
 			return;
 		}
 
-		if ( (Local.Pawn as Player).Role is TraitorRole && player.Role is TraitorRole )
+		var localPlayer = Local.Pawn as Player;
+		if ( localPlayer.Role is TraitorRole && player.Role is TraitorRole )
 			player.Components.GetOrCreate<RolePlateComponent>();
 	}
 

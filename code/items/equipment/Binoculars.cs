@@ -26,10 +26,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveEnd( entity, dropped );
 
-		if ( Corpse.IsValid() )
-			Corpse.HintDistance = Player.INTERACT_DISTANCE;
-
-		Corpse = null;
+		StopLooking();
 		ZoomLevel = 0;
 	}
 
@@ -95,10 +92,7 @@ public partial class Binoculars : Carriable
 	{
 		if ( ZoomLevel >= 4 )
 		{
-			if ( Corpse.IsValid() )
-				Corpse.HintDistance = Player.INTERACT_DISTANCE;
-
-			Corpse = null;
+			StopLooking();
 			ZoomLevel = 0;
 			Owner.CameraMode.FieldOfView = _defaultFOV;
 
@@ -108,5 +102,13 @@ public partial class Binoculars : Carriable
 		PlaySound( RawStrings.ScopeInSound );
 		ZoomLevel++;
 		Owner.CameraMode.FieldOfView = 40f / ZoomLevel;
+	}
+
+	private void StopLooking()
+	{
+		if ( Corpse.IsValid() )
+			Corpse.HintDistance = Player.INTERACT_DISTANCE;
+
+		Corpse = null;
 	}
 }

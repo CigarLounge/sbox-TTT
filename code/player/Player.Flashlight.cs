@@ -76,8 +76,8 @@ public partial class Player
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
 		viewLight.Transform = transform;
 
-		if ( ActiveChild.IsValid() )
-			viewLight.Transform = (ActiveChild as Carriable)?.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
+			viewLight.Transform = carriable.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
 
 	private SpotLightEntity CreateLight()
