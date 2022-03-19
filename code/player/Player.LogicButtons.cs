@@ -20,10 +20,8 @@ public partial class Player
 
 		foreach ( Entity entity in All )
 		{
-			if ( entity is LogicButton logicButton && logicButton.Role.ToLower() == Role.Info.Title.ToLower() )
-			{
+			if ( entity is LogicButton logicButton && Role == logicButton.Role )
 				logicButtonDataList.Add( logicButton.PackageData() );
-			}
 		}
 
 		// Network a small amount of data for each button within the player's scope.
@@ -97,7 +95,8 @@ public partial class Player
 			return;
 
 		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
-		player.ClientStoreLogicButton( To.Single( player ), logicButtons.Select( x => x.PackageData() ).ToArray() );
+		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => player.Role == x.Role );
+		player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
 	}
 
 	// Handle client telling server to activate a specific button

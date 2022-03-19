@@ -23,7 +23,7 @@ public partial class LogicRole : Entity
 	{
 		if ( activator is Player player && Game.Current.Round is InProgressRound )
 		{
-			if ( player.Role.Info.Title.ToLower() == Role.ToLower() )
+			if ( player.Role == Role )
 			{
 				_ = OnPass.Fire( this );
 				return;
