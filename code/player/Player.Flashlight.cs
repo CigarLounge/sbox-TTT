@@ -23,7 +23,7 @@ public partial class Player
 			worldLight.Transform = transform;
 
 			if ( ActiveChild.IsValid() )
-				worldLight.Transform = (ActiveChild as Carriable).GetAttachment( "muzzle" ) ?? transform;
+				worldLight.Transform = (ActiveChild as Carriable)?.GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( TimeSinceLightToggled > 0.1f && toggle )

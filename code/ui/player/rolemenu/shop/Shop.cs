@@ -7,9 +7,7 @@ namespace TTT.UI;
 
 public partial class Shop : Panel
 {
-	private readonly Panel _backgroundPanel;
 	private readonly Panel _shopContainer;
-	private readonly Label _roleLabel;
 	private readonly Label _creditLabel;
 	private readonly Panel _itemPanel;
 	private readonly Panel _scrollIcon;
