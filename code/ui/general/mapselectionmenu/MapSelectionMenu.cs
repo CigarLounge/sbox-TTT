@@ -50,9 +50,12 @@ public class MapSelectionMenu : Panel
 
 	public override void Tick()
 	{
-		IDictionary<long, string> playerIdMapVote = (Game.Current.Round as MapSelectionRound).PlayerIdVote;
+		if ( Game.Current.Round is not MapSelectionRound mapSelectionRound )
+			return;
 
-		IDictionary<string, int> mapToVoteCount = MapSelectionRound.GetTotalVotesPerMap();
+		IDictionary<long, string> playerIdMapVote = mapSelectionRound.PlayerIdVote;
+
+		IDictionary<string, int> mapToVoteCount = mapSelectionRound.GetTotalVotesPerMap();
 
 		bool hasLocalClientVoted = playerIdMapVote.ContainsKey( Local.Client.PlayerId );
 

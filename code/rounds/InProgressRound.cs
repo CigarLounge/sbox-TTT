@@ -1,7 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
-
 using Sandbox;
+using System.Collections.Generic;
 
 namespace TTT;
 
@@ -104,7 +102,7 @@ public partial class InProgressRound : BaseRound
 		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
 	}
 
-	public static void LoadPostRound( Team winningTeam )
+	public void LoadPostRound( Team winningTeam )
 	{
 		Game.Current.TotalRoundsPlayed++;
 		Game.Current.ForceRoundChange( new PostRound() );

@@ -40,11 +40,15 @@ public partial class MapSelectionRound : BaseRound
 
 	public override void OnPlayerKilled( Player player )
 	{
+		base.OnPlayerKilled( player );
+
 		player.MakeSpectator();
 	}
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+
 		if ( Host.IsClient )
 		{
 			UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapSelectionMenu() );
@@ -95,7 +99,7 @@ public partial class MapSelectionRound : BaseRound
 		return mapPanels;
 	}
 
-	public static IDictionary<string, int> GetTotalVotesPerMap()
+	public IDictionary<string, int> GetTotalVotesPerMap()
 	{
 		IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
 

@@ -32,7 +32,7 @@ public partial class ForceWin : Entity
 
 	private static void ForceEndRound( Team team )
 	{
-		if ( Game.Current.Round is InProgressRound )
-			InProgressRound.LoadPostRound( team );	
+		if ( Game.Current.Round is InProgressRound inProgressRound )
+			inProgressRound.LoadPostRound( team );	
 	}
 }
