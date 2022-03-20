@@ -53,6 +53,17 @@ DNAMenu
             top: 10px;
             font-size: 23px;
             color: $info;
+            cursor: pointer;
+
+            &:hover
+            {
+                transform: scale( 0.9 );
+            }
+
+            &:active
+            {
+                transform: scale( 1 );
+            }
         }
     }
 }

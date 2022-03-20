@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -5,6 +6,8 @@ namespace TTT.UI;
 
 public class DNAMenu : Panel
 {
+	private readonly List<Panel> _samples = new();
+
 	private readonly Panel _sampleContainer;
 	private readonly Panel _infoContainer;
 	private readonly Button _button;
@@ -53,6 +56,7 @@ public class DNAMenu : Panel
 
 	public void AddSample()
 	{
+		_samples.Add( new Sample() );
 		_sampleContainer.AddChild( new Sample() );
 	}
 
