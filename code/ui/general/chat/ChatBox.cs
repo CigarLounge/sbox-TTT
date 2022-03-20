@@ -66,6 +66,8 @@ public partial class ChatBox : Panel
 
 		if ( !player.IsAlive() )
 			CurrentChannel = Channel.Spectator;
+		else if ( !player.Role.Info.CanRoleChat )
+			CurrentChannel = Channel.All;
 
 		switch ( CurrentChannel )
 		{
