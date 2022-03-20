@@ -60,15 +60,10 @@ public partial class Binoculars : Carriable
 		if ( !IsServer || !Corpse.IsValid() )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack1 ) && !Corpse.DeadPlayer.IsConfirmedDead )
+		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			Corpse.Search( Owner, false );
-
-			if ( !Input.Down( InputButton.Run ) )
-			{
-				Corpse.DeadPlayer.Confirmer = Owner;
-				Corpse.DeadPlayer.Confirm();
-			}
+			bool covert = Corpse.DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
+			Corpse.Search( Owner, covert, false );
 		}
 	}
 

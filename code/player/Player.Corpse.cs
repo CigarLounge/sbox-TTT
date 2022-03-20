@@ -8,8 +8,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
 	public Player DeadPlayer { get; private set; }
-	public Player Confirmer { get; private set; }
-	public DamageInfo KillInfo { get; set; }
+	public DamageInfo KillInfo { get; private set; }
 	public List<Particles> Ropes = new();
 	public List<PhysicsJoint> RopeSprings = new();
 	public CarriableInfo KillerWeapon { get; private set; }
@@ -114,6 +113,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClearAttachments();
 	}
 
+	/// <summary>
+	/// Sends the <strong><see cref="TTT.Player"/></strong> this corpse belongs to alongside information about the player's death.
+	/// </summary>
+	/// <param name="to">The target.</param>
 	public void SendInfo( To to )
 	{
 		Host.AssertServer();
@@ -131,14 +134,20 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 	}
 
-	public void Search( Player searcher, bool retrieveCredits = true )
+	/// <summary>
+	/// Search this corpse.
+	/// </summary>
+	/// <param name="searcher">The player who is searching this corpse.</param>
+	/// <param name="covert">Whether or not this is a covert search.</param>
+	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
+	public void Search( Player searcher, bool covert, bool retrieveCredits = true )
 	{
 		Host.AssertServer();
 
 		int credits = 0;
-		retrieveCredits &= searcher.Role.Info.RetrieveCredits;
+		retrieveCredits &= searcher.Role.Info.RetrieveCredits & searcher.IsAlive();
 
-		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && searcher.IsAlive() && retrieveCredits )
+		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
@@ -146,7 +155,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
+		if ( !covert )
+		{
+			DeadPlayer.Confirmer = searcher;
+			DeadPlayer.Confirm();
+		}
+		else if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
 		{
 			DeadPlayer.SendRoleToClient( To.Single( searcher ) );
 			SendInfo( To.Single( searcher ) );
@@ -249,16 +263,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var player = user as Player;
 
-		Search( player, player.IsAlive() );
-
-		if ( !DeadPlayer.IsConfirmedDead )
-		{
-			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
-			{
-				DeadPlayer.Confirmer = player;
-				DeadPlayer.Confirm();
-			}
-		}
+		bool covert = !player.IsAlive() | DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
+		Search( player, covert );
 
 		return true;
 	}
