@@ -33,10 +33,8 @@ public partial class Player
 	[Event.Hotload]
 	public static void OnHotload()
 	{
-		if ( Host.IsClient )
-		{
-			return;
-		}
+		if ( Host.IsClient )	
+			return;	
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{

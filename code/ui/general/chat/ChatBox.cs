@@ -1,5 +1,4 @@
-﻿
-using Sandbox;
+﻿using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -87,7 +86,8 @@ public partial class ChatBox : Panel
 	public void AddEntry( string name, string message, string c = "" )
 	{
 		var entry = new ChatEntry( name, message );
-		if ( !string.IsNullOrEmpty( c ) ) entry.AddClass( c );
+		if ( !string.IsNullOrEmpty( c ) )
+			entry.AddClass( c );
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -99,7 +99,8 @@ public partial class ChatBox : Panel
 
 	private void Submit()
 	{
-		if ( string.IsNullOrWhiteSpace( Input.Text ) ) return;
+		if ( string.IsNullOrWhiteSpace( Input.Text ) )
+			return;
 
 		SendChat( Input.Text, CurrentChannel );
 	}

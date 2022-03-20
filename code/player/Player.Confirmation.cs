@@ -33,7 +33,9 @@ public partial class Player
 
 	private void BecomePlayerCorpseOnServer()
 	{
-		Corpse corpse = new()
+		Host.AssertServer();
+
+		var corpse = new Corpse()
 		{
 			Position = Position,
 			Rotation = Rotation
@@ -47,6 +49,8 @@ public partial class Player
 
 	public void SyncMIA( Player player = null )
 	{
+		Host.AssertServer();
+
 		if ( Game.Current.Round is not InProgressRound )
 			return;
 
