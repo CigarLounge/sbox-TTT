@@ -7,6 +7,8 @@ public class DNAMenu : Panel
 {
 	private readonly Panel _sampleContainer;
 	private readonly Panel _infoContainer;
+	private readonly Button _button;
+	private readonly Checkbox _checkbox;
 
 	public DNAMenu()
 	{
@@ -21,7 +23,11 @@ public class DNAMenu : Panel
 		_infoContainer.AddClass( "background-color-primary" );
 		var currentCharge = _infoContainer.Add.Label( "95.45%", "charge" );
 		var status = _infoContainer.Add.Label( "CHARGING", "charge-status" );
-		var scanButton = _infoContainer.Add.ButtonWithIcon( "Scan", "radar", "scan-button" );
+		_button = _infoContainer.Add.ButtonWithIcon( "Scan", "radar", "scan-button" );
+
+		_checkbox = new Checkbox();
+		_checkbox.LabelText = "Auto-repeat";
+		_infoContainer.AddChild( _checkbox );
 
 		// TODO: Remove.
 		AddSample();
@@ -38,6 +44,11 @@ public class DNAMenu : Panel
 		AddSample();
 		AddSample();
 		AddSample();
+	}
+
+	public override void Tick()
+	{
+		_button.SetClass( "inactive", _checkbox.Checked );
 	}
 
 	public void AddSample()
