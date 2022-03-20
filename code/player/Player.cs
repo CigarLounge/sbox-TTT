@@ -146,15 +146,15 @@ public partial class Player : Sandbox.Player
 		}
 		else
 		{
-			PlayerUse();
-			CheckAFK();
-			CheckPlayerDropCarriable();
-
 			if ( !this.IsAlive() )
 			{
 				ChangeSpectateCamera();
 				return;
 			}
+
+			PlayerUse();
+			CheckAFK();
+			CheckPlayerDropCarriable();
 		}
 
 		if ( Input.Pressed( InputButton.Menu ) )

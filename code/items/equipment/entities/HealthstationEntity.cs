@@ -1,6 +1,5 @@
-using System;
-
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -54,8 +53,6 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		StoredHealth -= healAmount;
 		_nextHeal = HEALFREQUENCY;
 	}
-
-	float IEntityHint.HintDistance => Player.INTERACT_DISTANCE;
 
 	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station";
 

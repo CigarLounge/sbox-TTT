@@ -39,7 +39,7 @@ public class MapSelectionMenu : Panel
 			if ( _mapPanels.Exists( ( mapPanel ) => mapPanel.MapName == mapImage.Key ) )
 				continue;
 
-			MapPanel panel = new( mapImage.Key, mapImage.Value )
+			var panel = new MapPanel( mapImage.Key, mapImage.Value )
 			{
 				Parent = _mapWrapper
 			};

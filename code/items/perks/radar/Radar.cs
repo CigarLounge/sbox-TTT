@@ -79,9 +79,7 @@ public partial class Radar : Perk
 			ClearRadarPoints();
 
 			if ( _lastPositions.IsNullOrEmpty() )
-			{
 				return;
-			}
 
 			foreach ( RadarPointData pointData in _lastPositions )
 			{

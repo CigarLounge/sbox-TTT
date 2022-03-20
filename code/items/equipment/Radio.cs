@@ -13,13 +13,28 @@ public partial class Radio : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			var droppedRadio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) );
-			if ( droppedRadio is null || droppedRadio is not RadioEntity radio )
-				return;
-
-			radio.RadioOwner = PreviousOwner;
+			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
+			radio.Owner = PreviousOwner;
+		}
+		else if ( Input.Pressed( InputButton.Attack2 ) )
+		{
+			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.INTERACT_DISTANCE )
+					.WorldOnly()
+					.Run();
+
+			if ( !trace.Hit )
+				return;
+
+			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
+			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
+			radioComponent.Radio = radio;
+			radio.Owner = PreviousOwner;
+			radio.Velocity = 0;
+			radio.Position = trace.EndPosition;
+			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
+			radio.MoveType = MoveType.None;
 		}
 	}
 }

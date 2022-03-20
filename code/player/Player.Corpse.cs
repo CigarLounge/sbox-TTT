@@ -263,7 +263,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var player = user as Player;
 
-		bool covert = !player.IsAlive() | DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
+		bool covert = DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
 		Search( player, covert );
 
 		return true;
