@@ -56,4 +56,36 @@ public abstract partial class BaseRound : BaseNetworkable
 	protected virtual void OnFinish() { }
 
 	protected virtual void OnTimeUp() { }
+
+	protected void RevealEveryone()
+	{
+		Host.AssertServer();
+
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			if ( !player.IsAlive() && !player.IsConfirmedDead )
+				player.Confirm();
+			else if ( !player.IsRoleKnown )
+				player.SendRoleToClient( To.Everyone );
+
+			player.IsRoleKnown = true;
+		}
+	}
+
+	protected void SyncPlayer( Player player )
+	{
+		Host.AssertServer();
+
+		foreach ( var client in Client.All )
+		{
+			var otherPlayer = client.Pawn as Player;
+
+			if ( otherPlayer.IsConfirmedDead )
+				otherPlayer.Confirm( To.Single( player ) );
+			else if ( otherPlayer.IsRoleKnown )
+				otherPlayer.SendRoleToClient( To.Single( player ) );
+		}
+	}
 }
