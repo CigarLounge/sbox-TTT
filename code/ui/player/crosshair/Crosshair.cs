@@ -115,4 +115,12 @@ public class Crosshair : Panel
 
 		Config = crosshairProperties;
 	}
+
+	public override void Tick()
+	{
+		if ( Local.Pawn is not Player player )
+			return;
+
+		this.Enabled( player.IsAlive() );
+	}
 }

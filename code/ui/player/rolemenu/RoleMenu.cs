@@ -38,7 +38,7 @@ public partial class RoleMenu : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.Role.Info.AvailableItems.Count == 0 )
+		if ( player.Role.Info.AvailableItems.Count == 0 || !player.IsAlive() )
 		{
 			SetClass( "fade-in", false );
 			return;

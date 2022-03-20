@@ -41,7 +41,7 @@ public partial class Scout : Weapon
 	{
 		if ( _isScoped )
 			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
-		
+
 		base.BuildInput( input );
 	}
 
@@ -49,12 +49,12 @@ public partial class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		if ( UI.Hud.GeneralHud.Instance is null )
+		if ( UI.Hud.Instance is null )
 			return;
 
 		_sniperScopePanel = new UI.Scope( "/ui/scout_scope.png" )
 		{
-			Parent = UI.Hud.GeneralHud.Instance
+			Parent = UI.Hud.Instance.RootPanel
 		};
 	}
 
