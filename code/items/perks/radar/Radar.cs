@@ -33,7 +33,7 @@ public partial class Radar : Perk
 		base.OnActivate();
 
 		if ( Host.IsClient )
-			UI.Hud.Instance.RootPanel.AddChild( new RadarDisplay() );
+			Local.Hud.AddChild( new RadarDisplay() );
 	}
 
 	protected override void OnDeactivate()
