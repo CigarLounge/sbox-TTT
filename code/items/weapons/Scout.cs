@@ -49,12 +49,9 @@ public partial class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		if ( UI.Hud.Instance is null )
-			return;
-
 		_sniperScopePanel = new UI.Scope( "/ui/scout_scope.png" )
 		{
-			Parent = UI.Hud.Instance.RootPanel
+			Parent = Local.Hud
 		};
 	}
 

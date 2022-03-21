@@ -5,14 +5,10 @@ namespace TTT.UI;
 
 public partial class Hud : HudEntity<RootPanel>
 {
-	public static Hud Instance;
-
 	public Hud()
 	{
 		if ( !Host.IsClient )
 			return;
-
-		Instance = this;
 
 		RootPanel.StyleSheet.Load( "/ui/Hud.scss" );
 		RootPanel.AddClass( "panel" );
@@ -45,7 +41,7 @@ public partial class Hud : HudEntity<RootPanel>
 	{
 		if ( !IsClient ) return;
 
-		Hud.Instance.RootPanel.DeleteChildren( true );
-		Hud.Instance.Init();
+		Local.Hud.DeleteChildren( true );
+		Init();
 	}
 }
