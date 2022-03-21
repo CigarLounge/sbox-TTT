@@ -17,13 +17,13 @@ public class InputGlyph : Panel
 	{
 		switch ( name )
 		{
-			case "glyph":
+			case "button":
 			{
 				InputButton.TryParse( value, true, out _inputButton );
 
 				break;
 			}
-			case "type":
+			case "style":
 			{
 				_glyphStyle = value switch
 				{

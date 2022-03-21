@@ -130,15 +130,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
 
 			GetKillInfo
-			( 
-				To.Single( client ), 
+			(
+				To.Single( client ),
 				KillInfo.Attacker,
-				KillerWeapon?.Id ?? 0, 
-				KillInfo.HitboxIndex, 
-				KillInfo.Damage, 
-				KillInfo.Flags, 
-				Distance, 
-				KilledTime 
+				KillerWeapon,
+				KillInfo.HitboxIndex,
+				KillInfo.Damage,
+				KillInfo.Flags,
+				Distance,
+				KilledTime
 			);
 
 			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
@@ -196,7 +196,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
+	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -206,7 +206,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		info.Damage = damage;
 		KillInfo = info;
 		LastAttacker = info.Attacker;
-		KillerWeapon = Asset.FromId<CarriableInfo>( weaponId );
+		KillerWeapon = killerWeapon;
 		Distance = distance;
 		KilledTime = killedTime;
 	}
