@@ -34,7 +34,7 @@ public class PreRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		foreach ( Client client in Client.All )
+		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
 			player.RemoveLogicButtons();
@@ -58,16 +58,16 @@ public class PreRound : BaseRound
 			{
 				player.MakeSpectator( false );
 				spectators.Add( player );
-			}
-			else
-			{
-				if ( player.IsAlive() )
-					player.Health = player.MaxHealth;
-				else
-					player.Respawn();
 
-				players.Add( player );
+				continue;
 			}
+
+			if ( player.IsAlive() )
+				player.Health = player.MaxHealth;
+			else
+				player.Respawn();
+
+			players.Add( player );
 		}
 
 		AssignRoles( players );

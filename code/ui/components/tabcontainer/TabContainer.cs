@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
@@ -140,7 +139,7 @@ public class TabContainer : Panel
 			Page = panel;
 			Title = title;
 
-			Button = new Button( title, icon, () => Parent?.SwitchTab( this, true ) );
+			Button = new( title, icon, () => Parent?.SwitchTab( this, true ) );
 			Button.Parent = tabControl.TabsContainer;
 		}
 

@@ -129,8 +129,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
 
-			GetKillInfo( To.Single( client ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
-			GetPlayerData( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
+			GetKillInfo
+			( 
+				To.Single( client ), 
+				KillInfo.Attacker,
+				KillerWeapon?.Id ?? 0, 
+				KillInfo.HitboxIndex, 
+				KillInfo.Damage, 
+				KillInfo.Flags, 
+				Distance, 
+				KilledTime 
+			);
+
+			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
 		}
 	}
 
@@ -155,7 +166,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		if ( !covert )
+		if ( !covert && !DeadPlayer.IsConfirmedDead )
 		{
 			DeadPlayer.Confirmer = searcher;
 			DeadPlayer.Confirm();
@@ -201,7 +212,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetPlayerData( Player deadPlayer, long playerId, string name )
+	private void GetPlayer( Player deadPlayer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
@@ -262,9 +273,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			return false;
 
 		var player = user as Player;
-
-		bool covert = DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
-		Search( player, covert );
+		Search( player, Input.Down( InputButton.Run ) );
 
 		return true;
 	}

@@ -1,46 +1,42 @@
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
-namespace TTT.UI
+namespace TTT.UI;
+
+public class LineBreak : Panel
 {
-	public class LineBreak : Panel
+	public LineBreak()
 	{
-		public LineBreak()
-		{
-			AddClass( "linebreak" );
-		}
-	}
-
-	public class HorizontalLineBreak : Panel
-	{
-		public HorizontalLineBreak()
-		{
-			AddClass( "horizontallinebreak" );
-		}
+		AddClass( "linebreak" );
 	}
 }
 
-namespace Sandbox.UI.Construct
+public class HorizontalLineBreak : Panel
 {
-	using TTT.UI;
-
-	public static class LineBreakConstructor
+	public HorizontalLineBreak()
 	{
-		public static LineBreak LineBreak( this PanelCreator self )
-		{
-			LineBreak lineBreak = new();
+		AddClass( "horizontallinebreak" );
+	}
+}
 
-			self.panel.AddChild( lineBreak );
 
-			return lineBreak;
-		}
+public static class LineBreakConstructor
+{
+	public static LineBreak LineBreak( this PanelCreator self )
+	{
+		LineBreak lineBreak = new();
 
-		public static HorizontalLineBreak HorizontalLineBreak( this PanelCreator self )
-		{
-			HorizontalLineBreak horizontalLineBreak = new();
+		self.panel.AddChild( lineBreak );
 
-			self.panel.AddChild( horizontalLineBreak );
+		return lineBreak;
+	}
 
-			return horizontalLineBreak;
-		}
+	public static HorizontalLineBreak HorizontalLineBreak( this PanelCreator self )
+	{
+		HorizontalLineBreak horizontalLineBreak = new();
+
+		self.panel.AddChild( horizontalLineBreak );
+
+		return horizontalLineBreak;
 	}
 }

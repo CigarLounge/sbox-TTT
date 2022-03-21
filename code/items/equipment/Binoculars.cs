@@ -61,10 +61,7 @@ public partial class Binoculars : Carriable
 			return;
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			bool covert = Corpse.DeadPlayer.IsConfirmedDead | Input.Down( InputButton.Run );
-			Corpse.Search( Owner, covert, false );
-		}
+			Corpse.Search( Owner, Input.Down( InputButton.Run ), false );
 	}
 
 	public override void BuildInput( InputBuilder input )

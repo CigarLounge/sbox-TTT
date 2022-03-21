@@ -47,7 +47,7 @@ public partial class Player
 			return;
 
 		var itemInfo = Asset.FromId<ItemInfo>( itemId );
-		if ( itemInfo == null )
+		if ( itemInfo is null )
 			return;
 
 		if ( !player.Role.Info.AvailableItems.Contains( itemInfo.LibraryName ) )

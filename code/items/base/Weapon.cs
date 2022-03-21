@@ -299,7 +299,7 @@ public abstract partial class Weapon : Carriable
 							.WithAttacker( Owner )
 							.WithWeapon( this );
 
-						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd ); ;
+						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
 
 						if ( trace.Entity is Player player )
 							player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
