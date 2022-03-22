@@ -95,6 +95,10 @@ public partial class Player
 			if ( weaponInfo != null )
 				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}
+		else if ( hitboxGroup == HitboxGroup.LeftArm || hitboxGroup == HitboxGroup.RightArm || hitboxGroup == HitboxGroup.LeftLeg || hitboxGroup == HitboxGroup.RightLeg )
+		{
+			info.Damage *= 0.7f;
+		}
 		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{
 			info.Damage *= ArmorReductionPercentage;

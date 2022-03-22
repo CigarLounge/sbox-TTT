@@ -7,11 +7,11 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 30
-		damage = 18.0
+		damage = 17.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
-		spread = 0.05
-		primaryrate = 16.0
+		spread = 0.04
+		primaryrate = 12.0
 		secondaryrate = 0.0
 		reloadtime = 2.45
 		ammotype = "1"
@@ -29,11 +29,12 @@
 		icon = "ui/icons/weapons/ttt_weapon_mp7.png"
 		worldmodel = resource:"models/weapons/w_mp7.vmdl"
 		libraryname = "ttt_weapon_mp7"
-		verticalrecoil = 8.0
+		verticalrecoil = 10.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.3
+		headshotmultiplier = 1.6
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }

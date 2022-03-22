@@ -31,6 +31,7 @@ public partial class WeaponInfo : CarriableInfo
 	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float HeadshotMultiplier { get; set; } = 1f;
 	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
+	[Property, Category( "Stats" )] public float MovementSpreadMultiplier { get; set; } = 1f;
 	[Property, Category( "Stats" )] public float PrimaryRate { get; set; } = 0f;
 	[Property, Category( "Stats" )] public float SecondaryRate { get; set; } = 0f;
 	[Property( "reserveammo", "The amount of ammo this weapon spawns with if the ammo type is set to None." ), Category( "Stats" )]
@@ -204,7 +205,11 @@ public abstract partial class Weapon : Carriable
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
+		var calculatedSpread = Info.Spread;
+		if ( Owner?.Velocity.WithZ( 0 ).Length > 150 )
+			calculatedSpread *= Info.MovementSpreadMultiplier;
+
+		ShootBullet( calculatedSpread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 	}
 
 	public void AttackSecondary() { }

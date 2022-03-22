@@ -27,6 +27,7 @@
 	damagefalloffend(float) { group = "Stats" } : "Damage Fall Off End" : "0" : ""
 	headshotmultiplier(float) { group = "Stats" } : "Headshot Multiplier" : "1" : ""
 	spread(float) { group = "Stats" } : "Spread" : "0" : ""
+	movementspreadmultiplier(float) { group = "Stats" } : "Movement Spread Multiplier" : "1" : ""
 	primaryrate(float) { group = "Stats" } : "Primary Rate" : "0" : ""
 	secondaryrate(float) { group = "Stats" } : "Secondary Rate" : "0" : ""
 	reserveammo(integer) { group = "Stats" } : "Reserve Ammo" : 0 : "The amount of ammo this weapon spawns with if the ammo type is set to None."
