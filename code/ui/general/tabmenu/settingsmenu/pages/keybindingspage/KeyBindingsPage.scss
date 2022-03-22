@@ -5,14 +5,27 @@ keybindingspage
     overflow: scroll;
     width: 100%;
     color: white;
+    flex-shrink: 0;
 
-    panel
+    .h1
+    {
+        margin-bottom: 40px;
+    }
+
+    .help
+    {
+        margin-bottom: 20px;
+    }
+
+    div
     {
         padding-top: 5px;
         align-items: center;
+        flex-shrink: 0;
 
         inputglyph, text
         {
+            flex-shrink: 0;
             margin-right: 10px;
         }
     }
