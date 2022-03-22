@@ -1,14 +1,19 @@
-KeyBindingsPage
+keybindingspage
 {
     flex-direction: column;
     justify-content: flex-start;
     overflow: scroll;
     width: 100%;
     color: white;
-}
 
-.wrapper
-{
-    padding-top: 5px;
-    align-items: center;
+    panel
+    {
+        padding-top: 5px;
+        align-items: center;
+
+        inputglyph, text
+        {
+            margin-right: 10px;
+        }
+    }
 }

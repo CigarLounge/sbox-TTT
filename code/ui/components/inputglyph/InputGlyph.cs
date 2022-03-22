@@ -13,6 +13,8 @@ public class InputGlyph : Panel
 		StyleSheet.Load( "/ui/components/inputglyph/InputGlyph.scss" );
 	}
 
+	public void SetButton( InputButton inputButton ) => _inputButton = inputButton;
+
 	public override void SetProperty( string name, string value )
 	{
 		switch ( name )
@@ -44,12 +46,12 @@ public class InputGlyph : Panel
 	{
 		base.Tick();
 
-		if ( this.IsEnabled() )
-		{
-			var texture = Input.GetGlyph( _inputButton, InputGlyphSize.Small, _glyphStyle );
-			Style.BackgroundImage = texture;
-			Style.Width = texture.Width;
-			Style.Height = texture.Height;
-		}
+		if ( !this.IsEnabled() )
+			return;
+
+		var texture = Input.GetGlyph( _inputButton, InputGlyphSize.Small, _glyphStyle );
+		Style.BackgroundImage = texture;
+		Style.Width = texture.Width;
+		Style.Height = texture.Height;
 	}
 }
