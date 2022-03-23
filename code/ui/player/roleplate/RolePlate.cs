@@ -6,15 +6,19 @@ namespace TTT.UI;
 
 public class RolePlateComponent : EntityComponent<Player>
 {
-	RolePlate _rolePlate;
+	private RolePlate _rolePlate;
 
 	protected override void OnActivate()
 	{
+		base.OnActivate();
+
 		_rolePlate = new RolePlate();
 	}
 
 	protected override void OnDeactivate()
 	{
+		base.OnDeactivate();
+
 		_rolePlate?.Delete();
 		_rolePlate = null;
 	}
@@ -25,9 +29,13 @@ public class RolePlateComponent : EntityComponent<Player>
 	[Event.Frame]
 	private void FrameUpdate()
 	{
+		_rolePlate.SceneObject.RenderingEnabled = !Entity.IsFirstPersonMode;
+		if ( Entity.IsFirstPersonMode )
+			return;
+
 		var tx = Entity.GetAttachment( "hat" ) ?? Entity.Transform;
 		tx.Position += Vector3.Up * 5.0f;
-		tx.Rotation = Rotation.LookAt( -CurrentView.Rotation.Forward );
+		tx.Rotation = CurrentView.Rotation;
 
 		_rolePlate.Transform = tx;
 	}
