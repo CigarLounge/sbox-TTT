@@ -7,11 +7,11 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 30
-		damage = 20.0
+		damage = 15.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
-		spread = 0.05
-		primaryrate = 10.0
+		spread = 0.01
+		primaryrate = 12.0
 		secondaryrate = 0.0
 		reloadtime = 2.8
 		ammotype = "1"
@@ -32,8 +32,9 @@
 		verticalrecoil = 8.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.2
+		headshotmultiplier = 1.7
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
