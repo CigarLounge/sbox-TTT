@@ -30,7 +30,7 @@
 		worldmodel = resource:"models/weapons/w_ak47.vmdl"
 		libraryname = "ttt_weapon_ak47"
 		verticalrecoil = 23.0
-		horizontalrecoilrange = 2.0
+		horizontalrecoilrange = 4.0
 		recoilrecoveryscale = 10.0
 		headshotmultiplier = 1.5
 		candrop = true
