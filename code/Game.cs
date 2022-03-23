@@ -16,8 +16,8 @@ public partial class Game : Sandbox.Game
 
 	public Game()
 	{
-		if ( IsServer )	
-			_ = new UI.Hud();	
+		if ( IsServer )
+			_ = new UI.Hud();
 	}
 
 	public override void Simulate( Client client )
@@ -61,10 +61,10 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
-		Player player = new();
+		var player = new Player();
 		client.Pawn = player;
 		client.SetValue( RawStrings.Spectator, true );
-		Round.OnPlayerJoin( client.Pawn as Player );
+		Round.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
 	}
