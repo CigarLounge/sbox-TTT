@@ -24,6 +24,15 @@ public partial class FreeSpectateCamera : CameraMode, ISpectateCamera
 		Position = _targetPos;
 		Rotation = _targetRot;
 		_lookAngles = Rotation.Angles();
+
+		Viewer = Local.Pawn;
+	}
+
+	public override void Deactivated()
+	{
+		base.Deactivated();
+
+		Viewer = null;
 	}
 
 	public override void Update()
