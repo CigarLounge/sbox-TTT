@@ -39,9 +39,7 @@ public class InventorySelection : Panel
 		base.Tick();
 
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324
@@ -106,15 +104,12 @@ public class InventorySelection : Panel
 	[Event.BuildInput]
 	private void ProcessClientInventorySelectionInput( InputBuilder input )
 	{
-		if ( Local.Pawn is not Player player || player.IsSpectatingPlayer )
-		{
+		var player = Local.Pawn as Player;
+		if ( !player.IsAlive() )
 			return;
-		}
 
 		if ( Children == null || !Children.Any() )
-		{
 			return;
-		}
 
 		List<Panel> childrenList = Children.ToList();
 
@@ -213,18 +208,16 @@ public class InventorySelection : Panel
 
 			Add.Label( carriable.Info.Title );
 
-			_slotText = Add.Label( String.Empty, "slot-text" );
-
-			if ( Local.Pawn is Player )
-				_slotText.Text = Carriable.SlotText;
+			_slotText = Add.Label( string.Empty, "slot-text" );
+			_slotText.Text = Carriable.SlotText;
 		}
 
 		public override void Tick()
 		{
 			base.Tick();
 
-			if ( Local.Pawn is Player player )
-				SlotLabel.Style.BackgroundColor = player.Role?.Info.Color;
+			var player = Local.Pawn as Player;
+			SlotLabel.Style.BackgroundColor = player.CurrentPlayer.Role?.Info.Color;
 		}
 
 		public void UpdateSlotText( string slotText )
