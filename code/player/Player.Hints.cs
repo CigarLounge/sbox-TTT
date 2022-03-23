@@ -55,7 +55,7 @@ public partial class Player
 
 	private IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
 	{
-		var trace = Trace.Ray( CameraMode.Position, CameraMode.Position + CameraMode.Rotation.Forward * maxHintDistance );
+		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * maxHintDistance );
 		trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( CurrentPlayer );
 
 		TraceResult tr = trace.UseHitboxes().Run();
