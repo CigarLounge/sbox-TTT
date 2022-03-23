@@ -23,7 +23,7 @@ public partial class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Viewer = Local.Pawn;
+		Viewer = player;
 		player.CurrentPlayer = null;
 	}
 

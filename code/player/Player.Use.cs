@@ -4,9 +4,6 @@ namespace TTT;
 
 public partial class Player
 {
-	[Net]
-	public new Entity Using { get; set; }
-
 	public const float INTERACT_DISTANCE = 80f;
 
 	public bool IsUseDisabled()
@@ -40,11 +37,6 @@ public partial class Player
 			return;
 
 		StopUsing();
-	}
-
-	protected override void StopUsing()
-	{
-		Using = null;
 	}
 
 	protected override Entity FindUsable()
