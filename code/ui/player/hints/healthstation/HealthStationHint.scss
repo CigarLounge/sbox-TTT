@@ -1,0 +1,19 @@
+﻿healthstationhint
+{
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+
+    div
+    {
+        align-items: center;
+        justify-content: center;
+        padding: 5px;
+
+        inputglyph
+        {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+    }
+}
