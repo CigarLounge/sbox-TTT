@@ -1,18 +1,5 @@
-Hint
+hint
 {
     flex-direction: column;
     text-align: center;
-
-    .sublabel
-    {
-        padding: 0 10 10 10;
-        transition: height 0.1s ease-in;
-        transition: opacity 0.1s ease-in;
-
-        &:outro
-        {
-            opacity: 0;
-            height: 0;
-        }
-    }
 }

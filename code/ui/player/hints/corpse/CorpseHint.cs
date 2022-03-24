@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -6,14 +5,14 @@ namespace TTT.UI;
 [UseTemplate]
 public class CorpseHint : EntityHintPanel
 {
-	public Corpse Corpse { get; init; }
+	private readonly Corpse _corpse;
 	private Label Title { get; set; }
 	private InputGlyph TopButton { get; set; }
 	private InputGlyph BottomButton { get; set; }
 
 	public CorpseHint() { }
 
-	public CorpseHint( Corpse corpse ) => Corpse = corpse;
+	public CorpseHint( Corpse corpse ) => _corpse = corpse;
 
 	public override void Tick()
 	{
@@ -21,7 +20,7 @@ public class CorpseHint : EntityHintPanel
 
 		TopButton.SetButton( Corpse.GetSearchButton() );
 		BottomButton.SetButton( Corpse.GetSearchButton() );
-		Title.Text = Corpse.PlayerName ?? "Unidentified body";
-		Title.SetClass( "unidentified", Corpse.PlayerName is null );
+		Title.Text = _corpse.PlayerName ?? "Unidentified body";
+		Title.SetClass( "unidentified", _corpse.PlayerName is null );
 	}
 }
