@@ -83,7 +83,7 @@ public partial class MapSelectionRound : BaseRound
 	private async Task<List<string>> GetMapNames()
 	{
 		Package result = await Package.Fetch( RawStrings.GameIndent, true );
-		return result?.GameConfiguration?.MapList ?? new List<string>();
+		return result?.GetMeta<List<string>>( "MapList" ) ?? new List<string>();
 	}
 
 	private async Task<List<string>> GetMapImages( List<string> mapNames )

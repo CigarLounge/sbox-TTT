@@ -11,5 +11,16 @@
   ],
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "TTT"
+  "RootNamespace": "TTT",
+  "Metadata": {
+    "MapList": [
+      "ice.terminal",
+      "thieves.ttt_cluedo",
+      "dnd.lego",
+      "mke.ttt_clue"
+    ],
+    "MinPlayers": 1,
+    "MaxPlayers": 64,
+    "MapSelect": 2
+  }
 }
