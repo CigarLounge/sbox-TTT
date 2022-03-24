@@ -68,7 +68,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	/// </summary>
 	public virtual string SlotText => string.Empty;
 	public CarriableInfo Info { get; protected set; }
-	string IEntityHint.TextOnTick => Info.Title;
 
 	public Carriable() { }
 
@@ -209,15 +208,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
 	}
 
-	bool IEntityHint.CanHint( Player player )
-	{
-		return Owner is null;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
-	}
+	bool IEntityHint.CanHint( Player player ) => Owner is null;
 
 	bool IUse.OnUse( Entity user )
 	{
@@ -227,10 +218,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		return false;
 	}
 
-	bool IUse.IsUsable( Entity user )
-	{
-		return Owner is null && user is Player;
-	}
+	bool IUse.IsUsable( Entity user ) => Owner is null && user is Player;
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

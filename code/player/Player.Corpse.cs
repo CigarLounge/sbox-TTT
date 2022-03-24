@@ -222,26 +222,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
 
-	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick => PlayerName;
-
-	public string SubTextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly";
-			else
-				return "";
-		}
-	}
-
 	bool IEntityHint.CanHint( Player client ) => true;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
-	{
-		return new UI.CorpseHint();
-	}
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{
@@ -251,10 +234,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
-	bool IUse.OnUse( Entity user )
-	{
-		return true;
-	}
+	bool IUse.OnUse( Entity user ) => true;
 
 	bool IUse.IsUsable( Entity user )
 	{
@@ -269,8 +249,16 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		return true;
 	}
 
-	private static InputButton GetSearchButton()
+	public static InputButton GetSearchButton()
 	{
-		return (Local.Pawn as Player).ActiveChild is Binoculars bino && bino.IsZoomed ? InputButton.Attack1 : InputButton.Use;
+		var player = Local.Pawn as Player;
+
+		if ( player.ActiveChild is not Binoculars binoculars )
+			return InputButton.Use;
+
+		if ( !binoculars.IsZoomed )
+			return InputButton.Use;
+
+		return InputButton.Attack1;
 	}
 }
