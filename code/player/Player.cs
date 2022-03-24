@@ -205,7 +205,7 @@ public partial class Player : Sandbox.Player
 	{
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
-			Entity droppedEntity = Inventory.DropActive();
+			var droppedEntity = Inventory.DropActive();
 
 			if ( droppedEntity != null )
 			{
