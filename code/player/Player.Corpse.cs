@@ -223,16 +223,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
 
 	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to identify the corpse";
-			else
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to inspect {PlayerName}";
-		}
-	}
+	public string TextOnTick => PlayerName;
 
 	public string SubTextOnTick
 	{
@@ -249,7 +240,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
 	{
-		return new UI.Hint( TextOnTick, SubTextOnTick );
+		return new UI.CorpseHint();
 	}
 
 	void IEntityHint.Tick( Player player )

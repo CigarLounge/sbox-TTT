@@ -13,11 +13,11 @@ public class Nameplate : EntityHintPanel
 	private readonly Label _roleLabel;
 	private readonly Label _damageIndicatorLabel;
 
-	public Nameplate( Player player ) : base()
+	public Nameplate( Player player )
 	{
 		Player = player;
 
-		StyleSheet.Load( "/ui/player/nameplate/Nameplate.scss" );
+		StyleSheet.Load( "/ui/player/hints/nameplate/Nameplate.scss" );
 
 		_labelHolder = Add.Panel( "label-holder" );
 

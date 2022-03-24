@@ -1,0 +1,36 @@
+@import "/ui/Hud.scss";
+
+CorpseHint
+{
+    flex-direction: column;
+    align-items: center;
+    transition: height 0.1s ease-in;
+    transition: opacity 0.1s ease-in;
+
+    .title
+    {
+        font-weight: 600; 
+        font-size: 18px;
+
+        &.unidentified
+        {
+            color: $info;
+        }
+    }
+
+    .actions
+    {
+        flex-direction: column;
+        align-items: center;
+
+        Label
+        {
+            font-size: 15px;
+        }
+
+        inputglyph
+        {
+            margin: 5px;
+        }
+    }
+}
