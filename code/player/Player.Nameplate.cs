@@ -2,8 +2,7 @@ namespace TTT;
 
 public partial class Player : IEntityHint
 {
-	public float HintDistance => 20480f;
-	public string TextOnTick => "";
+	public float HintDistance { get; set; } = MAX_HINT_DISTANCE;
 
 	public bool CanHint( Player player )
 	{

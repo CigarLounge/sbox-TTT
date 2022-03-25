@@ -52,7 +52,7 @@ public partial class Binoculars : Carriable
 		if ( IsClient && lastCorpse != Corpse )
 		{
 			if ( lastCorpse.IsValid() )
-				lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
+				lastCorpse.HintDistance = Player.USE_DISTANCE;
 			if ( Corpse.IsValid() )
 				Corpse.HintDistance = Player.MAX_HINT_DISTANCE;
 		}
@@ -98,7 +98,7 @@ public partial class Binoculars : Carriable
 	private void StopLooking()
 	{
 		if ( Corpse.IsValid() )
-			Corpse.HintDistance = Player.INTERACT_DISTANCE;
+			Corpse.HintDistance = Player.USE_DISTANCE;
 
 		Corpse = null;
 	}

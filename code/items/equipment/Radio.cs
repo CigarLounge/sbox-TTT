@@ -20,7 +20,7 @@ public partial class Radio : Carriable
 		}
 		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
-			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.INTERACT_DISTANCE )
+			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.USE_DISTANCE )
 					.WorldOnly()
 					.Run();
 

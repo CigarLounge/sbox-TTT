@@ -16,7 +16,7 @@ public interface IGrabbable
 [Library( "ttt_equipment_hands", Title = "Hands" )]
 public partial class Hands : Carriable
 {
-	public const float MAX_INTERACT_DISTANCE = Player.INTERACT_DISTANCE;
+	public const float MAX_INTERACT_DISTANCE = Player.USE_DISTANCE;
 	public const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
 	private const float MAX_PICKUP_MASS = 205;

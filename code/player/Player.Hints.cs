@@ -4,8 +4,6 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float MAX_HINT_DISTANCE = 20480f;
-
 	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
 
@@ -51,7 +49,7 @@ public partial class Player
 		_currentHint = null;
 	}
 
-	private IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
+	public IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
 	{
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * maxHintDistance );
 		trace = trace.HitLayer( CollisionLayer.Debris ).Ignore( CurrentPlayer );

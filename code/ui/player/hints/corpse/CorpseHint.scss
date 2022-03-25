@@ -4,8 +4,6 @@ CorpseHint
 {
     flex-direction: column;
     align-items: center;
-    transition: height 0.1s ease-in;
-    transition: opacity 0.1s ease-in;
 
     .title
     {
@@ -31,6 +29,18 @@ CorpseHint
         inputglyph
         {
             margin: 5px;
+        }
+    }
+
+    .covert-panel
+    {
+        align-items: center;
+        transition: all 0.1s ease-in;
+
+        &:outro
+        {
+            height: 0;
+            opacity: 0;
         }
     }
 }

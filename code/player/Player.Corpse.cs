@@ -220,7 +220,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
+	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
