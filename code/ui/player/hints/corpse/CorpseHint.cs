@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -22,12 +21,9 @@ public class CorpseHint : EntityHintPanel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-			return;
+		bool isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
 
-		var isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
-
-		Title.Text = !isConfirmed ? "Unidentified body" : _corpse.PlayerName;
+		Title.Text = _corpse.PlayerName ?? "Unidentified body";
 		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Info.Color;
 		Title.SetClass( "unidentified", !isConfirmed );
 		SubText.Text = !isConfirmed ? "to identify" : "to search";
@@ -36,13 +32,14 @@ public class CorpseHint : EntityHintPanel
 			CovertSearchPanel?.Delete();
 
 		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.
-		var searchButton = Corpse.GetSearchButton();
-		if ( searchButton != InputButton.Attack1 && player.Position.Distance( _corpse.Position ) >= Player.USE_DISTANCE )
+		if ( !_corpse.CanSearch() )
 		{
 			ActionPanel.Style.Opacity = 0;
+
 			return;
 		}
 
+		var searchButton = Corpse.GetSearchButton();
 		TopButton.SetButton( searchButton );
 		BottomButton.SetButton( searchButton );
 

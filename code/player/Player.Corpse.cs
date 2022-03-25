@@ -228,8 +228,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		var searchButton = GetSearchButton();
-		if ( (searchButton == InputButton.Use && player.Position.Distance( Position ) > Player.USE_DISTANCE) || !Input.Down( searchButton ) )
+		if ( !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
@@ -250,8 +249,25 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		return true;
 	}
 
+	public bool CanSearch()
+	{
+		Host.AssertClient();
+
+		var searchButton = GetSearchButton();
+
+		if ( searchButton == InputButton.Attack1 )
+			return true;
+
+		if ( searchButton == InputButton.Use && Local.Pawn.Position.Distance( Position ) <= Player.USE_DISTANCE )
+			return true;
+
+		return false;
+	}
+
 	public static InputButton GetSearchButton()
 	{
+		Host.AssertClient();
+
 		var player = Local.Pawn as Player;
 
 		if ( player.ActiveChild is not Binoculars binoculars )
