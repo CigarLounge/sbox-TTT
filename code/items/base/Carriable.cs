@@ -174,13 +174,10 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override bool CanCarry( Entity carrier )
 	{
-		if ( Owner is not null || carrier is not Player player )
+		if ( Owner is not null || carrier is not Player )
 			return false;
 
 		if ( carrier == PreviousOwner && TimeSinceDropped < 1f )
-			return false;
-
-		if ( !player.Inventory.HasFreeSlot( Info.Slot ) )
 			return false;
 
 		return true;
@@ -191,7 +188,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryStart( carrier );
 
 		PreviousOwner = Owner;
-		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
@@ -199,7 +195,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
-		PreviousOwner.Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )

@@ -1,18 +1,21 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Sandbox;
-
 namespace TTT;
 
-public partial class Inventory : BaseInventory
+public partial class Inventory : IBaseInventory
 {
-	public new Player Owner
+	public Player Owner { get; init; }
+
+	public Entity Active
 	{
-		get => base.Owner as Player;
-		private init => base.Owner = value;
+		get => Owner.ActiveChild;
+		set => Owner.ActiveChild = value;
 	}
+
+	public List<Carriable> List { get; set; } = new();
 
 	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
@@ -20,11 +23,66 @@ public partial class Inventory : BaseInventory
 	private const int DROPPOSITIONOFFSET = 50;
 	private const int DROPVELOCITY = 500;
 
-	public Inventory( Player player ) : base( player ) { }
+	public Inventory( Player player ) => Owner = player;
 
-	public override void Pickup( Entity entity )
+	public bool Add( Entity entity, bool makeActive = false )
 	{
-		if ( base.Add( entity ) )
+		Host.AssertServer();
+
+		if ( entity.Owner is not null )
+			return false;
+
+		if ( !CanAdd( entity ) )
+			return false;
+
+		var carriable = entity as Carriable;
+		carriable.SetParent( Owner );
+		carriable.OnCarryStart( Owner );
+
+		if ( makeActive )
+			SetActive( entity );
+
+		return true;
+	}
+
+	public bool CanAdd( Entity entity )
+	{
+		if ( entity is not Carriable carriable )
+			return false;
+
+		if ( Host.IsClient )
+			return true;
+
+		if ( !HasFreeSlot( carriable.Info.Slot ) )
+			return false;
+
+		if ( !carriable.CanCarry( Owner ) )
+			return false;
+
+		return true;
+	}
+
+	public bool Contains( Entity entity ) => List.Contains( entity );
+
+	public int Count() => List.Count;
+
+	/// <summary>
+	/// Get the item in this slot
+	/// </summary>
+	public Entity GetSlot( int i )
+	{
+		if ( List.Count <= i )
+			return null;
+
+		if ( i < 0 )
+			return null;
+
+		return List[i];
+	}
+
+	public void Pickup( Entity entity )
+	{
+		if ( Add( entity ) )
 			Sound.FromEntity( RawStrings.WeaponPickupSound, Owner );
 	}
 
@@ -40,15 +98,27 @@ public partial class Inventory : BaseInventory
 
 	public Carriable Swap( Carriable carriable )
 	{
-		var ent = List.Find( x => (x as Carriable).Info.Slot == carriable.Info.Slot );
-		bool wasActive = Owner.ActiveChild == ent;
+		var entity = List.Find( x => x.Info.Slot == carriable.Info.Slot );
+		bool wasActive = Owner.ActiveChild == entity;
 
-		if ( ent.IsValid() )
-			Drop( ent );
+		if ( entity.IsValid() )
+			Drop( entity );
 
 		Add( carriable, wasActive );
 
-		return ent as Carriable;
+		return entity;
+	}
+
+	public bool SetActive( Entity entity )
+	{
+		if ( Active == entity )
+			return false;
+
+		if ( !Contains( entity ) )
+			return false;
+
+		Active = entity;
+		return true;
 	}
 
 	public bool IsCarrying( string libraryName )
@@ -56,47 +126,154 @@ public partial class Inventory : BaseInventory
 		return List.Any( x => x.ClassInfo?.Name == libraryName );
 	}
 
-	public override bool Drop( Entity ent )
+	public bool Drop( Entity entity )
 	{
-		var carriableInfo = Asset.GetInfo<CarriableInfo>( ent );
-		if ( !carriableInfo.CanDrop )
+		if ( !Host.IsServer )
 			return false;
 
-		return base.Drop( ent );
+		if ( !Contains( entity ) )
+			return false;
+
+		var carriable = entity as Carriable;
+		carriable.Parent = null;
+		carriable.OnCarryDrop( Owner );
+
+		return true;
 	}
+
+	public int GetActiveSlot()
+	{
+		var active = Active;
+		int count = Count();
+
+		for ( int i = 0; i < count; i++ )
+		{
+			if ( List[i] == active )
+				return i;
+		}
+
+		return -1;
+	}
+
+	public Entity DropActive()
+	{
+		if ( !Host.IsServer )
+			return null;
+
+		var active = Active;
+		if ( active is not Carriable carriable )
+			return null;
+
+		if ( !carriable.Info.CanDrop )
+			return null;
+
+		if ( Drop( carriable ) )
+		{
+			Active = null;
+			return carriable;
+		}
+
+		return null;
+	}
+
+	public virtual bool SetActiveSlot( int i, bool evenIfEmpty = false )
+	{
+		var entity = GetSlot( i );
+		if ( Active == entity )
+			return false;
+
+		if ( !evenIfEmpty && entity is null )
+			return false;
+
+		Active = entity;
+		return entity.IsValid();
+	}
+
+	public bool SwitchActiveSlot( int idelta, bool loop )
+	{
+		int count = Count();
+		if ( count == 0 )
+			return false;
+
+		int slot = GetActiveSlot();
+		int nextSlot = slot + idelta;
+
+		if ( loop )
+		{
+			while ( nextSlot < 0 )
+				nextSlot += count;
+			while ( nextSlot >= count )
+				nextSlot -= count;
+		}
+		else
+		{
+			if ( nextSlot < 0 )
+				return false;
+			if ( nextSlot >= count )
+				return false;
+		}
+
+		return SetActiveSlot( nextSlot, false );
+	}
+
 
 	public void DropAll()
 	{
 		// Cache due to "collections modified error"
 		Active = null;
-		List<Entity> cache = new( List );
-		foreach ( Entity entity in cache )
+		foreach ( var carriable in List.ToArray() )
 		{
-			Drop( entity );
+			Drop( carriable );
 		}
 	}
 
-	public override void DeleteContents()
+	public void DeleteContents()
 	{
 		Host.AssertServer();
 
 		foreach ( var item in List.ToArray() )
 		{
-			item.OnChildRemoved( Owner );
-			SlotCapacity[(int)(item as Carriable).Info.Slot]++;
-
-			if ( item is Weapon weapon )
-				WeaponsOfAmmoType[(int)weapon.Info.AmmoType]--;
-
 			item.Delete();
 		}
 
 		List.Clear();
 	}
 
+	public void OnChildAdded( Entity child )
+	{
+		if ( !CanAdd( child ) )
+			return;
+
+		if ( List.Contains( child ) )
+			throw new System.Exception( "Trying to add to inventory multiple times. This is gated by Entity:OnChildAdded and should never happen!" );
+
+		var carriable = child as Carriable;
+		List.Add( carriable );
+
+		if ( !Host.IsServer )
+			return;
+
+		SlotCapacity[(int)carriable.Info.Slot] -= 1;
+		if ( carriable is Weapon weapon )
+			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
+	}
+
+	public void OnChildRemoved( Entity child )
+	{
+		if ( child is not Carriable carriable )
+			return;
+
+		if ( List.Remove( carriable ) )
+		{
+			SlotCapacity[(int)carriable.Info.Slot] += 1;
+			if ( carriable is Weapon weapon )
+				WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
+		}
+	}
+
 	public Entity DropEntity( Entity self, Type type )
 	{
-		if ( !base.Drop( self ) )
+		if ( !Drop( self ) )
 			return null;
 
 		self.Delete();

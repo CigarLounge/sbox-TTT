@@ -43,22 +43,19 @@ public class InventorySelection : Panel
 
 		// This code sucks. I'm forced to due this because of...
 		// https://github.com/Facepunch/sbox-issues/issues/1324
-		foreach ( var item in player.CurrentPlayer.Children )
+		foreach ( var carriable in player.CurrentPlayer.Inventory.List )
 		{
-			if ( item is Carriable carriable )
+			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
 			{
-				if ( !_entries.ContainsKey( carriable ) && item.Owner != null )
-				{
-					_entries[carriable] = AddInventorySlot( carriable );
-				}
+				_entries[carriable] = AddInventorySlot( carriable );
 			}
 		}
 
-		var activeItem = player?.CurrentPlayer.ActiveChild;
-		var activeItemTitle = activeItem is Carriable ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
+		var activeItem = player.CurrentPlayer.ActiveChild;
+		var activeItemTitle = activeItem is not null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
-			if ( !player.CurrentPlayer.Children.Contains( slot.Carriable ) )
+			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable ) )
 			{
 				_entries.Remove( slot.Carriable );
 				slot?.Delete();
@@ -111,7 +108,7 @@ public class InventorySelection : Panel
 		if ( Children == null || !Children.Any() )
 			return;
 
-		List<Panel> childrenList = Children.ToList();
+		var childrenList = Children.ToList();
 
 		var activeCarriable = player.ActiveChild as Carriable;
 		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
