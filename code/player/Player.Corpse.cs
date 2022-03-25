@@ -220,50 +220,21 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
-
-	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to identify the corpse";
-			else
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to inspect {PlayerName}";
-		}
-	}
-
-	public string SubTextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly";
-			else
-				return "";
-		}
-	}
+	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
-	{
-		return new UI.Hint( TextOnTick, SubTextOnTick );
-	}
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Input.Down( GetSearchButton() ) )
+		if ( !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
-	bool IUse.OnUse( Entity user )
-	{
-		return true;
-	}
+	bool IUse.OnUse( Entity user ) => true;
 
 	bool IUse.IsUsable( Entity user )
 	{
@@ -278,8 +249,30 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		return true;
 	}
 
-	private static InputButton GetSearchButton()
+	public bool CanSearch()
 	{
-		return (Local.Pawn as Player).ActiveChild is Binoculars bino && bino.IsZoomed ? InputButton.Attack1 : InputButton.Use;
+		Host.AssertClient();
+
+		var searchButton = GetSearchButton();
+
+		if ( searchButton == InputButton.Attack1 )
+			return true;
+
+		return CurrentView.Position.Distance( Position ) <= Player.USE_DISTANCE;
+	}
+
+	public static InputButton GetSearchButton()
+	{
+		Host.AssertClient();
+
+		var player = Local.Pawn as Player;
+
+		if ( player.ActiveChild is not Binoculars binoculars )
+			return InputButton.Use;
+
+		if ( !binoculars.IsZoomed )
+			return InputButton.Use;
+
+		return InputButton.Attack1;
 	}
 }

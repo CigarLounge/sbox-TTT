@@ -17,18 +17,6 @@ public partial class DecoyEntity : Prop, IEntityHint, IUse
 		Health = 100f;
 	}
 
-	string IEntityHint.TextOnTick => "Decoy";
-
-	bool IEntityHint.CanHint( Player player )
-	{
-		return true;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
-	}
-
 	bool IUse.OnUse( Entity user )
 	{
 		var player = user as Player;

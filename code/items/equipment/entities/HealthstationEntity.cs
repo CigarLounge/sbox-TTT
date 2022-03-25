@@ -54,19 +54,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		_nextHeal = HEALFREQUENCY;
 	}
 
-	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station";
-
-	string IEntityHint.SubTextOnTick => $"{StoredHealth} charges remaining";
-
-	bool IEntityHint.CanHint( Player client )
-	{
-		return true;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick, (this as IEntityHint).SubTextOnTick );
-	}
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );
 
 	bool IUse.OnUse( Entity user )
 	{

@@ -46,16 +46,7 @@ public partial class Binoculars : Carriable
 				.HitLayer( CollisionLayer.Debris )
 				.Run();
 
-		var lastCorpse = Corpse;
 		Corpse = trace.Entity as Corpse;
-
-		if ( IsClient && lastCorpse != Corpse )
-		{
-			if ( lastCorpse.IsValid() )
-				lastCorpse.HintDistance = Player.INTERACT_DISTANCE;
-			if ( Corpse.IsValid() )
-				Corpse.HintDistance = Player.MAX_HINT_DISTANCE;
-		}
 
 		if ( !IsServer || !Corpse.IsValid() )
 			return;
@@ -97,9 +88,6 @@ public partial class Binoculars : Carriable
 
 	private void StopLooking()
 	{
-		if ( Corpse.IsValid() )
-			Corpse.HintDistance = Player.INTERACT_DISTANCE;
-
 		Corpse = null;
 	}
 }

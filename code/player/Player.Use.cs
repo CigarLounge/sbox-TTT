@@ -4,7 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float INTERACT_DISTANCE = 80f;
+	public const float USE_DISTANCE = 80f;
 
 	public bool IsUseDisabled()
 	{
@@ -45,7 +45,7 @@ public partial class Player
 			return null;
 
 		// First try a direct 0 width line
-		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (INTERACT_DISTANCE * Scale) )
+		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (USE_DISTANCE * Scale) )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.Run();
@@ -60,7 +60,7 @@ public partial class Player
 		// Nothing found, try a wider search
 		if ( !IsValidUseEntity( ent ) )
 		{
-			tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (INTERACT_DISTANCE * Scale) )
+			tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (USE_DISTANCE * Scale) )
 			.Radius( 2 )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )

@@ -24,18 +24,6 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 		base.OnDestroy();
 	}
 
-	string IEntityHint.TextOnTick => "Radio";
-
-	public bool CanHint( Player player )
-	{
-		return true;
-	}
-
-	public UI.EntityHintPanel DisplayHint( Player player )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
-	}
-
 	bool IUse.OnUse( Entity user )
 	{
 		var player = user as Player;
