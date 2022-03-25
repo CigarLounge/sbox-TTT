@@ -1,0 +1,39 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = "hk417_fire-1"
+		dryfiresound = "dryfire_rifle-1"
+		firemode = "1"
+		bulletsperfire = 1
+		clipsize = 20
+		damage = 27.0
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		spread = 0.02
+		primaryrate = 20.0
+		secondaryrate = 0.0
+		reloadtime = 2.7
+		ammotype = "5"
+		ejectparticle = resource:"particles/pistol_ejectbrass.vpcf"
+		muzzleflashparticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		slot = "0"
+		spawnable = false
+		viewmodel = resource:"models/weapons/v_hk417.vmdl"
+		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
+		holdtype = "2"
+		deploytime = 1.7
+		buyable = false
+		islimited = false
+		price = 0
+		icon = ""
+		worldmodel = resource:"models/weapons/w_hk417.vmdl"
+		libraryname = "ttt_weapon_hk417"
+		verticalrecoil = 45.0
+		horizontalrecoilrange = 2.0
+		recoilrecoveryscale = 30.0
+		headshotmultiplier = 1.4
+		candrop = true
+		description = ""
+	}
+}

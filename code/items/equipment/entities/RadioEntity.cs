@@ -1,13 +1,11 @@
 using Sandbox;
-using TTT.UI;
 
 namespace TTT;
 
 [Hammer.EditorModel( "models/radio/radio.vmdl" )]
 [Library( "ttt_entity_radio", Title = "Radio" )]
-public partial class RadioEntity : Prop, IEntityHint
+public partial class RadioEntity : Prop, IEntityHint, IUse
 {
-	public Player RadioOwner { get; set; }
 	private const string WorldModel = "models/radio/radio.vmdl";
 
 	public override void Spawn()
@@ -21,19 +19,22 @@ public partial class RadioEntity : Prop, IEntityHint
 
 	protected override void OnDestroy()
 	{
-		RadioOwner?.Components.RemoveAny<RadioComponent>();
+		Owner?.Components.RemoveAny<RadioComponent>();
+
 		base.OnDestroy();
 	}
 
-	string IEntityHint.TextOnTick => "Radio";
-
-	public bool CanHint( Player player )
+	bool IUse.OnUse( Entity user )
 	{
-		return true;
+		var player = user as Player;
+		player.Inventory.Add( new Radio() );
+		Delete();
+
+		return false;
 	}
 
-	public EntityHintPanel DisplayHint( Player player )
+	bool IUse.IsUsable( Entity user )
 	{
-		return new Hint( (this as IEntityHint).TextOnTick );
+		return user is Player && (Owner is null || user == Owner);
 	}
 }

@@ -35,17 +35,17 @@ public partial class Player
 
 	private void ChangeSpectateCamera()
 	{
-		if ( Input.Pressed( InputButton.Jump ) )
+		if ( !Input.Pressed( InputButton.Jump ) )
+			return;
+
+		CameraMode = CameraMode switch
 		{
-			CameraMode = CameraMode switch
-			{
-				RagdollSpectateCamera => new FreeSpectateCamera(),
-				FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-				ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
-				FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-				_ => CameraMode
-			};
-		}
+			RagdollSpectateCamera => new FreeSpectateCamera(),
+			FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+			ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+			FirstPersonSpectatorCamera => new FreeSpectateCamera(),
+			_ => CameraMode
+		};
 	}
 
 	public void UpdateSpectatedPlayer()

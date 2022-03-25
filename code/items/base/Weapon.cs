@@ -147,20 +147,6 @@ public abstract partial class Weapon : Carriable
 		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
 	}
 
-	public override void OnCarryStart( Entity carrier )
-	{
-		base.OnCarryStart( carrier );
-
-		Owner.Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]++;
-	}
-
-	public override void OnCarryDrop( Entity dropper )
-	{
-		base.OnCarryDrop( dropper );
-
-		PreviousOwner.Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]--;
-	}
-
 	public virtual bool CanPrimaryAttack()
 	{
 		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.Attack1 ) )
@@ -299,7 +285,7 @@ public abstract partial class Weapon : Carriable
 							.WithAttacker( Owner )
 							.WithWeapon( this );
 
-						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd ); ;
+						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
 
 						if ( trace.Entity is Player player )
 							player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();

@@ -16,15 +16,12 @@ public class ColorEditor : Panel
 
 	public ColorEditor()
 	{
-		AddClass( "coloreditor" );
-
 		SaturationValueSlider = AddChild<Slider2D>( "satval" );
 		SaturationValueSlider.Add.Panel( "value_gradient" );
 		SaturationValueSlider.Bind( "value", this, "SaturationAndValue" );
 
 		Canvas = Add.Panel( "canvas" );
 		SwitchRGBA();
-
 
 		Presets = Add.Panel( "presets" );
 

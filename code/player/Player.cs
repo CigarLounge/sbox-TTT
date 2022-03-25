@@ -36,7 +36,7 @@ public partial class Player : Sandbox.Player
 		SetModel( "models/citizen/citizen.vmdl" );
 		Animator = new StandardPlayerAnimator();
 		Health = 0;
-		LifeState = LifeState.Dead;
+		LifeState = LifeState.Respawnable;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
@@ -57,6 +57,7 @@ public partial class Player : Sandbox.Player
 	{
 		Host.AssertServer();
 
+		LifeState = LifeState.Respawnable;
 		Credits = 0;
 		Confirmer = null;
 		IsConfirmedDead = false;
@@ -141,20 +142,19 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
-			DisplayEntityHints();
 			LogicButtonActivate();
 		}
 		else
 		{
-			PlayerUse();
-			CheckAFK();
-			CheckPlayerDropCarriable();
-
 			if ( !this.IsAlive() )
 			{
 				ChangeSpectateCamera();
 				return;
 			}
+
+			PlayerUse();
+			CheckAFK();
+			CheckPlayerDropCarriable();
 		}
 
 		if ( Input.Pressed( InputButton.Menu ) )
@@ -176,6 +176,7 @@ public partial class Player : Sandbox.Player
 	{
 		base.FrameSimulate( client );
 
+		DisplayEntityHints();
 		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
@@ -204,7 +205,7 @@ public partial class Player : Sandbox.Player
 	{
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
-			Entity droppedEntity = Inventory.DropActive();
+			var droppedEntity = Inventory.DropActive();
 
 			if ( droppedEntity != null )
 			{

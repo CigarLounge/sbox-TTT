@@ -68,7 +68,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	/// </summary>
 	public virtual string SlotText => string.Empty;
 	public CarriableInfo Info { get; protected set; }
-	string IEntityHint.TextOnTick => Info.Title;
 
 	public Carriable() { }
 
@@ -174,13 +173,10 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override bool CanCarry( Entity carrier )
 	{
-		if ( Owner is not null || carrier is not Player player )
+		if ( Owner is not null || carrier is not Player )
 			return false;
 
 		if ( carrier == PreviousOwner && TimeSinceDropped < 1f )
-			return false;
-
-		if ( !player.Inventory.HasFreeSlot( Info.Slot ) )
 			return false;
 
 		return true;
@@ -191,7 +187,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryStart( carrier );
 
 		PreviousOwner = Owner;
-		Owner.Inventory.SlotCapacity[(int)Info.Slot]--;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
@@ -199,7 +194,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
-		PreviousOwner.Inventory.SlotCapacity[(int)Info.Slot]++;
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )
@@ -209,28 +203,17 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
 	}
 
-	bool IEntityHint.CanHint( Player player )
-	{
-		return Owner is null;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
-	}
+	bool IEntityHint.CanHint( Player player ) => Owner is null;
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( IsServer && user is Player player )
+		if ( user is Player player )
 			player.Inventory.Swap( this );
 
 		return false;
 	}
 
-	bool IUse.IsUsable( Entity user )
-	{
-		return Owner is null && user is Player;
-	}
+	bool IUse.IsUsable( Entity user ) => Owner is null && user is Player;
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

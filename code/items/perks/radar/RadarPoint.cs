@@ -29,13 +29,13 @@ public class RadarPoint : Panel
 
 		Style.BackgroundColor = data.Color;
 		Style.BoxShadow = new ShadowList()
+		{
+			new Shadow
 			{
-				new Shadow
-				{
-					Blur = BLUR_RADIUS,
-					Color = data.Color
-				}
-			};
+				Blur = BLUR_RADIUS,
+				Color = data.Color
+			}
+		};
 	}
 
 	public override void Tick()
@@ -71,13 +71,5 @@ public class RadarDisplay : Panel
 		Instance = this;
 		AddClass( "fullscreen" );
 		Style.ZIndex = -1;
-	}
-
-	public override void Tick()
-	{
-		if ( Local.Pawn is not Player player || !player.Perks.Has( typeof( Radar ) ) )
-		{
-			Delete();
-		}
 	}
 }
