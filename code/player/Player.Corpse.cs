@@ -228,7 +228,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Input.Down( GetSearchButton() ) )
+		var searchButton = GetSearchButton();
+		if ( (searchButton == InputButton.Use && player.Position.Distance( Position ) > Player.USE_DISTANCE) || !Input.Down( searchButton ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
