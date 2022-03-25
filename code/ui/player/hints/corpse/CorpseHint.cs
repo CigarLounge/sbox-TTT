@@ -8,6 +8,7 @@ public class CorpseHint : EntityHintPanel
 {
 	private readonly Corpse _corpse;
 	private Label Title { get; set; }
+	private Label SubText { get; set; }
 	private InputGlyph TopButton { get; set; }
 	private InputGlyph BottomButton { get; set; }
 	private Panel ActionPanel { get; set; }
@@ -24,12 +25,12 @@ public class CorpseHint : EntityHintPanel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		TopButton.SetButton( Corpse.GetSearchButton() );
-		BottomButton.SetButton( Corpse.GetSearchButton() );
-
 		var isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
+
 		Title.Text = !isConfirmed ? "Unidentified body" : _corpse.PlayerName;
 		Title.SetClass( "unidentified", !isConfirmed );
+		SubText.Text = !isConfirmed ? "to identify" : "to search";
+
 		if ( isConfirmed )
 			CovertSearchPanel?.Delete();
 
@@ -39,6 +40,9 @@ public class CorpseHint : EntityHintPanel
 			ActionPanel.Style.Opacity = 0;
 			return;
 		}
+
+		TopButton.SetButton( Corpse.GetSearchButton() );
+		BottomButton.SetButton( Corpse.GetSearchButton() );
 
 		ActionPanel.Style.Opacity = 100;
 	}
