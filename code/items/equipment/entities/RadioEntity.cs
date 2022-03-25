@@ -24,11 +24,6 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 		base.OnDestroy();
 	}
 
-	public bool CanHint( Player player )
-	{
-		return true;
-	}
-
 	bool IUse.OnUse( Entity user )
 	{
 		var player = user as Player;

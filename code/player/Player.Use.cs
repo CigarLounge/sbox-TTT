@@ -4,7 +4,6 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float MAX_HINT_DISTANCE = 20480f;
 	public const float USE_DISTANCE = 80f;
 
 	public bool IsUseDisabled()
