@@ -147,20 +147,6 @@ public abstract partial class Weapon : Carriable
 		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
 	}
 
-	public override void OnCarryStart( Entity carrier )
-	{
-		base.OnCarryStart( carrier );
-
-		Owner.Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]++;
-	}
-
-	public override void OnCarryDrop( Entity dropper )
-	{
-		base.OnCarryDrop( dropper );
-
-		PreviousOwner.Inventory.WeaponsOfAmmoType[(int)Info.AmmoType]--;
-	}
-
 	public virtual bool CanPrimaryAttack()
 	{
 		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.Attack1 ) )

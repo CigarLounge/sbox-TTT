@@ -6,7 +6,7 @@ namespace TTT;
 [Library( "ttt_equipment_teleporter", Title = "Teleporter" )]
 public partial class Teleporter : Carriable
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public int Charges { get; private set; } = 16;
 
 	[Net, Predicted]
@@ -18,7 +18,7 @@ public partial class Teleporter : Carriable
 	[Net, Predicted]
 	public bool IsTeleporting { get; private set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public bool LocationIsSet { get; private set; }
 
 	public override string SlotText => Charges.ToString();
