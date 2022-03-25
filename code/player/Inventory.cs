@@ -278,10 +278,11 @@ public partial class Inventory : IBaseInventory
 
 		self.Delete();
 
-		Entity droppedEntity = Library.Create<Entity>( type );
+		DroppableEntity droppedEntity = Library.Create<DroppableEntity>( type );
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
 		droppedEntity.Rotation = Owner.EyeRotation;
 		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+		droppedEntity.EquipmentOwner = Owner;
 
 		return droppedEntity;
 	}

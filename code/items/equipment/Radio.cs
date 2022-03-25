@@ -16,7 +16,6 @@ public partial class Radio : Carriable
 			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
-			radio.Owner = PreviousOwner;
 		}
 		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
@@ -30,7 +29,6 @@ public partial class Radio : Carriable
 			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
-			radio.Owner = PreviousOwner;
 			radio.Velocity = 0;
 			radio.Position = trace.EndPosition;
 			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );

@@ -5,7 +5,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/health_station/health_station.vmdl" )]
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
-public partial class HealthStationEntity : Prop, IEntityHint, IUse
+public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 {
 	[Net]
 	public float StoredHealth { get; set; } = 200f;

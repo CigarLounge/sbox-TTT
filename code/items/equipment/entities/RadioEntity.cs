@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/radio/radio.vmdl" )]
 [Library( "ttt_entity_radio", Title = "Radio" )]
-public partial class RadioEntity : Prop, IEntityHint, IUse
+public partial class RadioEntity : DroppableEntity, IEntityHint, IUse
 {
 	private const string WorldModel = "models/radio/radio.vmdl";
 
@@ -47,6 +47,6 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user is Player && (Owner is null || user == Owner);
+		return user is Player && (EquipmentOwner is null || user == EquipmentOwner);
 	}
 }

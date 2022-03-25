@@ -13,8 +13,7 @@ public partial class Decoy : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			var decoy = Owner.Inventory.DropEntity( this, typeof( DecoyEntity ) );
-			decoy.Owner = PreviousOwner;
+			Owner.Inventory.DropEntity( this, typeof( DecoyEntity ) );
 		}
 		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
@@ -26,7 +25,6 @@ public partial class Decoy : Carriable
 				return;
 
 			var decoy = Owner.Inventory.DropEntity( this, typeof( DecoyEntity ) );
-			decoy.Owner = PreviousOwner;
 			decoy.Velocity = 0;
 			decoy.Position = trace.EndPosition;
 			decoy.Rotation = Rotation.From( trace.Normal.EulerAngles );
