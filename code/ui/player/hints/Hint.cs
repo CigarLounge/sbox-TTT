@@ -11,10 +11,9 @@ public class Hint : EntityHintPanel
 	{
 		StyleSheet.Load( "/ui/player/hints/Hint.scss" );
 
-		AddClass( "centered-vertical-75 background-color-primary rounded opacity-heavy text-shadow" );
+		AddClass( "centered-vertical-75 text-shadow" );
 
 		_label = Add.Label( text );
-		_label.Style.Padding = 10;
 
 		this.Enabled( false );
 	}
