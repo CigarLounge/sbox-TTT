@@ -258,10 +258,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( searchButton == InputButton.Attack1 )
 			return true;
 
-		if ( searchButton == InputButton.Use && Local.Pawn.Position.Distance( Position ) <= Player.USE_DISTANCE )
-			return true;
-
-		return false;
+		return CurrentView.Position.Distance( Position ) <= Player.USE_DISTANCE;
 	}
 
 	public static InputButton GetSearchButton()
