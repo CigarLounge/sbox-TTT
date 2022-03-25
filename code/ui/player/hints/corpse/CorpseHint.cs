@@ -28,6 +28,7 @@ public class CorpseHint : EntityHintPanel
 		var isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
 
 		Title.Text = !isConfirmed ? "Unidentified body" : _corpse.PlayerName;
+		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Info.Color;
 		Title.SetClass( "unidentified", !isConfirmed );
 		SubText.Text = !isConfirmed ? "to identify" : "to search";
 
@@ -35,14 +36,15 @@ public class CorpseHint : EntityHintPanel
 			CovertSearchPanel?.Delete();
 
 		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.
-		if ( (player.ActiveChild is not Binoculars binos || !binos.IsZoomed) && player.Position.Distance( _corpse.Position ) >= Player.USE_DISTANCE )
+		var searchButton = Corpse.GetSearchButton();
+		if ( searchButton != InputButton.Attack1 && player.Position.Distance( _corpse.Position ) >= Player.USE_DISTANCE )
 		{
 			ActionPanel.Style.Opacity = 0;
 			return;
 		}
 
-		TopButton.SetButton( Corpse.GetSearchButton() );
-		BottomButton.SetButton( Corpse.GetSearchButton() );
+		TopButton.SetButton( searchButton );
+		BottomButton.SetButton( searchButton );
 
 		ActionPanel.Style.Opacity = 100;
 	}
