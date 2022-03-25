@@ -33,7 +33,8 @@ public class CorpseHint : EntityHintPanel
 		if ( isConfirmed )
 			CovertSearchPanel?.Delete();
 
-		if ( player.IsLookingAtHintableEntity( Player.USE_DISTANCE ) == null )
+		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.
+		if ( (player.ActiveChild is not Binoculars binos || !binos.IsZoomed) && player.Position.Distance( _corpse.Position ) >= Player.USE_DISTANCE )
 		{
 			ActionPanel.Style.Opacity = 0;
 			return;
