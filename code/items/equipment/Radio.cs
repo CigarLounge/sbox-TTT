@@ -13,7 +13,7 @@ public partial class Radio : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
+			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
 		}
@@ -26,7 +26,7 @@ public partial class Radio : Carriable
 			if ( !trace.Hit )
 				return;
 
-			var radio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) ) as RadioEntity;
+			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
 			radio.Velocity = 0;
