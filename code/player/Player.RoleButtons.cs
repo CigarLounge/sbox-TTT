@@ -29,20 +29,11 @@ public partial class Player
 	public static void ActivateRoleButton( int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
-		{
-			Log.Warning( "Server received call from null player to activate logic button." );
-
 			return;
-		}
 
 		var entity = FindByIndex( networkIdent );
-
 		if ( entity is null || entity is not RoleButton button )
-		{
-			Log.Warning( $"Server received call for null logic button with network id `{networkIdent}`." );
-
 			return;
-		}
 
 		if ( player.Role == button.Role && !button.IsDisabled )
 			button.Press( player );
