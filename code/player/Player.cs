@@ -105,6 +105,8 @@ public partial class Player : Sandbox.Player
 
 		if ( !player.IsLocalPawn )
 			player.SetRole( new NoneRole() );
+		else
+			player.ClearRoleButtons();
 	}
 
 	public override void OnKilled()
@@ -142,7 +144,7 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
-			LogicButtonActivate();
+			ActivateRoleButton();
 		}
 		else
 		{

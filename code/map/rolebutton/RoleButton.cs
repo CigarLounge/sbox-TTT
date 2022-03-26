@@ -2,17 +2,17 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Role Button", "TTT", "Used to provide an onscreen button for a role to activate." )]
+[Hammer.EntityTool( "Role Button", "TTT", "Used to provide an on-screen button for a role to activate." )]
 [Library( "ttt_role_button" )]
 public partial class RoleButton : Entity
 {
-	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
-	public string Role { get; set; }
+	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	public string Role { get; set; } = "Traitor";
 
 	[Net, Property( "Description", "On screen tooltip shown on button." )]
 	public string Description { get; private set; }
 
-	[Property( "Range", "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units." )]
+	[Net, Property( "Range", "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units." )]
 	public int Range { get; private set; } = 1024;
 
 	[Property( "Delay", "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers." )]
@@ -38,16 +38,16 @@ public partial class RoleButton : Entity
 
 	public bool HasDelay => Delay > 0.0f;
 
-	private RealTimeUntil NextUse { get; set; }
+	private TimeUntil NextUse { get; set; }
 
 	protected Output OnPressed { get; set; }
 
-	public RoleButton()
+	public override void Spawn()
 	{
-		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
+		base.Spawn();
 
-		if ( IsServer )
-			Cleanup();
+		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
+		Cleanup();
 	}
 
 	// (Re)initialize our variables to default. Runs at preround as well as during construction
@@ -65,10 +65,8 @@ public partial class RoleButton : Entity
 	{
 		Host.AssertServer();
 
-		if ( HasDelay && IsDelayed && !IsRemoved && NextUse <= 0 ) // Check timer if button has delayed, no reason to check if button is removed.
-		{
+		if ( HasDelay && IsDelayed && !IsRemoved && NextUse <= 0 ) // Check timer if button has delayed, no reason to check if button is removed.	
 			IsDelayed = false;
-		}
 	}
 
 	[Input]
@@ -116,27 +114,4 @@ public partial class RoleButton : Entity
 		Host.AssertServer();
 		IsLocked = !IsLocked;
 	}
-
-	public bool CanUse() => !IsDisabled;
-
-	// Convert starter data to struct to network to clients for UI display.
-	public RoleButtonData PackageData()
-	{
-		return new RoleButtonData()
-		{
-			NetworkIdent = NetworkIdent,
-			Range = Range,
-			Position = Position,
-			IsDisabled = IsDisabled,
-		};
-	}
-}
-
-// Package up our data nice and neat for transmission to the client.
-public struct RoleButtonData
-{
-	public int NetworkIdent;
-	public int Range;
-	public Vector3 Position;
-	public bool IsDisabled;
 }

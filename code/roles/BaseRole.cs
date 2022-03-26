@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -41,7 +42,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public int DefaultCredits => Info.DefaultCredits;
 	public HashSet<string> AvailableItems => Info.AvailableItems;
 	public bool RetrieveCredits => Info.RetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
@@ -54,16 +54,36 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public virtual void OnSelect( Player player )
 	{
-		if ( !Host.IsServer )
-			return;
+		if ( player.IsLocalPawn )
+		{
+			player.RoleButtons = GetRoleButtons();
+			foreach ( var roleButton in player.RoleButtons )
+				player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );	
 
-		player.Credits = Math.Max( DefaultCredits, player.Credits );
+			return;
+		}
+
+		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
 	}
 
-	public virtual void OnDeselect( Player player ) { }
+	public virtual void OnDeselect( Player player )
+	{
+		if ( player.IsLocalPawn )
+			player.ClearRoleButtons();
+	}
 
 	public virtual void OnKilled( Player player ) { }
+
+	protected List<RoleButton> GetRoleButtons()
+	{
+		Host.AssertClient();
+
+		return Entity.All
+				.OfType<RoleButton>()
+				.Where( x => this == x.Role )
+				.ToList();
+	}
 
 	public static bool operator ==( BaseRole left, BaseRole right )
 	{
@@ -77,7 +97,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 		return left.Equals( right );
 	}
-
 	public static bool operator !=( BaseRole left, BaseRole right ) => !(left == right);
 
 	public static bool operator ==( BaseRole left, string right )
@@ -119,6 +138,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	private void OnHotReload()
 	{
 		Info = Asset.GetInfo<RoleInfo>( this );
+		(Local.Pawn as Player).RoleButtons = GetRoleButtons();
 	}
 #endif
 }

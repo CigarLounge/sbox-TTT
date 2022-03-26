@@ -51,8 +51,5 @@ public partial class Player
 		Host.AssertServer();
 
 		ClientSetRole( to ?? To.Single( this ), Role.Info.Id );
-
-		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
-			SendLogicButtonsToClient();
 	}
 }

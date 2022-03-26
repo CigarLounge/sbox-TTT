@@ -78,6 +78,8 @@ public partial class Player
 
 	public void SetHealth( float health )
 	{
+		Host.AssertServer();
+
 		Health = Math.Min( health, MaxHealth );
 	}
 

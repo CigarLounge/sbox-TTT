@@ -428,11 +428,11 @@ metadata
 {
 	entity_tool_name = "Role Button"
 	entity_tool_group = "TTT"
-	entity_tool_tip = "Used to provide an onscreen button for a role to activate."
+	entity_tool_tip = "Used to provide an on-screen button for a role to activate."
 }
 = ttt_role_button : ""
 [
-	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
+	check_value(string) : "Role" : "Traitor" : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
 	description(string) : "Description" :  : "On screen tooltip shown on button."
 	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units."
 	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."
