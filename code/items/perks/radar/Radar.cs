@@ -57,7 +57,7 @@ public partial class Radar : Perk
 			{
 				if ( ent is Player player )
 				{
-					if ( player.Client.PlayerId == owner.Client.PlayerId )
+					if ( player.Client == owner.Client )
 						continue;
 
 					pointData.Add( new RadarPointData
