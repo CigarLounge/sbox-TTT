@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -31,11 +32,33 @@ public class DNAMenu : Panel
 		_checkbox = new Checkbox();
 		_checkbox.LabelText = "Auto-repeat";
 		_infoContainer.AddChild( _checkbox );
+
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
+		AddSample();
 	}
 
 	public override void Tick()
 	{
 		_button.SetClass( "inactive", _checkbox.Checked );
+
+		if ( Local.Pawn is not Player player )
+			return;
+
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
+
+		if ( scanner.DNACollected.Count == 0 )
+		{
+
+		}
 	}
 
 	public void AddSample()

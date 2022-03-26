@@ -40,9 +40,16 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 			player.PurchasedLimitedShopItems.Clear();
 		}
+
+		if ( player.IsLocalPawn && Info.AvailableItems.Count > 0 )
+			UI.RoleMenu.Instance.AddShopTab();
 	}
 
-	public virtual void OnDeselect( Player player ) { }
+	public virtual void OnDeselect( Player player )
+	{
+		if ( player.IsLocalPawn && Info.AvailableItems.Count > 0 )
+			UI.RoleMenu.Instance.RemoveTab( RawStrings.ShopTab );
+	}
 
 	public virtual void OnKilled( Player player ) { }
 

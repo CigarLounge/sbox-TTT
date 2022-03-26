@@ -7,7 +7,7 @@ namespace TTT;
 [Library( "ttt_equipment_dnascanner", Title = "DNA Scanner" )]
 public partial class DNAScanner : Carriable
 {
-	[Net]
+	[Net, Local]
 	public IList<DNA> DNACollected { get; set; }
 
 	public override void Simulate( Client client )
@@ -32,10 +32,11 @@ public partial class DNAScanner : Carriable
 		var DNA = trace.Entity.Components.Get<DNA>();
 		if ( DNA != null )
 		{
-			if ( DNA.IsDecayed() )
+			trace.Entity.Components.Remove( DNA );
+
+			if ( DNA.IsDecayed )
 			{
 				Log.Info( "DNA is decayed, we need to remove it." );
-				trace.Entity.Components.Remove( DNA );
 				return;
 			}
 
@@ -74,25 +75,25 @@ public class DNA : EntityComponent<Entity>
 	private TimeSince _timeSinceCreated; // We will use this to figure out when the DNA decays completely.
 	private float _timeToDecay = 5; // This value is calculated based on the entity, the time to completely decay.
 
+	public bool IsDecayed => _timeSinceCreated > _timeToDecay;
+
 	protected override void OnActivate()
 	{
 		base.OnActivate();
 
 		_timeSinceCreated = 0;
 
-		if ( Entity is Carriable )
-			DNAType = Type.Carriable;
-		else if ( Entity is Corpse )
-			DNAType = Type.Corpse;
-		else if ( Entity is Ammo )
-			DNAType = Type.Ammo;
-	}
-
-	// Maybe we should remove the component from inside here? is that possible?
-	// If (IsDecayed())
-	//      remove this component here.
-	public bool IsDecayed()
-	{
-		return _timeSinceCreated > _timeToDecay;
+		switch ( Entity )
+		{
+			case Carriable:
+				DNAType = Type.Carriable;
+				break;
+			case Corpse:
+				DNAType = Type.Corpse;
+				break;
+			case Ammo:
+				DNAType = Type.Ammo;
+				break;
+		}
 	}
 }

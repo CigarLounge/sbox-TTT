@@ -9,9 +9,6 @@ public class TraitorRole : BaseRole
 	{
 		base.OnSelect( player );
 
-		if ( Host.IsClient )
-			UI.RoleMenu.Instance.AddShopTab();
-
 		if ( !Host.IsServer )
 			return;
 
@@ -31,14 +28,6 @@ public class TraitorRole : BaseRole
 			if ( otherPlayer.IsMissingInAction )
 				otherPlayer.SyncMIA( player );
 		}
-	}
-
-	public override void OnDeselect( Player player )
-	{
-		base.OnDeselect( player );
-
-		if ( Host.IsClient )
-			UI.RoleMenu.Instance.RemoveTab( RawStrings.ShopTab );
 	}
 
 	public override void OnKilled( Player player )

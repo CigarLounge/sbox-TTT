@@ -9,9 +9,6 @@ public class DetectiveRole : BaseRole
 	{
 		base.OnSelect( player );
 
-		if ( Host.IsClient )
-			UI.RoleMenu.Instance.AddShopTab();
-
 		if ( !Host.IsServer )
 			return;
 
@@ -32,9 +29,6 @@ public class DetectiveRole : BaseRole
 	public override void OnDeselect( Player player )
 	{
 		base.OnDeselect( player );
-
-		if ( Host.IsClient )
-			UI.RoleMenu.Instance.RemoveTab( RawStrings.ShopTab );
 
 		if ( Host.IsServer )
 			player.RemoveClothing();
