@@ -26,7 +26,14 @@ public class DNAScanner : Carriable
 		var DNA = trace.Entity.Components.Get<DNA>();
 		if ( DNA != null )
 		{
-			Log.Info( "DNA was found!" );
+			if ( DNA.IsDecayed() )
+			{
+				Log.Info( "DNA is decayed, we need to remove it." );
+				trace.Entity.Components.Remove( DNA );
+				return;
+			}
+
+			Log.Info( "DNA fetched successfully!" );
 		}
 	}
 }
@@ -41,10 +48,14 @@ public class DNA : EntityComponent<Entity>
 	}
 
 	private Type DNAType { get; set; }
+	private TimeSince _timeSinceCreated; // We will use this to figure out when the DNA decays completely.
+	private float _timeToDecay = 5; // This value is calculated based on the entity, the time to completely decay.
 
 	protected override void OnActivate()
 	{
 		base.OnActivate();
+
+		_timeSinceCreated = 0;
 
 		if ( Entity is Carriable )
 			DNAType = Type.Carriable;
@@ -52,5 +63,10 @@ public class DNA : EntityComponent<Entity>
 			DNAType = Type.Corpse;
 		else if ( Entity is Ammo )
 			DNAType = Type.Ammo;
+	}
+
+	public bool IsDecayed()
+	{
+		return _timeSinceCreated > _timeToDecay;
 	}
 }
