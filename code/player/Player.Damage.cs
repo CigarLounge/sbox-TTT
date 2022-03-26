@@ -43,12 +43,9 @@ public partial class Player
 {
 	[Net]
 	public float MaxHealth { get; set; } = 100f;
-
 	public DamageInfo LastDamageInfo { get; private set; }
-
 	public float LastDistanceToAttacker { get; set; } = 0f;
-
-	public float ArmorReductionPercentage { get; private set; } = 0.7f;
+	public readonly float ArmorReductionPercentage = 0.7f;
 
 	public struct HealthGroup
 	{

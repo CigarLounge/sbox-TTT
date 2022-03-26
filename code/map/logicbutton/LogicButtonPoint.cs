@@ -1,8 +1,8 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
+using System.Collections.Generic;
 
 namespace TTT.UI;
 
@@ -45,10 +45,7 @@ public class LogicButtonPoint : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-		{
-			return;
-		}
+		var player = Local.Pawn as Player;
 
 		Vector3 screenPos = Position.ToScreen();
 		this.Enabled( screenPos.z > 0f );
@@ -59,10 +56,8 @@ public class LogicButtonPoint : Panel
 			Style.Display = DisplayMode.None;
 
 			// Make sure our client is no longer tracking this element.
-			if ( Player.FocusedButton == this )
-			{
-				Player.FocusedButton = null;
-			}
+			if ( Player.FocusedButton == this )	
+				Player.FocusedButton = null;		
 
 			this.Enabled( false );
 

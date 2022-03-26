@@ -1,6 +1,6 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
-using Sandbox;
 
 namespace TTT;
 
@@ -35,11 +35,11 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public virtual void OnSelect( Player player )
 	{
-		if ( Host.IsServer )
-		{
-			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
-			player.PurchasedLimitedShopItems.Clear();
-		}
+		if ( !Host.IsServer )
+			return;
+
+		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
+		player.PurchasedLimitedShopItems.Clear();
 	}
 
 	public virtual void OnDeselect( Player player ) { }
@@ -83,10 +83,10 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public bool Equals( string other )
 	{
-		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
-		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
 		return false;
