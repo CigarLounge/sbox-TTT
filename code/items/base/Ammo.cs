@@ -41,7 +41,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		};
 
 
-		if ( ammo == null )
+		if ( ammo is null )
 			return null;
 
 		ammo.CurrentCount = count == 0 ? ammo.DefaultAmmoCount : count;
@@ -80,18 +80,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 		if ( CurrentCount <= 0 )
 			Delete();
-	}
-
-	public string TextOnTick => $"{Type} Ammo x{CurrentCount}";
-
-	bool IEntityHint.CanHint( Player player )
-	{
-		return true;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
-	{
-		return new UI.Hint( TextOnTick );
 	}
 
 	bool IUse.OnUse( Entity user )

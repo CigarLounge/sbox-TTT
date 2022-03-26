@@ -37,7 +37,6 @@ public class PreRound : BaseRound
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.RemoveLogicButtons();
 			player.Respawn();
 		}
 	}

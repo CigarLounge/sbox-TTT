@@ -27,12 +27,28 @@
 ]
 
 //
-// TTT.FeedEntry
+// TTT.ForceWin
 //
-@PointClass base(BaseProperties_matt_ttt) = ttt_feed_entry : "Add text entry to the game feed when input fired."
+@PointClass base(BaseProperties_matt_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
+[
+	team(choices) : "Team" : 0 : "The name of the team that will be forced to win." =
+	[
+		0 : "None"
+		1 : "Innocents"
+		2 : "Traitors"
+	]
+	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ActivateForceWin() is fired, this will award a win to the team of the activating player."
+
+	input ActivateForceWin(void) : ""
+]
+
+//
+// TTT.GameText
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_game_text : "Add text entry to the game feed when input fired."
 [
 	message(string) : "Message" : "" : ""
-	receiver(choices) : "Receiver" : 1 : "Who will this message go to? If using a custom team, choose `Other` and set the `Receiver Team Override` to the name of your team." =
+	receiver(choices) : "Receiver" : 1 : "Who will this message go to?" =
 	[
 		0 : "All"
 		1 : "Activator"
@@ -40,45 +56,8 @@
 		3 : "Traitors"
 	]
 	text_color(color255) : "Color" :  : ""
-	receiver_team_override(string) : "Receiver Team Override" : "Override Team Name" : "Use this ONLY if you're using a custom team name not listed in the `Receiver` list."
 
 	input DisplayMessage(void) : ""
-]
-
-//
-// TTT.ForceWin
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_force_win : "Forces round to end and win be awarded to team depending on input."
-[
-	team(choices) : "Team" : 0 : "The name of the team that will be forced to win. This entity also contains built in inputs for certain teams. Use this for setting win conditions for custom teams." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
-	use_activators_team(boolean) : "Use Activators Team" : 0 : "OVERRIDES `Team` PROPERTY. When ForceWin() is fired, this will award a win to the team of the activating player."
-
-	input InnocentsWin(void) : ""
-	input TraitorsWin(void) : ""
-	input ActivateForceWin(void) : ""
-]
-
-//
-// TTT.LogicAssigned
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_assigned : "Used to test the assigned team or role of the activator."
-[
-	check_value(choices) : "Check Team" : 0 : "Note that teams are often plural. For example, check the `Role` for `Traitor`, but check the `Team` for `Traitors`." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
-
-	input Activate(void) : ""
-
-	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
-	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
 ]
 
 //
@@ -94,17 +73,23 @@
 ]
 
 //
-// TTT.AmmoRandom
+// TTT.RoleCheck
 //
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) 
+@PointClass base(BaseProperties_matt_ttt) 
 metadata
 {
-	entity_tool_name = "Random Ammo"
+	entity_tool_name = "Role Check"
 	entity_tool_group = "TTT"
-	entity_tool_tip = "Place where a random ammo box will spawn in the beginning of the round."
+	entity_tool_tip = "Used to test the assigned role of the activator."
 }
-= ttt_ammo_random : ""
+= ttt_role_check : ""
 [
+	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
+
+	input Activate(void) : ""
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
 ]
 
 //
@@ -133,6 +118,20 @@ metadata
 
 	output OnDamaged(void) : "Fired when the entity gets damaged."
 	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.RandomAmmo
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Random Ammo"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Place where a random ammo box will spawn in the beginning of the round."
+}
+= ttt_random_ammo : ""
+[
 ]
 
 //
@@ -348,6 +347,30 @@ metadata
 ]
 
 //
+// TTT.RandomWeapon
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Random Weapon"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Place where a random weapon will spawn in the beginning of the round."
+}
+= ttt_random_weapon : ""
+[
+	ammo_type_to_spawn(choices) : "Selected Ammo Type" : 0 : "If changed, will only spawn weapons of the selected ammo type." =
+	[
+		0 : "None"
+		1 : "Pistol SMG"
+		2 : "Shotgun"
+		3 : "Sniper"
+		4 : "Magnum"
+		5 : "Rifle"
+	]
+	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
+]
+
+//
 // TTT.Revolver
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mr96.vmdl" ) = ttt_weapon_revolver : ""
@@ -398,40 +421,18 @@ metadata
 ]
 
 //
-// TTT.WeaponRandom
+// TTT.RoleButton
 //
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) 
+@PointClass base(BaseProperties_matt_ttt) 
 metadata
 {
-	entity_tool_name = "Random Weapon"
+	entity_tool_name = "Role Button"
 	entity_tool_group = "TTT"
-	entity_tool_tip = "Place where a random weapon will spawn in the beginning of the round."
+	entity_tool_tip = "Used to provide an on-screen button for a role to activate."
 }
-= ttt_weapon_random : ""
+= ttt_role_button : ""
 [
-	ammo_type_to_spawn(choices) : "Selected Ammo Type" : 0 : "If changed, will only spawn weapons of the selected ammo type." =
-	[
-		0 : "None"
-		1 : "Pistol SMG"
-		2 : "Shotgun"
-		3 : "Sniper"
-		4 : "Magnum"
-		5 : "Rifle"
-	]
-	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
-]
-
-//
-// TTT.LogicButton
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_button : "Used to provide an onscreen button for a team or special role to activate."
-[
-	check_value(choices) : "Check Team" : 2 : "The team to check for." =
-	[
-		0 : "None"
-		1 : "Innocents"
-		2 : "Traitors"
-	]
+	check_value(string) : "Role" : "Traitor" : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
 	description(string) : "Description" :  : "On screen tooltip shown on button."
 	range(integer) : "Range" : 1024 : "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units."
 	delay(integer) : "Delay" : 1 : "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers."

@@ -214,7 +214,7 @@ public class InventorySelection : Panel
 			base.Tick();
 
 			var player = Local.Pawn as Player;
-			SlotLabel.Style.BackgroundColor = player.CurrentPlayer.Role?.Info.Color;
+			SlotLabel.Style.BackgroundColor = player.CurrentPlayer.Role?.Color;
 		}
 
 		public void UpdateSlotText( string slotText )

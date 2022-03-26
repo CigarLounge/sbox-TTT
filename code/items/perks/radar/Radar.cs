@@ -8,12 +8,6 @@ namespace TTT;
 [Library( "ttt_perk_radar", Title = "Radar" )]
 public partial class Radar : Perk
 {
-	public struct RadarPointData
-	{
-		public Color Color;
-		public Vector3 Position;
-	}
-
 	public override string ActiveText => $"{Math.Abs( Math.Round( _timeUntilExecution ) )}";
 	private readonly float _timeToExecute = 20f;
 	private TimeUntil _timeUntilExecution;
@@ -59,26 +53,24 @@ public partial class Radar : Perk
 		{
 			List<RadarPointData> pointData = new();
 
-			foreach ( Player player in Utils.GetAlivePlayers() )
+			foreach ( var ent in Sandbox.Entity.All )
 			{
-				if ( player.Client.PlayerId == owner.Client.PlayerId )
-					continue;
-
-				pointData.Add( new RadarPointData
+				if ( ent is Player player )
 				{
-					Position = player.Position + _radarPointOffset,
-					Color = player.Role == owner.Role ? owner.Role.Info.Color : _defaultRadarColor
-				} );
-			}
+					if ( player.Client == owner.Client )
+						continue;
 
-			if ( owner.Team != Team.Traitors )
-			{
-				List<Vector3> decoyPositions = Sandbox.Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
-				foreach ( Vector3 decoyPosition in decoyPositions )
+					pointData.Add( new RadarPointData
+					{
+						Position = player.Position + _radarPointOffset,
+						Color = player.Role == owner.Role ? owner.Role.Info.Color : _defaultRadarColor
+					} );
+				}
+				else if ( owner.Team != Team.Traitors && ent is DecoyEntity decoy )
 				{
 					pointData.Add( new RadarPointData
 					{
-						Position = decoyPosition,
+						Position = decoy.Position,
 						Color = _defaultRadarColor
 					} );
 				}
@@ -93,19 +85,15 @@ public partial class Radar : Perk
 			if ( _lastPositions.IsNullOrEmpty() )
 				return;
 
-			foreach ( RadarPointData pointData in _lastPositions )
-			{
+			foreach ( var pointData in _lastPositions )
 				_cachedPoints.Add( new RadarPoint( pointData ) );
-			}
 		}
 	}
 
 	private void ClearRadarPoints()
 	{
 		foreach ( RadarPoint radarPoint in _cachedPoints )
-		{
 			radarPoint.Delete();
-		}
 
 		_cachedPoints.Clear();
 	}
@@ -125,3 +113,8 @@ public partial class Radar : Perk
 	}
 }
 
+public struct RadarPointData
+{
+	public Color Color;
+	public Vector3 Position;
+}

@@ -7,8 +7,11 @@ namespace TTT;
 
 public partial class MapSelectionRound : BaseRound
 {
-	[Net, Change] public IDictionary<string, string> MapImages { get; set; }
-	[Net] public IDictionary<long, string> PlayerIdVote { get; set; }
+	[Net, Change] 
+	public IDictionary<string, string> MapImages { get; set; }
+
+	[Net]
+	public IDictionary<long, string> PlayerIdVote { get; set; }
 
 	public override string RoundName => "Map Selection";
 	public override int RoundDuration => Game.MapSelectionTime;
@@ -64,7 +67,7 @@ public partial class MapSelectionRound : BaseRound
 	public static void SetVote( string map )
 	{
 		long callerPlayerId = ConsoleSystem.Caller.PlayerId;
-		IDictionary<long, string> nextMapVotes = (Game.Current.Round as MapSelectionRound).PlayerIdVote;
+		var nextMapVotes = (Game.Current.Round as MapSelectionRound).PlayerIdVote;
 
 		nextMapVotes[callerPlayerId] = map;
 	}
@@ -82,7 +85,7 @@ public partial class MapSelectionRound : BaseRound
 
 	private async Task<List<string>> GetMapNames()
 	{
-		Package result = await Package.Fetch( RawStrings.GameIndent, true );
+		var result = await Package.Fetch( RawStrings.GameIndent, true );
 		return result?.GetMeta<List<string>>( "MapList" ) ?? new List<string>();
 	}
 
@@ -92,7 +95,7 @@ public partial class MapSelectionRound : BaseRound
 
 		for ( int i = 0; i < mapNames.Count; ++i )
 		{
-			Package result = await Package.Fetch( mapNames[i], true );
+			var result = await Package.Fetch( mapNames[i], true );
 			mapPanels.Add( result.Thumb );
 		}
 
@@ -101,7 +104,7 @@ public partial class MapSelectionRound : BaseRound
 
 	public IDictionary<string, int> GetTotalVotesPerMap()
 	{
-		IDictionary<string, int> indexToVoteCount = new Dictionary<string, int>();
+		var indexToVoteCount = new Dictionary<string, int>();
 
 		foreach ( string mapName in (Game.Current.Round as MapSelectionRound)?.PlayerIdVote.Values )
 		{

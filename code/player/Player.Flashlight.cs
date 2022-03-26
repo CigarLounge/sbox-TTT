@@ -30,7 +30,7 @@ public partial class Player
 		{
 			FlashlightEnabled = !FlashlightEnabled;
 
-			PlaySound( FlashlightEnabled ? "flashlight-on" : "flashlight-off" );
+			PlaySound( FlashlightEnabled ? "flashlight_on" : "flashlight_off" );
 
 			if ( worldLight.IsValid() )
 				worldLight.Enabled = FlashlightEnabled;
@@ -82,7 +82,7 @@ public partial class Player
 
 	private SpotLightEntity CreateLight()
 	{
-		var light = new SpotLightEntity
+		return new SpotLightEntity
 		{
 			Enabled = true,
 			DynamicShadows = true,
@@ -98,7 +98,5 @@ public partial class Player
 			Owner = this,
 			LightCookie = Texture.Load( "materials/effects/lightcookie.vtex" )
 		};
-
-		return light;
 	}
 }

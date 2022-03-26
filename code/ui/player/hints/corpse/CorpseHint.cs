@@ -21,15 +21,26 @@ public class CorpseHint : EntityHintPanel
 	{
 		base.Tick();
 
-		bool isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
-
 		Title.Text = _corpse.PlayerName ?? "Unidentified body";
-		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Info.Color;
-		Title.SetClass( "unidentified", !isConfirmed );
-		SubText.Text = !isConfirmed ? "to identify" : "to search";
+		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Color;
+		Title.SetClass( "unidentified", _corpse.DeadPlayer is null );
 
-		if ( isConfirmed )
-			CovertSearchPanel?.Delete();
+		if ( _corpse.DeadPlayer is not null )
+		{
+			if ( _corpse.DeadPlayer.IsConfirmedDead )
+			{
+				SubText.Text = "to search";
+				CovertSearchPanel?.Delete();
+			}
+			else
+			{
+				SubText.Text = "to confirm";
+			}
+		}
+		else
+		{
+			SubText.Text = "to identify";
+		}
 
 		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.
 		if ( !_corpse.CanSearch() )

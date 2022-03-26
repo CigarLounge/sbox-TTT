@@ -17,7 +17,6 @@ public static partial class TTTEvent
 			public KilledAttribute() : base( Killed ) { }
 		}
 
-
 		public const string RoleChanged = "ttt.player.rolechanged";
 
 		/// <summary>

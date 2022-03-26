@@ -105,6 +105,8 @@ public partial class Player : Sandbox.Player
 
 		if ( !player.IsLocalPawn )
 			player.SetRole( new NoneRole() );
+		else
+			player.ClearRoleButtons();
 	}
 
 	public override void OnKilled()
@@ -142,7 +144,7 @@ public partial class Player : Sandbox.Player
 	{
 		if ( IsClient )
 		{
-			LogicButtonActivate();
+			ActivateRoleButton();
 		}
 		else
 		{
@@ -232,6 +234,22 @@ public partial class Player : Sandbox.Player
 		{
 			Perks.Get( i ).Simulate( this );
 		}
+	}
+
+	protected override void OnComponentAdded( EntityComponent component )
+	{
+		base.OnComponentAdded( component );
+
+		if ( Host.IsClient && component is Perk perk )
+			Perks.Add( perk );
+	}
+
+	protected override void OnComponentRemoved( EntityComponent component )
+	{
+		base.OnComponentAdded( component );
+
+		if ( Host.IsClient && component is Perk perk )
+			Perks.Remove( perk );
 	}
 
 	protected override void OnDestroy()

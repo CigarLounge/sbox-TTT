@@ -66,7 +66,7 @@ public partial class ChatBox : Panel
 
 		if ( !player.IsAlive() )
 			CurrentChannel = Channel.Spectator;
-		else if ( !player.Role.Info.CanRoleChat )
+		else if ( !player.Role.CanRoleChat )
 			CurrentChannel = Channel.All;
 
 		switch ( CurrentChannel )
@@ -78,7 +78,7 @@ public partial class ChatBox : Panel
 				Input.Style.BorderColor = _spectatorChatColor;
 				return;
 			case Channel.Role:
-				Input.Style.BorderColor = player.Role.Info.Color;
+				Input.Style.BorderColor = player.Role.Color;
 				return;
 		}
 
@@ -124,7 +124,7 @@ public partial class ChatBox : Panel
 
 		if ( channel == Channel.All )
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
-		else if ( channel == Channel.Role && player.Role.Info.CanRoleChat )
+		else if ( channel == Channel.Role && player.Role.CanRoleChat )
 			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.Id );
 	}
 
@@ -156,7 +156,7 @@ public partial class ChatBox : Panel
 		if ( Local.Pawn is not Player player || !player.IsAlive() )
 			return;
 
-		if ( player.Role.Info.CanRoleChat )
+		if ( player.Role.CanRoleChat )
 			CurrentChannel = CurrentChannel == Channel.All ? Channel.Role : Channel.All;
 	}
 }

@@ -13,7 +13,7 @@ public enum Team : byte
 
 public static class TeamExtensions
 {
-	public static string GetName( this Team team )
+	public static string GetTitle( this Team team )
 	{
 		return team switch
 		{
@@ -51,7 +51,7 @@ public static class TeamExtensions
 
 	public static To ToClients( this Team team )
 	{
-		return To.Multiple( Client.All.Where( x => (x.Pawn as Player).Role.Info.Team == team ) );
+		return To.Multiple( Client.All.Where( x => (x.Pawn as Player).Team == team ) );
 	}
 }
 
