@@ -4,10 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	[Net]
-	public new Entity Using { get; set; }
-
-	public const float INTERACT_DISTANCE = 80f;
+	public const float USE_DISTANCE = 80f;
 
 	public bool IsUseDisabled()
 	{
@@ -42,18 +39,13 @@ public partial class Player
 		StopUsing();
 	}
 
-	protected override void StopUsing()
-	{
-		Using = null;
-	}
-
 	protected override Entity FindUsable()
 	{
 		if ( IsUseDisabled() )
 			return null;
 
 		// First try a direct 0 width line
-		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (INTERACT_DISTANCE * Scale) )
+		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (USE_DISTANCE * Scale) )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.Run();
@@ -68,7 +60,7 @@ public partial class Player
 		// Nothing found, try a wider search
 		if ( !IsValidUseEntity( ent ) )
 		{
-			tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (INTERACT_DISTANCE * Scale) )
+			tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (USE_DISTANCE * Scale) )
 			.Radius( 2 )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )

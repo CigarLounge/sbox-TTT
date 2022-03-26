@@ -110,7 +110,7 @@ metadata
 //
 // TTT.MagnumAmmo
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" ) model() = ttt_ammo_magnum : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" ) model() = ttt_ammo_magnum : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -138,7 +138,7 @@ metadata
 //
 // TTT.RifleAmmo
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/ammo/ammo_rifle/ammo_rifle.vmdl" ) model() = ttt_ammo_rifle : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_rifle/ammo_rifle.vmdl" ) model() = ttt_ammo_rifle : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -166,7 +166,7 @@ metadata
 //
 // TTT.ShotgunAmmo
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" ) model() = ttt_ammo_shotgun : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" ) model() = ttt_ammo_shotgun : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -194,7 +194,7 @@ metadata
 //
 // TTT.SMGAmmo
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -222,7 +222,7 @@ metadata
 //
 // TTT.SniperAmmo
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" ) model() = ttt_ammo_sniper : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" ) model() = ttt_ammo_sniper : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -449,7 +449,7 @@ metadata
 //
 // TTT.DecoyEntity
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/decoy/decoy.vmdl" ) model() = ttt_entity_decoy : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/decoy/decoy.vmdl" ) model() = ttt_entity_decoy : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -477,7 +477,7 @@ metadata
 //
 // TTT.HealthStationEntity
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/health_station/health_station.vmdl" ) model() = ttt_entity_healthstation : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/health_station/health_station.vmdl" ) model() = ttt_entity_healthstation : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -505,7 +505,7 @@ metadata
 //
 // TTT.RadioEntity
 //
-@PointClass base(BaseProperties_matt_ttt) tags( Physics ) editormodel( "models/radio/radio.vmdl" ) model() = ttt_entity_radio : ""
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/radio/radio.vmdl" ) model() = ttt_entity_radio : ""
 [
 	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
 	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 

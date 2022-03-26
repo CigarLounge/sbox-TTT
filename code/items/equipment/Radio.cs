@@ -13,13 +13,26 @@ public partial class Radio : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			var droppedRadio = Owner.Inventory.DropEntity( this, typeof( RadioEntity ) );
-			if ( droppedRadio is null || droppedRadio is not RadioEntity radio )
+			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
+			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
+			radioComponent.RadioEntity = radio;
+		}
+		else if ( Input.Pressed( InputButton.Attack2 ) )
+		{
+			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.USE_DISTANCE )
+					.WorldOnly()
+					.Run();
+
+			if ( !trace.Hit )
 				return;
 
-			radio.RadioOwner = PreviousOwner;
+			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = radio;
+			radioComponent.RadioEntity = radio;
+			radio.Velocity = 0;
+			radio.Position = trace.EndPosition;
+			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
+			radio.MoveType = MoveType.None;
 		}
 	}
 }
@@ -27,7 +40,7 @@ public partial class Radio : Carriable
 public partial class RadioComponent : EntityComponent<Player>
 {
 	[Net, Local]
-	public RadioEntity Radio { get; set; }
+	public RadioEntity RadioEntity { get; set; }
 
 	protected override void OnActivate()
 	{

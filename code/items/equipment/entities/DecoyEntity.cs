@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
-public partial class DecoyEntity : Prop, IEntityHint
+public partial class DecoyEntity : DroppableEntity, IEntityHint, IUse
 {
 	private const string WorldModel = "models/decoy/decoy.vmdl";
 
@@ -17,15 +17,17 @@ public partial class DecoyEntity : Prop, IEntityHint
 		Health = 100f;
 	}
 
-	string IEntityHint.TextOnTick => "Decoy";
-
-	bool IEntityHint.CanHint( Player player )
+	bool IUse.OnUse( Entity user )
 	{
-		return true;
+		var player = user as Player;
+		player.Inventory.Add( new Decoy() );
+		Delete();
+
+		return false;
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
+	bool IUse.IsUsable( Entity user )
 	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick );
+		return user is Player && (EquipmentOwner is null || user == EquipmentOwner);
 	}
 }

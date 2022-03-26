@@ -1,12 +1,11 @@
-using System;
-
 using Sandbox;
+using System;
 
 namespace TTT;
 
 [Hammer.EditorModel( "models/health_station/health_station.vmdl" )]
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
-public partial class HealthStationEntity : Prop, IEntityHint, IUse
+public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 {
 	[Net]
 	public float StoredHealth { get; set; } = 200f;
@@ -55,21 +54,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		_nextHeal = HEALFREQUENCY;
 	}
 
-	float IEntityHint.HintDistance => Player.INTERACT_DISTANCE;
-
-	string IEntityHint.TextOnTick => $"Hold {Input.GetButtonOrigin( InputButton.Use ).ToUpper()} to use the Health Station";
-
-	string IEntityHint.SubTextOnTick => $"{StoredHealth} charges remaining";
-
-	bool IEntityHint.CanHint( Player client )
-	{
-		return true;
-	}
-
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
-	{
-		return new UI.Hint( (this as IEntityHint).TextOnTick, (this as IEntityHint).SubTextOnTick );
-	}
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );
 
 	bool IUse.OnUse( Entity user )
 	{

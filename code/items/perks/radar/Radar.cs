@@ -24,12 +24,24 @@ public partial class Radar : Perk
 
 	public Radar()
 	{
-		// Create radar hud here, it cleans itself up inside.
-		if ( Host.IsClient )
-			UI.Hud.GeneralHud.Instance.AddChildToAliveHud( new RadarDisplay() );
-
 		// We should execute as soon as the perk is equipped.
 		_timeUntilExecution = 0;
+	}
+
+	protected override void OnActivate()
+	{
+		base.OnActivate();
+
+		if ( Host.IsClient )
+			Local.Hud.AddChild( new RadarDisplay() );
+	}
+
+	protected override void OnDeactivate()
+	{
+		base.OnDeactivate();
+
+		if ( Host.IsClient )
+			RadarDisplay.Instance?.Delete();
 	}
 
 	public override void Simulate( Player player )
@@ -79,9 +91,7 @@ public partial class Radar : Perk
 			ClearRadarPoints();
 
 			if ( _lastPositions.IsNullOrEmpty() )
-			{
 				return;
-			}
 
 			foreach ( RadarPointData pointData in _lastPositions )
 			{

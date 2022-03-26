@@ -16,15 +16,15 @@ public interface IGrabbable
 [Library( "ttt_equipment_hands", Title = "Hands" )]
 public partial class Hands : Carriable
 {
-	public static readonly float MAX_INTERACT_DISTANCE = 75;
-	public static readonly string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
+	public const float MAX_INTERACT_DISTANCE = Player.USE_DISTANCE;
+	public const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
 	private const float MAX_PICKUP_MASS = 205;
-	private Vector3 MAX_PICKUP_SIZE = new( 75, 75, 75 );
+	private readonly Vector3 MAX_PICKUP_SIZE = new( 75, 75, 75 );
 	private const float PUSHING_FORCE = 350f;
 
 	private IGrabbable GrabbedEntity;
-	private bool IsHoldingEntity => GrabbedEntity != null && (GrabbedEntity?.IsHolding ?? false);
+	private bool IsHoldingEntity => GrabbedEntity is not null && (GrabbedEntity?.IsHolding ?? false);
 	private bool IsPushingEntity = false;
 
 	public override void Spawn()
@@ -39,9 +39,6 @@ public partial class Hands : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( Owner is not Player player )
-			return;
-
 		using ( Prediction.Off() )
 		{
 			if ( Input.Pressed( InputButton.Attack1 ) )
@@ -52,7 +49,7 @@ public partial class Hands : Carriable
 				}
 				else
 				{
-					TryGrabEntity( player );
+					TryGrabEntity();
 				}
 			}
 			else if ( Input.Pressed( InputButton.Attack2 ) )
@@ -63,38 +60,34 @@ public partial class Hands : Carriable
 				}
 				else
 				{
-					PushEntity( player );
+					PushEntity();
 				}
 			}
 
-			GrabbedEntity?.Update( player );
+			GrabbedEntity?.Update( Owner );
 		}
 	}
 
-	private void PushEntity( Player player )
+	private void PushEntity()
 	{
 		if ( IsPushingEntity )
-		{
 			return;
-		}
 
-		TraceResult tr = Trace.Ray( player.EyePosition, player.EyePosition + player.EyeRotation.Forward * MAX_INTERACT_DISTANCE )
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * MAX_INTERACT_DISTANCE )
 				.EntitiesOnly()
-				.Ignore( player )
+				.Ignore( Owner )
 				.Run();
 
-		if ( !tr.Hit || !tr.Entity.IsValid() )
-		{
+		if ( !trace.Hit || !trace.Entity.IsValid() )
 			return;
-		}
 
 		IsPushingEntity = true;
 
-		player.SetAnimParameter( "b_attack", true );
-		player.SetAnimParameter( "holdtype", 4 );
-		player.SetAnimParameter( "holdtype_handedness", 0 );
+		Owner.SetAnimParameter( "b_attack", true );
+		Owner.SetAnimParameter( "holdtype", 4 );
+		Owner.SetAnimParameter( "holdtype_handedness", 0 );
 
-		tr.Entity.Velocity += player.EyeRotation.Forward * PUSHING_FORCE;
+		trace.Entity.Velocity += Owner.EyeRotation.Forward * PUSHING_FORCE;
 
 		_ = WaitForAnimationFinish();
 	}
@@ -105,46 +98,44 @@ public partial class Hands : Carriable
 		IsPushingEntity = false;
 	}
 
-	private void TryGrabEntity( Player player )
+	private void TryGrabEntity()
 	{
 		if ( IsHoldingEntity )
-		{
 			return;
-		}
 
-		Vector3 eyePos = player.EyePosition;
-		Vector3 eyeDir = player.EyeRotation.Forward;
+		var eyePos = Owner.EyePosition;
+		var eyeDir = Owner.EyeRotation.Forward;
 
-		TraceResult tr = Trace.Ray( eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE )
+		var trace = Trace.Ray( eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE )
 			.UseHitboxes()
-			.Ignore( player )
+			.Ignore( Owner )
 			.HitLayer( CollisionLayer.Debris )
 			.EntitiesOnly()
 			.Run();
 
 		// Make sure trace is hit and not null.
-		if ( !tr.Hit || !tr.Entity.IsValid() )
+		if ( !trace.Hit || !trace.Entity.IsValid() )
 			return;
 
 		// Only allow dynamic entities to be picked up.
-		if ( tr.Body == null || tr.Body.BodyType == PhysicsBodyType.Keyframed || tr.Body.BodyType == PhysicsBodyType.Static )
+		if ( trace.Body is null || trace.Body.BodyType == PhysicsBodyType.Keyframed || trace.Body.BodyType == PhysicsBodyType.Static )
 			return;
 
 		// Cannot pickup items held by other players.
-		if ( tr.Entity.Parent != null )
+		if ( trace.Entity.Parent is not null )
 			return;
 
-		switch ( tr.Entity )
+		switch ( trace.Entity )
 		{
 			case Corpse corpse:
-				GrabbedEntity = new GrabbableCorpse( player, corpse, tr.Body, tr.Bone );
+				GrabbedEntity = new GrabbableCorpse( Owner, corpse, trace.Body, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
-				GrabbedEntity = new GrabbableProp( player, tr.Entity );
+				GrabbedEntity = new GrabbableProp( Owner, trace.Entity );
 				break;
 			case ModelEntity model:
 				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MAX_PICKUP_SIZE ) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS )
-					GrabbedEntity = new GrabbableProp( player, tr.Entity );
+					GrabbedEntity = new GrabbableProp( Owner, trace.Entity );
 				break;
 		}
 	}

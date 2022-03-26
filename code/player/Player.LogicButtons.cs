@@ -34,9 +34,7 @@ public partial class Player
 	public static void OnHotload()
 	{
 		if ( Host.IsClient )
-		{
 			return;
-		}
 
 		foreach ( Player player in Utils.GetPlayers() )
 		{
@@ -129,11 +127,11 @@ public partial class Player
 	// Client keybinding for activating button within focus.
 	public void LogicButtonActivate()
 	{
-		if ( Local.Pawn is not Player player || FocusedButton == null || !Input.Pressed( InputButton.Use ) )
+		if ( FocusedButton == null || !Input.Pressed( InputButton.Use ) )
 			return;
 
 		// Double check all of our data that initially set `FocusedButton` to make sure nothing has changed or any fuckery is about.
-		if ( FocusedButton.IsLengthWithinCamerasFocus() && FocusedButton.IsUsable( player ) )
+		if ( FocusedButton.IsLengthWithinCamerasFocus() && FocusedButton.IsUsable( this ) )
 			ActivateLogicButton( FocusedButton.Data.NetworkIdent );
 	}
 }

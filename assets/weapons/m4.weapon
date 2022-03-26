@@ -7,11 +7,11 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 30
-		damage = 24.0
+		damage = 20.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
-		spread = 0.03
-		primaryrate = 12.0
+		spread = 0.01
+		primaryrate = 11.0
 		secondaryrate = 0.0
 		reloadtime = 3.1
 		ammotype = "5"
@@ -30,7 +30,7 @@
 		worldmodel = resource:"models/weapons/w_m4.vmdl"
 		libraryname = "ttt_weapon_m4"
 		verticalrecoil = 20.0
-		horizontalrecoilrange = 2.0
+		horizontalrecoilrange = 3.0
 		recoilrecoveryscale = 10.0
 		headshotmultiplier = 1.5
 		candrop = true

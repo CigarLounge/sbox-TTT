@@ -8,8 +8,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
 	public Player DeadPlayer { get; private set; }
-	public Player Confirmer { get; private set; }
-	public DamageInfo KillInfo { get; set; }
+	public DamageInfo KillInfo { get; private set; }
 	public List<Particles> Ropes = new();
 	public List<PhysicsJoint> RopeSprings = new();
 	public CarriableInfo KillerWeapon { get; private set; }
@@ -114,6 +113,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClearAttachments();
 	}
 
+	/// <summary>
+	/// Sends the <strong><see cref="TTT.Player"/></strong> this corpse belongs to alongside information about the player's death.
+	/// </summary>
+	/// <param name="to">The target.</param>
 	public void SendInfo( To to )
 	{
 		Host.AssertServer();
@@ -126,19 +129,36 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
 
-			GetKillInfo( To.Single( client ), KillInfo.Attacker, KillerWeapon?.Id ?? 0, KillInfo.HitboxIndex, KillInfo.Damage, KillInfo.Flags, Distance, KilledTime );
-			GetPlayerData( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
+			GetKillInfo
+			(
+				To.Single( client ),
+				KillInfo.Attacker,
+				KillerWeapon,
+				KillInfo.HitboxIndex,
+				KillInfo.Damage,
+				KillInfo.Flags,
+				Distance,
+				KilledTime
+			);
+
+			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
 		}
 	}
 
-	public void Search( Player searcher, bool retrieveCredits = true )
+	/// <summary>
+	/// Search this corpse.
+	/// </summary>
+	/// <param name="searcher">The player who is searching this corpse.</param>
+	/// <param name="covert">Whether or not this is a covert search.</param>
+	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
+	public void Search( Player searcher, bool covert, bool retrieveCredits = true )
 	{
 		Host.AssertServer();
 
 		int credits = 0;
-		retrieveCredits &= searcher.Role.Info.RetrieveCredits;
+		retrieveCredits &= searcher.Role.Info.RetrieveCredits & searcher.IsAlive();
 
-		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && searcher.IsAlive() && retrieveCredits )
+		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
@@ -146,7 +166,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
+		if ( !covert && !DeadPlayer.IsConfirmedDead )
+		{
+			DeadPlayer.Confirmer = searcher;
+			DeadPlayer.Confirm();
+		}
+		else if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
 		{
 			DeadPlayer.SendRoleToClient( To.Single( searcher ) );
 			SendInfo( To.Single( searcher ) );
@@ -171,7 +196,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetKillInfo( Entity attacker, int weaponId, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
+	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -181,13 +206,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		info.Damage = damage;
 		KillInfo = info;
 		LastAttacker = info.Attacker;
-		KillerWeapon = Asset.FromId<CarriableInfo>( weaponId );
+		KillerWeapon = killerWeapon;
 		Distance = distance;
 		KilledTime = killedTime;
 	}
 
 	[ClientRpc]
-	private void GetPlayerData( Player deadPlayer, long playerId, string name )
+	private void GetPlayer( Player deadPlayer, long playerId, string name )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
@@ -195,50 +220,21 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance { get; set; } = Player.INTERACT_DISTANCE;
-
-	// DeadPlayer is only sent to client once the body is confirmed, therefore check if null.
-	public string TextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to identify the corpse";
-			else
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} to inspect {PlayerName}";
-		}
-	}
-
-	public string SubTextOnTick
-	{
-		get
-		{
-			if ( DeadPlayer is null || !DeadPlayer.IsConfirmedDead )
-				return $"Hold {Input.GetButtonOrigin( GetSearchButton() ).ToUpper()} + {Input.GetButtonOrigin( InputButton.Run ).ToUpper()} to search covertly";
-			else
-				return "";
-		}
-	}
+	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
 
 	bool IEntityHint.CanHint( Player client ) => true;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client )
-	{
-		return new UI.Hint( TextOnTick, SubTextOnTick );
-	}
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Input.Down( GetSearchButton() ) )
+		if ( !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
-	bool IUse.OnUse( Entity user )
-	{
-		return true;
-	}
+	bool IUse.OnUse( Entity user ) => true;
 
 	bool IUse.IsUsable( Entity user )
 	{
@@ -248,23 +244,35 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			return false;
 
 		var player = user as Player;
-
-		Search( player, player.IsAlive() );
-
-		if ( !DeadPlayer.IsConfirmedDead )
-		{
-			if ( player.IsAlive() && !Input.Down( InputButton.Run ) )
-			{
-				DeadPlayer.Confirmer = player;
-				DeadPlayer.Confirm();
-			}
-		}
+		Search( player, Input.Down( InputButton.Run ) );
 
 		return true;
 	}
 
-	private static InputButton GetSearchButton()
+	public bool CanSearch()
 	{
-		return (Local.Pawn as Player).ActiveChild is Binoculars bino && bino.IsZoomed ? InputButton.Attack1 : InputButton.Use;
+		Host.AssertClient();
+
+		var searchButton = GetSearchButton();
+
+		if ( searchButton == InputButton.Attack1 )
+			return true;
+
+		return CurrentView.Position.Distance( Position ) <= Player.USE_DISTANCE;
+	}
+
+	public static InputButton GetSearchButton()
+	{
+		Host.AssertClient();
+
+		var player = Local.Pawn as Player;
+
+		if ( player.ActiveChild is not Binoculars binoculars )
+			return InputButton.Use;
+
+		if ( !binoculars.IsZoomed )
+			return InputButton.Use;
+
+		return InputButton.Attack1;
 	}
 }

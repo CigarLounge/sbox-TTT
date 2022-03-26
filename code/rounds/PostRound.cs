@@ -29,15 +29,7 @@ public class PostRound : BaseRound
 	{
 		base.OnPlayerJoin( player );
 
-		foreach ( var client in Client.All )
-		{
-			var otherPlayer = client.Pawn as Player;
-
-			if ( otherPlayer.IsConfirmedDead )
-				otherPlayer.Confirm( To.Single( player ) );
-			else if ( otherPlayer.IsRoleKnown )
-				otherPlayer.SendRoleToClient( To.Single( player ) );
-		}
+		SyncPlayer( player );
 	}
 
 	protected override void OnStart()
@@ -47,14 +39,6 @@ public class PostRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		foreach ( var client in Client.All )
-		{
-			var player = client.Pawn as Player;
-
-			if ( !player.IsAlive() && !player.IsConfirmedDead )
-				player.Confirm();
-			else if ( !player.IsRoleKnown )
-				player.SendRoleToClient( To.Everyone );
-		}
+		RevealEveryone();
 	}
 }

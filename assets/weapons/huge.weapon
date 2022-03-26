@@ -7,7 +7,7 @@
 		firemode = "0"
 		bulletsperfire = 1
 		clipsize = 150
-		damage = 24.0
+		damage = 11.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		spread = 0.1
@@ -32,7 +32,7 @@
 		verticalrecoil = 30.0
 		horizontalrecoilrange = 7.0
 		recoilrecoveryscale = 10.0
-		headshotmultiplier = 1.3
+		headshotmultiplier = 1.6
 		candrop = true
 		description = ""
 		reserveammo = 0
