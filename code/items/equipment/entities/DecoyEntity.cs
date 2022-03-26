@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
-public partial class DecoyEntity : Prop, IEntityHint, IUse
+public partial class DecoyEntity : DroppableEntity, IEntityHint, IUse
 {
 	private const string WorldModel = "models/decoy/decoy.vmdl";
 
@@ -28,6 +28,6 @@ public partial class DecoyEntity : Prop, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user is Player && (Owner is null || user == Owner);
+		return user is Player && (EquipmentOwner is null || user == EquipmentOwner);
 	}
 }

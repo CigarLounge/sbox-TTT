@@ -271,18 +271,21 @@ public partial class Inventory : IBaseInventory
 		}
 	}
 
-	public Entity DropEntity( Entity self, Type type )
+	public Entity DropEntity( Entity self, DroppableEntity ent )
 	{
 		if ( !Drop( self ) )
+		{
+			ent.Delete();
 			return null;
+		}
 
 		self.Delete();
 
-		Entity droppedEntity = Library.Create<Entity>( type );
-		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
-		droppedEntity.Rotation = Owner.EyeRotation;
-		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+		ent.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
+		ent.Rotation = Owner.EyeRotation;
+		ent.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+		ent.EquipmentOwner = Owner;
 
-		return droppedEntity;
+		return ent;
 	}
 }
