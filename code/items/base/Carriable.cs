@@ -86,6 +86,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 		Info = Asset.GetInfo<CarriableInfo>( this );
 		SetModel( Info.WorldModel );
+
+		Components.Create<DNA>();
 	}
 
 	public override void ClientSpawn()

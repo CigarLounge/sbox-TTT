@@ -58,6 +58,8 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 		CurrentCount = DefaultAmmoCount;
+
+		Components.Create<DNA>();
 	}
 
 	public override void StartTouch( Entity other )
