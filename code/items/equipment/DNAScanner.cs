@@ -1,13 +1,20 @@
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_dnascanner", Title = "DNA Scanner" )]
-public class DNAScanner : Carriable
+public partial class DNAScanner : Carriable
 {
+	[Net]
+	public IList<DNA> DNACollected { get; set; }
+
 	public override void Simulate( Client client )
 	{
+		if ( IsClient )
+			Log.Info( DNACollected.Count );
+
 		if ( !IsServer )
 			return;
 
@@ -23,6 +30,8 @@ public class DNAScanner : Carriable
 		if ( !trace.Hit || !trace.Entity.IsValid() )
 			return;
 
+		// If body, check if its identified, otherwise prompt the user a message.
+
 		var DNA = trace.Entity.Components.Get<DNA>();
 		if ( DNA != null )
 		{
@@ -34,6 +43,7 @@ public class DNAScanner : Carriable
 			}
 
 			Log.Info( "DNA fetched successfully!" );
+			DNACollected.Add( DNA );
 		}
 	}
 }
