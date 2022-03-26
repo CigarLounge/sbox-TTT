@@ -8,7 +8,7 @@
 		viewmodel = resource:""
 		handsmodel = resource:""
 		holdtype = "0"
-		worldmodel = resource:""
+		worldmodel = resource:"models/dnascanner/huladoll.vmdl"
 		deploytime = 0.0
 		buyable = false
 		islimited = false
