@@ -65,6 +65,9 @@ public class DNA : EntityComponent<Entity>
 			DNAType = Type.Ammo;
 	}
 
+	// Maybe we should remove the component from inside here? is that possible?
+	// If (IsDecayed())
+	//      remove this component here.
 	public bool IsDecayed()
 	{
 		return _timeSinceCreated > _timeToDecay;
