@@ -10,7 +10,7 @@ public class RadarPoint : Panel
 	private readonly Label _distanceLabel;
 	private const int BLUR_RADIUS = 10;
 
-	public RadarPoint( Radar.RadarPointData data )
+	public RadarPoint( RadarPointData data )
 	{
 		if ( RadarDisplay.Instance == null )
 			return;
@@ -43,9 +43,7 @@ public class RadarPoint : Panel
 		base.Tick();
 
 		if ( Local.Pawn is not Player player )
-		{
 			return;
-		}
 
 		_distanceLabel.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
 
@@ -53,9 +51,7 @@ public class RadarPoint : Panel
 		this.Enabled( screenPos.z > 0f );
 
 		if ( !this.IsEnabled() )
-		{
 			return;
-		}
 
 		Style.Left = Length.Fraction( screenPos.x );
 		Style.Top = Length.Fraction( screenPos.y );
