@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_logic_role", Description = "Used to test the assigned role of the activator." )]
-public partial class LogicRole : Entity
+[Hammer.EntityTool( "Role Check", "TTT", "Used to test the assigned role of the activator." )]
+[Library( "ttt_role_check" )]
+public partial class RoleCheck : Entity
 {
 	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
 	public string Role { get; set; }

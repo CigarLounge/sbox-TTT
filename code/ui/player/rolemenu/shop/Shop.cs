@@ -39,7 +39,7 @@ public partial class Shop : Panel
 
 	public void AddRoleShopItems( Player player )
 	{
-		foreach ( var libraryName in player.Role.Info.AvailableItems )
+		foreach ( var libraryName in player.Role.AvailableItems )
 		{
 			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
 			if ( itemInfo == null )
@@ -71,7 +71,7 @@ public partial class Shop : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.Role.Info.AvailableItems.Count == 0 )
+		if ( player.Role.AvailableItems.Count == 0 )
 			return;
 
 		_creditLabel.Text = $"{player.Credits} credits";

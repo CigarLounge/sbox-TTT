@@ -83,8 +83,8 @@ public class InspectMenu : Panel
 	{
 		_avatarImage.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
 		_playerLabel.Text = _playerCorpse.PlayerName;
-		_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Info.Title;
-		_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Info.Color;
+		_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Title;
+		_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
@@ -175,7 +175,7 @@ public class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		string timeSinceDeath = ( Time.Now - _playerCorpse.KilledTime ).TimerString();
+		string timeSinceDeath = (Time.Now - _playerCorpse.KilledTime).TimerString();
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 

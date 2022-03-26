@@ -45,7 +45,7 @@ public class ScoreboardEntry : Panel
 			return;
 
 		if ( player.Role is not NoneRole && player.Role is not InnocentRole )
-			Style.BackgroundColor = player.Role.Info.Color.WithAlpha( 0.15f );
+			Style.BackgroundColor = player.Role.Color.WithAlpha( 0.15f );
 		else
 			Style.BackgroundColor = null;
 

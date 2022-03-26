@@ -26,8 +26,8 @@ public enum HoldType
 [Library( "carri" ), AutoGenerate]
 public partial class CarriableInfo : ItemInfo
 {
-	public Model CachedViewModel { get; set; }
-	public Model CachedWorldModel { get; set; }
+	public Model CachedViewModel { get; private set; }
+	public Model CachedWorldModel { get; private set; }
 
 	[Property, Category( "Important" )] public SlotType Slot { get; set; } = SlotType.Primary;
 	[Property, Category( "Important" )] public bool Spawnable { get; set; } = false;

@@ -59,22 +59,22 @@ public partial class Radar : Perk
 		{
 			List<RadarPointData> pointData = new();
 
-			foreach ( Player player in Utils.GetAlivePlayers() )
+			foreach ( var player in Utils.GetAlivePlayers() )
 			{
-				if ( player.Client.PlayerId == owner.Client.PlayerId )
+				if ( player.Client == owner.Client )
 					continue;
 
 				pointData.Add( new RadarPointData
 				{
 					Position = player.Position + _radarPointOffset,
-					Color = player.Role == owner.Role ? owner.Role.Info.Color : _defaultRadarColor
+					Color = player.Role == owner.Role ? owner.Role.Color : _defaultRadarColor
 				} );
 			}
 
 			if ( owner.Team != Team.Traitors )
 			{
-				List<Vector3> decoyPositions = Sandbox.Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
-				foreach ( Vector3 decoyPosition in decoyPositions )
+				var decoyPositions = Sandbox.Entity.All.Where( x => x.GetType() == typeof( DecoyEntity ) )?.Select( x => x.Position ).ToList();
+				foreach ( var decoyPosition in decoyPositions )
 				{
 					pointData.Add( new RadarPointData
 					{

@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_logic_button", Description = "Used to provide an onscreen button for a role to activate." )]
-public partial class LogicButton : Entity
+[Hammer.EntityTool( "Role Button", "TTT", "Used to provide an onscreen button for a role to activate." )]
+[Library( "ttt_role_button" )]
+public partial class RoleButton : Entity
 {
 	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
 	public string Role { get; set; }
@@ -41,7 +42,7 @@ public partial class LogicButton : Entity
 
 	protected Output OnPressed { get; set; }
 
-	public LogicButton()
+	public RoleButton()
 	{
 		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
 
@@ -119,9 +120,9 @@ public partial class LogicButton : Entity
 	public bool CanUse() => !IsDisabled;
 
 	// Convert starter data to struct to network to clients for UI display.
-	public LogicButtonData PackageData()
+	public RoleButtonData PackageData()
 	{
-		return new LogicButtonData()
+		return new RoleButtonData()
 		{
 			NetworkIdent = NetworkIdent,
 			Range = Range,
@@ -132,7 +133,7 @@ public partial class LogicButton : Entity
 }
 
 // Package up our data nice and neat for transmission to the client.
-public struct LogicButtonData
+public struct RoleButtonData
 {
 	public int NetworkIdent;
 	public int Range;

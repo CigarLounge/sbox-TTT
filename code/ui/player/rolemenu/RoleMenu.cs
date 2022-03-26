@@ -38,7 +38,7 @@ public partial class RoleMenu : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( !player.IsAlive() || player.Role.Info.AvailableItems.Count == 0 )
+		if ( !player.IsAlive() || player.Role.AvailableItems.Count == 0 )
 		{
 			SetClass( "fade-in", false );
 			return;
@@ -49,7 +49,7 @@ public partial class RoleMenu : Panel
 		if ( !HasClass( "fade-in" ) )
 			return;
 
-		RoleHeader.Text = player.Role.Info.Title;
-		RoleHeader.Style.FontColor = player.Role.Info.Color;
+		RoleHeader.Text = player.Role.Title;
+		RoleHeader.Style.FontColor = player.Role.Color;
 	}
 }

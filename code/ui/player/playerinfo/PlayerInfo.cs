@@ -48,11 +48,7 @@ public class PlayerInfo : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
-		{
-			this.Enabled( false );
-			return;
-		}
+		var player = Local.Pawn as Player;
 
 		this.Enabled( player.CurrentPlayer.IsAlive() );
 		if ( !this.IsEnabled() )
@@ -67,8 +63,8 @@ public class PlayerInfo : Panel
 		else
 		{
 			_roleContainer.Enabled( true );
-			_roleContainer.Style.BackgroundColor = player.CurrentPlayer.Role.Info.Color;
-			_role.Text = player.CurrentPlayer.Role.Info.Title;
+			_roleContainer.Style.BackgroundColor = player.CurrentPlayer.Role.Color;
+			_role.Text = player.CurrentPlayer.Role.Title;
 
 			_healthContainer.Style.BorderTopLeftRadius = 0;
 			_healthContainer.Style.BorderBottomLeftRadius = 0;

@@ -24,7 +24,7 @@ public class CorpseHint : EntityHintPanel
 		bool isConfirmed = _corpse.DeadPlayer is not null && _corpse.DeadPlayer.IsConfirmedDead;
 
 		Title.Text = _corpse.PlayerName ?? "Unidentified body";
-		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Info.Color;
+		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Color;
 		Title.SetClass( "unidentified", !isConfirmed );
 		SubText.Text = !isConfirmed ? "to identify" : "to search";
 

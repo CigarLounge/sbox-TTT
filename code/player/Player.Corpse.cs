@@ -156,7 +156,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Host.AssertServer();
 
 		int credits = 0;
-		retrieveCredits &= searcher.Role.Info.RetrieveCredits & searcher.IsAlive();
+		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
 
 		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
 		{

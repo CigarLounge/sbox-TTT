@@ -7,12 +7,23 @@ namespace TTT;
 [Library( "role" ), AutoGenerate]
 public partial class RoleInfo : Asset
 {
-	[Property] public Team Team { get; set; } = Team.None;
-	[Property] public Color Color { get; set; }
-	[Property( "defaultcredits", "The amount of credits players spawn with." )] public int DefaultCredits { get; set; }
-	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
-	[Property( "retrievecredits", "Players can retrieve credits from corpses." )] public bool RetrieveCredits { get; set; }
-	[Property] public bool CanRoleChat { get; set; }
+	[Property]
+	public Team Team { get; set; } = Team.None;
+
+	[Property]
+	public Color Color { get; set; }
+
+	[Property( "defaultcredits", "The amount of credits players spawn with." )]
+	public int DefaultCredits { get; set; }
+
+	[Property]
+	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
+
+	[Property( "retrievecredits", "Players can retrieve credits from corpses." )]
+	public bool RetrieveCredits { get; set; }
+
+	[Property]
+	public bool CanRoleChat { get; set; }
 
 	public HashSet<string> AvailableItems { get; set; }
 
@@ -28,6 +39,14 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 {
 	public RoleInfo Info { get; private set; }
 
+	public Team Team => Info.Team;
+	public Color Color => Info.Color;
+	public int DefaultCredits => Info.DefaultCredits;
+	public HashSet<string> AvailableItems => Info.AvailableItems;
+	public bool RetrieveCredits => Info.RetrieveCredits;
+	public bool CanRoleChat => Info.CanRoleChat;
+	public string Title => Info.Title;
+
 	public BaseRole()
 	{
 		Info = Asset.GetInfo<RoleInfo>( this );
@@ -38,7 +57,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		if ( !Host.IsServer )
 			return;
 
-		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
+		player.Credits = Math.Max( DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
 	}
 

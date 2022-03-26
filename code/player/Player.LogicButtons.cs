@@ -7,20 +7,20 @@ namespace TTT;
 
 public partial class Player
 {
-	public static Dictionary<int, LogicButtonData> LogicButtons = new();
-	public static Dictionary<int, UI.LogicButtonPoint> LogicButtonPoints = new(); // UI display
-	public static UI.LogicButtonPoint FocusedButton;
+	public static Dictionary<int, RoleButtonData> LogicButtons = new();
+	public static Dictionary<int, UI.RoleButtonPoint> LogicButtonPoints = new(); // UI display
+	public static UI.RoleButtonPoint FocusedButton;
 	public bool HasTrackedButtons => LogicButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
 
 	public void SendLogicButtonsToClient()
 	{
 		Host.AssertServer();
 
-		List<LogicButtonData> logicButtonDataList = new();
+		List<RoleButtonData> logicButtonDataList = new();
 
 		foreach ( Entity entity in All )
 		{
-			if ( entity is LogicButton logicButton && Role == logicButton.Role )
+			if ( entity is RoleButton logicButton && Role == logicButton.Role )
 				logicButtonDataList.Add( logicButton.PackageData() );
 		}
 
@@ -45,15 +45,15 @@ public partial class Player
 	{
 		LogicButtonPoints = new();
 
-		foreach ( KeyValuePair<int, LogicButtonData> keyValuePair in LogicButtons )
+		foreach ( KeyValuePair<int, RoleButtonData> keyValuePair in LogicButtons )
 		{
-			LogicButtonPoints.Add( keyValuePair.Key, new UI.LogicButtonPoint( keyValuePair.Value ) );
+			LogicButtonPoints.Add( keyValuePair.Key, new UI.RoleButtonPoint( keyValuePair.Value ) );
 		}
 	}
 
 	// Receive data of player's buttons from client.
 	[ClientRpc]
-	public void ClientStoreLogicButton( LogicButtonData[] buttons )
+	public void ClientStoreLogicButton( RoleButtonData[] buttons )
 	{
 		Clear();
 
@@ -61,7 +61,7 @@ public partial class Player
 
 		// Index our data table by the Logic buttons network identity so we can find it later if need be.
 		LogicButtons = buttons.ToDictionary( k => k.NetworkIdent, v => v );
-		LogicButtonPoints = buttons.ToDictionary( k => k.NetworkIdent, v => new UI.LogicButtonPoint( v ) );
+		LogicButtonPoints = buttons.ToDictionary( k => k.NetworkIdent, v => new UI.RoleButtonPoint( v ) );
 	}
 
 	// Clear logic buttons, called before player respawns.
@@ -73,7 +73,7 @@ public partial class Player
 
 	private void Clear()
 	{
-		foreach ( UI.LogicButtonPoint logicButtonPoint in LogicButtonPoints.Values )
+		foreach ( UI.RoleButtonPoint logicButtonPoint in LogicButtonPoints.Values )
 		{
 			logicButtonPoint.Delete( true );
 		}
@@ -92,8 +92,8 @@ public partial class Player
 		if ( !player.IsValid() )
 			return;
 
-		IEnumerable<LogicButton> logicButtons = All.Where( x => x is LogicButton ).Select( x => x as LogicButton );
-		IEnumerable<LogicButton> applicableButtons = logicButtons.Where( x => player.Role == x.Role );
+		IEnumerable<RoleButton> logicButtons = All.Where( x => x is RoleButton ).Select( x => x as RoleButton );
+		IEnumerable<RoleButton> applicableButtons = logicButtons.Where( x => player.Role == x.Role );
 		player.ClientStoreLogicButton( To.Single( player ), applicableButtons.Select( x => x.PackageData() ).ToArray() );
 	}
 
@@ -110,7 +110,7 @@ public partial class Player
 
 		Entity entity = FindByIndex( networkIdent );
 
-		if ( entity == null || entity is not LogicButton button )
+		if ( entity == null || entity is not RoleButton button )
 		{
 			Log.Warning( $"Server received call for null logic button with network id `{networkIdent}`." );
 

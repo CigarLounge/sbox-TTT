@@ -82,7 +82,7 @@ public partial class Player
 
 	private SpotLightEntity CreateLight()
 	{
-		var light = new SpotLightEntity
+		return new SpotLightEntity
 		{
 			Enabled = true,
 			DynamicShadows = true,
@@ -98,7 +98,5 @@ public partial class Player
 			Owner = this,
 			LightCookie = Texture.Load( "materials/effects/lightcookie.vtex" )
 		};
-
-		return light;
 	}
 }

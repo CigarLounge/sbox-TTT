@@ -2,17 +2,16 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
-using System.Collections.Generic;
 
 namespace TTT.UI;
 
-public class LogicButtonPoint : Panel
+public class RoleButtonPoint : Panel
 {
 	// Our data we received initially from the server during creation.
-	public LogicButtonData Data { get; private set; }
+	public RoleButtonData Data { get; private set; }
 
 	// Our specific assigned Entity.
-	private LogicButton _entity;
+	private RoleButton _entity;
 
 	// Position pulled from Data
 	public Vector3 Position { get; private set; }
@@ -24,7 +23,7 @@ public class LogicButtonPoint : Panel
 	// Past this distance, the button is unusuable.
 	private readonly int _maxViewDistance = 1024;
 
-	public LogicButtonPoint( LogicButtonData data )
+	public RoleButtonPoint( RoleButtonData data )
 	{
 		Data = data;
 		Position = data.Position;
@@ -35,7 +34,7 @@ public class LogicButtonPoint : Panel
 
 		Local.Hud.AddChild( this );
 
-		_entity = Entity.FindByIndex( Data.NetworkIdent ) as LogicButton;
+		_entity = Entity.FindByIndex( Data.NetworkIdent ) as RoleButton;
 
 		Add.Image( "/ui/icons/logic_button.png", "pointer" );
 		Add.Label( _entity.Description, "text-shadow" );
