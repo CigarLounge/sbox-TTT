@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System.Linq;
 
 namespace TTT.UI;
 
-public class DNAMenu : Panel
+public partial class DNAMenu : Panel
 {
-	private readonly List<Panel> _samples = new();
+	private readonly Dictionary<DNA, Sample> _entries = new();
 
 	private readonly Panel _sampleContainer;
 	private readonly Panel _infoContainer;
@@ -32,17 +33,6 @@ public class DNAMenu : Panel
 		_checkbox = new Checkbox();
 		_checkbox.LabelText = "Auto-repeat";
 		_infoContainer.AddChild( _checkbox );
-
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
 	}
 
 	public override void Tick()
@@ -55,21 +45,32 @@ public class DNAMenu : Panel
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
 
-		if ( scanner.DNACollected.Count == 0 )
+		foreach ( var sample in scanner.DNACollected.Except( _entries.Keys ) )
 		{
+			var panel = AddSample( sample );
+			_entries[sample] = panel;
+		}
 
+		foreach ( var dna in _entries.Keys.Except( scanner.DNACollected ) )
+		{
+			if ( _entries.TryGetValue( dna, out var panel ) )
+			{
+				panel?.Delete();
+				_entries.Remove( dna );
+			}
 		}
 	}
 
-	public void AddSample()
+	private Sample AddSample( DNA dna )
 	{
-		_samples.Add( new Sample() );
-		_sampleContainer.AddChild( new Sample() );
+		var panel = new Sample( dna );
+		_sampleContainer.AddChild( panel );
+		return panel;
 	}
 
 	public class Sample : Panel
 	{
-		public Sample()
+		public Sample( DNA dna )
 		{
 			AddClass( "rounded" );
 			AddClass( "background-color-primary" );
@@ -80,8 +81,7 @@ public class DNAMenu : Panel
 
 			} );
 
-
-			Add.Button( "Sample #1 - 6:11 - Corpse" );
+			Add.Button( $"{dna.IsDecayed}" );
 		}
 	}
 }

@@ -7,7 +7,7 @@ DNAMenu
 
     .sample-container
     {
-        min-height: 325px;
+        max-height: 325px;
         flex-direction: column;
         overflow: scroll;
     }
@@ -57,12 +57,12 @@ DNAMenu
 
             &:hover
             {
-                transform: scale( 0.9 );
+                color: #c59913;
             }
 
             &:active
             {
-                transform: scale( 1 );
+                transform: scale( 0.9 );
             }
         }
     }
