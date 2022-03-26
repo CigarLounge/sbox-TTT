@@ -59,7 +59,7 @@ public partial class RadioMenu : Panel
 		{
 			var radioComponent = player.Components.Get<RadioComponent>();
 			if ( radioComponent != null )
-				_cachedRadio = radioComponent.Radio;
+				_cachedRadio = radioComponent.RadioEntity;
 		}
 	}
 }
