@@ -6,6 +6,7 @@ namespace TTT.UI;
 public class InputGlyph : Panel
 {
 	private InputButton _inputButton;
+	private InputGlyphSize _inputGlyphSize;
 	private GlyphStyle _glyphStyle;
 
 	public InputGlyph()
@@ -15,12 +16,11 @@ public class InputGlyph : Panel
 
 	public void SetButton( InputButton inputButton )
 	{
-		_inputButton = inputButton;
+		if ( _inputButton == inputButton )
+			return;
 
-		var texture = Input.GetGlyph( _inputButton, InputGlyphSize.Small, _glyphStyle );
-		Style.BackgroundImage = texture;
-		Style.Width = texture.Width;
-		Style.Height = texture.Height;
+		_inputButton = inputButton;
+		Update();
 	}
 
 	public override void SetProperty( string name, string value )
@@ -34,6 +34,13 @@ public class InputGlyph : Panel
 
 				break;
 			}
+			case "size":
+			{
+				InputGlyphSize.TryParse( value, true, out _inputGlyphSize );
+				Update();
+
+				break;
+			}
 			case "style":
 			{
 				_glyphStyle = value switch
@@ -44,11 +51,19 @@ public class InputGlyph : Panel
 					_ => _glyphStyle
 				};
 
-				SetButton( _inputButton );
+				Update();
 				break;
 			}
 		}
 
 		base.SetProperty( name, value );
+	}
+
+	private void Update()
+	{
+		var texture = Input.GetGlyph( _inputButton, _inputGlyphSize, _glyphStyle );
+		Style.BackgroundImage = texture;
+		Style.Width = texture.Width;
+		Style.Height = texture.Height;
 	}
 }
