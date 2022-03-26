@@ -86,18 +86,14 @@ public partial class Radar : Perk
 				return;
 
 			foreach ( var pointData in _lastPositions )
-			{
 				_cachedPoints.Add( new RadarPoint( pointData ) );
-			}
 		}
 	}
 
 	private void ClearRadarPoints()
 	{
 		foreach ( RadarPoint radarPoint in _cachedPoints )
-		{
 			radarPoint.Delete();
-		}
 
 		_cachedPoints.Clear();
 	}
