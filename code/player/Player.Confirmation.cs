@@ -101,9 +101,9 @@ public partial class Player
 		(
 			Confirmer.Client,
 			Corpse.PlayerName,
-			Role.Info.Color,
+			Role.Color,
 			"found the body of",
-			$"({Role.Info.Title})"
+			$"({Role.Title})"
 		);
 	}
 

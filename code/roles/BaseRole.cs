@@ -1,18 +1,30 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
-using Sandbox;
+using System.Linq;
 
 namespace TTT;
 
 [Library( "role" ), AutoGenerate]
 public partial class RoleInfo : Asset
 {
-	[Property] public Team Team { get; set; } = Team.None;
-	[Property] public Color Color { get; set; }
-	[Property( "defaultcredits", "The amount of credits players spawn with." )] public int DefaultCredits { get; set; }
-	[Property] public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
-	[Property( "retrievecredits", "Players can retrieve credits from corpses." )] public bool RetrieveCredits { get; set; }
-	[Property] public bool CanRoleChat { get; set; }
+	[Property]
+	public Team Team { get; set; } = Team.None;
+
+	[Property]
+	public Color Color { get; set; }
+
+	[Property( "defaultcredits", "The amount of credits players spawn with." )]
+	public int DefaultCredits { get; set; }
+
+	[Property]
+	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
+
+	[Property( "retrievecredits", "Players can retrieve credits from corpses." )]
+	public bool RetrieveCredits { get; set; }
+
+	[Property]
+	public bool CanRoleChat { get; set; }
 
 	public HashSet<string> AvailableItems { get; set; }
 
@@ -28,6 +40,13 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 {
 	public RoleInfo Info { get; private set; }
 
+	public Team Team => Info.Team;
+	public Color Color => Info.Color;
+	public HashSet<string> AvailableItems => Info.AvailableItems;
+	public bool RetrieveCredits => Info.RetrieveCredits;
+	public bool CanRoleChat => Info.CanRoleChat;
+	public string Title => Info.Title;
+
 	public BaseRole()
 	{
 		Info = Asset.GetInfo<RoleInfo>( this );
@@ -35,16 +54,36 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public virtual void OnSelect( Player player )
 	{
-		if ( Host.IsServer )
+		if ( player.IsLocalPawn )
 		{
-			player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
-			player.PurchasedLimitedShopItems.Clear();
+			player.RoleButtons = GetRoleButtons();
+			foreach ( var roleButton in player.RoleButtons )
+				player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );	
+
+			return;
 		}
+
+		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
+		player.PurchasedLimitedShopItems.Clear();
 	}
 
-	public virtual void OnDeselect( Player player ) { }
+	public virtual void OnDeselect( Player player )
+	{
+		if ( player.IsLocalPawn )
+			player.ClearRoleButtons();
+	}
 
 	public virtual void OnKilled( Player player ) { }
+
+	protected List<RoleButton> GetRoleButtons()
+	{
+		Host.AssertClient();
+
+		return Entity.All
+				.OfType<RoleButton>()
+				.Where( x => this == x.Role )
+				.ToList();
+	}
 
 	public static bool operator ==( BaseRole left, BaseRole right )
 	{
@@ -58,7 +97,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 		return left.Equals( right );
 	}
-
 	public static bool operator !=( BaseRole left, BaseRole right ) => !(left == right);
 
 	public static bool operator ==( BaseRole left, string right )
@@ -83,10 +121,10 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public bool Equals( string other )
 	{
-		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
-		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
 		return false;
@@ -100,6 +138,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	private void OnHotReload()
 	{
 		Info = Asset.GetInfo<RoleInfo>( this );
+		(Local.Pawn as Player).RoleButtons = GetRoleButtons();
 	}
 #endif
 }

@@ -23,24 +23,6 @@ public abstract class Perk : EntityComponent<Player>
 
 	public virtual void Simulate( Player player ) { }
 
-	protected override void OnActivate()
-	{
-		base.OnActivate();
-
-		_entity = Entity;
-
-		if ( Host.IsClient )
-			Entity.Perks.Add( this );
-	}
-
-	protected override void OnDeactivate()
-	{
-		base.OnDeactivate();
-
-		if ( Host.IsClient )
-			_entity.Perks.Remove( this );
-	}
-
 #if SANDBOX && DEBUG
 	[Event.Hotload]
 	private void OnHotReload()

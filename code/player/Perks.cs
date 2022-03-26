@@ -6,14 +6,11 @@ namespace TTT;
 
 public class Perks
 {
-	public Player Owner { get; set; }
+	public Player Owner { get; init; }
 	private readonly List<Perk> _perks = new();
 	public int Count => _perks.Count;
 
-	public Perks( Player player )
-	{
-		Owner = player;
-	}
+	public Perks( Player player ) => Owner = player;
 
 	public void Add( Perk perk )
 	{

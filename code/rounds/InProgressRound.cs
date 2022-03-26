@@ -13,7 +13,7 @@ public partial class InProgressRound : BaseRound
 	[Net]
 	public List<Player> Spectators { get; set; }
 
-	private readonly List<LogicButton> _logicButtons = new();
+	private readonly List<RoleButton> _logicButtons = new();
 
 	public override int RoundDuration { get => Game.InProgressRoundTime; }
 
@@ -63,7 +63,7 @@ public partial class InProgressRound : BaseRound
 
 		foreach ( var ent in Entity.All )
 		{
-			if ( ent is LogicButton button )
+			if ( ent is RoleButton button )
 				_logicButtons.Add( button );
 			else if ( ent is Corpse corpse )
 				corpse.Delete();
@@ -108,7 +108,7 @@ public partial class InProgressRound : BaseRound
 		Game.Current.ForceRoundChange( new PostRound() );
 		RPCs.ClientOpenAndSetPostRoundMenu
 		(
-			winningTeam.GetName(),
+			winningTeam.GetTitle(),
 			winningTeam.GetColor()
 		);
 	}

@@ -1,6 +1,5 @@
-using System;
-
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -50,7 +49,7 @@ public partial class WalkController : Sandbox.WalkController
 
 	private void CheckFalling()
 	{
-		if ( GroundEntity == null || FallVelocity <= 0 )
+		if ( GroundEntity is null || FallVelocity <= 0 )
 			return;
 
 		float fallVelocity = FallVelocity;

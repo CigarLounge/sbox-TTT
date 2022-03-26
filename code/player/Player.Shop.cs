@@ -50,7 +50,7 @@ public partial class Player
 		if ( itemInfo is null )
 			return;
 
-		if ( !player.Role.Info.AvailableItems.Contains( itemInfo.LibraryName ) )
+		if ( !player.Role.AvailableItems.Contains( itemInfo.LibraryName ) )
 			return;
 
 		if ( !itemInfo.Buyable || (itemInfo.IsLimited && player.PurchasedLimitedShopItems.Contains( itemInfo.LibraryName )) )

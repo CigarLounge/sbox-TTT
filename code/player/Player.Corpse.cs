@@ -37,6 +37,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public void CopyFrom( Player player )
 	{
+		Host.AssertServer();
+
 		DeadPlayer = player;
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
@@ -52,7 +54,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		this.SetRagdollVelocityFrom( player );
 
 		List<Entity> attachedEnts = new();
-		foreach ( Entity child in player.Children )
+		foreach ( var child in player.Children )
 		{
 			if ( child is BaseClothing e )
 			{
@@ -71,7 +73,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			Perks[i] = DeadPlayer.Perks.Get( i ).Info.Title;
 		}
 
-		foreach ( Entity entity in attachedEnts )
+		foreach ( var entity in attachedEnts )
 		{
 			entity.SetParent( this, false );
 		}
@@ -156,7 +158,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Host.AssertServer();
 
 		int credits = 0;
-		retrieveCredits &= searcher.Role.Info.RetrieveCredits & searcher.IsAlive();
+		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
 
 		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
 		{
@@ -221,8 +223,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
-
-	bool IEntityHint.CanHint( Player client ) => true;
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
 

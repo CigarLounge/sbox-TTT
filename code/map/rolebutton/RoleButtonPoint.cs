@@ -1,21 +1,14 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
 
 namespace TTT.UI;
 
-public class LogicButtonPoint : Panel
+public class RoleButtonPoint : Panel
 {
-	// Our data we received initially from the server during creation.
-	public LogicButtonData Data { get; private set; }
-
 	// Our specific assigned Entity.
-	private LogicButton _entity;
-
-	// Position pulled from Data
-	public Vector3 Position { get; private set; }
+	private readonly RoleButton _roleButton;
 
 	// If the distance from the player to the button is less than this value, the element is fully visible.
 	private int _minViewDistance = 512;
@@ -24,70 +17,60 @@ public class LogicButtonPoint : Panel
 	// Past this distance, the button is unusuable.
 	private readonly int _maxViewDistance = 1024;
 
-	public LogicButtonPoint( LogicButtonData data )
+	public RoleButtonPoint( RoleButton roleButton )
 	{
-		Data = data;
-		Position = data.Position;
-		_maxViewDistance = data.Range;
+		_roleButton = roleButton;
+		_maxViewDistance = roleButton.Range;
 		_minViewDistance = Math.Min( _minViewDistance, _maxViewDistance / 2 );
 
-		StyleSheet.Load( "/map/logicbutton/LogicButtonPoint.scss" );
-
+		StyleSheet.Load( "/map/rolebutton/RoleButtonPoint.scss" );
 		Local.Hud.AddChild( this );
 
-		_entity = Entity.FindByIndex( Data.NetworkIdent ) as LogicButton;
-
-		Add.Image( "/ui/icons/logic_button.png", "pointer" );
-		Add.Label( _entity.Description, "text-shadow" );
+		Add.Image( $"/ui/icons/role_button_{_roleButton.Role.ToLower()}.png", "pointer" );
+		Add.Label( _roleButton.Description, "text-shadow" );
 	}
 
 	public override void Tick()
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-		{
-			return;
-		}
-
-		Vector3 screenPos = Position.ToScreen();
+		var player = Local.Pawn as Player;
+		var screenPos = _roleButton.Position.ToScreen();
 		this.Enabled( screenPos.z > 0f );
 
 		// If our entity is locked, delayed or removed, let's not show it.
-		if ( _entity.IsDisabled )
+		if ( _roleButton.IsDisabled )
 		{
 			Style.Display = DisplayMode.None;
 
 			// Make sure our client is no longer tracking this element.
-			if ( Player.FocusedButton == this )
-			{
+			if ( Player.FocusedButton == _roleButton )
 				Player.FocusedButton = null;
-			}
 
 			this.Enabled( false );
 
 			return;
 		}
 
-		if ( this.IsEnabled() )
+		if ( !this.IsEnabled() )
+			return;
+
+		Style.Display = DisplayMode.Flex;
+		Style.Left = Length.Fraction( screenPos.x );
+		Style.Top = Length.Fraction( screenPos.y );
+		Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( _roleButton.Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
+
+		// Update our 'focus' CSS look if our player currently is looking near this point.
+		SetClass( "focus", Player.FocusedButton == _roleButton );
+
+		// Check if point is within 10% of the crosshair.
+		if ( IsLengthWithinCamerasFocus() && player.Position.Distance( _roleButton.Position ) <= _maxViewDistance )
 		{
-			Style.Display = DisplayMode.Flex;
-			Style.Left = Length.Fraction( screenPos.x );
-			Style.Top = Length.Fraction( screenPos.y );
-			Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
-
-			// Update our 'focus' CSS look if our player currently is looking near this point.
-			SetClass( "focus", Player.FocusedButton == this );
-
-			// Check if point is within 10% of the crosshair.
-			if ( IsLengthWithinCamerasFocus() && player.Position.Distance( Position ) <= _maxViewDistance )
-			{
-				Player.FocusedButton ??= this; // If the current focused button is null, update it to this.
-			}
-			else if ( Player.FocusedButton == this ) // If we are the current focused button, but we are out of focus, set to null
-			{
-				Player.FocusedButton = null;
-			}
+			Player.FocusedButton ??= _roleButton; // If the current focused button is null, update it to this.
+		}
+		else if ( Player.FocusedButton == _roleButton ) // If we are the current focused button, but we are out of focus, set to null
+		{
+			Player.FocusedButton = null;
 		}
 	}
 
@@ -110,6 +93,6 @@ public class LogicButtonPoint : Panel
 	// Called when client calls for button to be activated. A simple double check.
 	public bool IsUsable( Player player )
 	{
-		return player.Position.Distance( Position ) <= Data.Range && !Data.IsDisabled;
+		return player.Position.Distance( _roleButton.Position ) <= _roleButton.Range && !_roleButton.IsDisabled;
 	}
 }

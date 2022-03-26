@@ -5,7 +5,7 @@ namespace TTT;
 public partial class Player
 {
 	public BaseRole Role { get; private set; }
-	public Team Team => Role.Info.Team;
+	public Team Team => Role.Team;
 
 	public void SetRole( BaseRole role )
 	{
@@ -51,8 +51,5 @@ public partial class Player
 		Host.AssertServer();
 
 		ClientSetRole( to ?? To.Single( this ), Role.Info.Id );
-
-		if ( to == null || to.Value.ToString().Equals( Client.Name ) )
-			SendLogicButtonsToClient();
 	}
 }
