@@ -9,26 +9,32 @@ public class DetectiveRole : BaseRole
 	{
 		base.OnSelect( player );
 
-		if ( Host.IsServer )
+		if ( Host.IsClient )
+			UI.RoleMenu.Instance.AddShopTab();
+
+		if ( !Host.IsServer )
+			return;
+
+		player.IsRoleKnown = true;
+
+		foreach ( var client in Client.All )
 		{
-			player.IsRoleKnown = true;
+			if ( client == player.Client )
+				continue;
 
-			foreach ( var client in Client.All )
-			{
-				if ( client == player.Client )
-					continue;
-
-				player.SendRoleToClient( To.Single( client ) );
-			}
-
-			player.Perks.Add( new BodyArmor() );
-			player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+			player.SendRoleToClient( To.Single( client ) );
 		}
+
+		player.Perks.Add( new BodyArmor() );
+		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 	}
 
 	public override void OnDeselect( Player player )
 	{
 		base.OnDeselect( player );
+
+		if ( Host.IsClient )
+			UI.RoleMenu.Instance.RemoveTab( RawStrings.ShopTab );
 
 		if ( Host.IsServer )
 			player.RemoveClothing();

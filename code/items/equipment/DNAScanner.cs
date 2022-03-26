@@ -12,9 +12,6 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( IsClient )
-			Log.Info( DNACollected.Count );
-
 		if ( !IsServer )
 			return;
 
@@ -45,6 +42,22 @@ public partial class DNAScanner : Carriable
 			Log.Info( "DNA fetched successfully!" );
 			DNACollected.Add( DNA );
 		}
+	}
+
+	public override void ActiveStart( Entity ent )
+	{
+		base.ActiveStart( ent );
+
+		if ( Host.IsClient )
+			UI.RoleMenu.Instance.AddDNATab();
+	}
+
+	public override void ActiveEnd( Entity ent, bool dropped )
+	{
+		base.ActiveEnd( ent, dropped );
+
+		if ( Host.IsClient )
+			UI.RoleMenu.Instance.RemoveTab( RawStrings.DNATab );
 	}
 }
 

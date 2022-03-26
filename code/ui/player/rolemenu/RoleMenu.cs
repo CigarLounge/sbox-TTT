@@ -19,31 +19,26 @@ public partial class RoleMenu : Panel
 		backgroundPanel.AddClass( "background-color-secondary" );
 		backgroundPanel.AddClass( "opacity-medium" );
 		backgroundPanel.AddClass( "fullscreen" );
+	}
 
-		TabContainer.AddTab( new Shop(), "Shop", "shopping_cart" );
-
-		// TEMP
-		AddDNATab();
+	public void AddShopTab()
+	{
+		TabContainer.AddTab( new Shop(), RawStrings.ShopTab, "shopping_cart" );
 	}
 
 	public void AddRadioTab()
 	{
-		TabContainer.AddTab( new RadioMenu(), "Radio", "radio" );
-	}
-
-	public void DeleteRadioTab()
-	{
-		TabContainer.DeleteTab( "Radio" );
+		TabContainer.AddTab( new RadioMenu(), RawStrings.RadioTab, "radio" );
 	}
 
 	public void AddDNATab()
 	{
-		TabContainer.AddTab( new DNAMenu(), "DNA", "fingerprint" );
+		TabContainer.AddTab( new DNAMenu(), RawStrings.DNATab, "fingerprint" );
 	}
 
-	public void DeleteDNATab()
+	public void RemoveTab( string tabName )
 	{
-		TabContainer.DeleteTab( "DNA" );
+		TabContainer.RemoveTab( tabName );
 	}
 
 	public override void Tick()
@@ -51,7 +46,7 @@ public partial class RoleMenu : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( !player.IsAlive() || player.Role.Info.AvailableItems.Count == 0 )
+		if ( !player.IsAlive() || TabContainer.Tabs.Count == 0 )
 		{
 			SetClass( "fade-in", false );
 			return;

@@ -31,22 +31,6 @@ public class DNAMenu : Panel
 		_checkbox = new Checkbox();
 		_checkbox.LabelText = "Auto-repeat";
 		_infoContainer.AddChild( _checkbox );
-
-		// TODO: Remove.
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
-		AddSample();
 	}
 
 	public override void Tick()
