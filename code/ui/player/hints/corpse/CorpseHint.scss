@@ -1,13 +1,13 @@
 @import "/ui/Hud.scss";
 
-CorpseHint
+corpsehint
 {
     flex-direction: column;
     align-items: center;
 
     .title
     {
-        font-weight: 600; 
+        font-weight: 600;
         font-size: 18px;
 
         &.unidentified
@@ -21,7 +21,7 @@ CorpseHint
         flex-direction: column;
         align-items: center;
 
-        Label
+        label
         {
             font-size: 15px;
         }

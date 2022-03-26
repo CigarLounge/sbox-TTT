@@ -61,19 +61,6 @@
 ]
 
 //
-// TTT.LogicRole
-//
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_role : "Used to test the assigned role of the activator."
-[
-	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
-
-	input Activate(void) : ""
-
-	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
-	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
-]
-
-//
 // TTT.MapSettings
 //
 @PointClass base(BaseProperties_matt_ttt) = ttt_map_settings : ""
@@ -83,6 +70,26 @@
 	output RoundPreparation(void) : "Fired once Preround begins."
 	output RoundStart(void) : "Fired once round starts and roles are assigned."
 	output RoundEnd(void) : "Fired once a win condition is met."
+]
+
+//
+// TTT.RoleCheck
+//
+@PointClass base(BaseProperties_matt_ttt) 
+metadata
+{
+	entity_tool_name = "Role Check"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Used to test the assigned role of the activator."
+}
+= ttt_role_check : ""
+[
+	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
+
+	input Activate(void) : ""
+
+	output OnPass(void) : "Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
+	output OnFail(void) : "Fires if activator's check type does not match the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass()."
 ]
 
 //
@@ -414,9 +421,16 @@ metadata
 ]
 
 //
-// TTT.LogicButton
+// TTT.RoleButton
 //
-@PointClass base(BaseProperties_matt_ttt) = ttt_logic_button : "Used to provide an onscreen button for a role to activate."
+@PointClass base(BaseProperties_matt_ttt) 
+metadata
+{
+	entity_tool_name = "Role Button"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Used to provide an onscreen button for a role to activate."
+}
+= ttt_role_button : ""
 [
 	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
 	description(string) : "Description" :  : "On screen tooltip shown on button."

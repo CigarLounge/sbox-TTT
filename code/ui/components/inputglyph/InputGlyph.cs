@@ -31,6 +31,7 @@ public class InputGlyph : Panel
 			{
 				InputButton.TryParse( value, true, out _inputButton );
 				SetButton( _inputButton );
+				Update();
 
 				break;
 			}
