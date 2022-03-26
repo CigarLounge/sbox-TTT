@@ -7,9 +7,24 @@ DNAMenu
 
     .sample-container
     {
+        height: 325px;
         max-height: 325px;
         flex-direction: column;
         overflow: scroll;
+
+        .empty
+        {
+            align-items: center;
+            margin: 10px;
+            max-width: 300;
+            height: 325px;
+
+            Label 
+            {
+                font-size: 18px;
+                font-weight: 600;
+            }
+        }
     }
 
     .info-container
@@ -44,6 +59,7 @@ DNAMenu
         transition: transform 0.1s ease-in;
         min-height: 45px;
         min-width: 300px;
+        max-width: 300px;
         justify-content: center;
 
         .delete-button

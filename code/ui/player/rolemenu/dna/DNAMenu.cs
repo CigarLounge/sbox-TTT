@@ -11,6 +11,7 @@ public partial class DNAMenu : Panel
 	private readonly Dictionary<DNA, Sample> _entries = new();
 
 	private readonly Panel _sampleContainer;
+	private Panel _emptyPanel;
 	private readonly Panel _infoContainer;
 	private readonly Button _button;
 	private readonly Checkbox _checkbox;
@@ -45,6 +46,20 @@ public partial class DNAMenu : Panel
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
 
+		if ( scanner.DNACollected.IsNullOrEmpty() )
+		{
+			if ( _emptyPanel == null )
+			{
+				_emptyPanel = _sampleContainer.Add.Panel( "empty" );
+				_emptyPanel.Add.Label( "No samples collected" );
+			}
+			return;
+		}
+		else
+		{
+			_emptyPanel?.Delete( true );
+		}
+
 		foreach ( var sample in scanner.DNACollected.Except( _entries.Keys ) )
 		{
 			var panel = AddSample( sample );
@@ -78,10 +93,23 @@ public partial class DNAMenu : Panel
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
 			deleteButton.AddEventListener( "onclick", () =>
 			{
-
+				DeleteSample( dna.NetworkIdent );
 			} );
 
-			Add.Button( $"{dna.IsDecayed}" );
+			Add.Button( $"{true}" );
 		}
+	}
+
+	[ServerCmd()]
+	public static void DeleteSample( int indent )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
+
+		scanner.DNACollected.RemoveAll( ( dna ) => dna.NetworkIdent == indent );
 	}
 }
