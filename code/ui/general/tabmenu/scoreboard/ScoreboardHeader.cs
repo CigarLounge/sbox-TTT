@@ -6,7 +6,7 @@ namespace TTT.UI;
 
 public class ScoreboardHeader : Panel
 {
-	private readonly Panel _gameLogoPanel;
+	private readonly Panel _terryImage;
 	private readonly Panel _serverInfoPanel;
 	private readonly Label _serverNameLabel;
 	private readonly Label _serverDescriptionLabel;
@@ -18,8 +18,8 @@ public class ScoreboardHeader : Panel
 	{
 		AddClass( "text-shadow" );
 
-		_gameLogoPanel = new( this );
-		_gameLogoPanel.AddClass( "game-logo" );
+		_terryImage = new( this );
+		_terryImage.AddClass( "terry-image" );
 
 		_serverInfoPanel = new( this );
 		_serverInfoPanel.AddClass( "server-information-panel" );
@@ -30,7 +30,7 @@ public class ScoreboardHeader : Panel
 
 		_serverDescriptionLabel = _serverInfoPanel.Add.Label();
 		_serverDescriptionLabel.AddClass( "server-description-label" );
-		_serverDescriptionLabel.Text = "Created by github.com/mzegar/sbox-TTT/contributors";
+		_serverDescriptionLabel.Text = "Created by github.com/mzegar/sbox-TTT";
 
 		_serverDataPanel = new( this );
 		_serverDataPanel.AddClass( "server-data-panel" );
