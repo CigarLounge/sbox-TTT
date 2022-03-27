@@ -32,7 +32,7 @@ public partial class DNAScanner : Carriable
 		var DNA = trace.Entity.Components.Get<DNA>();
 		if ( DNA != null )
 		{
-			trace.Entity.Components.Remove( DNA );
+			// trace.Entity.Components.Remove( DNA );
 
 			if ( DNA.IsDecayed )
 			{
@@ -73,7 +73,7 @@ public class DNA : EntityComponent<Entity>
 
 	private Type DNAType { get; set; }
 	private TimeSince _timeSinceCreated; // We will use this to figure out when the DNA decays completely. Lets use TimeUntil instead...
-	private float _timeToDecay = 5; // This value is calculated based on the entity, the time to completely decay.
+	private float _timeToDecay = 60000; // This value is calculated based on the entity, the time to completely decay.
 
 	public bool IsDecayed => _timeSinceCreated > _timeToDecay;
 

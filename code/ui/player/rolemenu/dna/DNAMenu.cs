@@ -46,20 +46,6 @@ public partial class DNAMenu : Panel
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
 
-		if ( scanner.DNACollected.IsNullOrEmpty() )
-		{
-			if ( _emptyPanel == null )
-			{
-				_emptyPanel = _sampleContainer.Add.Panel( "empty" );
-				_emptyPanel.Add.Label( "No samples collected" );
-			}
-			return;
-		}
-		else
-		{
-			_emptyPanel?.Delete( true );
-		}
-
 		foreach ( var sample in scanner.DNACollected.Except( _entries.Keys ) )
 		{
 			var panel = AddSample( sample );
