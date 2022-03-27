@@ -110,6 +110,13 @@ public partial class DNAMenu : Panel
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
 
-		scanner.DNACollected.RemoveAll( ( dna ) => dna.NetworkIdent == indent );
+		foreach ( var dna in scanner.DNACollected )
+		{
+			if ( dna.NetworkIdent == indent )
+			{
+				scanner.DNACollected.Remove( dna );
+				return;
+			}
+		}
 	}
 }
