@@ -8,7 +8,6 @@ public class RadarPoint : Panel
 {
 	private readonly Vector3 _position;
 	private readonly Label _distanceLabel;
-	private const int BLUR_RADIUS = 10;
 
 	public RadarPoint( RadarPointData data )
 	{
@@ -32,7 +31,7 @@ public class RadarPoint : Panel
 		{
 			new Shadow
 			{
-				Blur = BLUR_RADIUS,
+				Blur = 5,
 				Color = data.Color
 			}
 		};

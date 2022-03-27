@@ -42,7 +42,7 @@ public abstract partial class Asset : Sandbox.Asset
 
 		var attribute = Library.GetAttribute( LibraryName );
 
-		if ( attribute == null )
+		if ( attribute is null )
 			return;
 
 		Collection[LibraryName] = this;

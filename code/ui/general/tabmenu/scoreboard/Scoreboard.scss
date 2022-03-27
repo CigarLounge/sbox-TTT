@@ -43,15 +43,17 @@ scoreboardheader
     flex-direction: row;
     max-height: 100px;
     justify-content: space-between;
-    padding: 16px;
+    padding: 30 16 0 16;
 
-    .game-logo
+    .terry-image
     {
-        background-image: url("/ui/ttt-logo.png");
+        position: absolute;
+        top: -70px;
+        background-image: url("/ui/scoreboard-terry.png");
         background-repeat: no-repeat;
-        background-size: contain;
-        width: 75px;
-        height: 75px;
+        background-size: cover;
+        width: 180px;
+        height: 150px;
     }
 
     .server-information-panel

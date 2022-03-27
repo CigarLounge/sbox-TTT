@@ -8,7 +8,7 @@ public class InspectEntry : Panel
 {
 	public string ActiveText { get; private set; }
 	private readonly Image _inspectIcon;
-	private readonly Label _inspectQuickLabel;
+	private readonly Label _inspectLabel;
 
 	public InspectEntry( Panel parent ) : base( parent )
 	{
@@ -21,8 +21,8 @@ public class InspectEntry : Panel
 		_inspectIcon = Add.Image();
 		_inspectIcon.AddClass( "inspect-icon" );
 
-		_inspectQuickLabel = Add.Label();
-		_inspectQuickLabel.AddClass( "quick-label" );
+		_inspectLabel = Add.Label();
+		_inspectLabel.AddClass( "quick-label" );
 	}
 
 	public void SetImage( string imagePath )
@@ -42,6 +42,6 @@ public class InspectEntry : Panel
 
 	public void SetImageText( string text )
 	{
-		_inspectQuickLabel.Text = text;
+		_inspectLabel.Text = text;
 	}
 }
