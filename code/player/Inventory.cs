@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TTT;
 
-public partial class Inventory : IBaseInventory
+public class Inventory : IBaseInventory
 {
 	public Player Owner { get; init; }
 
@@ -176,7 +176,7 @@ public partial class Inventory : IBaseInventory
 		return null;
 	}
 
-	public virtual bool SetActiveSlot( int i, bool evenIfEmpty = false )
+	public bool SetActiveSlot( int i, bool evenIfEmpty = false )
 	{
 		var entity = GetSlot( i );
 		if ( Active == entity )

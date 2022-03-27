@@ -25,12 +25,12 @@ public abstract partial class Asset : Sandbox.Asset
 		return Collection[libraryClass.ClassInfo.Name] as T;
 	}
 
-	public static T GetInfo<T>( string libraryName ) where T : Asset
+	public static T GetInfo<T>( string name ) where T : Asset
 	{
-		if ( string.IsNullOrEmpty( libraryName ) || !Collection.ContainsKey( libraryName ) )
+		if ( string.IsNullOrEmpty( name ) || !Collection.ContainsKey( name ) )
 			return null;
 
-		return Collection[libraryName] as T;
+		return Collection[name] as T;
 	}
 
 	protected override void PostLoad()
@@ -45,7 +45,10 @@ public abstract partial class Asset : Sandbox.Asset
 		if ( attribute is null )
 			return;
 
-		Collection[LibraryName] = this;
 		Title = attribute.Title;
+		Collection[LibraryName] = this;
+
+		if ( !string.IsNullOrEmpty( Title ) )
+			Collection[Title] = this;
 	}
 }

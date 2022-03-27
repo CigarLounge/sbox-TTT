@@ -13,19 +13,18 @@ rolebuttonpoint
 
     .pointer
     {
-        background-repeat: no-repeat;
-        background-size: contain;
+        font-family: MaterialIcons;
+        font-size: 38px;
+        text-align: center;
     }
 
-    .pointer, .label
+    .pointer, label
     {
         opacity: 0.1;
     }
 
-    .label
+    .description
     {
-        position: absolute;
-        left: 50px;
         width: 200px;
     }
 
@@ -33,7 +32,7 @@ rolebuttonpoint
     {
         transform: scale(1);
 
-        .pointer, .label
+        .pointer, label
         {
             opacity: 1;
         }

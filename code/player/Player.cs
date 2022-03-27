@@ -106,7 +106,7 @@ public partial class Player : Sandbox.Player
 		if ( !player.IsLocalPawn )
 			player.SetRole( new NoneRole() );
 		else
-			player.ClearRoleButtons();
+			player.ClearButtons();
 	}
 
 	public override void OnKilled()

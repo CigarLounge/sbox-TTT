@@ -56,9 +56,9 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	{
 		if ( player.IsLocalPawn )
 		{
-			player.RoleButtons = GetRoleButtons();
-			foreach ( var roleButton in player.RoleButtons )
-				player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );	
+			Player.RoleButtons = GetRoleButtons();
+			foreach ( var roleButton in Player.RoleButtons )
+				Player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );
 
 			return;
 		}
@@ -70,7 +70,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	public virtual void OnDeselect( Player player )
 	{
 		if ( player.IsLocalPawn )
-			player.ClearRoleButtons();
+			player.ClearButtons();
 	}
 
 	public virtual void OnKilled( Player player ) { }
@@ -81,7 +81,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 		return Entity.All
 				.OfType<RoleButton>()
-				.Where( x => this == x.Role )
+				.Where( x => x.Role == "All" || this == x.Role )
 				.ToList();
 	}
 
@@ -131,6 +131,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	}
 
 	public override bool Equals( object obj ) => Equals( obj as BaseRole );
+
 	public override int GetHashCode() => Info.Id.GetHashCode();
 
 #if SANDBOX && DEBUG
@@ -138,7 +139,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	private void OnHotReload()
 	{
 		Info = Asset.GetInfo<RoleInfo>( this );
-		(Local.Pawn as Player).RoleButtons = GetRoleButtons();
+		Player.RoleButtons = GetRoleButtons();
 	}
 #endif
 }

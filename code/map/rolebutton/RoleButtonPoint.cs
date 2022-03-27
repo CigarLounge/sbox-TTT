@@ -26,8 +26,16 @@ public class RoleButtonPoint : Panel
 		StyleSheet.Load( "/map/rolebutton/RoleButtonPoint.scss" );
 		Local.Hud.AddChild( this );
 
-		Add.Image( $"/ui/icons/role_button_{_roleButton.Role.ToLower()}.png", "pointer" );
-		Add.Label( _roleButton.Description, "text-shadow" );
+		var roleInfo = Asset.GetInfo<RoleInfo>( _roleButton.Role );
+		var pointer = Add.Label( "ads_click", "pointer" );
+
+		if ( roleInfo is not null )
+		{
+			pointer.Style.TextStrokeColor = roleInfo.Color;
+			pointer.Style.TextStrokeWidth = 2f;
+		}
+
+		Add.Label( _roleButton.Description, "text-shadow description" );
 	}
 
 	public override void Tick()
