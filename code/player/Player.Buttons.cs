@@ -5,12 +5,11 @@ namespace TTT;
 
 public partial class Player
 {
-	public List<RoleButton> RoleButtons { get; set; } = new();
-	public List<UI.RoleButtonPoint> RoleButtonPoints { get; set; } = new(); // UI display
-	public static RoleButton FocusedButton;
-	public bool HasTrackedButtons => RoleButtons.Count > 0; // LogicButtons will never have a situation where a button is removed, therefore this value remains the same throughout.
+	public static List<RoleButton> RoleButtons { get; set; } = new();
+	public static List<UI.RoleButtonPoint> RoleButtonPoints { get; set; } = new();
+	public static RoleButton FocusedButton { get; set; }
 
-	public void ClearRoleButtons()
+	public void ClearButtons()
 	{
 		Host.AssertClient();
 
@@ -24,7 +23,6 @@ public partial class Player
 		FocusedButton = null;
 	}
 
-	// Handle client telling server to activate a specific button
 	[ServerCmd]
 	public static void ActivateRoleButton( int networkIdent )
 	{
@@ -39,7 +37,6 @@ public partial class Player
 			button.Press( player );
 	}
 
-	// Client keybinding for activating button within focus.
 	public void ActivateRoleButton()
 	{
 		Host.AssertClient();

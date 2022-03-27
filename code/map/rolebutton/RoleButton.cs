@@ -24,7 +24,6 @@ public partial class RoleButton : Entity
 	[Property( "Locked", "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input." )]
 	public bool Locked { get; private set; } = false;
 
-	// Tracks button state.
 	[Net]
 	public bool IsLocked { get; set; }
 
@@ -35,37 +34,22 @@ public partial class RoleButton : Entity
 	public bool IsRemoved { get; set; }
 
 	public bool IsDisabled => IsLocked || IsDelayed || IsRemoved;
-
 	public bool HasDelay => Delay > 0.0f;
-
 	private TimeUntil NextUse { get; set; }
-
 	protected Output OnPressed { get; set; }
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		Transmit = TransmitType.Always; // Make sure our clients receive the button entity.
-		Cleanup();
+		Transmit = TransmitType.Always;
 	}
 
-	// (Re)initialize our variables to default. Runs at preround as well as during construction
-	public void Cleanup()
+	public void OnSecond()
 	{
 		Host.AssertServer();
 
-		IsLocked = Locked;
-		IsDelayed = false;
-		IsRemoved = false;
-		NextUse = 0;
-	}
-
-	public void OnSecond() // Hijack the round timer to tick on every second. No reason to tick any faster.
-	{
-		Host.AssertServer();
-
-		if ( HasDelay && IsDelayed && !IsRemoved && NextUse <= 0 ) // Check timer if button has delayed, no reason to check if button is removed.	
+		if ( HasDelay && IsDelayed && !IsRemoved && NextUse <= 0 )
 			IsDelayed = false;
 	}
 
@@ -74,9 +58,9 @@ public partial class RoleButton : Entity
 	{
 		Host.AssertServer();
 
-		if ( !IsDisabled ) // Make sure button is not delayed, locked or removed.
+		if ( !IsDisabled )
 		{
-			OnPressed.Fire( activator ); // Fire Hammer IO
+			OnPressed.Fire( activator );
 
 			if ( RemoveOnPress )
 			{
