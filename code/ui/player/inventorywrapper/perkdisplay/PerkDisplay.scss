@@ -9,10 +9,7 @@ PerkDisplay
 PerkSlot
 {
     flex-direction: column;
-    width: 100px;
-    height: 100px;
     align-items: center;
-    margin-bottom: 10px;
 
     .name
     {
@@ -21,16 +18,15 @@ PerkSlot
 
     .active
     {
-        font-size: 25px;
+        font-size: 22px;
         font-weight: bold;
         z-index: 1;
-        margin-left: 1px;
     }
 
     .icon-panel
     {
-        width: 90px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
     }
 
     Image
@@ -39,6 +35,6 @@ PerkSlot
         width: 100%;
         opacity: 0.65;
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: cover;
     }
 }
