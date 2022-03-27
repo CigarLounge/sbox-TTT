@@ -19,9 +19,9 @@ public class InspectMenu : Panel
 	private readonly InspectEntry _distanceEntry;
 
 	private readonly Panel _inspectContainer;
-	private readonly Image _avatarImage;
-	private readonly Label _playerLabel;
-	private readonly Label _roleLabel;
+	private readonly Image _playerAvatar;
+	private readonly Label _playerName;
+	private readonly Label _roleName;
 	private readonly Panel _inspectIconsPanel;
 	private readonly Label _inspectDetailsLabel;
 
@@ -37,16 +37,16 @@ public class InspectMenu : Panel
 		_inspectContainer = new Panel( this );
 		_inspectContainer.AddClass( "inspect-container" );
 
-		_avatarImage = _inspectContainer.Add.Image();
-		_avatarImage.AddClass( "avatar-image" );
-		_avatarImage.AddClass( "box-shadow" );
-		_avatarImage.AddClass( "circular" );
+		_playerAvatar = _inspectContainer.Add.Image();
+		_playerAvatar.AddClass( "avatar-image" );
+		_playerAvatar.AddClass( "box-shadow" );
+		_playerAvatar.AddClass( "circular" );
 
-		_playerLabel = _inspectContainer.Add.Label();
-		_playerLabel.AddClass( "player-label" );
+		_playerName = _inspectContainer.Add.Label();
+		_playerName.AddClass( "player-label" );
 
-		_roleLabel = _inspectContainer.Add.Label();
-		_roleLabel.AddClass( "role-label" );
+		_roleName = _inspectContainer.Add.Label();
+		_roleName.AddClass( "role-label" );
 
 		_inspectIconsPanel = new Panel( _inspectContainer );
 		_inspectIconsPanel.AddClass( "info-panel" );
@@ -81,10 +81,10 @@ public class InspectMenu : Panel
 
 	private void SetConfirmationData( CarriableInfo carriableInfo, string[] perks )
 	{
-		_avatarImage.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
-		_playerLabel.Text = _playerCorpse.PlayerName;
-		_roleLabel.Text = _playerCorpse.DeadPlayer.Role.Title;
-		_roleLabel.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
+		_playerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
+		_playerName.Text = _playerCorpse.PlayerName;
+		_roleName.Text = _playerCorpse.DeadPlayer.Role.Title;
+		_roleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
@@ -110,8 +110,7 @@ public class InspectMenu : Panel
 			_weaponEntry.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
 		}
 
-		// Populate perk entries
-		if ( perks != null )
+		if ( !perks.IsNullOrEmpty() )
 		{
 			foreach ( string perkName in perks )
 			{
@@ -129,14 +128,12 @@ public class InspectMenu : Panel
 			entry.AddEventListener( "onmouseover", () =>
 			 {
 				 _selectedInspectEntry = entry;
-
 				 UpdateCurrentInspectDescription();
 			 } );
 
 			entry.AddEventListener( "onmouseout", () =>
 			 {
 				 _selectedInspectEntry = null;
-
 				 UpdateCurrentInspectDescription();
 			 } );
 		}
@@ -147,9 +144,7 @@ public class InspectMenu : Panel
 		_inspectDetailsLabel.SetClass( "fade-in", _selectedInspectEntry != null );
 
 		if ( _selectedInspectEntry == null )
-		{
 			return;
-		}
 
 		_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 	}
@@ -180,8 +175,6 @@ public class InspectMenu : Panel
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
 		if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
-		{
 			UpdateCurrentInspectDescription();
-		}
 	}
 }

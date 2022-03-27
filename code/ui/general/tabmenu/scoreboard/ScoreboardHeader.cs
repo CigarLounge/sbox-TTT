@@ -7,12 +7,12 @@ namespace TTT.UI;
 public class ScoreboardHeader : Panel
 {
 	private readonly Panel _terryImage;
-	private readonly Panel _serverInfoPanel;
-	private readonly Label _serverNameLabel;
-	private readonly Label _serverDescriptionLabel;
-	private readonly Panel _serverDataPanel;
-	private readonly Label _serverMapLabel;
-	private readonly Label _serverPlayersLabel;
+	private readonly Panel _serverInfoWrapper;
+	private readonly Label _serverName;
+	private readonly Label _serverDescription;
+	private readonly Panel _serverInfo;
+	private readonly Label _playerCount;
+	private readonly Label _currentMap;
 
 	public ScoreboardHeader( Panel parent ) : base( parent )
 	{
@@ -21,25 +21,25 @@ public class ScoreboardHeader : Panel
 		_terryImage = new( this );
 		_terryImage.AddClass( "terry-image" );
 
-		_serverInfoPanel = new( this );
-		_serverInfoPanel.AddClass( "server-information-panel" );
+		_serverInfoWrapper = new( this );
+		_serverInfoWrapper.AddClass( "server-information-panel" );
 
-		_serverNameLabel = _serverInfoPanel.Add.Label();
-		_serverNameLabel.AddClass( "server-name-label" );
-		_serverNameLabel.Text = "TTT";
+		_serverName = _serverInfoWrapper.Add.Label();
+		_serverName.AddClass( "server-name-label" );
+		_serverName.Text = "TTT";
 
-		_serverDescriptionLabel = _serverInfoPanel.Add.Label();
-		_serverDescriptionLabel.AddClass( "server-description-label" );
-		_serverDescriptionLabel.Text = "Created by github.com/mzegar/sbox-TTT";
+		_serverDescription = _serverInfoWrapper.Add.Label();
+		_serverDescription.AddClass( "server-description-label" );
+		_serverDescription.Text = "Created by github.com/mzegar/sbox-TTT";
 
-		_serverDataPanel = new( this );
-		_serverDataPanel.AddClass( "server-data-panel" );
+		_serverInfo = new( this );
+		_serverInfo.AddClass( "server-data-panel" );
 
-		_serverMapLabel = _serverDataPanel.Add.Label();
-		_serverMapLabel.AddClass( "server-map-label" );
+		_playerCount = _serverInfo.Add.Label();
+		_playerCount.AddClass( "server-players-label" );
 
-		_serverPlayersLabel = _serverDataPanel.Add.Label();
-		_serverPlayersLabel.AddClass( "server-players-label" );
+		_currentMap = _serverInfo.Add.Label();
+		_currentMap.AddClass( "server-map-label" );
 
 		UpdateServerInfo();
 	}
@@ -48,7 +48,7 @@ public class ScoreboardHeader : Panel
 	{
 		int maxPlayers = ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 );
 
-		_serverMapLabel.Text = Global.MapName;
-		_serverPlayersLabel.Text = $"{Client.All.Count} / {maxPlayers} Players";
+		_currentMap.Text = Global.MapName;
+		_playerCount.Text = $"{Client.All.Count} / {maxPlayers} Players";
 	}
 }

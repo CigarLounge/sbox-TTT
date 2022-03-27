@@ -41,8 +41,6 @@ public class InventorySelection : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		// This code sucks. I'm forced to due this because of...
-		// https://github.com/Facepunch/sbox-issues/issues/1324
 		foreach ( var carriable in player.CurrentPlayer.Inventory.List )
 		{
 			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
