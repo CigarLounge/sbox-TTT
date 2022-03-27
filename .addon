@@ -21,6 +21,6 @@
     ],
     "MinPlayers": 1,
     "MaxPlayers": 64,
-    "MapSelect": 2
+    "MapSelect": 0
   }
 }
