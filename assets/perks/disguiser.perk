@@ -5,7 +5,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = ""
+		icon = "ui/icons/ttt_perk_disguiser.png"
 		libraryname = "ttt_perk_disguiser"
 		description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
 	}
