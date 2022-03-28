@@ -21,6 +21,7 @@ public class ScoreboardEntry : Panel
 
 		PlayerName.Text = Client.Name;
 		Karma.Text = Client.GetInt( "karma" ).ToString();
+		Ping.Text = Client.Ping.ToString();
 
 		SetClass( "me", Client == Local.Client );
 
@@ -33,13 +34,5 @@ public class ScoreboardEntry : Panel
 			Style.BackgroundColor = null;
 
 		PlayerAvatar.SetTexture( $"avatar:{Client.PlayerId}" );
-	}
-
-	public override void Tick()
-	{
-		base.Tick();
-
-		if ( Client != null )
-			Ping.Text = Client.Ping.ToString();
 	}
 }
