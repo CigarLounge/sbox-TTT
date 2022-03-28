@@ -87,7 +87,7 @@ public partial class Player
 	{
 		LastDamageInfo = info;
 
-		HitboxGroup hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
+		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
 		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );

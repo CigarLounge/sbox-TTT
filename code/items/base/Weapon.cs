@@ -140,8 +140,8 @@ public abstract partial class Weapon : Carriable
 	{
 		base.BuildInput( input );
 
-		var oldPitch = input.ViewAngles.pitch;
-		var oldYaw = input.ViewAngles.yaw;
+		float oldPitch = input.ViewAngles.pitch;
+		float oldYaw = input.ViewAngles.yaw;
 		input.ViewAngles.pitch -= CurrentRecoilAmount.y * Time.Delta;
 		input.ViewAngles.yaw -= CurrentRecoilAmount.x * Time.Delta;
 		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
@@ -154,7 +154,7 @@ public abstract partial class Weapon : Carriable
 		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputButton.Attack1 ) )
 			return false;
 
-		var rate = Info.PrimaryRate;
+		float rate = Info.PrimaryRate;
 		if ( rate <= 0 )
 			return true;
 
@@ -166,7 +166,7 @@ public abstract partial class Weapon : Carriable
 		if ( !Input.Pressed( InputButton.Attack2 ) )
 			return false;
 
-		var rate = Info.SecondaryRate;
+		float rate = Info.SecondaryRate;
 		if ( rate <= 0 )
 			return true;
 

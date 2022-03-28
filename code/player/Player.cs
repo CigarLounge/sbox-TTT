@@ -182,11 +182,11 @@ public partial class Player : Sandbox.Player
 		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
-	public override void StartTouch( Entity other )
+	public override void Touch( Entity other )
 	{
 		if ( other is PickupTrigger )
 		{
-			StartTouch( other.Parent );
+			Touch( other.Parent );
 
 			return;
 		}
@@ -232,7 +232,7 @@ public partial class Player : Sandbox.Player
 	{
 		for ( int i = 0; i < Perks.Count; ++i )
 		{
-			Perks.Get( i ).Simulate( this );
+			Perks.Get( i ).Simulate( Client );
 		}
 	}
 

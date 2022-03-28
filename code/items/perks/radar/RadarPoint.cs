@@ -1,7 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
 
-namespace TTT;
+namespace TTT.UI;
 
 public class RadarDisplay : Panel
 {
@@ -23,7 +23,7 @@ public class RadarPoint : Panel
 
 	public RadarPoint( RadarPointData data )
 	{
-		if ( RadarDisplay.Instance == null )
+		if ( RadarDisplay.Instance is null )
 			return;
 
 		_position = data.Position;
@@ -44,12 +44,11 @@ public class RadarPoint : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-			return;
+		var player = Local.Pawn as Player;
 
 		Distance.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
 
-		Vector3 screenPos = _position.ToScreen();
+		var screenPos = _position.ToScreen();
 		this.Enabled( screenPos.z > 0f );
 
 		if ( !this.IsEnabled() )

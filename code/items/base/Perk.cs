@@ -10,7 +10,7 @@ public partial class PerkInfo : ItemInfo
 
 public abstract class Perk : EntityComponent<Player>
 {
-	public virtual string ActiveText => string.Empty;
+	public virtual string SlotText => string.Empty;
 	public PerkInfo Info { get; private set; }
 
 	public Perk()
@@ -18,7 +18,7 @@ public abstract class Perk : EntityComponent<Player>
 		Info = Asset.GetInfo<PerkInfo>( this );
 	}
 
-	public virtual void Simulate( Player player ) { }
+	public virtual void Simulate( Client client ) { }
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

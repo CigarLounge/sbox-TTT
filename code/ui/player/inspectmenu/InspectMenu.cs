@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System.Collections.Generic;
 
 namespace TTT.UI;
 
@@ -28,7 +27,7 @@ public class InspectMenu : Panel
 
 	public InspectMenu( Corpse playerCorpse )
 	{
-		if ( playerCorpse.DeadPlayer == null )
+		if ( playerCorpse.DeadPlayer is null )
 			return;
 
 		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
@@ -59,7 +58,7 @@ public class InspectMenu : Panel
 		SetConfirmationData( _playerCorpse.KillerWeapon, _playerCorpse.Perks );
 	}
 
-	private void SetConfirmationData( CarriableInfo carriableInfo, string[] perks )
+	private void SetConfirmationData( CarriableInfo carriableInfo, PerkInfo[] perks )
 	{
 		PlayerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
 		PlayerName.Text = _playerCorpse.PlayerName;
@@ -92,18 +91,18 @@ public class InspectMenu : Panel
 
 		if ( !perks.IsNullOrEmpty() )
 		{
-			foreach ( string perkName in perks )
+			foreach ( var perk in perks )
 			{
-				InspectEntry perkEntry = new( IconsContainer );
-				perkEntry.SetImage( $"/ui/icons/{perkName}.png" );
-				perkEntry.SetImageText( $"{perkName}" );
-				perkEntry.SetActiveText( $"They were carrying {perkName}." );
+				var perkEntry = new InspectEntry( IconsContainer );
+				perkEntry.SetImage( perk.Icon );
+				perkEntry.SetImageText( perk.Title );
+				perkEntry.SetActiveText( $"They were carrying {perk.Title}." );
 
 				_inspectionEntries.Add( perkEntry );
 			}
 		}
 
-		foreach ( InspectEntry entry in _inspectionEntries )
+		foreach ( var entry in _inspectionEntries )
 		{
 			entry.AddEventListener( "onmouseover", () =>
 			 {

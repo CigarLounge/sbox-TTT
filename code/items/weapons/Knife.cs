@@ -67,7 +67,7 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		DamageInfo info = new DamageInfo()
+		var info = new DamageInfo()
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
