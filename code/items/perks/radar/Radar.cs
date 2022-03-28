@@ -1,7 +1,6 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TTT;
 
@@ -49,45 +48,45 @@ public partial class Radar : Perk
 
 	private void UpdatePositions( Player owner )
 	{
-		if ( Host.IsServer )
-		{
-			List<RadarPointData> pointData = new();
-
-			foreach ( var ent in Sandbox.Entity.All )
-			{
-				if ( ent is Player player )
-				{
-					if ( player.Client == owner.Client )
-						continue;
-
-					pointData.Add( new RadarPointData
-					{
-						Position = player.Position + _radarPointOffset,
-						Color = player.Role == owner.Role ? owner.Role.Info.Color : _defaultRadarColor
-					} );
-				}
-				else if ( owner.Team != Team.Traitors && ent is DecoyEntity decoy )
-				{
-					pointData.Add( new RadarPointData
-					{
-						Position = decoy.Position,
-						Color = _defaultRadarColor
-					} );
-				}
-			}
-
-			ClientSendRadarPositions( To.Single( owner ), owner, pointData.ToArray() );
-		}
-		else
+		if ( Host.IsClient )
 		{
 			ClearRadarPoints();
 
 			if ( _lastPositions.IsNullOrEmpty() )
 				return;
 
-			foreach ( var pointData in _lastPositions )
-				_cachedPoints.Add( new RadarPoint( pointData ) );
+			foreach ( var radarData in _lastPositions )
+				_cachedPoints.Add( new RadarPoint( radarData ) );
+
+			return;
 		}
+
+
+		List<RadarPointData> pointData = new();
+		foreach ( var ent in Sandbox.Entity.All )
+		{
+			if ( ent is Player player )
+			{
+				if ( player.Client == owner.Client )
+					continue;
+
+				pointData.Add( new RadarPointData
+				{
+					Position = player.Position + _radarPointOffset,
+					Color = player.Role == owner.Role ? owner.Role.Info.Color : _defaultRadarColor
+				} );
+			}
+			else if ( owner.Team != Team.Traitors && ent is DecoyEntity decoy )
+			{
+				pointData.Add( new RadarPointData
+				{
+					Position = decoy.Position,
+					Color = _defaultRadarColor
+				} );
+			}
+		}
+
+		ClientSendRadarPositions( To.Single( owner ), owner, pointData.ToArray() );
 	}
 
 	private void ClearRadarPoints()
