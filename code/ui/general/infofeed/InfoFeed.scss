@@ -8,13 +8,15 @@ InfoFeed
     align-items: flex-end;
 }
 
-InfoFeedEntry {
+InfoFeedEntry 
+{
     position: relative;
     margin-bottom: 5px;
     padding: 5px 10px;
     transition: all 0.25s ease-out;
 
-    &:intro {
+    &:intro 
+    {
         right: 10px;
         opacity: 0;
     }
@@ -25,7 +27,8 @@ InfoFeedEntry {
         margin-top: -38px;
     }
 
-    .left, .right {
+    .left, .right 
+    {
         padding: 0 5px;
         font-weight: bold;
     }

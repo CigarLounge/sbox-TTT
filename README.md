@@ -16,6 +16,9 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 - Every [contributor](https://github.com/mzegar/sbox-TTT/graphs/contributors) listed here
 - (and more to be added!)
 
+### Special Thanks
+- [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which this game is **heavily** based on
+
 # Discord
 Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 

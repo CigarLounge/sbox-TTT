@@ -1,13 +1,25 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT;
 
+public class RadarDisplay : Panel
+{
+	public static RadarDisplay Instance { get; set; }
+
+	public RadarDisplay() : base()
+	{
+		Instance = this;
+		AddClass( "fullscreen" );
+		Style.ZIndex = -1;
+	}
+}
+
+[UseTemplate]
 public class RadarPoint : Panel
 {
 	private readonly Vector3 _position;
-	private readonly Label _distanceLabel;
+	private Label Distance { get; set; }
 
 	public RadarPoint( RadarPointData data )
 	{
@@ -15,24 +27,15 @@ public class RadarPoint : Panel
 			return;
 
 		_position = data.Position;
-
-		StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
-
 		RadarDisplay.Instance.AddChild( this );
-
-		AddClass( "circular" );
-
-		_distanceLabel = Add.Label();
-		_distanceLabel.AddClass( "distance-label" );
-		_distanceLabel.AddClass( "text-shadow" );
 
 		Style.BackgroundColor = data.Color;
 		Style.BoxShadow = new ShadowList()
 		{
 			new Shadow
 			{
-				Blur = 5,
-				Color = data.Color
+				Color = data.Color,
+				Blur = 5
 			}
 		};
 	}
@@ -44,7 +47,7 @@ public class RadarPoint : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		_distanceLabel.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
+		Distance.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
 
 		Vector3 screenPos = _position.ToScreen();
 		this.Enabled( screenPos.z > 0f );
@@ -54,17 +57,5 @@ public class RadarPoint : Panel
 
 		Style.Left = Length.Fraction( screenPos.x );
 		Style.Top = Length.Fraction( screenPos.y );
-	}
-}
-
-public class RadarDisplay : Panel
-{
-	public static RadarDisplay Instance { get; set; }
-
-	public RadarDisplay() : base()
-	{
-		Instance = this;
-		AddClass( "fullscreen" );
-		Style.ZIndex = -1;
 	}
 }

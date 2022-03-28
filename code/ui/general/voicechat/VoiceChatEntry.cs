@@ -29,7 +29,6 @@ public class VoiceChatEntry : Panel
 
 		Avatar = Add.Image( "", "avatar" );
 		Avatar.SetTexture( $"avatar:{client.PlayerId}" );
-		Avatar.AddClass( "circular" );
 
 		Name = Add.Label( Friend.Name, "name" );
 

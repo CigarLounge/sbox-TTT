@@ -143,7 +143,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				KilledTime
 			);
 
-			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
+			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
 		}
 	}
 
@@ -214,11 +214,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetPlayer( Player deadPlayer, long playerId, string name )
+	private void GetPlayer( Player deadPlayer, long playerId, string name, string[] perks )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
 		PlayerName = name;
+		Perks = perks;
 		DeadPlayer.Corpse = this;
 	}
 

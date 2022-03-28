@@ -1,15 +1,18 @@
-InventorySelection {
+InventorySelection 
+{
     min-width: 300px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
-    &.hide {
+    &.hide 
+    {
         display: none;
     }
 }
 
-InventorySlot {
+InventorySlot 
+{
     height: 34px;
     font-size: 20px;
     opacity: 0.5;
@@ -17,7 +20,8 @@ InventorySlot {
     transition: opacity 0.1s ease-out;
     transition: height 0.1s ease-in;
 
-    .slot-label {
+    .slot-label 
+    {
         height: 100%;
         text-align: center;
         margin-right: 10px;
@@ -26,12 +30,14 @@ InventorySlot {
         font-weight: bold;
     }
 
-    .slot-text {
+    .slot-text 
+    {
         position: absolute;
         right: 8px;
     }
 
-    &.active {
+    &.active 
+    {
         opacity: 1;
     }
 
