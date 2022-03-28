@@ -31,7 +31,6 @@ public partial class Scoreboard : Panel
 		_backgroundPanel.AddClass( "fullscreen" );
 
 		_scoreboardContainer = new( this );
-		_scoreboardContainer.AddClass( "rounded" );
 		_scoreboardContainer.AddClass( "scoreboard-container" );
 
 		_scoreboardHeader = new( _scoreboardContainer );

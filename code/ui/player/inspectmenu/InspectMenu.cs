@@ -19,6 +19,7 @@ public class InspectMenu : Panel
 	private readonly InspectEntry _distanceEntry;
 
 	private readonly Panel _inspectContainer;
+	private readonly Panel _header;
 	private readonly Image _playerAvatar;
 	private readonly Label _playerName;
 	private readonly Label _roleName;
@@ -37,16 +38,17 @@ public class InspectMenu : Panel
 		_inspectContainer = new Panel( this );
 		_inspectContainer.AddClass( "inspect-container" );
 
-		_playerAvatar = _inspectContainer.Add.Image();
+		_header = _inspectContainer.Add.Panel( "header-panel" );
+
+		_playerAvatar = _header.Add.Image();
 		_playerAvatar.AddClass( "avatar-image" );
 		_playerAvatar.AddClass( "box-shadow" );
-		_playerAvatar.AddClass( "circular" );
 
-		_playerName = _inspectContainer.Add.Label();
-		_playerName.AddClass( "player-label" );
-
-		_roleName = _inspectContainer.Add.Label();
+		_roleName = _header.Add.Label();
 		_roleName.AddClass( "role-label" );
+
+		_playerName = _header.Add.Label();
+		_playerName.AddClass( "player-label" );
 
 		_inspectIconsPanel = new Panel( _inspectContainer );
 		_inspectIconsPanel.AddClass( "info-panel" );
