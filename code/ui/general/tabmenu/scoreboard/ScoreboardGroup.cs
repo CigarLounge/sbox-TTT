@@ -51,7 +51,7 @@ public partial class ScoreboardGroup : Panel
 		return scoreboardEntry;
 	}
 
-	public void UpdateLabel()
+	public void UpdateTitle()
 	{
 		_groupTitleLabel.Text = GroupTitle;
 	}

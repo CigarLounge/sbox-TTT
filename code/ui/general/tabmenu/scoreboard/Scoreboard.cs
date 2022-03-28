@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public partial class Scoreboard : Panel
 {
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
@@ -15,38 +16,15 @@ public partial class Scoreboard : Panel
 	private readonly string _confirmedDead = "Confirmed Dead";
 	private readonly string _spectator = "Spectator";
 
-	private readonly Panel _backgroundPanel;
-	private readonly Panel _scoreboardContainer;
-	private readonly ScoreboardHeader _scoreboardHeader;
-	private readonly Panel _scoreboardContent;
-	private readonly Panel _scoreboardFooter;
+	private Panel Container { get; set; }
+	private ScoreboardHeader Header { get; set; }
+	private Panel Content { get; set; }
 
 	public Scoreboard( Panel parent, Button swapButton ) : base()
 	{
 		Parent = parent;
 
-		StyleSheet.Load( "/ui/general/tabmenu/scoreboard/Scoreboard.scss" );
-
-		_backgroundPanel = new( this );
-		_backgroundPanel.AddClass( "fullscreen" );
-
-		_scoreboardContainer = new( this );
-		_scoreboardContainer.AddClass( "scoreboard-container" );
-
-		_scoreboardHeader = new( _scoreboardContainer );
-		_scoreboardHeader.AddClass( "background-color-secondary" );
-		_scoreboardHeader.AddClass( "rounded-top" );
-
-		_scoreboardContent = new( _scoreboardContainer );
-		_scoreboardContent.AddClass( "background-color-primary" );
-		_scoreboardContent.AddClass( "scoreboard-content" );
-
-		_scoreboardFooter = new( _scoreboardContainer );
-		_scoreboardFooter.AddClass( "background-color-secondary" );
-		_scoreboardFooter.AddClass( "scoreboard-footer" );
-		_scoreboardFooter.AddClass( "rounded-bottom" );
-
-		_scoreboardContainer.AddChild( swapButton );
+		Container.AddChild( swapButton );
 
 		Initialize();
 	}
@@ -67,7 +45,7 @@ public partial class Scoreboard : Panel
 	{
 		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
 		ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
-		scoreboardGroup.UpdateLabel();
+		scoreboardGroup.UpdateTitle();
 		scoreboardGroup.GroupMembers++;
 
 		_entries.Add( client, scoreboardEntry );
@@ -92,7 +70,7 @@ public partial class Scoreboard : Panel
 			panel.Update();
 		}
 
-		_scoreboardHeader.UpdateServerInfo();
+		Header.UpdateServerInfo();
 
 		foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
 			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
@@ -108,7 +86,7 @@ public partial class Scoreboard : Panel
 		if ( scoreboardGroup != null )
 			scoreboardGroup.GroupMembers--;
 
-		scoreboardGroup.UpdateLabel();
+		scoreboardGroup.UpdateTitle();
 
 		panel.Delete();
 		_entries.Remove( client );
@@ -145,8 +123,8 @@ public partial class Scoreboard : Panel
 		if ( _scoreboardGroups.ContainsKey( groupName ) )
 			return _scoreboardGroups[groupName];
 
-		ScoreboardGroup scoreboardGroup = new( _scoreboardContent, groupName );
-		scoreboardGroup.UpdateLabel();
+		ScoreboardGroup scoreboardGroup = new( Content, groupName );
+		scoreboardGroup.UpdateTitle();
 
 		_scoreboardGroups.Add( groupName, scoreboardGroup );
 

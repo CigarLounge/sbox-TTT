@@ -1,43 +1,26 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class ScoreboardEntry : Panel
 {
 	public string ScoreboardGroupName;
 	public Client Client;
 
-	private readonly Image _playerAvatar;
-	private readonly Label _playerName;
-
-	private readonly Label _karma;
-	private readonly Label _ping;
-
-	public ScoreboardEntry()
-	{
-		AddClass( "text-shadow" );
-		AddClass( "entry" );
-
-		_playerAvatar = Add.Image();
-		_playerAvatar.AddClass( "circular" );
-		_playerAvatar.AddClass( "avatar" );
-
-		_playerName = Add.Label();
-		_playerName.AddClass( "name-label" );
-
-		_karma = Add.Label( "", "karma" );
-		_ping = Add.Label( "", "ping" );
-	}
+	private Image PlayerAvatar { get; set; }
+	private Label PlayerName { get; set; }
+	private Label Karma { get; set; }
+	private Label Ping { get; set; }
 
 	public virtual void Update()
 	{
 		if ( Client == null )
 			return;
 
-		_playerName.Text = Client.Name;
-		_karma.Text = Client.GetInt( "karma" ).ToString();
+		PlayerName.Text = Client.Name;
+		Karma.Text = Client.GetInt( "karma" ).ToString();
 
 		SetClass( "me", Client == Local.Client );
 
@@ -49,7 +32,7 @@ public class ScoreboardEntry : Panel
 		else
 			Style.BackgroundColor = null;
 
-		_playerAvatar.SetTexture( $"avatar:{Client.PlayerId}" );
+		PlayerAvatar.SetTexture( $"avatar:{Client.PlayerId}" );
 	}
 
 	public override void Tick()
@@ -57,6 +40,6 @@ public class ScoreboardEntry : Panel
 		base.Tick();
 
 		if ( Client != null )
-			_ping.Text = Client.Ping.ToString();
+			Ping.Text = Client.Ping.ToString();
 	}
 }
