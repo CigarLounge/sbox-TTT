@@ -1,4 +1,5 @@
-damageindicator {
+damageindicator 
+{
     mix-blend-mode: lighten;
     position: absolute;
     left: 0;
@@ -8,7 +9,8 @@ damageindicator {
     position: absolute;
     z-index: -10;
 
-    hitpoint {
+    hitpoint 
+    {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -21,11 +23,13 @@ damageindicator {
         opacity: 0.8;
         transform-origin: 0% 0%;
 
-        label {
+        label 
+        {
             text-shadow: 0px 0px 10px #fa0;
         }
 
-        &.dying {
+        &.dying 
+        {
             opacity: 0;
         }
     }
