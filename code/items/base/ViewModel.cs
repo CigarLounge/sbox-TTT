@@ -21,7 +21,7 @@ partial class ViewModel : BaseViewModel
 	public override void PostCameraSetup( ref CameraSetup camSetup )
 	{
 		base.PostCameraSetup( ref camSetup );
-		FieldOfView = 65f;
+		camSetup.ViewModel.FieldOfView = 65f;
 		Rotation = camSetup.Rotation;
 		Position = camSetup.Position;
 
@@ -32,7 +32,7 @@ partial class ViewModel : BaseViewModel
 
 		Rotation *= Rotation.From( _finalVectorRot.x, _finalVectorRot.y, _finalVectorRot.z );
 		Position += _finalVectorPos.z * Rotation.Up + _finalVectorPos.y * Rotation.Forward + _finalVectorPos.x * Rotation.Right;
-		FieldOfView = _finalFOV;
+		camSetup.ViewModel.FieldOfView = _finalFOV;
 
 		_localVel = new Vector3( Owner.Rotation.Right.Dot( Owner.Velocity ), Owner.Rotation.Forward.Dot( Owner.Velocity ), Owner.Velocity.z );
 
