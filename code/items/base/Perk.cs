@@ -13,9 +13,6 @@ public abstract class Perk : EntityComponent<Player>
 	public virtual string ActiveText => string.Empty;
 	public PerkInfo Info { get; private set; }
 
-	// We need this because Entity is null OnDeactivate()
-	private Player _entity;
-
 	public Perk()
 	{
 		Info = Asset.GetInfo<PerkInfo>( this );

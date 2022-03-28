@@ -160,7 +160,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		int credits = 0;
 		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
 
-		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
+		if ( DeadPlayer.Credits > 0 && retrieveCredits )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
