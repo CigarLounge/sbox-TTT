@@ -6,6 +6,7 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class InspectMenu : Panel
 {
 	private readonly Corpse _playerCorpse;
@@ -18,12 +19,11 @@ public class InspectMenu : Panel
 	private readonly InspectEntry _headshotEntry;
 	private readonly InspectEntry _distanceEntry;
 
-	private readonly Panel _inspectContainer;
-	private readonly Panel _header;
-	private readonly Image _playerAvatar;
-	private readonly Label _playerName;
-	private readonly Label _roleName;
-	private readonly Panel _inspectIconsPanel;
+	private Panel InspectContainer { get; set; }
+	private Image PlayerAvatar { get; set; }
+	private Label RoleName { get; set; }
+	private Label PlayerName { get; set; }
+	private Panel IconsContainer { get; set; }
 	private readonly Label _inspectDetailsLabel;
 
 	public InspectMenu( Corpse playerCorpse )
@@ -31,50 +31,28 @@ public class InspectMenu : Panel
 		if ( playerCorpse.DeadPlayer == null )
 			return;
 
-		StyleSheet.Load( "/ui/player/inspectmenu/InspectMenu.scss" );
-
-		AddClass( "text-shadow" );
-
-		_inspectContainer = new Panel( this );
-		_inspectContainer.AddClass( "inspect-container" );
-
-		_header = _inspectContainer.Add.Panel( "header-panel" );
-
-		_playerAvatar = _header.Add.Image();
-		_playerAvatar.AddClass( "avatar-image" );
-		_playerAvatar.AddClass( "box-shadow" );
-
-		_roleName = _header.Add.Label();
-		_roleName.AddClass( "role-label" );
-
-		_playerName = _header.Add.Label();
-		_playerName.AddClass( "player-label" );
-
-		_inspectIconsPanel = new Panel( _inspectContainer );
-		_inspectIconsPanel.AddClass( "info-panel" );
-
-		_timeSinceDeathEntry = new InspectEntry( _inspectIconsPanel );
-		_timeSinceDeathEntry.Enabled( true ); // Time since death is ALWAYS visible
+		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
+		_timeSinceDeathEntry.Enabled( true );
 		_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
 		_inspectionEntries.Add( _timeSinceDeathEntry );
 
-		_deathCauseEntry = new InspectEntry( _inspectIconsPanel );
+		_deathCauseEntry = new InspectEntry( IconsContainer );
 		_deathCauseEntry.Enabled( false );
 		_inspectionEntries.Add( _deathCauseEntry );
 
-		_weaponEntry = new InspectEntry( _inspectIconsPanel );
+		_weaponEntry = new InspectEntry( IconsContainer );
 		_weaponEntry.Enabled( false );
 		_inspectionEntries.Add( _weaponEntry );
 
-		_headshotEntry = new InspectEntry( _inspectIconsPanel );
+		_headshotEntry = new InspectEntry( IconsContainer );
 		_headshotEntry.Enabled( false );
 		_inspectionEntries.Add( _headshotEntry );
 
-		_distanceEntry = new InspectEntry( _inspectIconsPanel );
+		_distanceEntry = new InspectEntry( IconsContainer );
 		_distanceEntry.Enabled( false );
 		_inspectionEntries.Add( _distanceEntry );
 
-		_inspectDetailsLabel = _inspectContainer.Add.Label();
+		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
 		_playerCorpse = playerCorpse;
@@ -83,10 +61,10 @@ public class InspectMenu : Panel
 
 	private void SetConfirmationData( CarriableInfo carriableInfo, string[] perks )
 	{
-		_playerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
-		_playerName.Text = _playerCorpse.PlayerName;
-		_roleName.Text = _playerCorpse.DeadPlayer.Role.Title;
-		_roleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
+		PlayerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
+		PlayerName.Text = _playerCorpse.PlayerName;
+		RoleName.Text = _playerCorpse.DeadPlayer.Role.Title;
+		RoleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
@@ -116,7 +94,7 @@ public class InspectMenu : Panel
 		{
 			foreach ( string perkName in perks )
 			{
-				InspectEntry perkEntry = new( _inspectIconsPanel );
+				InspectEntry perkEntry = new( IconsContainer );
 				perkEntry.SetImage( $"/ui/icons/{perkName}.png" );
 				perkEntry.SetImageText( $"{perkName}" );
 				perkEntry.SetActiveText( $"They were carrying {perkName}." );

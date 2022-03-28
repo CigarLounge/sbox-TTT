@@ -30,11 +30,6 @@ public class InspectEntry : Panel
 		_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 	}
 
-	public void SetData( string text )
-	{
-		ActiveText = text;
-	}
-
 	public void SetActiveText( string text )
 	{
 		ActiveText = text;
