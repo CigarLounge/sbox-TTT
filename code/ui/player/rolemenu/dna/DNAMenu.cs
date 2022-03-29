@@ -9,7 +9,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class DNAMenu : Panel
 {
-	private readonly Dictionary<DNA, Sample> _entries = new();
+	private readonly Dictionary<DNA, DNASample> _entries = new();
 
 	private Panel SampleContainer { get; set; }
 	private Label Charge { get; set; }
@@ -27,33 +27,39 @@ public partial class DNAMenu : Panel
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
 
-		foreach ( var sample in scanner.DNACollected.Except( _entries.Keys ) )
+		foreach ( var dna in scanner.DNACollected )
 		{
-			var panel = AddSample( sample );
-			_entries[sample] = panel;
+			if ( !_entries.ContainsKey( dna ) )
+				_entries[dna] = AddDNASample( dna );
 		}
 
-		foreach ( var dna in _entries.Keys.Except( scanner.DNACollected ) )
+		foreach ( var dnaPanel in _entries.Values )
 		{
-			if ( _entries.TryGetValue( dna, out var panel ) )
+			if ( !scanner.DNACollected.Contains( dnaPanel.DNA ) )
 			{
-				panel?.Delete();
-				_entries.Remove( dna );
+				_entries.Remove( dnaPanel.DNA );
+				dnaPanel?.Delete();
 			}
+
+			dnaPanel.SetClass( "selected", scanner.SelectedSample == dnaPanel.DNA );
 		}
 	}
 
-	private Sample AddSample( DNA dna )
+	private DNASample AddDNASample( DNA dna )
 	{
-		var panel = new Sample( dna );
+		var panel = new DNASample( dna );
 		SampleContainer.AddChild( panel );
 		return panel;
 	}
 
-	public class Sample : Panel
+	public class DNASample : Panel
 	{
-		public Sample( DNA dna )
+		public DNA DNA;
+
+		public DNASample( DNA dna )
 		{
+			DNA = dna;
+
 			AddClass( "rounded" );
 			AddClass( "background-color-primary" );
 
@@ -63,7 +69,30 @@ public partial class DNAMenu : Panel
 				DeleteSample( dna.NetworkIdent );
 			} );
 
-			Add.Button( $"{true}" );
+			Add.Button( $"{dna.DNAType}", () =>
+			{
+				SetActiveSample( dna.NetworkIdent );
+			} );
+		}
+	}
+
+	[ServerCmd()]
+	public static void SetActiveSample( int indent )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
+
+		foreach ( var dna in scanner.DNACollected )
+		{
+			if ( dna.NetworkIdent == indent )
+			{
+				scanner.SelectedSample = dna;
+				return;
+			}
 		}
 	}
 

@@ -41,13 +41,19 @@ DNAMenu
         }
     }
 
-    Sample 
+    DNASample 
     {
         margin: 0 10 10 10;
         min-height: 45px;
         min-width: 300px;
         max-width: 300px;
         justify-content: center;
+
+        .selected
+        {
+        
+            height: 500px;
+        }
 
         .delete-button
         {

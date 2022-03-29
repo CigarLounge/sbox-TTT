@@ -11,6 +11,9 @@ public partial class DNAScanner : Carriable
 	public IList<DNA> DNACollected { get; set; }
 
 	[Net, Local]
+	public DNA SelectedSample { get; set; }
+
+	[Net, Local]
 	public float Charge { get; set; } = 0;
 
 	private const float MAX_CHARGE = 100f;
@@ -83,14 +86,14 @@ public partial class DNAScanner : Carriable
 
 public class DNA : EntityComponent<Entity>
 {
-	enum Type
+	public enum Type
 	{
 		Carriable,
 		Corpse,
 		Ammo // Might not be possible let's double check.
 	}
 
-	private Type DNAType { get; set; }
+	public Type DNAType { get; set; }
 	private TimeSince _timeSinceCreated; // We will use this to figure out when the DNA decays completely. Lets use TimeUntil instead...
 	private float _timeToDecay = 60000; // This value is calculated based on the entity, the time to completely decay.
 
