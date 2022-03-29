@@ -48,12 +48,7 @@ DNAMenu
         min-width: 300px;
         max-width: 300px;
         justify-content: center;
-
-        .selected
-        {
-        
-            height: 500px;
-        }
+        text-shadow: 0px 0px 2px black, 0px 0px 2px black;
 
         .delete-button
         {
@@ -73,6 +68,12 @@ DNAMenu
             {
                 transform: scale( 0.9 );
             }
+        }
+
+        &.selected
+        {
+            border-width: 2px;
+            border-color: #c59913;
         }
     }
 }
