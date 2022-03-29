@@ -1,0 +1,37 @@
+<link rel="stylesheet" href="ComponentTestingPage.scss">
+
+<div class="root">
+    <button icon="settings">Settings</button>
+    <br />
+
+    <button class="inactive">Settings</button>
+    <br />
+
+    <checkbox @checked="CheckedValue">Settings</checkbox>
+    <br />
+
+    <checkbox class="inactive" @checked="CheckedValue">Settings</checkbox>
+    <br />
+
+    <dropdown @value="FloatValue">
+        <option value="0" key="MENU_SUBMENU_SETTINGS">0</option>
+        <option value="10" key="MENU_SUBMENU_SETTINGS">10</option>
+    </dropdown>
+    <br />
+
+    <SliderEntry min="0" max="100" @value="SliderValue"></SliderEntry>
+    <br />
+
+    <textentry @value="TextValue" placeholder="Here is some placeholder text."></textentry>
+    <br />
+
+    <tabcontainer>
+        <tab slot="tab" tabicon="emoji_people" tabtext="First Tab">
+            <button class="inactive">Tab 1</button>
+        </tab>
+
+        <tab slot="tab" tabicon="settings" tabtext="Second Tab">
+            <button icon="settings">Tab 2</button>
+        </tab>
+    </tabcontainer>
+</div>
