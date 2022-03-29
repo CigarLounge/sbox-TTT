@@ -43,8 +43,8 @@ public partial class Scoreboard : Panel
 
 	public void AddClient( Client client )
 	{
-		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
-		ScoreboardEntry scoreboardEntry = scoreboardGroup.AddEntry( client );
+		var scoreboardGroup = GetScoreboardGroup( client );
+		var scoreboardEntry = scoreboardGroup.AddEntry( client );
 		scoreboardGroup.UpdateTitle();
 		scoreboardGroup.GroupMembers++;
 
@@ -53,13 +53,13 @@ public partial class Scoreboard : Panel
 
 	private void UpdateClient( Client client )
 	{
-		if ( client == null )
+		if ( client is null )
 			return;
 
 		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
 			return;
 
-		ScoreboardGroup scoreboardGroup = GetScoreboardGroup( client );
+		var scoreboardGroup = GetScoreboardGroup( client );
 		if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
 		{
 			RemoveClient( client );
@@ -72,7 +72,7 @@ public partial class Scoreboard : Panel
 
 		Header.UpdateServerInfo();
 
-		foreach ( ScoreboardGroup value in _scoreboardGroups.Values )
+		foreach ( var value in _scoreboardGroups.Values )
 			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
 	}
 
@@ -83,7 +83,7 @@ public partial class Scoreboard : Panel
 
 		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup );
 
-		if ( scoreboardGroup != null )
+		if ( scoreboardGroup is not null )
 			scoreboardGroup.GroupMembers--;
 
 		scoreboardGroup.UpdateTitle();
@@ -114,7 +114,7 @@ public partial class Scoreboard : Panel
 			}
 		}
 
-		foreach ( Client client in Client.All )
+		foreach ( var client in Client.All )
 			UpdateClient( client );
 	}
 
@@ -123,7 +123,7 @@ public partial class Scoreboard : Panel
 		if ( _scoreboardGroups.ContainsKey( groupName ) )
 			return _scoreboardGroups[groupName];
 
-		ScoreboardGroup scoreboardGroup = new( Content, groupName );
+		var scoreboardGroup = new ScoreboardGroup( Content, groupName );
 		scoreboardGroup.UpdateTitle();
 
 		_scoreboardGroups.Add( groupName, scoreboardGroup );
@@ -133,15 +133,14 @@ public partial class Scoreboard : Panel
 
 	private ScoreboardGroup GetScoreboardGroup( Client client )
 	{
-		if ( client.Pawn is Player player )
-		{
-			if ( player.IsMissingInAction )
-				return _scoreboardGroups[_missingInAction];
+		var player = client.Pawn as Player;
 
-			if ( player.IsConfirmedDead )
-				return _scoreboardGroups[_confirmedDead];
-		}
+		if ( player.IsMissingInAction )
+			return _scoreboardGroups[_missingInAction];
 
-		return _scoreboardGroups[client.GetValue<bool>( RawStrings.Spectator ) ? _spectator : _alive];
+		if ( player.IsConfirmedDead )
+			return _scoreboardGroups[_confirmedDead];
+
+		return _scoreboardGroups[player.IsSpectator ? _spectator : _alive];
 	}
 }

@@ -65,7 +65,7 @@ public abstract partial class BaseRound : BaseNetworkable
 		{
 			var player = client.Pawn as Player;
 
-			if ( !player.IsAlive() && !player.IsConfirmedDead )
+			if ( !player.IsAlive() && !player.IsConfirmedDead && !player.IsSpectator )
 				player.Confirm();
 			else if ( !player.IsRoleKnown )
 				player.SendRoleToClient( To.Everyone );

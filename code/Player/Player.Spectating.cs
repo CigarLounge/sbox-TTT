@@ -18,6 +18,7 @@ public partial class Player
 	}
 
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
+	public bool IsSpectator => Client.GetValue<bool>( RawStrings.Spectator );
 
 	private int _targetIdx = 0;
 
