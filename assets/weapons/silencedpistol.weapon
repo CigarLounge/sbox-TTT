@@ -19,7 +19,7 @@
 		deploytime = 0.6
 		buyable = true
 		price = 100
-		icon = "ui/icons/weapons/ttt_weapon_silencedpistol.png"
+		icon = "ui/icons/silenced-pistol.png"
 		worldmodel = resource:"models/weapons/w_vertec-silenced.vmdl"
 		libraryname = "ttt_weapon_silencedpistol"
 		spread = 0.03

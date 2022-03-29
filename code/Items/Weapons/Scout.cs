@@ -49,7 +49,7 @@ public partial class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout_scope.png" )
+		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" )
 		{
 			Parent = Local.Hud
 		};

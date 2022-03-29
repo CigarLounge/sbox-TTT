@@ -6,13 +6,13 @@ namespace TTT;
 [Library( "ttt_equipment_teleporter", Title = "Teleporter" )]
 public partial class Teleporter : Carriable
 {
-	[Net, Local, Predicted]
+	[Net, Predicted]
 	public int Charges { get; private set; } = 16;
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSinceAction { get; private set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	[Net, Predicted]

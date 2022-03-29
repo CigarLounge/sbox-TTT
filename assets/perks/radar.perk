@@ -5,7 +5,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = "ui/icons/ttt_perk_radar.png"
+		icon = "ui/perks/radar.png"
 		libraryname = "ttt_perk_radar"
 		description = "Allows you to scan for life signs."
 	}

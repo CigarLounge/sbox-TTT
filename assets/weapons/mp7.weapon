@@ -26,7 +26,7 @@
 		buyable = false
 		islimited = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_mp7.png"
+		icon = "ui/weapons/mp7.png"
 		worldmodel = resource:"models/weapons/w_mp7.vmdl"
 		libraryname = "ttt_weapon_mp7"
 		verticalrecoil = 10.0

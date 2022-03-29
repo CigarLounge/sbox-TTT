@@ -51,16 +51,16 @@ public abstract partial class Weapon : Carriable
 	[Net, Predicted]
 	public int ReserveAmmo { get; protected set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public bool IsReloading { get; protected set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSincePrimaryAttack { get; protected set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSinceSecondaryAttack { get; protected set; }
 
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";

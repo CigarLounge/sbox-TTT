@@ -21,7 +21,7 @@
 		deploytime = 0.6
 		buyable = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_bekas.png"
+		icon = "ui/weapons/bekas.png"
 		worldmodel = resource:"models/weapons/w_bekas.vmdl"
 		libraryname = "ttt_weapon_bekas"
 		ammotype = "2"
@@ -35,5 +35,6 @@
 		islimited = false
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
