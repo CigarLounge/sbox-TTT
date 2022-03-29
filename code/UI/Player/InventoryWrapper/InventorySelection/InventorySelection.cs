@@ -4,10 +4,10 @@ using System.Linq;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class InventorySelection : Panel
 {
 	private readonly Dictionary<Carriable, InventorySlot> _entries = new();
@@ -24,15 +24,7 @@ public class InventorySelection : Panel
 			InputButton.Slot7,
 			InputButton.Slot8,
 			InputButton.Slot9
-		};
-
-	public InventorySelection() : base()
-	{
-		StyleSheet.Load( "/ui/player/inventorywrapper/inventoryselection/InventorySelection.scss" );
-
-		AddClass( "opacity-heavy" );
-		AddClass( "text-shadow" );
-	}
+	};
 
 	public override void Tick()
 	{
@@ -44,9 +36,7 @@ public class InventorySelection : Panel
 		foreach ( var carriable in player.CurrentPlayer.Inventory.List )
 		{
 			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
-			{
 				_entries[carriable] = AddInventorySlot( carriable );
-			}
 		}
 
 		var activeItem = player.CurrentPlayer.ActiveChild;
@@ -183,41 +173,5 @@ public class InventorySelection : Panel
 		}
 
 		return -1;
-	}
-
-	private class InventorySlot : Panel
-	{
-		public Carriable Carriable { get; init; }
-		public Label SlotLabel;
-		private readonly Label _slotText;
-
-		public InventorySlot( Panel parent, Carriable carriable ) : base( parent )
-		{
-			Parent = parent;
-			Carriable = carriable;
-
-			AddClass( "background-color-primary" );
-
-			SlotLabel = Add.Label( ((int)carriable.Info.Slot + 1).ToString() );
-			SlotLabel.AddClass( "slot-label" );
-
-			Add.Label( carriable.Info.Title );
-
-			_slotText = Add.Label( string.Empty, "slot-text" );
-			_slotText.Text = Carriable.SlotText;
-		}
-
-		public override void Tick()
-		{
-			base.Tick();
-
-			var player = Local.Pawn as Player;
-			SlotLabel.Style.BackgroundColor = player.CurrentPlayer.Role?.Color;
-		}
-
-		public void UpdateSlotText( string slotText )
-		{
-			_slotText.Text = slotText;
-		}
 	}
 }
