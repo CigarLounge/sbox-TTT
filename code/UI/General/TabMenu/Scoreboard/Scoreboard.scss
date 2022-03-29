@@ -1,0 +1,39 @@
+@import "../../../Hud.scss";
+
+scoreboard
+{
+    height: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    width: 40%;
+    flex-direction: column;
+    transition: all 0.2s ease-in;
+
+    .container
+    {
+        flex-direction: column;
+        justify-content: center;
+
+        .column-label-panel
+        {
+            flex-direction: row;
+            justify-content: flex-end;
+            padding: 4px;
+        }
+
+        .scoreboard-content
+        {
+            flex-direction: column;
+            padding: 8px;
+            max-height: 73%;
+            overflow: scroll;
+        }
+
+        .scoreboard-footer
+        {
+            height: 41px;
+        }
+    }
+}
