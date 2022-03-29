@@ -1,0 +1,32 @@
+PerkSlot
+{
+    flex-direction: column;
+    align-items: center;
+
+    .name
+    {
+        font-size: 12px;
+    }
+
+    .active
+    {
+        font-size: 22px;
+        font-weight: bold;
+        z-index: 1;
+    }
+
+    .icon-panel
+    {
+        width: 100px;
+        height: 100px;
+    }
+
+    Image
+    {
+        height: 100%;
+        width: 100%;
+        opacity: 0.65;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
