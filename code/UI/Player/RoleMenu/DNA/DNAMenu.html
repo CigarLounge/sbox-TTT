@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="DNAMenu.scss" />
+
+<root>
+    <div @ref="SampleContainer" class="sample-container">
+
+    </div>
+    <div class="info-container rounded background-color-primary">
+        <label @ref="Charge" class="charge"></label>
+        <label @ref="ChargeStatus" class="charge-status"></label>
+        <Button @ref="ScanButton" icon="radar" class="scan-button">Scan</Button>
+        <Checkbox @ref="AutoRepeat">Auto-repeat</Checkbox>
+    </div>
+</root>
