@@ -1,0 +1,57 @@
+button
+{
+	display: flex;
+	font-family: Poppins;
+	font-weight: 600;
+	font-size: 16px;
+	cursor: pointer;
+	background-color: transparent;
+	padding: 8px 16px;
+	border-radius: 8px;
+	color: $button-primary-fg;
+	min-height: $button-size;
+	flex-shrink: 0;
+	align-items: center;
+
+	> iconpanel
+	{
+		font-size: 22px;
+		display: none;
+	}
+
+	> .button-label
+	{
+		display: none;
+	}
+
+	&.has-icon > iconpanel
+	{
+		display: flex;
+	}
+
+	&.has-label > .button-label
+	{
+		display: flex;
+	}
+
+	&.has-label.has-icon > iconpanel
+	{
+		margin-right: 10px;
+	}
+
+	&:hover
+	{
+		color: $button-secondary-fg;
+	}
+
+	&:active
+	{
+		color: $button-primary-fg;
+	}
+
+	&.inactive
+	{
+		opacity: 0.3;
+		pointer-events: none;
+	}
+}

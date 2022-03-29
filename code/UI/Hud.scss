@@ -1,0 +1,300 @@
+$primary: #282828;
+$secondary: #1e1e1e;
+$alive: #17ad44;
+$missing: #50754f;
+$dead: #c65b3a;
+$spectator: #fcdb38;
+$info: #fdc418;
+
+$button-primary: #ffffff !default;
+$button-primary-bottom: $button-primary !default;
+$button-primary-fg: #ffffff !default;
+$button-secondary: #282828 !default;
+$button-secondary-fg: #bbbbbb !default;
+$button-dark: #1b3039 !default;
+$button-size: 45px;
+
+@import "/ui/components/styles/tabcontainer.scss";
+@import "/ui/components/styles/button.scss";
+@import "/ui/components/styles/checkbox.scss";
+@import "/ui/components/styles/dropdown.scss";
+@import "/ui/components/styles/label.scss";
+@import "/ui/components/styles/textentry.scss";
+@import "/ui/components/styles/slider.scss";
+
+@import "/ui/components/coloreditor/coloreditor.scss";
+@import "/ui/components/linebreak/linebreak.scss";
+
+rootpanel
+{
+    font-family: Poppins;
+    flex-shrink: 0;
+    color: #fafafa;
+    letter-spacing: 0.5px;
+}
+
+.iconpanel,
+.icon
+{
+    font-size: 21px;
+    font-family: MaterialIcons;
+}
+
+.window
+{
+    flex-direction: column;
+    justify-content: space-between;
+    pointer-events: all;
+
+    .header
+    {
+        width: 100%;
+        min-height: 50px;
+        top: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px;
+        font-weight: 500;
+    }
+
+    .content
+    {
+        flex-grow: 1;
+    }
+
+    .footer
+    {
+        width: 100%;
+        min-height: 40px;
+        bottom: 0;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+    }
+}
+
+.disabled
+{
+    display: none;
+    pointer-events: none;
+}
+
+.fade-in
+{
+    opacity: 0.75;
+}
+
+.fade-out
+{
+    opacity: 0;
+}
+
+.rounded
+{
+    border-radius: 8px;
+}
+
+.rounded-top-left
+{
+    border-top-left-radius: 8px;
+}
+
+.rounded-bottom-left
+{
+    border-bottom-left-radius: 8px;
+}
+
+.rounded-top
+{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.rounded-bottom
+{
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.circular
+{
+    border-radius: 50%;
+}
+
+.opacity-zero
+{
+    opacity: 0;
+}
+
+.opacity-medium
+{
+    opacity: 0.75;
+}
+
+.opacity-heavy
+{
+    opacity: 0.9;
+}
+
+.centered-flex
+{
+    left: 0;
+    right: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
+.centered
+{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.centered-vertical-75
+{
+    position: absolute;
+    left: 50%;
+    top: 75%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.centered-vertical-90
+{
+    position: absolute;
+    left: 50%;
+    top: 95%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.centered-vertical-10
+{
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.centered-horizontal
+{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.button
+{
+    cursor: pointer;
+}
+
+.text-shadow
+{
+    text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+}
+
+.text-shadow-light
+{
+    text-shadow: 0px 0px 1px black, 0px 0px 0px black;
+}
+
+.box-shadow
+{
+    box-shadow: 0px 0px 10px black;
+}
+
+.fullscreen
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.text-color-alive
+{
+    color: $alive;
+}
+
+.text-color-spectator
+{
+    color: $spectator;
+}
+
+.text-color-info
+{
+    color: $info;
+}
+
+.background-color-primary
+{
+    background-color: $primary;
+}
+
+.background-color-alive
+{
+    background-color: $alive;
+}
+
+.background-color-spectator
+{
+    background-color: $spectator;
+}
+
+.background-color-secondary
+{
+    background-color: $secondary;
+}
+
+.border-color-alive
+{
+    border-color: $alive;
+}
+
+.border-color-spectator
+{
+    border-color: $spectator;
+}
+
+.h1
+{
+    color: white;
+    font-weight: bold;
+    font-family: Poppins;
+    text-decoration: underline;
+    margin-bottom: 5px;
+
+    &.label
+    {
+        font-size: 25px;
+    }
+}
+
+.h2
+{
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
+
+    &.label
+    {
+        font-size: 20px;
+    }
+}
+
+.h3
+{
+    color: white;
+    font-weight: normal;
+    font-family: Poppins;
+    margin-bottom: 5px;
+
+    &.label
+    {
+        font-size: 15px;
+    }
+}

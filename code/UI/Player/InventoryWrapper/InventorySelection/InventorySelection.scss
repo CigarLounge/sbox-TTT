@@ -1,0 +1,12 @@
+InventorySelection 
+{
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    &.hide 
+    {
+        display: none;
+    }
+}
