@@ -41,7 +41,6 @@ public enum HitboxGroup
 
 public partial class Player
 {
-	[Net]
 	public float MaxHealth { get; set; } = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float LastDistanceToAttacker { get; set; } = 0f;
@@ -87,7 +86,7 @@ public partial class Player
 	{
 		LastDamageInfo = info;
 
-		HitboxGroup hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
+		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
 		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );

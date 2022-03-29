@@ -76,7 +76,7 @@ public class PerkDisplay : Panel
 		public override void Tick()
 		{
 			base.Tick();
-			_activeLabel.Text = _perk.ActiveText;
+			_activeLabel.Text = _perk.SlotText;
 		}
 	}
 }

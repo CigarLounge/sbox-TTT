@@ -11,11 +11,10 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 	public float StoredHealth { get; set; } = 200f;
 
 	private const string WorldModel = "models/health_station/health_station.vmdl";
-	private TimeUntil _nextHeal = 0;
-	private TimeUntil _nextRecharge = 0;
+	private const int HEALAMOUNT = 5; // The amount of health given per second.
+	private const int RECHARGEAMOUNT = 1; // The amount of health recharged per second.
 
-	private const int HEALAMOUNT = 5;
-	private const int HEALFREQUENCY = 1; // seconds
+	private TimeUntil _timeUntilRecharge = 1f;
 
 	public override void Spawn()
 	{
@@ -23,22 +22,21 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 
 		SetModel( WorldModel );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		Health = 100f;
+		Health = 201f;
 	}
 
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		if ( StoredHealth < 200f && _nextRecharge && _nextHeal )
-		{
-			StoredHealth++;
-			_nextRecharge = 2f;
-		}
+		if ( StoredHealth >= 200f || !_timeUntilRecharge )
+			return;
+
+		StoredHealth = Math.Min( StoredHealth + RECHARGEAMOUNT * Time.Delta, 200f );
 	}
 
 	private void HealPlayer( Player player )
 	{
-		if ( !_nextHeal || StoredHealth <= 0 )
+		if ( StoredHealth <= 0 )
 			return;
 
 		float healthNeeded = player.MaxHealth - player.Health;
@@ -46,12 +44,12 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 		if ( healthNeeded <= 0 )
 			return;
 
-		float healAmount = Math.Min( StoredHealth, Math.Min( HEALAMOUNT, healthNeeded ) );
+		float healAmount = Math.Min( StoredHealth, Math.Min( HEALAMOUNT * Time.Delta, healthNeeded ) );
 
 		player.SetHealth( player.Health + healAmount );
 
 		StoredHealth -= healAmount;
-		_nextHeal = HEALFREQUENCY;
+		_timeUntilRecharge = 10;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );
@@ -61,12 +59,12 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 		var player = user as Player;
 		HealPlayer( player );
 
-		return player.Health < player.MaxHealth;
+		return player.Health < player.MaxHealth && StoredHealth > 0;
 	}
 
 	bool IUse.IsUsable( Entity user )
 	{
-		if ( StoredHealth <= 0 || !user.IsAlive() )
+		if ( StoredHealth <= 0 )
 			return false;
 
 		if ( user is not Player player || player.Health >= player.MaxHealth )

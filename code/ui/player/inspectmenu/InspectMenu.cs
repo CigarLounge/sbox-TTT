@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System.Collections.Generic;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class InspectMenu : Panel
 {
 	private readonly Corpse _playerCorpse;
@@ -18,73 +18,52 @@ public class InspectMenu : Panel
 	private readonly InspectEntry _headshotEntry;
 	private readonly InspectEntry _distanceEntry;
 
-	private readonly Panel _inspectContainer;
-	private readonly Image _playerAvatar;
-	private readonly Label _playerName;
-	private readonly Label _roleName;
-	private readonly Panel _inspectIconsPanel;
+	private Panel InspectContainer { get; set; }
+	private Image PlayerAvatar { get; set; }
+	private Label RoleName { get; set; }
+	private Label PlayerName { get; set; }
+	private Panel IconsContainer { get; set; }
 	private readonly Label _inspectDetailsLabel;
 
 	public InspectMenu( Corpse playerCorpse )
 	{
-		if ( playerCorpse.DeadPlayer == null )
+		if ( playerCorpse.DeadPlayer is null )
 			return;
 
-		StyleSheet.Load( "/ui/player/inspectmenu/InspectMenu.scss" );
-
-		AddClass( "text-shadow" );
-
-		_inspectContainer = new Panel( this );
-		_inspectContainer.AddClass( "inspect-container" );
-
-		_playerAvatar = _inspectContainer.Add.Image();
-		_playerAvatar.AddClass( "avatar-image" );
-		_playerAvatar.AddClass( "box-shadow" );
-		_playerAvatar.AddClass( "circular" );
-
-		_playerName = _inspectContainer.Add.Label();
-		_playerName.AddClass( "player-label" );
-
-		_roleName = _inspectContainer.Add.Label();
-		_roleName.AddClass( "role-label" );
-
-		_inspectIconsPanel = new Panel( _inspectContainer );
-		_inspectIconsPanel.AddClass( "info-panel" );
-
-		_timeSinceDeathEntry = new InspectEntry( _inspectIconsPanel );
-		_timeSinceDeathEntry.Enabled( true ); // Time since death is ALWAYS visible
+		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
+		_timeSinceDeathEntry.Enabled( true );
 		_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
 		_inspectionEntries.Add( _timeSinceDeathEntry );
 
-		_deathCauseEntry = new InspectEntry( _inspectIconsPanel );
+		_deathCauseEntry = new InspectEntry( IconsContainer );
 		_deathCauseEntry.Enabled( false );
 		_inspectionEntries.Add( _deathCauseEntry );
 
-		_weaponEntry = new InspectEntry( _inspectIconsPanel );
+		_weaponEntry = new InspectEntry( IconsContainer );
 		_weaponEntry.Enabled( false );
 		_inspectionEntries.Add( _weaponEntry );
 
-		_headshotEntry = new InspectEntry( _inspectIconsPanel );
+		_headshotEntry = new InspectEntry( IconsContainer );
 		_headshotEntry.Enabled( false );
 		_inspectionEntries.Add( _headshotEntry );
 
-		_distanceEntry = new InspectEntry( _inspectIconsPanel );
+		_distanceEntry = new InspectEntry( IconsContainer );
 		_distanceEntry.Enabled( false );
 		_inspectionEntries.Add( _distanceEntry );
 
-		_inspectDetailsLabel = _inspectContainer.Add.Label();
+		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
 		_playerCorpse = playerCorpse;
 		SetConfirmationData( _playerCorpse.KillerWeapon, _playerCorpse.Perks );
 	}
 
-	private void SetConfirmationData( CarriableInfo carriableInfo, string[] perks )
+	private void SetConfirmationData( CarriableInfo carriableInfo, PerkInfo[] perks )
 	{
-		_playerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
-		_playerName.Text = _playerCorpse.PlayerName;
-		_roleName.Text = _playerCorpse.DeadPlayer.Role.Title;
-		_roleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
+		PlayerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
+		PlayerName.Text = _playerCorpse.PlayerName;
+		RoleName.Text = _playerCorpse.DeadPlayer.Role.Title;
+		RoleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
 
 		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
@@ -112,18 +91,18 @@ public class InspectMenu : Panel
 
 		if ( !perks.IsNullOrEmpty() )
 		{
-			foreach ( string perkName in perks )
+			foreach ( var perk in perks )
 			{
-				InspectEntry perkEntry = new( _inspectIconsPanel );
-				perkEntry.SetImage( $"/ui/icons/{perkName}.png" );
-				perkEntry.SetImageText( $"{perkName}" );
-				perkEntry.SetActiveText( $"They were carrying {perkName}." );
+				var perkEntry = new InspectEntry( IconsContainer );
+				perkEntry.SetImage( perk.Icon );
+				perkEntry.SetImageText( perk.Title );
+				perkEntry.SetActiveText( $"They were carrying {perk.Title}." );
 
 				_inspectionEntries.Add( perkEntry );
 			}
 		}
 
-		foreach ( InspectEntry entry in _inspectionEntries )
+		foreach ( var entry in _inspectionEntries )
 		{
 			entry.AddEventListener( "onmouseover", () =>
 			 {

@@ -4,13 +4,13 @@ public partial class Player : IEntityHint
 {
 	public float HintDistance { get; set; } = MAX_HINT_DISTANCE;
 
-	public bool CanHint( Player player )
+	bool IEntityHint.CanHint( Player player )
 	{
 		var disguiser = Perks.Find<Disguiser>();
 		return disguiser is null || (disguiser is not null && !disguiser.IsEnabled);
 	}
 
-	public UI.EntityHintPanel DisplayHint( Player player )
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
 		return new UI.Nameplate( this );
 	}

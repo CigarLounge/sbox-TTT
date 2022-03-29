@@ -11,7 +11,7 @@ public class InputGlyph : Panel
 
 	public InputGlyph()
 	{
-		StyleSheet.Load( "/ui/components/inputglyph/InputGlyph.scss" );
+		StyleSheet.Load( "/UI/Components/InputGlyph/InputGlyph.scss" );
 	}
 
 	public void SetButton( InputButton inputButton )

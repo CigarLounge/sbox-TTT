@@ -7,14 +7,14 @@ namespace TTT;
 [Library( "ttt_perk_disguiser", Title = "Disguiser" )]
 public partial class Disguiser : Perk
 {
-	public override string ActiveText => IsEnabled ? "ON" : "OFF";
+	public override string SlotText => IsEnabled ? "ON" : "OFF";
 
 	[Net, Local]
 	public bool IsEnabled { get; set; } = false;
 	private readonly float _lockOutSeconds = 1f;
 	private bool _isLocked = false;
 
-	public override void Simulate( Player player )
+	public override void Simulate( Client client )
 	{
 		if ( Input.Down( InputButton.Grenade ) && !_isLocked )
 		{

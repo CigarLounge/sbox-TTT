@@ -15,7 +15,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
-	public string[] Perks { get; set; }
+	public PerkInfo[] Perks { get; set; }
 
 	// We need this so we don't send information to players multiple times
 	// The HashSet consists of NetworkIds
@@ -69,10 +69,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		Player.SetClothingBodyGroups( this, 1 );
 
-		Perks = new string[DeadPlayer.Perks.Count];
+		Perks = new PerkInfo[DeadPlayer.Perks.Count];
 		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
 		{
-			Perks[i] = DeadPlayer.Perks.Get( i ).Info.Title;
+			Perks[i] = DeadPlayer.Perks.Get( i ).Info;
 		}
 
 		foreach ( var entity in attachedEnts )
@@ -145,7 +145,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				KilledTime
 			);
 
-			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName );
+			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
 		}
 	}
 
@@ -162,7 +162,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		int credits = 0;
 		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
 
-		if ( DeadPlayer.Credits > 0 && searcher.IsValid() && retrieveCredits )
+		if ( DeadPlayer.Credits > 0 && retrieveCredits )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
@@ -216,11 +216,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetPlayer( Player deadPlayer, long playerId, string name )
+	private void GetPlayer( Player deadPlayer, long playerId, string name, PerkInfo[] perks )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
 		PlayerName = name;
+		Perks = perks;
 		DeadPlayer.Corpse = this;
 	}
 

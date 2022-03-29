@@ -7,8 +7,8 @@ namespace TTT;
 [Library( "ttt_weapon_huge", Title = "H.U.G.E" )]
 public partial class Huge : Weapon
 {
-	private readonly string BulletsBodyGroup = "bullets";
-	private readonly int MaxBulletsChoice = 7;
+	private const string BulletsBodyGroup = "bullets";
+	private const int MaxBulletsChoice = 7;
 
 	public override void Simulate( Client client )
 	{

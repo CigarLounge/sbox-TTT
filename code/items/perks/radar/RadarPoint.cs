@@ -1,61 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
-namespace TTT;
-
-public class RadarPoint : Panel
-{
-	private readonly Vector3 _position;
-	private readonly Label _distanceLabel;
-
-	public RadarPoint( RadarPointData data )
-	{
-		if ( RadarDisplay.Instance == null )
-			return;
-
-		_position = data.Position;
-
-		StyleSheet.Load( "/items/perks/radar/RadarPoint.scss" );
-
-		RadarDisplay.Instance.AddChild( this );
-
-		AddClass( "circular" );
-
-		_distanceLabel = Add.Label();
-		_distanceLabel.AddClass( "distance-label" );
-		_distanceLabel.AddClass( "text-shadow" );
-
-		Style.BackgroundColor = data.Color;
-		Style.BoxShadow = new ShadowList()
-		{
-			new Shadow
-			{
-				Blur = 5,
-				Color = data.Color
-			}
-		};
-	}
-
-	public override void Tick()
-	{
-		base.Tick();
-
-		if ( Local.Pawn is not Player player )
-			return;
-
-		_distanceLabel.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
-
-		Vector3 screenPos = _position.ToScreen();
-		this.Enabled( screenPos.z > 0f );
-
-		if ( !this.IsEnabled() )
-			return;
-
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
-	}
-}
+namespace TTT.UI;
 
 public class RadarDisplay : Panel
 {
@@ -66,5 +12,49 @@ public class RadarDisplay : Panel
 		Instance = this;
 		AddClass( "fullscreen" );
 		Style.ZIndex = -1;
+	}
+}
+
+[UseTemplate]
+public class RadarPoint : Panel
+{
+	private readonly Vector3 _position;
+	private Label Distance { get; set; }
+
+	public RadarPoint( RadarPointData data )
+	{
+		if ( RadarDisplay.Instance is null )
+			return;
+
+		_position = data.Position;
+		RadarDisplay.Instance.AddChild( this );
+
+		Style.BackgroundColor = data.Color;
+		Style.BoxShadow = new ShadowList()
+		{
+			new Shadow
+			{
+				Color = data.Color,
+				Blur = 5
+			}
+		};
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		var player = Local.Pawn as Player;
+
+		Distance.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
+
+		var screenPos = _position.ToScreen();
+		this.Enabled( screenPos.z > 0f );
+
+		if ( !this.IsEnabled() )
+			return;
+
+		Style.Left = Length.Fraction( screenPos.x );
+		Style.Top = Length.Fraction( screenPos.y );
 	}
 }

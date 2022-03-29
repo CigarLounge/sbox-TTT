@@ -19,6 +19,6 @@ public class HealthStationHint : EntityHintPanel
 	{
 		base.Tick();
 
-		Charges.Text = $"{_healthStation.StoredHealth} charges remaining";
+		Charges.Text = $"{(int)_healthStation.StoredHealth} charges remaining";
 	}
 }

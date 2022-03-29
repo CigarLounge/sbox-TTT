@@ -3,7 +3,7 @@
 namespace TTT;
 
 [Hammer.EditorModel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" )]
-[Library( "ttt_ammo_shotgun" )]
+[Library( "ttt_ammo_shotgun", Title = "Shotgun Ammo" )]
 public partial class ShotgunAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Shotgun;
