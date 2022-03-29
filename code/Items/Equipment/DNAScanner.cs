@@ -10,10 +10,24 @@ public partial class DNAScanner : Carriable
 	[Net, Local]
 	public IList<DNA> DNACollected { get; set; }
 
+	[Net, Local]
+	public float Charge { get; set; } = 0;
+
+	private const float MAX_CHARGE = 100f;
+	private const float RECHARGE_AMOUNT = 0.5f;
+
 	public override void Simulate( Client client )
 	{
 		if ( !IsServer )
 			return;
+
+		if ( Charge <= MAX_CHARGE )
+			Charge += RECHARGE_AMOUNT;
+
+		if ( !Input.Pressed( InputButton.Attack2 ) )
+		{
+
+		}
 
 		if ( !Input.Pressed( InputButton.Attack1 ) )
 			return;
@@ -59,6 +73,11 @@ public partial class DNAScanner : Carriable
 
 		if ( Host.IsClient )
 			UI.RoleMenu.Instance.RemoveTab( RawStrings.DNATab );
+	}
+
+	private void Scan()
+	{
+
 	}
 }
 
