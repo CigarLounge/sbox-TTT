@@ -11,10 +11,10 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 	public float StoredHealth { get; set; } = 200f;
 
 	private const string WorldModel = "models/health_station/health_station.vmdl";
-	private const int HEALAMOUNT = 5; // The amount of health given per second.
-	private const int RECHARGEAMOUNT = 1; // The amount of health recharged per second.
+	private const float HEALAMOUNT = 5; // The amount of health given per second.
+	private const float RECHARGEAMOUNT = 0.5f; // The amount of health recharged per second.
 
-	private TimeUntil _timeUntilRecharge = 1f;
+	private TimeUntil _timeUntilRecharge;
 
 	public override void Spawn()
 	{
