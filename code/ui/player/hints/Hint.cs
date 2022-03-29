@@ -3,6 +3,10 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+public abstract class EntityHintPanel : Panel
+{
+}
+
 public class Hint : EntityHintPanel
 {
 	private readonly Label _label;

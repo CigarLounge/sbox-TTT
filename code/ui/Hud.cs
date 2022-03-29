@@ -10,7 +10,7 @@ public partial class Hud : HudEntity<RootPanel>
 		if ( !Host.IsClient )
 			return;
 
-		RootPanel.StyleSheet.Load( "/ui/Hud.scss" );
+		RootPanel.StyleSheet.Load( "/UI/Hud.scss" );
 		RootPanel.AddClass( "panel" );
 		RootPanel.AddClass( "fullscreen" );
 
