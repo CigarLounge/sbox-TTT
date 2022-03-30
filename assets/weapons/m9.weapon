@@ -19,7 +19,7 @@
 		deploytime = 0.6
 		buyable = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_m9.png"
+		icon = "ui/weapons/m9.png"
 		worldmodel = resource:"models/weapons/w_vertec.vmdl"
 		libraryname = "ttt_weapon_m9"
 		spread = 0.03

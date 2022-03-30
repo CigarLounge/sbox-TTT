@@ -19,7 +19,7 @@ public partial class CrosshairPage : Panel
 	public CrosshairPage()
 	{
 		var crosshairConfig = FileSystem.Data.ReadJson<Crosshair.Properties>( "crosshair.json" );
-		if ( crosshairConfig == null )
+		if ( crosshairConfig is null )
 			return;
 
 		ShowTop = crosshairConfig.ShowTop;
@@ -33,14 +33,14 @@ public partial class CrosshairPage : Panel
 
 	public void SaveCrosshairData()
 	{
-		if ( Crosshair.Instance != null )
+		if ( Crosshair.Instance is not null )
 			FileSystem.Data.WriteJson( "crosshair.json", Crosshair.Instance.Config );
 		SettingsMenu.Instance.PopPage();
 	}
 
 	public override void Tick()
 	{
-		Crosshair.Instance?.SetupCrosshair( new UI.Crosshair.Properties(
+		Crosshair.Instance?.SetupCrosshair( new Crosshair.Properties(
 			ShowTop,
 			ShowDot,
 			Size,

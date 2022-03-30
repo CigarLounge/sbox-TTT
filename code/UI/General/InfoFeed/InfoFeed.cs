@@ -11,7 +11,7 @@ public partial class InfoFeed : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/general/infofeed/InfoFeed.scss" );
+		StyleSheet.Load( "/UI/General/InfoFeed/InfoFeed.scss" );
 	}
 
 	public void AddEntry( string method, Color? color = null )

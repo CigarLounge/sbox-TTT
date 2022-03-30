@@ -71,7 +71,7 @@ public partial class RolePlate : WorldPanel
 {
 	public RolePlate()
 	{
-		StyleSheet.Load( "/ui/player/roleplate/RolePlate.scss" );
+		StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
 
 		Add.Image( "ui/traitor-icon.png", "icon" );
 	}

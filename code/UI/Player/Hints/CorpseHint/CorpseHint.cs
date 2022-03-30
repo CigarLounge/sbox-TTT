@@ -29,17 +29,17 @@ public class CorpseHint : EntityHintPanel
 		{
 			if ( _corpse.DeadPlayer.IsConfirmedDead )
 			{
-				SubText.Text = "to search";
+				SubText.Text = "to search.";
 				CovertSearchPanel?.Delete();
 			}
 			else
 			{
-				SubText.Text = "to confirm";
+				SubText.Text = "to confirm.";
 			}
 		}
 		else
 		{
-			SubText.Text = "to identify";
+			SubText.Text = "to identify.";
 		}
 
 		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.

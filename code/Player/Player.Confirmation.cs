@@ -51,21 +51,19 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( Game.Current.Round is not InProgressRound )
-			return;
-
-		if ( player == null )
-			AddMIA( Team.Traitors.ToClients() );
-		else
+		if ( player is not null )
+		{
 			AddMIA( To.Single( player ) );
+			return;
+		}
+
+		IsMissingInAction = true;
+		AddMIA( Team.Traitors.ToClients() );
 	}
 
 	public void Confirm( To? _to = null )
 	{
 		Host.AssertServer();
-
-		if ( this.IsAlive() )
-			return;
 
 		bool wasPreviouslyConfirmed = true;
 
@@ -79,7 +77,7 @@ public partial class Player
 
 		var to = _to ?? To.Everyone;
 
-		SendRoleToClient( to );
+		SendRole( to );
 
 		if ( Corpse.IsValid() )
 			Corpse.SendInfo( to );

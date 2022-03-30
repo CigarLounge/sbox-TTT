@@ -26,7 +26,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = "ui/icons/weapons/ttt_weapon_silentfox.png"
+		icon = "ui/icons/silent-fox.png"
 		worldmodel = resource:"models/weapons/w_mp7-silenced.vmdl"
 		libraryname = "ttt_weapon_silentfox"
 		verticalrecoil = 8.0

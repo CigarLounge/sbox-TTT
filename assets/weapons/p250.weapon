@@ -19,7 +19,7 @@
 		deploytime = 0.8
 		buyable = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_p250.png"
+		icon = "ui/weapons/p250.png"
 		worldmodel = resource:"models/weapons/w_p250.vmdl"
 		libraryname = "ttt_weapon_p250"
 		spread = 0.03

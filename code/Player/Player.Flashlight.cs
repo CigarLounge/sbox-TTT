@@ -30,7 +30,7 @@ public partial class Player
 		{
 			FlashlightEnabled = !FlashlightEnabled;
 
-			PlaySound( FlashlightEnabled ? "flashlight_on" : "flashlight_off" );
+			PlaySound( FlashlightEnabled ? "flashlight-on" : "flashlight-off" );
 
 			if ( worldLight.IsValid() )
 				worldLight.Enabled = FlashlightEnabled;

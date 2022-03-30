@@ -65,10 +65,10 @@ public abstract partial class BaseRound : BaseNetworkable
 		{
 			var player = client.Pawn as Player;
 
-			if ( !player.IsAlive() && !player.IsConfirmedDead )
+			if ( !player.IsAlive() && !player.IsConfirmedDead && !player.IsSpectator )
 				player.Confirm();
 			else if ( !player.IsRoleKnown )
-				player.SendRoleToClient( To.Everyone );
+				player.SendRole( To.Everyone );
 
 			player.IsRoleKnown = true;
 		}
@@ -85,7 +85,7 @@ public abstract partial class BaseRound : BaseNetworkable
 			if ( otherPlayer.IsConfirmedDead )
 				otherPlayer.Confirm( To.Single( player ) );
 			else if ( otherPlayer.IsRoleKnown )
-				otherPlayer.SendRoleToClient( To.Single( player ) );
+				otherPlayer.SendRole( To.Single( player ) );
 		}
 	}
 }

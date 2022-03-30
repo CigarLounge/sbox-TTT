@@ -5,7 +5,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = "ui/icons/ttt_perk_bodyarmor.png"
+		icon = "ui/perks/bodyarmor.png"
 		libraryname = "ttt_perk_bodyarmor"
 		description = "Reduces bullet damage by 30% when you get hit in the body."
 	}

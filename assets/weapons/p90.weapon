@@ -26,7 +26,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = "ui/icons/weapons/ttt_weapon_p90.png"
+		icon = "ui/weapons/p90.png"
 		worldmodel = resource:"models/weapons/w_p90.vmdl"
 		libraryname = "ttt_weapon_p90"
 		verticalrecoil = 15.0

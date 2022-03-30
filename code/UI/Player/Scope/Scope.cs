@@ -13,7 +13,7 @@ public class Scope : Panel
 
 	public Scope( string scopeTexture )
 	{
-		StyleSheet.Load( "/ui/player/scope/Scope.scss" );
+		StyleSheet.Load( "/UI/Player/Scope/Scope.scss" );
 
 		Add.Panel( "leftBar" );
 		_lens = Add.Image( scopeTexture, "lens" );

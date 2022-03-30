@@ -16,6 +16,7 @@ public class ColorEditor : Panel
 
 	public ColorEditor()
 	{
+		StyleSheet.Load( "/UI/Components/ColorEditor/ColorEditor.scss" );
 		SaturationValueSlider = AddChild<Slider2D>( "satval" );
 		SaturationValueSlider.Add.Panel( "value_gradient" );
 		SaturationValueSlider.Bind( "value", this, "SaturationAndValue" );

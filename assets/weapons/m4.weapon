@@ -26,7 +26,7 @@
 		buyable = false
 		islimited = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_m4.png"
+		icon = "ui/weapons/m4.png"
 		worldmodel = resource:"models/weapons/w_m4.vmdl"
 		libraryname = "ttt_weapon_m4"
 		verticalrecoil = 20.0

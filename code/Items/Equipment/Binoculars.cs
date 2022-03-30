@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -25,7 +26,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveEnd( entity, dropped );
 
-		StopLooking();
+		Corpse = null;
 		ZoomLevel = 0;
 	}
 
@@ -36,6 +37,13 @@ public partial class Binoculars : Carriable
 
 		if ( Input.Pressed( InputButton.Attack2 ) )
 			ChangeZoomLevel();
+
+		if ( Input.Pressed( InputButton.Reload ) )
+		{
+			// Reset zoom.
+			ZoomLevel = 4;
+			ChangeZoomLevel();
+		}
 
 		if ( !IsZoomed )
 			return;
@@ -60,7 +68,7 @@ public partial class Binoculars : Carriable
 		base.BuildInput( input );
 
 		if ( IsZoomed )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.4f / ZoomLevel );
+			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
 	}
 
 	public override void DestroyHudElements()
@@ -74,7 +82,7 @@ public partial class Binoculars : Carriable
 	{
 		if ( ZoomLevel >= 4 )
 		{
-			StopLooking();
+			Corpse = null;
 			ZoomLevel = 0;
 			Owner.CameraMode.FieldOfView = _defaultFOV;
 
@@ -83,11 +91,6 @@ public partial class Binoculars : Carriable
 
 		PlaySound( RawStrings.ScopeInSound );
 		ZoomLevel++;
-		Owner.CameraMode.FieldOfView = 40f / (ZoomLevel * 2f);
-	}
-
-	private void StopLooking()
-	{
-		Corpse = null;
+		Owner.CameraMode.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}
 }

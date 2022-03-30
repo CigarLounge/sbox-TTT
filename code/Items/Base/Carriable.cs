@@ -49,7 +49,7 @@ public partial class CarriableInfo : ItemInfo
 
 public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public TimeSince TimeSinceDeployed { get; private set; }
 
 	public TimeSince TimeSinceDropped { get; private set; }

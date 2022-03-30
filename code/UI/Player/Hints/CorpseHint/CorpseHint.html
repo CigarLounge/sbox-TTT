@@ -1,19 +1,19 @@
 <link rel="stylesheet" href="CorpseHint.scss">
 
 <root class="centered-vertical-75 text-shadow-light">
-    <label @ref="Title" class="title"></label>
+    <text @ref="Title" class="title"></text>
     <div @ref="ActionPanel" class="actions">
         <div style="margin-bottom: 5px; align-items: center;">
-            <label>Press</label>
-            <inputglyph @ref="TopButton" button="Use"></inputglyph>
-            <label @ref="SubText">to identify</label>
+            <text>Press</text>
+            <inputglyph @ref="TopButton" button="Use" />
+            <text @ref="SubText">to identify.</text>
         </div>
         <div @ref="CovertSearchPanel" class="covert-panel">
-            <label>Press</label>
-            <inputglyph button="Run"></inputglyph>
-            <label>+</label>
-            <inputglyph @ref="BottomButton" button="Use"></inputglyph>
-            <label>to search covertly</label>
+            <text>Press</text>
+            <inputglyph button="Run" />
+            <text>+</text>
+            <inputglyph @ref="BottomButton" button="Use" />
+            <text>to search covertly.</text>
         </div>
     </div>
 </root>

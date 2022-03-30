@@ -19,7 +19,7 @@
 		deploytime = 1.2
 		buyable = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_revolver.png"
+		icon = "ui/weapons/revolver.png"
 		worldmodel = resource:"models/weapons/w_mr96.vmdl"
 		libraryname = "ttt_weapon_revolver"
 		spread = 0.05

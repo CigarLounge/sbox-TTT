@@ -1,34 +1,23 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System.Threading.Tasks;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class PlayerInfo : Panel
 {
 	public static PlayerInfo Instance;
 
-	private readonly Panel _roleContainer;
-	private readonly Label _role;
+	private Panel RoleContainer { get; set; }
+	private Label Role { get; set; }
 
-	private readonly Panel _healthContainer;
-	private readonly Label _health;
+	private Panel HealthContainer { get; set; }
+	private Label Health { get; set; }
 
 	public PlayerInfo()
 	{
 		Instance = this;
-
-		StyleSheet.Load( "/ui/player/playerinfo/PlayerInfo.scss" );
-
-		AddClass( "opacity-heavy" );
-		AddClass( "text-shadow" );
-
-		_roleContainer = Add.Panel( "role-container" );
-		_role = _roleContainer.Add.Label();
-
-		_healthContainer = Add.Panel( "health-container background-color-primary" );
-		_health = _healthContainer.Add.Label();
 	}
 
 	public void OnHit()
@@ -56,20 +45,20 @@ public class PlayerInfo : Panel
 
 		if ( player.CurrentPlayer.Role is NoneRole )
 		{
-			_roleContainer.Enabled( false );
-			_healthContainer.Style.BorderTopLeftRadius = 8;
-			_healthContainer.Style.BorderBottomLeftRadius = 8;
+			RoleContainer.Enabled( false );
+			HealthContainer.Style.BorderTopLeftRadius = 8;
+			HealthContainer.Style.BorderBottomLeftRadius = 8;
 		}
 		else
 		{
-			_roleContainer.Enabled( true );
-			_roleContainer.Style.BackgroundColor = player.CurrentPlayer.Role.Color;
-			_role.Text = player.CurrentPlayer.Role.Title;
+			RoleContainer.Enabled( true );
+			RoleContainer.Style.BackgroundColor = player.CurrentPlayer.Role.Color;
+			Role.Text = player.CurrentPlayer.Role.Title;
 
-			_healthContainer.Style.BorderTopLeftRadius = 0;
-			_healthContainer.Style.BorderBottomLeftRadius = 0;
+			HealthContainer.Style.BorderTopLeftRadius = 0;
+			HealthContainer.Style.BorderBottomLeftRadius = 0;
 		}
 
-		_health.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
+		Health.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
 	}
 }

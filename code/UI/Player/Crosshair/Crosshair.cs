@@ -48,8 +48,7 @@ public class Crosshair : Panel
 	public Crosshair()
 	{
 		Instance = this;
-		StyleSheet.Load( "/ui/player/crosshair/Crosshair.scss" );
-
+		StyleSheet.Load( "/UI/Player/Crosshair/Crosshair.scss" );
 		_topLine = Add.Panel( "line" );
 		_leftLine = Add.Panel( "line" );
 		_rightLine = Add.Panel( "line" );
@@ -118,9 +117,6 @@ public class Crosshair : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
-		this.Enabled( player.IsAlive() );
+		this.Enabled( Local.Pawn.IsAlive() );
 	}
 }

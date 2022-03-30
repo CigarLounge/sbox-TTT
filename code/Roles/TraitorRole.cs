@@ -21,8 +21,8 @@ public class TraitorRole : BaseRole
 
 			if ( otherPlayer.Team == Team.Traitors )
 			{
-				player.SendRoleToClient( To.Single( otherPlayer ) );
-				otherPlayer.SendRoleToClient( To.Single( player ) );
+				player.SendRole( To.Single( otherPlayer ) );
+				otherPlayer.SendRole( To.Single( player ) );
 			}
 
 			if ( otherPlayer.IsMissingInAction )

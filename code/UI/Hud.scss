@@ -40,41 +40,6 @@ rootpanel
     font-family: MaterialIcons;
 }
 
-.window
-{
-    flex-direction: column;
-    justify-content: space-between;
-    pointer-events: all;
-
-    .header
-    {
-        width: 100%;
-        min-height: 50px;
-        top: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px;
-        font-weight: 500;
-    }
-
-    .content
-    {
-        flex-grow: 1;
-    }
-
-    .footer
-    {
-        width: 100%;
-        min-height: 40px;
-        bottom: 0;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px;
-    }
-}
-
 .disabled
 {
     display: none;
@@ -118,16 +83,6 @@ rootpanel
     border-bottom-right-radius: 8px;
 }
 
-.circular
-{
-    border-radius: 50%;
-}
-
-.opacity-zero
-{
-    opacity: 0;
-}
-
 .opacity-medium
 {
     opacity: 0.75;
@@ -136,16 +91,6 @@ rootpanel
 .opacity-heavy
 {
     opacity: 0.9;
-}
-
-.centered-flex
-{
-    left: 0;
-    right: 0;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-self: center;
 }
 
 .centered
@@ -180,18 +125,6 @@ rootpanel
     transform: translateX(-50%) translateY(-50%);
 }
 
-.centered-horizontal
-{
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.button
-{
-    cursor: pointer;
-}
-
 .text-shadow
 {
     text-shadow: 0px 0px 2px black, 0px 0px 2px black;
@@ -214,16 +147,6 @@ rootpanel
     height: 100%;
 }
 
-.text-color-alive
-{
-    color: $alive;
-}
-
-.text-color-spectator
-{
-    color: $spectator;
-}
-
 .text-color-info
 {
     color: $info;
@@ -234,11 +157,6 @@ rootpanel
     background-color: $primary;
 }
 
-.background-color-alive
-{
-    background-color: $alive;
-}
-
 .background-color-spectator
 {
     background-color: $spectator;
@@ -247,16 +165,6 @@ rootpanel
 .background-color-secondary
 {
     background-color: $secondary;
-}
-
-.border-color-alive
-{
-    border-color: $alive;
-}
-
-.border-color-spectator
-{
-    border-color: $spectator;
 }
 
 .h1
@@ -270,31 +178,5 @@ rootpanel
     &.label
     {
         font-size: 25px;
-    }
-}
-
-.h2
-{
-    color: white;
-    font-weight: normal;
-    font-family: Poppins;
-    margin-bottom: 5px;
-
-    &.label
-    {
-        font-size: 20px;
-    }
-}
-
-.h3
-{
-    color: white;
-    font-weight: normal;
-    font-family: Poppins;
-    margin-bottom: 5px;
-
-    &.label
-    {
-        font-size: 15px;
     }
 }

@@ -58,6 +58,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
+		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 		Credits = 0;
 		Confirmer = null;
 		IsConfirmedDead = false;
@@ -79,10 +80,9 @@ public partial class Player : Sandbox.Player
 			CameraMode = new FirstPersonCamera();
 			DressPlayer();
 			CreateHull();
-			Client.SetValue( RawStrings.Spectator, false );
 			Game.Current.Round.OnPlayerSpawned( this );
 			ResetInterpolation();
-			Game.Current?.MoveToSpawnpoint( this );
+			Game.Current.MoveToSpawnpoint( this );
 		}
 		else
 		{
@@ -118,17 +118,11 @@ public partial class Player : Sandbox.Player
 
 		Inventory.DropAll();
 		DeleteItems();
-		IsMissingInAction = true;
 		FlashlightEnabled = false;
 
 		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( this );
 		ClientOnKilled( this );
-
-		if ( Game.Current.Round is InProgressRound )
-			SyncMIA();
-		else if ( Game.Current.Round is PostRound )
-			Confirm();
 	}
 
 	[ClientRpc]
@@ -209,9 +203,9 @@ public partial class Player : Sandbox.Player
 		{
 			var droppedEntity = Inventory.DropActive();
 
-			if ( droppedEntity != null )
+			if ( droppedEntity is not null )
 			{
-				if ( droppedEntity.PhysicsGroup != null )
+				if ( droppedEntity.PhysicsGroup is not null )
 				{
 					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * DropVelocity;
 				}
@@ -221,7 +215,7 @@ public partial class Player : Sandbox.Player
 
 	private void SimulateCarriableSwitch()
 	{
-		if ( Input.ActiveChild != null )
+		if ( Input.ActiveChild is not null )
 		{
 			LastActiveChild = ActiveChild;
 			ActiveChild = Input.ActiveChild;

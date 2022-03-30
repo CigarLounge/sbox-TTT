@@ -26,7 +26,7 @@
 		buyable = false
 		islimited = false
 		price = 0
-		icon = "ui/icons/weapons/ttt_weapon_sg551.png"
+		icon = "ui/weapons/sg551.png"
 		worldmodel = resource:"models/weapons/w_sg551.vmdl"
 		libraryname = "ttt_weapon_sg551"
 		verticalrecoil = 35.0
@@ -35,5 +35,6 @@
 		headshotmultiplier = 1.4
 		candrop = true
 		description = ""
+		reserveammo = 0
 	}
 }
