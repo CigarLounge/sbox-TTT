@@ -51,13 +51,14 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( Game.Current.Round is not InProgressRound )
-			return;
-
-		if ( player == null )
-			AddMIA( Team.Traitors.ToClients() );
-		else
+		if ( player is not null )
+		{
 			AddMIA( To.Single( player ) );
+			return;
+		}
+
+		IsMissingInAction = true;
+		AddMIA( Team.Traitors.ToClients() );
 	}
 
 	public void Confirm( To? _to = null )

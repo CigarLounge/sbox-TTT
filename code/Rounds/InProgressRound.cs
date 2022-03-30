@@ -15,7 +15,7 @@ public partial class InProgressRound : BaseRound
 
 	private readonly List<RoleButton> _logicButtons = new();
 
-	public override int RoundDuration { get => Game.InProgressRoundTime; }
+	public override int RoundDuration => Game.InProgressRoundTime;
 
 	public override void OnPlayerKilled( Player player )
 	{
@@ -25,6 +25,7 @@ public partial class InProgressRound : BaseRound
 		Spectators.AddIfDoesNotContain( player );
 
 		player.MakeSpectator();
+		player.SyncMIA();
 		ChangeRoundIfOver();
 	}
 
@@ -90,7 +91,7 @@ public partial class InProgressRound : BaseRound
 	{
 		List<Team> aliveTeams = new();
 
-		foreach ( Player player in Players )
+		foreach ( var player in Players )
 		{
 			if ( !aliveTeams.Contains( player.Team ) )
 				aliveTeams.Add( player.Team );
@@ -115,18 +116,18 @@ public partial class InProgressRound : BaseRound
 
 	public override void OnSecond()
 	{
-		if ( Host.IsServer )
-		{
-			if ( !Game.PreventWin )
-				base.OnSecond();
-			else
-				TimeUntilRoundEnd += 1f;
+		if ( !Host.IsServer )
+			return;
 
-			_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
+		if ( !Game.PreventWin )
+			base.OnSecond();
+		else
+			TimeUntilRoundEnd += 1f;
 
-			if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-				Game.Current.ForceRoundChange( new WaitingRound() );
-		}
+		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
+
+		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
+			Game.Current.ForceRoundChange( new WaitingRound() );
 	}
 
 	private bool ChangeRoundIfOver()
