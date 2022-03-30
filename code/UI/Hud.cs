@@ -34,6 +34,7 @@ public partial class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<Crosshair>();
 		RootPanel.AddChild<RoleMenu>();
 		RootPanel.AddChild<DamageIndicator>();
+		RootPanel.AddChild<WorldPoints>();
 	}
 
 	[Event.Hotload]

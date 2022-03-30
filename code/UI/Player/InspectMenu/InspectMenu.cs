@@ -160,6 +160,7 @@ public class InspectMenu : Panel
 			UpdateCurrentInspectDescription();
 	}
 
+	// Called from UI panel
 	public void CallDetective()
 	{
 		_playerCorpse.HasCalledDetective = true;
