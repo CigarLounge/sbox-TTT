@@ -128,7 +128,7 @@ public partial class Hands : Carriable
 		switch ( trace.Entity )
 		{
 			case Corpse corpse:
-				GrabbedEntity = new GrabbableCorpse( Owner, corpse, trace.Body, trace.Bone );
+				GrabbedEntity = new GrabbableCorpse( Owner, corpse, corpse.PhysicsBody, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
 				GrabbedEntity = new GrabbableProp( Owner, trace.Entity );
