@@ -24,9 +24,6 @@ public partial class DNAScanner : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( Charge <= MAX_CHARGE )
-			Charge += RECHARGE_AMOUNT;
-
 		if ( !Input.Pressed( InputButton.Attack2 ) )
 		{
 
@@ -62,11 +59,24 @@ public partial class DNAScanner : Carriable
 		}
 	}
 
+	[Event.Tick.Server]
+	private void ServerTick()
+	{
+		if ( Owner is null )
+			return;
+
+		if ( Charge <= MAX_CHARGE )
+			Charge += RECHARGE_AMOUNT;
+
+		if ( Charge == MAX_CHARGE )
+			Scan();
+	}
+
 	public override void ActiveStart( Entity ent )
 	{
 		base.ActiveStart( ent );
 
-		if ( Host.IsClient )
+		if ( IsLocalPawn )
 			UI.RoleMenu.Instance.AddDNATab();
 	}
 
@@ -74,13 +84,13 @@ public partial class DNAScanner : Carriable
 	{
 		base.ActiveEnd( ent, dropped );
 
-		if ( Host.IsClient )
+		if ( IsLocalPawn )
 			UI.RoleMenu.Instance.RemoveTab( RawStrings.DNATab );
 	}
 
 	private void Scan()
 	{
-
+		Charge -= 50;
 	}
 }
 

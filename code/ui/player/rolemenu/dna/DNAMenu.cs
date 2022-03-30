@@ -41,7 +41,7 @@ public partial class DNAMenu : Panel
 				dnaPanel?.Delete();
 			}
 
-			dnaPanel.SetClass( "selected", scanner.SelectedSample == dnaPanel.DNA );
+			dnaPanel.SetClass( "selected", scanner?.SelectedSample?.NetworkIdent == dnaPanel.DNA.NetworkIdent );
 		}
 	}
 
@@ -76,8 +76,8 @@ public partial class DNAMenu : Panel
 		}
 	}
 
-	[ServerCmd()]
-	public static void SetActiveSample( int indent )
+	[ServerCmd]
+	public static void SetActiveSample( int ident )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
@@ -88,16 +88,17 @@ public partial class DNAMenu : Panel
 
 		foreach ( var dna in scanner.DNACollected )
 		{
-			if ( dna.NetworkIdent == indent )
+			if ( dna.NetworkIdent == ident )
 			{
+				Log.Info( "found one" );
 				scanner.SelectedSample = dna;
 				return;
 			}
 		}
 	}
 
-	[ServerCmd()]
-	public static void DeleteSample( int indent )
+	[ServerCmd]
+	public static void DeleteSample( int ident )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
@@ -108,7 +109,7 @@ public partial class DNAMenu : Panel
 
 		foreach ( var dna in scanner.DNACollected )
 		{
-			if ( dna.NetworkIdent == indent )
+			if ( dna.NetworkIdent == ident )
 			{
 				scanner.DNACollected.Remove( dna );
 				return;
