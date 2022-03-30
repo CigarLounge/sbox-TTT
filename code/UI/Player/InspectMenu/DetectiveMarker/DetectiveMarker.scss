@@ -1,0 +1,25 @@
+DetectiveMarker
+{
+    position: absolute;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+
+    .detective-image
+    {
+        position: absolute;
+        background-image: url("/ui/detective-icon.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 40px;
+        height: 40px;
+    }
+
+    .distance-label
+    {
+        position: absolute;
+        top: 15px;
+        font-weight: bold;
+        width: 100px;
+    }
+}

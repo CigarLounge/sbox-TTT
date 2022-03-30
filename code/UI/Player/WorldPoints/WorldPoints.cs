@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -20,5 +21,16 @@ public class WorldPoints : Panel
 			if ( child is T )
 				child.Delete();
 		}
+	}
+
+	public List<T> FindPoints<T>()
+	{
+		List<T> points = new();
+		foreach ( var child in Children )
+		{
+			if ( child is T template )
+				points.Add( template );
+		}
+		return points;
 	}
 }

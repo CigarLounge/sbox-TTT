@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace TTT.UI;
 
 [UseTemplate]
-public class InspectMenu : Panel
+public partial class InspectMenu : Panel
 {
 	private readonly Corpse _playerCorpse;
 	private InspectEntry _selectedInspectEntry;
@@ -163,16 +163,34 @@ public class InspectMenu : Panel
 	// Called from UI panel
 	public void CallDetective()
 	{
-		_playerCorpse.HasCalledDetective = true;
-
 		if ( !_playerCorpse.HasCalledDetective )
-			CallDetectives();
+		{
+			CallDetectives( _playerCorpse.NetworkIdent );
+			_playerCorpse.HasCalledDetective = true;
+		}
 	}
 
 	[ServerCmd]
-	private void CallDetectives()
+	private static void CallDetectives( int ident )
 	{
-		if ( ConsoleSystem.Caller.Pawn is not Player player )
+		var ent = Entity.FindByIndex( ident );
+		if ( !ent.IsValid() || ent is not Corpse corpse )
 			return;
+
+		UI.ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
+		SendDetectiveMarker( To.Everyone, corpse.Position ); // Only send to alive detectives.
+	}
+
+	[ClientRpc]
+	public static void SendDetectiveMarker( Vector3 corpseLocation )
+	{
+		var activeDetectiveMarkers = WorldPoints.Instance.FindPoints<DetectiveMarker>();
+		foreach ( var marker in activeDetectiveMarkers )
+		{
+			if ( marker.CorpseLocation == corpseLocation )
+				return;
+		}
+
+		UI.WorldPoints.Instance.AddChild( new DetectiveMarker( corpseLocation ) );
 	}
 }
