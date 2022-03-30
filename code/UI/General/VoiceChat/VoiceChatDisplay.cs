@@ -13,7 +13,7 @@ public class VoiceChatDisplay : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/general/voicechat/VoiceChatDisplay.scss" );
+		StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatDisplay.scss" );
 	}
 
 	public void OnVoicePlayed( Client client, float level )

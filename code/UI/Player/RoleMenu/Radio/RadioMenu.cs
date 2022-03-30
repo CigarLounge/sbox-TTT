@@ -23,7 +23,7 @@ public partial class RadioMenu : Panel
 
 	public RadioMenu()
 	{
-		StyleSheet.Load( "/ui/player/rolemenu/radio/RadioMenu.scss" );
+		StyleSheet.Load( "/UI/Player/RoleMenu/Radio/RadioMenu.scss" );
 
 		FetchRadio();
 

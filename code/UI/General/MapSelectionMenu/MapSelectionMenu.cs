@@ -17,7 +17,7 @@ public class MapSelectionMenu : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/general/mapselectionmenu/MapSelectionMenu.scss" );
+		StyleSheet.Load( "/UI/General/MapSelectionMenu/MapSelectionMenu.scss" );
 
 		AddClass( "text-shadow" );
 

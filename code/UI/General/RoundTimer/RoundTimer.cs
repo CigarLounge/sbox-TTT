@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -11,7 +10,7 @@ public class RoundTimer : Panel
 
 	public RoundTimer()
 	{
-		StyleSheet.Load( "/ui/general/roundtimer/RoundTimer.scss" );
+		StyleSheet.Load( "/UI/General/RoundTimer/RoundTimer.scss" );
 
 		AddClass( "background-color-primary" );
 		AddClass( "opacity-heavy" );

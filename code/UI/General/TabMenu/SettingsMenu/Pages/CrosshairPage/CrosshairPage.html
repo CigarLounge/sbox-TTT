@@ -1,8 +1,7 @@
 <link rel="stylesheet" href="CrosshairPage.scss">
 
-<div class="root">
-
-    <Button icon="save" onclick="SaveCrosshairData()">Save Crosshair</Button>
+<root>
+    <button icon="save" onclick="SaveCrosshairData()">Save Crosshair</button>
     <br />
 
     <checkbox @checked="ShowTop">Show Top</checkbox>
@@ -14,19 +13,27 @@
     <br />
     <br />
 
-    <label>Size</label>
+    <text>Size</text>
+    <br />
+    <br />
     <SliderEntry min="0" max="100" @value="Size"></SliderEntry>
     <br />
 
-    <label>Thickness</label>
+    <text>Thickness</text>
+    <br />
+    <br />
     <SliderEntry min="0" max="100" @value="Thickness"></SliderEntry>
     <br />
 
-    <label>Gap</label>
-    <SliderEntry min="-100" max="100" @value="Gap"></SliderEntry>
+    <text>Gap</text>
+    <br />
+    <br />
+    <SliderEntry min="-20" max="100" @value="Gap"></SliderEntry>
     <br />
 
-    <label>Outline Thickness</label>
+    <text>Outline Thickness</text>
+    <br />
+    <br />
     <SliderEntry min="0" max="25" @value="OutlineThickness"></SliderEntry>
     <br />
 
@@ -35,4 +42,4 @@
 
     <ColorEditor @value="SelectedColor"></ColorEditor>
 
-</div>
+</root>

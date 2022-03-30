@@ -64,9 +64,6 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( this.IsAlive() )
-			return;
-
 		bool wasPreviouslyConfirmed = true;
 
 		if ( !IsConfirmedDead )
@@ -79,7 +76,7 @@ public partial class Player
 
 		var to = _to ?? To.Everyone;
 
-		SendRoleToClient( to );
+		SendRole( to );
 
 		if ( Corpse.IsValid() )
 			Corpse.SendInfo( to );

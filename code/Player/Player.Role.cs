@@ -18,7 +18,7 @@ public partial class Player
 
 		// Always send the role to this player's client
 		if ( IsServer )
-			SendRoleToClient();
+			SendRole();
 
 		Role.OnSelect( this );
 
@@ -43,10 +43,10 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// Sends the role and all connected additional data like logic buttons of the current Player to the given target or - if no target was provided - the player itself
+	/// Sends the role to the given target or - if no target was provided - the player itself
 	/// </summary>
 	/// <param name="to">optional - The target.</param>
-	public void SendRoleToClient( To? to = null )
+	public void SendRole( To? to = null )
 	{
 		Host.AssertServer();
 

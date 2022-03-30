@@ -31,7 +31,7 @@ public class PostRoundMenu : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/general/postroundmenu/PostRoundMenu.scss" );
+		StyleSheet.Load( "/UI/General/PostRoundMenu/PostRoundMenu.scss" );
 
 		AddClass( "text-shadow" );
 

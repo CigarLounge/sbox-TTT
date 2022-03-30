@@ -63,8 +63,8 @@ public class InventorySelection : Panel
 
 		SortChildren( ( p1, p2 ) =>
 		{
-			InventorySlot s1 = p1 as InventorySlot;
-			InventorySlot s2 = p2 as InventorySlot;
+			var s1 = p1 as InventorySlot;
+			var s2 = p2 as InventorySlot;
 
 			int result = s1.Carriable.Info.Slot.CompareTo( s2.Carriable.Info.Slot );
 			return result != 0
