@@ -1,5 +1,4 @@
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -7,20 +6,28 @@ public abstract class EntityHintPanel : Panel
 {
 }
 
+public class HintDisplay : Panel
+{
+	public static HintDisplay Instance { get; set; }
+
+	public HintDisplay() : base()
+	{
+		Instance = this;
+
+		AddClass( "fullscreen" );
+	}
+}
+
+[UseTemplate]
 public class Hint : EntityHintPanel
 {
-	private readonly Label _label;
+	private Label HintLabel { get; set; }
 
 	public Hint( string text )
 	{
-		StyleSheet.Load( "/ui/player/hints/Hint.scss" );
-
-		AddClass( "centered-vertical-75 text-shadow" );
-
-		_label = Add.Label( text );
-
+		HintLabel.Text = text;
 		this.Enabled( false );
 	}
 
-	public void SetText( string text ) => _label.Text = text;
+	public void SetText( string text ) => HintLabel.Text = text;
 }
