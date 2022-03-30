@@ -92,10 +92,12 @@ public partial class Player
 	{
 		IsForcedSpectator = !IsForcedSpectator;
 
+		if ( Game.Current.Round is (PreRound or WaitingRound) )
+			Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
+
 		if ( !IsForcedSpectator || !this.IsAlive() )
 			return;
 
 		TakeDamage( DamageInfo.Generic( 1000 ) );
-		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 	}
 }

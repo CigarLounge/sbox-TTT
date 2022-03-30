@@ -58,6 +58,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
+		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 		Credits = 0;
 		Confirmer = null;
 		IsConfirmedDead = false;
@@ -79,7 +80,6 @@ public partial class Player : Sandbox.Player
 			CameraMode = new FirstPersonCamera();
 			DressPlayer();
 			CreateHull();
-			Client.SetValue( RawStrings.Spectator, false );
 			Game.Current.Round.OnPlayerSpawned( this );
 			ResetInterpolation();
 			Game.Current?.MoveToSpawnpoint( this );
