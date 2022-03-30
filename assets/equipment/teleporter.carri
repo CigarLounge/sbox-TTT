@@ -14,7 +14,7 @@
 		price = 100
 		icon = ""
 		description = ""
-		worldmodel = resource:""
+		worldmodel = resource:"models/teleporter/teleporter.vmdl"
 		libraryname = "ttt_equipment_teleporter"
 	}
 }

@@ -46,7 +46,7 @@ public partial class Teleporter : Carriable
 
 		if ( IsTeleporting )
 		{
-			_particle ??= Particles.Create( "particles/teleport.vpcf", this, true );
+			_particle ??= Particles.Create( "particles/teleport.vpcf", Owner, true );
 
 			if ( TimeSinceStartedTeleporting >= 2f )
 			{
