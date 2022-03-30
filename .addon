@@ -14,8 +14,8 @@
   "RootNamespace": "TTT",
   "Metadata": {
     "MapList": [
-      "ice.terminal",
       "thieves.ttt_cluedo",
+      "ice.terminal",
       "dnd.lego",
       "mke.ttt_clue"
     ],
