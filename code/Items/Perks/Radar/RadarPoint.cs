@@ -3,18 +3,6 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public class RadarDisplay : Panel
-{
-	public static RadarDisplay Instance { get; set; }
-
-	public RadarDisplay() : base()
-	{
-		Instance = this;
-		AddClass( "fullscreen" );
-		Style.ZIndex = -1;
-	}
-}
-
 [UseTemplate]
 public class RadarPoint : Panel
 {
@@ -23,11 +11,11 @@ public class RadarPoint : Panel
 
 	public RadarPoint( RadarPointData data )
 	{
-		if ( RadarDisplay.Instance is null )
+		if ( WorldPoints.Instance is null )
 			return;
 
 		_position = data.Position;
-		RadarDisplay.Instance.AddChild( this );
+		WorldPoints.Instance.AddChild( this );
 
 		Style.BackgroundColor = data.Color;
 		Style.BoxShadow = new ShadowList()

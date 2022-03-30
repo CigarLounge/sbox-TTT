@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace TTT.UI;
 
 [UseTemplate]
-public class InspectMenu : Panel
+public partial class InspectMenu : Panel
 {
 	private readonly Corpse _playerCorpse;
 	private InspectEntry _selectedInspectEntry;
@@ -23,6 +23,7 @@ public class InspectMenu : Panel
 	private Label RoleName { get; set; }
 	private Label PlayerName { get; set; }
 	private Panel IconsContainer { get; set; }
+	private Button CallDetectiveButton { get; set; }
 	private readonly Label _inspectDetailsLabel;
 
 	public InspectMenu( Corpse playerCorpse )
@@ -149,11 +150,47 @@ public class InspectMenu : Panel
 
 	public override void Tick()
 	{
+		CallDetectiveButton.SetClass( "inactive", _playerCorpse.HasCalledDetective );
+
 		string timeSinceDeath = (Time.Now - _playerCorpse.KilledTime).TimerString();
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
 		if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
 			UpdateCurrentInspectDescription();
+	}
+
+	// Called from UI panel
+	public void CallDetective()
+	{
+		if ( !_playerCorpse.HasCalledDetective )
+		{
+			CallDetectives( _playerCorpse.NetworkIdent );
+			_playerCorpse.HasCalledDetective = true;
+		}
+	}
+
+	[ServerCmd]
+	private static void CallDetectives( int ident )
+	{
+		var ent = Entity.FindByIndex( ident );
+		if ( !ent.IsValid() || ent is not Corpse corpse )
+			return;
+
+		UI.ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
+		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole( new DetectiveRole() ) ), corpse.Position );
+	}
+
+	[ClientRpc]
+	public static void SendDetectiveMarker( Vector3 corpseLocation )
+	{
+		var activeDetectiveMarkers = WorldPoints.Instance.FindPoints<DetectiveMarker>();
+		foreach ( var marker in activeDetectiveMarkers )
+		{
+			if ( marker.CorpseLocation == corpseLocation )
+				return;
+		}
+
+		UI.WorldPoints.Instance.AddChild( new DetectiveMarker( corpseLocation ) );
 	}
 }

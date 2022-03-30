@@ -17,6 +17,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public float KilledTime { get; private set; }
 	public PerkInfo[] Perks { get; set; }
 
+	// Clientside only
+	public bool HasCalledDetective { get; set; } = false;
+
 	// We need this so we don't send information to players multiple times
 	// The HashSet consists of NetworkIds
 	private readonly HashSet<int> _playersWhoGotSentInfo = new();
