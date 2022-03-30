@@ -15,9 +15,9 @@ public class PerkDisplay : Panel
 
 		var player = Local.Pawn as Player;
 
-		for ( int i = 0; i < player.CurrentPlayer.Perks.Count; ++i )
+		for ( int i = 0; i < player.Perks.Count; ++i )
 		{
-			var perk = player.CurrentPlayer.Perks.Get( i );
+			var perk = player.Perks.Get( i );
 			if ( !_entries.ContainsKey( perk ) )
 			{
 				_entries[perk] = AddPerkSlot( perk );
@@ -29,7 +29,7 @@ public class PerkDisplay : Panel
 			var perk = keyValue.Key;
 			var slot = keyValue.Value;
 
-			if ( !player.CurrentPlayer.Perks.Contains( perk ) )
+			if ( !player.Perks.Contains( perk ) )
 			{
 				_entries.Remove( perk );
 				slot?.Delete();
