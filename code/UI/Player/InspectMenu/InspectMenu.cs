@@ -178,7 +178,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
-		SendDetectiveMarker( To.Everyone, corpse.Position ); // Only send to alive detectives.
+		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole( new DetectiveRole() ) ), corpse.Position );
 	}
 
 	[ClientRpc]

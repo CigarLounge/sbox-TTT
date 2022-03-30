@@ -4,6 +4,8 @@ DetectiveMarker
     text-align: center;
     align-items: center;
     justify-content: center;
+    transform: scale(0.75);
+    transition: opacity 0.1s ease-in;
 
     .detective-image
     {
@@ -21,5 +23,15 @@ DetectiveMarker
         top: 15px;
         font-weight: bold;
         width: 100px;
+    }
+
+    &:intro
+    {
+        opacity: 0;
+    }
+
+    &:outro
+    {
+        opacity: 0;
     }
 }
