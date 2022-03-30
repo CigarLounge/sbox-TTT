@@ -4,7 +4,6 @@ namespace TTT;
 
 public partial class RPCs
 {
-
 	[ClientRpc]
 	public static void ClientOpenAndSetPostRoundMenu( string winningTeam, Color winningColor )
 	{
