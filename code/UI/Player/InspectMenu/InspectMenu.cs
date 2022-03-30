@@ -23,6 +23,7 @@ public class InspectMenu : Panel
 	private Label RoleName { get; set; }
 	private Label PlayerName { get; set; }
 	private Panel IconsContainer { get; set; }
+	private Button CallDetectiveButton { get; set; }
 	private readonly Label _inspectDetailsLabel;
 
 	public InspectMenu( Corpse playerCorpse )
@@ -149,11 +150,28 @@ public class InspectMenu : Panel
 
 	public override void Tick()
 	{
+		CallDetectiveButton.SetClass( "inactive", _playerCorpse.HasCalledDetective );
+
 		string timeSinceDeath = (Time.Now - _playerCorpse.KilledTime).TimerString();
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
 		if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
 			UpdateCurrentInspectDescription();
+	}
+
+	public void CallDetective()
+	{
+		_playerCorpse.HasCalledDetective = true;
+
+		if ( !_playerCorpse.HasCalledDetective )
+			CallDetectives();
+	}
+
+	[ServerCmd]
+	private void CallDetectives()
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
 	}
 }

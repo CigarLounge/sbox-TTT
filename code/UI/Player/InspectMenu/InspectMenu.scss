@@ -19,6 +19,7 @@ InspectMenu
 
         .header-panel
         {
+            flex-direction: row;
             align-items: center;
 
             .avatar-image 
@@ -42,6 +43,12 @@ InspectMenu
                 font-weight: 500;
                 margin: 10px;
             }
+        }
+
+        .call-detective
+        {
+            position: absolute;
+            top: -10px;
         }
 
         .icons-container 
