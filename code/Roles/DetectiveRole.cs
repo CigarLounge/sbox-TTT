@@ -18,7 +18,7 @@ public class DetectiveRole : BaseRole
 				if ( client == player.Client )
 					continue;
 
-				player.SendRoleToClient( To.Single( client ) );
+				player.SendRole( To.Single( client ) );
 			}
 
 			player.Perks.Add( new BodyArmor() );

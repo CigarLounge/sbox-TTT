@@ -12,7 +12,7 @@ public partial class DamageIndicator : Panel
 	public DamageIndicator()
 	{
 		Instance = this;
-		StyleSheet.Load( "/ui/player/damageindicator/DamageIndicator.scss" );
+		StyleSheet.Load( "/UI/Player/DamageIndicator/DamageIndicator.scss" );
 	}
 
 	public void OnHit( Vector3 pos )

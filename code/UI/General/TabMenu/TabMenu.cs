@@ -10,7 +10,7 @@ public class TabMenu : Panel
 
 	public TabMenu()
 	{
-		StyleSheet.Load( "/ui/general/tabmenu/TabMenu.scss" );
+		StyleSheet.Load( "/UI/General/TabMenu/TabMenu.scss" );
 
 		var scoreboardButton = new Button( "Settings", "settings", () =>
 		{

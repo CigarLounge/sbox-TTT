@@ -14,7 +14,7 @@ public class FullScreenHintMenu : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/ui/player/fullscreenHintmenu/FullScreenHintMenu.scss" );
+		StyleSheet.Load( "/UI/Player/FullScreenHintMenu/FullScreenHintMenu.scss" );
 
 		AddClass( "background-color-secondary" );
 		AddClass( "fullscreen" );

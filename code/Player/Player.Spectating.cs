@@ -53,6 +53,7 @@ public partial class Player
 	{
 		var oldSpectatedPlayer = CurrentPlayer;
 		var players = Utils.GetAlivePlayers();
+
 		if ( players.Count > 0 )
 		{
 			if ( ++_targetIdx >= players.Count )
@@ -91,10 +92,12 @@ public partial class Player
 	{
 		IsForcedSpectator = !IsForcedSpectator;
 
-		if ( IsForcedSpectator && this.IsAlive() )
-		{
-			TakeDamage( DamageInfo.Generic( 1000 ) );
+		if ( Game.Current.Round is (PreRound or WaitingRound) )
 			Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
-		}
+
+		if ( !IsForcedSpectator || !this.IsAlive() )
+			return;
+
+		TakeDamage( DamageInfo.Generic( 1000 ) );
 	}
 }

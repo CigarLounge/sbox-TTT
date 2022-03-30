@@ -67,15 +67,11 @@ public class TabContainer : Panel
 
 		panel.Parent = SheetContainer;
 
-		if ( index == 0 || cookieIndex == index )
-		{
-			SwitchTab( tab, false );
-		}
-		else
-		{
+		if ( index == 0 || cookieIndex == index )	
+			SwitchTab( tab, false );	
+		else	
 			tab.Active = false;
-		}
-
+		
 		return tab;
 	}
 
@@ -84,6 +80,7 @@ public class TabContainer : Panel
 		for ( int i = Tabs.Count - 1; i >= 0; --i )
 		{
 			var tab = Tabs[i];
+
 			if ( tab.Title == title )
 			{
 				tab.Page.Delete( true );

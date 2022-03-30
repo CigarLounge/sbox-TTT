@@ -17,7 +17,7 @@ public partial class Shop : Panel
 
 	public Shop() : base()
 	{
-		StyleSheet.Load( "/ui/player/rolemenu/shop/Shop.scss" );
+		StyleSheet.Load( "/UI/Player/RoleMenu/Shop/Shop.scss" );
 
 		_shopContainer = new Panel( this );
 		_shopContainer.AddClass( "shop-container" );

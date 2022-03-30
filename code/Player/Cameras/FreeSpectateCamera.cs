@@ -37,10 +37,7 @@ public partial class FreeSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Update()
 	{
-		if ( Local.Client == null )
-			return;
-
-		Vector3 mv = _moveInput.Normal * 300 * RealTime.Delta * Rotation * _moveSpeed;
+		var mv = _moveInput.Normal * 300 * RealTime.Delta * Rotation * _moveSpeed;
 
 		_targetRot = Rotation.From( _lookAngles );
 		_targetPos += mv;

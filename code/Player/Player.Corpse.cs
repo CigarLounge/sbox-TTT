@@ -178,7 +178,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		else if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
 		{
-			DeadPlayer.SendRoleToClient( To.Single( searcher ) );
+			DeadPlayer.SendRole( To.Single( searcher ) );
 			SendInfo( To.Single( searcher ) );
 		}
 
