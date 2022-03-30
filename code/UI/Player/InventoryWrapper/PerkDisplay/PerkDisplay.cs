@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
+using System.Collections.Generic;
 
 namespace TTT.UI;
 
@@ -13,12 +13,11 @@ public class PerkDisplay : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-			return;
+		var player = Local.Pawn as Player;
 
-		for ( int i = 0; i < player.Perks.Count; ++i )
+		for ( int i = 0; i < player.CurrentPlayer.Perks.Count; ++i )
 		{
-			var perk = player.Perks.Get( i );
+			var perk = player.CurrentPlayer.Perks.Get( i );
 			if ( !_entries.ContainsKey( perk ) )
 			{
 				_entries[perk] = AddPerkSlot( perk );
@@ -30,7 +29,7 @@ public class PerkDisplay : Panel
 			var perk = keyValue.Key;
 			var slot = keyValue.Value;
 
-			if ( !player.Perks.Contains( perk ) )
+			if ( !player.CurrentPlayer.Perks.Contains( perk ) )
 			{
 				_entries.Remove( perk );
 				slot?.Delete();
