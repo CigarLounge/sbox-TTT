@@ -12,7 +12,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	{
 		base.OnActivate();
 
-		_rolePlate = new RolePlate();
+		_rolePlate = new RolePlate( Entity.Role.Info.Icon );
 	}
 
 	protected override void OnDeactivate()
@@ -69,10 +69,10 @@ public class RolePlateComponent : EntityComponent<Player>
 
 public partial class RolePlate : WorldPanel
 {
-	public RolePlate()
+	public RolePlate( string icon )
 	{
 		StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
 
-		Add.Image( "ui/traitor-icon.png", "icon" );
+		Add.Image( icon, "icon" );
 	}
 }
