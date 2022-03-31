@@ -17,30 +17,66 @@ public partial class WeaponInfo : CarriableInfo
 {
 	[Property, Category( "Sounds" )]
 	public string FireSound { get; set; } = "";
+
 	[Property, Category( "Sounds" )]
 	public string DryFireSound { get; set; } = "";
+
 	[Property( "ammotype", "The ammo type. Set this to None if you want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]
 	public AmmoType AmmoType { get; set; } = AmmoType.None;
+
 	[Property, Category( "Important" )]
 	public FireMode FireMode { get; set; } = FireMode.Automatic;
+
 	[Property( "bulletsperfire", "The amount of bullets that come out in one shot." ), Category( "Stats" )]
 	public int BulletsPerFire { get; set; } = 1;
-	[Property, Category( "Stats" )] public int ClipSize { get; set; } = 30;
-	[Property, Category( "Stats" )] public float Damage { get; set; } = 20;
-	[Property, Category( "Stats" )] public float DamageFallOffStart { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float DamageFallOffEnd { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float HeadshotMultiplier { get; set; } = 1f;
-	[Property, Category( "Stats" )] public float Spread { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float PrimaryRate { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float SecondaryRate { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public int ClipSize { get; set; } = 30;
+
+	[Property, Category( "Stats" )]
+	public float Damage { get; set; } = 20;
+
+	[Property, Category( "Stats" )]
+	public float DamageFallOffStart { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float DamageFallOffEnd { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float HeadshotMultiplier { get; set; } = 1f;
+
+	[Property, Category( "Stats" )]
+	public float Spread { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float PrimaryRate { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float SecondaryRate { get; set; } = 0f;
+
 	[Property( "reserveammo", "The amount of ammo this weapon spawns with if the ammo type is set to None." ), Category( "Stats" )]
 	public int ReserveAmmo { get; set; } = 0;
-	[Property, Category( "Stats" )] public float ReloadTime { get; set; } = 2f;
-	[Property, Category( "Stats" )] public float VerticalRecoil { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float HorizontalRecoilRange { get; set; } = 0f;
-	[Property, Category( "Stats" )] public float RecoilRecoveryScale { get; set; } = 0f;
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string EjectParticle { get; set; } = "";
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )] public string MuzzleFlashParticle { get; set; } = "";
+
+	[Property, Category( "Stats" )]
+	public float ReloadTime { get; set; } = 2f;
+
+	[Property, Category( "Stats" )]
+	public float VerticalRecoil { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float HorizontalRecoilRange { get; set; } = 0f;
+
+	[Property, Category( "Stats" )]
+	public float RecoilRecoveryScale { get; set; } = 0f;
+
+	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	public string EjectParticle { get; set; } = "";
+
+	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	public string MuzzleFlashParticle { get; set; } = "";
+
+	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	public string TracerParticle { get; set; } = "";
 }
 
 public abstract partial class Weapon : Carriable
@@ -268,7 +304,14 @@ public abstract partial class Weapon : Carriable
 			{
 				trace.Surface.DoBulletImpact( trace );
 
-				var fullEndPos = trace.EndPosition + trace.Direction * bulletSize;
+				var fullEndPosition = trace.EndPosition + trace.Direction * bulletSize;
+
+				if ( !string.IsNullOrEmpty( Info.TracerParticle ) && trace.Distance > 200 )
+				{
+					var tracer = Particles.Create( Info.TracerParticle );
+					tracer?.SetPosition( 0, trace.StartPosition );
+					tracer?.SetPosition( 1, trace.EndPosition);
+				}
 
 				if ( !IsServer )
 					continue;

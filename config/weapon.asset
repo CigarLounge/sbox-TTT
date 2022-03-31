@@ -36,6 +36,7 @@
 	recoilrecoveryscale(float) { group = "Stats" } : "Recoil Recovery Scale" : "0" : ""
 	ejectparticle(resource:vpcf) { group = "VFX" } : "Eject Particle" : "" : ""
 	muzzleflashparticle(resource:vpcf) { group = "VFX" } : "Muzzle Flash Particle" : "" : ""
+	tracerparticle(resource:vpcf) { group = "VFX" } : "Tracer Particle" : "" : ""
 	slot(choices) { group = "Important" } : "Slot" : 0 : "" =
 	[
 		0 : "Primary"

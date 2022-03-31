@@ -26,17 +26,32 @@ public enum HoldType
 [Library( "carri" ), AutoGenerate]
 public partial class CarriableInfo : ItemInfo
 {
+	[Property, Category( "Important" )]
+	public SlotType Slot { get; set; } = SlotType.Primary;
+	
+	[Property, Category( "Important" )] 
+	public bool Spawnable { get; set; } = false;
+	
+	[Property, Category( "Important" )] 
+	public bool CanDrop { get; set; } = true;
+	
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] 
+	public string ViewModel { get; set; } = "";
+	
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] 
+	public string HandsModel { get; set; } = "";
+	
+	[Property, Category( "WorldModels" )] 
+	public HoldType HoldType { get; set; } = HoldType.None;
+	
+	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )] 
+	public string WorldModel { get; set; } = "";
+	
+	[Property, Category( "Stats" )] 
+	public float DeployTime { get; set; } = 0.6f;
+
 	public Model CachedViewModel { get; private set; }
 	public Model CachedWorldModel { get; private set; }
-
-	[Property, Category( "Important" )] public SlotType Slot { get; set; } = SlotType.Primary;
-	[Property, Category( "Important" )] public bool Spawnable { get; set; } = false;
-	[Property, Category( "Important" )] public bool CanDrop { get; set; } = true;
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string ViewModel { get; set; } = "";
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] public string HandsModel { get; set; } = "";
-	[Property, Category( "WorldModels" )] public HoldType HoldType { get; set; } = HoldType.None;
-	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )] public string WorldModel { get; set; } = "";
-	[Property, Category( "Stats" )] public float DeployTime { get; set; } = 0.6f;
 
 	protected override void PostLoad()
 	{
