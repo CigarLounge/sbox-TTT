@@ -10,6 +10,9 @@ public abstract partial class Throwable<T> : Carriable where T : BaseGrenade, ne
 		if ( TimeSinceDropped < Info.DeployTime )
 			return;
 
+		if ( Input.Pressed( InputButton.Attack1 ) )
+			ViewModelEntity?.SetAnimParameter( "fire", true );
+
 		if ( Input.Released( InputButton.Attack1 ) )
 			Throw();
 	}
@@ -17,8 +20,6 @@ public abstract partial class Throwable<T> : Carriable where T : BaseGrenade, ne
 	private void Throw()
 	{
 		Rand.SetSeed( Time.Tick );
-
-		Owner.SetAnimParameter( "b_attack", true );
 
 		if ( !IsServer )
 			return;
