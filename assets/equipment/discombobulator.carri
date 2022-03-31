@@ -1,0 +1,20 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		slot = "5"
+		spawnable = false
+		candrop = true
+		viewmodel = resource:"weapons/rust_pistol/v_rust_pistol.vmdl"
+		handsmodel = resource:""
+		holdtype = "0"
+		worldmodel = resource:""
+		deploytime = 0.6
+		buyable = false
+		islimited = false
+		price = 0
+		icon = ""
+		description = ""
+		libraryname = "ttt_equipment_discombobulator"
+	}
+}

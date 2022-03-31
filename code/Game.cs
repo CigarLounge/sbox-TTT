@@ -126,7 +126,7 @@ public partial class Game : Sandbox.Game
 		Event.Run( TTTEvent.Game.RoundChanged, oldRound, newRound );
 	}
 
-	public static void Explosion( Entity weapon, Entity owner, Vector3 position, float radius, float damage, float forceScale )
+	public static void Explosion( Entity source, Entity owner, Vector3 position, float radius, float damage, float forceScale )
 	{
 		// Effects
 		Sound.FromWorld( "rust_pumpshotgun.shootdouble", position );
@@ -137,42 +137,42 @@ public partial class Game : Sandbox.Game
 
 		foreach ( var overlap in overlaps )
 		{
-			if ( overlap is not ModelEntity ent || !ent.IsValid() )
+			if ( overlap is not ModelEntity entity || !entity.IsValid() )
 				continue;
 
-			if ( ent.LifeState != LifeState.Alive )
+			if ( !entity.IsAlive() )
 				continue;
 
-			if ( !ent.PhysicsBody.IsValid() )
+			if ( !entity.PhysicsBody.IsValid() )
 				continue;
 
-			if ( ent.IsWorld )
+			if ( entity.IsWorld )
 				continue;
 
-			var targetPos = ent.PhysicsBody.MassCenter;
+			var targetPos = entity.PhysicsBody.MassCenter;
 
 			var dist = Vector3.DistanceBetween( position, targetPos );
 			if ( dist > radius )
 				continue;
 
-			var tr = Trace.Ray( position, targetPos )
-				.Ignore( weapon )
+			var trace = Trace.Ray( position, targetPos )
+				.Ignore( source )
 				.WorldOnly()
 				.Run();
 
-			if ( tr.Fraction < 0.98f )
+			if ( trace.Fraction < 0.98f )
 				continue;
 
-			var distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
-			var dmg = damage * distanceMul;
-			var force = (forceScale * distanceMul) * ent.PhysicsBody.Mass;
+			float distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
+			float dmg = damage * distanceMul;
+			float force = (forceScale * distanceMul) * entity.PhysicsBody.Mass;
 			var forceDir = (targetPos - position).Normal;
 
 			var damageInfo = DamageInfo.Explosion( position, forceDir * force, dmg )
-				.WithWeapon( weapon )
+				.WithWeapon( source )
 				.WithAttacker( owner );
 
-			ent.TakeDamage( damageInfo );
+			entity.TakeDamage( damageInfo );
 		}
 	}
 }

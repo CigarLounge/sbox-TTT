@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TTT;
 
-public abstract partial class Throwable<T> : Carriable where T : Grenade, new()
+public abstract partial class Throwable<T> : Carriable where T : BaseGrenade, new()
 {
 	public override void Simulate( Client client )
 	{
@@ -45,9 +45,7 @@ public abstract partial class Throwable<T> : Carriable where T : Grenade, new()
 	}
 }
 
-[Hammer.Skip]
-[Library( "ttt_entity_grenade", Title = "Grenade" )]
-public class Grenade : BasePhysics
+public abstract class BaseGrenade : BasePhysics
 {
 	public static readonly Model WorldModel = Model.Load( "models/citizen_props/beachball.vmdl" );
 	protected virtual float Seconds => 3f;
@@ -68,8 +66,5 @@ public class Grenade : BasePhysics
 		Delete();
 	}
 
-	protected virtual void Explode()
-	{
-		Game.Explosion( this, Owner, Position, 400, 200, 1.0f );
-	}
+	protected virtual void Explode() { }
 }
