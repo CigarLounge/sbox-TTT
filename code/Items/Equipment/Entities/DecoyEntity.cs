@@ -6,13 +6,13 @@ namespace TTT;
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
 public partial class DecoyEntity : DroppableEntity, IEntityHint, IUse
 {
-	private const string WorldModel = "models/decoy/decoy.vmdl";
+	private static readonly Model WorldModel = Model.Load( "models/decoy/decoy.vmdl" );
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		SetModel( WorldModel );
+		Model = WorldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 100f;
 	}
