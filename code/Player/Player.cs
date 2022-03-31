@@ -4,10 +4,8 @@ namespace TTT;
 
 public partial class Player : Sandbox.Player
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public Entity LastActiveChild { get; set; }
-
-	public Perks Perks { get; init; }
 
 	[Net, Local]
 	public int Credits { get; set; } = 0;
@@ -18,7 +16,9 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	public static int DropVelocity { get; set; } = 300;
+	public Perks Perks { get; init; }
+
+	public const float DropVelocity = 300;
 
 	public Player()
 	{
@@ -42,14 +42,14 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
-		ActivateFlashlight();
+		CreateFlashlight();
 	}
 
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
 
-		ActivateFlashlight();
+		CreateFlashlight();
 		SetRole( new NoneRole() );
 	}
 
@@ -159,11 +159,14 @@ public partial class Player : Sandbox.Player
 				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
-		SimulateFlashlight();
-		SimulateCarriableSwitch();
-		SimulatePerks();
-		SimulateActiveChild( client, ActiveChild );
+		if ( this.IsAlive() )
+		{
+			SimulateFlashlight();
+			SimulateCarriableSwitch();
+			SimulatePerks();
+		}
 
+		SimulateActiveChild( client, ActiveChild );
 		var controller = GetActiveController();
 		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
@@ -176,7 +179,7 @@ public partial class Player : Sandbox.Player
 		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
-	public override void Touch( Entity other )
+	public override void StartTouch( Entity other )
 	{
 		if ( other is PickupTrigger )
 		{
@@ -249,7 +252,7 @@ public partial class Player : Sandbox.Player
 	protected override void OnDestroy()
 	{
 		RemovePlayerCorpse();
-		DeactivateFlashlight();
+		DeleteFlashlight();
 
 		base.OnDestroy();
 	}

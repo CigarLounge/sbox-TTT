@@ -4,23 +4,22 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float MAX_HINT_DISTANCE = 20480f;
+	public const float MaxHintDistance = 20480f;
 
 	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
 
 	private void DisplayEntityHints()
 	{
-		if ( !IsFirstPersonMode )
+		if ( !CurrentPlayer.IsFirstPersonMode )
 		{
 			DeleteHint();
-
 			return;
 		}
 
-		var hint = IsLookingAtHintableEntity( MAX_HINT_DISTANCE );
+		var hint = IsLookingAtHintableEntity();
 
-		if ( hint == null || !hint.CanHint( this ) )
+		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
 		{
 			DeleteHint();
 			return;
@@ -28,14 +27,13 @@ public partial class Player
 
 		if ( hint == _currentHint )
 		{
-			hint.Tick( this );
-
+			hint.Tick( CurrentPlayer );
 			return;
 		}
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( this );
+		_currentHintPanel = hint.DisplayHint( CurrentPlayer );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
 
@@ -51,15 +49,15 @@ public partial class Player
 		_currentHint = null;
 	}
 
-	public IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
+	public IEntityHint IsLookingAtHintableEntity()
 	{
-		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * maxHintDistance )
+		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
 				.HitLayer( CollisionLayer.Debris )
-				.Ignore( this )
+				.Ignore( CurrentPlayer )
 				.UseHitboxes()
 				.Run();
 
-		if ( trace.Hit && trace.Entity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
+		if ( trace.Entity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
 			return hint;
 
 		return null;

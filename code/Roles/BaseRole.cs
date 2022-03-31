@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace TTT;
@@ -11,22 +12,25 @@ public partial class RoleInfo : Asset
 	[Property]
 	public Team Team { get; set; } = Team.None;
 
-	[Property]
-	public Color Color { get; set; }
-
 	[Property( "defaultcredits", "The amount of credits players spawn with." )]
-	public int DefaultCredits { get; set; }
+	public int DefaultCredits { get; set; } = 0;
 
 	[Property]
 	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
 	[Property( "retrievecredits", "Players can retrieve credits from corpses." )]
-	public bool RetrieveCredits { get; set; }
+	public bool RetrieveCredits { get; set; } = false;
 
 	[Property]
-	public bool CanRoleChat { get; set; }
+	public bool CanRoleChat { get; set; } = false;
 
-	public HashSet<string> AvailableItems { get; set; }
+	[Property, Category( "UI" )]
+	public Color Color { get; set; }
+
+	[Property, Category( "UI" ), ResourceType( "png" )]
+	public string Icon { get; set; } = "ui/logo.png";
+
+	public HashSet<string> AvailableItems { get; private set; }
 
 	protected override void PostLoad()
 	{

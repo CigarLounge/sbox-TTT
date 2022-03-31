@@ -36,5 +36,6 @@
 		icon = ""
 		description = "Pistol that can burn corpses."
 		libraryname = "ttt_equipment_flaregun"
+		tracerparticle = resource:"particles/tracer.standard.vpcf"
 	}
 }

@@ -31,6 +31,7 @@ public partial class Player
 		var entity = new BaseClothing();
 		entity.SetModel( modelName );
 		AttachClothing( entity );
+
 		return entity;
 	}
 

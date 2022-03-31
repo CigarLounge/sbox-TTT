@@ -48,7 +48,7 @@ public partial class Binoculars : Carriable
 		if ( !IsZoomed )
 			return;
 
-		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MAX_HINT_DISTANCE )
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MaxHintDistance )
 				.Ignore( this )
 				.Ignore( Owner )
 				.HitLayer( CollisionLayer.Debris )

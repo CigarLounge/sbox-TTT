@@ -16,7 +16,7 @@ public interface IGrabbable
 [Library( "ttt_equipment_hands", Title = "Hands" )]
 public partial class Hands : Carriable
 {
-	public const float MAX_INTERACT_DISTANCE = Player.USE_DISTANCE;
+	public const float MAX_INTERACT_DISTANCE = Player.UseDistance;
 	public const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
 	private const float MAX_PICKUP_MASS = 205;
@@ -128,7 +128,7 @@ public partial class Hands : Carriable
 		switch ( trace.Entity )
 		{
 			case Corpse corpse:
-				GrabbedEntity = new GrabbableCorpse( Owner, corpse, trace.Body, trace.Bone );
+				GrabbedEntity = new GrabbableCorpse( Owner, corpse, corpse.PhysicsBody, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
 				GrabbedEntity = new GrabbableProp( Owner, trace.Entity );

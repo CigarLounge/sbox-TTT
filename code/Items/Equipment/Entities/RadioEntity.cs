@@ -6,13 +6,13 @@ namespace TTT;
 [Library( "ttt_entity_radio", Title = "Radio" )]
 public partial class RadioEntity : DroppableEntity, IEntityHint, IUse
 {
-	private const string WorldModel = "models/radio/radio.vmdl";
+	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		SetModel( WorldModel );
+		Model = WorldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 100f;
 	}

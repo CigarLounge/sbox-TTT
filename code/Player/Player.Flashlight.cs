@@ -10,74 +10,81 @@ public partial class Player
 	[Net, Local, Predicted]
 	public TimeSince TimeSinceLightToggled { get; private set; }
 
-	private SpotLightEntity worldLight;
-	private SpotLightEntity viewLight;
+	/// <summary>
+	/// The flashlight that can only be seen in ThirdPerson.
+	/// </summary>
+	private SpotLightEntity _worldLight;
+
+	/// <summary>
+	/// The flashlight that can only be seen in FirstPerson.
+	/// </summary>
+	private SpotLightEntity _viewLight;
 
 	public void SimulateFlashlight()
 	{
 		bool toggle = Input.Pressed( InputButton.Flashlight );
 
-		if ( worldLight.IsValid() )
+		if ( _worldLight.IsValid() )
 		{
 			var transform = new Transform( EyePosition + EyeRotation.Forward * 20, EyeRotation );
-			worldLight.Transform = transform;
+			_worldLight.Transform = transform;
 
 			if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
-				worldLight.Transform = carriable.GetAttachment( "muzzle" ) ?? transform;
+				_worldLight.Transform = carriable.GetAttachment( "muzzle" ) ?? transform;
 		}
 
-		if ( TimeSinceLightToggled > 0.1f && toggle )
+		if ( TimeSinceLightToggled > 0.25f && toggle )
 		{
 			FlashlightEnabled = !FlashlightEnabled;
 
 			PlaySound( FlashlightEnabled ? "flashlight-on" : "flashlight-off" );
 
-			if ( worldLight.IsValid() )
-				worldLight.Enabled = FlashlightEnabled;
+			if ( _worldLight.IsValid() )
+				_worldLight.Enabled = FlashlightEnabled;
 
 			TimeSinceLightToggled = 0;
 		}
 	}
 
-	protected void ActivateFlashlight()
+	protected void CreateFlashlight()
 	{
 		if ( Host.IsServer )
 		{
-			worldLight = CreateLight();
-			worldLight.Parent = this;
-			worldLight.EnableHideInFirstPerson = true;
-			worldLight.Enabled = false;
+			_worldLight = CreateLight();
+			_worldLight.Parent = this;
+			_worldLight.EnableHideInFirstPerson = true;
+			_worldLight.Enabled = false;
 		}
 		else
 		{
-			viewLight = CreateLight();
-			viewLight.Parent = this;
-			viewLight.EnableViewmodelRendering = true;
-			viewLight.Enabled = FlashlightEnabled;
+			_viewLight = CreateLight();
+			_viewLight.Parent = this;
+			_viewLight.EnableViewmodelRendering = true;
+			_viewLight.Enabled = FlashlightEnabled;
 		}
 	}
 
-	protected void DeactivateFlashlight()
+	protected void DeleteFlashlight()
 	{
-		worldLight?.Delete();
-		viewLight?.Delete();
+		_worldLight?.Delete();
+		_viewLight?.Delete();
 	}
 
 	public void FrameSimulateFlashlight()
 	{
-		if ( !viewLight.IsValid() )
+		if ( !_viewLight.IsValid() )
 			return;
 
-		viewLight.Enabled = FlashlightEnabled;
+		_viewLight.Enabled = FlashlightEnabled;
 
-		if ( !viewLight.Enabled )
+		if ( !_viewLight.Enabled )
 			return;
 
 		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
-		viewLight.Transform = transform;
+		_viewLight.Transform = transform;
 
 		if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
-			viewLight.Transform = carriable.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+			_viewLight.Transform = carriable.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
 
 	private SpotLightEntity CreateLight()

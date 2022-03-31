@@ -12,7 +12,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	{
 		base.OnActivate();
 
-		_rolePlate = new RolePlate();
+		_rolePlate = new RolePlate( Entity.Role.Info.Icon );
 	}
 
 	protected override void OnDeactivate()
@@ -24,7 +24,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	}
 
 	/// <summary>
-	/// Called for every plate, while it's active
+	/// Called for every plate, while it's active.
 	/// </summary>
 	[Event.Frame]
 	private void FrameUpdate()
@@ -35,7 +35,7 @@ public class RolePlateComponent : EntityComponent<Player>
 
 		var tx = Entity.GetAttachment( "hat" ) ?? Entity.Transform;
 		tx.Position += Vector3.Up * 5.0f;
-		tx.Rotation = CurrentView.Rotation;
+		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		_rolePlate.Transform = tx;
 	}
@@ -65,14 +65,14 @@ public class RolePlateComponent : EntityComponent<Player>
 
 		player.Components.RemoveAny<RolePlateComponent>();
 	}
-}
 
-public partial class RolePlate : WorldPanel
-{
-	public RolePlate()
+	private partial class RolePlate : WorldPanel
 	{
-		StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
+		public RolePlate( string icon )
+		{
+			StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
 
-		Add.Image( "ui/traitor-icon.png", "icon" );
+			Add.Image( icon, "icon" );
+		}
 	}
 }

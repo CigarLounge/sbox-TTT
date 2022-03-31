@@ -22,20 +22,12 @@ public partial class Radar : Perk
 		TimeUntilExecution = 0;
 	}
 
-	protected override void OnActivate()
-	{
-		base.OnActivate();
-
-		if ( Host.IsClient )
-			Local.Hud.AddChild( new UI.RadarDisplay() );
-	}
-
 	protected override void OnDeactivate()
 	{
 		base.OnDeactivate();
 
 		if ( Host.IsClient )
-			UI.RadarDisplay.Instance?.Delete();
+			UI.WorldPoints.Instance.DeletePoints<UI.RadarPoint>();
 	}
 
 	public override void Simulate( Client client )

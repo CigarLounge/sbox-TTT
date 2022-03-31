@@ -7,12 +7,13 @@ namespace TTT;
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
 public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 {
+	private static readonly Model WorldModel = Model.Load( "models/health_station/health_station.vmdl" );
+
 	[Net]
 	public float StoredHealth { get; set; } = 200f;
 
-	private const string WorldModel = "models/health_station/health_station.vmdl";
-	private const float HEALAMOUNT = 5; // The amount of health given per second.
-	private const float RECHARGEAMOUNT = 0.5f; // The amount of health recharged per second.
+	private const float HealAmount = 5; // The amount of health given per second.
+	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
 	private TimeUntil _timeUntilRecharge;
 
@@ -20,7 +21,7 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		SetModel( WorldModel );
+		Model = WorldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 201f;
 	}
@@ -31,7 +32,7 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 		if ( StoredHealth >= 200f || !_timeUntilRecharge )
 			return;
 
-		StoredHealth = Math.Min( StoredHealth + RECHARGEAMOUNT * Time.Delta, 200f );
+		StoredHealth = Math.Min( StoredHealth + RechargeAmount * Time.Delta, 200f );
 	}
 
 	private void HealPlayer( Player player )
@@ -44,7 +45,7 @@ public partial class HealthStationEntity : DroppableEntity, IEntityHint, IUse
 		if ( healthNeeded <= 0 )
 			return;
 
-		float healAmount = Math.Min( StoredHealth, Math.Min( HEALAMOUNT * Time.Delta, healthNeeded ) );
+		float healAmount = Math.Min( StoredHealth, Math.Min( HealAmount * Time.Delta, healthNeeded ) );
 
 		player.SetHealth( player.Health + healAmount );
 
