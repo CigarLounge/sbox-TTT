@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Linq;
 
 namespace TTT;
@@ -123,5 +124,55 @@ public partial class Game : Sandbox.Game
 		_lastRound.Start();
 
 		Event.Run( TTTEvent.Game.RoundChanged, oldRound, newRound );
+	}
+
+	public static void Explosion( Entity weapon, Entity owner, Vector3 position, float radius, float damage, float forceScale )
+	{
+		// Effects
+		Sound.FromWorld( "rust_pumpshotgun.shootdouble", position );
+		Particles.Create( "particles/explosion/barrel_explosion/explosion_barrel.vpcf", position );
+
+		// Damage, etc
+		var overlaps = Entity.FindInSphere( position, radius );
+
+		foreach ( var overlap in overlaps )
+		{
+			if ( overlap is not ModelEntity ent || !ent.IsValid() )
+				continue;
+
+			if ( ent.LifeState != LifeState.Alive )
+				continue;
+
+			if ( !ent.PhysicsBody.IsValid() )
+				continue;
+
+			if ( ent.IsWorld )
+				continue;
+
+			var targetPos = ent.PhysicsBody.MassCenter;
+
+			var dist = Vector3.DistanceBetween( position, targetPos );
+			if ( dist > radius )
+				continue;
+
+			var tr = Trace.Ray( position, targetPos )
+				.Ignore( weapon )
+				.WorldOnly()
+				.Run();
+
+			if ( tr.Fraction < 0.98f )
+				continue;
+
+			var distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
+			var dmg = damage * distanceMul;
+			var force = (forceScale * distanceMul) * ent.PhysicsBody.Mass;
+			var forceDir = (targetPos - position).Normal;
+
+			var damageInfo = DamageInfo.Explosion( position, forceDir * force, dmg )
+				.WithWeapon( weapon )
+				.WithAttacker( owner );
+
+			ent.TakeDamage( damageInfo );
+		}
 	}
 }
