@@ -16,7 +16,7 @@ public partial class Bekas : Weapon
 		TimeSinceReload = 0f;
 	}
 
-	public override bool CanReload()
+	protected override bool CanReload()
 	{
 		if ( !base.CanReload() )
 			return false;

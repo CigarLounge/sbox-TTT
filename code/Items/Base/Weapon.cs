@@ -130,17 +130,14 @@ public abstract partial class Weapon : Carriable
 		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
 
+		if ( CanReload() )
+		{
+			Reload();
+			return;
+		}
+
 		if ( !IsReloading )
 		{
-			if ( CanReload() )
-				Reload();
-
-			//
-			// Reload could have changed our owner
-			//
-			if ( !Owner.IsValid() )
-				return;
-
 			if ( CanPrimaryAttack() )
 			{
 				using ( LagCompensation() )
@@ -149,12 +146,6 @@ public abstract partial class Weapon : Carriable
 					AttackPrimary();
 				}
 			}
-
-			//
-			// AttackPrimary could have changed our owner
-			//
-			if ( !Owner.IsValid() )
-				return;
 
 			if ( CanSecondaryAttack() )
 			{
@@ -168,7 +159,7 @@ public abstract partial class Weapon : Carriable
 			if ( Input.Down( InputButton.Run ) && Input.Pressed( InputButton.Drop ) )
 				DropAmmo();
 		}
-		else if ( IsReloading && TimeSinceReload > Info.ReloadTime )
+		else if ( TimeSinceReload > Info.ReloadTime )
 			OnReloadFinish();
 	}
 
@@ -183,7 +174,7 @@ public abstract partial class Weapon : Carriable
 		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
 	}
 
-	public virtual bool CanPrimaryAttack()
+	protected virtual bool CanPrimaryAttack()
 	{
 		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.Attack1 ) )
 			return false;
@@ -197,7 +188,7 @@ public abstract partial class Weapon : Carriable
 		return TimeSincePrimaryAttack > (1 / rate);
 	}
 
-	public virtual bool CanSecondaryAttack()
+	protected virtual bool CanSecondaryAttack()
 	{
 		if ( !Input.Pressed( InputButton.Attack2 ) )
 			return false;
@@ -209,7 +200,7 @@ public abstract partial class Weapon : Carriable
 		return TimeSinceSecondaryAttack > (1 / rate);
 	}
 
-	public void AttackPrimary()
+	protected void AttackPrimary()
 	{
 		if ( AmmoClip == 0 )
 		{
@@ -229,20 +220,23 @@ public abstract partial class Weapon : Carriable
 		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 	}
 
-	public void AttackSecondary() { }
+	protected void AttackSecondary() { }
 
-	public virtual bool CanReload()
+	protected virtual bool CanReload()
 	{
+		if ( IsReloading )
+			return false;
+
 		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0 && ReserveAmmo == 0) )
 			return false;
 
-		if ( !Owner.IsValid() || !Input.Down( InputButton.Reload ) )
+		if ( !Owner.IsValid() || !Input.Pressed( InputButton.Reload ) )
 			return false;
 
 		return true;
 	}
 
-	public virtual void Reload()
+	protected virtual void Reload()
 	{
 		if ( IsReloading )
 			return;
@@ -287,7 +281,7 @@ public abstract partial class Weapon : Carriable
 		ViewModelEntity?.SetAnimParameter( "reload", true );
 	}
 
-	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
+	protected virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
 		// Seed rand using the tick, so bullet cones match on client and server
 		Rand.SetSeed( Time.Tick );
@@ -340,7 +334,7 @@ public abstract partial class Weapon : Carriable
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple
 	/// hits, like if you're going through layers or ricocet'ing or something.
 	/// </summary>
-	public IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
+	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
 		bool InWater = Map.Physics.IsPointWater( start );
 
