@@ -47,7 +47,7 @@ public abstract partial class Throwable<T> : Carriable where T : BaseGrenade, ne
 
 public abstract class BaseGrenade : BasePhysics
 {
-	public static readonly Model WorldModel = Model.Load( "models/citizen_props/beachball.vmdl" );
+	public static readonly Model WorldModel = Model.Load( "models/weapons/w_frag.vmdl" );
 	protected virtual float Seconds => 3f;
 
 	public override void Spawn()

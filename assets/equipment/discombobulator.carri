@@ -5,10 +5,10 @@
 		slot = "5"
 		spawnable = false
 		candrop = true
-		viewmodel = resource:"weapons/rust_pistol/v_rust_pistol.vmdl"
-		handsmodel = resource:""
+		viewmodel = resource:"models/weapons/v_frag.vmdl"
+		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		holdtype = "0"
-		worldmodel = resource:""
+		worldmodel = resource:"models/weapons/w_frag.vmdl"
 		deploytime = 0.6
 		buyable = false
 		islimited = false
