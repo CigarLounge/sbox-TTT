@@ -8,4 +8,5 @@ public static partial class RawStrings
 	public const string WeaponPickupSound = "pickup_weapon";
 	public const string AmmoPickupSound = "pickup_ammo";
 	public const string ScopeInSound = "scope_in";
+	public const string DiscombobulatorExplodeSound = "discombobulator_explode-1";
 }
