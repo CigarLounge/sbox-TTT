@@ -38,7 +38,7 @@ public abstract partial class Throwable<T> : Carriable where T : Grenade, new()
 			grenade.SetInteractsExclude( CollisionLayer.Player );
 			grenade.SetInteractsAs( CollisionLayer.Debris );
 
-			_ = grenade.BlowIn( 3.0f );
+			_ = grenade.BlowIn();
 		}
 
 		Delete();
@@ -50,6 +50,7 @@ public abstract partial class Throwable<T> : Carriable where T : Grenade, new()
 public class Grenade : BasePhysics
 {
 	public static readonly Model WorldModel = Model.Load( "models/citizen_props/beachball.vmdl" );
+	protected virtual float Seconds => 3f;
 
 	public override void Spawn()
 	{
@@ -59,9 +60,9 @@ public class Grenade : BasePhysics
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	public async Task BlowIn( float seconds )
+	public async Task BlowIn()
 	{
-		await Task.DelaySeconds( seconds );
+		await Task.DelaySeconds( Seconds );
 
 		Explode();
 		Delete();

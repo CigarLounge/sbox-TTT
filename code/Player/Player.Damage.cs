@@ -101,7 +101,7 @@ public partial class Player
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 
-			if ( Game.Current.Round is not (InProgressRound or PostRound) )
+			if ( Game.Current.Round is not InProgressRound or PostRound )
 				return;
 
 			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
@@ -118,8 +118,6 @@ public partial class Player
 		{
 			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
 		}
-
-		LastDamageInfo = info;
 
 		base.TakeDamage( info );
 	}

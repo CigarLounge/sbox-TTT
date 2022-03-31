@@ -2,7 +2,7 @@ namespace TTT;
 
 public partial class Player : IEntityHint
 {
-	public float HintDistance { get; set; } = MAX_HINT_DISTANCE;
+	public float HintDistance { get; set; } = MaxHintDistance;
 
 	bool IEntityHint.CanHint( Player player )
 	{
