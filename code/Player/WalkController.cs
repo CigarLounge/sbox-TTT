@@ -33,16 +33,21 @@ public partial class WalkController : Sandbox.WalkController
 	public override void Simulate()
 	{
 		FallVelocity = -Pawn.Velocity.z;
+
 		base.Simulate();
+
 		CheckFalling();
 	}
 
 	public override float GetWishSpeed()
 	{
-		var ws = Duck.GetWishSpeed();
-		if ( ws >= 0 ) return ws;
+		float ws = Duck.GetWishSpeed();
 
-		if ( Input.Down( InputButton.Run ) ) return WalkSpeed;
+		if ( ws >= 0 ) 
+			return ws;
+
+		if ( Input.Down( InputButton.Run ) )
+			return WalkSpeed;
 
 		return DefaultSpeed;
 	}
@@ -54,7 +59,7 @@ public partial class WalkController : Sandbox.WalkController
 
 		float fallVelocity = FallVelocity;
 
-		if ( Pawn.LifeState != LifeState.Dead
+		if ( Pawn.IsAlive()
 			&& fallVelocity >= FallPunchThreshold
 			&& Pawn.WaterLevel == 0f )
 		{
@@ -82,6 +87,7 @@ public partial class WalkController : Sandbox.WalkController
 	private void TakeFallDamage()
 	{
 		float fallDamage = (FallVelocity - PlayerMaxSafeFallSpeed) * DamageForFallSpeed;
+
 		Pawn.TakeDamage( new DamageInfo
 		{
 			Flags = DamageFlags.Fall,

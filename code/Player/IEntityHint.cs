@@ -7,7 +7,7 @@ public interface IEntityHint
 	/// <summary>
 	/// The max viewable distance of the hint.
 	/// </summary>
-	float HintDistance => Player.USE_DISTANCE;
+	float HintDistance => Player.UseDistance;
 
 	/// <summary>
 	/// Whether or not we can show the UI hint.

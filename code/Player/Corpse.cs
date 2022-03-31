@@ -91,9 +91,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( forceBone < 0 )
 			return;
 
-		PhysicsBody corpse = GetBonePhysicsBody( forceBone );
+		var corpse = GetBonePhysicsBody( forceBone );
 
-		if ( corpse != null )
+		if ( corpse is not null )
 			corpse.ApplyForce( force * 1000 );
 		else
 			PhysicsGroup.AddVelocity( force );
@@ -101,12 +101,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public void ClearAttachments()
 	{
-		foreach ( Particles rope in Ropes )
+		foreach ( var rope in Ropes )
 		{
 			rope.Destroy( true );
 		}
 
-		foreach ( PhysicsJoint spring in RopeSprings )
+		foreach ( var spring in RopeSprings )
 		{
 			spring.Remove();
 		}
@@ -228,7 +228,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
+	public float HintDistance { get; set; } = Player.MaxHintDistance;
 
 	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
 
@@ -266,7 +266,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( searchButton == InputButton.Attack1 )
 			return true;
 
-		return CurrentView.Position.Distance( Position ) <= Player.USE_DISTANCE;
+		return CurrentView.Position.Distance( Position ) <= Player.UseDistance;
 	}
 
 	public static InputButton GetSearchButton()
