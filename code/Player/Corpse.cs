@@ -230,6 +230,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public float HintDistance { get; set; } = Player.MAX_HINT_DISTANCE;
 
+	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
+
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
