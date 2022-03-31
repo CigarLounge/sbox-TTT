@@ -11,10 +11,9 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		if ( !IsFirstPersonMode )
+		if ( !CurrentPlayer.IsFirstPersonMode )
 		{
 			DeleteHint();
-
 			return;
 		}
 
@@ -29,7 +28,6 @@ public partial class Player
 		if ( hint == _currentHint )
 		{
 			hint.Tick( this );
-
 			return;
 		}
 
@@ -55,7 +53,7 @@ public partial class Player
 	{
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * maxHintDistance )
 				.HitLayer( CollisionLayer.Debris )
-				.Ignore( this )
+				.Ignore( CurrentPlayer )
 				.UseHitboxes()
 				.Run();
 
