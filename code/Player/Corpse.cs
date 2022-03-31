@@ -15,7 +15,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
-	public PerkInfo[] Perks { get; set; }
+	public PerkInfo[] Perks { get; private set; }
 
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
@@ -57,6 +57,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		this.SetRagdollVelocityFrom( player );
 
 		List<Entity> attachedEnts = new();
+
 		foreach ( var child in player.Children )
 		{
 			if ( child is BaseClothing e )
@@ -68,6 +69,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				clothing.SetParent( this, true );
 			}
 		}
+
 		Player.SetClothingBodyGroups( this, 1 );
 
 		Perks = new PerkInfo[DeadPlayer.Perks.Count];
@@ -232,7 +234,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !CanSearch() || !Input.Down( GetSearchButton() ) )
+		if ( !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );

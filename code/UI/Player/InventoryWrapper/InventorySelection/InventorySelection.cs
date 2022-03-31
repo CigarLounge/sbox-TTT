@@ -1,9 +1,8 @@
+using Sandbox;
+using Sandbox.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Sandbox;
-using Sandbox.UI;
 
 namespace TTT.UI;
 
@@ -30,20 +29,19 @@ public class InventorySelection : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-			return;
+		var player = (Local.Pawn as Player).CurrentPlayer;
 
-		foreach ( var carriable in player.CurrentPlayer.Inventory.List )
+		foreach ( var carriable in player.Inventory.List )
 		{
 			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeItem = player.CurrentPlayer.ActiveChild;
+		var activeItem = player.ActiveChild;
 		var activeItemTitle = activeItem is not null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
-			if ( !player.CurrentPlayer.Inventory.Contains( slot.Carriable ) )
+			if ( !player.Inventory.Contains( slot.Carriable ) )
 			{
 				_entries.Remove( slot.Carriable );
 				slot?.Delete();
@@ -93,7 +91,7 @@ public class InventorySelection : Panel
 		if ( !player.IsAlive() )
 			return;
 
-		if ( Children == null || !Children.Any() )
+		if ( Children is null || !Children.Any() )
 			return;
 
 		var childrenList = Children.ToList();
@@ -126,7 +124,7 @@ public class InventorySelection : Panel
 				}
 			}
 
-			if ( activeCarriable == null || activeCarriableOfSlotTypeIndex == -1 )
+			if ( activeCarriable is null || activeCarriableOfSlotTypeIndex == -1 )
 			{
 				// The user isn't holding an active carriable, or is holding a weapon that has a different
 				// hold type than the one selected using the keyboard. We can just select the first weapon.

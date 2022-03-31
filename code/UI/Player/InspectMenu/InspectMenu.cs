@@ -8,7 +8,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class InspectMenu : Panel
 {
-	private readonly Corpse _playerCorpse;
+	private readonly Corpse _corpse;
 	private InspectEntry _selectedInspectEntry;
 
 	private readonly List<InspectEntry> _inspectionEntries = new();
@@ -26,9 +26,9 @@ public partial class InspectMenu : Panel
 	private Button CallDetectiveButton { get; set; }
 	private readonly Label _inspectDetailsLabel;
 
-	public InspectMenu( Corpse playerCorpse )
+	public InspectMenu( Corpse corpse )
 	{
-		if ( playerCorpse.DeadPlayer is null )
+		if ( corpse.DeadPlayer is null )
 			return;
 
 		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
@@ -55,18 +55,18 @@ public partial class InspectMenu : Panel
 		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
-		_playerCorpse = playerCorpse;
-		SetConfirmationData( _playerCorpse.KillerWeapon, _playerCorpse.Perks );
+		_corpse = corpse;
+		SetConfirmationData( _corpse.KillerWeapon, _corpse.Perks );
 	}
 
 	private void SetConfirmationData( CarriableInfo carriableInfo, PerkInfo[] perks )
 	{
-		PlayerAvatar.SetTexture( $"avatar:{_playerCorpse.PlayerId}" );
-		PlayerName.Text = _playerCorpse.PlayerName;
-		RoleName.Text = _playerCorpse.DeadPlayer.Role.Title;
-		RoleName.Style.FontColor = _playerCorpse.DeadPlayer.Role.Color;
+		PlayerAvatar.SetTexture( $"avatar:{_corpse.PlayerId}" );
+		PlayerName.Text = _corpse.PlayerName;
+		RoleName.Text = _corpse.DeadPlayer.Role.Title;
+		RoleName.Style.FontColor = _corpse.DeadPlayer.Role.Color;
 
-		_headshotEntry.Enabled( _playerCorpse.WasHeadshot );
+		_headshotEntry.Enabled( _corpse.WasHeadshot );
 		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
 		_headshotEntry.SetImageText( "Headshot" );
 		_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
@@ -77,12 +77,12 @@ public partial class InspectMenu : Panel
 		_deathCauseEntry.SetImageText( imageText );
 		_deathCauseEntry.SetActiveText( activeText );
 
-		_distanceEntry.Enabled( _playerCorpse.KillInfo.Flags != DamageFlags.Generic );
+		_distanceEntry.Enabled( _corpse.KillInfo.Flags != DamageFlags.Generic );
 		_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
-		_distanceEntry.SetImageText( $"{_playerCorpse.Distance:n0}m" );
-		_distanceEntry.SetActiveText( $"They were killed from approximately {_playerCorpse.Distance:n0}m away." );
+		_distanceEntry.SetImageText( $"{_corpse.Distance:n0}m" );
+		_distanceEntry.SetActiveText( $"They were killed from approximately {_corpse.Distance:n0}m away." );
 
-		_weaponEntry.Enabled( carriableInfo != null );
+		_weaponEntry.Enabled( carriableInfo is not null );
 		if ( _weaponEntry.IsEnabled() )
 		{
 			_weaponEntry.SetImage( carriableInfo.Icon );
@@ -121,9 +121,9 @@ public partial class InspectMenu : Panel
 
 	private void UpdateCurrentInspectDescription()
 	{
-		_inspectDetailsLabel.SetClass( "fade-in", _selectedInspectEntry != null );
+		_inspectDetailsLabel.SetClass( "fade-in", _selectedInspectEntry is not null );
 
-		if ( _selectedInspectEntry == null )
+		if ( _selectedInspectEntry is null )
 			return;
 
 		_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
@@ -131,7 +131,7 @@ public partial class InspectMenu : Panel
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _playerCorpse.KillInfo.Flags switch
+		return _corpse.KillInfo.Flags switch
 		{
 			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
 			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
@@ -143,31 +143,31 @@ public partial class InspectMenu : Panel
 			DamageFlags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
 			DamageFlags.Blast => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
 			DamageFlags.PhysicsImpact => ("Prop", "Prop", "A wild flying prop caused this death."),
-			DamageFlags.Drown => ("Drown", "Drown", "This corpse drowned to death."),
+			DamageFlags.Drown => ("Drown", "Drown", "This player drowned to death."),
 			_ => ("Unknown", "Unknown", "The cause of death is unknown.")
 		};
 	}
 
 	public override void Tick()
 	{
-		CallDetectiveButton.SetClass( "inactive", _playerCorpse.HasCalledDetective || !(Local.Pawn as Player).IsAlive() );
+		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
-		string timeSinceDeath = (Time.Now - _playerCorpse.KilledTime).TimerString();
+		string timeSinceDeath = (Time.Now - _corpse.KilledTime).TimerString();
 		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
-		if ( _selectedInspectEntry != null && _selectedInspectEntry == _timeSinceDeathEntry )
+		if ( _selectedInspectEntry is not null && _selectedInspectEntry == _timeSinceDeathEntry )
 			UpdateCurrentInspectDescription();
 	}
 
 	// Called from UI panel
 	public void CallDetective()
 	{
-		if ( !_playerCorpse.HasCalledDetective )
-		{
-			CallDetectives( _playerCorpse.NetworkIdent );
-			_playerCorpse.HasCalledDetective = true;
-		}
+		if ( _corpse.HasCalledDetective )
+			return;
+
+		CallDetectives( _corpse.NetworkIdent );
+		_corpse.HasCalledDetective = true;
 	}
 
 	[ServerCmd]
@@ -177,7 +177,7 @@ public partial class InspectMenu : Panel
 		if ( !ent.IsValid() || ent is not Corpse corpse )
 			return;
 
-		UI.ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
+		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
 		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole( new DetectiveRole() ) ), corpse.Position );
 	}
 
@@ -191,6 +191,6 @@ public partial class InspectMenu : Panel
 				return;
 		}
 
-		UI.WorldPoints.Instance.AddChild( new DetectiveMarker( corpseLocation ) );
+		WorldPoints.Instance.AddChild( new DetectiveMarker( corpseLocation ) );
 	}
 }
