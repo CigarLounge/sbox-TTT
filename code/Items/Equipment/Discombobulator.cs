@@ -17,6 +17,8 @@ public class DiscombobulatorEntity : BaseGrenade
 	{
 		base.Explode();
 
+		PlaySound( RawStrings.DiscombobulatorExplodeSound );
+
 		var overlaps = Entity.FindInSphere( Position, 800 );
 
 		foreach ( var overlap in overlaps )
