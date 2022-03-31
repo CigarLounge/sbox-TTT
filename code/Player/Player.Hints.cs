@@ -19,7 +19,7 @@ public partial class Player
 
 		var hint = IsLookingAtHintableEntity( MAX_HINT_DISTANCE );
 
-		if ( hint == null || !hint.CanHint( this ) )
+		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
 		{
 			DeleteHint();
 			return;
@@ -27,13 +27,13 @@ public partial class Player
 
 		if ( hint == _currentHint )
 		{
-			hint.Tick( this );
+			hint.Tick( CurrentPlayer );
 			return;
 		}
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( this );
+		_currentHintPanel = hint.DisplayHint( CurrentPlayer );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
 
