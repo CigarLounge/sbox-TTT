@@ -319,15 +319,10 @@ public abstract partial class Weapon : Carriable
 
 				using ( Prediction.Off() )
 				{
-					var damageInfo = new DamageInfo()
-						.WithPosition( trace.EndPosition )
-						.WithFlag( DamageFlags.Bullet )
-						.WithForce( forward * 100f * force )
+					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
 						.WithWeapon( this );
-
-					damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
 
 					if ( trace.Entity is Player player )
 						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
