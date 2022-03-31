@@ -24,7 +24,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	}
 
 	/// <summary>
-	/// Called for every plate, while it's active
+	/// Called for every plate, while it's active.
 	/// </summary>
 	[Event.Frame]
 	private void FrameUpdate()
@@ -65,14 +65,14 @@ public class RolePlateComponent : EntityComponent<Player>
 
 		player.Components.RemoveAny<RolePlateComponent>();
 	}
-}
 
-public partial class RolePlate : WorldPanel
-{
-	public RolePlate( string icon )
+	private partial class RolePlate : WorldPanel
 	{
-		StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
+		public RolePlate( string icon )
+		{
+			StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
 
-		Add.Image( icon, "icon" );
+			Add.Image( icon, "icon" );
+		}
 	}
 }

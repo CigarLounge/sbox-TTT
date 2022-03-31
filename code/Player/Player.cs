@@ -4,7 +4,7 @@ namespace TTT;
 
 public partial class Player : Sandbox.Player
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	public Entity LastActiveChild { get; set; }
 
 	[Net, Local]
@@ -42,14 +42,14 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
-		ActivateFlashlight();
+		CreateFlashlight();
 	}
 
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
 
-		ActivateFlashlight();
+		CreateFlashlight();
 		SetRole( new NoneRole() );
 	}
 
@@ -179,7 +179,7 @@ public partial class Player : Sandbox.Player
 		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
-	public override void Touch( Entity other )
+	public override void StartTouch( Entity other )
 	{
 		if ( other is PickupTrigger )
 		{
@@ -252,7 +252,7 @@ public partial class Player : Sandbox.Player
 	protected override void OnDestroy()
 	{
 		RemovePlayerCorpse();
-		DeactivateFlashlight();
+		DeleteFlashlight();
 
 		base.OnDestroy();
 	}

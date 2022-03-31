@@ -17,7 +17,7 @@ public partial class Player
 			return;
 		}
 
-		var hint = IsLookingAtHintableEntity( MAX_HINT_DISTANCE );
+		var hint = IsLookingAtHintableEntity();
 
 		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
 		{
@@ -49,15 +49,15 @@ public partial class Player
 		_currentHint = null;
 	}
 
-	public IEntityHint IsLookingAtHintableEntity( float maxHintDistance )
+	public IEntityHint IsLookingAtHintableEntity()
 	{
-		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * maxHintDistance )
+		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MAX_HINT_DISTANCE )
 				.HitLayer( CollisionLayer.Debris )
 				.Ignore( CurrentPlayer )
 				.UseHitboxes()
 				.Run();
 
-		if ( trace.Hit && trace.Entity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
+		if ( trace.Entity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
 			return hint;
 
 		return null;

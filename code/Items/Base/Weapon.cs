@@ -289,9 +289,7 @@ public abstract partial class Weapon : Carriable
 
 	public virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
-		//
 		// Seed rand using the tick, so bullet cones match on client and server
-		//
 		Rand.SetSeed( Time.Tick );
 
 		while ( bulletCount-- > 0 )
@@ -310,32 +308,32 @@ public abstract partial class Weapon : Carriable
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
 					tracer?.SetPosition( 0, trace.StartPosition );
-					tracer?.SetPosition( 1, trace.EndPosition);
+					tracer?.SetPosition( 1, trace.EndPosition );
 				}
 
 				if ( !IsServer )
 					continue;
 
-				if ( trace.Entity.IsValid() )
+				if ( !trace.Entity.IsValid() )
+					continue;
+
+				using ( Prediction.Off() )
 				{
-					using ( Prediction.Off() )
-					{
-						var damageInfo = new DamageInfo()
-							.WithPosition( trace.EndPosition )
-							.WithFlag( DamageFlags.Bullet )
-							.WithForce( forward * 100f * force )
-							.UsingTraceResult( trace )
-							.WithAttacker( Owner )
-							.WithWeapon( this );
+					var damageInfo = new DamageInfo()
+						.WithPosition( trace.EndPosition )
+						.WithFlag( DamageFlags.Bullet )
+						.WithForce( forward * 100f * force )
+						.UsingTraceResult( trace )
+						.WithAttacker( Owner )
+						.WithWeapon( this );
 
-						damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
+					damageInfo.Damage = GetDamageFalloff( trace.Distance, Info.Damage, Info.DamageFallOffStart, Info.DamageFallOffEnd );
 
-						if ( trace.Entity is Player player )
-							player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
+					if ( trace.Entity is Player player )
+						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
 
-						OnHit( trace.Entity );
-						trace.Entity.TakeDamage( damageInfo );
-					}
+					OnHit( trace.Entity );
+					trace.Entity.TakeDamage( damageInfo );
 				}
 			}
 		}

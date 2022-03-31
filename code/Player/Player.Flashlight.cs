@@ -46,7 +46,7 @@ public partial class Player
 		}
 	}
 
-	protected void ActivateFlashlight()
+	protected void CreateFlashlight()
 	{
 		if ( Host.IsServer )
 		{
@@ -64,7 +64,7 @@ public partial class Player
 		}
 	}
 
-	protected void DeactivateFlashlight()
+	protected void DeleteFlashlight()
 	{
 		_worldLight?.Delete();
 		_viewLight?.Delete();
