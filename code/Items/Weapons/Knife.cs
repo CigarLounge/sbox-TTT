@@ -167,6 +167,9 @@ public partial class Knife : Carriable
 			}
 			case WorldEntity:
 			{
+				if ( Vector3.GetAngle( trace.Normal, trace.Direction ) < 120 )
+					goto default;
+
 				trace.Surface.DoBulletImpact( trace );
 				Position -= trace.Direction * 4f; // Make the knife stuck in the terrain.
 				MoveType = MoveType.None;
@@ -178,7 +181,7 @@ public partial class Knife : Carriable
 				Position = oldPosition - trace.Direction * 5;
 				MoveType = MoveType.Physics;
 				PhysicsEnabled = true;
-				Velocity = trace.Direction * 500f;
+				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
 
 				break;
 			}
