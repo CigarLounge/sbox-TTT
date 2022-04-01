@@ -15,9 +15,8 @@ public class PerkDisplay : Panel
 
 		var player = Local.Pawn as Player;
 
-		for ( int i = 0; i < player.Perks.Count; ++i )
+		foreach ( var perk in player.Perks )
 		{
-			var perk = player.Perks.Get( i );
 			if ( !_entries.ContainsKey( perk ) )
 			{
 				_entries[perk] = AddPerkSlot( perk );

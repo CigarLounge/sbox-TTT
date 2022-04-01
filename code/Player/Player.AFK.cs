@@ -7,7 +7,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public readonly static List<InputButton> Buttons = Enum.GetValues( typeof( InputButton ) ).Cast<InputButton>().ToList();
+	public static readonly List<InputButton> Buttons = Enum.GetValues( typeof( InputButton ) ).Cast<InputButton>().ToList();
 
 	private TimeSince _timeSinceLastAction = 0f;
 

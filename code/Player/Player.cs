@@ -16,7 +16,7 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	public Perks Perks { get; init; }
+	public Perks Perks { get; private init; }
 
 	public const float DropVelocity = 300;
 
@@ -227,9 +227,9 @@ public partial class Player : Sandbox.Player
 
 	private void SimulatePerks()
 	{
-		for ( int i = 0; i < Perks.Count; ++i )
+		foreach ( var perk in Perks )
 		{
-			Perks.Get( i ).Simulate( Client );
+			perk.Simulate( Client );
 		}
 	}
 
