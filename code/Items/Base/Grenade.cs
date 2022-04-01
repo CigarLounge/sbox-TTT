@@ -42,11 +42,11 @@ public abstract partial class Grenade : Carriable
 	{
 		await Task.DelaySeconds( seconds );
 
-		Explode();
+		OnExplode();
 		Delete();
 	}
 
-	protected virtual void Explode() { }
+	protected virtual void OnExplode() { }
 
 	protected void Throw()
 	{

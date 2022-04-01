@@ -4,12 +4,12 @@ using System;
 namespace TTT;
 
 [Hammer.Skip]
-[Library( "ttt_equipment_discombobulator", Title = "Discombobulator" )]
+[Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
 public class Discombobulator : Grenade
 {
-	protected override void Explode()
+	protected override void OnExplode()
 	{
-		base.Explode();
+		base.OnExplode();
 
 		PlaySound( RawStrings.DiscombobulatorExplodeSound );
 
@@ -43,7 +43,7 @@ public class Discombobulator : Grenade
 			if ( trace.Fraction < 0.98f )
 				continue;
 
-			float distanceMul = 1.0f - Math.Clamp( dist / 800, 0.0f, 1.0f );
+			float distanceMul = 1.0f - Math.Clamp( dist / 400, 0.0f, 1.0f );
 			float force = 800 * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
