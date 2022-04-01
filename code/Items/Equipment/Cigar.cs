@@ -6,19 +6,18 @@ namespace TTT;
 [Library( "ttt_equipment_cigar", Title = "Cigar" )]
 public partial class Cigar : Carriable
 {
-	private TimeSince _timeSinceLastSmoke = 5;
+	private TimeUntil _timeUntilNextSmoke = 0;
 	private Particles _trailParticle;
 
 	public override void Simulate( Client client )
 	{
-		if ( Input.Pressed( InputButton.Attack1 ) && _timeSinceLastSmoke > 5 )
+		if ( Input.Pressed( InputButton.Attack1 ) && _timeUntilNextSmoke )
 			Smoke();
 	}
 
 	private void Smoke()
 	{
-		_timeSinceLastSmoke = 0;
-
+		_timeUntilNextSmoke = 5;
 
 		Particles.Create( "particles/swb/smoke/swb_smokepuff_1", this, "muzzle" );
 		_trailParticle = null;
