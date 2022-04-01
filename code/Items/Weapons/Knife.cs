@@ -95,17 +95,21 @@ public partial class Knife : Carriable
 		_isThrown = true;
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
+		Owner.Inventory.SetActive( Owner.LastActiveChild );
 
 		if ( !IsServer )
 			return;
 
-		var owner = Owner;
-		Owner.Inventory.DropActive();
-		Rotation = owner.EyeRotation * _throwRotation;
+		if ( IsActiveChild )
+			Owner.Inventory.DropActive();
+		else
+			Owner.Inventory.Drop( this );
+
+		Rotation = PreviousOwner.EyeRotation * _throwRotation;
 		Position = trace.EndPosition;
 		MoveType = MoveType.None;
 		PhysicsEnabled = false;
-		Velocity = owner.EyeRotation.Forward * (1250f + owner.Velocity.Length);
+		Velocity = PreviousOwner.EyeRotation.Forward * (1250f + PreviousOwner.Velocity.Length);
 		EnableTouch = false;
 	}
 
