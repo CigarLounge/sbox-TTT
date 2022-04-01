@@ -176,7 +176,6 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
-		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
 	public override void StartTouch( Entity other )

@@ -71,7 +71,8 @@ public partial class Player
 		_viewLight?.Delete();
 	}
 
-	public void FrameSimulateFlashlight()
+	[Event.Frame]
+	private void Frame()
 	{
 		if ( !_viewLight.IsValid() )
 			return;
