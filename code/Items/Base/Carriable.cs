@@ -82,6 +82,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
+	public bool IsActiveChild => Owner.ActiveChild == this;
 	public CarriableInfo Info { get; private set; }
 
 	public Carriable() { }
