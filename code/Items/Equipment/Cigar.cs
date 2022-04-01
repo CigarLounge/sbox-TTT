@@ -10,9 +10,6 @@ public partial class Cigar : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( Input.Pressed( InputButton.Attack1 ) && _timeSinceLastSmoke > 5 )
 			Smoke();
 	}
