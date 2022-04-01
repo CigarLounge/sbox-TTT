@@ -5,13 +5,7 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_discombobulator", Title = "Discombobulator" )]
-public class Discombobulator : Throwable<DiscombobulatorEntity>
-{
-}
-
-[Hammer.Skip]
-[Library( "ttt_entity_discombobulator", Title = "Discombobulator" )]
-public class DiscombobulatorEntity : BaseGrenade
+public class Discombobulator : Throwable
 {
 	protected override void Explode()
 	{
@@ -50,10 +44,13 @@ public class DiscombobulatorEntity : BaseGrenade
 				continue;
 
 			float distanceMul = 1.0f - Math.Clamp( dist / 800, 0.0f, 1.0f );
-			float force = 2 * distanceMul * entity.PhysicsBody.Mass;
+			float force = 800 * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
-			entity.ApplyAbsoluteImpulse( force * forceDir );
+			if ( entity is not Player )
+				entity.ApplyAbsoluteImpulse( force * forceDir );
+			else
+				entity.ApplyAbsoluteImpulse( force * forceDir * 2 );
 		}
 	}
 }

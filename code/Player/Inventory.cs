@@ -275,6 +275,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return;
 
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
+
 		if ( carriable is Weapon weapon )
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
 	}
@@ -284,12 +285,13 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( child is not Carriable carriable )
 			return;
 
-		if ( _list.Remove( carriable ) )
-		{
-			SlotCapacity[(int)carriable.Info.Slot] += 1;
-			if ( carriable is Weapon weapon )
-				WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
-		}
+		if ( !_list.Remove( carriable ) )
+			return;
+
+		SlotCapacity[(int)carriable.Info.Slot] += 1;
+
+		if ( carriable is Weapon weapon )
+			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
 	public Entity DropEntity( Entity self, Entity droppedEntity )

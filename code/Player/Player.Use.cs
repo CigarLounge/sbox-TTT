@@ -17,7 +17,7 @@ public partial class Player
 		{
 			Using = FindUsable();
 
-			if ( Using == null )
+			if ( Using is null )
 			{
 				UseFail();
 				return;
