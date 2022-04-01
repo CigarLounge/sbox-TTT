@@ -6,7 +6,7 @@ namespace TTT;
 [Library( "ttt_equipment_cigar", Title = "Cigar" )]
 public partial class Cigar : Carriable
 {
-	private TimeSince _timeSinceLastSmoke = 0;
+	private TimeSince _timeSinceLastSmoke = 5;
 	private Particles _trailParticle;
 
 	public override void Simulate( Client client )
