@@ -114,16 +114,15 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		var entities = _list.FindAll( x => x.Info.Slot == carriable.Info.Slot );
 		var active = Active as Carriable;
 
-		if ( active.Info.Slot == carriable.Info.Slot && DropActive() is not null )
+		if ( active is not null && active.Info.Slot == carriable.Info.Slot )
 		{
-			Add( carriable, true );
+			if ( DropActive() is not null )
+				Add( carriable, true );
 		}
 		else if ( entities.Count == 1 )
 		{
-			if ( !Drop( entities[0] ) )
-				return;
-
-			Add( carriable, false );
+			if ( Drop( entities[0] ) )
+				Add( carriable, false );
 		}
 	}
 
