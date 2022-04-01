@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TTT;
 
-public abstract partial class Throwable : Carriable
+public abstract partial class Grenade : Carriable
 {
 	[Net, Predicted]
 	public TimeUntil TimeUntilExplode { get; protected set; }
