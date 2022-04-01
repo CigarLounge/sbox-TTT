@@ -5,7 +5,7 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_discombobulator", Title = "Discombobulator" )]
-public class Discombobulator : Throwable
+public class Discombobulator : Grenade
 {
 	protected override void Explode()
 	{
