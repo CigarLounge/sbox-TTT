@@ -12,7 +12,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = ""
+		icon = "ui/equipment/teleporter.png"
 		description = ""
 		worldmodel = resource:"models/teleporter/teleporter.vmdl"
 		libraryname = "ttt_equipment_teleporter"

@@ -11,7 +11,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = ""
+		icon = "ui/equipment/decoy.png"
 		worldmodel = resource:""
 		libraryname = "ttt_equipment_decoy"
 		candrop = false

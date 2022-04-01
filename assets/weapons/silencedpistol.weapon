@@ -19,7 +19,7 @@
 		deploytime = 0.6
 		buyable = true
 		price = 100
-		icon = "ui/icons/silenced-pistol.png"
+		icon = "ui/weapons/silenced-pistol.png"
 		worldmodel = resource:"models/weapons/w_vertec-silenced.vmdl"
 		libraryname = "ttt_weapon_silencedpistol"
 		spread = 0.03
@@ -36,5 +36,6 @@
 		candrop = true
 		description = "Low-noise handgun which prevents victims from screaming when killed."
 		reserveammo = 20
+		tracerparticle = resource:""
 	}
 }
