@@ -11,12 +11,12 @@ public partial class Player
 	public TimeSince TimeSinceLightToggled { get; private set; }
 
 	/// <summary>
-	/// The flashlight that can only be seen in ThirdPerson.
+	/// The third person flashlight.
 	/// </summary>
 	private SpotLightEntity _worldLight;
 
 	/// <summary>
-	/// The flashlight that can only be seen in FirstPerson.
+	/// The first person flashlight.
 	/// </summary>
 	private SpotLightEntity _viewLight;
 
@@ -26,7 +26,8 @@ public partial class Player
 
 		if ( _worldLight.IsValid() )
 		{
-			var transform = new Transform( EyePosition + EyeRotation.Forward * 20, EyeRotation );
+			var transform = GetAttachment( "eyes" ) ?? default;
+			transform.Rotation *= Rotation.From( new Angles( 0, 90, 0 ) );
 			_worldLight.Transform = transform;
 
 			if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )

@@ -11,4 +11,5 @@ public static partial class RawStrings
 	public const string RadioTab = "Radio";
 	public const string ShopTab = "Shop";
 	public const string DNATab = "DNA";
+	public const string DiscombobulatorExplodeSound = "discombobulator_explode-1";
 }

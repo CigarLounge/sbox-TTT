@@ -28,26 +28,26 @@ public partial class CarriableInfo : ItemInfo
 {
 	[Property, Category( "Important" )]
 	public SlotType Slot { get; set; } = SlotType.Primary;
-	
-	[Property, Category( "Important" )] 
+
+	[Property, Category( "Important" )]
 	public bool Spawnable { get; set; } = false;
-	
-	[Property, Category( "Important" )] 
+
+	[Property, Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
-	
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] 
+
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string ViewModel { get; set; } = "";
-	
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )] 
+
+	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string HandsModel { get; set; } = "";
-	
-	[Property, Category( "WorldModels" )] 
+
+	[Property, Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
-	
-	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )] 
+
+	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModel { get; set; } = "";
-	
-	[Property, Category( "Stats" )] 
+
+	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
 	public Model CachedViewModel { get; private set; }
@@ -76,13 +76,13 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	}
 
 	public BaseViewModel HandsModelEntity { get; private set; }
-	public Player PreviousOwner { get; set; }
+	public Player PreviousOwner { get; private set; }
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
-	public CarriableInfo Info { get; protected set; }
+	public CarriableInfo Info { get; private set; }
 
 	public Carriable() { }
 

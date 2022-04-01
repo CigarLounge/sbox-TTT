@@ -17,6 +17,8 @@ public class DiscombobulatorEntity : BaseGrenade
 	{
 		base.Explode();
 
+		PlaySound( RawStrings.DiscombobulatorExplodeSound );
+
 		var overlaps = Entity.FindInSphere( Position, 800 );
 
 		foreach ( var overlap in overlaps )
@@ -48,10 +50,10 @@ public class DiscombobulatorEntity : BaseGrenade
 				continue;
 
 			float distanceMul = 1.0f - Math.Clamp( dist / 800, 0.0f, 1.0f );
-			float force = 3 * distanceMul * entity.PhysicsBody.Mass;
+			float force = 2 * distanceMul * entity.PhysicsBody.Mass;
 			var forceDir = (targetPos - Position).Normal;
 
-			entity.Velocity = force * forceDir;
+			entity.ApplyAbsoluteImpulse( force * forceDir );
 		}
 	}
 }
