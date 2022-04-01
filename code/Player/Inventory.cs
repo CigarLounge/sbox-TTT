@@ -20,8 +20,8 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 	private readonly List<Carriable> _list = new();
 
-	public readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	public readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+	private readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+	private readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
 	private const int DropPositionOffset = 50;
 	private const int DropVelocity = 500;
@@ -39,11 +39,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return false;
 
 		var carriable = entity as Carriable;
-		carriable.SetParent( Owner );
 		carriable.OnCarryStart( Owner );
 
 		if ( makeActive )
-			SetActive( entity );
+			SetActive( carriable );
 
 		return true;
 	}
@@ -99,17 +98,33 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
-	public Carriable Swap( Carriable carriable )
+	public void Swap( Carriable carriable )
 	{
-		var entity = _list.Find( x => x.Info.Slot == carriable.Info.Slot );
-		bool wasActive = Owner.ActiveChild == entity;
+		Host.AssertServer();
 
-		if ( entity.IsValid() )
-			Drop( entity );
+		if ( !carriable.CanCarry( Owner ) )
+			return;
 
-		Add( carriable, wasActive );
+		if ( HasFreeSlot( carriable.Info.Slot ) )
+		{
+			Add( carriable );
+			return;
+		}
 
-		return entity;
+		var entities = _list.FindAll( x => x.Info.Slot == carriable.Info.Slot );
+		var active = Active as Carriable;
+
+		if ( active.Info.Slot == carriable.Info.Slot && DropActive() is not null )
+		{
+			Add( carriable, true );
+		}
+		else if ( entities.Count == 1 )
+		{
+			if ( !Drop( entities[0] ) )
+				return;
+
+			Add( carriable, false );
+		}
 	}
 
 	public bool SetActive( Entity entity )
@@ -138,7 +153,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return false;
 
 		var carriable = entity as Carriable;
-		carriable.Parent = null;
+
+		if ( !carriable.Info.CanDrop )
+			return false;
+
 		carriable.OnCarryDrop( Owner );
 
 		return true;
@@ -165,9 +183,6 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 		var active = Active;
 		if ( active is not Carriable carriable )
-			return null;
-
-		if ( !carriable.Info.CanDrop )
 			return null;
 
 		if ( Drop( carriable ) )
@@ -222,21 +237,25 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 	public void DropAll()
 	{
+		Host.AssertServer();
+
 		// Cache due to "collections modified error"
 		Active = null;
 		foreach ( var carriable in _list.ToArray() )
 		{
 			Drop( carriable );
 		}
+
+		DeleteContents();
 	}
 
 	public void DeleteContents()
 	{
 		Host.AssertServer();
 
-		foreach ( var item in _list.ToArray() )
+		foreach ( var carriable in _list.ToArray() )
 		{
-			item.Delete();
+			carriable.Delete();
 		}
 
 		_list.Clear();
@@ -276,13 +295,11 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 	public Entity DropEntity( Entity self, Entity droppedEntity )
 	{
-		if ( !Drop( self ) )
-		{
-			droppedEntity.Delete();
-			return null;
-		}
+		Host.AssertServer();
 
-		self.Delete();
+		var carriable = self as Carriable;
+		carriable.OnCarryDrop( Owner );
+		carriable.Delete();
 
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset;
 		droppedEntity.Rotation = Owner.EyeRotation;
