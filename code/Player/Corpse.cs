@@ -75,7 +75,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Perks = new PerkInfo[DeadPlayer.Perks.Count];
 		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
 		{
-			Perks[i] = DeadPlayer.Perks.Get( i ).Info;
+			Perks[i] = DeadPlayer.Perks[i].Info;
 		}
 
 		foreach ( var entity in attachedEnts )

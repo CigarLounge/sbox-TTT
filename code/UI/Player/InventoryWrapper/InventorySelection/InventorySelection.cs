@@ -31,7 +31,7 @@ public class InventorySelection : Panel
 
 		var player = (Local.Pawn as Player).CurrentPlayer;
 
-		foreach ( var carriable in player.Inventory.List )
+		foreach ( var carriable in player.Inventory )
 		{
 			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
 				_entries[carriable] = AddInventorySlot( carriable );
