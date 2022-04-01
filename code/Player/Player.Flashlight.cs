@@ -52,14 +52,13 @@ public partial class Player
 		if ( Host.IsServer )
 		{
 			_worldLight = CreateLight();
-			_worldLight.Parent = this;
 			_worldLight.EnableHideInFirstPerson = true;
 			_worldLight.Enabled = false;
+			FlashlightEnabled = false;
 		}
 		else
 		{
 			_viewLight = CreateLight();
-			_viewLight.Parent = this;
 			_viewLight.EnableViewmodelRendering = true;
 			_viewLight.Enabled = FlashlightEnabled;
 		}
@@ -68,7 +67,9 @@ public partial class Player
 	protected void DeleteFlashlight()
 	{
 		_worldLight?.Delete();
+		_worldLight = null;
 		_viewLight?.Delete();
+		_viewLight = null;
 	}
 
 	[Event.Frame]
@@ -77,7 +78,7 @@ public partial class Player
 		if ( !_viewLight.IsValid() )
 			return;
 
-		_viewLight.Enabled = FlashlightEnabled;
+		_viewLight.Enabled = FlashlightEnabled & IsFirstPersonMode;
 
 		if ( !_viewLight.Enabled )
 			return;
@@ -105,6 +106,7 @@ public partial class Player
 			OuterConeAngle = 40,
 			FogStength = 1.0f,
 			Owner = this,
+			Parent = this,
 			LightCookie = Texture.Load( "materials/effects/lightcookie.vtex" )
 		};
 	}

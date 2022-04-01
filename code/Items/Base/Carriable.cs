@@ -101,7 +101,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		}
 
 		Info = Asset.GetInfo<CarriableInfo>( this );
-		SetModel( Info.WorldModel );
+		Model = Info.CachedWorldModel;
 	}
 
 	public override void ClientSpawn()
@@ -119,10 +119,9 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( entity is Player player )
 		{
 			var animator = player.GetActiveAnimator();
-			if ( animator != null )
-			{
-				SimulateAnimator( animator );
-			}
+
+			if ( animator is not null )	
+				SimulateAnimator( animator );		
 		}
 
 		if ( IsLocalPawn )
@@ -165,7 +164,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Owner = Owner,
 			EnableViewmodelRendering = true
 		};
-		ViewModelEntity.SetModel( Info.ViewModel );
+		ViewModelEntity.Model = Info.CachedViewModel;
 
 		HandsModelEntity = new BaseViewModel
 		{
