@@ -26,7 +26,7 @@
 		buyable = false
 		islimited = false
 		price = 0
-		icon = ""
+		icon = "ui/weapons/huge.png"
 		worldmodel = resource:"models/weapons/w_mg4.vmdl"
 		libraryname = "ttt_weapon_huge"
 		verticalrecoil = 30.0
