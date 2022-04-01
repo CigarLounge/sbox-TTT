@@ -7,6 +7,7 @@ namespace TTT;
 public partial class Cigar : Carriable
 {
 	private TimeSince _timeSinceLastSmoke = 0;
+	private Particles _trailParticle;
 
 	public override void Simulate( Client client )
 	{
@@ -18,12 +19,21 @@ public partial class Cigar : Carriable
 	{
 		_timeSinceLastSmoke = 0;
 
+
 		Particles.Create( "particles/swb/smoke/swb_smokepuff_1", this, "muzzle" );
-		Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
+		_trailParticle = null;
+		_trailParticle ??= Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
 
 		Owner.TakeDamage( DamageInfo.Generic( 1 )
 			.WithAttacker( Owner )
 			.WithWeapon( this )
 		);
+	}
+
+	public override void ActiveEnd( Entity entity, bool dropped )
+	{
+		base.ActiveEnd( entity, dropped );
+
+		_trailParticle?.Destroy( true );
 	}
 }
