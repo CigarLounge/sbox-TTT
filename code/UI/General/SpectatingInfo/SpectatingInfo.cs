@@ -6,6 +6,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class SpectatingInfo : Panel
 {
+	private Panel SwapPanel { get; set; }
 	private Label PlayerName { get; set; }
 
 	public override void Tick()
@@ -15,9 +16,8 @@ public class SpectatingInfo : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		PlayerName.EnableFade( player.IsSpectatingPlayer );
-
-		if ( PlayerName.IsEnabled() )
+		SwapPanel.EnableFade( player.IsSpectatingPlayer );
+		if ( SwapPanel.IsEnabled() )
 		{
 			PlayerName.Text = player.CurrentPlayer?.Client?.Name;
 			PlayerName.Style.FontColor = player.CurrentPlayer?.Role?.Color;

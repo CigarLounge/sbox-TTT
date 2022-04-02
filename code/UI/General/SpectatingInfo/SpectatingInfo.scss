@@ -15,6 +15,13 @@ SpectatingInfo
         font-weight: 600;
     }
 
+    .swap-panel
+    {
+        align-items: center; 
+        flex-direction: column;
+        transition: all 0.2s ease-in-out;
+    }
+
     inputglyph
     {
         margin: 5px;
