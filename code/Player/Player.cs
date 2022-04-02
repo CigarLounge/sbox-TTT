@@ -84,7 +84,7 @@ public partial class Player : Sandbox.Player
 
 			CreateHull();
 			CreateFlashlight();
-			DressPlayer();	
+			DressPlayer();
 			ResetInterpolation();
 
 			Game.Current.Round.OnPlayerSpawned( this );
@@ -107,7 +107,7 @@ public partial class Player : Sandbox.Player
 
 		DeleteFlashlight();
 
-		if ( !IsSpectator )
+		if ( this.IsAlive() )
 			CreateFlashlight();
 
 		if ( !IsLocalPawn )
