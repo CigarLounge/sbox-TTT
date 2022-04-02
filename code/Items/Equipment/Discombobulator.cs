@@ -4,18 +4,12 @@ using System;
 namespace TTT;
 
 [Hammer.Skip]
-[Library( "ttt_equipment_discombobulator", Title = "Discombobulator" )]
-public class Discombobulator : Throwable<DiscombobulatorEntity>
+[Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
+public class Discombobulator : Grenade
 {
-}
-
-[Hammer.Skip]
-[Library( "ttt_entity_discombobulator", Title = "Discombobulator" )]
-public class DiscombobulatorEntity : BaseGrenade
-{
-	protected override void Explode()
+	protected override void OnExplode()
 	{
-		base.Explode();
+		base.OnExplode();
 
 		PlaySound( RawStrings.DiscombobulatorExplodeSound );
 
@@ -49,11 +43,14 @@ public class DiscombobulatorEntity : BaseGrenade
 			if ( trace.Fraction < 0.98f )
 				continue;
 
-			float distanceMul = 1.0f - Math.Clamp( dist / 800, 0.0f, 1.0f );
-			float force = 2 * distanceMul * entity.PhysicsBody.Mass;
+			float distanceMul = 1.0f - Math.Clamp( dist / 400, 0.0f, 1.0f );
+			float force = 800 * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
-			entity.ApplyAbsoluteImpulse( force * forceDir );
+			if ( entity is not Player )
+				entity.ApplyAbsoluteImpulse( force * forceDir );
+			else
+				entity.ApplyAbsoluteImpulse( force * forceDir * 2 );
 		}
 	}
 }

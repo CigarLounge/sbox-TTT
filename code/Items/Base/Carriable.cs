@@ -82,6 +82,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
+	public bool IsActiveChild => Owner?.ActiveChild == this;
 	public CarriableInfo Info { get; private set; }
 
 	public Carriable() { }
@@ -100,7 +101,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		}
 
 		Info = Asset.GetInfo<CarriableInfo>( this );
-		SetModel( Info.WorldModel );
+		Model = Info.CachedWorldModel;
 
 		Components.Create<DNA>();
 	}
@@ -120,10 +121,9 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( entity is Player player )
 		{
 			var animator = player.GetActiveAnimator();
-			if ( animator != null )
-			{
+
+			if ( animator is not null )
 				SimulateAnimator( animator );
-			}
 		}
 
 		if ( IsLocalPawn )
@@ -166,7 +166,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Owner = Owner,
 			EnableViewmodelRendering = true
 		};
-		ViewModelEntity.SetModel( Info.ViewModel );
+		ViewModelEntity.Model = Info.CachedViewModel;
 
 		HandsModelEntity = new BaseViewModel
 		{

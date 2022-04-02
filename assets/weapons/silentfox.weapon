@@ -26,7 +26,7 @@
 		buyable = true
 		islimited = true
 		price = 100
-		icon = "ui/icons/silent-fox.png"
+		icon = "ui/weapons/silent-fox.png"
 		worldmodel = resource:"models/weapons/w_mp7-silenced.vmdl"
 		libraryname = "ttt_weapon_silentfox"
 		verticalrecoil = 8.0
@@ -36,5 +36,6 @@
 		candrop = true
 		description = "Low-noise SMG which prevents victims from screaming when killed."
 		reserveammo = 60
+		tracerparticle = resource:""
 	}
 }

@@ -171,7 +171,9 @@ public abstract partial class Weapon : Carriable
 		float oldYaw = input.ViewAngles.yaw;
 		input.ViewAngles.pitch -= CurrentRecoilAmount.y * Time.Delta;
 		input.ViewAngles.yaw -= CurrentRecoilAmount.x * Time.Delta;
-		CurrentRecoilAmount -= CurrentRecoilAmount.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale * 1f ).WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale * 1f );
+		CurrentRecoilAmount -= CurrentRecoilAmount
+			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
+			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
 
 	protected virtual bool CanPrimaryAttack()

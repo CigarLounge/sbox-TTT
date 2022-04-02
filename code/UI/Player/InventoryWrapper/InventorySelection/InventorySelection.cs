@@ -31,13 +31,13 @@ public class InventorySelection : Panel
 
 		var player = (Local.Pawn as Player).CurrentPlayer;
 
-		foreach ( var carriable in player.Inventory.List )
+		foreach ( var carriable in player.Inventory )
 		{
 			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeItem = player.ActiveChild;
+		var activeItem = player.ActiveChild as Carriable;
 		var activeItemTitle = activeItem is not null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
 		foreach ( var slot in _entries.Values )
 		{
@@ -53,8 +53,8 @@ public class InventorySelection : Panel
 			slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
 
-			slot.SetClass( "active", slot.Carriable.Info.Title == activeItemTitle );
-			slot.SetClass( "opacity-heavy", slot.Carriable.Info.Title == activeItemTitle );
+			slot.SetClass( "active", slot.Carriable.IsActiveChild );
+			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveChild );
 
 			slot.UpdateSlotText( slot.Carriable.SlotText );
 		}
@@ -114,7 +114,7 @@ public class InventorySelection : Panel
 						// Ex. "3" pressed, find all carriables with slot type "3".
 						weaponsOfSlotTypeSelected.Add( slot.Carriable );
 
-						if ( slot.Carriable.Info.Title == activeCarriable?.Info.Title )
+						if ( slot.Carriable == activeCarriable )
 						{
 							// If the current active carriable has the same slot type as
 							// the keyboard index the user pressed
@@ -134,7 +134,9 @@ public class InventorySelection : Panel
 			{
 				// The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
 				// Find the next possible weapon within the hold types.
-				input.ActiveChild = weaponsOfSlotTypeSelected[GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count )];
+
+				activeCarriableOfSlotTypeIndex = GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count );
+				input.ActiveChild = weaponsOfSlotTypeSelected[activeCarriableOfSlotTypeIndex];
 			}
 		}
 
@@ -142,7 +144,7 @@ public class InventorySelection : Panel
 		if ( mouseWheelIndex != 0 )
 		{
 			int activeCarriableIndex = childrenList.FindIndex( ( p ) =>
-				 p is InventorySlot slot && slot.Carriable.Info.Title == activeCarriable?.Info.Title );
+				 p is InventorySlot slot && slot.Carriable == activeCarriable );
 
 			int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
 			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
@@ -165,9 +167,7 @@ public class InventorySelection : Panel
 		for ( int i = 0; i < _slotInputButtons.Length; i++ )
 		{
 			if ( input.Pressed( _slotInputButtons[i] ) )
-			{
 				return i;
-			}
 		}
 
 		return -1;

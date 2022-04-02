@@ -16,7 +16,7 @@ public partial class Player : Sandbox.Player
 		private init => base.Inventory = value;
 	}
 
-	public Perks Perks { get; init; }
+	public Perks Perks { get; private init; }
 
 	public const float DropVelocity = 300;
 
@@ -42,14 +42,12 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 		CameraMode = new FreeSpectateCamera();
-		CreateFlashlight();
 	}
 
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
 
-		CreateFlashlight();
 		SetRole( new NoneRole() );
 	}
 
@@ -59,29 +57,37 @@ public partial class Player : Sandbox.Player
 
 		LifeState = LifeState.Respawnable;
 		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
-		Credits = 0;
+
 		Confirmer = null;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
+
+		DeleteFlashlight();
 		DeleteItems();
 		SetRole( new NoneRole() );
 
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
+		Credits = 0;
 
 		if ( !IsForcedSpectator )
 		{
 			LifeState = LifeState.Alive;
 			Health = MaxHealth;
+
 			EnableAllCollisions = true;
 			EnableDrawing = true;
+
 			Controller = new WalkController();
 			CameraMode = new FirstPersonCamera();
-			DressPlayer();
+
 			CreateHull();
-			Game.Current.Round.OnPlayerSpawned( this );
+			CreateFlashlight();
+			DressPlayer();
 			ResetInterpolation();
+
+			Game.Current.Round.OnPlayerSpawned( this );
 			Game.Current.MoveToSpawnpoint( this );
 		}
 		else
@@ -92,21 +98,22 @@ public partial class Player : Sandbox.Player
 		ClientRespawn( this );
 	}
 
-	[ClientRpc]
-	public static void ClientRespawn( Player player )
+	private void ClientRespawn()
 	{
-		if ( !player.IsValid() )
-			return;
+		Confirmer = null;
+		IsConfirmedDead = false;
+		IsMissingInAction = false;
+		IsRoleKnown = false;
 
-		player.Confirmer = null;
-		player.IsConfirmedDead = false;
-		player.IsMissingInAction = false;
-		player.IsRoleKnown = false;
+		DeleteFlashlight();
 
-		if ( !player.IsLocalPawn )
-			player.SetRole( new NoneRole() );
+		if ( this.IsAlive() )
+			CreateFlashlight();
+
+		if ( !IsLocalPawn )
+			SetRole( new NoneRole() );
 		else
-			player.ClearButtons();
+			ClearButtons();
 	}
 
 	public override void OnKilled()
@@ -117,21 +124,23 @@ public partial class Player : Sandbox.Player
 		RemoveAllDecals();
 
 		Inventory.DropAll();
+		DeleteFlashlight();
 		DeleteItems();
-		FlashlightEnabled = false;
 
 		Game.Current.Round.OnPlayerKilled( this );
 		Role?.OnKilled( this );
+		Event.Run( TTTEvent.Player.Killed, this );
+
 		ClientOnKilled( this );
 	}
 
-	[ClientRpc]
-	public static void ClientOnKilled( Player player )
+	private void ClientOnKilled()
 	{
-		if ( !player.IsValid() )
-			return;
+		if ( IsLocalPawn )
+			ClearButtons();
 
-		Event.Run( TTTEvent.Player.Killed, player );
+		DeleteFlashlight();
+		Event.Run( TTTEvent.Player.Killed, this );
 	}
 
 	public override void Simulate( Client client )
@@ -176,7 +185,6 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
-		CurrentPlayer.FrameSimulateFlashlight();
 	}
 
 	public override void StartTouch( Entity other )
@@ -227,9 +235,9 @@ public partial class Player : Sandbox.Player
 
 	private void SimulatePerks()
 	{
-		for ( int i = 0; i < Perks.Count; ++i )
+		foreach ( var perk in Perks )
 		{
-			Perks.Get( i ).Simulate( Client );
+			perk.Simulate( Client );
 		}
 	}
 
@@ -255,5 +263,23 @@ public partial class Player : Sandbox.Player
 		DeleteFlashlight();
 
 		base.OnDestroy();
+	}
+
+	[ClientRpc]
+	public static void ClientRespawn( Player player )
+	{
+		if ( !player.IsValid() )
+			return;
+
+		player.ClientRespawn();
+	}
+
+	[ClientRpc]
+	public static void ClientOnKilled( Player player )
+	{
+		if ( !player.IsValid() )
+			return;
+
+		player.ClientOnKilled();
 	}
 }

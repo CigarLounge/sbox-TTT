@@ -39,7 +39,7 @@ public partial class RadioMenu : Panel
 
 	private void PlayRadioSound( List<string> sounds )
 	{
-		if ( _cachedRadio == null )
+		if ( _cachedRadio is null )
 		{
 			FetchRadio();
 			return;
@@ -55,11 +55,9 @@ public partial class RadioMenu : Panel
 
 	private void FetchRadio()
 	{
-		if ( Local.Pawn is Player player )
-		{
-			var radioComponent = player.Components.Get<RadioComponent>();
-			if ( radioComponent != null )
-				_cachedRadio = radioComponent.RadioEntity;
-		}
+		var radioComponent = Local.Pawn.Components.Get<RadioComponent>();
+
+		if ( radioComponent is not null )
+			_cachedRadio = radioComponent.Radio;
 	}
 }

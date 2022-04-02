@@ -41,7 +41,9 @@ public partial class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		if ( Local.Pawn is Player player )
 		{
 			if ( input.Pressed( InputButton.Attack1 ) )
-				player.UpdateSpectatedPlayer();
+				player.UpdateSpectatedPlayer( true );
+			else if ( input.Pressed( InputButton.Attack2 ) )
+				player.UpdateSpectatedPlayer( false );
 		}
 
 		base.BuildInput( input );

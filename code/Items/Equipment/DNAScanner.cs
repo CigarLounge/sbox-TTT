@@ -32,7 +32,7 @@ public partial class DNAScanner : Carriable
 		if ( !Input.Pressed( InputButton.Attack1 ) )
 			return;
 
-		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.USE_DISTANCE )
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
 			.HitLayer( CollisionLayer.Debris )

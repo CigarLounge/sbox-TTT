@@ -19,7 +19,6 @@ public partial class Hud : HudEntity<RootPanel>
 
 	private void Init()
 	{
-		RootPanel.AddChild<WIPDisclaimer>();
 		RootPanel.AddChild<HintDisplay>();
 		RootPanel.AddChild<PlayerInfo>();
 		RootPanel.AddChild<InventoryWrapper>();
@@ -35,6 +34,7 @@ public partial class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<RoleMenu>();
 		RootPanel.AddChild<DamageIndicator>();
 		RootPanel.AddChild<WorldPoints>();
+		RootPanel.AddChild<SpectatingInfo>();
 	}
 
 	[Event.Hotload]

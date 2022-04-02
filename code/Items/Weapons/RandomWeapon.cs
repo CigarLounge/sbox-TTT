@@ -38,7 +38,7 @@ public class RandomWeapon : Entity
 			foreach ( var weaponType in weapons )
 			{
 				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
-				if ( weaponInfo != null && weaponInfo.Spawnable )
+				if ( weaponInfo is not null && weaponInfo.Spawnable )
 					_cachedWeaponTypes.Add( weaponType );
 			}
 		}

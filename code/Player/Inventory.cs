@@ -1,11 +1,12 @@
 using Sandbox;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace TTT;
 
-public class Inventory : IBaseInventory
+public class Inventory : IBaseInventory, IEnumerable<Carriable>
 {
 	public Player Owner { get; init; }
 
@@ -15,13 +16,15 @@ public class Inventory : IBaseInventory
 		set => Owner.ActiveChild = value;
 	}
 
-	public List<Carriable> List { get; set; } = new();
+	public Carriable this[int i] => GetSlot( i ) as Carriable;
 
-	public int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	public int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+	private readonly List<Carriable> _list = new();
 
-	private const int DROPPOSITIONOFFSET = 50;
-	private const int DROPVELOCITY = 500;
+	private readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+	private readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+
+	private const int DropPositionOffset = 50;
+	private const int DropVelocity = 500;
 
 	public Inventory( Player player ) => Owner = player;
 
@@ -36,11 +39,10 @@ public class Inventory : IBaseInventory
 			return false;
 
 		var carriable = entity as Carriable;
-		carriable.SetParent( Owner );
 		carriable.OnCarryStart( Owner );
 
 		if ( makeActive )
-			SetActive( entity );
+			SetActive( carriable );
 
 		return true;
 	}
@@ -62,22 +64,22 @@ public class Inventory : IBaseInventory
 		return true;
 	}
 
-	public bool Contains( Entity entity ) => List.Contains( entity );
+	public bool Contains( Entity entity ) => _list.Contains( entity );
 
-	public int Count() => List.Count;
+	public int Count() => _list.Count;
 
 	/// <summary>
 	/// Get the item in this slot
 	/// </summary>
 	public Entity GetSlot( int i )
 	{
-		if ( List.Count <= i )
+		if ( _list.Count <= i )
 			return null;
 
 		if ( i < 0 )
 			return null;
 
-		return List[i];
+		return _list[i];
 	}
 
 	public void Pickup( Entity entity )
@@ -96,17 +98,32 @@ public class Inventory : IBaseInventory
 		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
-	public Carriable Swap( Carriable carriable )
+	public void Swap( Carriable carriable )
 	{
-		var entity = List.Find( x => x.Info.Slot == carriable.Info.Slot );
-		bool wasActive = Owner.ActiveChild == entity;
+		Host.AssertServer();
 
-		if ( entity.IsValid() )
-			Drop( entity );
+		if ( !carriable.CanCarry( Owner ) )
+			return;
 
-		Add( carriable, wasActive );
+		if ( HasFreeSlot( carriable.Info.Slot ) )
+		{
+			Add( carriable );
+			return;
+		}
 
-		return entity;
+		var entities = _list.FindAll( x => x.Info.Slot == carriable.Info.Slot );
+		var active = Active as Carriable;
+
+		if ( active is not null && active.Info.Slot == carriable.Info.Slot )
+		{
+			if ( DropActive() is not null )
+				Add( carriable, true );
+		}
+		else if ( entities.Count == 1 )
+		{
+			if ( Drop( entities[0] ) )
+				Add( carriable, false );
+		}
 	}
 
 	public bool SetActive( Entity entity )
@@ -123,7 +140,7 @@ public class Inventory : IBaseInventory
 
 	public bool IsCarrying( string libraryName )
 	{
-		return List.Any( x => x.ClassInfo?.Name == libraryName );
+		return _list.Any( x => x.ClassInfo?.Name == libraryName );
 	}
 
 	public bool Drop( Entity entity )
@@ -135,7 +152,10 @@ public class Inventory : IBaseInventory
 			return false;
 
 		var carriable = entity as Carriable;
-		carriable.Parent = null;
+
+		if ( !carriable.Info.CanDrop )
+			return false;
+
 		carriable.OnCarryDrop( Owner );
 
 		return true;
@@ -148,7 +168,7 @@ public class Inventory : IBaseInventory
 
 		for ( int i = 0; i < count; i++ )
 		{
-			if ( List[i] == active )
+			if ( _list[i] == active )
 				return i;
 		}
 
@@ -162,9 +182,6 @@ public class Inventory : IBaseInventory
 
 		var active = Active;
 		if ( active is not Carriable carriable )
-			return null;
-
-		if ( !carriable.Info.CanDrop )
 			return null;
 
 		if ( Drop( carriable ) )
@@ -219,24 +236,28 @@ public class Inventory : IBaseInventory
 
 	public void DropAll()
 	{
+		Host.AssertServer();
+
 		// Cache due to "collections modified error"
 		Active = null;
-		foreach ( var carriable in List.ToArray() )
+		foreach ( var carriable in _list.ToArray() )
 		{
 			Drop( carriable );
 		}
+
+		DeleteContents();
 	}
 
 	public void DeleteContents()
 	{
 		Host.AssertServer();
 
-		foreach ( var item in List.ToArray() )
+		foreach ( var carriable in _list.ToArray() )
 		{
-			item.Delete();
+			carriable.Delete();
 		}
 
-		List.Clear();
+		_list.Clear();
 	}
 
 	public void OnChildAdded( Entity child )
@@ -244,16 +265,17 @@ public class Inventory : IBaseInventory
 		if ( !CanAdd( child ) )
 			return;
 
-		if ( List.Contains( child ) )
+		if ( _list.Contains( child ) )
 			throw new System.Exception( "Trying to add to inventory multiple times. This is gated by Entity:OnChildAdded and should never happen!" );
 
 		var carriable = child as Carriable;
-		List.Add( carriable );
+		_list.Add( carriable );
 
 		if ( !Host.IsServer )
 			return;
 
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
+
 		if ( carriable is Weapon weapon )
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
 	}
@@ -263,29 +285,32 @@ public class Inventory : IBaseInventory
 		if ( child is not Carriable carriable )
 			return;
 
-		if ( List.Remove( carriable ) )
-		{
-			SlotCapacity[(int)carriable.Info.Slot] += 1;
-			if ( carriable is Weapon weapon )
-				WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
-		}
+		if ( !_list.Remove( carriable ) )
+			return;
+
+		SlotCapacity[(int)carriable.Info.Slot] += 1;
+
+		if ( carriable is Weapon weapon )
+			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
 	public Entity DropEntity( Entity self, Entity droppedEntity )
 	{
-		if ( !Drop( self ) )
-		{
-			droppedEntity.Delete();
-			return null;
-		}
+		Host.AssertServer();
 
-		self.Delete();
+		var carriable = self as Carriable;
+		carriable.OnCarryDrop( Owner );
+		carriable.Delete();
 
-		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DROPPOSITIONOFFSET;
+		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset;
 		droppedEntity.Rotation = Owner.EyeRotation;
-		droppedEntity.Velocity = Owner.EyeRotation.Forward * DROPVELOCITY;
+		droppedEntity.Velocity = Owner.EyeRotation.Forward * DropVelocity;
 		droppedEntity.Owner = Owner;
 
 		return droppedEntity;
 	}
+
+	public IEnumerator<Carriable> GetEnumerator() => _list.GetEnumerator();
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
