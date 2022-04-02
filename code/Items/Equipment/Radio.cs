@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -13,7 +14,7 @@ public partial class Radio : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
+			var radio = Owner.Inventory.DropEntity<RadioEntity>( this );
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
 		}
@@ -26,23 +27,20 @@ public partial class Radio : Carriable
 			if ( !trace.Hit )
 				return;
 
-			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
+			var radio = Owner.Inventory.DropEntity<RadioEntity>( this );
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
 			radio.Velocity = 0;
 			radio.Position = trace.EndPosition;
 			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
-			if ( trace.Normal.z >= 0.98f )
-			{
-				radio.Rotation = Rotation.From( Rotation.Angles().WithYaw( PreviousOwner.EyeRotation.Yaw() + 180f ) );
-			}
-			else if ( trace.Normal.z <= -0.98f )
+
+			if ( Math.Abs( trace.Normal.z ) >= 0.99f )
 			{
 				radio.Rotation = Rotation.From
 				(
 					Rotation.Angles()
 					.WithYaw( PreviousOwner.EyeRotation.Yaw() )
-					.WithPitch( 90 )
+					.WithPitch( -90 * trace.Normal.z.CeilToInt() )
 					.WithRoll( 180f )
 				);
 			}

@@ -7,7 +7,7 @@ namespace TTT;
 
 public class Perks : IEnumerable<Perk>
 {
-	public Player Owner { get; init; }
+	public Player Owner { get; private init; }
 
 	public Perk this[int i] => Get( i );
 

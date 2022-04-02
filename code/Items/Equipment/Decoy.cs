@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 
 namespace TTT;
 
@@ -13,7 +14,7 @@ public partial class Decoy : Carriable
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			Owner.Inventory.DropEntity( this, new DecoyEntity() );
+			var decoy = Owner.Inventory.DropEntity<DecoyEntity>( this );
 		}
 		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
@@ -24,23 +25,19 @@ public partial class Decoy : Carriable
 			if ( !trace.Hit )
 				return;
 
-			var decoy = Owner.Inventory.DropEntity( this, new DecoyEntity() );
+			var decoy = Owner.Inventory.DropEntity<DecoyEntity>( this );
 			decoy.Velocity = 0;
 			decoy.Position = trace.EndPosition;
 			decoy.Rotation = Rotation.From( trace.Normal.EulerAngles );
 			decoy.MoveType = MoveType.None;
 
-			if ( trace.Normal.z >= 0.98f )
-			{
-				decoy.Rotation = Rotation.From( Rotation.Angles().WithYaw( PreviousOwner.EyeRotation.Yaw() + 180f ) );
-			}
-			else if ( trace.Normal.z <= -0.98f )
+			if ( Math.Abs( trace.Normal.z ) >= 0.99f )
 			{
 				decoy.Rotation = Rotation.From
 				(
 					Rotation.Angles()
 					.WithYaw( PreviousOwner.EyeRotation.Yaw() )
-					.WithPitch( 90 )
+					.WithPitch( -90 * trace.Normal.z.CeilToInt() )
 					.WithRoll( 180f )
 				);
 			}

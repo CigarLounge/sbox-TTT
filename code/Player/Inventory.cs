@@ -8,7 +8,7 @@ namespace TTT;
 
 public class Inventory : IBaseInventory, IEnumerable<Carriable>
 {
-	public Player Owner { get; init; }
+	public Player Owner { get; private init; }
 
 	public Entity Active
 	{
@@ -296,7 +296,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
-	public Entity DropEntity( Entity self, Entity droppedEntity )
+	public T DropEntity<T>( Entity self ) where T : Entity
 	{
 		Host.AssertServer();
 
@@ -304,6 +304,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		carriable.OnCarryDrop( Owner );
 		carriable.Delete();
 
+		var droppedEntity = Library.Create<T>();
 		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset;
 		droppedEntity.Rotation = Owner.EyeRotation;
 		droppedEntity.Velocity = Owner.EyeRotation.Forward * DropVelocity;

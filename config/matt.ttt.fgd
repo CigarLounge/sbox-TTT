@@ -130,7 +130,7 @@ metadata
 	entity_tool_group = "TTT"
 	entity_tool_tip = "Place where a random ammo box will spawn in the beginning of the round."
 }
-= ttt_random_ammo : ""
+= ttt_ammo_random : ""
 [
 ]
 
@@ -366,7 +366,7 @@ metadata
 	entity_tool_group = "TTT"
 	entity_tool_tip = "Place where a random weapon will spawn in the beginning of the round."
 }
-= ttt_random_weapon : ""
+= ttt_weapon_random : ""
 [
 	ammo_type_to_spawn(choices) : "Selected Ammo Type" : 0 : "If changed, will only spawn weapons of the selected ammo type." =
 	[
