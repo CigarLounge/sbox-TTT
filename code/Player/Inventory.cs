@@ -23,8 +23,8 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	private readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	private readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
-	private const int DropPositionOffset = 50;
-	private const int DropVelocity = 500;
+	private const float DropPositionOffset = 50f;
+	private const float DropVelocity = 500f;
 
 	public Inventory( Player player ) => Owner = player;
 
@@ -196,6 +196,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	public bool SetActiveSlot( int i, bool evenIfEmpty = false )
 	{
 		var entity = GetSlot( i );
+
 		if ( Active == entity )
 			return false;
 
@@ -203,6 +204,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return false;
 
 		Active = entity;
+
 		return entity.IsValid();
 	}
 

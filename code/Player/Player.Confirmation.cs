@@ -31,7 +31,7 @@ public partial class Player
 		Corpse = null;
 	}
 
-	private void BecomePlayerCorpseOnServer()
+	private void BecomeCorpse()
 	{
 		Host.AssertServer();
 

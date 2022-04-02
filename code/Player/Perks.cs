@@ -9,7 +9,7 @@ public class Perks : IEnumerable<Perk>
 {
 	public Player Owner { get; init; }
 
-	public Perk this[int i] => _list[i];
+	public Perk this[int i] => Get( i );
 
 	private readonly List<Perk> _list = new();
 	public int Count => _list.Count;
@@ -33,13 +33,16 @@ public class Perks : IEnumerable<Perk>
 		return _list.Any( x => x.GetType() == t );
 	}
 
-	public bool Contains( Perk perk )
-	{
-		return _list.Contains( perk );
-	}
+	public bool Contains( Perk perk ) => _list.Contains( perk );
 
 	public Perk Get( int i )
 	{
+		if ( _list.Count <= i )
+			return null;
+
+		if ( i < 0 )
+			return null;
+
 		return _list[i];
 	}
 

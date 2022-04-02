@@ -32,6 +32,20 @@ public partial class Radio : Carriable
 			radio.Velocity = 0;
 			radio.Position = trace.EndPosition;
 			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
+			if ( trace.Normal.z >= 0.98f )
+			{
+				radio.Rotation = Rotation.From( Rotation.Angles().WithYaw( PreviousOwner.EyeRotation.Yaw() + 180f ) );
+			}
+			else if ( trace.Normal.z <= -0.98f )
+			{
+				radio.Rotation = Rotation.From
+				(
+					Rotation.Angles()
+					.WithYaw( PreviousOwner.EyeRotation.Yaw() )
+					.WithPitch( 90 )
+					.WithRoll( 180f )
+				);
+			}
 			radio.MoveType = MoveType.None;
 		}
 	}
