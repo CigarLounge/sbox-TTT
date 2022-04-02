@@ -29,9 +29,8 @@ public partial class Player
 			return;
 
 		var localPlayer = Local.Pawn as Player;
-
 		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
-			localPlayer.UpdateSpectatedPlayer();
+			localPlayer.CameraMode = new FreeSpectateCamera();
 	}
 
 	private void ChangeSpectateCamera()
@@ -39,14 +38,23 @@ public partial class Player
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
-		CameraMode = CameraMode switch
+		if ( CameraMode is RagdollSpectateCamera || CameraMode is FirstPersonSpectatorCamera )
 		{
-			RagdollSpectateCamera => new FreeSpectateCamera(),
-			FreeSpectateCamera => new ThirdPersonSpectateCamera(),
-			ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
-			FirstPersonSpectatorCamera => new FreeSpectateCamera(),
-			_ => CameraMode
-		};
+			CameraMode = new FreeSpectateCamera();
+			return;
+		}
+
+		var spectatablePlayers = Utils.GetAlivePlayers().Count > 0;
+		if ( !spectatablePlayers )
+		{
+			CameraMode = new FreeSpectateCamera();
+			return;
+		}
+
+		if ( CameraMode is FreeSpectateCamera )
+			CameraMode = new ThirdPersonSpectateCamera();
+		else if ( CameraMode is ThirdPersonSpectateCamera )
+			CameraMode = new FirstPersonSpectatorCamera();
 	}
 
 	public void UpdateSpectatedPlayer( bool cycleForward = true )

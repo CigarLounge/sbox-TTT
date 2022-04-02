@@ -12,7 +12,7 @@ public class SpectatingInfo : Panel
 	public override void Tick()
 	{
 		var player = Local.Pawn as Player;
-		this.Enabled( player.IsSpectator );
+		this.Enabled( !player.IsAlive() );
 		if ( !this.IsEnabled() )
 			return;
 
