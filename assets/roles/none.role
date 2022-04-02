@@ -6,6 +6,9 @@
 		defaultcredits = 0
 		libraryname = "ttt_role_none"
 		exclusiveitems = [  ]
-		color = [ 0.113725, 0.113725, 0.113725, 1.0 ]
+		color = [ 0.933333, 0.933333, 0.933333, 1.0 ]
+		retrievecredits = false
+		canrolechat = false
+		icon = "ui/logo.png"
 	}
 }

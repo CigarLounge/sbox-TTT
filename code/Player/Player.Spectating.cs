@@ -49,15 +49,19 @@ public partial class Player
 		};
 	}
 
-	public void UpdateSpectatedPlayer()
+	public void UpdateSpectatedPlayer( bool cycleForward = true )
 	{
 		var oldSpectatedPlayer = CurrentPlayer;
 		var players = Utils.GetAlivePlayers();
 
 		if ( players.Count > 0 )
 		{
-			if ( ++_targetIdx >= players.Count )
+			_targetIdx = cycleForward ? _targetIdx + 1 : _targetIdx - 1;
+
+			if ( _targetIdx >= players.Count )
 				_targetIdx = 0;
+			else if ( _targetIdx < 0 )
+				_targetIdx = players.Count - 1;
 
 			CurrentPlayer = players[_targetIdx];
 		}
