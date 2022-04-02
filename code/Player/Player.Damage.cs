@@ -101,7 +101,7 @@ public partial class Player
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 
-			if ( Game.Current.Round is not InProgressRound or PostRound )
+			if ( Game.Current.Round is not (InProgressRound or PostRound) )
 				return;
 
 			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
