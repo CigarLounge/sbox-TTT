@@ -29,6 +29,21 @@ public partial class Decoy : Carriable
 			decoy.Position = trace.EndPosition;
 			decoy.Rotation = Rotation.From( trace.Normal.EulerAngles );
 			decoy.MoveType = MoveType.None;
+
+			if ( trace.Normal.z >= 0.98f )
+			{
+				decoy.Rotation = Rotation.From( Rotation.Angles().WithYaw( PreviousOwner.EyeRotation.Yaw() + 180f ) );
+			}
+			else if ( trace.Normal.z <= -0.98f )
+			{
+				decoy.Rotation = Rotation.From
+				(
+					Rotation.Angles()
+					.WithYaw( PreviousOwner.EyeRotation.Yaw() )
+					.WithPitch( 90 )
+					.WithRoll( 180f )
+				);
+			}
 		}
 	}
 }
