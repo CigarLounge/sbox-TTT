@@ -16,7 +16,7 @@ public partial class InspectMenu : Panel
 	private readonly InspectEntry _deathCauseEntry;
 	private readonly InspectEntry _weaponEntry;
 	private readonly InspectEntry _headshotEntry;
-	private readonly InspectEntry _distanceEntry;
+	private readonly InspectEntry _lastSeenEntry;
 
 	private Panel InspectContainer { get; set; }
 	private Image PlayerAvatar { get; set; }
@@ -48,9 +48,9 @@ public partial class InspectMenu : Panel
 		_headshotEntry.Enabled( false );
 		_inspectionEntries.Add( _headshotEntry );
 
-		_distanceEntry = new InspectEntry( IconsContainer );
-		_distanceEntry.Enabled( false );
-		_inspectionEntries.Add( _distanceEntry );
+		_lastSeenEntry = new InspectEntry( IconsContainer );
+		_lastSeenEntry.Enabled( false );
+		_inspectionEntries.Add( _lastSeenEntry );
 
 		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
@@ -77,10 +77,13 @@ public partial class InspectMenu : Panel
 		_deathCauseEntry.SetImageText( imageText );
 		_deathCauseEntry.SetActiveText( activeText );
 
-		_distanceEntry.Enabled( _corpse.KillInfo.Flags != DamageFlags.Generic );
-		_distanceEntry.SetImage( "/ui/inspectmenu/distance.png" );
-		_distanceEntry.SetImageText( $"{_corpse.Distance:n0}m" );
-		_distanceEntry.SetActiveText( $"They were killed from approximately {_corpse.Distance:n0}m away." );
+		_lastSeenEntry.Enabled( !string.IsNullOrEmpty( _corpse.LastSeenPlayerName ) );
+		if ( _lastSeenEntry.IsEnabled() )
+		{
+			_lastSeenEntry.SetImage( "/ui/inspectmenu/lastseen.png" );
+			_lastSeenEntry.SetImageText( _corpse.LastSeenPlayerName );
+			_lastSeenEntry.SetActiveText( $"The last person they saw was {_corpse.LastSeenPlayerName}... killer or coincidence?" );
+		}
 
 		_weaponEntry.Enabled( carriableInfo is not null );
 		if ( _weaponEntry.IsEnabled() )

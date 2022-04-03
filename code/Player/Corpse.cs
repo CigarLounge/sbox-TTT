@@ -9,13 +9,16 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string PlayerName { get; private set; }
 	public Player DeadPlayer { get; private set; }
 	public DamageInfo KillInfo { get; private set; }
-	public List<Particles> Ropes = new();
-	public List<PhysicsJoint> RopeSprings = new();
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
-	public float Distance { get; private set; } = 0f;
 	public float KilledTime { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
+
+	// Detective information
+	public string LastSeenPlayerName { get; private set; }
+
+	public List<Particles> Ropes = new();
+	public List<PhysicsJoint> RopeSprings = new();
 
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
@@ -47,7 +50,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
-		Distance = player.LastDistanceToAttacker;
+
+		LastSeenPlayerName = player.LastSeenPlayerName;
+
 		player.Corpse = this;
 
 		SetModel( player.GetModelName() );
@@ -144,9 +149,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				KillInfo.HitboxIndex,
 				KillInfo.Damage,
 				KillInfo.Flags,
-				Distance,
 				KilledTime
 			);
+
+			if ( client.Pawn is Player player && player.Role is DetectiveRole )
+				DetectiveGetKillInfo( To.Single( client ), LastSeenPlayerName );
 
 			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
 		}
@@ -203,7 +210,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float distance, float killedTime )
+	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -214,8 +221,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillInfo = info;
 		LastAttacker = info.Attacker;
 		KillerWeapon = killerWeapon;
-		Distance = distance;
 		KilledTime = killedTime;
+	}
+
+	// Detectives get additional information about a corpse.
+	[ClientRpc]
+	private void DetectiveGetKillInfo( string lastSeenPlayerName )
+	{
+		LastSeenPlayerName = lastSeenPlayerName;
 	}
 
 	[ClientRpc]
