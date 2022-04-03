@@ -7,6 +7,5 @@ namespace TTT;
 public partial class RifleAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Rifle;
-	public override int DefaultAmmoCount => 20;
 	protected override string WorldModelPath => "models/ammo/ammo_rifle/ammo_rifle.vmdl";
 }
