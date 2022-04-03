@@ -8,7 +8,7 @@ namespace TTT.UI;
 public partial class RadioMenu : Panel
 {
 	// TODO: Let's hook up some of the other sounds like death, fire, explore, etc.
-	private readonly Dictionary<string, List<string>> _sounds = new()
+	private static readonly Dictionary<string, List<string>> _sounds = new()
 	{
 		{ "Pistol", new List<string>() { "vertec_fire-1", "p250_fire-1" } },
 		{ "SMG", new List<string>() { "mp5_fire-1", "mp7_fire-1" } },
@@ -18,46 +18,25 @@ public partial class RadioMenu : Panel
 		{ "Silenced", new List<string>() { "vertec_fire_silenced-1", "mp7_fire_silenced-1" } },
 	};
 
-	private RadioEntity _cachedRadio;
-	private bool _isPlayingSound = false;
+	private readonly RadioEntity _cachedRadio;
 
 	public RadioMenu()
 	{
 		StyleSheet.Load( "/UI/Player/RoleMenu/Radio/RadioMenu.scss" );
 
-		FetchRadio();
-
 		foreach ( var sound in _sounds )
 		{
 			Add.Button( sound.Key, () =>
 			{
-				if ( !_isPlayingSound )
-					PlayRadioSound( sound.Value );
+				RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Rand.Int( 0, sound.Value.Count - 1 )] );
 			} );
 		}
 	}
 
-	private void PlayRadioSound( List<string> sounds )
-	{
-		if ( _cachedRadio is null )
-		{
-			FetchRadio();
-			return;
-		}
-
-		_isPlayingSound = true;
-
-		var soundToPlay = sounds[Rand.Int( 0, sounds.Count - 1 )];
-
-		_cachedRadio.PlaySound( soundToPlay );
-		_isPlayingSound = false;
-	}
-
-	private void FetchRadio()
+	private RadioEntity FetchRadio()
 	{
 		var radioComponent = Local.Pawn.Components.Get<RadioComponent>();
 
-		if ( radioComponent is not null )
-			_cachedRadio = radioComponent.Radio;
+		return radioComponent.Radio;
 	}
 }
