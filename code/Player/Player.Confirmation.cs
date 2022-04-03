@@ -23,7 +23,7 @@ public partial class Player
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
-	public LastChatData LastChat { get; set; }
+	public LastChatData LastChatInfo { get; set; }
 
 	public void RemovePlayerCorpse()
 	{

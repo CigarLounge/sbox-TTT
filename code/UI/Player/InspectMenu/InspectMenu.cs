@@ -17,6 +17,7 @@ public partial class InspectMenu : Panel
 	private readonly InspectEntry _weaponEntry;
 	private readonly InspectEntry _headshotEntry;
 	private readonly InspectEntry _lastSeenEntry;
+	private readonly InspectEntry _lastChatEntry;
 
 	private Panel InspectContainer { get; set; }
 	private Image PlayerAvatar { get; set; }
@@ -52,6 +53,10 @@ public partial class InspectMenu : Panel
 		_lastSeenEntry.Enabled( false );
 		_inspectionEntries.Add( _lastSeenEntry );
 
+		_lastChatEntry = new InspectEntry( IconsContainer );
+		_lastChatEntry.Enabled( false );
+		_inspectionEntries.Add( _lastChatEntry );
+
 		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
 
@@ -77,6 +82,14 @@ public partial class InspectMenu : Panel
 		_deathCauseEntry.SetImageText( imageText );
 		_deathCauseEntry.SetActiveText( activeText );
 
+		_weaponEntry.Enabled( carriableInfo is not null );
+		if ( _weaponEntry.IsEnabled() )
+		{
+			_weaponEntry.SetImage( carriableInfo.Icon );
+			_weaponEntry.SetImageText( $"{carriableInfo.Title}" );
+			_weaponEntry.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+		}
+
 		_lastSeenEntry.Enabled( !string.IsNullOrEmpty( _corpse.LastSeenPlayerName ) );
 		if ( _lastSeenEntry.IsEnabled() )
 		{
@@ -85,12 +98,15 @@ public partial class InspectMenu : Panel
 			_lastSeenEntry.SetActiveText( $"The last person they saw was {_corpse.LastSeenPlayerName}... killer or coincidence?" );
 		}
 
-		_weaponEntry.Enabled( carriableInfo is not null );
-		if ( _weaponEntry.IsEnabled() )
+		Log.Info( _corpse.KilledTime );
+		Log.Info( _corpse.LastChatInfo.TimeSent );
+
+		_lastChatEntry.Enabled( !string.IsNullOrEmpty( _corpse.LastChatInfo.Message ) );
+		if ( _lastChatEntry.IsEnabled() )
 		{
-			_weaponEntry.SetImage( carriableInfo.Icon );
-			_weaponEntry.SetImageText( $"{carriableInfo.Title}" );
-			_weaponEntry.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+			_lastChatEntry.SetImage( "/ui/inspectmenu/lastchat.png" );
+			_lastChatEntry.SetImageText( "Last message" );
+			_lastChatEntry.SetActiveText( $"{_corpse.LastChatInfo.Message}" );
 		}
 
 		if ( !perks.IsNullOrEmpty() )

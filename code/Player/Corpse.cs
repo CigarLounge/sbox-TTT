@@ -51,7 +51,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
+		LastChatInfo = player.LastChatInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
+
+		Log.Info( player.LastChatInfo.Message );
 
 		LastSeenPlayerName = player.LastSeenPlayerName;
 

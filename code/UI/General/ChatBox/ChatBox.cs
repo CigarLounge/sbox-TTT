@@ -125,7 +125,7 @@ public partial class ChatBox : Panel
 		if ( channel == Channel.All )
 		{
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
-			player.LastChat = new LastChatData( message, Time.Now ); // Keep track since it could be potentially their last...
+			player.LastChatInfo = new LastChatData( message, Time.Now ); // Keep track since it could be potentially their last.
 			return;
 		}
 
