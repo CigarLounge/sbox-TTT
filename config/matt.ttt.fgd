@@ -84,7 +84,7 @@ metadata
 }
 = ttt_role_check : ""
 [
-	check_value(string) : "Role" :  : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
+	check_value(string) : "Role" : "Traitor" : "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor"
 
 	input Activate(void) : ""
 

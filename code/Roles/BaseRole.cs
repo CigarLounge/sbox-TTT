@@ -61,6 +61,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		if ( player.IsLocalPawn )
 		{
 			Player.RoleButtons = GetRoleButtons();
+
 			foreach ( var roleButton in Player.RoleButtons )
 				Player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );
 

@@ -7,7 +7,7 @@ namespace TTT;
 public partial class RoleCheck : Entity
 {
 	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
-	public string Role { get; set; }
+	public string Role { get; set; } = "Traitor";
 
 	/// <summary>
 	/// Fires if activator's check type matches the check value. Remember that outputs are reversed. If a player's role/team is equal to the check value, the entity will trigger OnPass().

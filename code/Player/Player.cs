@@ -283,7 +283,7 @@ public partial class Player : Sandbox.Player
 
 	protected override void OnDestroy()
 	{
-		RemovePlayerCorpse();
+		RemoveCorpse();
 		DeleteFlashlight();
 
 		base.OnDestroy();

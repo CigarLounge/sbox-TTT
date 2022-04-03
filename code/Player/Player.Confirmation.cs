@@ -23,7 +23,7 @@ public partial class Player
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
-	public void RemovePlayerCorpse()
+	public void RemoveCorpse()
 	{
 		if ( !IsServer || !Corpse.IsValid() )
 			return;

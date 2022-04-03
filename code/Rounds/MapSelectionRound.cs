@@ -41,13 +41,6 @@ public partial class MapSelectionRound : BaseRound
 		Global.ChangeLevel( mapToVoteCount.OrderByDescending( x => x.Value ).First().Key );
 	}
 
-	public override void OnPlayerKilled( Player player )
-	{
-		base.OnPlayerKilled( player );
-
-		player.MakeSpectator();
-	}
-
 	protected override void OnStart()
 	{
 		base.OnStart();

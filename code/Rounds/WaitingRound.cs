@@ -24,8 +24,6 @@ public class WaitingRound : BaseRound
 		base.OnPlayerKilled( player );
 
 		StartRespawnTimer( player );
-
-		player.MakeSpectator();
 	}
 
 	protected override void OnStart()

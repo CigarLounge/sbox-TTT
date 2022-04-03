@@ -6,35 +6,28 @@ namespace TTT;
 [Library( "ttt_weapon_scout", Title = "Scout" )]
 public partial class Scout : Weapon
 {
-	[Net, Local, Predicted]
 	public bool IsScoped { get; private set; }
 
 	private float _defaultFOV;
-
 	private UI.Scope _sniperScopePanel;
 
 	public override void ActiveStart( Entity ent )
 	{
 		base.ActiveStart( ent );
 
-		_defaultFOV = Owner.CameraMode.FieldOfView;
-	}
-
-	public override void ActiveEnd( Entity ent, bool dropped )
-	{
-		base.ActiveEnd( ent, dropped );
-
 		IsScoped = false;
+		_defaultFOV = Owner.CameraMode.FieldOfView;
 	}
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed >= Info.DeployTime && Input.Pressed( InputButton.Attack2 ) )
+		if ( IsClient && Input.Pressed( InputButton.Attack2 ) )
 		{
-			if ( IsScoped )
-				OnScopeEnd( Owner );
-			else
-				OnScopeStart( Owner );
+			if ( Prediction.FirstTime )
+			{
+				SetScoped( !IsScoped );
+				PlaySound( RawStrings.ScopeInSound );
+			}
 		}
 
 		base.Simulate( client );
@@ -66,29 +59,18 @@ public partial class Scout : Weapon
 		_sniperScopePanel?.Delete( true );
 	}
 
-	private void OnScopeStart( Player player )
+	public void SetScoped( bool isScoped )
 	{
-		player.CameraMode.FieldOfView = 10f;
-		IsScoped = true;
+		IsScoped = isScoped;
 
-		if ( IsServer )
-			return;
+		if ( IsScoped )
+			_sniperScopePanel.Show();
+		else
+			_sniperScopePanel.Hide();
 
-		_sniperScopePanel.Show();
-		ViewModelEntity.EnableDrawing = false;
-		HandsModelEntity.EnableDrawing = false;
-	}
+		ViewModelEntity.EnableDrawing = !IsScoped;
+		HandsModelEntity.EnableDrawing = !IsScoped;
 
-	private void OnScopeEnd( Player player )
-	{
-		player.CameraMode.FieldOfView = _defaultFOV;
-		IsScoped = false;
-
-		if ( IsServer )
-			return;
-
-		_sniperScopePanel.Hide();
-		ViewModelEntity.EnableDrawing = true;
-		HandsModelEntity.EnableDrawing = true;
+		Owner.CameraMode.FieldOfView = isScoped ? 10f : _defaultFOV;
 	}
 }

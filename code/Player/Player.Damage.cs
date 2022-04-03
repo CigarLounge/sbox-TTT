@@ -90,7 +90,7 @@ public partial class Player
 		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
-			if ( weaponInfo != null )
+			if ( weaponInfo is not null )
 				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}
 		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
