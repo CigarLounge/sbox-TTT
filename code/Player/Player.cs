@@ -61,6 +61,7 @@ public partial class Player : Sandbox.Player
 		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 
 		Confirmer = null;
+		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
@@ -104,6 +105,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertClient();
 
 		Confirmer = null;
+		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
@@ -125,6 +127,9 @@ public partial class Player : Sandbox.Player
 
 		BecomeCorpse();
 		RemoveAllDecals();
+
+		EnableAllCollisions = false;
+		EnableDrawing = false;
 
 		Inventory.DropAll();
 		DeleteFlashlight();
@@ -235,7 +240,7 @@ public partial class Player : Sandbox.Player
 	{
 		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
 						.HitLayer( CollisionLayer.Debris )
-						.Ignore( CurrentPlayer )
+						.Ignore( this )
 						.UseHitboxes()
 						.Run();
 
