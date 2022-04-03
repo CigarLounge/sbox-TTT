@@ -49,6 +49,7 @@ public class GrabbableProp : IGrabbable
 
 		GrabbedEntity.SetParent( null );
 		GrabbedEntity.EnableHideInFirstPerson = true;
+		GrabbedEntity.EnableTouch = true;
 		GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
 
 		_ = WaitForAnimationFinish();
