@@ -233,14 +233,14 @@ public partial class Player : Sandbox.Player
 
 	private void CheckLastSeenPlayer()
 	{
-		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * MaxHintDistance )
+		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
 						.HitLayer( CollisionLayer.Debris )
 						.Ignore( CurrentPlayer )
 						.UseHitboxes()
 						.Run();
 
-		if ( trace.Hit && trace.Entity is Player player )
-			LastSeenPlayerName = player.Client.Name;
+		if ( trace.Entity is Player player )
+			LastSeenPlayerName = player.Client?.Name;
 	}
 
 	private void SimulateCarriableSwitch()
