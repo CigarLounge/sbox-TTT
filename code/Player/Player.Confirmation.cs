@@ -1,4 +1,5 @@
 using Sandbox;
+using TTT.UI;
 
 namespace TTT;
 
@@ -22,6 +23,7 @@ public partial class Player
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
+	public LastChatData LastChat { get; set; }
 
 	public void RemovePlayerCorpse()
 	{

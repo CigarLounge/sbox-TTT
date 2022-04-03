@@ -113,7 +113,7 @@ public partial class ChatBox : Panel
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+		if ( !IsValidMessage( message ) )
 			return;
 
 		if ( !player.IsAlive() )
@@ -123,9 +123,26 @@ public partial class ChatBox : Panel
 		}
 
 		if ( channel == Channel.All )
+		{
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
-		else if ( channel == Channel.Role && player.Role.CanRoleChat )
+			player.LastChat = new LastChatData( message, Time.Now ); // Keep track since it could be potentially their last...
+			return;
+		}
+
+		if ( channel == Channel.Role && player.Role.CanRoleChat )
 			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.Id );
+	}
+
+	[ServerCmd]
+	public static void SendLastWords( string message )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		if ( !IsValidMessage( message ) )
+			return;
+
+		AddChat( To.Everyone, player.Client.Name, message, Channel.All, player.IsRoleKnown ? player.Role.Info.Id : -1 );
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]
@@ -159,5 +176,46 @@ public partial class ChatBox : Panel
 		if ( player.Role.CanRoleChat )
 			CurrentChannel = CurrentChannel == Channel.All ? Channel.Role : Channel.All;
 	}
+
+	private static bool IsValidMessage( string message )
+	{
+		if ( string.IsNullOrEmpty( message ) )
+			return false;
+
+		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+			return false;
+
+		return true;
+	}
+
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
+	{
+		if ( !player.IsLocalPawn )
+			return;
+
+		if ( ChatBox.Instance == null )
+			return;
+
+		if ( ChatBox.Instance.IsOpen )
+		{
+			SendLastWords( ChatBox.Instance.Input.Text );
+
+			// In the future let's close the chatbox, currently can't due to s&box.
+			ChatBox.Instance.Input.Text = string.Empty;
+			ChatBox.Instance.Input.Label.SetCaretPosition( 0 );
+		}
+	}
 }
 
+public struct LastChatData
+{
+	public string Message;
+	public float TimeSent;
+
+	public LastChatData( string message, float timeSent )
+	{
+		Message = message;
+		TimeSent = timeSent;
+	}
+}

@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using TTT.UI;
 
 namespace TTT;
 
@@ -9,6 +10,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string PlayerName { get; private set; }
 	public Player DeadPlayer { get; private set; }
 	public DamageInfo KillInfo { get; private set; }
+	public LastChatData LastChatInfo { get; private set; }
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float KilledTime { get; private set; }
@@ -149,7 +151,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				KillInfo.HitboxIndex,
 				KillInfo.Damage,
 				KillInfo.Flags,
-				KilledTime
+				KilledTime,
+				LastChatInfo.Message,
+				LastChatInfo.TimeSent
 			);
 
 			if ( client.Pawn is Player player && player.Role is DetectiveRole )
@@ -210,7 +214,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float killedTime )
+	private void GetKillInfo( Entity attacker,
+							  CarriableInfo killerWeapon,
+							  int hitboxIndex,
+							  float damage,
+							  DamageFlags damageFlag,
+							  float killedTime,
+							  string lastMessage,
+							  float lastMessageTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -222,6 +233,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		LastAttacker = info.Attacker;
 		KillerWeapon = killerWeapon;
 		KilledTime = killedTime;
+		LastChatInfo = new LastChatData( lastMessage, lastMessageTime );
 	}
 
 	// Detectives get additional information about a corpse.
