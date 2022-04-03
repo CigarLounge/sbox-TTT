@@ -18,7 +18,6 @@ public partial class Player
 		}
 
 		var hint = IsLookingAtHintableEntity();
-
 		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
 		{
 			DeleteHint();

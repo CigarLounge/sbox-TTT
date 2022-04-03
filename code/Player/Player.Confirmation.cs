@@ -18,6 +18,7 @@ public partial class Player
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
+	public string LastSeenPlayerName { get; set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
