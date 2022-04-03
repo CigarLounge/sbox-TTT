@@ -83,7 +83,7 @@ public partial class Player
 		if ( !_viewLight.Enabled )
 			return;
 
-		var transform = new Transform( EyePosition + EyeRotation.Forward * 10, EyeRotation );
+		var transform = new Transform( EyePosition, EyeRotation );
 		_viewLight.Transform = transform;
 
 		if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
@@ -96,7 +96,7 @@ public partial class Player
 		{
 			Enabled = true,
 			DynamicShadows = true,
-			Range = 512,
+			Range = 1024,
 			Falloff = 1.0f,
 			LinearAttenuation = 0.0f,
 			QuadraticAttenuation = 1.0f,

@@ -39,9 +39,9 @@ public partial class Teleporter : Carriable
 		_particle?.Destroy( true );
 	}
 
-	public override void Simulate( Client cl )
+	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceAction < 1f )
+		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
 
 		if ( IsTeleporting )
@@ -65,7 +65,7 @@ public partial class Teleporter : Carriable
 		}
 
 		// We can't do anything if we aren't standing on the ground
-		if ( Charges <= 0 || Owner.GroundEntity is not WorldEntity )
+		if ( Charges <= 0 || TimeSinceAction < 1f || Owner.GroundEntity is not WorldEntity )
 			return;
 
 		if ( Input.Pressed( InputButton.Attack2 ) )
