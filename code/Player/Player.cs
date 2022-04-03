@@ -162,6 +162,8 @@ public partial class Player : Sandbox.Player
 		}
 		else
 		{
+			CheckAFK();
+
 			if ( !this.IsAlive() )
 			{
 				ChangeSpectateCamera();
@@ -169,7 +171,6 @@ public partial class Player : Sandbox.Player
 			}
 
 			PlayerUse();
-			CheckAFK();
 			CheckPlayerDropCarriable();
 			CheckLastSeenPlayer();
 		}
