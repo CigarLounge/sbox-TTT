@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
 [Library( "ttt_weapon_scout", Title = "Scout" )]
-public partial class Scout : Weapon
+public class Scout : Weapon
 {
 	public bool IsScoped { get; private set; }
 
@@ -59,7 +59,7 @@ public partial class Scout : Weapon
 		base.DestroyHudElements();
 
 		(Local.Pawn as Player).CameraMode.FieldOfView = _defaultFOV;
-		_sniperScopePanel?.Delete( true );
+		_sniperScopePanel.Delete( true );
 	}
 
 	public void SetScoped( bool isScoped )

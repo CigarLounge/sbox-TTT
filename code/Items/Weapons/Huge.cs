@@ -5,7 +5,7 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/weapons/w_mg4.vmdl" )]
 [Library( "ttt_weapon_huge", Title = "H.U.G.E" )]
-public partial class Huge : Weapon
+public class Huge : Weapon
 {
 	private const string BulletsBodyGroup = "bullets";
 	private const int MaxBulletsChoice = 7;
