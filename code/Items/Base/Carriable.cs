@@ -120,15 +120,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		{
 			var animator = player.GetActiveAnimator();
 
-			if ( animator is not null )	
-				SimulateAnimator( animator );		
+			if ( animator is not null )
+				SimulateAnimator( animator );
 		}
 
 		if ( IsLocalPawn )
 		{
-			DestroyViewModel();
-			DestroyHudElements();
-
 			CreateViewModel();
 			CreateHudElements();
 
@@ -138,13 +135,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		TimeSinceDeployed = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void ActiveEnd( Entity entity, bool dropped )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
-		base.Simulate( client );
+		base.ActiveEnd( entity, dropped );
 	}
+
+	public override void Simulate( Client client ) { }
 
 	public override void BuildInput( InputBuilder input )
 	{
