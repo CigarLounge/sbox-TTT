@@ -13,11 +13,11 @@ public partial class FlareGun : Weapon
 		anim.SetAnimParameter( "holdtype_handedness", 2 );
 	}
 
-	protected override void OnHit( Entity entity )
+	protected override void OnHit( TraceResult trace )
 	{
-		base.OnHit( entity );
+		base.OnHit( trace );
 
-		if ( entity is Corpse )
-			entity.Delete();
+		if ( trace.Entity is Corpse )
+			trace.Entity.Delete();
 	}
 }
