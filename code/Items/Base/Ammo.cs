@@ -80,7 +80,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 			Delete();
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.Hint( $"{ClassInfo.Title} x{CurrentCount}" );
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.Hint( $"{ClassInfo.Title} x{CurrentCount}" );
 
 	bool IUse.OnUse( Entity user )
 	{

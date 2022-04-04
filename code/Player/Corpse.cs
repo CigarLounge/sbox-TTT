@@ -245,7 +245,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player client ) => new UI.CorpseHint( this );
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{
