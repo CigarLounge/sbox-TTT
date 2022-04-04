@@ -31,7 +31,7 @@ public class PlayerInfo : Panel
 	private async Task TakeHit()
 	{
 		AddClass( "hit" );
-		await Task.Delay( 200 );
+		await GameTask.Delay( 200 );
 		RemoveClass( "hit" );
 	}
 

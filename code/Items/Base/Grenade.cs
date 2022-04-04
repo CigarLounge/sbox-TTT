@@ -40,7 +40,7 @@ public abstract partial class Grenade : Carriable
 
 	public async Task BlowIn( float seconds )
 	{
-		await Task.DelaySeconds( seconds );
+		await GameTask.DelaySeconds( seconds );
 
 		OnExplode();
 		Delete();

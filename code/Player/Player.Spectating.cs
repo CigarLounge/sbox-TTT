@@ -72,7 +72,7 @@ public partial class Player
 	{
 		// If the player is still watching their ragdoll, automatically
 		// move them to a free spectate camera.
-		await Task.DelaySeconds( 2 );
+		await GameTask.DelaySeconds( 2 );
 
 		if ( CameraMode is RagdollSpectateCamera )
 			CameraMode = new FreeSpectateCamera();
