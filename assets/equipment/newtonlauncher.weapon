@@ -1,0 +1,41 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = ""
+		dryfiresound = ""
+		ammotype = "0"
+		firemode = "1"
+		bulletsperfire = 1
+		clipsize = 1
+		damage = 6.0
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		headshotmultiplier = 2.0
+		spread = 0.0
+		primaryrate = 1.0
+		secondaryrate = 0.0
+		reserveammo = 0
+		reloadtime = 2.2
+		verticalrecoil = 0.0
+		horizontalrecoilrange = 0.0
+		recoilrecoveryscale = 0.0
+		ejectparticle = resource:""
+		muzzleflashparticle = resource:""
+		slot = "3"
+		spawnable = false
+		candrop = true
+		viewmodel = resource:""
+		handsmodel = resource:""
+		holdtype = "3"
+		worldmodel = resource:"models/newton_launcher/newton_launcher.vmdl"
+		deploytime = 0.6
+		buyable = true
+		islimited = true
+		price = 100
+		icon = ""
+		description = ""
+		libraryname = "ttt_equipment_newtonlauncher"
+		tracerparticle = resource:"particles/tracer.standard.vpcf"
+	}
+}

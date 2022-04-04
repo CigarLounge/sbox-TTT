@@ -202,7 +202,7 @@ public abstract partial class Weapon : Carriable
 		return TimeSinceSecondaryAttack > (1 / rate);
 	}
 
-	protected void AttackPrimary()
+	protected virtual void AttackPrimary()
 	{
 		if ( AmmoClip == 0 )
 		{
@@ -222,7 +222,7 @@ public abstract partial class Weapon : Carriable
 		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 	}
 
-	protected void AttackSecondary() { }
+	protected virtual void AttackSecondary() { }
 
 	protected virtual bool CanReload()
 	{
@@ -321,16 +321,16 @@ public abstract partial class Weapon : Carriable
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
-						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
+						player.LastDistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
 
-					OnHit( trace.Entity );
+					OnHit( trace );
 					trace.Entity.TakeDamage( damageInfo );
 				}
 			}
 		}
 	}
 
-	protected virtual void OnHit( Entity entity ) { }
+	protected virtual void OnHit( TraceResult trace ) { }
 
 	/// <summary>
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple

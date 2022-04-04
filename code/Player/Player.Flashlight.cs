@@ -53,7 +53,6 @@ public partial class Player
 		{
 			_worldLight = CreateLight();
 			_worldLight.EnableHideInFirstPerson = true;
-			_worldLight.Enabled = false;
 			FlashlightEnabled = false;
 		}
 		else
@@ -94,7 +93,7 @@ public partial class Player
 	{
 		return new SpotLightEntity
 		{
-			Enabled = true,
+			Enabled = false,
 			DynamicShadows = true,
 			Range = 1024,
 			Falloff = 1.0f,
