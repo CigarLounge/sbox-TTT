@@ -18,7 +18,7 @@ public partial class Player
 	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
-	public string LastSeenPlayerName { get; set; }
+	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
@@ -84,6 +84,18 @@ public partial class Player
 			Corpse.SendInfo( to );
 
 		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
+	}
+
+	private void CheckLastSeenPlayer()
+	{
+		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
+						.HitLayer( CollisionLayer.Debris )
+						.Ignore( this )
+						.UseHitboxes()
+						.Run();
+
+		if ( trace.Entity is Player player )
+			LastSeenPlayerName = player.Client?.Name;
 	}
 
 	[ClientRpc]

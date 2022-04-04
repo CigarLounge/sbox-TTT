@@ -237,18 +237,6 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
-	private void CheckLastSeenPlayer()
-	{
-		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
-						.HitLayer( CollisionLayer.Debris )
-						.Ignore( this )
-						.UseHitboxes()
-						.Run();
-
-		if ( trace.Entity is Player player )
-			LastSeenPlayerName = player.Client?.Name;
-	}
-
 	private void SimulateCarriableSwitch()
 	{
 		if ( Input.ActiveChild is not null )
