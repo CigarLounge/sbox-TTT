@@ -105,8 +105,6 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => base.Info as WeaponInfo;
 
-	public bool UnlimitedAmmo { get; set; }
-
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -208,11 +206,10 @@ public abstract partial class Weapon : Carriable
 		{
 			DryFireEffects();
 			PlaySound( Info.DryFireSound );
+
 			return;
 		}
 
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
 		AmmoClip -= 1;
 
 		Owner.SetAnimParameter( "b_attack", true );
@@ -229,10 +226,10 @@ public abstract partial class Weapon : Carriable
 		if ( IsReloading )
 			return false;
 
-		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0 && ReserveAmmo == 0) )
+		if ( !Input.Pressed( InputButton.Reload ) )
 			return false;
 
-		if ( !Owner.IsValid() || !Input.Pressed( InputButton.Reload ) )
+		if ( AmmoClip >= Info.ClipSize || (Owner.AmmoCount( Info.AmmoType ) <= 0 && ReserveAmmo <= 0) )
 			return false;
 
 		return true;
@@ -375,9 +372,6 @@ public abstract partial class Weapon : Carriable
 
 	protected int TakeAmmo( int ammo )
 	{
-		if ( UnlimitedAmmo )
-			return ammo;
-
 		int available = Math.Min( Info.AmmoType == AmmoType.None ? ReserveAmmo : Owner.AmmoCount( Info.AmmoType ), ammo );
 
 		if ( Info.AmmoType == AmmoType.None )
