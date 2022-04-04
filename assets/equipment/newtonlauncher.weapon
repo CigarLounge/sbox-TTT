@@ -13,7 +13,7 @@
 		damagefalloffend = 0.0
 		headshotmultiplier = 2.0
 		spread = 0.0
-		primaryrate = 1.0
+		primaryrate = 3.0
 		secondaryrate = 0.0
 		reserveammo = 0
 		reloadtime = 2.2

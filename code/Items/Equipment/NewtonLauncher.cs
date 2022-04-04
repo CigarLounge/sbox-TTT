@@ -13,7 +13,7 @@ public partial class NewtonLauncher : Weapon
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MaxCharge = 100f;
-	private const float ChargePerSecond = 25f;
+	private const float ChargePerSecond = 50f;
 
 	public override void ActiveStart( Entity entity )
 	{
@@ -32,9 +32,10 @@ public partial class NewtonLauncher : Weapon
 			return;
 
 		if ( Input.Down( InputButton.Attack1 ) )
+		{
 			Charge = Math.Min( MaxCharge, Charge + ChargePerSecond * Time.Delta );
-
-		if ( Input.Released( InputButton.Attack1 ) )
+		}
+		else if ( Input.Released( InputButton.Attack1 ) )
 		{
 			using ( LagCompensation() )
 			{
@@ -63,6 +64,6 @@ public partial class NewtonLauncher : Weapon
 			return;
 
 		trace.Entity.GroundEntity = null;
-		trace.Entity.ApplyAbsoluteImpulse( 10 * Charge * trace.Direction + Vector3.Up * Charge * 3 );
+		trace.Entity.ApplyAbsoluteImpulse( 10 * Charge * trace.Direction + 5 * Charge * Vector3.Up );
 	}
 }
