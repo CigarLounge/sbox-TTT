@@ -21,6 +21,9 @@ public partial class Scout : Weapon
 
 	public override void Simulate( Client client )
 	{
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
 		if ( IsClient && Input.Pressed( InputButton.Attack2 ) )
 		{
 			if ( Prediction.FirstTime )
