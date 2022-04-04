@@ -31,6 +31,9 @@ public class Discombobulator : Grenade
 
 			var targetPos = entity.PhysicsBody.MassCenter;
 
+			if ( entity is Player )
+				targetPos += Vector3.Up * 40;
+
 			var dist = Vector3.DistanceBetween( Position, targetPos );
 			if ( dist > 400 )
 				continue;
@@ -47,10 +50,8 @@ public class Discombobulator : Grenade
 			float force = 800 * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
-			if ( entity is not Player )
-				entity.ApplyAbsoluteImpulse( force * forceDir );
-			else
-				entity.ApplyAbsoluteImpulse( force * forceDir * 2 );
+			entity.GroundEntity = null;
+			entity.ApplyAbsoluteImpulse( force * forceDir );
 		}
 	}
 }
