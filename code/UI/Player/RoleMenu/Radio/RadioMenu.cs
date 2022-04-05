@@ -18,8 +18,6 @@ public partial class RadioMenu : Panel
 		{ "Silenced", new List<string>() { "vertec_fire_silenced-1", "mp7_fire_silenced-1" } },
 	};
 
-	private readonly RadioEntity _cachedRadio;
-
 	public RadioMenu()
 	{
 		StyleSheet.Load( "/UI/Player/RoleMenu/Radio/RadioMenu.scss" );
@@ -36,7 +34,6 @@ public partial class RadioMenu : Panel
 	private RadioEntity FetchRadio()
 	{
 		var radioComponent = Local.Pawn.Components.Get<RadioComponent>();
-
 		return radioComponent.Radio;
 	}
 }
