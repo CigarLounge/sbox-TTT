@@ -15,14 +15,6 @@ public partial class NewtonLauncher : Weapon
 	private const float MaxCharge = 100f;
 	private const float ChargePerSecond = 50f;
 
-	public override void ActiveStart( Entity entity )
-	{
-		base.ActiveStart( entity );
-
-		// While we have no viewmodel let's just show the world model.
-		EnableHideInFirstPerson = false;
-	}
-
 	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime )

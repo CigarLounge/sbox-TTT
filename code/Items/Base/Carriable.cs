@@ -151,25 +151,28 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		Host.AssertClient();
 
-		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
-			return;
-
-		ViewModelEntity = new ViewModel
+		if ( !string.IsNullOrEmpty( Info.ViewModel ) )
 		{
-			Position = Position,
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
-		ViewModelEntity.Model = Info.CachedViewModel;
+			ViewModelEntity = new ViewModel
+			{
+				Position = Position,
+				Owner = Owner,
+				EnableViewmodelRendering = true
+			};
+			ViewModelEntity.Model = Info.CachedViewModel;
+		}
 
-		HandsModelEntity = new BaseViewModel
+		if ( !string.IsNullOrEmpty( Info.HandsModel ) )
 		{
-			Position = Position,
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
-		HandsModelEntity.SetModel( Info.HandsModel );
-		HandsModelEntity.SetParent( ViewModelEntity, true );
+			HandsModelEntity = new BaseViewModel
+			{
+				Position = Position,
+				Owner = Owner,
+				EnableViewmodelRendering = true
+			};
+			HandsModelEntity.SetModel( Info.HandsModel );
+			HandsModelEntity.SetParent( ViewModelEntity, true );
+		}
 	}
 
 	public override void CreateHudElements() { }

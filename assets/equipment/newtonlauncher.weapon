@@ -25,7 +25,7 @@
 		slot = "3"
 		spawnable = false
 		candrop = true
-		viewmodel = resource:""
+		viewmodel = resource:"models/newton_launcher/v_newton_launcher.vmdl"
 		handsmodel = resource:""
 		holdtype = "3"
 		worldmodel = resource:"models/newton_launcher/newton_launcher.vmdl"
