@@ -2,8 +2,8 @@
 {
 	data = 
 	{
-		firesound = ""
-		dryfiresound = ""
+		firesound = "newton_fire-1"
+		dryfiresound = "newton_charge-1"
 		ammotype = "0"
 		firemode = "1"
 		bulletsperfire = 1
