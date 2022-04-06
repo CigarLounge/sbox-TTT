@@ -22,7 +22,8 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	public void Arm( int time )
 	{
-		// TODO: Let the timer.
+		// TODO: Set the timer.
+		// TODO: Send out rpc to close any open C4 menus.
 		IsArmed = true;
 	}
 
