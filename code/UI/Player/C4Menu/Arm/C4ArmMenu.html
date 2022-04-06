@@ -1,5 +1,10 @@
 <link rel="stylesheet" href="C4ArmMenu.scss" />
 
 <root class="text-shadow">
-    <text>C4 Arm</text>
+    <div class="container">
+        <text class="header">Arm C4</text>
+        <text @ref="TimerDisplay" class="timer text-color-info"></text>
+        <Slider min="45" max="600" @value="Timer"></Slider>
+        <button onclick="ArmC4()" icon="radio_button_checked" class="call-detective">ARM C4</button>
+    </div>
 </root>

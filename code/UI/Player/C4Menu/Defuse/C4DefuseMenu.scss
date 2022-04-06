@@ -1,0 +1,12 @@
+C4DefuseMenu 
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease-out;
+    pointer-events: all;
+    z-index: 2;
+}

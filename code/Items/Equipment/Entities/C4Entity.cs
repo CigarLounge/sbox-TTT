@@ -20,6 +20,12 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		Health = 100f;
 	}
 
+	public void Arm( int time )
+	{
+		// TODO: Let the timer.
+		IsArmed = true;
+	}
+
 	void IEntityHint.Tick( Player player )
 	{
 		if ( !player.IsLocalPawn || !Input.Down( InputButton.Use ) )
@@ -37,9 +43,15 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 			UI.FullScreenHintMenu.Instance?.Open( new UI.C4ArmMenu( this ) );
 	}
 
-	// Maybe we setup a keybinding to pickup c4?
 	bool IUse.OnUse( Entity user )
 	{
+		if ( Input.Down( InputButton.Run ) && !IsArmed )
+		{
+			var player = user as Player;
+			player.Inventory.Add( new C4() );
+			Delete();
+		}
+
 		return false;
 	}
 
