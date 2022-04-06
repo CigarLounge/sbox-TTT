@@ -10,6 +10,9 @@ public partial class NewtonLauncher : Weapon
 	[Net, Predicted]
 	private float Charge { get; set; }
 
+	[Net, Local, Predicted]
+	public bool IsCharging { get; protected set; }
+
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MaxCharge = 100f;
@@ -26,9 +29,18 @@ public partial class NewtonLauncher : Weapon
 		if ( Input.Down( InputButton.Attack1 ) )
 		{
 			Charge = Math.Min( MaxCharge, Charge + ChargePerSecond * Time.Delta );
+
+			if ( IsCharging )
+				return;
+
+			ChargeStart();
+			IsCharging = true;
 		}
 		else if ( Input.Released( InputButton.Attack1 ) )
 		{
+			ChargeFinished();
+			IsCharging = false;
+
 			using ( LagCompensation() )
 			{
 				TimeSincePrimaryAttack = 0;
@@ -39,7 +51,6 @@ public partial class NewtonLauncher : Weapon
 
 	protected override void AttackPrimary()
 	{
-		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
@@ -57,5 +68,17 @@ public partial class NewtonLauncher : Weapon
 
 		trace.Entity.GroundEntity = null;
 		trace.Entity.ApplyAbsoluteImpulse( 10 * Charge * trace.Direction + 5 * Charge * Vector3.Up );
+	}
+
+	[ClientRpc]
+	protected void ChargeStart()
+	{
+		ViewModelEntity?.SetAnimParameter( "charge", true );
+	}
+
+	[ClientRpc]
+	protected void ChargeFinished()
+	{
+		ViewModelEntity?.SetAnimParameter( "charge_finished", true );
 	}
 }

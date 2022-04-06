@@ -27,7 +27,7 @@
 		candrop = true
 		viewmodel = resource:"models/newton_launcher/v_newton_launcher.vmdl"
 		handsmodel = resource:""
-		holdtype = "3"
+		holdtype = "2"
 		worldmodel = resource:"models/newton_launcher/newton_launcher.vmdl"
 		deploytime = 0.6
 		buyable = true
