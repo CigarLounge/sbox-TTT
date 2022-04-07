@@ -1,5 +1,6 @@
 using Sandbox;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -35,23 +36,31 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
+	[JsonPropertyName("viewmodel")]
 	[Property( "viewmodel", title: "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string ViewModelPath { get; set; } = "";
 
+	[JsonPropertyName( "handsmodel" )]
 	[Property( "handsmodel", title: "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string HandsModelPath { get; set; } = "";
 
 	[Property, Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
 
+	[JsonPropertyName( "worldmodel" )]
 	[Property( "worldmodel", title: "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModelPath { get; set; } = "";
 
 	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
+	[JsonPropertyName( "handsmodel-" )]
 	public Model HandsModel { get; private set; }
+
+	[JsonPropertyName( "viewmodel-" )]
 	public Model ViewModel { get; private set; }
+
+	[JsonPropertyName( "worldmodel-" )]
 	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()

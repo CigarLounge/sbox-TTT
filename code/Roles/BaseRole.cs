@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -27,10 +28,13 @@ public partial class RoleInfo : Asset
 	[Property, Category( "UI" )]
 	public Color Color { get; set; }
 
+	[JsonPropertyName( "icon" )]
 	[Property( "icon", title: "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/logo.png";
 
 	public HashSet<string> AvailableItems { get; private set; }
+
+	[JsonPropertyName( "icon-" )]
 	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()
