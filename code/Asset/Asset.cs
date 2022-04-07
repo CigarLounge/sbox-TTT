@@ -10,6 +10,7 @@ public abstract partial class Asset : Sandbox.Asset
 
 	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
 	public string LibraryName { get; set; }
+
 	public string Title { get; set; }
 
 	public static T CreateFromId<T>( int id ) where T : LibraryClass
@@ -37,7 +38,7 @@ public abstract partial class Asset : Sandbox.Asset
 	{
 		base.PostLoad();
 
-		if ( string.IsNullOrEmpty( LibraryName ) )
+		if ( string.IsNullOrWhiteSpace( LibraryName ) )
 			return;
 
 		var attribute = Library.GetAttribute( LibraryName );
@@ -48,7 +49,7 @@ public abstract partial class Asset : Sandbox.Asset
 		Title = attribute.Title;
 		Collection[LibraryName] = this;
 
-		if ( !string.IsNullOrEmpty( Title ) )
+		if ( !string.IsNullOrWhiteSpace( Title ) )
 			Collection[Title] = this;
 	}
 }

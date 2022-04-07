@@ -25,6 +25,11 @@ public class InspectEntry : Panel
 		_inspectLabel.AddClass( "quick-label" );
 	}
 
+	public void SetTexture( Texture texture )
+	{
+		_inspectIcon.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
+	}
+
 	public void SetImage( string imagePath )
 	{
 		_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );

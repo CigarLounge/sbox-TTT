@@ -1,5 +1,6 @@
 using Sandbox;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -35,30 +36,40 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
-	public string ViewModel { get; set; } = "";
+	[JsonPropertyName("viewmodel")]
+	[Property( "viewmodel", title: "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	public string ViewModelPath { get; set; } = "";
 
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
-	public string HandsModel { get; set; } = "";
+	[JsonPropertyName( "handsmodel" )]
+	[Property( "handsmodel", title: "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	public string HandsModelPath { get; set; } = "";
 
 	[Property, Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
 
-	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )]
-	public string WorldModel { get; set; } = "";
+	[JsonPropertyName( "worldmodel" )]
+	[Property( "worldmodel", title: "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
+	public string WorldModelPath { get; set; } = "";
 
 	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
-	public Model CachedViewModel { get; private set; }
-	public Model CachedWorldModel { get; private set; }
+	[JsonPropertyName( "cached-handsmodel" )]
+	public Model HandsModel { get; private set; }
+
+	[JsonPropertyName( "cached-viewmodel" )]
+	public Model ViewModel { get; private set; }
+
+	[JsonPropertyName( "cached-worldmodel" )]
+	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
-		CachedViewModel = Model.Load( ViewModel );
-		CachedWorldModel = Model.Load( WorldModel );
+		HandsModel = Model.Load( HandsModelPath );
+		ViewModel = Model.Load( ViewModelPath );
+		WorldModel = Model.Load( WorldModelPath );
 	}
 }
 
@@ -94,21 +105,21 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 
-		if ( string.IsNullOrEmpty( ClassInfo?.Name ) )
+		if ( string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
 		{
 			Log.Error( this + " doesn't have a Library name!" );
 			return;
 		}
 
 		Info = Asset.GetInfo<CarriableInfo>( this );
-		Model = Info.CachedWorldModel;
+		Model = Info.WorldModel;
 	}
 
 	public override void ClientSpawn()
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrEmpty( ClassInfo?.Name ) )
+		if ( !string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
 			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
@@ -151,26 +162,29 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		Host.AssertClient();
 
-		if ( !string.IsNullOrEmpty( Info.ViewModel ) )
+		if ( Info.ViewModel is not null )
 		{
 			ViewModelEntity = new ViewModel
 			{
-				Position = Position,
+				EnableViewmodelRendering = true,
+				Model = Info.ViewModel,
 				Owner = Owner,
-				EnableViewmodelRendering = true
+				Position = Position
 			};
-			ViewModelEntity.Model = Info.CachedViewModel;
+
+			ViewModelEntity.Model = Info.ViewModel;
 		}
 
-		if ( !string.IsNullOrEmpty( Info.HandsModel ) )
+		if ( Info.HandsModel is not null )
 		{
 			HandsModelEntity = new BaseViewModel
 			{
-				Position = Position,
+				EnableViewmodelRendering = true,
+				Model = Info.HandsModel,
 				Owner = Owner,
-				EnableViewmodelRendering = true
+				Position = Position
 			};
-			HandsModelEntity.SetModel( Info.HandsModel );
+
 			HandsModelEntity.SetParent( ViewModelEntity, true );
 		}
 	}

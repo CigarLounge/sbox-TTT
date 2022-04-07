@@ -7,12 +7,12 @@ namespace TTT;
 [Library( "ttt_equipment_binoculars", Title = "Binoculars" )]
 public partial class Binoculars : Carriable
 {
-	private Corpse Corpse { get; set; }
-
 	[Net, Predicted]
 	private float ZoomLevel { get; set; }
+
 	public bool IsZoomed => ZoomLevel > 0;
 
+	private Corpse _corpse;
 	private float _defaultFOV;
 
 	public override void ActiveStart( Entity entity )
@@ -26,7 +26,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveEnd( entity, dropped );
 
-		Corpse = null;
+		_corpse = null;
 		ZoomLevel = 0;
 	}
 
@@ -54,13 +54,13 @@ public partial class Binoculars : Carriable
 				.HitLayer( CollisionLayer.Debris )
 				.Run();
 
-		Corpse = trace.Entity as Corpse;
+		_corpse = trace.Entity as Corpse;
 
-		if ( !IsServer || !Corpse.IsValid() )
+		if ( !IsServer || !_corpse.IsValid() )
 			return;
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
-			Corpse.Search( Owner, Input.Down( InputButton.Run ), false );
+			_corpse.Search( Owner, Input.Down( InputButton.Run ), false );
 	}
 
 	public override void BuildInput( InputBuilder input )
@@ -82,7 +82,7 @@ public partial class Binoculars : Carriable
 	{
 		if ( ZoomLevel >= 4 )
 		{
-			Corpse = null;
+			_corpse = null;
 			ZoomLevel = 0;
 			Owner.CameraMode.FieldOfView = _defaultFOV;
 
