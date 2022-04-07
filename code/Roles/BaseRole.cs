@@ -44,7 +44,7 @@ public partial class RoleInfo : Asset
 		AvailableItems = new HashSet<string>( ExclusiveItems );
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( IconPath );
+			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 }
 
