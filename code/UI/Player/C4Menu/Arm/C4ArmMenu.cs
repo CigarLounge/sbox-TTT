@@ -9,6 +9,7 @@ public class C4ArmMenu : EntityHintPanel
 	public int Timer { get; set; } = 45;
 
 	private Label TimerDisplay { get; set; }
+	private Label Wires { get; set; }
 
 	private readonly C4Entity _c4;
 
@@ -35,5 +36,6 @@ public class C4ArmMenu : EntityHintPanel
 	public override void Tick()
 	{
 		TimerDisplay.Text = TimeSpan.FromSeconds( Timer ).ToString( "mm':'ss" );
+		Wires.Text = $"{Math.Min( Math.Ceiling( Timer / 60.0 ), 5 )} of the 6 wires will cause instant detonation during defusal";
 	}
 }

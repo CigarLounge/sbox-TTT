@@ -5,7 +5,8 @@
         <text class="header">C4 Arm</text>
         <text @ref="TimerDisplay" class="timer text-color-info"></text>
         <Slider @value="Timer" min="45" max="600"></Slider>
-        <div style="justify-content: center; padding-top: 10px;">
+        <text @ref="Wires" class="wires"> of the 6 wires will cause instant detonation during defusal</text>
+        <div style="justify-content: center;">
             <button onclick="Arm()" icon="touch_app" class="call-detective">Arm</button>
             <button onclick="Pickup()" icon="pan_tool" class="call-detective">Pick up</button>
             <button onclick="Destroy()" icon="delete">Destroy</button>
