@@ -9,7 +9,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
 
 	[Net, Local]
-	private bool IsArmed { get; set; }
+	public bool IsArmed { get; set; }
 
 	public override void Spawn()
 	{
@@ -22,9 +22,9 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	public void Arm( int time )
 	{
-		// TODO: Set the timer.
-		// TODO: Send out rpc to close any open C4 menus.
+		// TODO: Set the timer and bomb to explode.
 		IsArmed = true;
+		CloseC4Menus();
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -44,6 +44,8 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 			UI.FullScreenHintMenu.Instance?.Open( new UI.C4ArmMenu( this ) );
 	}
 
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
+
 	bool IUse.OnUse( Entity user )
 	{
 		if ( Input.Down( InputButton.Run ) && !IsArmed )
@@ -59,5 +61,43 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	bool IUse.IsUsable( Entity user )
 	{
 		return user is Player;
+	}
+
+	[ServerCmd]
+	public static void ArmC4( int networkIdent, int time )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player )
+			return;
+
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		c4.Arm( time );
+	}
+
+	[ServerCmd]
+	public static void DeleteC4( int networkIdent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player )
+			return;
+
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		c4.Delete();
+	}
+
+	[ClientRpc]
+	private void CloseC4Menus()
+	{
+		if ( !IsLocalPawn )
+			return;
+
+		if ( UI.FullScreenHintMenu.Instance.ActivePanel is UI.C4ArmMenu )
+			UI.FullScreenHintMenu.Instance.Close();
 	}
 }
