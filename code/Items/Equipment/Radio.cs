@@ -21,8 +21,8 @@ public partial class Radio : Carriable
 		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
 			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-					.WorldOnly()
-					.Run();
+				.WorldOnly()
+				.Run();
 
 			if ( !trace.Hit )
 				return;
@@ -30,9 +30,11 @@ public partial class Radio : Carriable
 			var radio = Owner.Inventory.DropEntity<RadioEntity>( this );
 			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
 			radioComponent.Radio = radio;
-			radio.Velocity = 0;
+
+			radio.MoveType = MoveType.None;
 			radio.Position = trace.EndPosition;
 			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
+			radio.Velocity = 0;
 
 			if ( Math.Abs( trace.Normal.z ) >= 0.99f )
 			{
@@ -44,7 +46,6 @@ public partial class Radio : Carriable
 					.WithRoll( 180f )
 				);
 			}
-			radio.MoveType = MoveType.None;
 		}
 	}
 }

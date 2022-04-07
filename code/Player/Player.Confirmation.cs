@@ -15,7 +15,6 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; set; }
 
-	[Net]
 	public int CorpseCredits { get; set; } = 0;
 
 	public string LastSeenPlayerName { get; private set; }
@@ -89,10 +88,10 @@ public partial class Player
 	private void CheckLastSeenPlayer()
 	{
 		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
-						.HitLayer( CollisionLayer.Debris )
-						.Ignore( this )
-						.UseHitboxes()
-						.Run();
+			.HitLayer( CollisionLayer.Debris )
+			.Ignore( this )
+			.UseHitboxes()
+			.Run();
 
 		if ( trace.Entity is Player player )
 			LastSeenPlayerName = player.Client?.Name;

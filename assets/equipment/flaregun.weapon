@@ -8,7 +8,7 @@
 		firemode = "1"
 		bulletsperfire = 1
 		clipsize = 6
-		damage = 20.0
+		damage = 0.0
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0
 		headshotmultiplier = 1.0
