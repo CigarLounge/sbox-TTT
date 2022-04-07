@@ -6,7 +6,6 @@ namespace TTT;
 
 public abstract partial class Asset : Sandbox.Asset
 {
-	[Hammer.Skip]
 	private static readonly Dictionary<string, Asset> Collection = new();
 
 	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
