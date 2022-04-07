@@ -23,13 +23,13 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	public void Arm( int time )
 	{
 		// TODO: Set the timer and bomb to explode.
-		IsArmed = true;
 		CloseC4Menus();
+		IsArmed = true;
 	}
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !player.IsLocalPawn || !Input.Down( InputButton.Use ) )
+		if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
 		{
 			UI.FullScreenHintMenu.Instance?.Close();
 			return;
