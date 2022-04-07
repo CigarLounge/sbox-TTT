@@ -296,7 +296,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
-	public T DropEntity<T>( Entity self ) where T : Entity
+	public T DropEntity<T>( Entity self ) where T : Entity, new()
 	{
 		Host.AssertServer();
 
@@ -304,11 +304,13 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		carriable.OnCarryDrop( Owner );
 		carriable.Delete();
 
-		var droppedEntity = Library.Create<T>();
-		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset;
-		droppedEntity.Rotation = Owner.EyeRotation;
-		droppedEntity.Velocity = Owner.EyeRotation.Forward * DropVelocity;
-		droppedEntity.Owner = Owner;
+		var droppedEntity = new T
+		{
+			Owner = Owner,
+			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
+			Rotation = Owner.EyeRotation,
+			Velocity = Owner.EyeRotation.Forward * DropVelocity		
+		};
 
 		return droppedEntity;
 	}

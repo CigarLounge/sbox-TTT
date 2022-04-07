@@ -77,6 +77,15 @@ public partial class WeaponInfo : CarriableInfo
 
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
 	public string TracerParticle { get; set; } = "";
+
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		Precache.Add( EjectParticle );
+		Precache.Add( MuzzleFlashParticle );
+		Precache.Add( TracerParticle );
+	}
 }
 
 public abstract partial class Weapon : Carriable
@@ -312,6 +321,11 @@ public abstract partial class Weapon : Carriable
 
 				using ( Prediction.Off() )
 				{
+					OnHit( trace );
+
+					if ( Info.Damage <= 0 )
+						continue;
+
 					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
@@ -319,14 +333,17 @@ public abstract partial class Weapon : Carriable
 
 					if ( trace.Entity is Player player )
 						player.LastDistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
-
-					OnHit( trace );
+		
 					trace.Entity.TakeDamage( damageInfo );
 				}
 			}
 		}
 	}
 
+	/// <summary>
+	/// Called when the bullet hits something, i.e the World or an entity.
+	/// </summary>
+	/// <param name="trace"></param>
 	protected virtual void OnHit( TraceResult trace ) { }
 
 	/// <summary>
@@ -338,13 +355,13 @@ public abstract partial class Weapon : Carriable
 		bool InWater = Map.Physics.IsPointWater( start );
 
 		var trace = Trace.Ray( start, end )
-				.UseHitboxes()
-				.HitLayer( CollisionLayer.Water, !InWater )
-				.HitLayer( CollisionLayer.Debris )
-				.Ignore( Owner )
-				.Ignore( this )
-				.Size( radius )
-				.Run();
+			.UseHitboxes()
+			.HitLayer( CollisionLayer.Water, !InWater )
+			.HitLayer( CollisionLayer.Debris )
+			.Ignore( Owner )
+			.Ignore( this )
+			.Size( radius )
+			.Run();
 
 		yield return trace;
 
@@ -389,12 +406,10 @@ public abstract partial class Weapon : Carriable
 			if ( start > 0f )
 			{
 				if ( distance < start )
-				{
 					return damage;
-				}
 
-				var falloffRange = end - start;
-				var difference = (distance - start);
+				float falloffRange = end - start;
+				float difference = (distance - start);
 
 				return Math.Max( damage - (damage / falloffRange) * difference, 0f );
 			}

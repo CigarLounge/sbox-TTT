@@ -11,7 +11,7 @@ public partial class NewtonLauncher : Weapon
 	private float Charge { get; set; }
 
 	[Net, Local, Predicted]
-	public bool IsCharging { get; protected set; }
+	public bool IsCharging { get; private set; }
 
 	public override string SlotText => $"{(int)Charge}%";
 
