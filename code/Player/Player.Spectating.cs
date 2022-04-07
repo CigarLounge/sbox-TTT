@@ -32,7 +32,7 @@ public partial class Player
 		if ( !IsForcedSpectator || !this.IsAlive() )
 			return;
 
-		TakeDamage( DamageInfo.Generic( 1000 ) );
+		this.Kill();
 	}
 
 	public void UpdateSpectatedPlayer( int increment = 0 )

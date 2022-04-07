@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public static partial class Utils
+public static class Utils
 {
 	public static List<Client> GetClients( Func<Player, bool> predicate = null )
 	{
@@ -104,14 +104,12 @@ public static partial class Utils
 	}
 
 	/// <summary>
-	/// Adds the item to the IList if that IList does not already contain the item
+	/// Adds the item to the IList if that IList does not already contain the item.
 	/// </summary>
 	public static void AddIfDoesNotContain<T>( this IList<T> list, T item )
 	{
-		if ( !list.Contains( item ) )
-		{
-			list.Add( item );
-		}
+		if ( !list.Contains( item ) )	
+			list.Add( item );	
 	}
 
 	public static void Shuffle<T>( this IList<T> list )
@@ -130,7 +128,7 @@ public static partial class Utils
 
 	public static bool IsNullOrEmpty<T>( this IList<T> list )
 	{
-		return list == null || list.Count == 0;
+		return list is null || list.Count == 0;
 	}
 
 	/// <summary>
@@ -138,8 +136,10 @@ public static partial class Utils
 	/// </summary>
 	public static bool IsNullOrEmpty<T>( this T[] arr )
 	{
-		return arr == null || arr.Length == 0;
+		return arr is null || arr.Length == 0;
 	}
 
 	public static bool IsAlive( this Entity entity ) => entity.LifeState == LifeState.Alive;
+
+	public static void Kill( this Entity entity ) => entity.TakeDamage( DamageInfo.Generic( float.MaxValue ) );
 }
