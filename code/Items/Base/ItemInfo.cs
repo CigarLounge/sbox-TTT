@@ -5,18 +5,28 @@ namespace TTT;
 
 public abstract partial class ItemInfo : Asset
 {
-	[Property, Category( "Important" )] 
+	[Property, Category( "Important" )]
 	public bool Buyable { get; set; } = false;
-	
-	[Property, Category( "Important" )] 
+
+	[Property, Category( "Important" )]
 	public bool IsLimited { get; set; } = false;
-	
-	[Property, Category( "Stats" )] 
+
+	[Property, Category( "Stats" )]
 	public int Price { get; set; } = 0;
-	
-	[Property, Category( "UI" ), ResourceType( "png" )] 
-	public string Icon { get; set; } = "";
-	
-	[Property, Category( "UI" )] 
+
+	[Property( "icon", title: "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	public string IconPath { get; set; } = "";
+
+	[Property, Category( "UI" )]
 	public string Description { get; set; } = "";
+
+	public Texture Icon { get; private set; }
+
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		if ( Host.IsClient )
+			Icon = Texture.Load( FileSystem.Mounted, IconPath );
+	}
 }

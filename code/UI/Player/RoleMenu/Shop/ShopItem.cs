@@ -30,7 +30,7 @@ public partial class ShopItem : Panel
 
 		_itemNameLabel.Text = itemInfo.Title;
 		_itemPriceLabel.Text = $"${itemInfo.Price}";
-		_itemIcon.SetImage( itemInfo.Icon );
+		_itemIcon.SetTexture( itemInfo.Icon );
 
 		ItemInfo = itemInfo;
 	}
