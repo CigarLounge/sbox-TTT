@@ -22,6 +22,11 @@ public class C4ArmMenu : EntityHintPanel
 		C4Entity.ArmC4( _c4.NetworkIdent, Timer );
 	}
 
+	public void Pickup()
+	{
+		C4Entity.Pickup( _c4.NetworkIdent );
+	}
+
 	public void Destroy()
 	{
 		C4Entity.DeleteC4( _c4.NetworkIdent );

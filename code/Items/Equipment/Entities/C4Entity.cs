@@ -48,13 +48,6 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( Input.Down( InputButton.Run ) && !IsArmed )
-		{
-			var player = user as Player;
-			player.Inventory.Add( new C4() );
-			Delete();
-		}
-
 		return false;
 	}
 
@@ -75,6 +68,21 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 			return;
 
 		c4.Arm( time );
+	}
+
+	[ServerCmd]
+	public static void Pickup( int networkIdent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		player.Inventory.Add( new C4() );
+		c4.Delete();
 	}
 
 	[ServerCmd]

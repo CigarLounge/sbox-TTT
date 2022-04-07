@@ -2,11 +2,12 @@
 
 <root class="text-shadow">
     <div class="container">
-        <text class="header">Arm C4</text>
+        <text class="header">C4 Arm</text>
         <text @ref="TimerDisplay" class="timer text-color-info"></text>
         <Slider min="45" max="600" @value="Timer"></Slider>
-        <div style="justify-content: center;">
-            <button onclick="Arm()" icon="pan_tool" class="call-detective">Arm</button>
+        <div style="justify-content: center; padding-top: 10px;">
+            <button onclick="Arm()" icon="touch_app" class="call-detective">Arm</button>
+            <button onclick="Pickup()" icon="pan_tool" class="call-detective">Pick up</button>
             <button onclick="Destroy()" icon="delete">Destroy</button>
         </div>
     </div>
