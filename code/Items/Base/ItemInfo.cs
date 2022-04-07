@@ -22,7 +22,7 @@ public abstract partial class ItemInfo : Asset
 	[Property, Category( "UI" )]
 	public string Description { get; set; } = "";
 
-	[JsonPropertyName( "icon-" )]
+	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()

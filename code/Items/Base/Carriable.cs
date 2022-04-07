@@ -54,13 +54,13 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
-	[JsonPropertyName( "handsmodel-" )]
+	[JsonPropertyName( "cached-handsmodel" )]
 	public Model HandsModel { get; private set; }
 
-	[JsonPropertyName( "viewmodel-" )]
+	[JsonPropertyName( "cached-viewmodel" )]
 	public Model ViewModel { get; private set; }
 
-	[JsonPropertyName( "worldmodel-" )]
+	[JsonPropertyName( "cached-worldmodel" )]
 	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()

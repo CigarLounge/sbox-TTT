@@ -34,7 +34,7 @@ public partial class RoleInfo : Asset
 
 	public HashSet<string> AvailableItems { get; private set; }
 
-	[JsonPropertyName( "icon-" )]
+	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()
