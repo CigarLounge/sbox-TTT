@@ -4,8 +4,10 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_flaregun", Title = "Flare Gun" )]
-public partial class FlareGun : Weapon
+public class FlareGun : Weapon
 {
+	public override string SlotText => AmmoClip.ToString();
+
 	public override void SimulateAnimator( PawnAnimator anim )
 	{
 		base.SimulateAnimator( anim );
@@ -16,6 +18,14 @@ public partial class FlareGun : Weapon
 	protected override void OnHit( TraceResult trace )
 	{
 		base.OnHit( trace );
+
+		// TODO: Use proper burning once FP implements it.
+		var burnDamage = DamageInfo.Generic( 25 )
+			.WithAttacker( Owner )
+			.WithWeapon( this )
+			.WithFlag( DamageFlags.Burn );
+
+		trace.Entity.TakeDamage( burnDamage );
 
 		if ( trace.Entity is Corpse )
 			trace.Entity.Delete();
