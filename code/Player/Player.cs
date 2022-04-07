@@ -198,6 +198,7 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
+		ActiveChild?.FrameSimulate( client );
 	}
 
 	public override void StartTouch( Entity other )

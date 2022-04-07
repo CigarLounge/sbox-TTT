@@ -20,7 +20,10 @@ public partial class Knife : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceStab < 1f )
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
+		if ( TimeSinceStab < 1f )
 			return;
 
 		if ( Input.Down( InputButton.Attack1 ) )
@@ -183,7 +186,7 @@ public partial class Knife : Carriable
 			default:
 			{
 				MoveType = MoveType.Physics;
-				Position = oldPosition - trace.Direction * 5;				
+				Position = oldPosition - trace.Direction * 5;
 				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
 
 				PhysicsEnabled = true;
@@ -193,6 +196,6 @@ public partial class Knife : Carriable
 		}
 
 		EnableTouch = true;
-		_isThrown = false;		
+		_isThrown = false;
 	}
 }

@@ -1,52 +1,19 @@
 using Sandbox;
-using System;
 
 namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_radio", Title = "Radio" )]
-public partial class Radio : Carriable
+public partial class Radio : Droppable<RadioEntity>
 {
-	public override void Simulate( Client client )
+	protected override string ModelPath => "models/radio/radio.vmdl";
+
+	protected override void OnDrop( Entity entity )
 	{
-		if ( !IsServer )
-			return;
+		base.OnDrop( entity );
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			var radio = Owner.Inventory.DropEntity<RadioEntity>( this );
-			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = radio;
-		}
-		else if ( Input.Pressed( InputButton.Attack2 ) )
-		{
-			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-				.WorldOnly()
-				.Run();
-
-			if ( !trace.Hit )
-				return;
-
-			var radio = Owner.Inventory.DropEntity<RadioEntity>( this );
-			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = radio;
-
-			radio.MoveType = MoveType.None;
-			radio.Position = trace.EndPosition;
-			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
-			radio.Velocity = 0;
-
-			if ( Math.Abs( trace.Normal.z ) >= 0.99f )
-			{
-				radio.Rotation = Rotation.From
-				(
-					Rotation.Angles()
-					.WithYaw( PreviousOwner.EyeRotation.Yaw() )
-					.WithPitch( -90 * trace.Normal.z.CeilToInt() )
-					.WithRoll( 180f )
-				);
-			}
-		}
+		var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
+		radioComponent.Radio = entity as RadioEntity;
 	}
 }
 
