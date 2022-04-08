@@ -13,8 +13,8 @@
             <wire style="background-color: rgb(172, 99, 39);" />
         </div>
         <div style="justify-content: center;">
-            <button onclick="Pickup()" icon="pan_tool" class="inactive">Pick up</button>
-            <button onclick="Destroy()" icon="delete" class="inactive">Destroy</button>
+            <button @ref="PickupBtn" onclick="Pickup()" icon="pan_tool" class="inactive">Pick up</button>
+            <button @ref="DestroyBtn" onclick="Destroy()" icon="delete" class="inactive">Destroy</button>
         </div>
     </div>
 </root>

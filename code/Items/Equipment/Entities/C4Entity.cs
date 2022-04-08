@@ -9,7 +9,10 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
 
 	[Net, Local]
-	public bool IsArmed { get; set; }
+	public bool IsArmed { get; private set; }
+
+	[Net, Local]
+	public TimeUntil TimeUntilExplode { get; private set; }
 
 	public override void Spawn()
 	{
@@ -22,18 +25,18 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	public void Arm( int time )
 	{
-		// TODO: Set the timer and bomb to explode.
 		CloseC4Menus();
+		TimeUntilExplode = time;
 		IsArmed = true;
 	}
 
 	void IEntityHint.Tick( Player player )
 	{
-		// if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
-		// {
-		// 	UI.FullScreenHintMenu.Instance?.Close();
-		// 	return;
-		// }
+		if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
+		{
+			UI.FullScreenHintMenu.Instance?.Close();
+			return;
+		}
 
 		if ( UI.FullScreenHintMenu.Instance.IsOpen )
 			return;
@@ -54,6 +57,19 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	bool IUse.IsUsable( Entity user )
 	{
 		return user is Player;
+	}
+
+	[Event.Tick.Server]
+	private void ServerTick()
+	{
+		if ( !IsArmed )
+			return;
+
+		if ( TimeUntilExplode )
+		{
+			// TODO: Explode.
+			Delete();
+		}
 	}
 
 	[ServerCmd]
