@@ -11,4 +11,14 @@ public class C4DefuseMenu : EntityHintPanel
 	{
 		_c4 = c4;
 	}
+
+	public void Pickup()
+	{
+		C4Entity.Pickup( _c4.NetworkIdent );
+	}
+
+	public void Destroy()
+	{
+		C4Entity.DeleteC4( _c4.NetworkIdent );
+	}
 }
