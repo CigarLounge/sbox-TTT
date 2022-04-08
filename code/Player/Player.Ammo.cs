@@ -20,7 +20,7 @@ public partial class Player
 	{
 		int iType = (int)type;
 
-		if ( Ammo == null )
+		if ( Ammo is null )
 			return 0;
 
 		if ( Ammo.Count <= iType )
@@ -36,7 +36,7 @@ public partial class Player
 		if ( !Host.IsServer )
 			return false;
 
-		if ( Ammo == null )
+		if ( Ammo is null )
 			return false;
 
 		while ( Ammo.Count <= iType )
@@ -54,7 +54,7 @@ public partial class Player
 		if ( !Host.IsServer )
 			return false;
 
-		if ( Ammo == null )
+		if ( Ammo is null )
 			return false;
 
 		foreach ( AmmoType ammoType in Enum.GetValues( typeof( AmmoType ) ) )
@@ -70,7 +70,7 @@ public partial class Player
 		if ( !Host.IsServer || Ammo is null )
 			return 0;
 
-		var ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
+		int ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
 		{
 			using ( Prediction.Off() )
@@ -85,10 +85,10 @@ public partial class Player
 
 	public int TakeAmmo( AmmoType type, int amount )
 	{
-		if ( Ammo == null )
+		if ( Ammo is null )
 			return 0;
 
-		var available = AmmoCount( type );
+		int available = AmmoCount( type );
 		amount = Math.Min( available, amount );
 
 		SetAmmo( type, available - amount );
