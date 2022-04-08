@@ -67,14 +67,17 @@ public partial class Player
 
 	public int GiveAmmo( AmmoType type, int amount )
 	{
-		if ( !Host.IsServer || Ammo == null )
+		if ( !Host.IsServer || Ammo is null )
 			return 0;
 
 		var ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
 		{
-			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
-			PlaySound( RawStrings.AmmoPickupSound );
+			using ( Prediction.Off() )
+			{
+				SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
+				PlaySound( RawStrings.AmmoPickupSound );
+			}
 		}
 
 		return ammoPickedUp;
