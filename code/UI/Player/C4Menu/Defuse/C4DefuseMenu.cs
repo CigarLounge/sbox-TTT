@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -12,13 +13,21 @@ public class C4DefuseMenu : EntityHintPanel
 	{
 		_c4 = c4;
 
-		foreach ( var wire in Wires.Children )
+		var wires = Wires.Children.ToList();
+		for ( int i = 0; i < wires.Count; ++i )
 		{
+			var wire = wires[i] as Wire;
+			wire.Number.Text = $"{i + 1}";
 			wire.AddEventListener( "onclick", () =>
 			{
 				wire.Style.Opacity = 0;
 			} );
 		}
+	}
+
+	public void Defuse( int wire )
+	{
+		C4Entity.Defuse( wire, _c4.NetworkIdent );
 	}
 
 	public void Pickup()

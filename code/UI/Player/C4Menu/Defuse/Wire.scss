@@ -1,9 +1,15 @@
 Wire
 {
-    height: 100px;
-    width: 10px;
+    height: 75px;
+    width: 13px;
     transition: transform 0.1s ease-in-out;
     box-shadow: 0px 0px 10px black;
+    justify-content: center;
+
+    .number
+    {   
+        top: -20px;
+    }
 
     &:hover
     {

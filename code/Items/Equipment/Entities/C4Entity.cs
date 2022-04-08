@@ -71,6 +71,20 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	}
 
 	[ServerCmd]
+	public static void Defuse( int wire, int networkIdent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		// Explode here, or defuse.
+	}
+
+	[ServerCmd]
 	public static void Pickup( int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
