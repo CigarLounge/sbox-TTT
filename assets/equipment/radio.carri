@@ -12,7 +12,7 @@
 		islimited = true
 		price = 100
 		icon = "ui/equipment/radio.png"
-		worldmodel = resource:""
+		worldmodel = resource:"models/radio/radio.vmdl"
 		libraryname = "ttt_equipment_radio"
 		candrop = false
 		description = "Place the radio somewhere, and then play sounds on it using the Radio tab in this menu."

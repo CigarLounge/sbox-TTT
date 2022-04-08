@@ -6,8 +6,6 @@ namespace TTT;
 [Library( "ttt_equipment_radio", Title = "Radio" )]
 public partial class Radio : Droppable<RadioEntity>
 {
-	protected override string ModelPath => "models/radio/radio.vmdl";
-
 	protected override void OnDrop( Entity entity )
 	{
 		base.OnDrop( entity );
