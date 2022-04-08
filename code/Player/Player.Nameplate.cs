@@ -7,7 +7,7 @@ public partial class Player : IEntityHint
 	public bool CanHint( Player player )
 	{
 		var disguiser = Perks.Find<Disguiser>();
-		return disguiser is null || (disguiser is not null && !disguiser.IsEnabled);
+		return disguiser is null || !disguiser.IsEnabled;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
