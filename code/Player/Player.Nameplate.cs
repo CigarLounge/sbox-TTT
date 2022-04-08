@@ -4,7 +4,7 @@ public partial class Player : IEntityHint
 {
 	public float HintDistance { get; set; } = MaxHintDistance;
 
-	bool IEntityHint.CanHint( Player player )
+	public bool CanHint( Player player )
 	{
 		var disguiser = Perks.Find<Disguiser>();
 		return disguiser is null || (disguiser is not null && !disguiser.IsEnabled);

@@ -93,7 +93,7 @@ public partial class Player
 			.UseHitboxes()
 			.Run();
 
-		if ( trace.Entity is Player player )
+		if ( trace.Entity is Player player && player.CanHint( this ) )
 			LastSeenPlayerName = player.Client?.Name;
 	}
 
