@@ -6,9 +6,10 @@ namespace TTT.UI;
 public class Wire : Panel
 {
 	public Label Number { get; set; }
+	public Panel WireDisplay { get; set; }
 
-	public Wire()
+	public void Cut()
 	{
-
+		WireDisplay.AddClass( "cut-wire" );
 	}
 }

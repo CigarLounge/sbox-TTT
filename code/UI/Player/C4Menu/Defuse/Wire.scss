@@ -1,14 +1,29 @@
 Wire
 {
-    height: 75px;
-    width: 13px;
     transition: transform 0.1s ease-in-out;
-    box-shadow: 0px 0px 10px black;
     justify-content: center;
 
     .number
     {   
+        position: absolute;
         top: -20px;
+    }
+
+    .full-wire
+    {
+        height: 75px;
+        width: 13px;
+
+        &.cut-wire
+        {
+            top: 50%;
+            height: 50%;
+        }
+    }
+
+    .space
+    {
+        padding: 5px;
     }
 
     &:hover

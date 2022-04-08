@@ -36,6 +36,6 @@ public class C4ArmMenu : EntityHintPanel
 	public override void Tick()
 	{
 		TimerDisplay.Text = TimeSpan.FromSeconds( Timer ).ToString( "mm':'ss" );
-		Wires.Text = $"{Math.Min( Math.Ceiling( Timer / 60.0 ), 5 )} of the 6 wires will cause instant detonation during defusal";
+		Wires.Text = $"{C4Entity.GetBadWireCount( Timer )} of the 6 wires will cause instant detonation during defusal";
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 namespace TTT;
@@ -25,9 +26,14 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	public void Arm( int time )
 	{
-		CloseC4Menus();
+		CloseC4ArmMenu();
 		TimeUntilExplode = time;
 		IsArmed = true;
+	}
+
+	public static int GetBadWireCount( int timer )
+	{
+		return (int)Math.Min( Math.Ceiling( timer / 60.0 ), 5 );
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -130,7 +136,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void CloseC4Menus()
+	private void CloseC4ArmMenu()
 	{
 		if ( !IsLocalPawn )
 			return;

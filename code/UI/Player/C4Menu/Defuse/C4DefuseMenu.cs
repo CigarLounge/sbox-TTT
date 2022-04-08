@@ -25,10 +25,7 @@ public class C4DefuseMenu : EntityHintPanel
 			wire.Number.Text = $"{i + 1}";
 			wire.AddEventListener( "onclick", () =>
 			{
-				wire.Style.Opacity = 0;
-
-				PickupBtn.RemoveClass( "inactive" );
-				DestroyBtn.RemoveClass( "inactive" );
+				wire.Cut();
 			} );
 		}
 	}
