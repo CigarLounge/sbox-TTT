@@ -29,11 +29,11 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
-		{
-			UI.FullScreenHintMenu.Instance?.Close();
-			return;
-		}
+		// if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
+		// {
+		// 	UI.FullScreenHintMenu.Instance?.Close();
+		// 	return;
+		// }
 
 		if ( UI.FullScreenHintMenu.Instance.IsOpen )
 			return;
