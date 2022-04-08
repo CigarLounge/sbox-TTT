@@ -15,8 +15,15 @@ public partial class NewtonLauncher : Weapon
 
 	public override string SlotText => $"{(int)Charge}%";
 
-	private const float MaxCharge = 100f;
 	private const float ChargePerSecond = 50f;
+	private const float MaxCharge = 100f;
+	private const float MaxForwardForce = 700;
+	private const float MinForwardForce = 300;
+	private const float MaxUpwardForce = 350;
+	private const float MinUpwardForce = 100;
+
+	private float _forwardForce;
+	private float _upwardForce;
 
 	public override void Simulate( Client client )
 	{
@@ -54,7 +61,10 @@ public partial class NewtonLauncher : Weapon
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		ShootBullet( Info.Spread, 0, Info.Damage, 3.0f, Info.BulletsPerFire );
+		_forwardForce = ((Charge / 100f * MinForwardForce) - MinForwardForce) + MaxForwardForce;
+		_upwardForce = ((Charge / 100f * MinUpwardForce) - MinUpwardForce) + MaxUpwardForce;
+
+		ShootBullet( Info.Spread, _forwardForce / 10f, Info.Damage, 3.0f, Info.BulletsPerFire );
 
 		Charge = 0;
 	}
@@ -63,11 +73,15 @@ public partial class NewtonLauncher : Weapon
 	{
 		base.OnHit( trace );
 
-		if ( trace.Entity.IsWorld )
+		if ( trace.Entity is not Player player )
 			return;
 
-		trace.Entity.GroundEntity = null;
-		trace.Entity.ApplyAbsoluteImpulse( 10 * Charge * trace.Direction + 5 * Charge * Vector3.Up );
+		player.GroundEntity = null;
+
+		var pushVel = trace.Direction * _forwardForce;
+		pushVel.z = Math.Max( pushVel.z, _upwardForce );
+
+		player.Velocity += pushVel;
 	}
 
 	[ClientRpc]
