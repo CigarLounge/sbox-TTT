@@ -15,21 +15,26 @@ public partial class Game
 	}
 
 	[AdminCmd( Name = "ttt_giveitem" )]
-	public static void GiveItem( string libraryName )
+	public static void GiveItem( string itemName )
 	{
-		if ( string.IsNullOrEmpty( libraryName ) )
+		if ( string.IsNullOrEmpty( itemName ) )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+		var itemInfo = Asset.GetInfo<ItemInfo>( itemName );
+		if ( itemInfo is null )
+		{
+			Log.Error( $"{itemName} isn't a valid Item!" );
+			return;
+		}
 
 		if ( itemInfo is CarriableInfo )
-			player.Inventory.Add( Library.Create<Carriable>( libraryName ) );
+			player.Inventory.Add( Library.Create<Carriable>( itemInfo.LibraryName ) );
 		else if ( itemInfo is PerkInfo )
-			player.Perks.Add( Library.Create<Perk>( libraryName ) );
+			player.Perks.Add( Library.Create<Perk>( itemInfo.LibraryName ) );
 	}
 
 	[AdminCmd( Name = "ttt_setrole" )]
@@ -42,7 +47,14 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
-		player.SetRole( roleName );
+		var roleInfo = Asset.GetInfo<RoleInfo>( roleName );
+		if ( roleInfo is null )
+		{
+			Log.Error( $"{roleName} isn't a valid Role!" );
+			return;
+		}
+
+		player.SetRole( roleInfo.LibraryName );
 	}
 
 	[ServerCmd( Name = "ttt_forcespec" )]
