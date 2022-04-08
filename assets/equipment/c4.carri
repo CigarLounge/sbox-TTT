@@ -12,7 +12,7 @@
 		islimited = true
 		price = 100
 		icon = ""
-		worldmodel = resource:""
+		worldmodel = resource:"models/c4/c4.vmdl"
 		libraryname = "ttt_equipment_c4"
 		candrop = false
 		description = "C4 TODO"

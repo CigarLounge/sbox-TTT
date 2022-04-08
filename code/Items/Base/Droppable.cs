@@ -6,14 +6,14 @@ namespace TTT;
 public abstract partial class Droppable<T> : Carriable where T : Prop, new()
 {
 	public GhostEntity GhostEntity { get; set; }
-	protected virtual string ModelPath => string.Empty;
 
 	public override void ActiveStart( Entity entity )
 	{
 		base.ActiveStart( entity );
 
+		EnableDrawing = false;
 		GhostEntity = new();
-		GhostEntity.SetEntity( ModelPath );
+		GhostEntity.SetEntity( this );
 	}
 
 	public override void ActiveEnd( Entity entity, bool dropped )

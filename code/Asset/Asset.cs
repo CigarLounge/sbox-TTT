@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -6,7 +7,7 @@ namespace TTT;
 
 public abstract partial class Asset : Sandbox.Asset
 {
-	private static readonly Dictionary<string, Asset> Collection = new();
+	private static readonly Dictionary<string, Asset> Collection = new( StringComparer.OrdinalIgnoreCase );
 
 	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
 	public string LibraryName { get; set; }
