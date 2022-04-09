@@ -180,15 +180,24 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		if ( !covert && !DeadPlayer.IsConfirmedDead )
-		{
-			DeadPlayer.Confirmer = searcher;
-			DeadPlayer.Confirm();
-		}
-		else if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
+		if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
 		{
 			DeadPlayer.SendRole( To.Single( searcher ) );
 			SendInfo( To.Single( searcher ) );
+		}
+
+		covert &= searcher.IsAlive();
+		if ( !covert )
+		{
+			if ( !DeadPlayer.IsConfirmedDead )
+			{
+				DeadPlayer.Confirmer = searcher;
+				DeadPlayer.Confirm();
+			}
+
+			// If the searcher is a detective, send kill info to everyone.
+			if ( searcher.Role is DetectiveRole )
+				SendInfo( To.Everyone );
 		}
 
 		ClientSearch( To.Single( searcher ), credits );
@@ -261,7 +270,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		// For now, let's not let people inspect outside of InProgressRound.
 		// we should probably create an "empty" corpse instead.
-		if ( Game.Current.Round is not InProgressRound )
+		if ( Game.Current.Round is WaitingRound or PreRound )
 			return false;
 
 		var player = user as Player;
