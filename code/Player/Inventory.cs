@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -301,6 +300,9 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		Host.AssertServer();
 
 		var carriable = self as Carriable;
+		if ( !carriable.IsValid() || !Contains( carriable ) )
+			return null;
+
 		carriable.OnCarryDrop( Owner );
 		carriable.Delete();
 
@@ -309,7 +311,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			Owner = Owner,
 			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
 			Rotation = Owner.EyeRotation,
-			Velocity = Owner.EyeRotation.Forward * DropVelocity		
+			Velocity = Owner.EyeRotation.Forward * DropVelocity
 		};
 
 		return droppedEntity;
