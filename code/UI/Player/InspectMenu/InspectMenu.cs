@@ -31,9 +31,6 @@ public partial class InspectMenu : Panel
 		if ( corpse.DeadPlayer is null )
 			return;
 
-		if ( !corpse.DeadPlayer.IsConfirmedDead )
-			CallDetectiveButton.Delete( true );
-
 		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
 		_timeSinceDeathEntry.Enabled( true );
 		_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
@@ -156,6 +153,7 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
+		CallDetectiveButton.Enabled( _corpse.DeadPlayer.IsConfirmedDead );
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
 		string timeSinceDeath = (Time.Now - _corpse.KilledTime).TimerString();

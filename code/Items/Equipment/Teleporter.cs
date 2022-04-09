@@ -106,7 +106,9 @@ public partial class Teleporter : Carriable
 
 		LocationIsSet = true;
 		_teleportLocation = trace.EndPosition;
-		UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
+
+		if ( Prediction.FirstTime )
+			UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
 	}
 
 	protected override void OnDestroy()

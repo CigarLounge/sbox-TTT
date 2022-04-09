@@ -78,7 +78,7 @@ public partial class Player
 		var to = _to ?? To.Everyone;
 
 		SendRole( to );
-		ClientConfirm( to, Confirmer, Corpse?.PlayerName, wasPreviouslyConfirmed );
+		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
 	}
 
 	private void CheckLastSeenPlayer()
@@ -94,19 +94,19 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void ClientConfirm( Player confirmer, string playerName, bool wasPreviouslyConfirmed = false )
+	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{
 		Confirmer = confirmer;
 		IsConfirmedDead = true;
 		IsMissingInAction = false;
 
-		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || string.IsNullOrEmpty( playerName ) )
+		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
 
 		UI.InfoFeed.Instance.AddClientToClientEntry
 		(
 			Confirmer.Client,
-			playerName,
+			Corpse.PlayerName,
 			Role.Color,
 			"found the body of",
 			$"({Role.Title})"
