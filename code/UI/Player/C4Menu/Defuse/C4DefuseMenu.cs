@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -18,22 +17,28 @@ public class C4DefuseMenu : EntityHintPanel
 	{
 		_c4 = c4;
 
-		var wires = Wires.Children.ToList();
-		for ( int i = 0; i < wires.Count; ++i )
+		for ( int i = 0; i < C4Entity.Wires.Count; ++i )
 		{
-			var wire = wires[i] as Wire;
-			wire.Number.Text = $"{i + 1}";
+			var wireNumber = i + 1;
+			var wire = new Wire( wireNumber, C4Entity.Wires[i] );
 			wire.AddEventListener( "onclick", () =>
 			{
 				wire.Cut();
+				Defuse( wireNumber );
 			} );
+
+			Wires.AddChild( wire );
 		}
 	}
 
 	public override void Tick()
 	{
-		if ( _c4 != null )
-			TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
+		if ( _c4 is null )
+			return;
+
+		TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
+		PickupBtn.SetClass( "inactive", _c4.IsArmed );
+		DestroyBtn.SetClass( "inactive", _c4.IsArmed );
 	}
 
 	public void Defuse( int wire )

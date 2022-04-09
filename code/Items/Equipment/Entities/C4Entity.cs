@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -7,6 +8,15 @@ namespace TTT;
 [Library( "ttt_entity_c4", Title = "C4" )]
 public partial class C4Entity : Prop, IEntityHint, IUse
 {
+	public static readonly List<Color> Wires = new() {
+		Color.Magenta,
+		Color.Red,
+		Color.Blue,
+		Color.Yellow,
+		Color.Cyan,
+		Color.Green
+	};
+
 	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
 
 	[Net, Local]
@@ -33,7 +43,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	public static int GetBadWireCount( int timer )
 	{
-		return (int)Math.Min( Math.Ceiling( timer / 60.0 ), 5 );
+		return (int)Math.Min( Math.Ceiling( timer / 60.0 ), Wires.Count - 1 );
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -104,6 +114,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 			return;
 
 		// Explode here, or defuse.
+		c4.IsArmed = false;
 	}
 
 	[ServerCmd]

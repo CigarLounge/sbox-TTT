@@ -5,11 +5,19 @@ namespace TTT.UI;
 [UseTemplate]
 public class Wire : Panel
 {
-	public Label Number { get; set; }
-	public Panel WireDisplay { get; set; }
+	private Label Number { get; set; }
+	private Panel Line { get; set; }
+	private readonly int _height = 80;
+
+	public Wire( int num, Color color )
+	{
+		Number.Text = $"{num}";
+		Line.Style.BackgroundColor = color;
+		Line.Style.Height = _height;
+	}
 
 	public void Cut()
 	{
-		WireDisplay.AddClass( "cut-wire" );
+		Line.Style.Height = _height / 2;
 	}
 }
