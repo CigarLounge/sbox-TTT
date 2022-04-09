@@ -31,6 +31,9 @@ public partial class InspectMenu : Panel
 		if ( corpse.DeadPlayer is null )
 			return;
 
+		if ( !corpse.DeadPlayer.IsConfirmedDead )
+			CallDetectiveButton.Delete( true );
+
 		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
 		_timeSinceDeathEntry.Enabled( true );
 		_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
