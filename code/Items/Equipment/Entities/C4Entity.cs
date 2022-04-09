@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -25,6 +26,8 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	[Net, Local]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
+	private readonly List<int> _safeWireNumbers = new();
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -34,16 +37,43 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		Health = 100f;
 	}
 
-	public void Arm( int time )
+	public void Arm( Player player, int timer )
 	{
-		CloseC4ArmMenu();
-		TimeUntilExplode = time;
+		var possibleSafeWires = Enumerable.Range( 1, Wires.Count ).ToList();
+		possibleSafeWires.Shuffle();
+
+		var safeWireCount = Wires.Count - GetBadWireCount( timer );
+		for ( int i = 0; i < safeWireCount; ++i )
+			_safeWireNumbers.Add( possibleSafeWires[i] );
+
+		// TODO: Add the safe numbers to the player.
+
+		TimeUntilExplode = timer;
 		IsArmed = true;
+		CloseC4ArmMenu();
 	}
 
 	public static int GetBadWireCount( int timer )
 	{
 		return (int)Math.Min( Math.Ceiling( timer / 60.0 ), Wires.Count - 1 );
+	}
+
+	public void AttemptDefuse( int wire )
+	{
+		if ( !_safeWireNumbers.Contains( wire ) )
+		{
+			Explode();
+			return;
+		}
+
+		IsArmed = false;
+		_safeWireNumbers.Clear();
+	}
+
+	private void Explode()
+	{
+		// TODO: Explode.
+		Delete();
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -82,28 +112,11 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 			return;
 
 		if ( TimeUntilExplode )
-		{
-			// TODO: Explode.
-			Delete();
-		}
+			Explode();
 	}
 
 	[ServerCmd]
 	public static void ArmC4( int networkIdent, int time )
-	{
-		if ( ConsoleSystem.Caller.Pawn is not Player )
-			return;
-
-		var entity = FindByIndex( networkIdent );
-
-		if ( entity is null || entity is not C4Entity c4 )
-			return;
-
-		c4.Arm( time );
-	}
-
-	[ServerCmd]
-	public static void Defuse( int wire, int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
@@ -113,8 +126,21 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		if ( entity is null || entity is not C4Entity c4 )
 			return;
 
-		// Explode here, or defuse.
-		c4.IsArmed = false;
+		c4.Arm( player, time );
+	}
+
+	[ServerCmd]
+	public static void Defuse( int wire, int networkIdent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player )
+			return;
+
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		c4.AttemptDefuse( wire );
 	}
 
 	[ServerCmd]
