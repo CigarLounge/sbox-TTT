@@ -218,7 +218,7 @@ public partial class Player : Sandbox.Player
 
 	public void DeleteItems()
 	{
-		Perks.Clear();
+		Components.RemoveAll();
 		ClearAmmo();
 		Inventory?.DeleteContents();
 		RemoveClothing();

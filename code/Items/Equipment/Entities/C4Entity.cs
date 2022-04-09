@@ -46,11 +46,11 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		for ( int i = 0; i < safeWireCount; ++i )
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
-		// TODO: Add the safe numbers to the player.
-
 		TimeUntilExplode = timer;
 		IsArmed = true;
 		CloseC4ArmMenu();
+
+		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
 	}
 
 	public static int GetBadWireCount( int timer )
@@ -180,5 +180,17 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 		if ( UI.FullScreenHintMenu.Instance.ActivePanel is UI.C4ArmMenu )
 			UI.FullScreenHintMenu.Instance.Close();
+	}
+}
+
+public class C4Note : EntityComponent
+{
+	public int SafeWireNumber { get; init; }
+
+	public C4Note() { }
+
+	public C4Note( int wire )
+	{
+		SafeWireNumber = wire;
 	}
 }

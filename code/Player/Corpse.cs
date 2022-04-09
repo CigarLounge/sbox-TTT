@@ -12,6 +12,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float KilledTime { get; private set; }
+	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 
 	// Detective information
@@ -54,6 +55,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
+
+		var c4Note = player.Components.Get<C4Note>();
+		if ( c4Note != null )
+			C4Note = c4Note.SafeWireNumber.ToString();
 
 		LastSeenPlayerName = player.LastSeenPlayerName;
 
@@ -245,7 +250,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				continue;
 
 			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
-		
+
 			SendPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
 			DeadPlayer.SendRole( To.Single( client ) );
 		}
