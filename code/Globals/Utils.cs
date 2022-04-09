@@ -13,7 +13,7 @@ public static class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
 			{
 				clients.Add( client );
 			}
@@ -28,7 +28,7 @@ public static class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
 			{
 				players.Add( player );
 			}
@@ -113,8 +113,8 @@ public static class Utils
 	/// </summary>
 	public static void AddIfDoesNotContain<T>( this IList<T> list, T item )
 	{
-		if ( !list.Contains( item ) )	
-			list.Add( item );	
+		if ( !list.Contains( item ) )
+			list.Add( item );
 	}
 
 	public static void Shuffle<T>( this IList<T> list )

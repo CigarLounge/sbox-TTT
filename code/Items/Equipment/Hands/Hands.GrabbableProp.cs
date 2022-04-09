@@ -9,7 +9,7 @@ public class GrabbableProp : IGrabbable
 	public ModelEntity GrabbedEntity { get; set; }
 	public Player _owner;
 
-	public bool IsHolding => GrabbedEntity != null || _isThrowing;
+	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false; // Needed to maintain the Holding animation.
 
 	public GrabbableProp( Player player, ModelEntity ent )

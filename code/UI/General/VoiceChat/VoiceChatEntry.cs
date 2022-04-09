@@ -44,13 +44,13 @@ public class VoiceChatEntry : Panel
 		Name.Text = Friend.Name;
 		_targetVoiceLevel = level;
 
-		if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
-		{
-			SetClass( "background-color-spectator", !player.IsAlive() );
-		}
-	}
 
-	public override void Tick()
+		/* Unmerged change from project 'ttt'
+		Before:
+				if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
+		After:
+				if ( Client is not null && Client.IsValid() && Client.Pawn is Player player )
+			public override void Tick()
 	{
 		base.Tick();
 

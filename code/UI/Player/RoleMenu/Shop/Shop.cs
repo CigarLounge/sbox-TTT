@@ -42,7 +42,7 @@ public partial class Shop : Panel
 		foreach ( var libraryName in player.Role.AvailableItems )
 		{
 			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
-			if ( itemInfo == null )
+			if ( itemInfo is null )
 				return;
 
 			AddRoleShopItem( itemInfo );
@@ -75,8 +75,8 @@ public partial class Shop : Panel
 			return;
 
 		_creditLabel.Text = $"{player.Credits} credits";
-		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo != null );
-		if ( _selectedItemInfo != null )
+		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo is not null );
+		if ( _selectedItemInfo is not null )
 			_itemDescriptionLabel.Text = _selectedItemInfo.Description;
 
 		if ( _shopItems.Count == 0 )

@@ -28,7 +28,7 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( Game.Current.Round == null )
+		if ( Game.Current.Round is null )
 			return;
 
 		_currentRound.Text = Game.Current.Round.RoundName;
