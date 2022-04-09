@@ -25,7 +25,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	// We need this so we don't send information to players multiple times
 	// The HashSet consists of NetworkIds
-	private readonly HashSet<int> _playersWhoGotSentInfo = new();
+	private readonly HashSet<int> _playersWhoGotKillInfo = new();
+	private readonly HashSet<int> _playersWhoGotPlayerData = new();
+
+	// Only display the inspect menu if this is true;
+	private bool _receivedKillInfo;
 
 	public override void Spawn()
 	{
@@ -126,40 +130,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	/// <summary>
-	/// Sends the <strong><see cref="TTT.Player"/></strong> this corpse belongs to alongside information about the player's death.
-	/// </summary>
-	/// <param name="to">The target.</param>
-	public void SendInfo( To to )
-	{
-		Host.AssertServer();
-
-		foreach ( var client in to )
-		{
-			// Don't send general data to players who already got info
-			if ( _playersWhoGotSentInfo.Contains( client.Pawn.NetworkIdent ) )
-				continue;
-
-			_playersWhoGotSentInfo.Add( client.Pawn.NetworkIdent );
-
-			GetKillInfo
-			(
-				To.Single( client ),
-				KillInfo.Attacker,
-				KillerWeapon,
-				KillInfo.HitboxIndex,
-				KillInfo.Damage,
-				KillInfo.Flags,
-				KilledTime
-			);
-
-			if ( client.Pawn is Player player && player.Role is DetectiveRole )
-				DetectiveGetKillInfo( To.Single( client ), LastSeenPlayerName );
-
-			GetPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
-		}
-	}
-
-	/// <summary>
 	/// Search this corpse.
 	/// </summary>
 	/// <param name="searcher">The player who is searching this corpse.</param>
@@ -180,15 +150,22 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
-		if ( !covert && !DeadPlayer.IsConfirmedDead )
+		SendPlayer( To.Single( searcher ) );
+		SendKillInfo( To.Single( searcher ) );
+
+		covert &= searcher.IsAlive();
+		if ( !covert )
 		{
-			DeadPlayer.Confirmer = searcher;
-			DeadPlayer.Confirm();
-		}
-		else if ( !_playersWhoGotSentInfo.Contains( searcher.NetworkIdent ) )
-		{
-			DeadPlayer.SendRole( To.Single( searcher ) );
-			SendInfo( To.Single( searcher ) );
+			if ( !DeadPlayer.IsConfirmedDead )
+			{
+				SendPlayer( To.Everyone );
+				DeadPlayer.Confirmer = searcher;
+				DeadPlayer.Confirm();
+			}
+
+			// If the searcher is a detective, send kill info to everyone.
+			if ( searcher.Role is DetectiveRole )
+				SendKillInfo( To.Everyone );
 		}
 
 		ClientSearch( To.Single( searcher ), credits );
@@ -209,8 +186,35 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		);
 	}
 
+	public void SendKillInfo( To to )
+	{
+		Host.AssertServer();
+
+		foreach ( var client in to )
+		{
+			if ( _playersWhoGotKillInfo.Contains( client.Pawn.NetworkIdent ) )
+				continue;
+
+			_playersWhoGotKillInfo.Add( client.Pawn.NetworkIdent );
+
+			SendKillInfo
+			(
+				To.Single( client ),
+				KillInfo.Attacker,
+				KillerWeapon,
+				KillInfo.HitboxIndex,
+				KillInfo.Damage,
+				KillInfo.Flags,
+				KilledTime
+			);
+
+			if ( client.Pawn is Player player && player.Role is DetectiveRole )
+				DetectiveSendKillInfo( To.Single( client ), LastSeenPlayerName );
+		}
+	}
+
 	[ClientRpc]
-	private void GetKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float killedTime )
+	private void SendKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float killedTime )
 	{
 		var info = new DamageInfo()
 			.WithAttacker( attacker )
@@ -222,17 +226,33 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		LastAttacker = info.Attacker;
 		KillerWeapon = killerWeapon;
 		KilledTime = killedTime;
+
+		_receivedKillInfo = true;
 	}
 
 	// Detectives get additional information about a corpse.
 	[ClientRpc]
-	private void DetectiveGetKillInfo( string lastSeenPlayerName )
+	private void DetectiveSendKillInfo( string lastSeenPlayerName )
 	{
 		LastSeenPlayerName = lastSeenPlayerName;
 	}
 
+	public void SendPlayer( To to )
+	{
+		foreach ( var client in to )
+		{
+			if ( _playersWhoGotPlayerData.Contains( client.Pawn.NetworkIdent ) )
+				continue;
+
+			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
+		
+			SendPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
+			DeadPlayer.SendRole( To.Single( client ) );
+		}
+	}
+
 	[ClientRpc]
-	private void GetPlayer( Player deadPlayer, long playerId, string name, PerkInfo[] perks )
+	private void SendPlayer( Player deadPlayer, long playerId, string name, PerkInfo[] perks )
 	{
 		DeadPlayer = deadPlayer;
 		PlayerId = playerId;
@@ -251,7 +271,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( DeadPlayer.IsValid() && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( _receivedKillInfo && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
@@ -261,7 +281,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		// For now, let's not let people inspect outside of InProgressRound.
 		// we should probably create an "empty" corpse instead.
-		if ( Game.Current.Round is not InProgressRound )
+		if ( Game.Current.Round is WaitingRound or PreRound )
 			return false;
 
 		var player = user as Player;

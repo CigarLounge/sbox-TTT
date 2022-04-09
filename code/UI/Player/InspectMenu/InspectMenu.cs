@@ -153,6 +153,7 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
+		CallDetectiveButton.Enabled( _corpse.DeadPlayer.IsConfirmedDead );
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
 		string timeSinceDeath = (Time.Now - _corpse.KilledTime).TimerString();

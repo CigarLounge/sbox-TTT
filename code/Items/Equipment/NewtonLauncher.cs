@@ -25,6 +25,14 @@ public partial class NewtonLauncher : Weapon
 	private float _forwardForce;
 	private float _upwardForce;
 
+	public override void ActiveEnd( Entity entity, bool dropped )
+	{
+		base.ActiveEnd( entity, dropped );
+
+		Charge = 0;
+		IsCharging = false;
+	}
+
 	public override void Simulate( Client client )
 	{
 		if ( TimeSinceDeployed < Info.DeployTime )
@@ -64,7 +72,7 @@ public partial class NewtonLauncher : Weapon
 		_forwardForce = ((Charge / 100f * MinForwardForce) - MinForwardForce) + MaxForwardForce;
 		_upwardForce = ((Charge / 100f * MinUpwardForce) - MinUpwardForce) + MaxUpwardForce;
 
-		ShootBullet( Info.Spread, _forwardForce / 10f, Info.Damage, 3.0f, Info.BulletsPerFire );
+		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 
 		Charge = 0;
 	}

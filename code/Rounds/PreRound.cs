@@ -78,8 +78,8 @@ public class PreRound : BaseRound
 
 	private void AssignRoles( List<Player> players )
 	{
-		int traitorCount = Math.Max( players.Count / 4, 1 );
-		int detectiveCount = players.Count / 8;
+		int traitorCount = Math.Max( players.Count >> 2, 1 );
+		int detectiveCount = players.Count >> 3;
 		players.Shuffle();
 
 		int index = 0;

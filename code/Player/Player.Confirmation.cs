@@ -78,10 +78,6 @@ public partial class Player
 		var to = _to ?? To.Everyone;
 
 		SendRole( to );
-
-		if ( Corpse.IsValid() )
-			Corpse.SendInfo( to );
-
 		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
 	}
 
