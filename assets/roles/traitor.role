@@ -18,6 +18,7 @@
 			"ttt_equipment_decoy",
 			"ttt_equipment_radio",
 			"ttt_equipment_newtonlauncher",
+			"ttt_equipment_c4",
 		]
 		color = [ 0.87451, 0.160784, 0.207843, 1.0 ]
 		retrievecredits = true
