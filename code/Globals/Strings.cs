@@ -10,5 +10,5 @@ public static partial class RawStrings
 	public const string DiscombobulatorExplodeSound = "discombobulator_explode-1";
 	public const string C4Beep = "c4_beep-1";
 	public const string C4Plant = "c4_plant-1";
-	public const string C4Explode = "c4_explode-1";
+	public const string C4Explode = "c4_explode-2";
 }

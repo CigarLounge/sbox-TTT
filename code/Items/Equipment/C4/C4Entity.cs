@@ -14,22 +14,12 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public static readonly List<Color> Wires = new()
 	{
-		// Vanilla colors.
 		Color.Red,
 		Color.Yellow,
 		Color.Blue,
 		Color.White,
 		Color.Green,
-		Color.FromBytes( 255, 160, 50, 255 ) // brown
-
-		/*
-		Color.Magenta,
-		Color.Red,
-		Color.Blue,
-		Color.Yellow,
-		Color.Cyan,
-		Color.Green
-		*/
+		Color.FromBytes( 255, 160, 50, 255 ) // Brown
 	};
 
 	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
@@ -40,7 +30,7 @@ public partial class C4Entity : Prop, IEntityHint
 	[Net, Local]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
-	public bool DisarmCausedExplosion { get; private set; }
+	public bool ExplosionDueToDefsual { get; private set; }
 
 	private RealTimeUntil _nextBeepTime = 0f;
 	private float _totalSeconds = 0f;
@@ -84,7 +74,7 @@ public partial class C4Entity : Prop, IEntityHint
 	{
 		if ( !_safeWireNumbers.Contains( wire ) )
 		{
-			DisarmCausedExplosion = true;
+			ExplosionDueToDefsual = true;
 			Explode();
 			return;
 		}
@@ -97,7 +87,7 @@ public partial class C4Entity : Prop, IEntityHint
 	{
 		float radius = 750;
 
-		if ( DisarmCausedExplosion )
+		if ( ExplosionDueToDefsual )
 			radius /= 2.5f;
 
 		Explosion( radius );
@@ -107,9 +97,8 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explosion( float radius )
 	{
-		// Vanilla just iterated through players. Maybe use
-		// FindInSphere beacause of the newer engine?
-
+		// We should probably just use FindInSphere here...
+		// Just replicating old TTT code for now.
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
