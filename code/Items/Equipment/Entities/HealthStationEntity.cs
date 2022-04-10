@@ -50,7 +50,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		player.SetHealth( player.Health + healAmount );
 
 		StoredHealth -= healAmount;
-		_timeUntilRecharge = 10;
+		_timeUntilRecharge = 1;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );

@@ -36,8 +36,7 @@ public class GrabbableProp : IGrabbable
 
 	public void Update( Player player )
 	{
-		// If the entity is destroyed drop it.
-		if ( !GrabbedEntity?.IsValid ?? true )
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
 		{
 			Drop();
 			return;

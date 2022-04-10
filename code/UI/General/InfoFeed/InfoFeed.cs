@@ -34,11 +34,10 @@ public partial class InfoFeed : Panel
 		e.AddLabel( message, "method" );
 	}
 
-	public void AddRoleEntry( int roleId, string interaction )
+	public void AddRoleEntry( RoleInfo roleInfo, string interaction )
 	{
 		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
 
-		var roleInfo = Asset.FromId<RoleInfo>( roleId );
 		Label leftLabel = e.AddLabel( $"{roleInfo.Title}s", "left" );
 		leftLabel.Style.FontColor = roleInfo.Color;
 

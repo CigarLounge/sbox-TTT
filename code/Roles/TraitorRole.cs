@@ -38,7 +38,7 @@ public class TraitorRole : BaseRole
 		RPCs.ClientDisplayRoleEntry
 		(
 			To.Multiple( clients ),
-			Asset.GetInfo<RoleInfo>( "ttt_role_detective" ).Id,
+			Asset.GetInfo<RoleInfo>( "ttt_role_detective" ),
 			"You have been awarded 100 credits for your performance."
 		);
 	}

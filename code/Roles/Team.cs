@@ -33,7 +33,7 @@ public static class TeamExtensions
 		};
 	}
 
-	// TODO: Koley ;), cache this. Maybe in a dictionary at run time?
+	// TODO: Kole cache this. Maybe in a dictionary at run time?
 	public static IEnumerable<Player> GetOthers( this Team team, Player player )
 	{
 		return Entity.All.OfType<Player>().Where( e => e.Team == team && player != e );
@@ -52,6 +52,11 @@ public static class TeamExtensions
 	public static To ToClients( this Team team )
 	{
 		return To.Multiple( Client.All.Where( x => (x.Pawn as Player).Team == team ) );
+	}
+
+	public static To ToAliveClients( this Team team )
+	{
+		return To.Multiple( Client.All.Where( x => x.Pawn is Player player && player.Team == team && player.IsAlive() ) );
 	}
 }
 

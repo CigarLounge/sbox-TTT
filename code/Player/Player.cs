@@ -61,6 +61,7 @@ public partial class Player : Sandbox.Player
 		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 
 		Confirmer = null;
+		Corpse = null;
 		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
@@ -105,6 +106,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertClient();
 
 		Confirmer = null;
+		Corpse = null;
 		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
@@ -198,6 +200,7 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
+		ActiveChild?.FrameSimulate( client );
 	}
 
 	public override void StartTouch( Entity other )
@@ -215,7 +218,7 @@ public partial class Player : Sandbox.Player
 
 	public void DeleteItems()
 	{
-		Perks.Clear();
+		Components.RemoveAll();
 		ClearAmmo();
 		Inventory?.DeleteContents();
 		RemoveClothing();

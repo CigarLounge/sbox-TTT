@@ -12,11 +12,12 @@ public partial class InspectMenu : Panel
 	private InspectEntry _selectedInspectEntry;
 
 	private readonly List<InspectEntry> _inspectionEntries = new();
-	private readonly InspectEntry _timeSinceDeathEntry;
-	private readonly InspectEntry _deathCauseEntry;
-	private readonly InspectEntry _weaponEntry;
-	private readonly InspectEntry _headshotEntry;
-	private readonly InspectEntry _lastSeenEntry;
+	private readonly InspectEntry _timeSinceDeath;
+	private readonly InspectEntry _deathCause;
+	private readonly InspectEntry _weapon;
+	private readonly InspectEntry _headshot;
+	private readonly InspectEntry _lastSeen;
+	private readonly InspectEntry _c4Note;
 
 	private Panel InspectContainer { get; set; }
 	private Image PlayerAvatar { get; set; }
@@ -31,26 +32,30 @@ public partial class InspectMenu : Panel
 		if ( corpse.DeadPlayer is null )
 			return;
 
-		_timeSinceDeathEntry = new InspectEntry( IconsContainer );
-		_timeSinceDeathEntry.Enabled( true );
-		_timeSinceDeathEntry.SetImage( "/ui/inspectmenu/time.png" );
-		_inspectionEntries.Add( _timeSinceDeathEntry );
+		_timeSinceDeath = new InspectEntry( IconsContainer );
+		_timeSinceDeath.Enabled( true );
+		_timeSinceDeath.SetImage( "/ui/inspectmenu/time.png" );
+		_inspectionEntries.Add( _timeSinceDeath );
 
-		_deathCauseEntry = new InspectEntry( IconsContainer );
-		_deathCauseEntry.Enabled( false );
-		_inspectionEntries.Add( _deathCauseEntry );
+		_deathCause = new InspectEntry( IconsContainer );
+		_deathCause.Enabled( false );
+		_inspectionEntries.Add( _deathCause );
 
-		_weaponEntry = new InspectEntry( IconsContainer );
-		_weaponEntry.Enabled( false );
-		_inspectionEntries.Add( _weaponEntry );
+		_weapon = new InspectEntry( IconsContainer );
+		_weapon.Enabled( false );
+		_inspectionEntries.Add( _weapon );
 
-		_headshotEntry = new InspectEntry( IconsContainer );
-		_headshotEntry.Enabled( false );
-		_inspectionEntries.Add( _headshotEntry );
+		_headshot = new InspectEntry( IconsContainer );
+		_headshot.Enabled( false );
+		_inspectionEntries.Add( _headshot );
 
-		_lastSeenEntry = new InspectEntry( IconsContainer );
-		_lastSeenEntry.Enabled( false );
-		_inspectionEntries.Add( _lastSeenEntry );
+		_lastSeen = new InspectEntry( IconsContainer );
+		_lastSeen.Enabled( false );
+		_inspectionEntries.Add( _lastSeen );
+
+		_c4Note = new InspectEntry( IconsContainer );
+		_c4Note.Enabled( false );
+		_inspectionEntries.Add( _c4Note );
 
 		_inspectDetailsLabel = InspectContainer.Add.Label();
 		_inspectDetailsLabel.AddClass( "inspect-details-label" );
@@ -66,31 +71,39 @@ public partial class InspectMenu : Panel
 		RoleName.Text = _corpse.DeadPlayer.Role.Title;
 		RoleName.Style.FontColor = _corpse.DeadPlayer.Role.Color;
 
-		_headshotEntry.Enabled( _corpse.WasHeadshot );
-		_headshotEntry.SetImage( "/ui/inspectmenu/headshot.png" );
-		_headshotEntry.SetImageText( "Headshot" );
-		_headshotEntry.SetActiveText( "The fatal wound was a headshot. No time to scream." );
+		_headshot.Enabled( _corpse.WasHeadshot );
+		_headshot.SetImage( "/ui/inspectmenu/headshot.png" );
+		_headshot.SetImageText( "Headshot" );
+		_headshot.SetActiveText( "The fatal wound was a headshot. No time to scream." );
 
 		var (name, imageText, activeText) = GetCauseOfDeathStrings();
-		_deathCauseEntry.Enabled( true );
-		_deathCauseEntry.SetImage( $"/ui/inspectmenu/{name}.png" );
-		_deathCauseEntry.SetImageText( imageText );
-		_deathCauseEntry.SetActiveText( activeText );
+		_deathCause.Enabled( true );
+		_deathCause.SetImage( $"/ui/inspectmenu/{name}.png" );
+		_deathCause.SetImageText( imageText );
+		_deathCause.SetActiveText( activeText );
 
-		_lastSeenEntry.Enabled( !string.IsNullOrEmpty( _corpse.LastSeenPlayerName ) );
-		if ( _lastSeenEntry.IsEnabled() )
+		_lastSeen.Enabled( !string.IsNullOrEmpty( _corpse.LastSeenPlayerName ) );
+		if ( _lastSeen.IsEnabled() )
 		{
-			_lastSeenEntry.SetImage( "/ui/inspectmenu/lastseen.png" );
-			_lastSeenEntry.SetImageText( _corpse.LastSeenPlayerName );
-			_lastSeenEntry.SetActiveText( $"The last person they saw was {_corpse.LastSeenPlayerName}... killer or coincidence?" );
+			_lastSeen.SetImage( "/ui/inspectmenu/lastseen.png" );
+			_lastSeen.SetImageText( _corpse.LastSeenPlayerName );
+			_lastSeen.SetActiveText( $"The last person they saw was {_corpse.LastSeenPlayerName}... killer or coincidence?" );
 		}
 
-		_weaponEntry.Enabled( carriableInfo is not null );
-		if ( _weaponEntry.IsEnabled() )
+		_weapon.Enabled( carriableInfo is not null );
+		if ( _weapon.IsEnabled() )
 		{
-			_weaponEntry.SetTexture( carriableInfo.Icon );
-			_weaponEntry.SetImageText( $"{carriableInfo.Title}" );
-			_weaponEntry.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+			_weapon.SetTexture( carriableInfo.Icon );
+			_weapon.SetImageText( $"{carriableInfo.Title}" );
+			_weapon.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+		}
+
+		_c4Note.Enabled( !string.IsNullOrEmpty( _corpse.C4Note ) );
+		if ( _c4Note.IsEnabled() )
+		{
+			_c4Note.SetImage( "/ui/inspectmenu/c4note.png" );
+			_c4Note.SetImageText( "C4 Defuse Note" );
+			_c4Note.SetActiveText( $"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4." );
 		}
 
 		if ( !perks.IsNullOrEmpty() )
@@ -153,13 +166,14 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
+		CallDetectiveButton.Enabled( _corpse.DeadPlayer.IsConfirmedDead );
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
 		string timeSinceDeath = (Time.Now - _corpse.KilledTime).TimerString();
-		_timeSinceDeathEntry.SetImageText( $"{timeSinceDeath}" );
-		_timeSinceDeathEntry.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
+		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
+		_timeSinceDeath.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
-		if ( _selectedInspectEntry is not null && _selectedInspectEntry == _timeSinceDeathEntry )
+		if ( _selectedInspectEntry is not null && _selectedInspectEntry == _timeSinceDeath )
 			UpdateCurrentInspectDescription();
 	}
 
