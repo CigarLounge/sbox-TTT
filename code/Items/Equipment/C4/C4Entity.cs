@@ -27,7 +27,7 @@ public partial class C4Entity : Prop, IEntityHint
 	[Net]
 	public bool IsArmed { get; private set; }
 
-	[Net, Local]
+	[Net]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
 	private RealTimeUntil _nextBeepTime = 0f;
@@ -44,6 +44,10 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void Arm( Player player, int timer )
 	{
+		// Incase another player sends in a request before their UI is updated.
+		if ( IsArmed )
+			return;
+
 		var possibleSafeWires = Enumerable.Range( 1, Wires.Count ).ToList();
 		possibleSafeWires.Shuffle();
 
@@ -91,7 +95,7 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		Sound.FromWorld(RawStrings.C4Explode, Position);
+		Sound.FromWorld( RawStrings.C4Explode, Position );
 		Delete();
 	}
 
@@ -219,9 +223,6 @@ public partial class C4Entity : Prop, IEntityHint
 	[ClientRpc]
 	private void CloseC4ArmMenu()
 	{
-		if ( !IsLocalPawn )
-			return;
-
 		if ( UI.FullScreenHintMenu.Instance.ActivePanel is UI.C4ArmMenu )
 			UI.FullScreenHintMenu.Instance.Close();
 	}

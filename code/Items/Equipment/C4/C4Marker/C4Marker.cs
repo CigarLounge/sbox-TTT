@@ -21,7 +21,7 @@ public class C4Marker : Panel
 	{
 		base.Tick();
 
-		if ( !_c4.IsValid() )
+		if ( !_c4.IsValid() || !_c4.IsArmed )
 		{
 			Delete();
 			return;
