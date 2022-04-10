@@ -48,7 +48,8 @@ public class GrabbableProp : IGrabbable
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 
-		GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+		if ( GrabbedEntity.IsValid() )
+			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
 		Drop();
 
 		_ = WaitForAnimationFinish();
