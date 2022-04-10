@@ -27,6 +27,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	[Net, Local]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
+	private RealTimeUntil _nextBeepTime = 0f;
 	private readonly List<int> _safeWireNumbers = new();
 
 	public override void Spawn()
@@ -112,6 +113,12 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	{
 		if ( !IsArmed )
 			return;
+
+		if ( _nextBeepTime )
+		{
+			PlaySound( RawStrings.C4Beep );
+			_nextBeepTime = 1f;
+		}
 
 		if ( TimeUntilExplode )
 			Explode();
