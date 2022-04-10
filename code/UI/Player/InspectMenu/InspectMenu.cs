@@ -101,6 +101,7 @@ public partial class InspectMenu : Panel
 		_c4Note.Enabled( !string.IsNullOrEmpty( _corpse.C4Note ) );
 		if ( _c4Note.IsEnabled() )
 		{
+			_c4Note.SetImage( "/ui/inspectmenu/c4note.png" );
 			_c4Note.SetImageText( "C4 Defuse Note" );
 			_c4Note.SetActiveText( $"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4." );
 		}
