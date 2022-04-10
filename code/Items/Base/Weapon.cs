@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace TTT;
+namespace TTT.Items;
 
 public enum FireMode
 {

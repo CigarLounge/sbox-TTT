@@ -1,16 +1,17 @@
 ﻿using Sandbox.UI;
+using TTT.Entities;
 
 namespace TTT.UI;
 
 [UseTemplate]
 public class HealthStationHint : EntityHintPanel
 {
-	private readonly HealthStationEntity _healthStation;
+	private readonly HealthStation _healthStation;
 	private Label Charges { get; set; }
 
 	public HealthStationHint() { }
 
-	public HealthStationHint( HealthStationEntity healthStation )
+	public HealthStationHint( HealthStation healthStation )
 	{
 		_healthStation = healthStation;
 	}

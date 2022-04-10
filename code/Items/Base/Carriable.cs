@@ -2,7 +2,7 @@ using Sandbox;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace TTT;
+namespace TTT.Items;
 
 public enum SlotType
 {

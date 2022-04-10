@@ -1,26 +1,27 @@
 using System;
 using Sandbox.UI;
+using TTT.Entities;
 
 namespace TTT.UI;
 
 [UseTemplate]
 public class C4DefuseMenu : EntityHintPanel
 {
-	private readonly C4Entity _c4;
+	private readonly C4 _c4;
 
 	private Label TimerDisplay { get; set; }
 	private Panel Wires { get; set; }
 	private Button PickupBtn { get; set; }
 	private Button DestroyBtn { get; set; }
 
-	public C4DefuseMenu( C4Entity c4 )
+	public C4DefuseMenu( C4 c4 )
 	{
 		_c4 = c4;
 
-		for ( int i = 0; i < C4Entity.Wires.Count; ++i )
+		for ( int i = 0; i < C4.Wires.Count; ++i )
 		{
 			var wireNumber = i + 1;
-			var wire = new Wire( wireNumber, C4Entity.Wires[i] );
+			var wire = new Wire( wireNumber, C4.Wires[i] );
 			wire.AddEventListener( "onclick", () =>
 			{
 				wire.Cut();
@@ -43,16 +44,16 @@ public class C4DefuseMenu : EntityHintPanel
 	public void Defuse( int wire )
 	{
 		if ( _c4.IsArmed )
-			C4Entity.Defuse( wire, _c4.NetworkIdent );
+			C4.Defuse( wire, _c4.NetworkIdent );
 	}
 
 	public void Pickup()
 	{
-		C4Entity.Pickup( _c4.NetworkIdent );
+		C4.Pickup( _c4.NetworkIdent );
 	}
 
 	public void Destroy()
 	{
-		C4Entity.DeleteC4( _c4.NetworkIdent );
+		C4.DeleteC4( _c4.NetworkIdent );
 	}
 }

@@ -1,10 +1,10 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Entities;
 
 [Hammer.EditorModel( "models/radio/radio.vmdl" )]
 [Library( "ttt_entity_radio", Title = "Radio" )]
-public partial class RadioEntity : Prop, IEntityHint, IUse
+public class Radio : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );
 
@@ -41,7 +41,7 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 	[ServerCmd]
 	public static void PlayRadio( int id, string sound )
 	{
-		var radio = Entity.FindByIndex( id ) as RadioEntity;
+		var radio = Entity.FindByIndex( id ) as Radio;
 
 		if ( radio is null || radio.Owner != ConsoleSystem.Caller.Pawn )
 			return;

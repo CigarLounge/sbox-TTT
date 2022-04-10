@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_weapon_knife", Title = "Knife" )]

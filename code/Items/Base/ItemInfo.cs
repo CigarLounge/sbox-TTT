@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
-namespace TTT;
+namespace TTT.Items;
 
 public abstract partial class ItemInfo : Asset
 {

@@ -1,7 +1,8 @@
 ﻿using Sandbox;
 using System;
+using TTT.Entities;
 
-namespace TTT;
+namespace TTT.Items;
 
 public abstract partial class Droppable<T> : Carriable where T : Prop, new()
 {

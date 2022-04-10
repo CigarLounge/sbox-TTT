@@ -1,11 +1,11 @@
 using Sandbox;
 using System;
 
-namespace TTT;
+namespace TTT.Entities;
 
 [Hammer.EditorModel( "models/health_station/health_station.vmdl" )]
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
-public partial class HealthStationEntity : Prop, IEntityHint, IUse
+public partial class HealthStation : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/health_station/health_station.vmdl" );
 

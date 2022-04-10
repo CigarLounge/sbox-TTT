@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System.Linq;
 
-namespace TTT;
+namespace TTT.Entities;
 
 public class GhostEntity : ModelEntity
 {

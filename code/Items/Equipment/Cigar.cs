@@ -1,10 +1,10 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EditorModel( "models/cigar/cigar.vmdl" )]
 [Library( "ttt_equipment_cigar", Title = "Cigar" )]
-public partial class Cigar : Carriable
+public class Cigar : Carriable
 {
 	private TimeUntil _timeUntilNextSmoke = 0;
 	private Particles _trailParticle;

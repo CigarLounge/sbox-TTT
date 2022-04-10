@@ -1,6 +1,6 @@
 ﻿using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
 [Library( "ttt_weapon_bekas", Title = "Bekas-M" )]

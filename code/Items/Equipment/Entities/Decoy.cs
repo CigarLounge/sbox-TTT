@@ -1,10 +1,10 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Entities;
 
 [Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
-public partial class DecoyEntity : Prop, IEntityHint, IUse
+public class Decoy : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/decoy/decoy.vmdl" );
 
@@ -20,7 +20,7 @@ public partial class DecoyEntity : Prop, IEntityHint, IUse
 	bool IUse.OnUse( Entity user )
 	{
 		var player = user as Player;
-		player.Inventory.Add( new Decoy() );
+		player.Inventory.Add( new Items.Decoy() );
 		Delete();
 
 		return false;

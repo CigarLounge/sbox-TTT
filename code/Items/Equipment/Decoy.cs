@@ -1,9 +1,9 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_decoy", Title = "Decoy" )]
-public partial class Decoy : Droppable<DecoyEntity>
+public class Decoy : Droppable<Entities.Decoy>
 {
 }

@@ -2,6 +2,7 @@ using Sandbox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TTT.Items;
 
 namespace TTT;
 

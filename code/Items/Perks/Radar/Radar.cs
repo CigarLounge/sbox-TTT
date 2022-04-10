@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Collections.Generic;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Library( "ttt_perk_radar", Title = "Radar" )]
 public partial class Radar : Perk
@@ -71,7 +71,7 @@ public partial class Radar : Perk
 					Color = player.Role == Entity.Role ? Entity.Role.Info.Color : _defaultRadarColor
 				} );
 			}
-			else if ( Entity.Team != Team.Traitors && entity is DecoyEntity decoy )
+			else if ( Entity.Team != Team.Traitors && entity is Entities.Decoy decoy )
 			{
 				pointData.Add( new RadarPointData
 				{

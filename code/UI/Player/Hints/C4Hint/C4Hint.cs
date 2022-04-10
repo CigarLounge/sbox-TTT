@@ -1,14 +1,15 @@
 using Sandbox.UI;
+using TTT.Entities;
 
 namespace TTT.UI;
 
 [UseTemplate]
 public class C4Hint : EntityHintPanel
 {
-	private readonly C4Entity _c4;
+	private readonly C4 _c4;
 	private Label SubText { get; set; }
 
-	public C4Hint( C4Entity c4 ) => _c4 = c4;
+	public C4Hint( C4 c4 ) => _c4 = c4;
 
 	public override void Tick()
 	{

@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 public enum AmmoType : byte
 {

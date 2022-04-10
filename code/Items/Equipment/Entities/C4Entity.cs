@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Entities;
 
 [Hammer.EditorModel( "models/c4/c4.vmdl" )]
 [Library( "ttt_entity_c4", Title = "C4" )]
-public partial class C4Entity : Prop, IEntityHint
+public partial class C4 : Prop, IEntityHint
 {
 	public const float MaxTime = 600;
 	public const float MinTime = 45;
@@ -44,6 +44,8 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void Arm( Player player, int timer )
 	{
+		Rand.SetSeed( Time.Tick );
+
 		var possibleSafeWires = Enumerable.Range( 1, Wires.Count ).ToList();
 		possibleSafeWires.Shuffle();
 
@@ -68,12 +70,12 @@ public partial class C4Entity : Prop, IEntityHint
 		return Math.Min( (int)MathF.Ceiling( timer / MinTime ), Wires.Count - 1 );
 	}
 
-	public void AttemptDefuse( int wire )
+	public void AttemptDefuse( Player defuser, int wire )
 	{
 		if ( !IsArmed )
 			return;
 
-		if ( !_safeWireNumbers.Contains( wire ) )
+		if ( defuser != Owner && defuser.Role is not TraitorRole && !_safeWireNumbers.Contains( wire ) )
 		{
 			Explode( true );
 			return;
@@ -91,7 +93,7 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		Sound.FromWorld(RawStrings.C4Explode, Position);
+		Sound.FromWorld( RawStrings.C4Explode, Position );
 		Delete();
 	}
 
@@ -167,7 +169,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		var entity = FindByIndex( networkIdent );
 
-		if ( entity is null || entity is not C4Entity c4 )
+		if ( entity is null || entity is not C4 c4 )
 			return;
 
 		c4.Arm( player, time );
@@ -176,15 +178,15 @@ public partial class C4Entity : Prop, IEntityHint
 	[ServerCmd]
 	public static void Defuse( int wire, int networkIdent )
 	{
-		if ( ConsoleSystem.Caller.Pawn is not Player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		var entity = FindByIndex( networkIdent );
 
-		if ( entity is null || entity is not C4Entity c4 )
+		if ( entity is null || entity is not C4 c4 )
 			return;
 
-		c4.AttemptDefuse( wire );
+		c4.AttemptDefuse( player, wire );
 	}
 
 	[ServerCmd]
@@ -195,7 +197,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		var entity = FindByIndex( networkIdent );
 
-		if ( entity is null || entity is not C4Entity c4 )
+		if ( entity is null || entity is not C4 c4 )
 			return;
 
 		player.Inventory.Add( new C4() );
@@ -210,7 +212,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		var entity = FindByIndex( networkIdent );
 
-		if ( entity is null || entity is not C4Entity c4 )
+		if ( entity is null || entity is not C4 c4 )
 			return;
 
 		c4.Delete();
@@ -227,13 +229,13 @@ public partial class C4Entity : Prop, IEntityHint
 	}
 
 	[ClientRpc]
-	public static void SendC4Marker( C4Entity c4 )
+	public static void SendC4Marker( C4 c4 )
 	{
 		UI.WorldPoints.Instance.AddChild( new UI.C4Marker( c4 ) );
 	}
 }
 
-public class C4Note : EntityComponent
+public class C4Note : EntityComponent<Player>
 {
 	public int SafeWireNumber { get; init; }
 

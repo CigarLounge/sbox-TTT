@@ -1,7 +1,7 @@
 using Sandbox;
 using System.Threading.Tasks;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_perk_disguiser", Title = "Disguiser" )]

@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EntityTool( "Random Ammo", "TTT", "Place where a random ammo box will spawn in the beginning of the round." )]
 [Hammer.EditorModel( "models/ammo/ammo_smg/ammo_smg.vmdl" )]

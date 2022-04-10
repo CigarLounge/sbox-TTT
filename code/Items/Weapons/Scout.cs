@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
 [Library( "ttt_weapon_scout", Title = "Scout" )]

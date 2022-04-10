@@ -1,10 +1,10 @@
 ﻿using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EditorModel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" )]
 [Library( "ttt_ammo_shotgun", Title = "Shotgun Ammo" )]
-public partial class ShotgunAmmo : Ammo
+public class ShotgunAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Shotgun;
 	public override int DefaultAmmoCount => 5;

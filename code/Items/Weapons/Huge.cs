@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.EditorModel( "models/weapons/w_mg4.vmdl" )]
 [Library( "ttt_weapon_huge", Title = "H.U.G.E" )]

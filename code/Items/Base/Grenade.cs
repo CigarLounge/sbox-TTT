@@ -1,7 +1,7 @@
 ﻿using Sandbox;
 using System.Threading.Tasks;
 
-namespace TTT;
+namespace TTT.Items;
 
 public abstract partial class Grenade : Carriable
 {

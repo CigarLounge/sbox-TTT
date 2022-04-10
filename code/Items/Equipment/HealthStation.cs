@@ -1,6 +1,6 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_healthstation", Title = "Health Station" )]
@@ -14,6 +14,6 @@ public class HealthStation : Carriable
 		if ( !Input.Pressed( InputButton.Attack1 ) )
 			return;
 
-		Owner.Inventory.DropEntity<HealthStationEntity>( this );
+		Owner.Inventory.DropEntity<Entities.HealthStation>( this );
 	}
 }

@@ -1,7 +1,7 @@
 using Sandbox;
 using System;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_newtonlauncher", Title = "Newton Launcher" )]

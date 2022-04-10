@@ -1,24 +1,24 @@
 using Sandbox;
 
-namespace TTT;
+namespace TTT.Items;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_radio", Title = "Radio" )]
-public partial class Radio : Droppable<RadioEntity>
+public partial class Radio : Droppable<Entities.Radio>
 {
 	protected override void OnDrop( Entity entity )
 	{
 		base.OnDrop( entity );
 
 		var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-		radioComponent.Radio = entity as RadioEntity;
+		radioComponent.Radio = entity as Entities.Radio;
 	}
 }
 
 public partial class RadioComponent : EntityComponent<Player>
 {
 	[Net, Local]
-	public RadioEntity Radio { get; set; }
+	public Entities.Radio Radio { get; set; }
 
 	protected override void OnActivate()
 	{
