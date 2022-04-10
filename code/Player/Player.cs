@@ -200,6 +200,7 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
+		ActiveChild?.FrameSimulate( client );
 	}
 
 	public override void StartTouch( Entity other )
@@ -217,7 +218,7 @@ public partial class Player : Sandbox.Player
 
 	public void DeleteItems()
 	{
-		Perks.Clear();
+		Components.RemoveAll();
 		ClearAmmo();
 		Inventory?.DeleteContents();
 		RemoveClothing();

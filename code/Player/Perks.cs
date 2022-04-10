@@ -58,14 +58,6 @@ public class Perks : IEnumerable<Perk>
 		return default;
 	}
 
-	public void Clear()
-	{
-		foreach ( var perk in _list.ToArray() )
-		{
-			Remove( perk );
-		}
-	}
-
 	public IEnumerator<Perk> GetEnumerator() => _list.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

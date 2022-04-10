@@ -8,7 +8,7 @@
 
 	> .thumb
 	{
-		background-color: rgb(78, 78, 78);
+		background-color: rgb(209, 209, 209);
 		position: absolute;
 		width: $form-control-height;
 		height: $form-control-height;
@@ -18,7 +18,7 @@
 
 		&:hover
 		{
-			background-color: $button-primary;
+			background-color: rgb(177, 177, 177);
 		}
 	}
 
@@ -26,7 +26,7 @@
 	{
 		> .thumb	
 		{
-			background-color: $button-secondary-fg;
+			background-color: rgb(209, 209, 209);
 		}
 	}
 
@@ -42,7 +42,7 @@
 		> .inner
 		{
 			border-radius: 4px;
-			background-color: rgb(77, 77, 77);
+			background-color: $info;
 			width: 200px;
 			height: 10px;
 			transition: all 0.2s ease-out;
