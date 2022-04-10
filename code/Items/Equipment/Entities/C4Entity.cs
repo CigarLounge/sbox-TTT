@@ -50,10 +50,12 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 		TimeUntilExplode = timer;
 		IsArmed = true;
-		CloseC4ArmMenu();
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
+		PlaySound( RawStrings.C4Plant );
+
 		SendC4Marker( To.Multiple( Utils.GetAliveClientsWithRole( new TraitorRole() ) ), NetworkIdent );
+		CloseC4ArmMenu();
 	}
 
 	public static int GetBadWireCount( int timer )
@@ -76,6 +78,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	private void Explode()
 	{
 		// TODO: Explode.
+		PlaySound( RawStrings.C4Explode );
 		Delete();
 	}
 
