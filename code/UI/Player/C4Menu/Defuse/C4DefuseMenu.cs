@@ -33,12 +33,11 @@ public class C4DefuseMenu : EntityHintPanel
 
 	public override void Tick()
 	{
-		if ( _c4 is null )
-			return;
-
-		TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 		PickupBtn.SetClass( "inactive", _c4.IsArmed );
 		DestroyBtn.SetClass( "inactive", _c4.IsArmed );
+
+		if ( _c4.IsArmed )
+			TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 	}
 
 	public void Defuse( int wire )
