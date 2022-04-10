@@ -42,7 +42,8 @@ public class C4DefuseMenu : EntityHintPanel
 
 	public void Defuse( int wire )
 	{
-		C4Entity.Defuse( wire, _c4.NetworkIdent );
+		if ( _c4.IsArmed )
+			C4Entity.Defuse( wire, _c4.NetworkIdent );
 	}
 
 	public void Pickup()

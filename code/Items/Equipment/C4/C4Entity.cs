@@ -30,8 +30,6 @@ public partial class C4Entity : Prop, IEntityHint
 	[Net, Local]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
-	public bool ExplosionDueToDefsual { get; private set; }
-
 	private RealTimeUntil _nextBeepTime = 0f;
 	private float _totalSeconds = 0f;
 	private readonly List<int> _safeWireNumbers = new();
@@ -42,7 +40,6 @@ public partial class C4Entity : Prop, IEntityHint
 
 		Model = WorldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		Health = 100f;
 	}
 
 	public void Arm( Player player, int timer )
@@ -61,8 +58,9 @@ public partial class C4Entity : Prop, IEntityHint
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
 		PlaySound( RawStrings.C4Plant );
 
-		SendC4Marker( To.Multiple( Utils.GetAliveClientsWithRole( new TraitorRole() ) ), this );
 		CloseC4ArmMenu();
+		if ( player.Team == Team.Traitors )
+			SendC4Marker( player.Team.ToAliveClients(), this );
 	}
 
 	public static int GetBadWireCount( int timer )
@@ -72,10 +70,12 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void AttemptDefuse( int wire )
 	{
+		if ( !IsArmed )
+			return;
+
 		if ( !_safeWireNumbers.Contains( wire ) )
 		{
-			ExplosionDueToDefsual = true;
-			Explode();
+			Explode( true );
 			return;
 		}
 
@@ -83,11 +83,11 @@ public partial class C4Entity : Prop, IEntityHint
 		_safeWireNumbers.Clear();
 	}
 
-	private void Explode()
+	private void Explode( bool defusalDetonation = false )
 	{
 		float radius = 750;
 
-		if ( ExplosionDueToDefsual )
+		if ( defusalDetonation )
 			radius /= 2.5f;
 
 		Explosion( radius );
