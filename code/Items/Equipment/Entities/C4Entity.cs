@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
+using TTT.UI;
 
 namespace TTT;
 
@@ -51,6 +52,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		CloseC4ArmMenu();
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
+		SendC4Marker( To.Multiple( Utils.GetAliveClientsWithRole( new TraitorRole() ) ), NetworkIdent );
 	}
 
 	public static int GetBadWireCount( int timer )
@@ -180,6 +182,17 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 		if ( UI.FullScreenHintMenu.Instance.ActivePanel is UI.C4ArmMenu )
 			UI.FullScreenHintMenu.Instance.Close();
+	}
+
+	[ClientRpc]
+	public static void SendC4Marker( int networkIdent )
+	{
+		var entity = FindByIndex( networkIdent );
+
+		if ( entity is null || entity is not C4Entity c4 )
+			return;
+
+		WorldPoints.Instance.AddChild( new C4Marker( c4 ) );
 	}
 }
 
