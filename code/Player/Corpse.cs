@@ -213,6 +213,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				KilledTime
 			);
 
+			SendMiscInfo
+			(
+				C4Note
+			);
+
 			if ( client.Pawn is Player player && player.Role is DetectiveRole )
 				DetectiveSendKillInfo( To.Single( client ), LastSeenPlayerName );
 		}
@@ -233,6 +238,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KilledTime = killedTime;
 
 		_receivedKillInfo = true;
+	}
+
+	[ClientRpc]
+	private void SendMiscInfo( string c4Note )
+	{
+		C4Note = c4Note;
 	}
 
 	// Detectives get additional information about a corpse.
