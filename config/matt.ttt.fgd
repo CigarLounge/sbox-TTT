@@ -93,324 +93,6 @@ metadata
 ]
 
 //
-// TTT.MagnumAmmo
-//
-@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" ) model() = ttt_ammo_magnum : ""
-[
-	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
-	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
-	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
-	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
-	[
-		-1 : "UNUSED"
-		0 : "COLLISION GROUP ALWAYS"
-		1 : "COLLISION GROUP NONPHYSICAL"
-		4 : "COLLISION GROUP DEFAULT"
-		5 : "COLLISION GROUP DEBRIS"
-		14 : "COLLISION GROUP WEAPON"
-	]
-	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-
-	output OnDamaged(void) : "Fired when the entity gets damaged."
-	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.RandomAmmo
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) 
-metadata
-{
-	entity_tool_name = "Random Ammo"
-	entity_tool_group = "TTT"
-	entity_tool_tip = "Place where a random ammo box will spawn in the beginning of the round."
-}
-= ttt_ammo_random : ""
-[
-]
-
-//
-// TTT.RifleAmmo
-//
-@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_rifle/ammo_rifle.vmdl" ) model() = ttt_ammo_rifle : ""
-[
-	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
-	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
-	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
-	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
-	[
-		-1 : "UNUSED"
-		0 : "COLLISION GROUP ALWAYS"
-		1 : "COLLISION GROUP NONPHYSICAL"
-		4 : "COLLISION GROUP DEFAULT"
-		5 : "COLLISION GROUP DEBRIS"
-		14 : "COLLISION GROUP WEAPON"
-	]
-	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-
-	output OnDamaged(void) : "Fired when the entity gets damaged."
-	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.ShotgunAmmo
-//
-@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" ) model() = ttt_ammo_shotgun : ""
-[
-	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
-	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
-	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
-	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
-	[
-		-1 : "UNUSED"
-		0 : "COLLISION GROUP ALWAYS"
-		1 : "COLLISION GROUP NONPHYSICAL"
-		4 : "COLLISION GROUP DEFAULT"
-		5 : "COLLISION GROUP DEBRIS"
-		14 : "COLLISION GROUP WEAPON"
-	]
-	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-
-	output OnDamaged(void) : "Fired when the entity gets damaged."
-	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.SMGAmmo
-//
-@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
-[
-	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
-	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
-	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
-	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
-	[
-		-1 : "UNUSED"
-		0 : "COLLISION GROUP ALWAYS"
-		1 : "COLLISION GROUP NONPHYSICAL"
-		4 : "COLLISION GROUP DEFAULT"
-		5 : "COLLISION GROUP DEBRIS"
-		14 : "COLLISION GROUP WEAPON"
-	]
-	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-
-	output OnDamaged(void) : "Fired when the entity gets damaged."
-	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.SniperAmmo
-//
-@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" ) model() = ttt_ammo_sniper : ""
-[
-	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
-	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
-	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
-	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
-	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
-	[
-		-1 : "UNUSED"
-		0 : "COLLISION GROUP ALWAYS"
-		1 : "COLLISION GROUP NONPHYSICAL"
-		4 : "COLLISION GROUP DEFAULT"
-		5 : "COLLISION GROUP DEBRIS"
-		14 : "COLLISION GROUP WEAPON"
-	]
-	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-
-	output OnDamaged(void) : "Fired when the entity gets damaged."
-	output OnBreak(void) : "Fired when the entity gets destroyed."
-]
-
-//
-// TTT.Cigar
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/cigar/cigar.vmdl" ) = ttt_equipment_cigar : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.AK47
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_ak47.vmdl" ) = ttt_weapon_ak47 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Bekas
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_bekas.vmdl" ) = ttt_weapon_bekas : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Huge
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mg4.vmdl" ) = ttt_weapon_huge : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.M4
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_m4.vmdl" ) = ttt_weapon_m4 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.M9
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec.vmdl" ) = ttt_weapon_m9 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.MP5
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) = ttt_weapon_mp5 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.MP7
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7.vmdl" ) = ttt_weapon_mp7 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.P250
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_p250.vmdl" ) = ttt_weapon_p250 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.P90
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_p90.vmdl" ) = ttt_weapon_p90 : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.RandomWeapon
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) 
-metadata
-{
-	entity_tool_name = "Random Weapon"
-	entity_tool_group = "TTT"
-	entity_tool_tip = "Place where a random weapon will spawn in the beginning of the round."
-}
-= ttt_weapon_random : ""
-[
-	ammo_type_to_spawn(choices) : "Selected Ammo Type" : 0 : "If changed, will only spawn weapons of the selected ammo type." =
-	[
-		0 : "None"
-		1 : "Pistol SMG"
-		2 : "Shotgun"
-		3 : "Sniper"
-		4 : "Magnum"
-		5 : "Rifle"
-	]
-	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
-]
-
-//
-// TTT.Revolver
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mr96.vmdl" ) = ttt_weapon_revolver : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.Scout
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_spr.vmdl" ) = ttt_weapon_scout : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.SilencedPistol
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec-silenced.vmdl" ) = ttt_weapon_silencedpistol : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
-// TTT.SilentFox
-//
-@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7-silenced.vmdl" ) = ttt_weapon_silentfox : ""
-[
-	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
-
-	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
-]
-
-//
 // TTT.RoleButton
 //
 @PointClass base(BaseProperties_matt_ttt) 
@@ -438,7 +120,7 @@ metadata
 ]
 
 //
-// TTT.C4Entity
+// TTT.Entities.C4
 //
 @PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/c4/c4.vmdl" ) model() = ttt_entity_c4 : ""
 [
@@ -466,7 +148,7 @@ metadata
 ]
 
 //
-// TTT.DecoyEntity
+// TTT.Entities.Decoy
 //
 @PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/decoy/decoy.vmdl" ) model() = ttt_entity_decoy : ""
 [
@@ -494,7 +176,7 @@ metadata
 ]
 
 //
-// TTT.HealthStationEntity
+// TTT.Entities.HealthStation
 //
 @PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/health_station/health_station.vmdl" ) model() = ttt_entity_healthstation : ""
 [
@@ -522,7 +204,7 @@ metadata
 ]
 
 //
-// TTT.RadioEntity
+// TTT.Entities.Radio
 //
 @PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/radio/radio.vmdl" ) model() = ttt_entity_radio : ""
 [
@@ -547,5 +229,323 @@ metadata
 
 	output OnDamaged(void) : "Fired when the entity gets damaged."
 	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.MagnumAmmo
+//
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" ) model() = ttt_ammo_magnum : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.RandomAmmo
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Random Ammo"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Place where a random ammo box will spawn in the beginning of the round."
+}
+= ttt_ammo_random : ""
+[
+]
+
+//
+// TTT.Items.RifleAmmo
+//
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_rifle/ammo_rifle.vmdl" ) model() = ttt_ammo_rifle : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.ShotgunAmmo
+//
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" ) model() = ttt_ammo_shotgun : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.SMGAmmo
+//
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_smg/ammo_smg.vmdl" ) model() = ttt_ammo_smg : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.SniperAmmo
+//
+@PointClass base(BaseProperties_matt_ttt, BasePhysicsSimulated) tags( Physics ) editormodel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" ) model() = ttt_ammo_sniper : ""
+[
+	model(resource:vmdl) { report = true hide_when_solid = true }: "World Model" : "" : "The model this entity should use."
+	skin(materialgroup) { group = "Rendering" hide_when_solid = true } : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
+	bodygroups(bodygroupchoices) { group = "Rendering" hide_when_solid = true } : "Body Groups" : "" : "Some models have multiple variations of certain items, such as characters having different hair styles, etc."
+	rendercolor(color255) { alpha = true } : "Color (R G B A)" : "255 255 255 255" : "The color tint of this entity."
+	collisiongroupoverride(choices) : "Collision Group Override" : -1 : "" =
+	[
+		-1 : "UNUSED"
+		0 : "COLLISION GROUP ALWAYS"
+		1 : "COLLISION GROUP NONPHYSICAL"
+		4 : "COLLISION GROUP DEFAULT"
+		5 : "COLLISION GROUP DEBRIS"
+		14 : "COLLISION GROUP WEAPON"
+	]
+	static(boolean) : "Static" : 0 : "If set, the prop will spawn with motion disabled and will act as a nav blocker until broken."
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input Break(void) : "Causes this prop to break, regardless if it is actually breakable or not. (i.e. ignores health and whether the model has gibs)"
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+
+	output OnDamaged(void) : "Fired when the entity gets damaged."
+	output OnBreak(void) : "Fired when the entity gets destroyed."
+]
+
+//
+// TTT.Items.Cigar
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/cigar/cigar.vmdl" ) = ttt_equipment_cigar : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.AK47
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_ak47.vmdl" ) = ttt_weapon_ak47 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.Bekas
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_bekas.vmdl" ) = ttt_weapon_bekas : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.Huge
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mg4.vmdl" ) = ttt_weapon_huge : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.M4
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_m4.vmdl" ) = ttt_weapon_m4 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.M9
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec.vmdl" ) = ttt_weapon_m9 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.MP5
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) = ttt_weapon_mp5 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.MP7
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7.vmdl" ) = ttt_weapon_mp7 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.P250
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_p250.vmdl" ) = ttt_weapon_p250 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.P90
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_p90.vmdl" ) = ttt_weapon_p90 : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.RandomWeapon
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp5.vmdl" ) 
+metadata
+{
+	entity_tool_name = "Random Weapon"
+	entity_tool_group = "TTT"
+	entity_tool_tip = "Place where a random weapon will spawn in the beginning of the round."
+}
+= ttt_weapon_random : ""
+[
+	ammo_type_to_spawn(choices) : "Selected Ammo Type" : 0 : "If changed, will only spawn weapons of the selected ammo type." =
+	[
+		0 : "None"
+		1 : "Pistol SMG"
+		2 : "Shotgun"
+		3 : "Sniper"
+		4 : "Magnum"
+		5 : "Rifle"
+	]
+	ammotospawn(integer) : "Amount of Ammo" : 0 : "Defines the amount of matching ammo entities that should be spawned near the weapons."
+]
+
+//
+// TTT.Items.Revolver
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mr96.vmdl" ) = ttt_weapon_revolver : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.Scout
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_spr.vmdl" ) = ttt_weapon_scout : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.SilencedPistol
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_vertec-silenced.vmdl" ) = ttt_weapon_silencedpistol : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
+// TTT.Items.SilentFox
+//
+@PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_mp7-silenced.vmdl" ) = ttt_weapon_silentfox : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
 ]
 

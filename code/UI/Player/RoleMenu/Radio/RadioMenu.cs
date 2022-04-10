@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
+using TTT.Entities;
 
 namespace TTT.UI;
 
@@ -26,14 +27,14 @@ public partial class RadioMenu : Panel
 		{
 			Add.Button( sound.Key, () =>
 			{
-				RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Rand.Int( 0, sound.Value.Count - 1 )] );
+				Radio.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Rand.Int( 0, sound.Value.Count - 1 )] );
 			} );
 		}
 	}
 
-	private RadioEntity FetchRadio()
+	private Radio FetchRadio()
 	{
-		var radioComponent = Local.Pawn.Components.Get<RadioComponent>();
+		var radioComponent = Local.Pawn.Components.Get<Items.RadioComponent>();
 		return radioComponent.Radio;
 	}
 }

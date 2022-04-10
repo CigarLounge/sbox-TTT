@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
-
 using Sandbox;
+using System.Threading.Tasks;
+using TTT.Entities;
 
-namespace TTT;
+namespace TTT.Items;
 
 public interface IGrabbable
 {

@@ -1,7 +1,8 @@
 using Sandbox;
 using System.Threading.Tasks;
+using TTT.Items;
 
-namespace TTT;
+namespace TTT.Entities;
 
 public class GrabbableProp : IGrabbable
 {

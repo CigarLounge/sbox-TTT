@@ -19,7 +19,7 @@ public class Radio : Prop, IEntityHint, IUse
 
 	protected override void OnDestroy()
 	{
-		Owner?.Components.RemoveAny<RadioComponent>();
+		Owner?.Components.RemoveAny<Items.RadioComponent>();
 
 		base.OnDestroy();
 	}

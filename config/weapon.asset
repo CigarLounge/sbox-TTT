@@ -1,5 +1,5 @@
 //
-// TTT.WeaponInfo
+// TTT.Items.WeaponInfo
 //
 @BaseClass = weapon : ""
 [

@@ -1,6 +1,7 @@
 using Sandbox;
+using TTT.Items;
 
-namespace TTT;
+namespace TTT.Entities;
 
 public class GrabbableCorpse : IGrabbable
 {

@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using TTT.Items;
 
 namespace TTT;
 

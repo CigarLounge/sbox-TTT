@@ -1,6 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
 using System.Collections.Generic;
+using TTT.Items;
 
 namespace TTT.UI;
 

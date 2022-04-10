@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using TTT.Items;
 
 namespace TTT;
 
@@ -56,8 +57,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
 
-		var c4Note = player.Components.Get<C4Note>();
-		if ( c4Note != null )
+		var c4Note = player.Components.Get<Entities.C4Note>();
+		if ( c4Note is not null )
 			C4Note = c4Note.SafeWireNumber.ToString();
 
 		LastSeenPlayerName = player.LastSeenPlayerName;
