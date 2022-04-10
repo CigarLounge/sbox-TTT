@@ -2,32 +2,48 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
-using TTT.UI;
 
 namespace TTT;
 
 [Hammer.EditorModel( "models/c4/c4.vmdl" )]
 [Library( "ttt_entity_c4", Title = "C4" )]
-public partial class C4Entity : Prop, IEntityHint, IUse
+public partial class C4Entity : Prop, IEntityHint
 {
-	public static readonly List<Color> Wires = new() {
+	public const float MaxTime = 600;
+	public const float MinTime = 45;
+
+	public static readonly List<Color> Wires = new()
+	{
+		// Vanilla colors.
+		Color.Red,
+		Color.Yellow,
+		Color.Blue,
+		Color.White,
+		Color.Green,
+		Color.FromBytes( 255, 160, 50, 255 ) // brown
+
+		/*
 		Color.Magenta,
 		Color.Red,
 		Color.Blue,
 		Color.Yellow,
 		Color.Cyan,
 		Color.Green
+		*/
 	};
 
 	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
 
-	[Net, Local]
+	[Net]
 	public bool IsArmed { get; private set; }
 
 	[Net, Local]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
+	public bool DisarmCausedExplosion { get; private set; }
+
 	private RealTimeUntil _nextBeepTime = 0f;
+	private float _totalSeconds = 0f;
 	private readonly List<int> _safeWireNumbers = new();
 
 	public override void Spawn()
@@ -48,25 +64,27 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		for ( int i = 0; i < safeWireCount; ++i )
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
+		_totalSeconds = timer;
 		TimeUntilExplode = timer;
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
 		PlaySound( RawStrings.C4Plant );
 
-		SendC4Marker( To.Multiple( Utils.GetAliveClientsWithRole( new TraitorRole() ) ), NetworkIdent );
+		SendC4Marker( To.Multiple( Utils.GetAliveClientsWithRole( new TraitorRole() ) ), this );
 		CloseC4ArmMenu();
 	}
 
 	public static int GetBadWireCount( int timer )
 	{
-		return (int)Math.Min( Math.Ceiling( timer / 60.0 ), Wires.Count - 1 );
+		return Math.Min( (int)MathF.Ceiling( timer / MinTime ), Wires.Count - 1 );
 	}
 
 	public void AttemptDefuse( int wire )
 	{
 		if ( !_safeWireNumbers.Contains( wire ) )
 		{
+			DisarmCausedExplosion = true;
 			Explode();
 			return;
 		}
@@ -77,9 +95,44 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	private void Explode()
 	{
-		// TODO: Explode.
+		float radius = 750;
+
+		if ( DisarmCausedExplosion )
+			radius /= 2.5f;
+
+		Explosion( radius );
 		PlaySound( RawStrings.C4Explode );
 		Delete();
+	}
+
+	private void Explosion( float radius )
+	{
+		// Vanilla just iterated through players. Maybe use
+		// FindInSphere beacause of the newer engine?
+
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			if ( !player.IsAlive() || player.IsSpectator )
+				continue;
+
+			var diff = player.Position - Position;
+			float dist = Vector3.DistanceBetween( Position, player.Position );
+
+			if ( dist > radius )
+				continue;
+
+			// TODO: Better way to calculate falloff.
+			dist = Math.Max( 0, dist - 490 );
+			float damage = 125 - dist / 21 * 12;
+
+			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
+				.WithAttacker( Owner )
+				.WithWeapon( this );
+
+			player.TakeDamage( damageInfo );
+		}
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -101,16 +154,6 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
 
-	bool IUse.OnUse( Entity user )
-	{
-		return false;
-	}
-
-	bool IUse.IsUsable( Entity user )
-	{
-		return user is Player;
-	}
-
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
@@ -120,7 +163,7 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 		if ( _nextBeepTime )
 		{
 			PlaySound( RawStrings.C4Beep );
-			_nextBeepTime = 1f;
+			_nextBeepTime = _totalSeconds / 45;
 		}
 
 		if ( TimeUntilExplode )
@@ -195,14 +238,9 @@ public partial class C4Entity : Prop, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	public static void SendC4Marker( int networkIdent )
+	public static void SendC4Marker( C4Entity c4 )
 	{
-		var entity = FindByIndex( networkIdent );
-
-		if ( entity is null || entity is not C4Entity c4 )
-			return;
-
-		WorldPoints.Instance.AddChild( new C4Marker( c4 ) );
+		UI.WorldPoints.Instance.AddChild( new UI.C4Marker( c4 ) );
 	}
 }
 

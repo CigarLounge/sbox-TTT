@@ -27,14 +27,13 @@ public class C4Marker : Panel
 			return;
 		}
 
-		Timer.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
-
 		var screenPos = _c4.Position.ToScreen();
 		this.Enabled( screenPos.z > 0f );
 
 		if ( !this.IsEnabled() )
 			return;
 
+		Timer.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 		Style.Left = Length.Fraction( screenPos.x );
 		Style.Top = Length.Fraction( screenPos.y );
 	}

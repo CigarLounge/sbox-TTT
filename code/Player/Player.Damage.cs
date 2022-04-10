@@ -71,6 +71,9 @@ public partial class Player
 
 	public HealthGroup GetHealthGroup( float health )
 	{
+		if ( Health > MaxHealth )
+			return HealthGroupList[4];
+
 		int index = (int)((health - 1f) / (MaxHealth / 5f));
 		return HealthGroupList[index];
 	}
