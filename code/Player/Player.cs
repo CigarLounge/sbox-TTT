@@ -28,19 +28,21 @@ public partial class Player : Sandbox.Player
 
 	public override void Spawn()
 	{
-		Transmit = TransmitType.Always;
-
 		base.Spawn();
 
-		SetRole( new NoneRole() );
 		SetModel( "models/citizen/citizen.vmdl" );
-		Animator = new StandardPlayerAnimator();
+		SetRole( new NoneRole() );
+
 		Health = 0;
 		LifeState = LifeState.Respawnable;
+		Transmit = TransmitType.Always;
+
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
+
+		Animator = new StandardPlayerAnimator();
 		CameraMode = new FreeSpectateCamera();
 	}
 
@@ -59,6 +61,8 @@ public partial class Player : Sandbox.Player
 		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 
 		Confirmer = null;
+		Corpse = null;
+		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
@@ -71,10 +75,10 @@ public partial class Player : Sandbox.Player
 		WaterLevel = 0;
 		Credits = 0;
 
-		if ( !IsForcedSpectator )
+		if ( !IsSpectator )
 		{
-			LifeState = LifeState.Alive;
 			Health = MaxHealth;
+			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
@@ -88,7 +92,6 @@ public partial class Player : Sandbox.Player
 			ResetInterpolation();
 
 			Game.Current.Round.OnPlayerSpawned( this );
-			Game.Current.MoveToSpawnpoint( this );
 		}
 		else
 		{
@@ -100,7 +103,11 @@ public partial class Player : Sandbox.Player
 
 	private void ClientRespawn()
 	{
+		Host.AssertClient();
+
 		Confirmer = null;
+		Corpse = null;
+		LastSeenPlayerName = string.Empty;
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
@@ -120,8 +127,11 @@ public partial class Player : Sandbox.Player
 	{
 		base.OnKilled();
 
-		BecomePlayerCorpseOnServer();
+		BecomeCorpse();
 		RemoveAllDecals();
+
+		EnableAllCollisions = false;
+		EnableDrawing = false;
 
 		Inventory.DropAll();
 		DeleteFlashlight();
@@ -136,10 +146,13 @@ public partial class Player : Sandbox.Player
 
 	private void ClientOnKilled()
 	{
+		Host.AssertClient();
+
 		if ( IsLocalPawn )
 			ClearButtons();
 
 		DeleteFlashlight();
+
 		Event.Run( TTTEvent.Player.Killed, this );
 	}
 
@@ -151,6 +164,8 @@ public partial class Player : Sandbox.Player
 		}
 		else
 		{
+			CheckAFK();
+
 			if ( !this.IsAlive() )
 			{
 				ChangeSpectateCamera();
@@ -158,8 +173,8 @@ public partial class Player : Sandbox.Player
 			}
 
 			PlayerUse();
-			CheckAFK();
 			CheckPlayerDropCarriable();
+			CheckLastSeenPlayer();
 		}
 
 		if ( Input.Pressed( InputButton.Menu ) )
@@ -185,6 +200,7 @@ public partial class Player : Sandbox.Player
 		base.FrameSimulate( client );
 
 		DisplayEntityHints();
+		ActiveChild?.FrameSimulate( client );
 	}
 
 	public override void StartTouch( Entity other )
@@ -202,7 +218,7 @@ public partial class Player : Sandbox.Player
 
 	public void DeleteItems()
 	{
-		Perks.Clear();
+		Components.RemoveAll();
 		ClearAmmo();
 		Inventory?.DeleteContents();
 		RemoveClothing();
@@ -259,7 +275,7 @@ public partial class Player : Sandbox.Player
 
 	protected override void OnDestroy()
 	{
-		RemovePlayerCorpse();
+		RemoveCorpse();
 		DeleteFlashlight();
 
 		base.OnDestroy();

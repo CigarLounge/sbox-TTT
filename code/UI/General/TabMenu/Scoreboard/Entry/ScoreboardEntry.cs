@@ -16,7 +16,7 @@ public class ScoreboardEntry : Panel
 
 	public virtual void Update()
 	{
-		if ( Client == null )
+		if ( Client is null )
 			return;
 
 		PlayerName.Text = Client.Name;

@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="C4ArmMenu.scss" />
+
+<root class="text-shadow">
+    <div class="container background-color-secondary rounded">
+        <text class="header">C4 Arm</text>
+        <text @ref="TimerDisplay" class="timer text-color-info"></text>
+        <slider @value="Timer" min="45" max="600"></slider>
+        <text @ref="Wires" class="wires"> of the 6 wires will cause instant detonation during defusal</text>
+        <div style="justify-content: center;">
+            <button onclick="Arm()" icon="touch_app">Arm</button>
+            <button onclick="Pickup()" icon="pan_tool">Pick up</button>
+            <button onclick="Destroy()" icon="delete">Destroy</button>
+        </div>
+    </div>
+</root>

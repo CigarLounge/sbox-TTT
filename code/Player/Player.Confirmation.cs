@@ -15,14 +15,12 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; set; }
 
-	[Net]
-	public int CorpseCredits { get; set; } = 0;
-
+	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
-	public void RemovePlayerCorpse()
+	public void RemoveCorpse()
 	{
 		if ( !IsServer || !Corpse.IsValid() )
 			return;
@@ -31,7 +29,7 @@ public partial class Player
 		Corpse = null;
 	}
 
-	private void BecomePlayerCorpseOnServer()
+	private void BecomeCorpse()
 	{
 		Host.AssertServer();
 
@@ -75,14 +73,25 @@ public partial class Player
 			wasPreviouslyConfirmed = false;
 		}
 
-		var to = _to ?? To.Everyone;
-
-		SendRole( to );
+		var to = _to ?? To.Everyone;		
 
 		if ( Corpse.IsValid() )
-			Corpse.SendInfo( to );
+			Corpse.SendPlayer( to );
 
+		SendRole( to );
 		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
+	}
+
+	private void CheckLastSeenPlayer()
+	{
+		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
+			.HitLayer( CollisionLayer.Debris )
+			.Ignore( this )
+			.UseHitboxes()
+			.Run();
+
+		if ( trace.Entity is Player player && player.CanHint( this ) )
+			LastSeenPlayerName = player.Client?.Name;
 	}
 
 	[ClientRpc]

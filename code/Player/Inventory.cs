@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ namespace TTT;
 
 public class Inventory : IBaseInventory, IEnumerable<Carriable>
 {
-	public Player Owner { get; init; }
+	public Player Owner { get; private init; }
 
 	public Entity Active
 	{
@@ -23,8 +22,8 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	private readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	private readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
-	private const int DropPositionOffset = 50;
-	private const int DropVelocity = 500;
+	private const float DropPositionOffset = 50f;
+	private const float DropVelocity = 500f;
 
 	public Inventory( Player player ) => Owner = player;
 
@@ -196,6 +195,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	public bool SetActiveSlot( int i, bool evenIfEmpty = false )
 	{
 		var entity = GetSlot( i );
+
 		if ( Active == entity )
 			return false;
 
@@ -203,6 +203,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return false;
 
 		Active = entity;
+
 		return entity.IsValid();
 	}
 
@@ -294,18 +295,24 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
-	public Entity DropEntity( Entity self, Entity droppedEntity )
+	public T DropEntity<T>( Entity self ) where T : Entity, new()
 	{
 		Host.AssertServer();
 
 		var carriable = self as Carriable;
+		if ( !carriable.IsValid() || !Contains( carriable ) )
+			return null;
+
 		carriable.OnCarryDrop( Owner );
 		carriable.Delete();
 
-		droppedEntity.Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset;
-		droppedEntity.Rotation = Owner.EyeRotation;
-		droppedEntity.Velocity = Owner.EyeRotation.Forward * DropVelocity;
-		droppedEntity.Owner = Owner;
+		var droppedEntity = new T
+		{
+			Owner = Owner,
+			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
+			Rotation = Owner.EyeRotation,
+			Velocity = Owner.EyeRotation.Forward * DropVelocity
+		};
 
 		return droppedEntity;
 	}

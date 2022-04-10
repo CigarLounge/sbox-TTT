@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_healthstation", Title = "Health Station" )]
-public partial class HealthStation : Carriable
+public class HealthStation : Carriable
 {
 	public override void Simulate( Client client )
 	{
@@ -14,6 +14,6 @@ public partial class HealthStation : Carriable
 		if ( !Input.Pressed( InputButton.Attack1 ) )
 			return;
 
-		Owner.Inventory.DropEntity( this, new HealthStationEntity() );
+		Owner.Inventory.DropEntity<HealthStationEntity>( this );
 	}
 }

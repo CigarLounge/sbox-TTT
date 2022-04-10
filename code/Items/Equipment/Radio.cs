@@ -4,36 +4,14 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_radio", Title = "Radio" )]
-public partial class Radio : Carriable
+public partial class Radio : Droppable<RadioEntity>
 {
-	public override void Simulate( Client client )
+	protected override void OnDrop( Entity entity )
 	{
-		if ( !IsServer )
-			return;
+		base.OnDrop( entity );
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
-			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = radio;
-		}
-		else if ( Input.Pressed( InputButton.Attack2 ) )
-		{
-			var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-					.WorldOnly()
-					.Run();
-
-			if ( !trace.Hit )
-				return;
-
-			var radio = Owner.Inventory.DropEntity( this, new RadioEntity() ) as RadioEntity;
-			var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
-			radioComponent.Radio = radio;
-			radio.Velocity = 0;
-			radio.Position = trace.EndPosition;
-			radio.Rotation = Rotation.From( trace.Normal.EulerAngles );
-			radio.MoveType = MoveType.None;
-		}
+		var radioComponent = PreviousOwner.Components.GetOrCreate<RadioComponent>();
+		radioComponent.Radio = entity as RadioEntity;
 	}
 }
 

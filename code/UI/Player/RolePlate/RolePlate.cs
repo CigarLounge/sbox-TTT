@@ -74,5 +74,12 @@ public class RolePlateComponent : EntityComponent<Player>
 
 			Add.Image( icon, "icon" );
 		}
+
+		public RolePlate( Texture texture )
+		{
+			StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
+
+			Add.Image( classname: "icon" ).Texture = texture;
+		}
 	}
 }

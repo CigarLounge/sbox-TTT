@@ -1,5 +1,6 @@
 using Sandbox;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -35,30 +36,40 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
-	public string ViewModel { get; set; } = "";
+	[JsonPropertyName( "viewmodel" )]
+	[Property( "viewmodel", title: "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	public string ViewModelPath { get; set; } = "";
 
-	[Property, Category( "ViewModels" ), ResourceType( "vmdl" )]
-	public string HandsModel { get; set; } = "";
+	[JsonPropertyName( "handsmodel" )]
+	[Property( "handsmodel", title: "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	public string HandsModelPath { get; set; } = "";
 
 	[Property, Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
 
-	[Property, Category( "WorldModels" ), ResourceType( "vmdl" )]
-	public string WorldModel { get; set; } = "";
+	[JsonPropertyName( "worldmodel" )]
+	[Property( "worldmodel", title: "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
+	public string WorldModelPath { get; set; } = "";
 
 	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
-	public Model CachedViewModel { get; private set; }
-	public Model CachedWorldModel { get; private set; }
+	[JsonPropertyName( "cached-handsmodel" )]
+	public Model HandsModel { get; private set; }
+
+	[JsonPropertyName( "cached-viewmodel" )]
+	public Model ViewModel { get; private set; }
+
+	[JsonPropertyName( "cached-worldmodel" )]
+	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
-		CachedViewModel = Model.Load( ViewModel );
-		CachedWorldModel = Model.Load( WorldModel );
+		HandsModel = Model.Load( HandsModelPath );
+		ViewModel = Model.Load( ViewModelPath );
+		WorldModel = Model.Load( WorldModelPath );
 	}
 }
 
@@ -94,15 +105,14 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 
-		if ( string.IsNullOrEmpty( ClassInfo?.Name ) )
+		if ( string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
 		{
 			Log.Error( this + " doesn't have a Library name!" );
 			return;
 		}
 
 		Info = Asset.GetInfo<CarriableInfo>( this );
-		Model = Info.CachedWorldModel;
-
+		Model = Info.WorldModel;
 		Components.Create<DNA>();
 	}
 
@@ -110,7 +120,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrEmpty( ClassInfo?.Name ) )
+		if ( !string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
 			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
@@ -128,9 +138,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 		if ( IsLocalPawn )
 		{
-			DestroyViewModel();
-			DestroyHudElements();
-
 			CreateViewModel();
 			CreateHudElements();
 
@@ -140,13 +147,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		TimeSinceDeployed = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void ActiveEnd( Entity entity, bool dropped )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
-		base.Simulate( client );
+		base.ActiveEnd( entity, dropped );
 	}
+
+	public override void Simulate( Client client ) { }
 
 	public override void BuildInput( InputBuilder input )
 	{
@@ -157,25 +163,31 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		Host.AssertClient();
 
-		if ( string.IsNullOrEmpty( Info.ViewModel ) || string.IsNullOrEmpty( Info.HandsModel ) )
-			return;
-
-		ViewModelEntity = new ViewModel
+		if ( Info.ViewModel is not null )
 		{
-			Position = Position,
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
-		ViewModelEntity.Model = Info.CachedViewModel;
+			ViewModelEntity = new ViewModel
+			{
+				EnableViewmodelRendering = true,
+				Model = Info.ViewModel,
+				Owner = Owner,
+				Position = Position
+			};
 
-		HandsModelEntity = new BaseViewModel
+			ViewModelEntity.Model = Info.ViewModel;
+		}
+
+		if ( Info.HandsModel is not null )
 		{
-			Position = Position,
-			Owner = Owner,
-			EnableViewmodelRendering = true
-		};
-		HandsModelEntity.SetModel( Info.HandsModel );
-		HandsModelEntity.SetParent( ViewModelEntity, true );
+			HandsModelEntity = new BaseViewModel
+			{
+				EnableViewmodelRendering = true,
+				Model = Info.HandsModel,
+				Owner = Owner,
+				Position = Position
+			};
+
+			HandsModelEntity.SetParent( ViewModelEntity, true );
+		}
 	}
 
 	public override void CreateHudElements() { }

@@ -4,34 +4,33 @@ namespace TTT;
 
 [Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
 [Library( "ttt_weapon_scout", Title = "Scout" )]
-public partial class Scout : Weapon
+public class Scout : Weapon
 {
+	public bool IsScoped { get; private set; }
+
 	private float _defaultFOV;
-	private bool _isScoped;
 	private UI.Scope _sniperScopePanel;
 
 	public override void ActiveStart( Entity ent )
 	{
 		base.ActiveStart( ent );
 
+		IsScoped = false;
 		_defaultFOV = Owner.CameraMode.FieldOfView;
-	}
-
-	public override void ActiveEnd( Entity ent, bool dropped )
-	{
-		base.ActiveEnd( ent, dropped );
-
-		_isScoped = false;
 	}
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed >= Info.DeployTime && Input.Pressed( InputButton.Attack2 ) )
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
+		if ( IsClient && Input.Pressed( InputButton.Attack2 ) )
 		{
-			if ( _isScoped )
-				OnScopeEnd( Owner );
-			else
-				OnScopeStart( Owner );
+			if ( Prediction.FirstTime )
+			{
+				SetScoped( !IsScoped );
+				PlaySound( RawStrings.ScopeInSound );
+			}
 		}
 
 		base.Simulate( client );
@@ -39,7 +38,7 @@ public partial class Scout : Weapon
 
 	public override void BuildInput( InputBuilder input )
 	{
-		if ( _isScoped )
+		if ( IsScoped )
 			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
 
 		base.BuildInput( input );
@@ -60,32 +59,21 @@ public partial class Scout : Weapon
 		base.DestroyHudElements();
 
 		(Local.Pawn as Player).CameraMode.FieldOfView = _defaultFOV;
-		_sniperScopePanel?.Delete( true );
+		_sniperScopePanel.Delete( true );
 	}
 
-	private void OnScopeStart( Player player )
+	public void SetScoped( bool isScoped )
 	{
-		player.CameraMode.FieldOfView = 10f;
+		IsScoped = isScoped;
 
-		if ( IsServer )
-			return;
+		if ( IsScoped )
+			_sniperScopePanel.Show();
+		else
+			_sniperScopePanel.Hide();
 
-		ViewModelEntity.EnableDrawing = false;
-		HandsModelEntity.EnableDrawing = false;
-		_isScoped = true;
-		_sniperScopePanel.Show();
-	}
+		ViewModelEntity.EnableDrawing = !IsScoped;
+		HandsModelEntity.EnableDrawing = !IsScoped;
 
-	private void OnScopeEnd( Player player )
-	{
-		player.CameraMode.FieldOfView = _defaultFOV;
-
-		if ( IsServer )
-			return;
-
-		ViewModelEntity.EnableDrawing = true;
-		HandsModelEntity.EnableDrawing = true;
-		_isScoped = false;
-		_sniperScopePanel.Hide();
+		Owner.CameraMode.FieldOfView = isScoped ? 10f : _defaultFOV;
 	}
 }

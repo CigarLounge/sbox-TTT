@@ -2,12 +2,12 @@
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/weapons/w_knife.vmdl" )]
+[Hammer.Skip]
 [Library( "ttt_weapon_knife", Title = "Knife" )]
 public partial class Knife : Carriable
 {
-	[Net, Predicted]
-	public TimeSince TimeSinceStab { get; set; }
+	[Net, Local, Predicted]
+	public TimeSince TimeSinceStab { get; private set; }
 
 	private const string SwingSound = "knife_swing-1";
 	private const string FleshHit = "knife_flesh_hit-1";
@@ -20,13 +20,17 @@ public partial class Knife : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime || TimeSinceStab < 1f )
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
+		if ( TimeSinceStab < 1f )
 			return;
 
 		if ( Input.Down( InputButton.Attack1 ) )
 		{
 			using ( LagCompensation() )
 			{
+				TimeSinceStab = 0;
 				MeleeAttack( 100f, 100f, 8f );
 			}
 		}
@@ -46,15 +50,13 @@ public partial class Knife : Carriable
 
 	private void MeleeAttack( float damage, float range, float radius )
 	{
-		TimeSinceStab = 0;
-
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
 		PlaySound( SwingSound );
 
-		var endPos = Owner.EyePosition + Owner.EyeRotation.Forward * range;
+		var endPosition = Owner.EyePosition + Owner.EyeRotation.Forward * range;
 
-		var trace = Trace.Ray( Owner.EyePosition, endPos )
+		var trace = Trace.Ray( Owner.EyePosition, endPosition )
 			.UseHitboxes( true )
 			.Ignore( Owner )
 			.Radius( radius )
@@ -68,14 +70,12 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		var damageInfo = new DamageInfo()
+		var damageInfo = DamageInfo.Generic( damage )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
-			.WithFlag( DamageFlags.Slash )
-			.WithWeapon( this );
-
-		damageInfo.Damage = damage;
+			.WithWeapon( this )
+			.WithFlag( DamageFlags.Slash );
 
 		if ( trace.Entity is Player player )
 		{
@@ -90,7 +90,10 @@ public partial class Knife : Carriable
 
 	private void Throw()
 	{
-		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition ).Ignore( Owner ).Run();
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition )
+			.Ignore( Owner )
+			.Run();
+
 		_thrower = Owner;
 		_isThrown = true;
 		_thrownFrom = Owner.Position;
@@ -105,12 +108,13 @@ public partial class Knife : Carriable
 		else
 			Owner.Inventory.Drop( this );
 
-		Rotation = PreviousOwner.EyeRotation * _throwRotation;
-		Position = trace.EndPosition;
 		MoveType = MoveType.None;
-		PhysicsEnabled = false;
+		Position = trace.EndPosition;
+		Rotation = PreviousOwner.EyeRotation * _throwRotation;
 		Velocity = PreviousOwner.EyeRotation.Forward * (1250f + PreviousOwner.Velocity.Length);
+
 		EnableTouch = false;
+		PhysicsEnabled = false;
 	}
 
 	[ClientRpc]
@@ -153,14 +157,12 @@ public partial class Knife : Carriable
 			{
 				trace.Surface.DoBulletImpact( trace );
 
-				var damageInfo = new DamageInfo()
+				var damageInfo = DamageInfo.Generic( 100f )
 					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
 					.WithFlag( DamageFlags.Slash )
 					.WithAttacker( _thrower )
 					.WithWeapon( this );
-
-				damageInfo.Damage = 100f;
 
 				player.LastDistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();
 				player.TakeDamage( damageInfo );
@@ -175,23 +177,25 @@ public partial class Knife : Carriable
 					goto default;
 
 				trace.Surface.DoBulletImpact( trace );
-				Position -= trace.Direction * 4f; // Make the knife stuck in the terrain.
+
 				MoveType = MoveType.None;
+				Position -= trace.Direction * 4f; // Make the knife stuck in the terrain.			
 
 				break;
 			}
 			default:
 			{
-				Position = oldPosition - trace.Direction * 5;
 				MoveType = MoveType.Physics;
-				PhysicsEnabled = true;
+				Position = oldPosition - trace.Direction * 5;
 				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
+
+				PhysicsEnabled = true;
 
 				break;
 			}
 		}
 
-		_isThrown = false;
 		EnableTouch = true;
+		_isThrown = false;
 	}
 }

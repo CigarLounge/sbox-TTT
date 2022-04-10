@@ -35,15 +35,15 @@ public class GrabbableCorpse : IGrabbable
 
 	public void Drop()
 	{
-		if ( _joint.IsValid() )	
+		if ( _joint.IsValid() )
 			_joint.Remove();
-		
+
 		_handPhysicsBody = null;
 	}
 
 	public void Update( Player player )
 	{
-		if ( _handPhysicsBody == null )
+		if ( _handPhysicsBody is null )
 			return;
 
 		// If the player grabs the corpse while it is attached with a rope, we should automatically

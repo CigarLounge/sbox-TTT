@@ -21,7 +21,6 @@ public class PostRound : BaseRound
 	{
 		base.OnPlayerKilled( player );
 
-		player.MakeSpectator();
 		player.Confirm();
 	}
 

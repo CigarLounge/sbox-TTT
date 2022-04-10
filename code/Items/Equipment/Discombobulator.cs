@@ -7,32 +7,65 @@ namespace TTT;
 [Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
 public class Discombobulator : Grenade
 {
+	private const bool AllowJump = false;
+
 	protected override void OnExplode()
 	{
 		base.OnExplode();
 
 		PlaySound( RawStrings.DiscombobulatorExplodeSound );
 
-		var overlaps = Entity.FindInSphere( Position, 800 );
+		float radius = 400;
+		float pushForce = 1024;
 
-		foreach ( var overlap in overlaps )
+		foreach ( var entity in Entity.FindInSphere( Position, radius ) )
 		{
-			if ( overlap is not ModelEntity entity || !entity.IsValid() )
+			if ( entity is not ModelEntity target || !target.IsValid() )
 				continue;
 
-			if ( !entity.IsAlive() )
+			if ( !target.IsAlive() )
 				continue;
 
-			if ( !entity.PhysicsBody.IsValid() )
+			if ( !target.PhysicsBody.IsValid() )
 				continue;
 
-			if ( entity.IsWorld )
+			if ( target.IsWorld )
 				continue;
 
-			var targetPos = entity.PhysicsBody.MassCenter;
+			// Ported over code from GMod, doesn't translate well to s&box
+			/*		
+			var dir = (targetPos - Position).Normal;
+			var phys = entity.PhysicsBody;
+
+			if ( entity is Player )
+			{
+				dir.z = Math.Abs( dir.z ) + 1;
+				var push = dir * pushForce;
+				var velocity = entity.Velocity + push;
+				velocity.z = Math.Min( velocity.z, pushForce );
+
+				if ( entity == PreviousOwner && !AllowJump )
+				{
+					velocity = Vector3.Random * velocity.Length;
+					velocity.z = Math.Abs( velocity.z );
+				}
+
+				entity.Velocity = velocity;
+			}
+			else
+			{
+				phys.ApplyForceAt( phys.MassCenter, physForce );
+
+			}
+			*/
+
+			var targetPos = target.PhysicsBody.MassCenter;
+
+			if ( target is Player )
+				targetPos += Vector3.Up * 40;
 
 			var dist = Vector3.DistanceBetween( Position, targetPos );
-			if ( dist > 400 )
+			if ( dist > radius )
 				continue;
 
 			var trace = Trace.Ray( Position, targetPos )
@@ -43,14 +76,17 @@ public class Discombobulator : Grenade
 			if ( trace.Fraction < 0.98f )
 				continue;
 
-			float distanceMul = 1.0f - Math.Clamp( dist / 400, 0.0f, 1.0f );
-			float force = 800 * distanceMul;
+			float distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
+			float force = pushForce * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
-			if ( entity is not Player )
-				entity.ApplyAbsoluteImpulse( force * forceDir );
-			else
-				entity.ApplyAbsoluteImpulse( force * forceDir * 2 );
+			if ( target == PreviousOwner && !AllowJump )
+			{
+				// TODO: Mess with discombobulator jumps.
+			}
+
+			target.GroundEntity = null;
+			target.Velocity += force * forceDir;
 		}
 	}
 }

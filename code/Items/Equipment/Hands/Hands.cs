@@ -44,24 +44,16 @@ public partial class Hands : Carriable
 			if ( Input.Pressed( InputButton.Attack1 ) )
 			{
 				if ( IsHoldingEntity )
-				{
 					GrabbedEntity?.SecondaryAction();
-				}
 				else
-				{
 					TryGrabEntity();
-				}
 			}
 			else if ( Input.Pressed( InputButton.Attack2 ) )
 			{
 				if ( IsHoldingEntity )
-				{
 					GrabbedEntity?.Drop();
-				}
 				else
-				{
 					PushEntity();
-				}
 			}
 
 			GrabbedEntity?.Update( Owner );

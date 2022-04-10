@@ -71,6 +71,9 @@ public partial class Player
 
 	public HealthGroup GetHealthGroup( float health )
 	{
+		if ( Health > MaxHealth )
+			return HealthGroupList[4];
+
 		int index = (int)((health - 1f) / (MaxHealth / 5f));
 		return HealthGroupList[index];
 	}
@@ -90,7 +93,7 @@ public partial class Player
 		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
-			if ( weaponInfo != null )
+			if ( weaponInfo is not null )
 				info.Damage *= weaponInfo.HeadshotMultiplier;
 		}
 		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
@@ -101,7 +104,7 @@ public partial class Player
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 
-			if ( Game.Current.Round is not InProgressRound or PostRound )
+			if ( Game.Current.Round is not (InProgressRound or PostRound) )
 				return;
 
 			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );

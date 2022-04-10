@@ -17,8 +17,7 @@ public partial class Player
 			return;
 		}
 
-		var hint = IsLookingAtHintableEntity();
-
+		var hint = FindHintableEntity();
 		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
 		{
 			DeleteHint();
@@ -49,7 +48,7 @@ public partial class Player
 		_currentHint = null;
 	}
 
-	public IEntityHint IsLookingAtHintableEntity()
+	private IEntityHint FindHintableEntity()
 	{
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
 				.HitLayer( CollisionLayer.Debris )

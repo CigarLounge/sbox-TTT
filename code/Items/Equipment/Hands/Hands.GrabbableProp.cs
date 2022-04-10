@@ -9,7 +9,8 @@ public class GrabbableProp : IGrabbable
 	public ModelEntity GrabbedEntity { get; set; }
 	public Player _owner;
 
-	public bool IsHolding => GrabbedEntity != null;
+	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+	private bool _isThrowing = false; // Needed to maintain the Holding animation.
 
 	public GrabbableProp( Player player, ModelEntity ent )
 	{
@@ -35,8 +36,7 @@ public class GrabbableProp : IGrabbable
 
 	public void Update( Player player )
 	{
-		// If the entity is destroyed drop it.
-		if ( !GrabbedEntity?.IsValid ?? true )
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
 		{
 			Drop();
 			return;
@@ -45,11 +45,11 @@ public class GrabbableProp : IGrabbable
 
 	public void SecondaryAction()
 	{
+		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 
-		GrabbedEntity.SetParent( null );
-		GrabbedEntity.EnableHideInFirstPerson = true;
 		GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+		Drop();
 
 		_ = WaitForAnimationFinish();
 	}
@@ -57,6 +57,6 @@ public class GrabbableProp : IGrabbable
 	private async Task WaitForAnimationFinish()
 	{
 		await GameTask.DelaySeconds( 0.6f );
-		GrabbedEntity = null;
+		_isThrowing = false;
 	}
 }

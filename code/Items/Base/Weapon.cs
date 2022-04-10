@@ -77,6 +77,15 @@ public partial class WeaponInfo : CarriableInfo
 
 	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
 	public string TracerParticle { get; set; } = "";
+
+	protected override void PostLoad()
+	{
+		base.PostLoad();
+
+		Precache.Add( EjectParticle );
+		Precache.Add( MuzzleFlashParticle );
+		Precache.Add( TracerParticle );
+	}
 }
 
 public abstract partial class Weapon : Carriable
@@ -104,8 +113,6 @@ public abstract partial class Weapon : Carriable
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
 	public new WeaponInfo Info => base.Info as WeaponInfo;
-
-	public bool UnlimitedAmmo { get; set; }
 
 	public override void Spawn()
 	{
@@ -202,17 +209,16 @@ public abstract partial class Weapon : Carriable
 		return TimeSinceSecondaryAttack > (1 / rate);
 	}
 
-	protected void AttackPrimary()
+	protected virtual void AttackPrimary()
 	{
 		if ( AmmoClip == 0 )
 		{
 			DryFireEffects();
 			PlaySound( Info.DryFireSound );
+
 			return;
 		}
 
-		TimeSincePrimaryAttack = 0;
-		TimeSinceSecondaryAttack = 0;
 		AmmoClip -= 1;
 
 		Owner.SetAnimParameter( "b_attack", true );
@@ -222,17 +228,17 @@ public abstract partial class Weapon : Carriable
 		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
 	}
 
-	protected void AttackSecondary() { }
+	protected virtual void AttackSecondary() { }
 
 	protected virtual bool CanReload()
 	{
 		if ( IsReloading )
 			return false;
 
-		if ( AmmoClip >= Info.ClipSize || (!UnlimitedAmmo && Owner.AmmoCount( Info.AmmoType ) == 0 && ReserveAmmo == 0) )
+		if ( !Input.Pressed( InputButton.Reload ) )
 			return false;
 
-		if ( !Owner.IsValid() || !Input.Pressed( InputButton.Reload ) )
+		if ( AmmoClip >= Info.ClipSize || (Owner.AmmoCount( Info.AmmoType ) <= 0 && ReserveAmmo <= 0) )
 			return false;
 
 		return true;
@@ -315,22 +321,30 @@ public abstract partial class Weapon : Carriable
 
 				using ( Prediction.Off() )
 				{
+					OnHit( trace );
+
+					if ( Info.Damage <= 0 )
+						continue;
+
 					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
-						player.LastDistanceToAttacker = Owner.Position.Distance( player.Position ).SourceUnitsToMeters();
-
-					OnHit( trace.Entity );
+						player.LastDistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
+		
 					trace.Entity.TakeDamage( damageInfo );
 				}
 			}
 		}
 	}
 
-	protected virtual void OnHit( Entity entity ) { }
+	/// <summary>
+	/// Called when the bullet hits something, i.e the World or an entity.
+	/// </summary>
+	/// <param name="trace"></param>
+	protected virtual void OnHit( TraceResult trace ) { }
 
 	/// <summary>
 	/// Does a trace from start to end, does bullet impact effects. Coded as an IEnumerable so you can return multiple
@@ -341,13 +355,13 @@ public abstract partial class Weapon : Carriable
 		bool InWater = Map.Physics.IsPointWater( start );
 
 		var trace = Trace.Ray( start, end )
-				.UseHitboxes()
-				.HitLayer( CollisionLayer.Water, !InWater )
-				.HitLayer( CollisionLayer.Debris )
-				.Ignore( Owner )
-				.Ignore( this )
-				.Size( radius )
-				.Run();
+			.UseHitboxes()
+			.HitLayer( CollisionLayer.Water, !InWater )
+			.HitLayer( CollisionLayer.Debris )
+			.Ignore( Owner )
+			.Ignore( this )
+			.Size( radius )
+			.Run();
 
 		yield return trace;
 
@@ -375,9 +389,6 @@ public abstract partial class Weapon : Carriable
 
 	protected int TakeAmmo( int ammo )
 	{
-		if ( UnlimitedAmmo )
-			return ammo;
-
 		int available = Math.Min( Info.AmmoType == AmmoType.None ? ReserveAmmo : Owner.AmmoCount( Info.AmmoType ), ammo );
 
 		if ( Info.AmmoType == AmmoType.None )
@@ -395,12 +406,10 @@ public abstract partial class Weapon : Carriable
 			if ( start > 0f )
 			{
 				if ( distance < start )
-				{
 					return damage;
-				}
 
-				var falloffRange = end - start;
-				var difference = (distance - start);
+				float falloffRange = end - start;
+				float difference = (distance - start);
 
 				return Math.Max( damage - (damage / falloffRange) * difference, 0f );
 			}

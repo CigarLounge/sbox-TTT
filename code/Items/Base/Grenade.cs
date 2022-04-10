@@ -38,9 +38,9 @@ public abstract partial class Grenade : Carriable
 			TimeUntilExplode = Seconds;
 	}
 
-	public async Task BlowIn( float seconds )
+	public async Task ExplodeIn( float seconds )
 	{
-		await Task.DelaySeconds( seconds );
+		await GameTask.DelaySeconds( seconds );
 
 		OnExplode();
 		Delete();
@@ -68,7 +68,7 @@ public abstract partial class Grenade : Carriable
 			SetInteractsAs( CollisionLayer.Debris );
 
 			_isThrown = true;
-			_ = BlowIn( TimeUntilExplode );
+			_ = ExplodeIn( TimeUntilExplode );
 		}
 	}
 }

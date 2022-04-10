@@ -1,0 +1,42 @@
+C4ArmMenu
+{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    transition: transform 0.25s ease-out;
+    pointer-events: all;
+    justify-content: center;
+    align-self: center;
+    z-index: 2;
+
+    .container
+    {
+        align-self: center;
+        flex-direction: column;
+        width: 20%;
+        padding: 15px;
+        opacity: 1.2;
+
+        .header
+        {
+            font-size: 50px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .wires
+        {
+            justify-content: center;
+            text-align: center;
+            padding: 10 0 10 0;
+        }
+
+        .timer
+        {
+            font-size: 45px;
+            text-align: center;
+            font-weight: 500;
+        }
+    }
+}

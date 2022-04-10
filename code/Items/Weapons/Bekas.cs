@@ -44,7 +44,7 @@ public partial class Bekas : Weapon
 
 		AmmoClip += TakeAmmo( 1 );
 
-		if ( !_attackedDuringReload && AmmoClip < Info.ClipSize && (UnlimitedAmmo || Owner.AmmoCount( Info.AmmoType ) != 0) )
+		if ( !_attackedDuringReload && AmmoClip < Info.ClipSize && Owner.AmmoCount( Info.AmmoType ) > 0 )
 			Reload();
 		else
 			FinishReload();

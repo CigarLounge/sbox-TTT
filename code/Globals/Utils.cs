@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public static partial class Utils
+public static class Utils
 {
 	public static List<Client> GetClients( Func<Player, bool> predicate = null )
 	{
@@ -13,7 +13,7 @@ public static partial class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
 			{
 				clients.Add( client );
 			}
@@ -28,7 +28,7 @@ public static partial class Utils
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate == null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
 			{
 				players.Add( player );
 			}
@@ -93,6 +93,11 @@ public static partial class Utils
 		return !panel.HasClass( "disabled" );
 	}
 
+	public static void SetTexture( this Image image, Texture texture )
+	{
+		image.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
+	}
+
 	public static void SetImage( this Image image, string imagePath )
 	{
 		image.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
@@ -104,14 +109,12 @@ public static partial class Utils
 	}
 
 	/// <summary>
-	/// Adds the item to the IList if that IList does not already contain the item
+	/// Adds the item to the IList if that IList does not already contain the item.
 	/// </summary>
 	public static void AddIfDoesNotContain<T>( this IList<T> list, T item )
 	{
 		if ( !list.Contains( item ) )
-		{
 			list.Add( item );
-		}
 	}
 
 	public static void Shuffle<T>( this IList<T> list )
@@ -130,7 +133,7 @@ public static partial class Utils
 
 	public static bool IsNullOrEmpty<T>( this IList<T> list )
 	{
-		return list == null || list.Count == 0;
+		return list is null || list.Count == 0;
 	}
 
 	/// <summary>
@@ -138,8 +141,10 @@ public static partial class Utils
 	/// </summary>
 	public static bool IsNullOrEmpty<T>( this T[] arr )
 	{
-		return arr == null || arr.Length == 0;
+		return arr is null || arr.Length == 0;
 	}
 
 	public static bool IsAlive( this Entity entity ) => entity.LifeState == LifeState.Alive;
+
+	public static void Kill( this Entity entity ) => entity.TakeDamage( DamageInfo.Generic( float.MaxValue ) );
 }

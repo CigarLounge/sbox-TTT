@@ -82,6 +82,7 @@ public partial class RoleButton : Entity
 	public void Lock()
 	{
 		Host.AssertServer();
+
 		IsLocked = true;
 	}
 
@@ -89,6 +90,7 @@ public partial class RoleButton : Entity
 	public void Unlock()
 	{
 		Host.AssertServer();
+
 		IsLocked = false;
 	}
 
@@ -96,6 +98,7 @@ public partial class RoleButton : Entity
 	public void Toggle()
 	{
 		Host.AssertServer();
+
 		IsLocked = !IsLocked;
 	}
 }

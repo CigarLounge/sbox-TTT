@@ -28,9 +28,15 @@ public abstract partial class BaseRound : BaseNetworkable
 		OnFinish();
 	}
 
-	public virtual void OnPlayerSpawned( Player player ) { }
+	public virtual void OnPlayerSpawned( Player player )
+	{
+		Game.Current.MoveToSpawnpoint( player );
+	}
 
-	public virtual void OnPlayerKilled( Player player ) { }
+	public virtual void OnPlayerKilled( Player player )
+	{
+		player.MakeSpectator();
+	}
 
 	public virtual void OnPlayerJoin( Player player ) { }
 

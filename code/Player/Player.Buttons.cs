@@ -30,6 +30,7 @@ public partial class Player
 			return;
 
 		var entity = FindByIndex( networkIdent );
+
 		if ( entity is null || entity is not RoleButton button )
 			return;
 

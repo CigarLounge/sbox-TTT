@@ -1,0 +1,29 @@
+Wire
+{
+    transition: transform 0.1s ease-in-out;
+    justify-content: start;
+    min-height: 80px;
+    flex-direction: column;
+    width: 14px;
+
+    .number
+    {
+        text-align: center;
+    }
+
+    .line
+    {
+        width: 13px;
+        box-shadow: 0px 0px 10px black;
+    }
+
+    &:hover
+    {
+        transform: scale(1.2);
+    }
+
+    &:active
+    {
+        transform: scale(1.1);
+    }
+}
