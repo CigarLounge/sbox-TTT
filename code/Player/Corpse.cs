@@ -147,15 +147,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		int credits = 0;
 		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
 
-		if ( DeadPlayer.Credits > 0 && retrieveCredits )
+		if ( retrieveCredits && DeadPlayer.Credits > 0 )
 		{
 			searcher.Credits += DeadPlayer.Credits;
 			credits = DeadPlayer.Credits;
 			DeadPlayer.Credits = 0;
-			DeadPlayer.CorpseCredits = DeadPlayer.Credits;
 		}
 
 		SendPlayer( To.Single( searcher ) );
+		DeadPlayer.SendRole( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
 
 		covert &= searcher.IsAlive();
@@ -163,7 +163,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		{
 			if ( !DeadPlayer.IsConfirmedDead )
 			{
-				SendPlayer( To.Everyone );
 				DeadPlayer.Confirmer = searcher;
 				DeadPlayer.Confirm();
 			}
@@ -263,7 +262,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
 
 			SendPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
-			DeadPlayer.SendRole( To.Single( client ) );
 		}
 	}
 
@@ -277,7 +275,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.Corpse = this;
 	}
 
-	public float HintDistance { get; set; } = Player.MaxHintDistance;
+	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
 	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
 
