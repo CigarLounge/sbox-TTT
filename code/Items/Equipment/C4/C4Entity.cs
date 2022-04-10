@@ -91,7 +91,7 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		PlaySound( RawStrings.C4Explode );
+		Sound.FromWorld(RawStrings.C4Explode, Position);
 		Delete();
 	}
 
