@@ -75,7 +75,6 @@ public class GrabbableCorpse : IGrabbable
 		if ( !trace.Hit || !trace.Entity.IsValid() )
 		{
 			_corpse.ClearAttachments();
-
 			return;
 		}
 

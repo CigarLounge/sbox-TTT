@@ -24,7 +24,7 @@ public class GrabbableProp : IGrabbable
 
 	public void Drop()
 	{
-		if ( GrabbedEntity?.IsValid ?? false )
+		if ( GrabbedEntity.IsValid() )
 		{
 			GrabbedEntity.EnableTouch = true;
 			GrabbedEntity.EnableHideInFirstPerson = true;
