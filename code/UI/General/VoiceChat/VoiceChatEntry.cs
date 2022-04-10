@@ -44,7 +44,7 @@ public class VoiceChatEntry : Panel
 		Name.Text = Friend.Name;
 		_targetVoiceLevel = level;
 
-		if ( Client != null && Client.IsValid() && Client.Pawn is Player player )
+		if ( Client is not null && Client.IsValid() && Client.Pawn is Player player )
 		{
 			SetClass( "background-color-spectator", !player.IsAlive() );
 		}

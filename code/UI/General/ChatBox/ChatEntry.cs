@@ -15,7 +15,7 @@ internal class ChatEntry : Panel
 		Name.Text = name;
 		Message.Text = message;
 
-		if ( color != null )
+		if ( color is not null )
 			Name.Style.FontColor = color;
 	}
 

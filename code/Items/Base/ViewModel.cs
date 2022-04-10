@@ -63,7 +63,7 @@ partial class ViewModel : BaseViewModel
 		float roll = 0.0f;
 		float yaw = 0.0f;
 
-		if ( Owner.GroundEntity == null )
+		if ( Owner.GroundEntity is null )
 			return;
 
 		if ( _localVel.x < 0.0f )
@@ -88,7 +88,7 @@ partial class ViewModel : BaseViewModel
 
 	private void HandleJumpAnimation()
 	{
-		if ( Owner.GroundEntity == null )
+		if ( Owner.GroundEntity is null )
 			_landTime = RealTime.Now + 0.31f;
 
 		if ( _landTime < RealTime.Now && _landTime != 0.0f )
@@ -116,7 +116,7 @@ partial class ViewModel : BaseViewModel
 			_targetVectorRot += new Vector3( pt, yw, rl ) / 4.0f;
 			_animSpeed = 20.0f;
 		}
-		else if ( Owner.GroundEntity == null )
+		else if ( Owner.GroundEntity is null )
 		{
 			float breatheTime = RealTime.Now * 30.0f;
 			_targetVectorPos += new Vector3( MathF.Cos( breatheTime / 2.0f ) / 16.0f, 0.0f, -5.0f + (MathF.Sin( breatheTime / 3.0f ) / 16.0f) ) / 4.0f;

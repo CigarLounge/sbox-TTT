@@ -5,7 +5,7 @@ namespace TTT.UI;
 public class FullScreenHintMenu : Panel
 {
 	public static FullScreenHintMenu Instance;
-	public bool IsOpen { get => ActivePanel != null; }
+	public bool IsOpen { get => ActivePanel is not null; }
 	public Panel ActivePanel { get; private set; }
 
 	private bool _isForcedOpen = false;
@@ -37,7 +37,7 @@ public class FullScreenHintMenu : Panel
 	/// </summary>
 	public void Open( Panel panel )
 	{
-		if ( ActivePanel != null )
+		if ( ActivePanel is not null )
 			return;
 
 		DeleteChildren( true );
@@ -48,7 +48,7 @@ public class FullScreenHintMenu : Panel
 
 	public void Close()
 	{
-		if ( ActivePanel == null || _isForcedOpen ) return;
+		if ( ActivePanel is null || _isForcedOpen ) return;
 		this.EnableFade( false );
 		DeleteChildren( true );
 		ActivePanel = null;

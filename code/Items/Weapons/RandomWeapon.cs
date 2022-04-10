@@ -53,7 +53,7 @@ public class RandomWeapon : Entity
 			foreach ( var type in _cachedWeaponTypes )
 			{
 				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( type ).Name );
-				if ( weaponInfo != null && weaponInfo.AmmoType == SelectedAmmoType )
+				if ( weaponInfo is not null && weaponInfo.AmmoType == SelectedAmmoType )
 					selectedAmmoWeaponTypes.Add( type );
 			}
 
@@ -67,7 +67,7 @@ public class RandomWeapon : Entity
 			return;
 
 		var weapon = Library.Create<Weapon>( Rand.FromList( weaponTypes ) );
-		if ( weapon == null )
+		if ( weapon is null )
 			return;
 
 		weapon.Position = Position + (Vector3.Up * WEAPON_DISTANCE_UP);
