@@ -15,8 +15,6 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; set; }
 
-	public int CorpseCredits { get; set; } = 0;
-
 	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
@@ -75,7 +73,10 @@ public partial class Player
 			wasPreviouslyConfirmed = false;
 		}
 
-		var to = _to ?? To.Everyone;
+		var to = _to ?? To.Everyone;		
+
+		if ( Corpse.IsValid() )
+			Corpse.SendPlayer( to );
 
 		SendRole( to );
 		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );

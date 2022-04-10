@@ -32,8 +32,8 @@ public partial class RPCs
 	}
 
 	[ClientRpc]
-	public static void ClientDisplayRoleEntry( int roleId, string message )
+	public static void ClientDisplayRoleEntry( RoleInfo roleInfo, string message )
 	{
-		UI.InfoFeed.Instance?.AddRoleEntry( roleId, message );
+		UI.InfoFeed.Instance?.AddRoleEntry( roleInfo, message );
 	}
 }
