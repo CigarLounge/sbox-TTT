@@ -72,12 +72,12 @@ public partial class C4Entity : Prop, IEntityHint
 		return Math.Min( (int)MathF.Ceiling( timer / MinTime ), Wires.Count - 1 );
 	}
 
-	public void AttemptDefuse( int wire )
+	public void AttemptDefuse( Player defuser, int wire )
 	{
 		if ( !IsArmed )
 			return;
 
-		if ( !_safeWireNumbers.Contains( wire ) )
+		if ( defuser != Owner && !_safeWireNumbers.Contains( wire ) )
 		{
 			Explode( true );
 			return;
@@ -180,7 +180,7 @@ public partial class C4Entity : Prop, IEntityHint
 	[ServerCmd]
 	public static void Defuse( int wire, int networkIdent )
 	{
-		if ( ConsoleSystem.Caller.Pawn is not Player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		var entity = FindByIndex( networkIdent );
@@ -188,7 +188,7 @@ public partial class C4Entity : Prop, IEntityHint
 		if ( entity is null || entity is not C4Entity c4 )
 			return;
 
-		c4.AttemptDefuse( wire );
+		c4.AttemptDefuse( player, wire );
 	}
 
 	[ServerCmd]

@@ -1,4 +1,5 @@
 using System;
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -12,6 +13,7 @@ public class C4DefuseMenu : EntityHintPanel
 	private Panel Wires { get; set; }
 	private Button PickupBtn { get; set; }
 	private Button DestroyBtn { get; set; }
+	private Label Disclaimer { get; set; }
 
 	public C4DefuseMenu( C4Entity c4 )
 	{
@@ -35,6 +37,8 @@ public class C4DefuseMenu : EntityHintPanel
 	{
 		PickupBtn.SetClass( "inactive", _c4.IsArmed );
 		DestroyBtn.SetClass( "inactive", _c4.IsArmed );
+
+		Disclaimer.Text = (Local.Pawn as Player) == _c4.Owner ? "As the armer, any wire will lead to a successful defusal" : string.Empty;
 
 		if ( _c4.IsArmed )
 			TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
