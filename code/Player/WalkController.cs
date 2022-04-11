@@ -24,11 +24,10 @@ public partial class WalkController : Sandbox.WalkController
 	}
 
 	public float FallVelocity { get; private set; } = 0;
-	public float FallPunchThreshold => 350f;
-	public float PlayerLandOnFloatingObject => 173;
+	public float FallPunchThreshold = 350f;
+	public float DamageForFallSpeed => 100.0f / (PlayerFatalFallSpeed - PlayerMaxSafeFallSpeed);
 	public float PlayerMaxSafeFallSpeed => MathF.Sqrt( 2 * Gravity * 20 * 12 );
 	public float PlayerFatalFallSpeed => MathF.Sqrt( 2 * Gravity * 60 * 12 );
-	public float DamageForFallSpeed => 100.0f / (PlayerFatalFallSpeed - PlayerMaxSafeFallSpeed);
 
 	public override void Simulate()
 	{
@@ -43,7 +42,7 @@ public partial class WalkController : Sandbox.WalkController
 	{
 		float ws = Duck.GetWishSpeed();
 
-		if ( ws >= 0 ) 
+		if ( ws >= 0 )
 			return ws;
 
 		if ( Input.Down( InputButton.Run ) )
@@ -59,17 +58,10 @@ public partial class WalkController : Sandbox.WalkController
 
 		float fallVelocity = FallVelocity;
 
-		if ( Pawn.IsAlive()
-			&& fallVelocity >= FallPunchThreshold
-			&& Pawn.WaterLevel == 0f )
+		if ( Pawn.IsAlive() && fallVelocity >= FallPunchThreshold && Pawn.WaterLevel == 0f )
 		{
 			float punchStrength = fallVelocity.LerpInverse( FallPunchThreshold, FallPunchThreshold * 3 );
 			_ = new Sandbox.ScreenShake.Perlin( 1, 1, punchStrength, 1 );
-
-			if ( GroundEntity.WaterLevel > 0f )
-			{
-				FallVelocity -= PlayerLandOnFloatingObject;
-			}
 
 			if ( GroundEntity.Velocity.z < 0.0f )
 			{
@@ -79,20 +71,13 @@ public partial class WalkController : Sandbox.WalkController
 
 			if ( FallVelocity > PlayerMaxSafeFallSpeed )
 			{
-				TakeFallDamage();
+				Pawn.TakeDamage( new DamageInfo
+				{
+					Flags = DamageFlags.Fall,
+					Damage = (FallVelocity - PlayerMaxSafeFallSpeed) * DamageForFallSpeed,
+					Attacker = Pawn,
+				} );
 			}
 		}
-	}
-
-	private void TakeFallDamage()
-	{
-		float fallDamage = (FallVelocity - PlayerMaxSafeFallSpeed) * DamageForFallSpeed;
-
-		Pawn.TakeDamage( new DamageInfo
-		{
-			Flags = DamageFlags.Fall,
-			Damage = fallDamage,
-			Attacker = Pawn,
-		} );
 	}
 }
