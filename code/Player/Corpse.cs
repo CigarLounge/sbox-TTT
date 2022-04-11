@@ -168,7 +168,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
-			if ( searcher.Role is DetectiveRole )
+			if ( searcher.Role is Detective )
 				SendKillInfo( To.Everyone );
 		}
 
@@ -217,7 +217,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				C4Note
 			);
 
-			if ( client.Pawn is Player player && player.Role is DetectiveRole )
+			if ( client.Pawn is Player player && player.Role is Detective )
 				DetectiveSendKillInfo( To.Single( client ), LastSeenPlayerName );
 		}
 	}

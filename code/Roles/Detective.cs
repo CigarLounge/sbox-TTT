@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_role_detective", Title = "Detective" )]
-public class DetectiveRole : BaseRole
+public class Detective : BaseRole
 {
 	public override void OnSelect( Player player )
 	{

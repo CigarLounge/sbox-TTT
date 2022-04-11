@@ -28,7 +28,7 @@ public class ScoreboardEntry : Panel
 		if ( Client.Pawn is not Player player )
 			return;
 
-		if ( player.Role is not NoneRole && player.Role is not InnocentRole )
+		if ( player.Role is not NoneRole and not Innocent )
 			Style.BackgroundColor = player.Role.Color.WithAlpha( 0.15f );
 		else
 			Style.BackgroundColor = null;
