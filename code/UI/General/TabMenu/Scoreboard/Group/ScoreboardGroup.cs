@@ -15,6 +15,7 @@ public partial class ScoreboardGroup : Panel
 	public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
 	{
 		GroupTitle = groupName;
+		Title.Text = groupName;
 		AddClass( groupName );
 	}
 
@@ -25,10 +26,5 @@ public partial class ScoreboardGroup : Panel
 		scoreboardEntry.Client = client;
 		scoreboardEntry.Update();
 		return scoreboardEntry;
-	}
-
-	public void UpdateTitle()
-	{
-		Title.Text = GroupTitle;
 	}
 }

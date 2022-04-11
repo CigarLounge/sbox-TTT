@@ -26,15 +26,6 @@ public partial class Scoreboard : Panel
 
 		Container.AddChild( swapButton );
 
-		Initialize();
-	}
-
-	[Event.Hotload]
-	private void Initialize()
-	{
-		if ( Host.IsServer )
-			return;
-
 		AddScoreboardGroup( _alive );
 		AddScoreboardGroup( _missingInAction );
 		AddScoreboardGroup( _confirmedDead );
@@ -45,7 +36,6 @@ public partial class Scoreboard : Panel
 	{
 		var scoreboardGroup = GetScoreboardGroup( client );
 		var scoreboardEntry = scoreboardGroup.AddEntry( client );
-		scoreboardGroup.UpdateTitle();
 		scoreboardGroup.GroupMembers++;
 
 		_entries.Add( client, scoreboardEntry );
@@ -86,8 +76,6 @@ public partial class Scoreboard : Panel
 		if ( scoreboardGroup is not null )
 			scoreboardGroup.GroupMembers--;
 
-		scoreboardGroup.UpdateTitle();
-
 		panel.Delete();
 		_entries.Remove( client );
 	}
@@ -120,14 +108,8 @@ public partial class Scoreboard : Panel
 
 	private ScoreboardGroup AddScoreboardGroup( string groupName )
 	{
-		if ( _scoreboardGroups.ContainsKey( groupName ) )
-			return _scoreboardGroups[groupName];
-
 		var scoreboardGroup = new ScoreboardGroup( Content, groupName );
-		scoreboardGroup.UpdateTitle();
-
 		_scoreboardGroups.Add( groupName, scoreboardGroup );
-
 		return scoreboardGroup;
 	}
 
