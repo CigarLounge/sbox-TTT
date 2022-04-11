@@ -78,16 +78,14 @@ public partial class C4Entity : Prop, IEntityHint
 			return;
 
 		if ( defuser != Owner && !_safeWireNumbers.Contains( wire ) )
-		{
 			Explode( true );
-			return;
-		}
-
-		Defuse();
+		else
+			Defuse();
 	}
 
 	public void Defuse()
 	{
+		PlaySound( RawStrings.C4Defuse );
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}
