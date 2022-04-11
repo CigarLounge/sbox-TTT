@@ -83,6 +83,11 @@ public partial class C4Entity : Prop, IEntityHint
 			return;
 		}
 
+		Defuse();
+	}
+
+	public void Defuse()
+	{
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}

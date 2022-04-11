@@ -73,7 +73,7 @@ public partial class Player
 			wasPreviouslyConfirmed = false;
 		}
 
-		var to = _to ?? To.Everyone;		
+		var to = _to ?? To.Everyone;
 
 		if ( Corpse.IsValid() )
 			Corpse.SendPlayer( to );
@@ -84,10 +84,11 @@ public partial class Player
 
 	private void CheckLastSeenPlayer()
 	{
-		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
+		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.UseHitboxes()
+			.EntitiesOnly()
 			.Run();
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )

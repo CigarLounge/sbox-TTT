@@ -11,6 +11,12 @@ C4Hint
         font-size: 18px;
     }
 
+    .actions
+    {
+        flex-direction: column;
+        align-items: center;
+    }
+
     inputglyph
     {
         margin: 5px;

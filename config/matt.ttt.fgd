@@ -257,6 +257,16 @@ metadata
 ]
 
 //
+// TTT.Defuser
+//
+@PointClass base(BaseProperties_matt_ttt) = ttt_equipment_defuser : ""
+[
+	enable_shadows(boolean) { group = "Rendering" } : "Shadow Casting" : 1 : "Whether this entity should cast shadows or not"
+
+	input SetColor(string) : "Sets the color of this entity. Format is '255 255 255 255'."
+]
+
+//
 // TTT.AK47
 //
 @PointClass base(BaseProperties_matt_ttt) editormodel( "models/weapons/w_ak47.vmdl" ) = ttt_weapon_ak47 : ""
