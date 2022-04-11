@@ -9,11 +9,6 @@ public class ScoreboardHeader : Panel
 	private Label PlayerCount { get; set; }
 	private Label CurrentMap { get; set; }
 
-	public ScoreboardHeader()
-	{
-		UpdateServerInfo();
-	}
-
 	public void UpdateServerInfo()
 	{
 		int maxPlayers = ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 );
