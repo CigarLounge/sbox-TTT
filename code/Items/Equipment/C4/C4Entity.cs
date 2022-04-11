@@ -88,6 +88,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void Defuse()
 	{
+		PlaySound( RawStrings.C4Defuse );
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}
