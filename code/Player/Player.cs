@@ -269,7 +269,7 @@ public partial class Player : Sandbox.Player
 	{
 		base.OnComponentAdded( component );
 
-		if ( Host.IsClient && component is Perk perk )
+		if ( component is Perk perk )
 			Perks.Remove( perk );
 	}
 
