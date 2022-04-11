@@ -38,7 +38,7 @@ public class C4DefuseMenu : EntityHintPanel
 		PickupBtn.SetClass( "inactive", _c4.IsArmed );
 		DestroyBtn.SetClass( "inactive", _c4.IsArmed );
 
-		Disclaimer.Text = (Local.Pawn as Player) == _c4.Owner ? "As the armer, any wire will lead to a successful defusal" : string.Empty;
+		Disclaimer.Text = (Local.Pawn as Player) == _c4.Owner ? "It's your C4, any wire will defuse it" : string.Empty;
 
 		if ( _c4.IsArmed )
 			TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
