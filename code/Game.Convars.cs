@@ -19,7 +19,7 @@ public partial class Game
 	public static int MapSelectionTime { get; set; } = 10;
 
 	[ServerVar( "ttt_round_limit", Help = "The max number of rounds until the maps is switched.", Saved = true )]
-	public static int RoundLimit { get; set; } = 10;
+	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
 	#region Debug
