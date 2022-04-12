@@ -5,7 +5,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/c4/c4.vmdl" )]
 [Library( "ttt_entity_c4", Title = "C4" )]
 public partial class C4Entity : Prop, IEntityHint
 {

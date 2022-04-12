@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Role Button", "TTT", "Used to provide an on-screen button for a role to activate." )]
 [Library( "ttt_role_button" )]
 public partial class RoleButton : Entity
 {

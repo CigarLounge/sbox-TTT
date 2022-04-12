@@ -3,7 +3,6 @@ using System;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/health_station/health_station.vmdl" )]
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
 public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {

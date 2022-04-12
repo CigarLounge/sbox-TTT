@@ -2,7 +2,6 @@
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" )]
 [Library( "ttt_ammo_sniper", Title = "Sniper Ammo" )]
 public partial class SniperAmmo : Ammo
 {

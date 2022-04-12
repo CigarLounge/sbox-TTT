@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Random Weapon", "TTT", "Place where a random weapon will spawn in the beginning of the round." )]
-[Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
 [Library( "ttt_weapon_random" )]
 public class RandomWeapon : Entity
 {

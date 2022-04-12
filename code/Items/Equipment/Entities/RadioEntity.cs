@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/radio/radio.vmdl" )]
 [Library( "ttt_entity_radio", Title = "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
