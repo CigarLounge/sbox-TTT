@@ -3,7 +3,6 @@ using System;
 
 namespace TTT;
 
-[Hammer.Skip]
 [Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
 public class Discombobulator : Grenade
 {
