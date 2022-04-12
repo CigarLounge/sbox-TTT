@@ -1,4 +1,4 @@
-<h1><img src="ui/logo.png" alt="TTT logo" height="200"/></h1>
+<h1><img src="ui/traitor-icon.png" alt="TTT logo" height="200"/></h1>
 
 # sbox TTT
 
