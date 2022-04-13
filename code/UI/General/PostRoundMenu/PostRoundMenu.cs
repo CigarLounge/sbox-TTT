@@ -1,31 +1,20 @@
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public class PostRoundStats
-{
-	public readonly string WinningRole;
-	public Color WinningColor;
-
-	public PostRoundStats( string winningRole, Color winningColor )
-	{
-		WinningRole = winningRole;
-		WinningColor = winningColor;
-	}
-}
-
-public class PostRoundMenu : Panel
+public partial class PostRoundMenu : Panel
 {
 	public static PostRoundMenu Instance;
-
-	private PostRoundStats _stats;
 
 	private readonly Panel _backgroundBannerPanel;
 	private readonly Panel _containerPanel;
 
 	private readonly Label _headerLabel;
 	private readonly Label _contentLabel;
+
+	private Team _winningTeam;
 
 	public PostRoundMenu()
 	{
@@ -50,27 +39,28 @@ public class PostRoundMenu : Panel
 		_contentLabel.AddClass( "content-label" );
 	}
 
-	public void OpenAndSetPostRoundMenu( PostRoundStats stats )
+	[ClientRpc]
+	public static void DisplayWinner( Team team )
 	{
-		_stats = stats;
+		Instance._winningTeam = team;
 
-		OpenPostRoundMenu();
+		Instance.Open();
 	}
 
-	public void ClosePostRoundMenu()
+	public void Close()
 	{
 		SetClass( "fade-in", false );
 		_containerPanel.SetClass( "pop-in", false );
 	}
 
-	public void OpenPostRoundMenu()
+	public void Open()
 	{
 		SetClass( "fade-in", true );
 		_containerPanel.SetClass( "pop-in", true );
 
 		_contentLabel.Text = "Thanks for playing TTT, more updates and stats to come!";
 
-		_headerLabel.Text = _stats.WinningRole == "nones" ? "IT'S A TIE!" : $"THE {_stats.WinningRole.ToUpper()} WIN!";
-		_headerLabel.Style.FontColor = _stats.WinningColor;
+		_headerLabel.Text = _winningTeam == Team.None ? "IT'S A TIE!" : $"THE {_winningTeam.GetTitle()} WIN!";
+		_headerLabel.Style.FontColor = _winningTeam.GetColor();
 	}
 }
