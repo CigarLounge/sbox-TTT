@@ -49,7 +49,7 @@ public partial class MapVotePanel : Panel
 			return icon;
 
 		icon = new MapIcon( fullIdent );
-		icon.AddEventListener( "onmousedown", () => MapSelectionRound.SetVote( fullIdent ) );
+		icon.AddEventListener( "onclick", () => MapSelectionRound.SetVote( fullIdent ) );
 		Body.AddChild( icon );
 
 		MapIcons.Add( icon );

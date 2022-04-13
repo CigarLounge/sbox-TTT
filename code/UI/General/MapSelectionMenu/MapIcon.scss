@@ -6,12 +6,17 @@
     aspect-ratio: 1;
     width: 400px;
     cursor: pointer;
-    opacity: 0.7;
+    border-radius: 8px;
 
     &:hover
     {
         transform: scale( 1.02 );
         opacity: 1;
+    }
+
+    &:active
+    {
+        transform: scale( 1.0 );
     }
 
     .votes

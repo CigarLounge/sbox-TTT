@@ -1,7 +1,4 @@
-﻿$yellow: #ff0;
-$orange: #f70;
-
-mapvotepanel
+﻿mapvotepanel
 {
     background-color: #111;
     position: absolute;
@@ -53,7 +50,7 @@ mapvotepanel > .inner > .header
 
 mapvotepanel > .inner > .body
 {
-    flex-grow: 1;
     margin: 50px;
     flex-wrap: wrap;
+    overflow: scroll;
 }

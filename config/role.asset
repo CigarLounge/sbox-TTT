@@ -14,7 +14,7 @@
 	retrievecredits(boolean) : "Retrieve Credits" : 0 : "Players can retrieve credits from corpses."
 	canrolechat(boolean) : "Can Role Chat" : 0 : ""
 	color(color1) { group = "UI" } : "Color" :  : ""
-	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "ui/logo.png" : ""
+	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "ui/none.png" : ""
 	libraryname(string) { group = "Important" } : "Library Name" :  : "The name you define in the Library Attribute in code."
 ]
 
