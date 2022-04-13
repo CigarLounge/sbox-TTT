@@ -8,7 +8,6 @@ public partial class MapSelectionRound : BaseRound
 {
 	[Net]
 	public IDictionary<Client, string> Votes { get; set; }
-	public string WinningMap { get; set; } = "facepunch.datacore";
 
 	public override string RoundName => "Map Selection";
 	public override int RoundDuration => Game.MapSelectionTime;
@@ -17,7 +16,6 @@ public partial class MapSelectionRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		// We failed to fetch TTT maps, fall back to default map.
 		if ( Votes.Count == 0 )
 		{
 			Log.Warning( "No viable TTT-support maps found on server. Restarting game on default map." );

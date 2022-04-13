@@ -20,11 +20,14 @@ public class MapIcon : Panel
 		_ = FetchMapInformation();
 	}
 
-	async Task FetchMapInformation()
+	private async Task FetchMapInformation()
 	{
 		var package = await Package.Fetch( Ident, true );
-		if ( package == null ) return;
-		if ( package.PackageType != Package.Type.Map ) return;
+		if ( package == null )
+			return;
+
+		if ( package.PackageType != Package.Type.Map )
+			return;
 
 		Title = package.Title;
 		Org = package.Org.Title;
