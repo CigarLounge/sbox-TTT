@@ -43,7 +43,7 @@ public partial class Shop : Panel
 		{
 			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
 			if ( itemInfo is null )
-				return;
+				continue;
 
 			AddRoleShopItem( itemInfo );
 		}
