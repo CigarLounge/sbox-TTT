@@ -43,7 +43,7 @@ public partial class MapVotePanel : Panel
 	{
 		var icon = MapIcons.FirstOrDefault( x => x.Ident == fullIdent );
 
-		if ( icon != null )
+		if ( icon is not null )
 			return icon;
 
 		icon = new MapIcon( fullIdent );
@@ -56,8 +56,7 @@ public partial class MapVotePanel : Panel
 
 	public override void Tick()
 	{
-		if ( Game.Current.Round is not MapSelectionRound mapSelectionRound )
-			return;
+		var mapSelectionRound = Game.Current.Round as MapSelectionRound;
 
 		TimeText = mapSelectionRound.TimeLeftFormatted;
 

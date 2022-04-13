@@ -1,4 +1,4 @@
-﻿mapvotepanel
+﻿MapVotePanel
 {
     background-color: #111;
     position: absolute;
@@ -9,14 +9,14 @@
     pointer-events: all;
 }
 
-mapvotepanel > .inner
+MapVotePanel > .inner
 {
     margin: 150px 20%;
     flex-direction: column;
     flex-grow: 1;
 }
 
-mapvotepanel > .inner > .header
+MapVotePanel > .inner > .header
 {
     flex-direction: row;
 
@@ -48,7 +48,7 @@ mapvotepanel > .inner > .header
     }
 }
 
-mapvotepanel > .inner > .body
+MapVotePanel > .inner > .body
 {
     margin: 50px;
     flex-wrap: wrap;

@@ -20,6 +20,7 @@ public partial class MapSelectionRound : BaseRound
 		{
 			Log.Warning( "No viable TTT-support maps found on server. Restarting game on default map." );
 			Global.ChangeLevel( Game.DefaultMap );
+
 			return;
 		}
 
@@ -31,13 +32,10 @@ public partial class MapSelectionRound : BaseRound
 		base.OnStart();
 
 		if ( Host.IsClient )
-		{
 			UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
-			return;
-		}
 	}
 
-	public void CullInvalidClients()
+	private void CullInvalidClients()
 	{
 		foreach ( var entry in Votes.Keys.Where( x => !x.IsValid() ).ToArray() )
 		{
