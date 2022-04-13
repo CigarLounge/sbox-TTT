@@ -4,7 +4,7 @@
     background-position: center;
     background-size: cover;
     aspect-ratio: 1;
-    width: 400px;
+    width: 300px;
     cursor: pointer;
     border-radius: 8px;
 
@@ -29,17 +29,13 @@
         border-radius: 3px;
         font-weight: bold;
         font-size: 22px;
-        min-height: 50px;
+        height: 50px;
         justify-content: center;
         align-items: center;
     }
 
     .info
     {
-        position: absolute;
-        bottom: 10px;
-        left: 10px;
-        background-color: rgba( black, 0.9 );
         flex-direction: column;
         padding: 5px;
         border-radius: 3px;
@@ -48,7 +44,7 @@
         {
             position: absolute;
             left: 5px;
-            bottom: 11px;
+            top: 10px;
             width: 40px;
             height: 40px;
             border-radius: 4px;
