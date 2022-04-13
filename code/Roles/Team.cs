@@ -13,24 +13,51 @@ public enum Team : byte
 
 public static class TeamExtensions
 {
+	private struct TeamProperties
+	{
+		/// <summary>
+		/// Display title of the team.
+		/// </summary>
+		public string Title { get; set; }
+		/// <summary>
+		/// Color of the team.
+		/// </summary>
+		public Color Color { get; set; }
+	}
+
+	static TeamExtensions()
+	{
+		// Default teams.
+
+		_properties[Team.None] = new TeamProperties
+		{
+			Title = "Nones",
+			Color = Color.Transparent
+		};
+
+		_properties[Team.Innocents] = new TeamProperties
+		{
+			Title = "Innocents",
+			Color = Color.FromBytes( 27, 197, 78 )
+		};
+
+		_properties[Team.Traitors] = new TeamProperties
+		{
+			Title = "Traitors",
+			Color = Color.FromBytes( 223, 41, 53 )
+		};
+	}
+
+	private static readonly Dictionary<Team, TeamProperties> _properties = new();
+
 	public static string GetTitle( this Team team )
 	{
-		return team switch
-		{
-			Team.Innocents => "Innocents",
-			Team.Traitors => "Traitors",
-			_ => "None",
-		};
+		return _properties[team].Title;
 	}
 
 	public static Color GetColor( this Team team )
 	{
-		return team switch
-		{
-			Team.Innocents => Color.FromBytes( 27, 197, 78 ),
-			Team.Traitors => Color.FromBytes( 223, 41, 53 ),
-			_ => Color.Transparent,
-		};
+		return _properties[team].Color;
 	}
 
 	// TODO: Kole cache this. Maybe in a dictionary at run time?
