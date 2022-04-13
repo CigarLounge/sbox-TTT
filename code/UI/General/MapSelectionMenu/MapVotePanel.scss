@@ -9,9 +9,7 @@ mapvotepanel
     right: -50px;
     top: -50px;
     bottom: -50px;
-    font-family: "Trebuchet MS";
     pointer-events: all;
-    z-index: 99;
 }
 
 mapvotepanel > .inner
@@ -34,16 +32,12 @@ mapvotepanel > .inner > .header
         {
             font-size: 50px;
             font-weight: bold;
-            color: $yellow;
-            text-shadow: 0px 0px 10px $orange;
         }
 
         .subtitle
         {
             font-size: 24px;
             font-weight: bold;
-            color: $yellow;
-            text-shadow: 0px 0px 7px $orange;
         }
     }
 
@@ -53,8 +47,6 @@ mapvotepanel > .inner > .header
         {
             font-size: 50px;
             font-weight: bold;
-            color: $yellow;
-            text-shadow: 0px 0px 10px $orange;
         }
     }
 }

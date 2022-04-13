@@ -34,8 +34,7 @@ public partial class MapSelectionRound : BaseRound
 
 		if ( Host.IsClient )
 		{
-			// UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapSelectionMenu() );
-			Local.Hud.AddChild( new UI.MapVotePanel() );
+			UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
 			return;
 		}
 	}
