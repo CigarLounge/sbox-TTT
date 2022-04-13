@@ -19,6 +19,7 @@ public static class TeamExtensions
 		/// Display title of the team.
 		/// </summary>
 		public string Title { get; set; }
+
 		/// <summary>
 		/// Color of the team.
 		/// </summary>
