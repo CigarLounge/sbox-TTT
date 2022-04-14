@@ -14,7 +14,8 @@ public partial class Game : Sandbox.Game
 	private BaseRound _lastRound;
 
 	public int TotalRoundsPlayed { get; set; }
-	public readonly List<Client> RockTheVoteClients = new();
+	public int RTVVotes { get; set; }
+
 	public MapHandler MapHandler { get; private set; }
 
 	public Game()

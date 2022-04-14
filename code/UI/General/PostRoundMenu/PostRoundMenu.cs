@@ -9,7 +9,6 @@ public partial class PostRoundMenu : Panel
 {
 	public static PostRoundMenu Instance;
 
-	private Panel Container { get; init; }
 	private Label Header { get; init; }
 	private Label Content { get; init; }
 

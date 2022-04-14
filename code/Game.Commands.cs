@@ -77,14 +77,16 @@ public partial class Game
 	[ServerCmd( Name = "ttt_rtv" )]
 	public static void RockTheVote()
 	{
-		var player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() )
+		var client = ConsoleSystem.Caller;
+		if ( !client.IsValid() )
 			return;
 
-		if ( Game.Current.RockTheVoteClients.Contains( player.Client ) )
+		if ( client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
 			return;
 
-		Game.Current.RockTheVoteClients.Add( player.Client );
-		UI.ChatBox.AddInfo( To.Everyone, $"{player.Client.Name} has rocked the vote! ({Game.Current.RockTheVoteClients.Count}/{Math.Round( Client.All.Count * Game.RTVThreshold )})" );
+		client.SetValue( RawStrings.HasRockedTheVote, true );
+		Game.Current.RTVVotes += 1;
+
+		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVVotes}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
 	}
 }

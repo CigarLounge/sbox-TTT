@@ -5,6 +5,7 @@ public static partial class RawStrings
 	public const string GameIdent = "game:matt.ttt";
 	public const string RTVCommand = "!rtv";
 	public const string Spectator = "spectator";
+	public const string HasRockedTheVote = "rtv";
 	public const string WeaponPickupSound = "pickup_weapon";
 	public const string AmmoPickupSound = "pickup_ammo";
 	public const string ScopeInSound = "scope_in";
