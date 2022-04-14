@@ -124,15 +124,15 @@ public partial class ChatBox : Panel
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
-		if ( !player.IsAlive() )
-		{
-			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
-			return;
-		}
-
 		if ( message == RawStrings.RTVCommand )
 		{
 			Game.RockTheVote();
+			return;
+		}
+
+		if ( !player.IsAlive() )
+		{
+			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
 
