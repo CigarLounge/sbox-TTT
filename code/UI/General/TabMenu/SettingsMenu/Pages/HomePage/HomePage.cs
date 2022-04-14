@@ -44,6 +44,11 @@ public partial class HomePage : Panel
 		ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
 	}
 
+	public void RockTheVote()
+	{
+		Game.RockTheVote();
+	}
+
 	public void ToggleForceSpectator()
 	{
 		Game.ToggleForceSpectator();

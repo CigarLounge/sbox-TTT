@@ -15,15 +15,8 @@ public static class TeamExtensions
 {
 	private struct TeamProperties
 	{
-		/// <summary>
-		/// Display title of the team.
-		/// </summary>
-		public string Title { get; set; }
-
-		/// <summary>
-		/// Color of the team.
-		/// </summary>
-		public Color Color { get; set; }
+		public string Title { get; init; }
+		public Color Color { get; init; }
 	}
 
 	static TeamExtensions()

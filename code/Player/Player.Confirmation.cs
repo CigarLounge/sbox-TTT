@@ -45,18 +45,18 @@ public partial class Player
 		Corpse = corpse;
 	}
 
-	public void SyncMIA( Player player = null )
+	public void UpdateMissingInAction( Player player = null )
 	{
 		Host.AssertServer();
 
 		if ( player is not null )
 		{
-			AddMIA( To.Single( player ) );
+			ClientMissingInAction( To.Single( player ) );
 			return;
 		}
 
 		IsMissingInAction = true;
-		AddMIA( Team.Traitors.ToClients() );
+		ClientMissingInAction( Team.Traitors.ToClients() );
 	}
 
 	public void Confirm( To? _to = null )
@@ -116,7 +116,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void AddMIA()
+	private void ClientMissingInAction()
 	{
 		IsMissingInAction = true;
 	}
