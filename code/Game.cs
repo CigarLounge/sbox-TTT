@@ -50,7 +50,7 @@ public partial class Game : Sandbox.Game
 		Host.AssertServer();
 
 		Round?.Finish();
-		BaseRound oldRound = Round;
+		var oldRound = Round;
 		Round = round;
 		Round.Start();
 
