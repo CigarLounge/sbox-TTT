@@ -50,8 +50,6 @@ public abstract partial class Grenade : Carriable
 
 	protected void Throw()
 	{
-		Rand.SetSeed( Time.Tick );
-
 		if ( !IsServer )
 			return;
 

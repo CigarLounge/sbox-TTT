@@ -11,8 +11,6 @@ public class PostRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		RPCs.ClientClosePostRoundMenu();
-
 		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
 		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
@@ -39,5 +37,13 @@ public class PostRound : BaseRound
 			return;
 
 		RevealEveryone();
+	}
+
+	protected override void OnFinish()
+	{
+		base.OnFinish();
+
+		if ( Host.IsClient )
+			UI.PostRoundMenu.Instance.Close();
 	}
 }
