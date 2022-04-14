@@ -103,7 +103,7 @@ public partial class ChatBox : Panel
 		if ( string.IsNullOrWhiteSpace( Input.Text ) )
 			return;
 
-		if ( Input.Text.TrimEnd().Contains( RawStrings.RTVCommand ) )
+		if ( Input.Text == RawStrings.RTVCommand )
 		{
 			if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
 			{
@@ -130,7 +130,7 @@ public partial class ChatBox : Panel
 			return;
 		}
 
-		if ( message.TrimEnd().Contains( RawStrings.RTVCommand ) )
+		if ( message == RawStrings.RTVCommand )
 		{
 			Game.RockTheVote();
 			return;
