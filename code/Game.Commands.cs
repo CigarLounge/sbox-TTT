@@ -85,6 +85,6 @@ public partial class Game
 			return;
 
 		Game.Current.RockTheVoteClients.Add( player.Client );
-		UI.ChatBox.AddInfo( To.Everyone, $"{player.Client.Name} has rocked the vote! ({Game.Current.RockTheVoteClients.Count}/{Math.Round( Client.All.Count * 0.66 )})" );
+		UI.ChatBox.AddInfo( To.Everyone, $"{player.Client.Name} has rocked the vote! ({Game.Current.RockTheVoteClients.Count}/{Math.Round( Client.All.Count * Game.RTVThreshold )})" );
 	}
 }

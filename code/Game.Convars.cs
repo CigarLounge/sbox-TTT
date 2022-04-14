@@ -30,6 +30,9 @@ public partial class Game
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
+
+	[ServerVar( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
+	public static float RTVThreshold { get; set; } = 0.66f;
 	#endregion
 
 	#region Minimum Players

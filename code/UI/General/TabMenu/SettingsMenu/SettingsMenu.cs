@@ -16,8 +16,6 @@ public class SettingsMenu : Panel
 	/// </summary>
 	private Panel Pages { get; set; }
 
-	private Panel BackgroundPanel { get; set; }
-
 	private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
 
 	private Button BackButton { get; set; }
