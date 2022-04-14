@@ -12,7 +12,7 @@ public class PostRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVVotes >= MathF.Round( Client.All.Count * Game.RTVThreshold );
+		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
 		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 

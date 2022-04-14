@@ -14,7 +14,7 @@ public partial class Game : Sandbox.Game
 	private BaseRound _lastRound;
 
 	public int TotalRoundsPlayed { get; set; }
-	public int RTVVotes { get; set; }
+	public int RTVCount { get; set; }
 
 	public MapHandler MapHandler { get; private set; }
 
