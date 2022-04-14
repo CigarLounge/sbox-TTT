@@ -69,10 +69,10 @@ public partial class NewtonLauncher : Weapon
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		_forwardForce = ((Charge / 100f * MinForwardForce) - MinForwardForce) + MaxForwardForce;
-		_upwardForce = ((Charge / 100f * MinUpwardForce) - MinUpwardForce) + MaxUpwardForce;
+		_forwardForce = (Charge / 100f * MinForwardForce) - MinForwardForce + MaxForwardForce;
+		_upwardForce = (Charge / 100f * MinUpwardForce) - MinUpwardForce + MaxUpwardForce;
 
-		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
+		ShootBullet( Info.Spread, _forwardForce / 100f, Info.Damage, 3.0f, Info.BulletsPerFire );
 
 		Charge = 0;
 	}
