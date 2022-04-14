@@ -1,9 +1,9 @@
 <link rel="stylesheet" href="HomePage.scss">
 
 <root>
-    <button icon="videocam" @ref="ForceSpectatorButton" onclick="ToggleForceSpectator()"></button>
+    <button @ref="ForceSpectatorButton" icon="videocam" onclick="ToggleForceSpectator()"></button>
     <br />
-    <button icon="how_to_vote" onclick="RockTheVote()">Rock The Vote</button>
+    <button @ref="RockTheVoteButton" icon="how_to_vote" onclick="RockTheVote()">Rock The Vote</button>
     <br />
     <button icon="adjust" onclick="GoToCrosshairPage()">Crosshair Customization</button>
     <br />
