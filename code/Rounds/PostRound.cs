@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 namespace TTT;
@@ -11,7 +12,7 @@ public class PostRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
+		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RockTheVoteClients.Count >= Math.Round( Client.All.Count * 0.66 );
 		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 

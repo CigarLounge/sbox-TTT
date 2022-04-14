@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TTT;
@@ -13,6 +14,7 @@ public partial class Game : Sandbox.Game
 	private BaseRound _lastRound;
 
 	public int TotalRoundsPlayed { get; set; }
+	public readonly List<Client> RockTheVoteClients = new();
 	public MapHandler MapHandler { get; private set; }
 
 	public Game()

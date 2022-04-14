@@ -26,7 +26,7 @@ public class Traitor : BaseRole
 			}
 
 			if ( otherPlayer.IsMissingInAction )
-				otherPlayer.SyncMIA( player );
+				otherPlayer.UpdateMissingInAction( player );
 		}
 	}
 

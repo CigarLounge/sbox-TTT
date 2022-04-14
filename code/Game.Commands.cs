@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 namespace TTT;
@@ -57,6 +58,12 @@ public partial class Game
 		player.SetRole( roleInfo.LibraryName );
 	}
 
+	[AdminCmd( Name = "ttt_force_restart" )]
+	public static void ForceRestart()
+	{
+		Game.Current.ChangeRound( new PreRound() );
+	}
+
 	[ServerCmd( Name = "ttt_forcespec" )]
 	public static void ToggleForceSpectator()
 	{
@@ -67,9 +74,17 @@ public partial class Game
 		player.ToggleForcedSpectator();
 	}
 
-	[AdminCmd( Name = "ttt_force_restart" )]
-	public static void ForceRestart()
+	[ServerCmd( Name = "ttt_rtv" )]
+	public static void RockTheVote()
 	{
-		Game.Current.ChangeRound( new PreRound() );
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		if ( Game.Current.RockTheVoteClients.Contains( player.Client ) )
+			return;
+
+		Game.Current.RockTheVoteClients.Add( player.Client );
+		UI.ChatBox.AddInfo( To.Everyone, $"{player.Client.Name} has rocked the vote! ({Game.Current.RockTheVoteClients.Count}/{Math.Round( Client.All.Count * 0.66 )})" );
 	}
 }

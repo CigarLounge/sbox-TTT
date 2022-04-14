@@ -24,7 +24,7 @@ public partial class InProgressRound : BaseRound
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
-		player.SyncMIA();
+		player.UpdateMissingInAction();
 		ChangeRoundIfOver();
 	}
 

@@ -122,6 +122,9 @@ public partial class ChatBox : Panel
 			return;
 		}
 
+		if ( message.TrimEnd().Contains( RawStrings.RTVCommand ) )
+			Game.RockTheVote();
+
 		if ( channel == Channel.All )
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
 		else if ( channel == Channel.Role && player.Role.CanRoleChat )
