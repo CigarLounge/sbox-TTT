@@ -65,8 +65,11 @@ public partial class Game : Sandbox.Game
 	public override void ClientJoined( Client client )
 	{
 		var player = new Player();
+
 		client.Pawn = player;
+		client.SetInt( "karma", Karma.DefaultValue );
 		client.SetValue( RawStrings.Spectator, true );
+
 		Round.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );

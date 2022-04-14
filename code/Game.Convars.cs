@@ -27,6 +27,14 @@ public partial class Game
 	public static bool PreventWin { get; set; } = false;
 	#endregion
 
+	#region Karma
+	[ServerVar( "ttt_karma_enabled" )]
+	public static bool KarmaEnabled { get; set; } = true;
+
+	[ServerVar( "ttt_karma_strict" )]
+	public static bool KarmaStrict { get; set; } = true;
+	#endregion
+
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";

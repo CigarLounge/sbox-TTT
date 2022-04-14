@@ -43,6 +43,7 @@ public enum HitboxGroup
 
 public partial class Player
 {
+	public float DamageFactor { get; set; } = 1f;
 	public float MaxHealth { get; set; } = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float LastDistanceToAttacker { get; set; } = 0f;
