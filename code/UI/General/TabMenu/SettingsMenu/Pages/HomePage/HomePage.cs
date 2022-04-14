@@ -40,20 +40,16 @@ public partial class HomePage : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
+		base.Tick();
+
+		var player = Local.Pawn as Player;
 
 		ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
-
-		if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
-			RockTheVoteButton.Text = "You have already rocked the vote!";
+		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) );
 	}
 
 	public void RockTheVote()
 	{
-		if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
-			return;
-
 		Game.RockTheVote();
 	}
 
