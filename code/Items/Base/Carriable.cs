@@ -36,7 +36,7 @@ public partial class CarriableInfo : ItemInfo
 	[Property, Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
-	[JsonPropertyName("viewmodel")]
+	[JsonPropertyName( "viewmodel" )]
 	[Property( "viewmodel", title: "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string ViewModelPath { get; set; } = "";
 
@@ -152,6 +152,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	}
 
 	public override void Simulate( Client client ) { }
+
+	public override void FrameSimulate( Client client ) { }
 
 	public override void BuildInput( InputBuilder input )
 	{

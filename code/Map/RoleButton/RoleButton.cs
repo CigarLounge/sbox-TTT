@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_role_button" )]
 [Hammer.Sphere( "radius" )]
+[Library( "ttt_role_button" )]
 public partial class RoleButton : Entity
 {
 	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
@@ -54,7 +54,7 @@ public partial class RoleButton : Entity
 	}
 
 	[Input]
-	public void Press( Player activator )
+	public void Press( Entity activator )
 	{
 		Host.AssertServer();
 
