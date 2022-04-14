@@ -2,7 +2,7 @@ namespace TTT;
 
 public static partial class RawStrings
 {
-	public const string GameIndent = "matt.ttt";
+	public const string GameIdent = "game:matt.ttt";
 	public const string Spectator = "spectator";
 	public const string WeaponPickupSound = "pickup_weapon";
 	public const string AmmoPickupSound = "pickup_ammo";
