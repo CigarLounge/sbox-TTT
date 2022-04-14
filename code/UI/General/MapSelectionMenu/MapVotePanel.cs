@@ -9,11 +9,9 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class MapVotePanel : Panel
 {
-	public string TimeText { get; set; }
-
-	public Panel Body { get; set; }
-
-	public List<MapIcon> MapIcons = new();
+	private Label TimeText { get; set; }
+	private Panel Body { get; set; }
+	private readonly List<MapIcon> MapIcons = new();
 
 	public MapVotePanel()
 	{
@@ -58,7 +56,7 @@ public partial class MapVotePanel : Panel
 	{
 		var mapSelectionRound = Game.Current.Round as MapSelectionRound;
 
-		TimeText = mapSelectionRound.TimeLeftFormatted;
+		TimeText.Text = mapSelectionRound.TimeLeftFormatted;
 
 		foreach ( var icon in MapIcons )
 			icon.VoteCount = "0";

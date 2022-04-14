@@ -7,12 +7,13 @@ namespace TTT.UI;
 [UseTemplate]
 public class MapIcon : Panel
 {
-	public string VoteCount { get; set; } = "0";
-	public string Title { get; set; } = "...";
-	public string Org { get; set; } = "...";
 	public string Ident { get; internal set; }
-	public Panel Container { get; set; }
-	public Panel OrgAvatar { get; set; }
+	public string VoteCount { get; set; } = "0";
+
+	private Label Title { get; set; }
+	private Label Org { get; set; }
+	private Panel Container { get; set; }
+	private Panel OrgAvatar { get; set; }
 
 	public MapIcon( string fullIdent )
 	{
@@ -30,8 +31,8 @@ public class MapIcon : Panel
 		if ( package.PackageType != Package.Type.Map )
 			return;
 
-		Title = package.Title;
-		Org = package.Org.Title;
+		Title.Text = package.Title;
+		Org.Text = package.Org.Title;
 
 		await Container.Style.SetBackgroundImageAsync( package.Thumb );
 		await OrgAvatar.Style.SetBackgroundImageAsync( package.Org.Thumb );
