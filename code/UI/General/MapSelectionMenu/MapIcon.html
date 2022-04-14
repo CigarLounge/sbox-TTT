@@ -1,10 +1,12 @@
 ﻿<link rel="stylesheet" href="MapIcon.scss" />
 
 <root>
-    <div class="info">
-        <div class="orgavatar text-shadow" @ref="OrgAvatar"></div>
-        <text class="title text-shadow" @text="Title"></text>
-        <text class="orgname text-shadow" @text="Org"></text>
+    <div @ref="Container" class="container">
+        <div class="info">
+            <div class="orgavatar text-shadow" @ref="OrgAvatar"></div>
+            <text class="title text-shadow" @text="Title"></text>
+            <text class="orgname text-shadow" @text="Org"></text>
+        </div>
+        <text class="votes text-shadow" @text="VoteCount"></text>
     </div>
-    <text class="votes text-shadow" @text="VoteCount"></text>
 </root>
