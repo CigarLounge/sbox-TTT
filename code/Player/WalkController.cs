@@ -23,40 +23,30 @@ public partial class WalkController : Sandbox.WalkController
 		StopSpeed = 150.0f;
 	}
 
-	public float FallVelocity { get; private set; } = 0;
-	public float FallPunchThreshold = 350f;
-	public float DamageForFallSpeed => 100.0f / (FatalFallSpeed - SafeFallSpeed);
-	public float SafeFallSpeed => MathF.Sqrt( 2 * Gravity * 20 * 14 );
-	public float FatalFallSpeed => MathF.Sqrt( 2 * Gravity * 60 * 12 );
+	public const float FallDamageThreshold = 650f;
+	public const float FallDamageScale = 0.3f;
 
 	public override void Simulate()
 	{
-		FallVelocity = -Pawn.Velocity.z;
 
 		base.Simulate();
 
-		if ( GroundEntity is null || FallVelocity <= 0 )
+		var fallVelocity = -Pawn.Velocity.z;
+		if ( GroundEntity is null || fallVelocity <= 0 )
 			return;
 
-		if ( Pawn.IsAlive() && FallVelocity >= FallPunchThreshold && Pawn.WaterLevel == 0f )
+		if ( fallVelocity > FallDamageThreshold )
 		{
-			_ = new Sandbox.ScreenShake.Perlin( 1, 1, FallVelocity.LerpInverse( FallPunchThreshold, FallPunchThreshold * 3 ), 1 );
+			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 2f );
 
-			if ( GroundEntity.Velocity.z < 0.0f )
+			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
+			Pawn.TakeDamage( new DamageInfo
 			{
-				FallVelocity += GroundEntity.Velocity.z;
-				FallVelocity = MathF.Max( 0.1f, FallVelocity );
-			}
-
-			if ( FallVelocity > SafeFallSpeed )
-			{
-				Pawn.TakeDamage( new DamageInfo
-				{
-					Flags = DamageFlags.Fall,
-					Damage = (FallVelocity - SafeFallSpeed) * DamageForFallSpeed,
-					Attacker = Pawn,
-				} );
-			}
+				Attacker = Pawn,
+				Flags = DamageFlags.Fall,
+				Force = Vector3.Down * Velocity.Length,
+				Damage = damage,
+			} );
 		}
 	}
 
