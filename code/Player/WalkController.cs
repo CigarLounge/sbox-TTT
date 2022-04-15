@@ -23,8 +23,8 @@ public partial class WalkController : Sandbox.WalkController
 		StopSpeed = 150.0f;
 	}
 
-	public const float FallDamageThreshold = 650f;
-	public const float FallDamageScale = 0.3f;
+	private const float _fallDamageThreshold = 650f;
+	private const float _fallDamageScale = 0.3f;
 
 	public override void Simulate()
 	{
@@ -35,11 +35,11 @@ public partial class WalkController : Sandbox.WalkController
 		if ( GroundEntity is null || fallVelocity <= 0 )
 			return;
 
-		if ( fallVelocity > FallDamageThreshold )
+		if ( fallVelocity > _fallDamageThreshold )
 		{
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 2f );
 
-			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
+			var damage = (MathF.Abs( fallVelocity ) - _fallDamageThreshold) * _fallDamageScale;
 			Pawn.TakeDamage( new DamageInfo
 			{
 				Attacker = Pawn,
