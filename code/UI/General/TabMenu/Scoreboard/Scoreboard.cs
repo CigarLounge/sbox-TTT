@@ -60,8 +60,6 @@ public partial class Scoreboard : Panel
 			panel.Update();
 		}
 
-		Header.UpdateServerInfo();
-
 		foreach ( var value in _scoreboardGroups.Values )
 			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
 	}
