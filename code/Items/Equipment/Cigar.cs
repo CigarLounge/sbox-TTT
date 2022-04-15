@@ -18,6 +18,8 @@ public partial class Cigar : Carriable
 	{
 		_timeUntilNextSmoke = 5;
 
+		PlaySound( "smoke" + Rand.Int( 1, 4 ) );
+
 		Particles.Create( "particles/swb/smoke/swb_smokepuff_1", this, "muzzle" );
 		_trailParticle = null;
 		_trailParticle ??= Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
