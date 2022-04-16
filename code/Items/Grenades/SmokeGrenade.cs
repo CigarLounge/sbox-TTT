@@ -8,5 +8,7 @@ public class SmokeGrenade : Grenade
 	protected override void OnExplode()
 	{
 		base.OnExplode();
+
+		Particles.Create( "particles/smoke_explode.vpcf", Position );
 	}
 }
