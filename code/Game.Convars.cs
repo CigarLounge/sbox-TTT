@@ -31,7 +31,7 @@ public partial class Game
 	[ServerVar( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
 	public static float RTVThreshold { get; set; } = 0.66f;
 
-	[ServerVar( "ttt_round_limit", Help = "The max number of rounds until the map is switched.", Saved = true )]
+	// TODO: Networked CONVAR once available.
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
