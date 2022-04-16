@@ -3,7 +3,6 @@ using System;
 
 namespace TTT;
 
-[Hammer.Skip]
 [Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
 public class Discombobulator : Grenade
 {
@@ -13,7 +12,7 @@ public class Discombobulator : Grenade
 	{
 		base.OnExplode();
 
-		PlaySound( RawStrings.DiscombobulatorExplodeSound );
+		Sound.FromWorld( RawStrings.DiscombobulatorExplodeSound, Position );
 
 		float radius = 400;
 		float pushForce = 1024;

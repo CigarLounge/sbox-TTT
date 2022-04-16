@@ -11,10 +11,8 @@ public class Nameplate : EntityHintPanel
 	private Label Name { get; set; }
 	private Label HealthIndicator { get; set; }
 	private Label Role { get; set; }
-	public Nameplate( Player player )
-	{
-		_player = player;
-	}
+
+	public Nameplate( Player player ) => _player = player;
 
 	public override void Tick()
 	{
@@ -28,7 +26,7 @@ public class Nameplate : EntityHintPanel
 		HealthIndicator.Text = healthGroup.Title;
 
 		Name.Text = _player.Client?.Name ?? "";
-		if ( _player.Role is not NoneRole && _player.Role is not InnocentRole )
+		if ( _player.Role is not NoneRole and not Innocent )
 		{
 			Role.Text = _player.Role.Title;
 			Role.Style.FontColor = _player.Role.Color;

@@ -17,9 +17,6 @@ public partial class Game
 
 	[ServerVar( "ttt_mapselection_time", Help = "The length of the map selection period.", Saved = true )]
 	public static int MapSelectionTime { get; set; } = 10;
-
-	[ServerVar( "ttt_round_limit", Help = "The max number of rounds until the maps is switched.", Saved = true )]
-	public static int RoundLimit { get; set; } = 10;
 	#endregion
 
 	#region Debug
@@ -30,6 +27,12 @@ public partial class Game
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
+
+	[ServerVar( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
+	public static float RTVThreshold { get; set; } = 0.66f;
+
+	// TODO: Networked CONVAR once available.
+	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
 	#region Minimum Players

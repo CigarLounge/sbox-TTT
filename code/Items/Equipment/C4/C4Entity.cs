@@ -5,7 +5,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/c4/c4.vmdl" )]
 [Library( "ttt_entity_c4", Title = "C4" )]
 public partial class C4Entity : Prop, IEntityHint
 {
@@ -27,11 +26,12 @@ public partial class C4Entity : Prop, IEntityHint
 	[Net]
 	public bool IsArmed { get; private set; }
 
-	[Net, Local]
+	[Net]
 	public TimeUntil TimeUntilExplode { get; private set; }
 
 	private RealTimeUntil _nextBeepTime = 0f;
 	private float _totalSeconds = 0f;
+	private UI.C4Timer _c4Timer;
 	private readonly List<int> _safeWireNumbers = new();
 
 	public override void Spawn()
@@ -42,8 +42,19 @@ public partial class C4Entity : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		_c4Timer = new( this );
+	}
+
 	public void Arm( Player player, int timer )
 	{
+		// Incase another player sends in a request before their UI is updated.
+		if ( IsArmed )
+			return;
+
 		var possibleSafeWires = Enumerable.Range( 1, Wires.Count ).ToList();
 		possibleSafeWires.Shuffle();
 
@@ -68,17 +79,20 @@ public partial class C4Entity : Prop, IEntityHint
 		return Math.Min( (int)MathF.Ceiling( timer / MinTime ), Wires.Count - 1 );
 	}
 
-	public void AttemptDefuse( int wire )
+	public void AttemptDefuse( Player defuser, int wire )
 	{
 		if ( !IsArmed )
 			return;
 
-		if ( !_safeWireNumbers.Contains( wire ) )
-		{
+		if ( defuser != Owner && !_safeWireNumbers.Contains( wire ) )
 			Explode( true );
-			return;
-		}
+		else
+			Defuse();
+	}
 
+	public void Defuse()
+	{
+		PlaySound( RawStrings.C4Defuse );
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}
@@ -91,7 +105,7 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		PlaySound( RawStrings.C4Explode );
+		Sound.FromWorld( RawStrings.C4Explode, Position );
 		Delete();
 	}
 
@@ -122,6 +136,13 @@ public partial class C4Entity : Prop, IEntityHint
 
 			player.TakeDamage( damageInfo );
 		}
+	}
+
+	protected override void OnDestroy()
+	{
+		_c4Timer?.Delete( true );
+
+		base.OnDestroy();
 	}
 
 	void IEntityHint.Tick( Player player )
@@ -176,7 +197,7 @@ public partial class C4Entity : Prop, IEntityHint
 	[ServerCmd]
 	public static void Defuse( int wire, int networkIdent )
 	{
-		if ( ConsoleSystem.Caller.Pawn is not Player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		var entity = FindByIndex( networkIdent );
@@ -184,7 +205,7 @@ public partial class C4Entity : Prop, IEntityHint
 		if ( entity is null || entity is not C4Entity c4 )
 			return;
 
-		c4.AttemptDefuse( wire );
+		c4.AttemptDefuse( player, wire );
 	}
 
 	[ServerCmd]
@@ -219,9 +240,6 @@ public partial class C4Entity : Prop, IEntityHint
 	[ClientRpc]
 	private void CloseC4ArmMenu()
 	{
-		if ( !IsLocalPawn )
-			return;
-
 		if ( UI.FullScreenHintMenu.Instance.ActivePanel is UI.C4ArmMenu )
 			UI.FullScreenHintMenu.Instance.Close();
 	}

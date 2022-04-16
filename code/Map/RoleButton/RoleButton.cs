@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Role Button", "TTT", "Used to provide an on-screen button for a role to activate." )]
+[Hammer.Sphere( "radius" )]
 [Library( "ttt_role_button" )]
 public partial class RoleButton : Entity
 {
@@ -12,8 +12,8 @@ public partial class RoleButton : Entity
 	[Net, Property( "Description", "On screen tooltip shown on button." )]
 	public string Description { get; private set; }
 
-	[Net, Property( "Range", "Maximum range a player can see and activate a button. Buttons are fully opaque within 512 units." )]
-	public int Range { get; private set; } = 1024;
+	[Net, Property( "Radius", "Maximum radius a player can see and activate a button. Buttons are fully opaque within 512 units." )]
+	public int Radius { get; private set; } = 1024;
 
 	[Property( "Delay", "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers." )]
 	public int Delay { get; private set; } = 1;
@@ -54,7 +54,7 @@ public partial class RoleButton : Entity
 	}
 
 	[Input]
-	public void Press( Player activator )
+	public void Press( Entity activator )
 	{
 		Host.AssertServer();
 

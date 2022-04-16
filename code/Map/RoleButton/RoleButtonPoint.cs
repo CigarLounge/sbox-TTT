@@ -11,16 +11,16 @@ public class RoleButtonPoint : Panel
 	private readonly RoleButton _roleButton;
 
 	// If the distance from the player to the button is less than this value, the element is fully visible.
-	private int _minViewDistance = 512;
+	private readonly float _minViewDistance = 512;
 
 	// Between MINVIEWDISTANCE and this value, the element will slowly become transparent.
 	// Past this distance, the button is unusuable.
-	private readonly int _maxViewDistance = 1024;
+	private readonly float _maxViewDistance = 1024;
 
 	public RoleButtonPoint( RoleButton roleButton )
 	{
 		_roleButton = roleButton;
-		_maxViewDistance = roleButton.Range;
+		_maxViewDistance = roleButton.Radius;
 		_minViewDistance = Math.Min( _minViewDistance, _maxViewDistance / 2 );
 
 		StyleSheet.Load( "/map/rolebutton/RoleButtonPoint.scss" );
@@ -101,6 +101,6 @@ public class RoleButtonPoint : Panel
 	// Called when client calls for button to be activated. A simple double check.
 	public bool IsUsable( Player player )
 	{
-		return player.Position.Distance( _roleButton.Position ) <= _roleButton.Range && !_roleButton.IsDisabled;
+		return player.Position.Distance( _roleButton.Position ) <= _roleButton.Radius && !_roleButton.IsDisabled;
 	}
 }

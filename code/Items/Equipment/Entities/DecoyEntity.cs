@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
 public partial class DecoyEntity : Prop, IEntityHint, IUse
 {

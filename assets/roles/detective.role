@@ -12,6 +12,7 @@
 			"ttt_equipment_healthstation",
 			"ttt_equipment_teleporter",
 			"ttt_equipment_binoculars",
+			"ttt_equipment_defuser",
 			"ttt_equipment_cigar",
 		]
 		color = [ 0.098039, 0.4, 1.0, 1.0 ]

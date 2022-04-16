@@ -30,7 +30,7 @@ public partial class RoleInfo : Asset
 
 	[JsonPropertyName( "icon" )]
 	[Property( "icon", title: "Icon" ), Category( "UI" ), ResourceType( "png" )]
-	public string IconPath { get; set; } = "ui/logo.png";
+	public string IconPath { get; set; } = "ui/none.png";
 
 	public HashSet<string> AvailableItems { get; private set; }
 

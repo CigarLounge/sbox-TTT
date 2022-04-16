@@ -1,4 +1,4 @@
-RoundTimer 
+﻿RoundTimer
 {
     position: absolute;
     top: 50px;
@@ -8,7 +8,7 @@ RoundTimer
     align-items: center;
     border-radius: 8px;
 
-    .Round 
+    .round-name-wrapper
     {
         min-width: 175px;
         justify-content: center;
@@ -20,7 +20,7 @@ RoundTimer
         font-weight: bold;
     }
 
-    .Timer 
+    .timer-wrapper
     {
         justify-content: center;
         min-width: 110px;

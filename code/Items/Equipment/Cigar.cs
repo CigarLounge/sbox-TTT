@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/cigar/cigar.vmdl" )]
 [Library( "ttt_equipment_cigar", Title = "Cigar" )]
 public partial class Cigar : Carriable
 {

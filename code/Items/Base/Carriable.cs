@@ -154,6 +154,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void Simulate( Client client ) { }
 
+	public override void FrameSimulate( Client client ) { }
+
 	public override void BuildInput( InputBuilder input )
 	{
 		base.BuildInput( input );

@@ -2,7 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EntityTool( "Role Check", "TTT", "Used to test the assigned role of the activator." )]
 [Library( "ttt_role_check" )]
 public partial class RoleCheck : Entity
 {

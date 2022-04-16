@@ -58,8 +58,7 @@ public partial class ChatBox : Panel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
-			return;
+		var player = Local.Pawn as Player;
 
 		if ( !IsOpen )
 			return;
@@ -104,6 +103,15 @@ public partial class ChatBox : Panel
 		if ( string.IsNullOrWhiteSpace( Input.Text ) )
 			return;
 
+		if ( Input.Text == RawStrings.RTVCommand )
+		{
+			if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
+			{
+				AddInfo( "You have already rocked the vote!" );
+				return;
+			}
+		}
+
 		SendChat( Input.Text, CurrentChannel );
 	}
 
@@ -115,6 +123,12 @@ public partial class ChatBox : Panel
 
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
+
+		if ( message == RawStrings.RTVCommand )
+		{
+			Game.RockTheVote();
+			return;
+		}
 
 		if ( !player.IsAlive() )
 		{

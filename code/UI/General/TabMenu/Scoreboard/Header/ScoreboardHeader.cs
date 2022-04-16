@@ -8,17 +8,19 @@ public class ScoreboardHeader : Panel
 {
 	private Label PlayerCount { get; set; }
 	private Label CurrentMap { get; set; }
+	private Label MapChange { get; set; }
 
 	public ScoreboardHeader()
 	{
-		UpdateServerInfo();
+		CurrentMap.Text = Global.MapName;
 	}
 
-	public void UpdateServerInfo()
+	public override void Tick()
 	{
-		int maxPlayers = ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 );
+		PlayerCount.Text = $"{Client.All.Count} / {ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 )} Players";
 
-		PlayerCount.Text = $"{Client.All.Count} / {maxPlayers} Players";
-		CurrentMap.Text = Global.MapName;
+		var roundsRemaining = Game.RoundLimit - Game.Current.TotalRoundsPlayed;
+		var suffix = roundsRemaining == 1 ? "round" : "rounds";
+		MapChange.Text = $"Map will change in {roundsRemaining} {suffix}";
 	}
 }

@@ -24,7 +24,7 @@ public class GrabbableProp : IGrabbable
 
 	public void Drop()
 	{
-		if ( GrabbedEntity?.IsValid ?? false )
+		if ( GrabbedEntity.IsValid() )
 		{
 			GrabbedEntity.EnableTouch = true;
 			GrabbedEntity.EnableHideInFirstPerson = true;
@@ -48,7 +48,8 @@ public class GrabbableProp : IGrabbable
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 
-		GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+		if ( GrabbedEntity.IsValid() )
+			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
 		Drop();
 
 		_ = WaitForAnimationFinish();

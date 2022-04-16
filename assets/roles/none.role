@@ -9,6 +9,6 @@
 		color = [ 0.784314, 0.784314, 0.784314, 1.0 ]
 		retrievecredits = false
 		canrolechat = false
-		icon = "ui/logo.png"
+		icon = "ui/none.png"
 	}
 }

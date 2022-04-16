@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 
 namespace TTT;
@@ -11,9 +12,7 @@ public class PostRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		RPCs.ClientClosePostRoundMenu();
-
-		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
+		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
 		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
 	}
 
@@ -39,5 +38,13 @@ public class PostRound : BaseRound
 			return;
 
 		RevealEveryone();
+	}
+
+	protected override void OnFinish()
+	{
+		base.OnFinish();
+
+		if ( Host.IsClient )
+			UI.PostRoundMenu.Instance.Close();
 	}
 }

@@ -45,18 +45,18 @@ public partial class Player
 		Corpse = corpse;
 	}
 
-	public void SyncMIA( Player player = null )
+	public void UpdateMissingInAction( Player player = null )
 	{
 		Host.AssertServer();
 
 		if ( player is not null )
 		{
-			AddMIA( To.Single( player ) );
+			ClientMissingInAction( To.Single( player ) );
 			return;
 		}
 
 		IsMissingInAction = true;
-		AddMIA( Team.Traitors.ToClients() );
+		ClientMissingInAction( Team.Traitors.ToClients() );
 	}
 
 	public void Confirm( To? _to = null )
@@ -73,7 +73,7 @@ public partial class Player
 			wasPreviouslyConfirmed = false;
 		}
 
-		var to = _to ?? To.Everyone;		
+		var to = _to ?? To.Everyone;
 
 		if ( Corpse.IsValid() )
 			Corpse.SendPlayer( to );
@@ -84,10 +84,11 @@ public partial class Player
 
 	private void CheckLastSeenPlayer()
 	{
-		var trace = Trace.Ray( Owner.EyePosition, EyeRotation.Forward * HintDistance )
+		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.UseHitboxes()
+			.EntitiesOnly()
 			.Run();
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )
@@ -115,7 +116,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void AddMIA()
+	private void ClientMissingInAction()
 	{
 		IsMissingInAction = true;
 	}

@@ -3,6 +3,7 @@ using System;
 
 namespace TTT;
 
+/*
 public enum HitboxIndex
 {
 	Pelvis = 1,
@@ -23,6 +24,7 @@ public enum HitboxIndex
 	LeftLowerLeg = 18,
 	LeftFoot = 19,
 }
+*/
 
 public enum HitboxGroup
 {
@@ -104,7 +106,7 @@ public partial class Player
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 
-			if ( Game.Current.Round is not (InProgressRound or PostRound) )
+			if ( Game.Current.Round is not InProgressRound and not PostRound )
 				return;
 
 			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
@@ -115,7 +117,7 @@ public partial class Player
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 		{
 			var volume = 0.05f * info.Damage;
-			PlaySound( "fall" ).SetVolume( volume > 0.5f ? 0.5f : volume ).SetPosition( info.Position );
+			PlaySound( "fall" + Rand.Int( 1, 3 ) ).SetVolume( volume.Clamp( 0, 0.5f ) ).SetPosition( info.Position );
 		}
 		else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{

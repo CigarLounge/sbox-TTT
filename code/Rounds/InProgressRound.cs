@@ -24,7 +24,7 @@ public partial class InProgressRound : BaseRound
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
-		player.SyncMIA();
+		player.UpdateMissingInAction();
 		ChangeRoundIfOver();
 	}
 
@@ -106,11 +106,8 @@ public partial class InProgressRound : BaseRound
 	{
 		Game.Current.TotalRoundsPlayed++;
 		Game.Current.ForceRoundChange( new PostRound() );
-		RPCs.ClientOpenAndSetPostRoundMenu
-		(
-			winningTeam.GetTitle(),
-			winningTeam.GetColor()
-		);
+
+		UI.PostRoundMenu.DisplayWinner( winningTeam );
 	}
 
 	public override void OnSecond()
