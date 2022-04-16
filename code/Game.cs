@@ -12,6 +12,7 @@ public partial class Game : Sandbox.Game
 	public BaseRound Round { get; private set; }
 	private BaseRound _lastRound;
 
+	[Net]
 	public int TotalRoundsPlayed { get; set; }
 	public int RTVCount { get; set; }
 
