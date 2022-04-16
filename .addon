@@ -14,11 +14,11 @@
   "RootNamespace": "TTT",
   "Metadata": {
     "MapList": [
-      "ice.terminal",
+      "mke.casino",
       "thieves.ttt_cluedo",
       "dnd.lego",
-      "mke.ttt_clue",
-      "mke.casino"
+      "ice.terminal",
+      "mke.ttt_clue"
     ],
     "MinPlayers": 1,
     "MaxPlayers": 64,
