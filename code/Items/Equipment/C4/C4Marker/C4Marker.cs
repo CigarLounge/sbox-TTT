@@ -9,7 +9,7 @@ public class C4Marker : Panel
 {
 	private readonly C4Entity _c4;
 
-	private Label Timer { get; set; }
+	private Label Timer { get; init; }
 
 	public C4Marker( C4Entity c4 )
 	{

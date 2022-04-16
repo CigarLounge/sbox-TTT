@@ -21,9 +21,7 @@ scoreboardheader
         display: flex;
         flex-grow: 1;
         flex-direction: column;
-        justify-content: center;
-        margin-left: 12px;
-        margin-right: 12px;
+        justify-content: flex-end;
     }
 
     .server-name-label
@@ -41,18 +39,7 @@ scoreboardheader
     {
         display: flex;
         flex-direction: column;
-        justify-content: center;
         text-align: right;
-    }
-
-    .server-map-label
-    {
-        font-size: 16px;
-        font-weight: 500;
-    }
-
-    .server-players-label
-    {
         font-weight: 500;
     }
 }

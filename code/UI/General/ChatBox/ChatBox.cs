@@ -103,7 +103,7 @@ public partial class ChatBox : Panel
 		if ( string.IsNullOrWhiteSpace( Input.Text ) )
 			return;
 
-		if ( Input.Text.TrimEnd().Contains( RawStrings.RTVCommand ) )
+		if ( Input.Text == RawStrings.RTVCommand )
 		{
 			if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
 			{
@@ -124,15 +124,15 @@ public partial class ChatBox : Panel
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
-		if ( !player.IsAlive() )
+		if ( message == RawStrings.RTVCommand )
 		{
-			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
+			Game.RockTheVote();
 			return;
 		}
 
-		if ( message.TrimEnd().Contains( RawStrings.RTVCommand ) )
+		if ( !player.IsAlive() )
 		{
-			Game.RockTheVote();
+			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
 

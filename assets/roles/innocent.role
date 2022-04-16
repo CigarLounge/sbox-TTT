@@ -9,6 +9,6 @@
 		color = [ 0.105882, 0.772549, 0.305882, 1.0 ]
 		retrievecredits = false
 		canrolechat = false
-		icon = ""
+		icon = "ui/innocent-icon.png"
 	}
 }

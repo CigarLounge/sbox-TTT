@@ -118,7 +118,7 @@ public partial class Player
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 		{
 			var volume = 0.05f * info.Damage;
-			PlaySound( "fall" ).SetVolume( volume > 0.5f ? 0.5f : volume ).SetPosition( info.Position );
+			PlaySound( "fall" + Rand.Int( 1, 3 ) ).SetVolume( volume.Clamp( 0, 0.5f ) ).SetPosition( info.Position );
 		}
 		else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{

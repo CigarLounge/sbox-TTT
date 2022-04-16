@@ -31,6 +31,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private RealTimeUntil _nextBeepTime = 0f;
 	private float _totalSeconds = 0f;
+	private UI.C4Timer _c4Timer;
 	private readonly List<int> _safeWireNumbers = new();
 
 	public override void Spawn()
@@ -39,6 +40,13 @@ public partial class C4Entity : Prop, IEntityHint
 
 		Model = WorldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		_c4Timer = new( this );
 	}
 
 	public void Arm( Player player, int timer )
@@ -128,6 +136,13 @@ public partial class C4Entity : Prop, IEntityHint
 
 			player.TakeDamage( damageInfo );
 		}
+	}
+
+	protected override void OnDestroy()
+	{
+		_c4Timer?.Delete( true );
+
+		base.OnDestroy();
 	}
 
 	void IEntityHint.Tick( Player player )
