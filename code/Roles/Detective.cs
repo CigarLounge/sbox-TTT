@@ -43,7 +43,7 @@ public class Detective : BaseRole
 		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
 		{
 			killer.Credits += 100;
-			RPCs.ClientDisplayClientEntry( To.Single( killer.Client ), "have received 100 credits for killing a Detective" );
+			UI.InfoFeed.ClientDisplayClientEntry( To.Single( killer.Client ), "have received 100 credits for killing a Detective" );
 		}
 	}
 }

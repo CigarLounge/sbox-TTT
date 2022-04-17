@@ -64,4 +64,22 @@ public partial class InfoFeed : Panel
 		if ( !string.IsNullOrEmpty( postfix ) )
 			e.AddLabel( postfix, "append" );
 	}
+
+	[ClientRpc]
+	public static void ClientDisplayEntry( string message, Color color )
+	{
+		Instance?.AddEntry( message, color );
+	}
+
+	[ClientRpc]
+	public static void ClientDisplayClientEntry( string message )
+	{
+		Instance?.AddClientEntry( Local.Client, message );
+	}
+
+	[ClientRpc]
+	public static void ClientDisplayRoleEntry( RoleInfo roleInfo, string message )
+	{
+		Instance?.AddRoleEntry( roleInfo, message );
+	}
 }
