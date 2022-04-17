@@ -9,6 +9,7 @@ public class SmokeGrenade : Grenade
 	{
 		base.OnExplode();
 
-		Particles.Create( "particles/smoke_explode.vpcf", Position );
+		Particles.Create( RawStrings.SmokeParticle, Position );
+		Sound.FromWorld( RawStrings.SmokeExplodeSound, Position );
 	}
 }

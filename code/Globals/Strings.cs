@@ -14,4 +14,6 @@ public static partial class RawStrings
 	public const string C4Plant = "c4_plant-1";
 	public const string C4Defuse = "c4_defuse-1";
 	public const string C4Explode = "c4_explode-2";
+	public const string SmokeParticle = "particles/smoke_explode.vpcf";
+	public const string SmokeExplodeSound = "smoke_explode-1";
 }
