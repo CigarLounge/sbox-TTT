@@ -12,6 +12,7 @@ public class Discombobulator : Grenade
 	{
 		base.OnExplode();
 
+		Particles.Create( RawStrings.DiscombobulatorParticle, Position );
 		Sound.FromWorld( RawStrings.DiscombobulatorExplodeSound, Position );
 
 		float radius = 400;
