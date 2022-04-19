@@ -24,13 +24,6 @@ public partial class Game : Sandbox.Game
 			_ = new UI.Hud();
 	}
 
-	public override void Simulate( Client client )
-	{
-		Round.OnTick();
-
-		base.Simulate( client );
-	}
-
 	/// <summary>
 	/// Changes the round if minimum players is met. Otherwise, force changes to "WaitingRound"
 	/// </summary>
@@ -123,6 +116,12 @@ public partial class Game : Sandbox.Game
 
 		ForceRoundChange( new WaitingRound() );
 		MapHandler = new();
+	}
+
+	[Event.Tick]
+	private void Tick()
+	{
+		Round?.OnTick();
 	}
 
 	private void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
