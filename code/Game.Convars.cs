@@ -35,7 +35,7 @@ public partial class Game
 	[ServerVar( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
 	public static float RTVThreshold { get; set; } = 0.66f;
 
-	// TODO: Networked CONVAR once available.
+	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played.", Saved = true )]
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
