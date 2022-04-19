@@ -51,7 +51,7 @@ public static class Karma
 			float plyDiff = player.LiveKarma - DefaultValue;
 			float half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
-			return MathF.Exp( -0.69314718f / baseDiff * half * plyDiff );
+			return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
 		}
 
 		return 1;
