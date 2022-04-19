@@ -54,8 +54,8 @@ public partial class Player
 	/// </summary>
 	public float BaseKarma
 	{
-		get => Client.GetValue<float>( "karma" );
-		set => Client.SetValue( "karma", value );
+		get => Client.GetValue<float>( RawStrings.Karma );
+		set => Client.SetValue( RawStrings.Karma, value );
 	}
 
 	/// <summary>
@@ -75,7 +75,7 @@ public partial class Player
 	/// player damages/kills others. When another player damages/kills this one, the
 	/// live karma is used to determine his karma penalty.
 	/// </summary>
-	public float LiveKarma { get; set; }
+	public float CurrentKarma { get; set; }
 
 	public struct HealthGroup
 	{

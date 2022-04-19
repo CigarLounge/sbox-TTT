@@ -22,9 +22,9 @@ public class ScoreboardEntry : Panel
 
 		PlayerName.Text = Client.Name;
 
-		Karma.Enabled( TTT.Karma.IsEnabled );
+		Karma.Enabled( Game.KarmaEnabled );
 		if ( Karma.IsEnabled() )
-			Karma.Text = MathF.Round( Client.GetValue<float>( "karma" ) ).ToString();
+			Karma.Text = MathF.Round( Client.GetValue<float>( RawStrings.Karma ) ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
 

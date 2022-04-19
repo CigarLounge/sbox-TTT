@@ -66,8 +66,8 @@ public partial class Game : Sandbox.Game
 
 		client.Pawn = player;
 
-		client.SetValue( "karma", Karma.DefaultValue );
-		player.LiveKarma = player.BaseKarma;
+		client.SetValue( RawStrings.Karma, Karma.DefaultValue );
+		player.CurrentKarma = player.BaseKarma;
 		Karma.Apply( player );
 
 		client.SetValue( RawStrings.Spectator, true );

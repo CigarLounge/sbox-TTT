@@ -17,11 +17,9 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	public static bool IsEnabled => Game.KarmaEnabled;
-
 	public static void Apply( Player player )
 	{
-		if ( !IsEnabled || player.BaseKarma >= 1000 )
+		if ( !Game.KarmaEnabled || player.BaseKarma >= 1000 )
 		{
 			player.DamageFactor = 1f;
 			return;
@@ -30,31 +28,24 @@ public static class Karma
 		float k = player.BaseKarma - 1000;
 		float damageFactor;
 
-		if ( Game.KarmaStrict )
-			damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
-		else
-			damageFactor = 1 + -0.0000025f * (k * k);
+		damageFactor = 1 + (-0.0000025f * (k * k));
 
-		damageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
-
-		player.DamageFactor = damageFactor;
+		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f ); ;
 	}
 
 	public static float DecayMultiplier( Player player )
 	{
-		if ( FallOff <= 0 || player.LiveKarma < DefaultValue )
+		if ( FallOff <= 0 || player.CurrentKarma < DefaultValue )
 			return 1;
 
-		if ( player.LiveKarma < MaxValue )
-		{
-			float baseDiff = MaxValue - DefaultValue;
-			float plyDiff = player.LiveKarma - DefaultValue;
-			float half = Math.Clamp( FallOff, 0.1f, 0.99f );
+		if ( player.CurrentKarma >= MaxValue )
+			return 1;
 
-			return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
-		}
+		float baseDiff = MaxValue - DefaultValue;
+		float plyDiff = player.CurrentKarma - DefaultValue;
+		float half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
-		return 1;
+		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
 	}
 
 	public static float GetHurtPenalty( float victimKarma, float damage )
@@ -85,13 +76,13 @@ public static class Karma
 
 	public static void GivePenalty( Player player, float penalty )
 	{
-		player.LiveKarma = Math.Max( player.LiveKarma - penalty, 0 );
+		player.CurrentKarma = Math.Max( player.CurrentKarma - penalty, 0 );
 	}
 
 	public static void GiveReward( Player player, float reward )
 	{
 		reward = DecayMultiplier( player ) * reward;
-		player.LiveKarma = Math.Min( player.LiveKarma + reward, MaxValue );
+		player.CurrentKarma = Math.Min( player.CurrentKarma + reward, MaxValue );
 	}
 
 
@@ -114,7 +105,7 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetHurtPenalty( player.LiveKarma, damage );
+			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
@@ -142,7 +133,7 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetKillPenalty( player.LiveKarma );
+			float penalty = GetKillPenalty( player.CurrentKarma );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
@@ -186,13 +177,13 @@ public static class Karma
 			RoundIncrement( player );
 			Rebase( player );
 
-			if ( IsEnabled && CheckAutoKick( player ) )
+			if ( Game.KarmaEnabled && CheckAutoKick( player ) )
 				client.Kick();
 		}
 	}
 
 	public static void Rebase( Player player )
 	{
-		player.BaseKarma = player.LiveKarma;
+		player.BaseKarma = player.CurrentKarma;
 	}
 }
