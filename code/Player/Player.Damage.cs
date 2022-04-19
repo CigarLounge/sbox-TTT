@@ -68,7 +68,7 @@ public partial class Player
 	/// If a player does not damage team members in a round, he has a "clean" round
 	/// and gets a bonus for it.
 	/// </summary>
-	public bool CleanRound { get; set; }
+	public bool CleanRound { get; set; } = true;
 
 	/// <summary>
 	/// The live karma starts equal to the base karma, but is updated "live" as the
@@ -118,7 +118,16 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		LastDamageInfo = info;
+		if ( info.Attacker is Player attacker && attacker != this )
+		{
+			if ( Game.Current.Round is not InProgressRound and not PostRound )
+				return;
+
+			if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash )
+				info.Damage *= attacker.DamageFactor;
+
+			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
+		}
 
 		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
 		if ( hitboxGroup == HitboxGroup.Head )
@@ -130,15 +139,6 @@ public partial class Player
 		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{
 			info.Damage *= ArmorReductionPercentage;
-		}
-
-		if ( info.Attacker is Player attacker && attacker != this )
-		{
-
-			if ( Game.Current.Round is not InProgressRound and not PostRound )
-				return;
-
-			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
 		}
 
 		ClientTookDamage( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
@@ -153,10 +153,9 @@ public partial class Player
 			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
 		}
 
-		if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash && info.Attacker is Player )
-			info.Damage *= (info.Attacker as Player).DamageFactor;
+		LastDamageInfo = info;
 
-		Karma.OnPlayerHurt( info.Attacker as Player, this );
+		Karma.OnPlayerHurt( this );
 
 		base.TakeDamage( info );
 	}

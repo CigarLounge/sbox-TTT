@@ -95,54 +95,58 @@ public static class Karma
 	}
 
 
-	public static void OnPlayerHurt( Player attacker, Player victim )
+	public static void OnPlayerHurt( Player player )
 	{
-		if ( !attacker.IsValid() || !victim.IsValid() )
+		var attacker = player.LastDamageInfo.Attacker as Player;
+
+		if ( !attacker.IsValid() || !player.IsValid() )
 			return;
 
-		if ( attacker == victim )
+		if ( attacker == player )
 			return;
 
-		float damage = Math.Min( victim.Health, victim.LastDamageInfo.Damage );
+		float damage = Math.Min( player.Health, player.LastDamageInfo.Damage );
 
-		if ( attacker.Team == victim.Team )
+		if ( attacker.Team == player.Team )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			float penalty = GetHurtPenalty( victim.LiveKarma, damage );
+			float penalty = GetHurtPenalty( player.LiveKarma, damage );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
-		else if ( attacker.Team != Team.Traitors && victim.Team == Team.Traitors )
+		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
 			float reward = GetHurtReward( damage );
 			GiveReward( attacker, reward );
 		}
 	}
 
-	public static void OnPlayerKilled( Player attacker, Player victim )
+	public static void OnPlayerKilled( Player player )
 	{
-		if ( !attacker.IsValid() || !victim.IsValid() )
+		var attacker = player.LastAttacker as Player;
+
+		if ( !attacker.IsValid() || !player.IsValid() )
 			return;
 
-		if ( attacker == victim )
+		if ( attacker == player )
 			return;
 
-		if ( attacker.Team == victim.Team )
+		if ( attacker.Team == player.Team )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			float penalty = GetKillPenalty( victim.LiveKarma );
+			float penalty = GetKillPenalty( player.LiveKarma );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
-		else if ( attacker.Team != Team.Traitors && victim.Team == Team.Traitors )
+		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
 			float reward = GetKillReward();
 			GiveReward( attacker, reward );
@@ -152,6 +156,7 @@ public static class Karma
 	public static void RoundIncrement( Player player )
 	{
 		float reward = RoundHeal;
+
 		if ( player.CleanRound )
 			reward += CleanBonus;
 
@@ -169,7 +174,6 @@ public static class Karma
 		{
 			var player = client.Pawn as Player;
 			Apply( player );
-			player.CleanRound = true;
 		}
 	}
 

@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.Linq;
 
 namespace TTT;
@@ -94,8 +93,6 @@ public partial class Game : Sandbox.Game
 
 	public override bool CanHearPlayerVoice( Client source, Client dest )
 	{
-		Host.AssertServer();
-
 		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
 			return true;
 
