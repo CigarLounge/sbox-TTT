@@ -116,7 +116,7 @@ public static class Karma
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
-		else
+		else if ( attacker.Team != Team.Traitors && victim.Team == Team.Traitors )
 		{
 			float reward = GetHurtReward( damage );
 			GiveReward( attacker, reward );
@@ -142,7 +142,7 @@ public static class Karma
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
-		else
+		else if ( attacker.Team != Team.Traitors && victim.Team == Team.Traitors )
 		{
 			float reward = GetKillReward();
 			GiveReward( attacker, reward );
