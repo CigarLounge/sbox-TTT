@@ -146,6 +146,10 @@ public static class Karma
 
 	public static void RoundIncrement( Player player )
 	{
+		// TODO: Figure out a way to check if the player died by suicide.
+		if ( player.IsSpectator )
+			return;
+
 		float reward = RoundHeal;
 
 		if ( player.CleanRound )
