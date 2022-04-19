@@ -27,11 +27,11 @@ public static class Karma
 			return;
 		}
 
-		float damageFactor = 1f;
 		float k = player.BaseKarma - 1000;
+		float damageFactor;
 
 		if ( Game.KarmaStrict )
-			damageFactor *= 1 + (0.0007f * k) + (-0.000002f * (k * k));
+			damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 		else
 			damageFactor = 1 + -0.0000025f * (k * k);
 
