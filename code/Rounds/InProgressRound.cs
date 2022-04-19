@@ -24,6 +24,7 @@ public partial class InProgressRound : BaseRound
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
+		Karma.OnPlayerKilled( player.LastAttacker as Player, player );
 		player.UpdateMissingInAction();
 		ChangeRoundIfOver();
 	}

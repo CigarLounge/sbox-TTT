@@ -20,7 +20,11 @@ public class ScoreboardEntry : Panel
 			return;
 
 		PlayerName.Text = Client.Name;
-		Karma.Text = Client.GetInt( "karma" ).ToString();
+
+		Karma.Enabled( TTT.Karma.IsEnabled );
+		if ( Karma.IsEnabled() )
+			Karma.Text = Client.GetValue<float>( "karma" ).Floor().ToString();
+
 		Ping.Text = Client.Ping.ToString();
 
 		SetClass( "me", Client == Local.Client );

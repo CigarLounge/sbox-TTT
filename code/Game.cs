@@ -73,7 +73,11 @@ public partial class Game : Sandbox.Game
 		var player = new Player();
 
 		client.Pawn = player;
-		client.SetInt( "karma", Karma.DefaultValue );
+
+		client.SetValue( "karma", Karma.DefaultValue );
+		player.LiveKarma = player.Karma;
+		Karma.Apply( player );
+
 		client.SetValue( RawStrings.Spectator, true );
 
 		Round.OnPlayerJoin( player );

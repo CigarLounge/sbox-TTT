@@ -6,26 +6,29 @@ namespace TTT;
 public static class Karma
 {
 	// Maybe turn the values into ServerVars down the line.
-	public const int DefaultValue = 1000;
+	public const float CleanBonus = 30;
+	public const float DefaultValue = 1000;
+	public const float FallOff = 0.25f;
 	public const float KillPenalty = 15f;
 	public const float Ratio = 0.001f;
+	public const float RoundHeal = 5f;
 	public const float TRatio = 0.0003f;
 	public const float TBonus = 40f;
-	public const int MaxValue = 1000;
-	public const int MinValue = 450;
+	public const float MaxValue = 1250;
+	public const float MinValue = 450;
 
 	public static bool IsEnabled => Game.KarmaEnabled;
 
-	public static float ApplyKarma( Player player, float damage )
+	public static void Apply( Player player )
 	{
-		if ( !IsEnabled )
-			return damage;
-
-		if ( player.Client.GetInt( "karma" ) >= 1000 )
-			return damage;
+		if ( !IsEnabled || player.Karma >= 1000 )
+		{
+			player.DamageFactor = 1f;
+			return;
+		}
 
 		float damageFactor = 1f;
-		float k = player.Client.GetInt( "karma" ) - 1000;
+		float k = player.Karma - 1000;
 
 		if ( Game.KarmaStrict )
 			damageFactor *= 1 + (0.0007f * k) + (-0.000002f * (k * k));
@@ -34,7 +37,24 @@ public static class Karma
 
 		damageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 
-		return damageFactor;
+		player.DamageFactor = damageFactor;
+	}
+
+	public static float DecayMultiplier( Player player )
+	{
+		if ( FallOff <= 0 || player.LiveKarma < DefaultValue )
+			return 1;
+
+		if ( player.LiveKarma < MaxValue )
+		{
+			float baseDiff = MaxValue - DefaultValue;
+			float plyDiff = player.LiveKarma - DefaultValue;
+			float half = Math.Clamp( FallOff, 0.1f, 0.99f );
+
+			return MathF.Exp( -0.69314718f / baseDiff * half * plyDiff );
+		}
+
+		return 1;
 	}
 
 	public static float GetHurtPenalty( float victimKarma, float damage )
@@ -47,14 +67,60 @@ public static class Karma
 		return GetHurtPenalty( victimKarma, KillPenalty );
 	}
 
+	/// <summary>
+	/// Compute the reward for hurting a traitor.
+	/// </summary>
 	public static float GetHurtReward( float damage )
 	{
 		return MaxValue * Math.Clamp( damage * TRatio, 0, 1 );
 	}
 
+	/// <summary>
+	/// Compute the reward for killing a traitor.
+	/// </summary>
 	public static float GetKillReward()
 	{
 		return GetHurtReward( TBonus );
+	}
+
+	public static void GivePenalty( Player player, float penalty )
+	{
+		player.LiveKarma = Math.Max( player.LiveKarma - penalty, 0 );
+	}
+
+	public static void GiveReward( Player player, float reward )
+	{
+		reward = DecayMultiplier( player ) * reward;
+		player.LiveKarma = Math.Min( player.LiveKarma + reward, MaxValue );
+	}
+
+
+	public static void OnPlayerHurt( Player attacker, Player victim )
+	{
+		if ( !attacker.IsValid() || !victim.IsValid() )
+			return;
+
+		if ( attacker == victim )
+			return;
+
+		float damage = Math.Min( victim.Health, victim.LastDamageInfo.Damage );
+
+		if ( attacker.Team == victim.Team )
+		{
+			/*
+			 * If ( WasAvoidable( attacker, victim ) )
+			 *		return;
+			 */
+
+			float penalty = GetHurtPenalty( victim.LiveKarma, damage );
+			GivePenalty( attacker, penalty );
+			attacker.CleanRound = false;
+		}
+		else
+		{
+			float reward = GetHurtReward( damage );
+			GiveReward( attacker, reward );
+		}
 	}
 
 	public static void OnPlayerKilled( Player attacker, Player victim )
@@ -67,16 +133,62 @@ public static class Karma
 
 		if ( attacker.Team == victim.Team )
 		{
+			/*
+			 * If ( WasAvoidable( attacker, victim ) )
+			 *		return;
+			 */
 
+			float penalty = GetKillPenalty( victim.LiveKarma );
+			GivePenalty( attacker, penalty );
+			attacker.CleanRound = false;
 		}
 		else
 		{
 			float reward = GetKillReward();
+			GiveReward( attacker, reward );
 		}
 	}
 
-	public static bool CheckAutoKick( Client client )
+	public static void RoundIncrement( Player player )
 	{
-		return client.GetInt( "karma" ) < MinValue;
+		float reward = RoundHeal;
+		if ( player.CleanRound )
+			reward += CleanBonus;
+
+		GiveReward( player, reward );
+	}
+
+	public static bool CheckAutoKick( Player player )
+	{
+		return player.Karma < MinValue;
+	}
+
+	public static void OnRoundBegin()
+	{
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+			Apply( player );
+			player.CleanRound = true;
+		}
+	}
+
+	public static void OnRoundEnd()
+	{
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			RoundIncrement( player );
+			Rebase( player );
+
+			if ( IsEnabled && CheckAutoKick( player ) )
+				client.Kick();
+		}
+	}
+
+	public static void Rebase( Player player )
+	{
+		player.Karma = player.LiveKarma;
 	}
 }

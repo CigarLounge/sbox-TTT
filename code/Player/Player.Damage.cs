@@ -43,11 +43,39 @@ public enum HitboxGroup
 
 public partial class Player
 {
-	public float DamageFactor { get; set; } = 1f;
 	public float MaxHealth { get; set; } = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float LastDistanceToAttacker { get; set; } = 0f;
-	public readonly float ArmorReductionPercentage = 0.7f;
+	private static readonly float ArmorReductionPercentage = 0.7f;
+
+	/// <summary>
+	/// The base/start karma is determined once per round and determines the player's
+	/// damage penalty.It is networked and shown on clients.
+	/// </summary>
+	public float Karma
+	{
+		get => Client.GetValue<float>( "karma" );
+		set => Client.SetValue( "karma", value );
+	}
+
+	/// <summary>
+	/// The damage factor scales how much damage the player deals, so if it is 0.9
+	/// then the player only deals 90% of his original damage.
+	/// </summary>
+	public float DamageFactor { get; set; } = 1f;
+
+	/// <summary>
+	/// If a player does not damage team members in a round, he has a "clean" round
+	/// and gets a bonus for it.
+	/// </summary>
+	public bool CleanRound { get; set; }
+
+	/// <summary>
+	/// The live karma starts equal to the base karma, but is updated "live" as the
+	/// player damages/kills others. When another player damages/kills this one, the
+	/// live karma is used to determine his karma penalty.
+	/// </summary>
+	public float LiveKarma { get; set; }
 
 	public struct HealthGroup
 	{
@@ -117,13 +145,18 @@ public partial class Player
 
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 		{
-			var volume = 0.05f * info.Damage;
+			float volume = 0.05f * info.Damage;
 			PlaySound( "fall" + Rand.Int( 1, 3 ) ).SetVolume( volume.Clamp( 0, 0.5f ) ).SetPosition( info.Position );
 		}
 		else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
 		{
 			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
 		}
+
+		if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash && info.Attacker is Player )
+			info.Damage *= (info.Attacker as Player).DamageFactor;
+
+		TTT.Karma.OnPlayerHurt( info.Attacker as Player, this );
 
 		base.TakeDamage( info );
 	}

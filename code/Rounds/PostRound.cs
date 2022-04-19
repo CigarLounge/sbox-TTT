@@ -38,6 +38,7 @@ public class PostRound : BaseRound
 			return;
 
 		RevealEveryone();
+		Karma.OnRoundEnd();
 	}
 
 	protected override void OnFinish()
@@ -45,15 +46,6 @@ public class PostRound : BaseRound
 		base.OnFinish();
 
 		if ( Host.IsClient )
-		{
 			UI.PostRoundMenu.Instance.Close();
-			return;
-		}
-
-		foreach ( var client in Client.All )
-		{
-			if ( Karma.IsEnabled && Karma.CheckAutoKick( client ) )
-				client.Kick();
-		}
 	}
 }
