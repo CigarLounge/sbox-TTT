@@ -10,9 +10,9 @@ public class Scout : Weapon
 	private float _defaultFOV;
 	private UI.Scope _sniperScopePanel;
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
-		base.ActiveStart( ent );
+		base.ActiveStart( entity );
 
 		IsScoped = false;
 		_defaultFOV = Owner.CameraMode.FieldOfView;
