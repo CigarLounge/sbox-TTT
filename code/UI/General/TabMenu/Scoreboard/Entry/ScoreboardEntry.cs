@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using System;
 
 namespace TTT.UI;
 
@@ -23,7 +24,7 @@ public class ScoreboardEntry : Panel
 
 		Karma.Enabled( TTT.Karma.IsEnabled );
 		if ( Karma.IsEnabled() )
-			Karma.Text = Client.GetValue<float>( "karma" ).Floor().ToString();
+			Karma.Text = MathF.Round( Client.GetValue<float>( "karma" ) ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
 
