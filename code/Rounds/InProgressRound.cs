@@ -5,17 +5,20 @@ namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
-	public override string RoundName => "In Progress";
-
 	[Net]
 	public List<Player> Players { get; set; }
 
 	[Net]
 	public List<Player> Spectators { get; set; }
 
-	private readonly List<RoleButton> _logicButtons = new();
+	[Net]
+	public TimeUntil TimeUntilExpectedRoundEnd { get; set; }
+	public string TimeUntilExpectedRoundEndFormatted => TimeUntilExpectedRoundEnd.Relative.TimerString();
 
+	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
+
+	private readonly List<RoleButton> _logicButtons = new();
 
 	public override void OnPlayerKilled( Player player )
 	{
@@ -50,6 +53,8 @@ public partial class InProgressRound : BaseRound
 	{
 		if ( !Host.IsServer )
 			return;
+
+		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.

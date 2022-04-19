@@ -29,5 +29,12 @@
         font-size: 24px;
         font-weight: bold;
         background-color: #1e1e1ea2;
+
+        .sub-text
+        {
+            font-size: 15px;
+            position: absolute;
+            bottom: -11px;
+        }
     }
 }

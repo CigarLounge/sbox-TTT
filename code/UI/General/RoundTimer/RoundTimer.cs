@@ -1,5 +1,5 @@
+using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -8,6 +8,7 @@ public class RoundTimer : Panel
 {
 	private Label RoundName { get; init; }
 	private Label Timer { get; init; }
+	private Label SubText { get; init; }
 
 	public override void Tick()
 	{
