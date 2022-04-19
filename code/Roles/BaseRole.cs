@@ -94,7 +94,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 		return Entity.All
 				.OfType<RoleButton>()
-				.Where( x => x.Role == "All" || this == x.Role )
+				.Where( x => x.IsValid() && (x.Role == "All" || this == x.Role) )
 				.ToList();
 	}
 

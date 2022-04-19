@@ -1,0 +1,41 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		firesound = "flaregun_fire-1"
+		dryfiresound = ""
+		ammotype = "0"
+		firemode = "1"
+		bulletsperfire = 1
+		clipsize = 6
+		damage = 0.0
+		damagefalloffstart = 0.0
+		damagefalloffend = 0.0
+		headshotmultiplier = 1.0
+		spread = 0.0
+		primaryrate = 1.0
+		secondaryrate = 0.0
+		reserveammo = 0
+		reloadtime = 2.2
+		verticalrecoil = 0.0
+		horizontalrecoilrange = 0.0
+		recoilrecoveryscale = 0.0
+		ejectparticle = resource:""
+		muzzleflashparticle = resource:""
+		slot = "4"
+		spawnable = false
+		candrop = true
+		viewmodel = resource:"models/poltergeist/poltergeist.vmdl"
+		handsmodel = resource:""
+		holdtype = "2"
+		worldmodel = resource:"models/poltergeist/poltergeist.vmdl"
+		deploytime = 0.6
+		buyable = true
+		islimited = true
+		price = 100
+		icon = ""
+		description = "WIP"
+		libraryname = "ttt_equipment_poltergeist"
+		tracerparticle = resource:"particles/tracer.standard.vpcf"
+	}
+}
