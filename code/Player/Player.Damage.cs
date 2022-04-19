@@ -52,7 +52,7 @@ public partial class Player
 	/// The base/start karma is determined once per round and determines the player's
 	/// damage penalty.It is networked and shown on clients.
 	/// </summary>
-	public float Karma
+	public float BaseKarma
 	{
 		get => Client.GetValue<float>( "karma" );
 		set => Client.SetValue( "karma", value );
@@ -156,7 +156,7 @@ public partial class Player
 		if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash && info.Attacker is Player )
 			info.Damage *= (info.Attacker as Player).DamageFactor;
 
-		TTT.Karma.OnPlayerHurt( info.Attacker as Player, this );
+		Karma.OnPlayerHurt( info.Attacker as Player, this );
 
 		base.TakeDamage( info );
 	}

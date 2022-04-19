@@ -21,14 +21,14 @@ public static class Karma
 
 	public static void Apply( Player player )
 	{
-		if ( !IsEnabled || player.Karma >= 1000 )
+		if ( !IsEnabled || player.BaseKarma >= 1000 )
 		{
 			player.DamageFactor = 1f;
 			return;
 		}
 
 		float damageFactor = 1f;
-		float k = player.Karma - 1000;
+		float k = player.BaseKarma - 1000;
 
 		if ( Game.KarmaStrict )
 			damageFactor *= 1 + (0.0007f * k) + (-0.000002f * (k * k));
@@ -160,7 +160,7 @@ public static class Karma
 
 	public static bool CheckAutoKick( Player player )
 	{
-		return player.Karma < MinValue;
+		return player.BaseKarma < MinValue;
 	}
 
 	public static void OnRoundBegin()
@@ -189,6 +189,6 @@ public static class Karma
 
 	public static void Rebase( Player player )
 	{
-		player.Karma = player.LiveKarma;
+		player.BaseKarma = player.LiveKarma;
 	}
 }
