@@ -160,7 +160,7 @@ public static class Karma
 
 	public static bool CheckAutoKick( Player player )
 	{
-		return Game.KarmaEnabled && player.BaseKarma < MinValue;
+		return player.BaseKarma < MinValue;
 	}
 
 	public static void OnRoundBegin()
