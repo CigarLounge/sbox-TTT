@@ -1,9 +1,10 @@
 namespace TTT;
 
-public static partial class RawStrings
+public static class RawStrings
 {
 	public const string GameIdent = "game:matt.ttt";
 	public const string RTVCommand = "!rtv";
+	public const string Karma = "karma";
 	public const string Spectator = "spectator";
 	public const string HasRockedTheVote = "rtv";
 	public const string WeaponPickupSound = "pickup_weapon";

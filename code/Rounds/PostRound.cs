@@ -38,6 +38,7 @@ public class PostRound : BaseRound
 			return;
 
 		RevealEveryone();
+		Karma.OnRoundEnd();
 	}
 
 	protected override void OnFinish()

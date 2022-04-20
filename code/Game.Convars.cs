@@ -5,7 +5,6 @@ namespace TTT;
 public partial class Game
 {
 	#region Round
-
 	[ServerVar( "ttt_preround_time", Help = "The length of the preround time.", Saved = true )]
 	public static int PreRoundTime { get; set; } = 20;
 
@@ -22,6 +21,11 @@ public partial class Game
 	#region Debug
 	[ServerVar( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
 	public static bool PreventWin { get; set; } = false;
+	#endregion
+
+	#region Karma
+	[ServerVar( "ttt_karma_enabled" )]
+	public static bool KarmaEnabled { get; set; } = true;
 	#endregion
 
 	#region Map Related
