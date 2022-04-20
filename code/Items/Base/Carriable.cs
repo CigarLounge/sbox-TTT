@@ -25,7 +25,7 @@ public enum HoldType
 }
 
 [Library( "carri" ), AutoGenerate]
-public partial class CarriableInfo : ItemInfo
+public class CarriableInfo : ItemInfo
 {
 	[Property, Category( "Important" )]
 	public SlotType Slot { get; set; } = SlotType.Primary;
@@ -96,8 +96,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	public bool IsActiveChild => Owner?.ActiveChild == this;
 	public CarriableInfo Info { get; private set; }
 
-	public Carriable() { }
-
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -155,10 +153,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void FrameSimulate( Client client ) { }
 
-	public override void BuildInput( InputBuilder input )
-	{
-		base.BuildInput( input );
-	}
+	public override void BuildInput( InputBuilder input ) { }
 
 	public override void CreateViewModel()
 	{

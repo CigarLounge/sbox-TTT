@@ -9,11 +9,11 @@ public static class Karma
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
-	public const float KillPenalty = 15f;
+	public const float KillPenalty = 15;
 	public const float Ratio = 0.001f;
-	public const float RoundHeal = 5f;
+	public const float RoundHeal = 5;
 	public const float TRatio = 0.0003f;
-	public const float TBonus = 40f;
+	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 

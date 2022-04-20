@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace TTT;
 
-public abstract partial class Asset : Sandbox.Asset
+public abstract class Asset : Sandbox.Asset
 {
 	private static readonly Dictionary<string, Asset> Collection = new( StringComparer.OrdinalIgnoreCase );
 

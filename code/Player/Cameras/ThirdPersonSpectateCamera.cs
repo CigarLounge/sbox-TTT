@@ -2,9 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
+public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
-	private Vector3 DefaultPosition { get; set; }
+	private Vector3 DefaultPosition { get; }
 	private const int CAMERA_DISTANCE = 120;
 
 	private Rotation _targetRot;

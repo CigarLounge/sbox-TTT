@@ -13,7 +13,7 @@ public enum FireMode
 }
 
 [Library( "weapon" ), AutoGenerate]
-public partial class WeaponInfo : CarriableInfo
+public class WeaponInfo : CarriableInfo
 {
 	[Property, Category( "Sounds" )]
 	public string FireSound { get; set; } = "";
@@ -333,7 +333,7 @@ public abstract partial class Weapon : Carriable
 
 					if ( trace.Entity is Player player )
 						player.LastDistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
-		
+
 					trace.Entity.TakeDamage( damageInfo );
 				}
 			}
