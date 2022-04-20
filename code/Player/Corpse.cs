@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+[Hammer.Skip]
+[Library( "ttt_entity_corpse", Title = "Corpse" )]
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
 	public long PlayerId { get; private set; }

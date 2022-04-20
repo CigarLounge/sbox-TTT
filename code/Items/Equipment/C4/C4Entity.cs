@@ -63,7 +63,7 @@ public partial class C4Entity : Prop, IEntityHint
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
 		_totalSeconds = timer;
-		TimeUntilExplode = timer;
+		TimeUntilExplode = 5;
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
@@ -99,7 +99,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		float radius = 750;
+		float radius = 590;
 
 		if ( defusalDetonation )
 			radius /= 2.5f;
@@ -123,12 +123,12 @@ public partial class C4Entity : Prop, IEntityHint
 			var diff = player.Position - Position;
 			float dist = Vector3.DistanceBetween( Position, player.Position );
 
-			if ( dist > radius )
-				continue;
-
 			// TODO: Better way to calculate falloff.
 			dist = Math.Max( 0, dist - 490 );
-			float damage = 125 - dist / 21 * 12;
+			float damage = 125 - 0.01f * (dist * dist);
+
+			if ( damage <= 0 )
+				continue;
 
 			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
 				.WithAttacker( Owner )
