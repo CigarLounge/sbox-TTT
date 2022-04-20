@@ -32,6 +32,8 @@ public class PreRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
+		Karma.OnRoundBegin();
+
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;

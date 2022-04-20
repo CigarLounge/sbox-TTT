@@ -5,7 +5,6 @@ namespace TTT;
 public partial class Game
 {
 	#region Round
-
 	[ServerVar( "ttt_preround_time", Help = "The length of the preround time.", Saved = true )]
 	public static int PreRoundTime { get; set; } = 20;
 
@@ -24,6 +23,11 @@ public partial class Game
 	public static bool PreventWin { get; set; } = false;
 	#endregion
 
+	#region Karma
+	[ServerVar( "ttt_karma_enabled" )]
+	public static bool KarmaEnabled { get; set; } = true;
+	#endregion
+
 	#region Map Related
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
@@ -31,7 +35,7 @@ public partial class Game
 	[ServerVar( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
 	public static float RTVThreshold { get; set; } = 0.66f;
 
-	// TODO: Networked CONVAR once available.
+	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played.", Saved = true )]
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 

@@ -60,6 +60,7 @@ public partial class Player : Sandbox.Player
 		LifeState = LifeState.Respawnable;
 		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
 
+		CleanRound = true;
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayerName = string.Empty;

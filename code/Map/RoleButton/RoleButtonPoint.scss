@@ -1,4 +1,4 @@
-rolebuttonpoint
+RoleButtonPoint
 {
     position: absolute;
     margin-left: -30px;
@@ -10,9 +10,11 @@ rolebuttonpoint
     flex-direction: row;
     font-size: 14px;
     transform: scale(0.95);
+    justify-content: center;
 
     .pointer
     {
+        position: absolute;
         font-family: MaterialIcons;
         font-size: 38px;
         text-align: center;
@@ -25,6 +27,7 @@ rolebuttonpoint
 
     .description
     {
+        margin-left: 250px;
         width: 200px;
     }
 

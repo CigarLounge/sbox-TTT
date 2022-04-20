@@ -9,10 +9,7 @@ public class C4Timer : WorldPanel
 
 	private Label Label { get; init; }
 
-	public C4Timer( C4Entity c4 )
-	{
-		_c4 = c4;	
-	}
+	public C4Timer( C4Entity c4 ) => _c4 = c4;
 
 	public override void Tick()
 	{
