@@ -155,8 +155,7 @@ public partial class Player
 
 		LastDamageInfo = info;
 
-		if ( Game.Current.Round is InProgressRound )
-			Karma.OnPlayerHurt( this );
+		Karma.OnPlayerHurt( this );
 
 		base.TakeDamage( info );
 	}
