@@ -129,7 +129,7 @@ public partial class InProgressRound : BaseRound
 
 	private bool ChangeRoundIfOver()
 	{
-		Team result = IsRoundOver();
+		var result = IsRoundOver();
 
 		if ( result != Team.None && !Game.PreventWin )
 		{

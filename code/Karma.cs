@@ -28,9 +28,9 @@ public static class Karma
 		float k = player.BaseKarma - 1000;
 		float damageFactor;
 
-		damageFactor = 1 + (-0.0000025f * (k * k));
+		damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 
-		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f ); ;
+		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 	}
 
 	public static float DecayMultiplier( Player player )
@@ -161,15 +161,6 @@ public static class Karma
 	public static bool CheckAutoKick( Player player )
 	{
 		return player.BaseKarma < MinValue;
-	}
-
-	public static void OnRoundBegin()
-	{
-		foreach ( var client in Client.All )
-		{
-			var player = client.Pawn as Player;
-			Apply( player );
-		}
 	}
 
 	public static void OnRoundEnd()

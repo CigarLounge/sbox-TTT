@@ -68,7 +68,6 @@ public partial class Game : Sandbox.Game
 
 		client.SetValue( RawStrings.Karma, Karma.DefaultValue );
 		player.CurrentKarma = player.BaseKarma;
-		Karma.Apply( player );
 
 		client.SetValue( RawStrings.Spectator, true );
 
