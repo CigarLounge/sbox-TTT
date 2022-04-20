@@ -50,7 +50,7 @@ public partial class Player
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
-	/// damage penalty.It is networked and shown on clients.
+	/// damage penalty. It is networked and shown on clients.
 	/// </summary>
 	public float BaseKarma
 	{
@@ -72,7 +72,7 @@ public partial class Player
 
 	/// <summary>
 	/// The live karma starts equal to the base karma, but is updated "live" as the
-	/// player damages/kills others. When another player damages/kills this one, the
+	/// player damages/kills others. When a player damages/kills another, the
 	/// live karma is used to determine his karma penalty.
 	/// </summary>
 	public float CurrentKarma { get; set; }
@@ -126,7 +126,7 @@ public partial class Player
 			if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash )
 				info.Damage *= attacker.DamageFactor;
 
-			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
+			OnDamageTakenFromPlayer( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
 		}
 
 		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
@@ -141,7 +141,7 @@ public partial class Player
 			info.Damage *= ArmorReductionPercentage;
 		}
 
-		ClientTookDamage( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
+		OnDamageTaken( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
 
 		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
 		{
@@ -155,13 +155,14 @@ public partial class Player
 
 		LastDamageInfo = info;
 
-		Karma.OnPlayerHurt( this );
+		if ( Game.Current.Round is InProgressRound )
+			Karma.OnPlayerHurt( this );
 
 		base.TakeDamage( info );
 	}
 
 	[ClientRpc]
-	public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
+	public void OnDamageTakenFromPlayer( Vector3 position, float inverseHealth )
 	{
 		Sound.FromScreen( "dm.ui_attacker" )
 			.SetPitch( 1 + inverseHealth * 1 )
@@ -169,7 +170,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void ClientTookDamage( Vector3 position, float damage )
+	public void OnDamageTaken( Vector3 position, float damage )
 	{
 		UI.DamageIndicator.Instance?.OnHit( position );
 		UI.PlayerInfo.Instance?.OnHit();
