@@ -127,7 +127,8 @@ public partial class Player
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		info.Damage *= ApplyBulletDamageMultipliers( info );
+		if ( info.Flags == DamageFlags.Bullet )
+			info.Damage *= ApplyBulletDamageMultipliers( info );
 
 		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
 		OnDamageTaken( To.Single( Client ), damageLocation );
@@ -142,23 +143,20 @@ public partial class Player
 
 	private float ApplyBulletDamageMultipliers( DamageInfo info )
 	{
-		var damage = 1f;
-
-		if ( info.Flags != DamageFlags.Bullet )
-			return damage;
+		var damageMultiplier = 1f;
 
 		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 		if ( isHeadShot )
 		{
 			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
 			if ( weaponInfo is not null )
-				damage *= weaponInfo.HeadshotMultiplier;
+				damageMultiplier *= weaponInfo.HeadshotMultiplier;
 		}
 
 		if ( !isHeadShot && Perks.Has( typeof( BodyArmor ) ) )
-			damage *= ArmorReductionPercentage;
+			damageMultiplier *= ArmorReductionPercentage;
 
-		return damage;
+		return damageMultiplier;
 	}
 
 	[ClientRpc]
