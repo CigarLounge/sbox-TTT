@@ -45,7 +45,7 @@ public partial class HomePage : Panel
 		var player = Local.Pawn as Player;
 
 		ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
-		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) );
+		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( Constants.Game.HasRockedTheVote ) );
 	}
 
 	public void RockTheVote()

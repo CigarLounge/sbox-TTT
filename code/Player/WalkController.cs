@@ -23,8 +23,8 @@ public class WalkController : Sandbox.WalkController
 		StopSpeed = 150.0f;
 	}
 
-	private const float _fallDamageThreshold = 550f;
-	private const float _fallDamageScale = 0.3f;
+	private const float _fallDamageThreshold = 700f;
+	private const float _fallDamageScale = 0.28f;
 
 	public override void Simulate()
 	{
@@ -46,6 +46,8 @@ public class WalkController : Sandbox.WalkController
 				Force = Vector3.Down * Velocity.Length,
 				Damage = damage,
 			} );
+
+			Pawn.PlaySound( Constants.Sounds.FallDamage ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
 		}
 	}
 

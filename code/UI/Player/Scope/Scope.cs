@@ -28,7 +28,6 @@ public class Scope : Panel
 		var scopeSize = Screen.Height * ScaleFromScreen;
 		_lens.Style.Width = Length.Pixels( scopeSize );
 		_lens.Style.Height = Length.Pixels( scopeSize );
-		PlaySound( RawStrings.ScopeInSound );
 	}
 
 	public void Hide()

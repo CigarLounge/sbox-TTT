@@ -56,7 +56,7 @@ public class PreRound : BaseRound
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.Client.SetValue( RawStrings.Spectator, player.IsForcedSpectator );
+			player.Client.SetValue( Constants.Game.Spectator, player.IsForcedSpectator );
 
 			if ( player.IsForcedSpectator )
 			{

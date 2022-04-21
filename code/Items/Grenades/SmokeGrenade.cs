@@ -9,7 +9,7 @@ public class SmokeGrenade : Grenade
 	{
 		base.OnExplode();
 
-		Particles.Create( RawStrings.SmokeParticle, Position );
-		Sound.FromWorld( RawStrings.SmokeExplodeSound, Position );
+		Particles.Create( Constants.Particles.Smoke, Position );
+		Sound.FromWorld( Constants.Sounds.SmokeExplode, Position );
 	}
 }

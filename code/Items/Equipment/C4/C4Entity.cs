@@ -67,7 +67,7 @@ public partial class C4Entity : Prop, IEntityHint
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
-		PlaySound( RawStrings.C4Plant );
+		PlaySound( Constants.Sounds.C4Plant );
 
 		CloseC4ArmMenu();
 		if ( player.Team == Team.Traitors )
@@ -92,7 +92,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void Defuse()
 	{
-		PlaySound( RawStrings.C4Defuse );
+		PlaySound( Constants.Sounds.C4Defuse );
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}
@@ -105,7 +105,7 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		Sound.FromWorld( RawStrings.C4Explode, Position );
+		Sound.FromWorld( Constants.Sounds.C4Explode, Position );
 		Delete();
 	}
 
@@ -172,7 +172,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		if ( _nextBeepTime )
 		{
-			PlaySound( RawStrings.C4Beep );
+			PlaySound( Constants.Sounds.C4Beep );
 			_nextBeepTime = _totalSeconds / 45;
 		}
 

@@ -24,7 +24,7 @@ public class ScoreboardEntry : Panel
 
 		Karma.Enabled( Game.KarmaEnabled );
 		if ( Karma.IsEnabled() )
-			Karma.Text = MathF.Round( Client.GetValue<float>( RawStrings.Karma ) ).ToString();
+			Karma.Text = MathF.Round( Client.GetValue<float>( Constants.Game.Karma ) ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
 

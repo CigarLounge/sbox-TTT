@@ -12,8 +12,8 @@ public class Discombobulator : Grenade
 	{
 		base.OnExplode();
 
-		Particles.Create( RawStrings.DiscombobulatorParticle, Position );
-		Sound.FromWorld( RawStrings.DiscombobulatorExplodeSound, Position );
+		Particles.Create( Constants.Particles.Discombobulator, Position );
+		Sound.FromWorld( Constants.Sounds.DiscombobulatorExplode, Position );
 
 		float radius = 400;
 		float pushForce = 1024;

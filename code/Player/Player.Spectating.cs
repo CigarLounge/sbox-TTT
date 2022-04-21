@@ -18,7 +18,7 @@ public partial class Player
 	}
 
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
-	public bool IsSpectator => Client.GetValue<bool>( RawStrings.Spectator );
+	public bool IsSpectator => Client.GetValue<bool>( Constants.Game.Spectator );
 
 	private int _targetSpectatorIndex = 0;
 
@@ -27,7 +27,7 @@ public partial class Player
 		IsForcedSpectator = !IsForcedSpectator;
 
 		if ( Game.Current.Round is PreRound or WaitingRound )
-			Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
+			Client.SetValue( Constants.Game.Spectator, IsForcedSpectator );
 
 		if ( !IsForcedSpectator || !this.IsAlive() )
 			return;

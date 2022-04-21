@@ -46,6 +46,6 @@ public class PostRound : BaseRound
 		base.OnFinish();
 
 		if ( Host.IsClient )
-			UI.PostRoundMenu.Instance.Close();
+			UI.PostRoundMenu.Instance?.Close();
 	}
 }

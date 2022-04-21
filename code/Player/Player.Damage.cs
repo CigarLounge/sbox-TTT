@@ -54,8 +54,8 @@ public partial class Player
 	/// </summary>
 	public float BaseKarma
 	{
-		get => Client.GetValue<float>( RawStrings.Karma );
-		set => Client.SetValue( RawStrings.Karma, value );
+		get => Client.GetValue<float>( Constants.Game.Karma );
+		set => Client.SetValue( Constants.Game.Karma, value );
 	}
 
 	/// <summary>
@@ -123,35 +123,14 @@ public partial class Player
 			if ( Game.Current.Round is not InProgressRound and not PostRound )
 				return;
 
-			if ( (info.Flags & DamageFlags.Slash) != DamageFlags.Slash )
+			if ( info.Flags != DamageFlags.Slash )
 				info.Damage *= attacker.DamageFactor;
-
-			OnDamageTakenFromPlayer( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
 		}
 
-		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
-		if ( hitboxGroup == HitboxGroup.Head )
-		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
-			if ( weaponInfo is not null )
-				info.Damage *= weaponInfo.HeadshotMultiplier;
-		}
-		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
-		{
-			info.Damage *= ArmorReductionPercentage;
-		}
+		info.Damage *= ApplyBulletDamageMultipliers( info );
 
-		OnDamageTaken( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
-
-		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
-		{
-			float volume = 0.05f * info.Damage;
-			PlaySound( "fall" + Rand.Int( 1, 3 ) ).SetVolume( volume.Clamp( 0, 0.5f ) ).SetPosition( info.Position );
-		}
-		else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
-		{
-			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
-		}
+		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
+		OnDamageTaken( To.Single( Client ), damageLocation );
 
 		LastDamageInfo = info;
 
@@ -161,16 +140,29 @@ public partial class Player
 		base.TakeDamage( info );
 	}
 
-	[ClientRpc]
-	public void OnDamageTakenFromPlayer( Vector3 position, float inverseHealth )
+	private float ApplyBulletDamageMultipliers( DamageInfo info )
 	{
-		Sound.FromScreen( "dm.ui_attacker" )
-			.SetPitch( 1 + inverseHealth * 1 )
-			.SetPosition( position );
+		var damage = 1f;
+
+		if ( info.Flags != DamageFlags.Bullet )
+			return damage;
+
+		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
+		if ( isHeadShot )
+		{
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
+			if ( weaponInfo is not null )
+				damage *= weaponInfo.HeadshotMultiplier;
+		}
+
+		if ( !isHeadShot && Perks.Has( typeof( BodyArmor ) ) )
+			damage *= ArmorReductionPercentage;
+
+		return damage;
 	}
 
 	[ClientRpc]
-	public void OnDamageTaken( Vector3 position, float damage )
+	public void OnDamageTaken( Vector3 position )
 	{
 		UI.DamageIndicator.Instance?.OnHit( position );
 		UI.PlayerInfo.Instance?.OnHit();
