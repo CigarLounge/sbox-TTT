@@ -128,7 +128,7 @@ public partial class Player
 		}
 
 		if ( info.Flags == DamageFlags.Bullet )
-			info.Damage *= ApplyBulletDamageMultipliers( info );
+			info.Damage *= GetBulletDamageMultipliers( info );
 
 		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
 		OnDamageTaken( To.Single( Client ), damageLocation );
@@ -141,7 +141,7 @@ public partial class Player
 		base.TakeDamage( info );
 	}
 
-	private float ApplyBulletDamageMultipliers( DamageInfo info )
+	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
 		var damageMultiplier = 1f;
 
