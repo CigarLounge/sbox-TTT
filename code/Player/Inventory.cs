@@ -84,7 +84,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	public void Pickup( Entity entity )
 	{
 		if ( Add( entity ) )
-			Sound.FromEntity( Constants.Sounds.WeaponPickup, Owner );
+			Sound.FromEntity( Strings.WeaponPickupSound, Owner );
 	}
 
 	public bool HasFreeSlot( SlotType slotType )

@@ -28,7 +28,7 @@ public class Scout : Weapon
 			if ( Prediction.FirstTime )
 			{
 				SetScoped( !IsScoped );
-				PlaySound( Constants.Sounds.ScopeIn );
+				PlaySound( Strings.ScopeInSound );
 			}
 		}
 

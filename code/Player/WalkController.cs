@@ -47,7 +47,7 @@ public class WalkController : Sandbox.WalkController
 				Damage = damage,
 			} );
 
-			Pawn.PlaySound( Constants.Sounds.FallDamage ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
+			Pawn.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
 		}
 	}
 

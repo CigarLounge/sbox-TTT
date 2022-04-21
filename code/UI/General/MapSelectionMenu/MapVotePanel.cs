@@ -27,7 +27,7 @@ public partial class MapVotePanel : Panel
 			Take = 99,
 		};
 
-		query.Tags.Add( Constants.Game.Ident );
+		query.Tags.Add( "game:" + Global.GameIdent );
 
 		var packages = await query.RunAsync( default );
 

@@ -54,8 +54,8 @@ public partial class Player
 	/// </summary>
 	public float BaseKarma
 	{
-		get => Client.GetValue<float>( Constants.Game.Karma );
-		set => Client.SetValue( Constants.Game.Karma, value );
+		get => Client.GetValue<float>( Strings.Karma );
+		set => Client.SetValue( Strings.Karma, value );
 	}
 
 	/// <summary>

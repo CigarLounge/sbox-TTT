@@ -8,14 +8,6 @@ public class PostRound : BaseRound
 	public override string RoundName => "Post";
 	public override int RoundDuration => Game.PostRoundTime;
 
-	protected override void OnTimeUp()
-	{
-		base.OnTimeUp();
-
-		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
-		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
-	}
-
 	public override void OnPlayerKilled( Player player )
 	{
 		base.OnPlayerKilled( player );
@@ -48,4 +40,13 @@ public class PostRound : BaseRound
 		if ( Host.IsClient )
 			UI.PostRoundMenu.Instance?.Close();
 	}
+
+	protected override void OnTimeUp()
+	{
+		base.OnTimeUp();
+
+		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
+		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
+	}
+
 }
