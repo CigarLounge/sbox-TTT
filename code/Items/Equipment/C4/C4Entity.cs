@@ -67,7 +67,7 @@ public partial class C4Entity : Prop, IEntityHint
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
 		_totalSeconds = timer;
-		TimeUntilExplode = 5;
+		TimeUntilExplode = timer;
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
