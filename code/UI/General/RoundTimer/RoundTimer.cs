@@ -14,12 +14,38 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( Game.Current.Round is null )
+		if ( Game.Current.Round is null || Local.Pawn is not Player player )
 			return;
 
 		RoundName.Text = Game.Current.Round.RoundName;
-		Timer.Text = Game.Current.Round is not WaitingRound ?
-							$"{Game.Current.Round.TimeLeftFormatted}" :
-							$"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
+
+		switch ( Game.Current.Round )
+		{
+			case WaitingRound:
+			{
+				Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
+				break;
+			}
+
+			case InProgressRound inProgressRound:
+			{
+				Timer.Text = inProgressRound.TimeUntilExpectedRoundEndFormatted;
+
+				var isTeamTraitor = player.Team == Team.Traitors;
+				if ( isTeamTraitor && inProgressRound.TimeUntilRoundEnd != inProgressRound.TimeUntilExpectedRoundEnd )
+					SubText.Text = inProgressRound.TimeUntilRoundEndFormatted;
+
+				if ( !isTeamTraitor && inProgressRound.TimeUntilExpectedRoundEnd )
+					SubText.Text = "OVERTIME";
+				break;
+			}
+
+			default:
+			{
+				Timer.Text = Game.Current.Round.TimeUntilRoundEndFormatted;
+				SubText.Text = string.Empty;
+				break;
+			}
+		}
 	}
 }

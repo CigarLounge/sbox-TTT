@@ -9,7 +9,7 @@ public abstract partial class BaseRound : BaseNetworkable
 
 	public virtual int RoundDuration => 0;
 	public virtual string RoundName => string.Empty;
-	public string TimeLeftFormatted => TimeUntilRoundEnd.Relative.TimerString();
+	public string TimeUntilRoundEndFormatted => TimeUntilRoundEnd.Relative.TimerString();
 	private RealTimeUntil _nextSecondTime = 0f;
 
 	public void Start()
