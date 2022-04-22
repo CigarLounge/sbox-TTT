@@ -49,10 +49,10 @@ public partial class Binoculars : Carriable
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MaxHintDistance )
-				.Ignore( this )
-				.Ignore( Owner )
-				.HitLayer( CollisionLayer.Debris )
-				.Run();
+			.Ignore( this )
+			.Ignore( Owner )
+			.HitLayer( CollisionLayer.Debris )
+			.Run();
 
 		_corpse = trace.Entity as Corpse;
 
@@ -89,7 +89,7 @@ public partial class Binoculars : Carriable
 			return;
 		}
 
-		PlaySound( RawStrings.ScopeInSound );
+		PlaySound( Strings.ScopeInSound );
 		ZoomLevel++;
 		Owner.CameraMode.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}

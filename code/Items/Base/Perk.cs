@@ -3,10 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "perk" ), AutoGenerate]
-public partial class PerkInfo : ItemInfo
-{
-
-}
+public class PerkInfo : ItemInfo { }
 
 public abstract class Perk : EntityComponent<Player>
 {

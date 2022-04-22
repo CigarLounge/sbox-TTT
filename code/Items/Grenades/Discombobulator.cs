@@ -8,12 +8,15 @@ public class Discombobulator : Grenade
 {
 	private const bool AllowJump = false;
 
+	private const string ExplodeSound = "discombobulator_explode-1";
+	private const string Particle = "particles/discombobulator_explode.vpcf";
+
 	protected override void OnExplode()
 	{
 		base.OnExplode();
 
-		Particles.Create( RawStrings.DiscombobulatorParticle, Position );
-		Sound.FromWorld( RawStrings.DiscombobulatorExplodeSound, Position );
+		Particles.Create( Particle, Position );
+		Sound.FromWorld( ExplodeSound, Position );
 
 		float radius = 400;
 		float pushForce = 1024;
@@ -88,5 +91,10 @@ public class Discombobulator : Grenade
 			target.GroundEntity = null;
 			target.Velocity += force * forceDir;
 		}
+	}
+
+	static Discombobulator()
+	{
+		Precache.Add( Particle );
 	}
 }

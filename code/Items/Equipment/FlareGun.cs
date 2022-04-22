@@ -27,7 +27,7 @@ public class FlareGun : Weapon
 
 		trace.Entity.TakeDamage( burnDamage );
 
-		if ( trace.Entity is Corpse )
-			trace.Entity.Delete();
+		if ( trace.Entity is Corpse corpse )
+			corpse.Delete();
 	}
 }

@@ -11,7 +11,7 @@ public enum EntryType : byte
 }
 
 [Library( "ttt_game_text", Description = "Add text entry to the game feed when input fired." )]
-public partial class GameText : Entity
+public class GameText : Entity
 {
 	[Property( "Message" )]
 	public string Message { get; set; } = "";

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class MapHandler
+public class MapHandler
 {
 	public MapSettings MapSettings { get; private set; }
 	public static int RandomWeaponCount = 0;

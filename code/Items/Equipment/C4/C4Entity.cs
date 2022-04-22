@@ -1,13 +1,17 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox;
 
 namespace TTT;
 
 [Library( "ttt_entity_c4", Title = "C4" )]
 public partial class C4Entity : Prop, IEntityHint
 {
+	public const string BeepSound = "c4_beep-1";
+	public const string PlantSound = "c4_plant-1";
+	public const string DefuseSound = "c4_defuse-1";
+	public const string ExplodeSound = "c4_explode-2";
 	public const float MaxTime = 600;
 	public const float MinTime = 45;
 
@@ -67,7 +71,7 @@ public partial class C4Entity : Prop, IEntityHint
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
-		PlaySound( RawStrings.C4Plant );
+		PlaySound( PlantSound );
 
 		CloseC4ArmMenu();
 		if ( player.Team == Team.Traitors )
@@ -92,20 +96,20 @@ public partial class C4Entity : Prop, IEntityHint
 
 	public void Defuse()
 	{
-		PlaySound( RawStrings.C4Defuse );
+		PlaySound( DefuseSound );
 		IsArmed = false;
 		_safeWireNumbers.Clear();
 	}
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		float radius = 750;
+		float radius = 590;
 
 		if ( defusalDetonation )
 			radius /= 2.5f;
 
 		Explosion( radius );
-		Sound.FromWorld( RawStrings.C4Explode, Position );
+		Sound.FromWorld( ExplodeSound, Position );
 		Delete();
 	}
 
@@ -123,12 +127,12 @@ public partial class C4Entity : Prop, IEntityHint
 			var diff = player.Position - Position;
 			float dist = Vector3.DistanceBetween( Position, player.Position );
 
-			if ( dist > radius )
-				continue;
-
 			// TODO: Better way to calculate falloff.
 			dist = Math.Max( 0, dist - 490 );
-			float damage = 125 - dist / 21 * 12;
+			float damage = 125 - 0.01f * (dist * dist);
+
+			if ( damage <= 0 )
+				continue;
 
 			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
 				.WithAttacker( Owner )
@@ -172,7 +176,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		if ( _nextBeepTime )
 		{
-			PlaySound( RawStrings.C4Beep );
+			PlaySound( BeepSound );
 			_nextBeepTime = _totalSeconds / 45;
 		}
 

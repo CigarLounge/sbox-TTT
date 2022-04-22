@@ -9,7 +9,7 @@ public partial class Game
 	public static void RespawnPlayer( int id = 0 )
 	{
 		var player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
-		if ( !player.IsValid() || player.Client.GetValue( RawStrings.Spectator, false ) )
+		if ( !player.IsValid() || player.Client.GetValue( Strings.Spectator, false ) )
 			return;
 
 		player.Respawn();
@@ -81,10 +81,10 @@ public partial class Game
 		if ( !client.IsValid() )
 			return;
 
-		if ( client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
+		if ( client.GetValue<bool>( Strings.HasRockedTheVote ) )
 			return;
 
-		client.SetValue( RawStrings.HasRockedTheVote, true );
+		client.SetValue( Strings.HasRockedTheVote, true );
 		Game.Current.RTVCount += 1;
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );

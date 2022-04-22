@@ -66,11 +66,10 @@ public partial class Game : Sandbox.Game
 
 		client.Pawn = player;
 
-		client.SetValue( RawStrings.Karma, Karma.DefaultValue );
+		client.SetValue( Strings.Karma, Karma.DefaultValue );
 		player.CurrentKarma = player.BaseKarma;
-		Karma.Apply( player );
 
-		client.SetValue( RawStrings.Spectator, true );
+		client.SetValue( Strings.Spectator, true );
 
 		Round.OnPlayerJoin( player );
 

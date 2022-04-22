@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace TTT;
 
 [Library( "role" ), AutoGenerate]
-public partial class RoleInfo : Asset
+public class RoleInfo : Asset
 {
 	[Property]
 	public Team Team { get; set; } = Team.None;

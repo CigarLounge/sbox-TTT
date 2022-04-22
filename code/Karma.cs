@@ -9,11 +9,11 @@ public static class Karma
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
-	public const float KillPenalty = 15f;
+	public const float KillPenalty = 15;
 	public const float Ratio = 0.001f;
-	public const float RoundHeal = 5f;
+	public const float RoundHeal = 5;
 	public const float TRatio = 0.0003f;
-	public const float TBonus = 40f;
+	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
@@ -28,12 +28,12 @@ public static class Karma
 		float k = player.BaseKarma - 1000;
 		float damageFactor;
 
-		damageFactor = 1 + (-0.0000025f * (k * k));
+		damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 
-		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f ); ;
+		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 	}
 
-	public static float DecayMultiplier( Player player )
+	private static float DecayMultiplier( Player player )
 	{
 		if ( FallOff <= 0 || player.CurrentKarma < DefaultValue )
 			return 1;
@@ -48,12 +48,12 @@ public static class Karma
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
 	}
 
-	public static float GetHurtPenalty( float victimKarma, float damage )
+	private static float GetHurtPenalty( float victimKarma, float damage )
 	{
 		return victimKarma * Math.Clamp( damage * Ratio, 0, 1 );
 	}
 
-	public static float GetKillPenalty( float victimKarma )
+	private static float GetKillPenalty( float victimKarma )
 	{
 		return GetHurtPenalty( victimKarma, KillPenalty );
 	}
@@ -61,7 +61,7 @@ public static class Karma
 	/// <summary>
 	/// Compute the reward for hurting a traitor.
 	/// </summary>
-	public static float GetHurtReward( float damage )
+	private static float GetHurtReward( float damage )
 	{
 		return MaxValue * Math.Clamp( damage * TRatio, 0, 1 );
 	}
@@ -69,17 +69,17 @@ public static class Karma
 	/// <summary>
 	/// Compute the reward for killing a traitor.
 	/// </summary>
-	public static float GetKillReward()
+	private static float GetKillReward()
 	{
 		return GetHurtReward( TBonus );
 	}
 
-	public static void GivePenalty( Player player, float penalty )
+	private static void GivePenalty( Player player, float penalty )
 	{
 		player.CurrentKarma = Math.Max( player.CurrentKarma - penalty, 0 );
 	}
 
-	public static void GiveReward( Player player, float reward )
+	private static void GiveReward( Player player, float reward )
 	{
 		reward = DecayMultiplier( player ) * reward;
 		player.CurrentKarma = Math.Min( player.CurrentKarma + reward, MaxValue );
@@ -144,7 +144,7 @@ public static class Karma
 		}
 	}
 
-	public static void RoundIncrement( Player player )
+	private static void RoundIncrement( Player player )
 	{
 		// TODO: Figure out a way to check if the player died by suicide.
 		if ( player.IsSpectator )
@@ -158,18 +158,9 @@ public static class Karma
 		GiveReward( player, reward );
 	}
 
-	public static bool CheckAutoKick( Player player )
+	private static bool CheckAutoKick( Player player )
 	{
-		return player.BaseKarma < MinValue;
-	}
-
-	public static void OnRoundBegin()
-	{
-		foreach ( var client in Client.All )
-		{
-			var player = client.Pawn as Player;
-			Apply( player );
-		}
+		return Game.KarmaEnabled && player.BaseKarma < MinValue;
 	}
 
 	public static void OnRoundEnd()
@@ -181,12 +172,12 @@ public static class Karma
 			RoundIncrement( player );
 			Rebase( player );
 
-			if ( Game.KarmaEnabled && CheckAutoKick( player ) )
+			if ( CheckAutoKick( player ) )
 				client.Kick();
 		}
 	}
 
-	public static void Rebase( Player player )
+	private static void Rebase( Player player )
 	{
 		player.BaseKarma = player.CurrentKarma;
 	}
