@@ -24,8 +24,11 @@ public partial class Game
 	#endregion
 
 	#region Karma
-	[ServerVar( "ttt_karma_enabled" )]
+	[ServerVar( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
 	public static bool KarmaEnabled { get; set; } = true;
+
+	[ServerVar( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
+	public static bool KarmaLowAutoKick { get; set; } = true;
 	#endregion
 
 	#region Map Related
