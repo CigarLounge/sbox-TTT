@@ -58,7 +58,7 @@ public partial class InProgressRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd - 5;
+		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
