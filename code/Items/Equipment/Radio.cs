@@ -33,6 +33,6 @@ public partial class RadioComponent : EntityComponent<Player>
 		base.OnDeactivate();
 
 		if ( Host.IsClient )
-			UI.RoleMenu.Instance.DeleteRadioTab();
+			UI.RoleMenu.Instance.RemoveTab( Strings.RadioTab );
 	}
 }
