@@ -46,8 +46,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SetInteractsExclude( CollisionLayer.Player );
 
 		KilledTime = Time.Now;
-
-		Components.Create<DNA>();
 	}
 
 	public void CopyFrom( Player player )

@@ -23,17 +23,17 @@ public partial class RoleMenu : Panel
 
 	public void AddShopTab()
 	{
-		TabContainer.AddTab( new Shop(), RawStrings.ShopTab, "shopping_cart" );
+		TabContainer.AddTab( new Shop(), Strings.ShopTab, "shopping_cart" );
 	}
 
 	public void AddRadioTab()
 	{
-		TabContainer.AddTab( new RadioMenu(), RawStrings.RadioTab, "radio" );
+		TabContainer.AddTab( new RadioMenu(), Strings.RadioTab, "radio" );
 	}
 
 	public void AddDNATab()
 	{
-		TabContainer.AddTab( new DNAMenu(), RawStrings.DNATab, "fingerprint" );
+		TabContainer.AddTab( new DNAMenu(), Strings.DNATab, "fingerprint" );
 	}
 
 	public void RemoveTab( string tabName )

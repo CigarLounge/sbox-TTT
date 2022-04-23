@@ -3,6 +3,9 @@ using Sandbox;
 
 namespace TTT;
 
+// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
+// Code is heavily W.I.P
+
 [Hammer.Skip]
 [Library( "ttt_equipment_dnascanner", Title = "DNA Scanner" )]
 public partial class DNAScanner : Carriable
@@ -85,7 +88,7 @@ public partial class DNAScanner : Carriable
 		base.ActiveEnd( ent, dropped );
 
 		if ( IsLocalPawn )
-			UI.RoleMenu.Instance.RemoveTab( RawStrings.DNATab );
+			UI.RoleMenu.Instance.RemoveTab( Strings.DNATab );
 	}
 
 	private void Scan()
