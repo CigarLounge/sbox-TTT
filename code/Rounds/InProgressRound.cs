@@ -57,12 +57,12 @@ public partial class InProgressRound : BaseRound
 	{
 		if ( Host.IsClient && Local.Pawn is Player localPlayer )
 		{
-			UI.InfoFeed.Instance?.AddEntry( $"The round has begun! Haste mode is enabled giving Traitors {Game.InProgressSecondsPerDeath} seconds per death!" );
+			UI.InfoFeed.Instance?.AddEntry( $"The round has begun... Traitors receive {Game.InProgressSecondsPerDeath} seconds per death." );
 
 			var karma = (int)localPlayer.Client.GetValue<float>( Strings.Karma );
 			UI.InfoFeed.Instance?.AddEntry( karma >= 1000 ?
-											$"Your karma is {karma}, so you'll deal full damage this round!" :
-											$"Your karma is {karma}, so you'll deal reduced damage this round!" );
+											$"Your karma is {karma}, so you'll deal full damage this round." :
+											$"Your karma is {karma}, so you'll deal reduced damage this round." );
 		}
 
 		if ( !Host.IsServer )
