@@ -19,33 +19,33 @@ public class RoundTimer : Panel
 
 		RoundName.Text = Game.Current.Round.RoundName;
 
-		switch ( Game.Current.Round )
+		if ( Game.Current.Round is WaitingRound )
 		{
-			case WaitingRound:
-			{
-				Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
-				break;
-			}
-
-			case InProgressRound inProgressRound:
-			{
-				Timer.Text = inProgressRound.TimeUntilExpectedRoundEndFormatted;
-
-				var isTeamTraitor = player.Team == Team.Traitors;
-				if ( isTeamTraitor && inProgressRound.TimeUntilRoundEnd != inProgressRound.TimeUntilExpectedRoundEnd )
-					SubText.Text = inProgressRound.TimeUntilRoundEndFormatted;
-
-				if ( !isTeamTraitor && (int)inProgressRound.TimeUntilExpectedRoundEnd < 0 )
-					SubText.Text = "OVERTIME";
-				break;
-			}
-
-			default:
-			{
-				Timer.Text = Game.Current.Round.TimeUntilRoundEndFormatted;
-				SubText.Text = string.Empty;
-				break;
-			}
+			Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
+			return;
 		}
+
+		if ( Game.Current.Round is InProgressRound inProgressRound )
+		{
+			Timer.Text = inProgressRound.TimeUntilExpectedRoundEndFormatted;
+
+			var isTeamTraitor = player.Team == Team.Traitors;
+			if ( isTeamTraitor && inProgressRound.TimeUntilRoundEnd != inProgressRound.TimeUntilExpectedRoundEnd )
+			{
+				SubText.Text = inProgressRound.TimeUntilRoundEndFormatted;
+				SubText.SetClass( "show", true );
+			}
+
+			if ( !isTeamTraitor && (int)inProgressRound.TimeUntilExpectedRoundEnd < 0 )
+			{
+				SubText.Text = "OVERTIME";
+				SubText.SetClass( "show", true );
+			}
+
+			return;
+		}
+
+		Timer.Text = Game.Current.Round.TimeUntilRoundEndFormatted;
+		SubText.SetClass( "show", false );
 	}
 }
