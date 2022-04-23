@@ -88,7 +88,7 @@ public partial class DNAScanner : Carriable
 		base.ActiveEnd( ent, dropped );
 
 		if ( IsLocalPawn )
-			UI.RoleMenu.Instance.RemoveTab( Strings.DNATab );
+			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.DNATab );
 	}
 
 	private void Scan()

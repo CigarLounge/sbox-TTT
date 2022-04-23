@@ -4,6 +4,7 @@ $switch-padding: 6px !default;
 .checkbox
 {
 	cursor: pointer;
+	flex-shrink: 0;
 
     > .label
     {
@@ -53,10 +54,5 @@ $switch-padding: 6px !default;
             content: "circle";
             font-size: 28px;
 		}
-	}
-
-	&:active
-	{
-		transform: scale( 0.9 );
 	}
 }

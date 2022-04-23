@@ -90,7 +90,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 			player.ClearButtons();
 
 			if ( Info.AvailableItems.Count > 0 )
-				UI.RoleMenu.Instance.RemoveTab( Strings.ShopTab );
+				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 		}
 	}
 

@@ -8,6 +8,10 @@ public partial class RoleMenu : Panel
 {
 	public static RoleMenu Instance;
 
+	public const string RadioTab = "Radio";
+	public const string ShopTab = "Shop";
+	public const string DNATab = "DNA";
+
 	private Label RoleHeader { get; set; }
 	private TabContainer TabContainer { get; set; }
 
@@ -23,17 +27,17 @@ public partial class RoleMenu : Panel
 
 	public void AddShopTab()
 	{
-		TabContainer.AddTab( new Shop(), Strings.ShopTab, "shopping_cart" );
+		TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart" );
 	}
 
 	public void AddRadioTab()
 	{
-		TabContainer.AddTab( new RadioMenu(), Strings.RadioTab, "radio" );
+		TabContainer.AddTab( new RadioMenu(), RadioTab, "radio" );
 	}
 
 	public void AddDNATab()
 	{
-		TabContainer.AddTab( new DNAMenu(), Strings.DNATab, "fingerprint" );
+		TabContainer.AddTab( new DNAMenu(), DNATab, "fingerprint" );
 	}
 
 	public void RemoveTab( string tabName )
