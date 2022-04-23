@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_credit_adjust", Description = "Changes the amount of credits upon the activator." )]
+[Library( "ttt_credit_adjust", Title = "Credit Adjust", Description = "Changes the amount of credits upon the activator." )]
 public partial class CreditAdjust : Entity
 {
 	[Property( "Credits", "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default." )]

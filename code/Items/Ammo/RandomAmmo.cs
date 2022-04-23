@@ -2,7 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_ammo_random" )]
+[Library( "ttt_ammo_random", Title = "Random Ammo" )]
+[Hammer.EditorModel( "models/ammo/ammo_smg/ammo_smg.vmdl" )]
 public class RandomAmmo : Entity
 {
 	public override void Spawn()

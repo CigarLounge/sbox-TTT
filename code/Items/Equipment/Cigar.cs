@@ -3,6 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_equipment_cigar", Title = "Cigar" )]
+[Hammer.EditorModel( "models/cigar/cigar.vmdl" )]
 public partial class Cigar : Carriable
 {
 	private TimeUntil _timeUntilNextSmoke = 0;

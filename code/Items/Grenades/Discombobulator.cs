@@ -4,6 +4,7 @@ using System;
 namespace TTT;
 
 [Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
+[Hammer.EditorModel( "models/weapons/w_frag.vmdl" )]
 public class Discombobulator : Grenade
 {
 	private const bool AllowJump = false;

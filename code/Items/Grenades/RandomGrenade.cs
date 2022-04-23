@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Library( "ttt_grenade_random" )]
+[Library( "ttt_grenade_random", Title = "Random Grenade" )]
+[Hammer.EditorModel( "models/weapons/w_frag.vmdl" )]
 public class RandomGrenade : Entity
 {
 	private static readonly List<Type> _cachedGrenadeTypes = new();
@@ -16,7 +17,7 @@ public class RandomGrenade : Entity
 		foreach ( var grenadeType in grenadeTypes )
 		{
 			var grenadeInfo = Asset.GetInfo<CarriableInfo>( Library.GetAttribute( grenadeType ).Name );
-			
+
 			if ( grenadeInfo is not null && grenadeInfo.Spawnable )
 				_cachedGrenadeTypes.Add( grenadeType );
 		}
