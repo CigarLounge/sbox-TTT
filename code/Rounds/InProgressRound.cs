@@ -14,9 +14,9 @@ public partial class InProgressRound : BaseRound
 	[Net]
 	public TimeUntil TimeUntilExpectedRoundEnd { get; set; }
 
-	public string TimeUntilExpectedRoundEndFormatted => !TimeUntilExpectedRoundEnd ?
-														TimeUntilExpectedRoundEnd.Relative.TimerString()
-														: $"+{TimeUntilExpectedRoundEnd.Relative.TimerString()}";
+	public string TimeUntilExpectedRoundEndFormatted => (int)TimeUntilExpectedRoundEnd < 0 ?
+														$"+{TimeUntilExpectedRoundEnd.Relative.TimerString()}"
+														: TimeUntilExpectedRoundEnd.Relative.TimerString();
 
 	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
@@ -58,7 +58,7 @@ public partial class InProgressRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd;
+		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd - 5;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.

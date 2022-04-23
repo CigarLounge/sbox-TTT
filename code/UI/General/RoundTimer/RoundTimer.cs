@@ -35,7 +35,7 @@ public class RoundTimer : Panel
 				if ( isTeamTraitor && inProgressRound.TimeUntilRoundEnd != inProgressRound.TimeUntilExpectedRoundEnd )
 					SubText.Text = inProgressRound.TimeUntilRoundEndFormatted;
 
-				if ( !isTeamTraitor && inProgressRound.TimeUntilExpectedRoundEnd )
+				if ( !isTeamTraitor && (int)inProgressRound.TimeUntilExpectedRoundEnd < 0 )
 					SubText.Text = "OVERTIME";
 				break;
 			}
