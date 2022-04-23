@@ -35,7 +35,7 @@ public class Traitor : BaseRole
 		base.OnKilled( player );
 
 		var clients = Utils.GiveAliveDetectivesCredits( 100 );
-		UI.InfoFeed.ClientDisplayRoleEntry
+		UI.InfoFeed.DisplayRoleEntry
 		(
 			To.Multiple( clients ),
 			Asset.GetInfo<RoleInfo>( "ttt_role_detective" ),

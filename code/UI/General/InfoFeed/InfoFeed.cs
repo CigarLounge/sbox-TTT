@@ -3,15 +3,14 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public partial class InfoFeed : Panel
 {
 	public static InfoFeed Instance;
 
-	public InfoFeed() : base()
+	public InfoFeed()
 	{
 		Instance = this;
-
-		StyleSheet.Load( "/UI/General/InfoFeed/InfoFeed.scss" );
 	}
 
 	public void AddEntry( string method, Color? color = null )
@@ -66,19 +65,25 @@ public partial class InfoFeed : Panel
 	}
 
 	[ClientRpc]
-	public static void ClientDisplayEntry( string message, Color color )
+	public static void DisplayEntry( string message )
+	{
+		Instance?.AddEntry( message );
+	}
+
+	[ClientRpc]
+	public static void DisplayEntry( string message, Color color )
 	{
 		Instance?.AddEntry( message, color );
 	}
 
 	[ClientRpc]
-	public static void ClientDisplayClientEntry( string message )
+	public static void DisplayClientEntry( string message )
 	{
 		Instance?.AddClientEntry( Local.Client, message );
 	}
 
 	[ClientRpc]
-	public static void ClientDisplayRoleEntry( RoleInfo roleInfo, string message )
+	public static void DisplayRoleEntry( RoleInfo roleInfo, string message )
 	{
 		Instance?.AddRoleEntry( roleInfo, message );
 	}

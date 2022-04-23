@@ -28,19 +28,19 @@ public class GameText : Entity
 		switch ( Receiver )
 		{
 			case EntryType.Activator:
-				UI.InfoFeed.ClientDisplayEntry( To.Single( activator ), Message, Color );
+				UI.InfoFeed.DisplayEntry( To.Single( activator ), Message, Color );
 				break;
 
 			case EntryType.All:
-				UI.InfoFeed.ClientDisplayEntry( To.Everyone, Message, Color );
+				UI.InfoFeed.DisplayEntry( To.Everyone, Message, Color );
 				break;
 
 			case EntryType.Innocents:
-				UI.InfoFeed.ClientDisplayEntry( Team.Innocents.ToClients(), Message, Color );
+				UI.InfoFeed.DisplayEntry( Team.Innocents.ToClients(), Message, Color );
 				break;
 
 			case EntryType.Traitors:
-				UI.InfoFeed.ClientDisplayEntry( Team.Traitors.ToClients(), Message, Color );
+				UI.InfoFeed.DisplayEntry( Team.Traitors.ToClients(), Message, Color );
 				break;
 		}
 	}
