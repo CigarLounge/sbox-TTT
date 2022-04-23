@@ -7,15 +7,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class InfoFeedEntry : Panel
 {
-	private readonly RealTimeSince _timeSinceBorn = 0;
-
-	public InfoFeedEntry()
-	{
-		AddClass( "background-color-primary" );
-		AddClass( "text-shadow" );
-		AddClass( "opacity-heavy" );
-		AddClass( "rounded" );
-	}
+	private readonly TimeUntil _timeUntilDelete = 6;
 
 	public Label AddLabel( string text, string classname )
 	{
@@ -27,7 +19,7 @@ public partial class InfoFeedEntry : Panel
 	{
 		base.Tick();
 
-		if ( _timeSinceBorn > 6 )
+		if ( _timeUntilDelete )
 			Delete();
 	}
 }
