@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TTT.UI;
 
-public partial class DamageIndicator : Panel
+public class DamageIndicator : Panel
 {
 	public static DamageIndicator Instance;
 

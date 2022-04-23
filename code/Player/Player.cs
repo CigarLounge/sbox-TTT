@@ -58,8 +58,9 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
-		Client.SetValue( RawStrings.Spectator, IsForcedSpectator );
+		Client.SetValue( Strings.Spectator, IsForcedSpectator );
 
+		CleanRound = true;
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayerName = string.Empty;

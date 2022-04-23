@@ -24,6 +24,7 @@ public partial class InProgressRound : BaseRound
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
+		Karma.OnPlayerKilled( player );
 		player.UpdateMissingInAction();
 		ChangeRoundIfOver();
 	}
@@ -128,7 +129,7 @@ public partial class InProgressRound : BaseRound
 
 	private bool ChangeRoundIfOver()
 	{
-		Team result = IsRoundOver();
+		var result = IsRoundOver();
 
 		if ( result != Team.None && !Game.PreventWin )
 		{

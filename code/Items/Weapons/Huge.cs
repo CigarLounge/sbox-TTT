@@ -4,6 +4,7 @@ using System;
 namespace TTT;
 
 [Library( "ttt_weapon_huge", Title = "H.U.G.E" )]
+[Hammer.EditorModel( "models/weapons/w_mg4.vmdl" )]
 public class Huge : Weapon
 {
 	private const string BulletsBodyGroup = "bullets";

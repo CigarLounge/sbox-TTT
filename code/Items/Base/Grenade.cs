@@ -7,8 +7,8 @@ public abstract partial class Grenade : Carriable
 {
 	[Net, Predicted]
 	public TimeUntil TimeUntilExplode { get; protected set; }
-	protected virtual float Seconds => 3f;
 
+	protected virtual float Seconds => 3f;
 	private bool _isThrown = false;
 
 	public override void ActiveStart( Entity entity )

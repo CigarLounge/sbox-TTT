@@ -10,8 +10,8 @@ public enum EntryType : byte
 	Traitors,
 }
 
-[Library( "ttt_game_text", Description = "Add text entry to the game feed when input fired." )]
-public partial class GameText : Entity
+[Library( "ttt_game_text", Title = "Game Text", Description = "Add text entry to the game feed when input fired." )]
+public class GameText : Entity
 {
 	[Property( "Message" )]
 	public string Message { get; set; } = "";
@@ -28,19 +28,19 @@ public partial class GameText : Entity
 		switch ( Receiver )
 		{
 			case EntryType.Activator:
-				RPCs.ClientDisplayEntry( To.Single( activator ), Message, Color );
+				UI.InfoFeed.ClientDisplayEntry( To.Single( activator ), Message, Color );
 				break;
 
 			case EntryType.All:
-				RPCs.ClientDisplayEntry( To.Everyone, Message, Color );
+				UI.InfoFeed.ClientDisplayEntry( To.Everyone, Message, Color );
 				break;
 
 			case EntryType.Innocents:
-				RPCs.ClientDisplayEntry( Team.Innocents.ToClients(), Message, Color );
+				UI.InfoFeed.ClientDisplayEntry( Team.Innocents.ToClients(), Message, Color );
 				break;
 
 			case EntryType.Traitors:
-				RPCs.ClientDisplayEntry( Team.Traitors.ToClients(), Message, Color );
+				UI.InfoFeed.ClientDisplayEntry( Team.Traitors.ToClients(), Message, Color );
 				break;
 		}
 	}

@@ -9,10 +9,17 @@ public class PreRound : BaseRound
 	public override string RoundName => "Preparing";
 	public override int RoundDuration => Game.Current.TotalRoundsPlayed == 0 ? Game.PreRoundTime * 2 : Game.PreRoundTime;
 
+	public override void OnPlayerSpawned( Player player )
+	{
+		base.OnPlayerSpawned( player );
+
+		Karma.Apply( player );
+		player.Inventory.Add( new Hands() );
+	}
+
 	public override void OnPlayerJoin( Player player )
 	{
 		base.OnPlayerJoin( player );
-
 		player.Respawn();
 	}
 
@@ -49,7 +56,7 @@ public class PreRound : BaseRound
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.Client.SetValue( RawStrings.Spectator, player.IsForcedSpectator );
+			player.Client.SetValue( Strings.Spectator, player.IsForcedSpectator );
 
 			if ( player.IsForcedSpectator )
 			{
@@ -94,12 +101,5 @@ public class PreRound : BaseRound
 
 		if ( player.IsValid() && Game.Current.Round is PreRound )
 			player.Respawn();
-	}
-
-	public override void OnPlayerSpawned( Player player )
-	{
-		base.OnPlayerSpawned( player );
-
-		player.Inventory.Add( new Hands() );
 	}
 }

@@ -3,6 +3,7 @@
 namespace TTT;
 
 [Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
+[Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
 public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;

@@ -76,7 +76,7 @@ public partial class Player
 			using ( Prediction.Off() )
 			{
 				SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
-				PlaySound( RawStrings.AmmoPickupSound );
+				PlaySound( Strings.AmmoPickupSound );
 			}
 		}
 

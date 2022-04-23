@@ -3,6 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_weapon_scout", Title = "Scout" )]
+[Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
 public class Scout : Weapon
 {
 	public bool IsScoped { get; private set; }
@@ -10,9 +11,9 @@ public class Scout : Weapon
 	private float _defaultFOV;
 	private UI.Scope _sniperScopePanel;
 
-	public override void ActiveStart( Entity ent )
+	public override void ActiveStart( Entity entity )
 	{
-		base.ActiveStart( ent );
+		base.ActiveStart( entity );
 
 		IsScoped = false;
 		_defaultFOV = Owner.CameraMode.FieldOfView;
@@ -28,7 +29,7 @@ public class Scout : Weapon
 			if ( Prediction.FirstTime )
 			{
 				SetScoped( !IsScoped );
-				PlaySound( RawStrings.ScopeInSound );
+				PlaySound( Strings.ScopeInSound );
 			}
 		}
 

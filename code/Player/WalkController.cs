@@ -13,7 +13,7 @@ public class Duck : Sandbox.Duck
 	}
 }
 
-public partial class WalkController : Sandbox.WalkController
+public class WalkController : Sandbox.WalkController
 {
 	public WalkController() : base()
 	{
@@ -23,12 +23,11 @@ public partial class WalkController : Sandbox.WalkController
 		StopSpeed = 150.0f;
 	}
 
-	private const float _fallDamageThreshold = 650f;
-	private const float _fallDamageScale = 0.3f;
+	private const float _fallDamageThreshold = 700f;
+	private const float _fallDamageScale = 0.28f;
 
 	public override void Simulate()
 	{
-
 		base.Simulate();
 
 		var fallVelocity = -Pawn.Velocity.z;
@@ -47,6 +46,8 @@ public partial class WalkController : Sandbox.WalkController
 				Force = Vector3.Down * Velocity.Length,
 				Damage = damage,
 			} );
+
+			Pawn.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
 		}
 	}
 

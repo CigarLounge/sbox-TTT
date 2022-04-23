@@ -46,7 +46,36 @@ public partial class Player
 	public float MaxHealth { get; set; } = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float LastDistanceToAttacker { get; set; } = 0f;
-	public readonly float ArmorReductionPercentage = 0.7f;
+	private static readonly float ArmorReductionPercentage = 0.7f;
+
+	/// <summary>
+	/// The base/start karma is determined once per round and determines the player's
+	/// damage penalty. It is networked and shown on clients.
+	/// </summary>
+	public float BaseKarma
+	{
+		get => Client.GetValue<float>( Strings.Karma );
+		set => Client.SetValue( Strings.Karma, value );
+	}
+
+	/// <summary>
+	/// The damage factor scales how much damage the player deals, so if it is 0.9
+	/// then the player only deals 90% of his original damage.
+	/// </summary>
+	public float DamageFactor { get; set; } = 1f;
+
+	/// <summary>
+	/// If a player does not damage team members in a round, he has a "clean" round
+	/// and gets a bonus for it.
+	/// </summary>
+	public bool CleanRound { get; set; } = true;
+
+	/// <summary>
+	/// The live karma starts equal to the base karma, but is updated "live" as the
+	/// player damages/kills others. When a player damages/kills another, the
+	/// live karma is used to determine his karma penalty.
+	/// </summary>
+	public float CurrentKarma { get; set; }
 
 	public struct HealthGroup
 	{
@@ -89,54 +118,49 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		LastDamageInfo = info;
-
-		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
-		if ( hitboxGroup == HitboxGroup.Head )
-		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
-			if ( weaponInfo is not null )
-				info.Damage *= weaponInfo.HeadshotMultiplier;
-		}
-		else if ( Perks.Has( typeof( BodyArmor ) ) && (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
-		{
-			info.Damage *= ArmorReductionPercentage;
-		}
-
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-
 			if ( Game.Current.Round is not InProgressRound and not PostRound )
 				return;
 
-			ClientAnotherPlayerDidDamage( To.Single( Client ), info.Position, Health.LerpInverse( 100, 0 ) );
+			if ( info.Flags != DamageFlags.Slash )
+				info.Damage *= attacker.DamageFactor;
 		}
 
-		ClientTookDamage( To.Single( Client ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position, info.Damage );
+		if ( info.Flags == DamageFlags.Bullet )
+			info.Damage *= GetBulletDamageMultipliers( info );
 
-		if ( (info.Flags & DamageFlags.Fall) == DamageFlags.Fall )
-		{
-			var volume = 0.05f * info.Damage;
-			PlaySound( "fall" + Rand.Int( 1, 3 ) ).SetVolume( volume.Clamp( 0, 0.5f ) ).SetPosition( info.Position );
-		}
-		else if ( (info.Flags & DamageFlags.Bullet) == DamageFlags.Bullet )
-		{
-			PlaySound( "grunt" + Rand.Int( 1, 4 ) ).SetVolume( 0.4f ).SetPosition( info.Position );
-		}
+		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
+		OnDamageTaken( To.Single( Client ), damageLocation );
+
+		LastDamageInfo = info;
+
+		if ( Game.Current.Round is InProgressRound )
+			Karma.OnPlayerHurt( this );
 
 		base.TakeDamage( info );
 	}
 
-	[ClientRpc]
-	public void ClientAnotherPlayerDidDamage( Vector3 position, float inverseHealth )
+	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
-		Sound.FromScreen( "dm.ui_attacker" )
-			.SetPitch( 1 + inverseHealth * 1 )
-			.SetPosition( position );
+		var damageMultiplier = 1f;
+
+		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
+		if ( isHeadShot )
+		{
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
+			if ( weaponInfo is not null )
+				damageMultiplier *= weaponInfo.HeadshotMultiplier;
+		}
+
+		if ( !isHeadShot && Perks.Has( typeof( BodyArmor ) ) )
+			damageMultiplier *= ArmorReductionPercentage;
+
+		return damageMultiplier;
 	}
 
 	[ClientRpc]
-	public void ClientTookDamage( Vector3 position, float damage )
+	public void OnDamageTaken( Vector3 position )
 	{
 		UI.DamageIndicator.Instance?.OnHit( position );
 		UI.PlayerInfo.Instance?.OnHit();

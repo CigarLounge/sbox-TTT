@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_force_win", Description = "Forces round to end and win be awarded to team depending on input." )]
-public partial class ForceWin : Entity
+[Library( "ttt_force_win", Title = "Force Win", Description = "Forces round to end and win be awarded to team depending on input." )]
+public class ForceWin : Entity
 {
 	[Property( "Team", "The name of the team that will be forced to win." )]
 	public Team Team { get; set; }

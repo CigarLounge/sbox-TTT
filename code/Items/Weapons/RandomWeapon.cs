@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Library( "ttt_weapon_random" )]
+[Library( "ttt_weapon_random", Title = "Random Weapon" )]
+[Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
 public class RandomWeapon : Entity
 {
 	/// <summary>
@@ -24,43 +25,36 @@ public class RandomWeapon : Entity
 	[Property( Title = "Amount of Ammo" )]
 	public int AmmoToSpawn { get; set; } = 0;
 
+	static RandomWeapon()
+	{
+		var weapons = Library.GetAll<Weapon>();
+		foreach ( var weaponType in weapons )
+		{
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
+
+			if ( weaponInfo is not null && weaponInfo.Spawnable )
+				_cachedWeaponTypes.Add( weaponType );
+		}
+	}
+
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		Transmit = TransmitType.Never;
+		var weaponTypes = _cachedWeaponTypes;
 
-		if ( _cachedWeaponTypes.IsNullOrEmpty() )
+		if ( SelectedAmmoType != AmmoType.None )
 		{
-			var weapons = Library.GetAll<Weapon>();
-			foreach ( var weaponType in weapons )
-			{
-				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
-				if ( weaponInfo is not null && weaponInfo.Spawnable )
-					_cachedWeaponTypes.Add( weaponType );
-			}
-		}
-
-		if ( SelectedAmmoType == AmmoType.None )
-		{
-			Activate( _cachedWeaponTypes );
-		}
-		else
-		{
-			var selectedAmmoWeaponTypes = new List<Type>();
+			weaponTypes = new List<Type>();
 			foreach ( var type in _cachedWeaponTypes )
 			{
 				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( type ).Name );
 				if ( weaponInfo is not null && weaponInfo.AmmoType == SelectedAmmoType )
-					selectedAmmoWeaponTypes.Add( type );
+					weaponTypes.Add( type );
 			}
-
-			Activate( selectedAmmoWeaponTypes );
 		}
-	}
 
-	public void Activate( List<Type> weaponTypes )
-	{
 		if ( weaponTypes.Count <= 0 )
 			return;
 

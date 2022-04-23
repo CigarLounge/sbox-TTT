@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using System;
 
 namespace TTT.UI;
 
@@ -20,7 +21,11 @@ public class ScoreboardEntry : Panel
 			return;
 
 		PlayerName.Text = Client.Name;
-		Karma.Text = Client.GetInt( "karma" ).ToString();
+
+		Karma.Enabled( Game.KarmaEnabled );
+		if ( Karma.IsEnabled() )
+			Karma.Text = MathF.Round( Client.GetValue<float>( Strings.Karma ) ).ToString();
+
 		Ping.Text = Client.Ping.ToString();
 
 		SetClass( "me", Client == Local.Client );

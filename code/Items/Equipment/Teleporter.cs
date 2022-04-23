@@ -9,17 +9,17 @@ public partial class Teleporter : Carriable
 	[Net, Predicted]
 	public int Charges { get; private set; } = 16;
 
-	[Net, Local, Predicted]
-	public TimeSince TimeSinceAction { get; private set; }
-
-	[Net, Local, Predicted]
-	public TimeSince TimeSinceStartedTeleporting { get; private set; }
-
 	[Net, Predicted]
 	public bool IsTeleporting { get; private set; }
 
 	[Net, Local, Predicted]
 	public bool LocationIsSet { get; private set; }
+
+	[Net, Local, Predicted]
+	public TimeSince TimeSinceAction { get; private set; }
+
+	[Net, Local, Predicted]
+	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	public override string SlotText => Charges.ToString();
 	private Vector3 _teleportLocation;
@@ -64,20 +64,23 @@ public partial class Teleporter : Carriable
 			return;
 		}
 
-		// We can't do anything if we aren't standing on the ground
-		if ( Charges <= 0 || TimeSinceAction < 1f || Owner.GroundEntity is not WorldEntity )
+		if ( Charges <= 0 || TimeSinceAction < 1f )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack2 ) )
+		// We can't do anything if we aren't standing on the ground
+		if ( Owner.GroundEntity is not WorldEntity )
+			return;
+
+		if ( Input.Pressed( InputButton.Attack1 ) )
+		{
+			StartTeleport();
+		}
+		else if ( Input.Pressed( InputButton.Attack2 ) )
 		{
 			using ( LagCompensation() )
 			{
 				SetLocation();
 			}
-		}
-		else if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			StartTeleport();
 		}
 	}
 
@@ -88,23 +91,22 @@ public partial class Teleporter : Carriable
 		if ( !IsTeleporting )
 			return;
 
+		input.ActiveChild = this;
 		input.ClearButton( InputButton.Jump );
 		input.ClearButton( InputButton.Drop );
-		input.ActiveChild = this;
 		input.InputDirection = 0;
 	}
 
 	private void SetLocation()
 	{
-		TimeSinceAction = 0;
-
 		var trace = Trace.Ray( Owner.Position, Owner.Position )
-				.WorldOnly()
-				.Ignore( Owner )
-				.Ignore( this )
-				.Run();
+			.WorldOnly()
+			.Ignore( Owner )
+			.Ignore( this )
+			.Run();
 
 		LocationIsSet = true;
+		TimeSinceAction = 0;
 		_teleportLocation = trace.EndPosition;
 
 		if ( Prediction.FirstTime )
@@ -123,9 +125,9 @@ public partial class Teleporter : Carriable
 		if ( !LocationIsSet )
 			return;
 
+		Charges -= 1;
 		IsTeleporting = true;
 		TimeSinceAction = 0;
-		TimeSinceStartedTeleporting = 0;
-		Charges -= 1;
+		TimeSinceStartedTeleporting = 0;	
 	}
 }

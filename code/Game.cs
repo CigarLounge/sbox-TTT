@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.Linq;
 
 namespace TTT;
@@ -22,13 +21,6 @@ public partial class Game : Sandbox.Game
 	{
 		if ( IsServer )
 			_ = new UI.Hud();
-	}
-
-	public override void Simulate( Client client )
-	{
-		Round.OnTick();
-
-		base.Simulate( client );
 	}
 
 	/// <summary>
@@ -71,8 +63,14 @@ public partial class Game : Sandbox.Game
 	public override void ClientJoined( Client client )
 	{
 		var player = new Player();
+
 		client.Pawn = player;
-		client.SetValue( RawStrings.Spectator, true );
+
+		client.SetValue( Strings.Karma, Karma.DefaultValue );
+		player.CurrentKarma = player.BaseKarma;
+
+		client.SetValue( Strings.Spectator, true );
+
 		Round.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
@@ -94,8 +92,6 @@ public partial class Game : Sandbox.Game
 
 	public override bool CanHearPlayerVoice( Client source, Client dest )
 	{
-		Host.AssertServer();
-
 		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
 			return true;
 
@@ -123,6 +119,12 @@ public partial class Game : Sandbox.Game
 
 		ForceRoundChange( new WaitingRound() );
 		MapHandler = new();
+	}
+
+	[Event.Tick]
+	private void Tick()
+	{
+		Round?.OnTick();
 	}
 
 	private void OnRoundChanged( BaseRound oldRound, BaseRound newRound )

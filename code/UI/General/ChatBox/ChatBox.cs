@@ -103,9 +103,9 @@ public partial class ChatBox : Panel
 		if ( string.IsNullOrWhiteSpace( Input.Text ) )
 			return;
 
-		if ( Input.Text == RawStrings.RTVCommand )
+		if ( Input.Text == Strings.RTVCommand )
 		{
-			if ( Local.Client.GetValue<bool>( RawStrings.HasRockedTheVote ) )
+			if ( Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) )
 			{
 				AddInfo( "You have already rocked the vote!" );
 				return;
@@ -124,7 +124,7 @@ public partial class ChatBox : Panel
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
-		if ( message == RawStrings.RTVCommand )
+		if ( message == Strings.RTVCommand )
 		{
 			Game.RockTheVote();
 			return;

@@ -3,9 +3,9 @@ using System;
 
 namespace TTT;
 
-public abstract partial class Droppable<T> : Carriable where T : Prop, new()
+public abstract class Droppable<T> : Carriable where T : Prop, new()
 {
-	public GhostEntity GhostEntity { get; set; }
+	public GhostEntity GhostEntity { get; private set; }
 
 	public override void ActiveStart( Entity entity )
 	{
@@ -108,8 +108,5 @@ public abstract partial class Droppable<T> : Carriable where T : Prop, new()
 			GhostEntity.ShowInvalid();
 	}
 
-	protected virtual void OnDrop( Entity entity )
-	{
-
-	}
+	protected virtual void OnDrop( Entity entity ) { }
 }

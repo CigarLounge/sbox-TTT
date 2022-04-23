@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_equipment_defuser", Title = "Defuser" )]
-public partial class Defuser : Carriable
+public class Defuser : Carriable
 {
 	public override void Simulate( Client client )
 	{
