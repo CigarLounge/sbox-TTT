@@ -65,9 +65,9 @@ public partial class Player
 	public float DamageFactor { get; set; } = 1f;
 
 	/// <summary>
-	/// If a player damages another team member that is "clean", they'll end up with
-	/// time being tacked onto this timer. A player will receive a karma bonus for
-	/// remaining "clean" at the end of the round.
+	/// If a player damages another team member that is "clean" (no active timer),
+	/// they'll end up with time being tacked onto this timer. A player will receive a
+	/// karma bonus for remaining "clean" (having no active timer) at the end of the round.
 	/// </summary>
 	public TimeUntil TimeUntilClean
 	{

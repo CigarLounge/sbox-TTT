@@ -110,8 +110,6 @@ public static class Karma
 			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
 			GivePenalty( attacker, penalty );
 			attacker.TimeUntilClean += penalty * CleanTimeHurtFactor;
-
-			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -140,8 +138,6 @@ public static class Karma
 			float penalty = GetKillPenalty( player.CurrentKarma );
 			GivePenalty( attacker, penalty );
 			attacker.TimeUntilClean += penalty * CleanTimeKillFactor;
-
-			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
