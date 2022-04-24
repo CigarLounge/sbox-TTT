@@ -16,6 +16,8 @@ public static class Karma
 	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
+	public const float CleanTimeHurtFactor = 3;
+	public const float CleanTimeKillFactor = CleanTimeHurtFactor * 2;
 
 	public static void Apply( Player player )
 	{
@@ -98,7 +100,7 @@ public static class Karma
 
 		float damage = Math.Min( player.Health, player.LastDamageInfo.Damage );
 
-		if ( attacker.Team == player.Team )
+		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
@@ -107,7 +109,9 @@ public static class Karma
 
 			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
 			GivePenalty( attacker, penalty );
-			attacker.CleanRound = false;
+			attacker.TimeUntilClean += penalty * CleanTimeHurtFactor;
+
+			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -126,7 +130,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		if ( attacker.Team == player.Team )
+		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
@@ -135,7 +139,9 @@ public static class Karma
 
 			float penalty = GetKillPenalty( player.CurrentKarma );
 			GivePenalty( attacker, penalty );
-			attacker.CleanRound = false;
+			attacker.TimeUntilClean += penalty * CleanTimeKillFactor;
+
+			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -152,7 +158,7 @@ public static class Karma
 
 		float reward = RoundHeal;
 
-		if ( player.CleanRound )
+		if ( player.TimeUntilClean )
 			reward += CleanBonus;
 
 		GiveReward( player, reward );
