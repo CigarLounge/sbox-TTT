@@ -81,7 +81,7 @@ public partial class Radar : Perk
 			}
 		}
 
-		SendPlayerRadarPositions( To.Single( Entity ), Entity, pointData.ToArray() );
+		SendPlayerRadarPositions( To.Single( Entity ), pointData.ToArray() );
 	}
 
 	private void ClearRadarPoints()
@@ -93,9 +93,9 @@ public partial class Radar : Perk
 	}
 
 	[ClientRpc]
-	public static void SendPlayerRadarPositions( Player player, RadarPointData[] points )
+	public static void SendPlayerRadarPositions( RadarPointData[] points )
 	{
-		if ( !player.IsValid() || !player.IsLocalPawn )
+		if ( Local.Pawn is not Player player )
 			return;
 
 		var radar = player.Perks.Find<Radar>();
