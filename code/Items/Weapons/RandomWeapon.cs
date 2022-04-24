@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Library( "ttt_weapon_random" )]
+[Library( "ttt_weapon_random", Title = "Random Weapon" )]
+[Hammer.EditorModel( "models/weapons/w_mp5.vmdl" )]
 public class RandomWeapon : Entity
 {
 	/// <summary>

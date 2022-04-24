@@ -68,6 +68,9 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	{
 		if ( player.IsLocalPawn )
 		{
+			if ( Info.AvailableItems.Count > 0 )
+				UI.RoleMenu.Instance.AddShopTab();
+
 			Player.RoleButtons = GetRoleButtons();
 
 			foreach ( var roleButton in Player.RoleButtons )
@@ -83,7 +86,12 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	public virtual void OnDeselect( Player player )
 	{
 		if ( player.IsLocalPawn )
+		{
 			player.ClearButtons();
+
+			if ( Info.AvailableItems.Count > 0 )
+				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
+		}
 	}
 
 	public virtual void OnKilled( Player player ) { }

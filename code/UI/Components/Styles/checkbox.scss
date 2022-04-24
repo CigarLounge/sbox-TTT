@@ -1,60 +1,58 @@
 $form-control-height: 24px !default;
+$switch-padding: 6px !default;
 
-checkbox
+.checkbox
 {
-    cursor: pointer;
-    color: $button-secondary;
-    align-items: center;
-    min-height: 30;
-    flex-shrink: 0;
+	cursor: pointer;
+	flex-shrink: 0;
 
-    label
+    > .label
     {
-        font-family: Poppins;
-        pointer-events: none;
-        color: $button-primary;
-    }
-
-    > .checkmark
-    {
-        padding: 1px;
-        font-size: 22px;
-        border: 3px solid $button-secondary-fg; 
-        border-radius: 4px;
-        text-align: center;
-        justify-content: center;
+        margin-left: 5px;
         align-items: center;
-        color: transparent;
-        min-height: $form-control-height;
-        margin-right: 10px;
-        pointer-events: none;
     }
 
-    &.checked
-    {
-        > .checkmark
-        {
-            color: white;
-        }
-    }
+	> .checkmark
+	{
+		border: 0px solid $primary;
+		border-radius: 100px;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		color: rgb(255, 255, 255);
+		padding: $switch-padding;
+		padding-right: 30px;
+		padding-left: $switch-padding;
+		transition: all 0.2s ease-out;
+		background-color: rgb(61, 61, 61);
+        color: $secondary;
 
-    &:active
-    {
-        color: $button-primary;
-    }
+        width: 55px;
+        height: 28px;
+        content: "circle";
+        font-size: 28px;
 
-    &:hover
-    {
-        color: $button-secondary;
-    }
+		> .handle
+		{
+			width: 20px;
+			height: 20px;
+			border-radius: 100px;
+		}
+	}
 
-    &.inactive
-    {
-        opacity: 0.35;
-        pointer-events: none;
+	&.checked
+	{
+        height: 28px;
 
-        > .checkmark {
-            border: 3px solid $button-primary;
-        }
-    }
+		> .checkmark
+		{
+			background-color: #fdc418;
+			padding-left: 34px;
+			padding-right: $switch-padding;
+
+            width: 55px;
+            content: "circle";
+            font-size: 28px;
+		}
+	}
 }

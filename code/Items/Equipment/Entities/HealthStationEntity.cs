@@ -4,6 +4,7 @@ using System;
 namespace TTT;
 
 [Library( "ttt_entity_healthstation", Title = "Health Station" )]
+[Hammer.EditorModel( "models/health_station/health_station.vmdl" )]
 public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/health_station/health_station.vmdl" );

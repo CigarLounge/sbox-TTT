@@ -56,8 +56,11 @@ public class TabContainer : Panel
 	/// <summary>
 	/// Add a tab to the sheet
 	/// </summary>
-	public Tab AddTab( Panel panel, string title, string icon = null )
+	public void AddTab( Panel panel, string title, string icon = null )
 	{
+		if ( Tabs.Any( ( t ) => t.Title == title ) )
+			return;
+
 		var index = Tabs.Count;
 
 		var tab = new Tab( this, title, icon, panel );
@@ -67,15 +70,13 @@ public class TabContainer : Panel
 
 		panel.Parent = SheetContainer;
 
-		if ( index == 0 || cookieIndex == index )	
-			SwitchTab( tab, false );	
-		else	
+		if ( index == 0 || cookieIndex == index )
+			SwitchTab( tab, false );
+		else
 			tab.Active = false;
-		
-		return tab;
 	}
 
-	public void DeleteTab( string title )
+	public void RemoveTab( string title )
 	{
 		for ( int i = Tabs.Count - 1; i >= 0; --i )
 		{
@@ -86,11 +87,12 @@ public class TabContainer : Panel
 				tab.Page.Delete( true );
 				tab.Button.Delete( true );
 				Tabs.RemoveAt( i );
+				break;
 			}
 		}
 
-		if ( !Tabs.IsNullOrEmpty() )
-			SwitchTab( Tabs.First() );
+		if ( Tabs.Count > 0 )
+			SwitchTab( Tabs[^1] );
 	}
 
 	public override void OnTemplateSlot( INode element, string slotName, Panel panel )

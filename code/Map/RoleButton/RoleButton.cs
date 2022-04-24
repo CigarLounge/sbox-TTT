@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Hammer.Sphere( "radius" )]
-[Library( "ttt_role_button" )]
+[Library( "ttt_role_button", Title = "Role Button" )]
 public partial class RoleButton : Entity
 {
 	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
