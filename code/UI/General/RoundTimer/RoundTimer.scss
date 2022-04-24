@@ -1,4 +1,6 @@
-﻿RoundTimer
+﻿@import "/ui/Hud.scss";
+
+RoundTimer
 {
     position: absolute;
     top: 50px;
@@ -29,5 +31,20 @@
         font-size: 24px;
         font-weight: bold;
         background-color: #1e1e1ea2;
+
+        .sub-text
+        {
+            color: $info;
+            font-size: 16px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.2s ease-in;
+
+            &.show
+            {
+                opacity: 1;
+                bottom: -12px;
+            }
+        }
     }
 }

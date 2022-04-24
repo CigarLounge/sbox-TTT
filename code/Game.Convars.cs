@@ -9,7 +9,10 @@ public partial class Game
 	public static int PreRoundTime { get; set; } = 20;
 
 	[ServerVar( "ttt_inprogressround_time", Help = "The length of the in progress round time.", Saved = true )]
-	public static int InProgressRoundTime { get; set; } = 360;
+	public static int InProgressRoundTime { get; set; } = 300;
+
+	[ServerVar( "ttt_inprogressround_secs_per_death", Help = "The number of seconds to add to the in progress round timer when someone dies.", Saved = true )]
+	public static int InProgressSecondsPerDeath { get; set; } = 15;
 
 	[ServerVar( "ttt_postround_time", Help = "The length of the postround time.", Saved = true )]
 	public static int PostRoundTime { get; set; } = 10;

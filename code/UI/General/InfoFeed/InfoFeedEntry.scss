@@ -1,0 +1,25 @@
+InfoFeedEntry 
+{
+    position: relative;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    transition: all 0.25s ease-out;
+
+    &:intro 
+    {
+        right: 10px;
+        opacity: 0;
+    }
+
+    &:outro
+    {
+        opacity: 0;
+        margin-top: -38px;
+    }
+
+    .left, .right 
+    {
+        padding: 0 5px;
+        font-weight: bold;
+    }
+}

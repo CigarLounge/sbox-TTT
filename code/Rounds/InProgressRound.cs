@@ -5,17 +5,23 @@ namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
-	public override string RoundName => "In Progress";
-
 	[Net]
 	public List<Player> Players { get; set; }
 
 	[Net]
 	public List<Player> Spectators { get; set; }
 
-	private readonly List<RoleButton> _logicButtons = new();
+	[Net]
+	public TimeUntil TimeUntilExpectedRoundEnd { get; set; }
 
+	public string TimeUntilExpectedRoundEndFormatted => (int)TimeUntilExpectedRoundEnd < 0 ?
+														$"+{TimeUntilExpectedRoundEnd.Relative.TimerString()}"
+														: TimeUntilExpectedRoundEnd.Relative.TimerString();
+
+	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
+
+	private readonly List<RoleButton> _logicButtons = new();
 
 	public override void OnPlayerKilled( Player player )
 	{
@@ -49,8 +55,21 @@ public partial class InProgressRound : BaseRound
 
 	protected override void OnStart()
 	{
+		if ( Host.IsClient && Local.Pawn is Player localPlayer )
+		{
+			UI.InfoFeed.Instance?.AddEntry( "Roles have been selected and the round has begun..." );
+			UI.InfoFeed.Instance?.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
+
+			var karma = (int)localPlayer.Client.GetValue<float>( Strings.Karma );
+			UI.InfoFeed.Instance?.AddEntry( karma >= 1000 ?
+											$"Your karma is {karma}, so you'll deal full damage this round." :
+											$"Your karma is {karma}, so you'll deal reduced damage this round." );
+		}
+
 		if ( !Host.IsServer )
 			return;
+
+		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
