@@ -75,9 +75,7 @@ public static class Utils
 	/// </summary>
 	/// <param name="seconds"></param>
 	/// <returns>Seconds as a string in the format "mm:ss"</returns>
-	public static string TimerString( this float seconds ) => (int)seconds < 0 ?
-																$"+{TimeSpan.FromSeconds( seconds.CeilToInt() ):mm\\:ss}" :
-																TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
+	public static string TimerString( this float seconds ) => (int)seconds < 0 ? $"+{TimeSpan.FromSeconds( seconds.CeilToInt() ):mm\\:ss}" : TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
 
 	public static void Enabled( this Panel panel, bool enabled )
 	{
