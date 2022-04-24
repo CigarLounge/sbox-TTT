@@ -105,7 +105,7 @@ public partial class Player
 		if ( Health > MaxHealth )
 			return HealthGroupList[^1];
 
-		int index = (int)((health - 1f) / (MaxHealth / 5f));
+		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
 		return HealthGroupList[index];
 	}
 

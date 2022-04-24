@@ -28,10 +28,11 @@ public static class Karma
 
 	public static string GetKarmaGroup( Player player )
 	{
-		if ( player.CurrentKarma >= DefaultValue )
+		var playerKarma = player.Client.GetValue<float>( Strings.Karma );
+		if ( playerKarma >= DefaultValue )
 			return KarmaGroupList[^1];
 
-		var index = (int)(player.CurrentKarma / (DefaultValue / KarmaGroupList.Length - 1));
+		var index = (int)((playerKarma - MinValue) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
 		return KarmaGroupList[index];
 	}
 
