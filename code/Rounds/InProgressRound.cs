@@ -63,7 +63,7 @@ public partial class InProgressRound : BaseRound
 			UI.InfoFeed.Instance?.AddEntry( "Roles have been selected and the round has begun..." );
 			UI.InfoFeed.Instance?.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
-			var karma = (int)localPlayer.Client.GetValue<float>( Strings.Karma );
+			var karma = localPlayer.BaseKarma;
 			UI.InfoFeed.Instance?.AddEntry( karma >= 1000 ?
 											$"Your karma is {karma}, so you'll deal full damage this round." :
 											$"Your karma is {karma}, so you'll deal reduced damage this round." );

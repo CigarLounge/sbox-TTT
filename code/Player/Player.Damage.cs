@@ -75,7 +75,7 @@ public partial class Player
 	/// player damages/kills others. When a player damages/kills another, the
 	/// live karma is used to determine his karma penalty.
 	/// </summary>
-	public float CurrentKarma { get; set; }
+	public float ActiveKarma { get; set; }
 
 	public struct HealthGroup
 	{
