@@ -28,6 +28,8 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerKilled( player );
 
+		TimeUntilActualRoundEnd += Game.InProgressSecondsPerDeath;
+
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
 
