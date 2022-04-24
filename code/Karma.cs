@@ -17,15 +17,33 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
+	private static readonly string[] KarmaGroupList = new string[]
+	{
+		"Liability",
+		"Dangerous",
+		"Trigger-happy",
+		"Crude",
+		"Reputable",
+	};
+
+	public static string GetKarmaGroup( Player player )
+	{
+		if ( player.CurrentKarma >= DefaultValue )
+			return KarmaGroupList[^1];
+
+		var index = (int)(player.CurrentKarma / (DefaultValue / KarmaGroupList.Length - 1));
+		return KarmaGroupList[index];
+	}
+
 	public static void Apply( Player player )
 	{
-		if ( !Game.KarmaEnabled || player.BaseKarma >= 1000 )
+		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
 		{
 			player.DamageFactor = 1f;
 			return;
 		}
 
-		float k = player.BaseKarma - 1000;
+		float k = player.BaseKarma - DefaultValue;
 		float damageFactor;
 
 		damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));

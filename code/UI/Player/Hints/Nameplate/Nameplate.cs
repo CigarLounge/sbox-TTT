@@ -8,9 +8,10 @@ public class Nameplate : EntityHintPanel
 {
 	public readonly Player _player;
 
-	private Label Name { get; set; }
-	private Label HealthIndicator { get; set; }
-	private Label Role { get; set; }
+	private Label Name { get; init; }
+	private Label HealthStatus { get; init; }
+	private Label KarmaStatus { get; init; }
+	private Label Role { get; init; }
 
 	public Nameplate( Player player ) => _player = player;
 
@@ -22,8 +23,10 @@ public class Nameplate : EntityHintPanel
 		var health = _player.Health / _player.MaxHealth * 100;
 		var healthGroup = _player.GetHealthGroup( health );
 
-		HealthIndicator.Style.FontColor = healthGroup.Color;
-		HealthIndicator.Text = healthGroup.Title;
+		HealthStatus.Style.FontColor = healthGroup.Color;
+		HealthStatus.Text = healthGroup.Title;
+
+		KarmaStatus.Text = Karma.GetKarmaGroup( _player );
 
 		Name.Text = _player.Client?.Name ?? "";
 		if ( _player.Role is not NoneRole and not Innocent )
