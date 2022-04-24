@@ -57,8 +57,8 @@ public partial class Game : Sandbox.Game
 
 	public override void OnKilled( Entity pawn )
 	{
-		if ( Round is InProgressRound )
-			Round.TimeUntilRoundEnd += InProgressSecondsPerDeath;
+		if ( Round is InProgressRound inProgressRound )
+			inProgressRound.TimeUntilActualRoundEnd += InProgressSecondsPerDeath;
 	}
 
 	public override void ClientJoined( Client client )

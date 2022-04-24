@@ -11,12 +11,13 @@ public partial class InProgressRound : BaseRound
 	[Net]
 	public List<Player> Spectators { get; set; }
 
+	/// <summary>
+	/// Unique case where InProgressRound has a seperate timer which determines the actual end of the round.
+	/// This timer is only displayed to Traitors as it increments every play death during the round.
+	/// </summary>
 	[Net]
-	public TimeUntil TimeUntilExpectedRoundEnd { get; set; }
-
-	public string TimeUntilExpectedRoundEndFormatted => (int)TimeUntilExpectedRoundEnd < 0 ?
-														$"+{TimeUntilExpectedRoundEnd.Relative.TimerString()}"
-														: TimeUntilExpectedRoundEnd.Relative.TimerString();
+	public TimeUntil TimeUntilActualRoundEnd { get; set; }
+	public string TimeUntilActualRoundEndFormatted => TimeUntilActualRoundEnd.Relative.TimerString();
 
 	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
@@ -69,7 +70,7 @@ public partial class InProgressRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		TimeUntilExpectedRoundEnd = TimeUntilRoundEnd;
+		TimeUntilActualRoundEnd = TimeUntilRoundEnd;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
@@ -135,10 +136,11 @@ public partial class InProgressRound : BaseRound
 		if ( !Host.IsServer )
 			return;
 
-		if ( !Game.PreventWin )
-			base.OnSecond();
-		else
-			TimeUntilRoundEnd += 1f;
+		if ( Game.PreventWin )
+			TimeUntilActualRoundEnd += 1f;
+
+		if ( TimeUntilActualRoundEnd )
+			OnTimeUp();
 
 		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
