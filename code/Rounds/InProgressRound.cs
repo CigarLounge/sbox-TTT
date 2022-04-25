@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 
 namespace TTT;
@@ -11,7 +12,7 @@ public partial class InProgressRound : BaseRound
 
 	/// <summary>
 	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
-	/// The real timer is only displayed to Traitors as it increments every play death during the round.
+	/// The real timer is only displayed to Traitors as it increments every player death during the round.
 	/// </summary>
 	[Net]
 	public TimeUntil FakeTime { get; private set; }
@@ -65,7 +66,7 @@ public partial class InProgressRound : BaseRound
 			UI.InfoFeed.Instance?.AddEntry( "Roles have been selected and the round has begun..." );
 			UI.InfoFeed.Instance?.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
-			int karma = (int)localPlayer.BaseKarma;
+			float karma = MathF.Round( localPlayer.BaseKarma );
 			UI.InfoFeed.Instance?.AddEntry( karma >= 1000 ?
 											$"Your karma is {karma}, so you'll deal full damage this round." :
 											$"Your karma is {karma}, so you'll deal reduced damage this round." );
