@@ -56,7 +56,7 @@ public partial class MapVotePanel : Panel
 	{
 		var mapSelectionRound = Game.Current.Round as MapSelectionRound;
 
-		TimeText.Text = mapSelectionRound.TimeUntilRoundEndFormatted;
+		TimeText.Text = mapSelectionRound.TimeLeftFormatted;
 
 		foreach ( var icon in MapIcons )
 			icon.VoteCount = "0";

@@ -5,17 +5,18 @@ namespace TTT;
 public abstract partial class BaseRound : BaseNetworkable
 {
 	[Net]
-	public TimeUntil TimeUntilRoundEnd { get; set; }
+	public TimeUntil TimeLeft { get; protected set; }
 
 	public virtual int RoundDuration => 0;
 	public virtual string RoundName => string.Empty;
-	public string TimeUntilRoundEndFormatted => TimeUntilRoundEnd.Relative.TimerString();
-	private RealTimeUntil _nextSecondTime = 0f;
+	public string TimeLeftFormatted => TimeLeft.Relative.TimerString();
+
+	private TimeUntil _nextSecondTime = 0f;
 
 	public void Start()
 	{
 		if ( Host.IsServer && RoundDuration > 0 )
-			TimeUntilRoundEnd = RoundDuration;
+			TimeLeft = RoundDuration;
 
 		OnStart();
 	}
@@ -23,7 +24,7 @@ public abstract partial class BaseRound : BaseNetworkable
 	public void Finish()
 	{
 		if ( Host.IsServer )
-			TimeUntilRoundEnd = 0f;
+			TimeLeft = 0f;
 
 		OnFinish();
 	}
@@ -53,7 +54,7 @@ public abstract partial class BaseRound : BaseNetworkable
 
 	public virtual void OnSecond()
 	{
-		if ( Host.IsServer && TimeUntilRoundEnd )
+		if ( Host.IsServer && TimeLeft )
 			OnTimeUp();
 	}
 
