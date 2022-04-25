@@ -3,6 +3,18 @@ using System;
 
 namespace TTT;
 
+public struct KarmaGroup
+{
+	public string Title;
+	public Color Color;
+
+	public KarmaGroup( string title, Color color )
+	{
+		Title = title;
+		Color = color;
+	}
+}
+
 public static class Karma
 {
 	// Maybe turn the values into ServerVars down the line.
@@ -17,21 +29,21 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	private static readonly string[] KarmaGroupList = new string[]
+	private static readonly KarmaGroup[] KarmaGroupList = new KarmaGroup[]
 	{
-		"Liability",
-		"Dangerous",
-		"Trigger-happy",
-		"Crude",
-		"Reputable",
+		new KarmaGroup("Liability", Color.FromBytes(255, 130, 0)),
+		new KarmaGroup("Dangerous", Color.FromBytes(255, 180, 0)),
+		new KarmaGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
+		new KarmaGroup("Crude", Color.FromBytes(255, 240, 135)),
+		new KarmaGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
 
-	public static string GetKarmaGroup( Player player )
+	public static KarmaGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
 			return KarmaGroupList[^1];
 
-		var index = (int)((player.BaseKarma - MinValue) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
+		int index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
 		return KarmaGroupList[index];
 	}
 

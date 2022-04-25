@@ -26,7 +26,10 @@ public class Nameplate : EntityHintPanel
 		HealthStatus.Style.FontColor = healthGroup.Color;
 		HealthStatus.Text = healthGroup.Title;
 
-		KarmaStatus.Text = Karma.GetKarmaGroup( _player );
+		var karmaGroup = Karma.GetKarmaGroup( _player );
+
+		KarmaStatus.Style.FontColor = karmaGroup.Color;
+		KarmaStatus.Text = karmaGroup.Title;
 
 		Name.Text = _player.Client?.Name ?? "";
 		if ( _player.Role is not NoneRole and not Innocent )
