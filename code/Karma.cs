@@ -16,8 +16,6 @@ public static class Karma
 	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
-	public const float CleanTimeHurtFactor = 3;
-	public const float CleanTimeKillFactor = CleanTimeHurtFactor * 2;
 
 	public static void Apply( Player player )
 	{
@@ -62,7 +60,7 @@ public static class Karma
 
 	private static float GetTimerPenalty( float cleanTimer, float penalty )
 	{
-		return Math.Max( cleanTimer * penalty * 0.2f, 5f );
+		return Math.Max( cleanTimer * penalty * 0.2f, penalty );
 	}
 
 	/// <summary>
@@ -115,8 +113,6 @@ public static class Karma
 			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
 			GivePenalty( attacker, penalty );
 			attacker.TimeUntilClean = GetTimerPenalty( attacker.TimeUntilClean, penalty );
-
-			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -145,8 +141,6 @@ public static class Karma
 			float penalty = GetKillPenalty( player.CurrentKarma );
 			GivePenalty( attacker, penalty );
 			attacker.TimeUntilClean = GetTimerPenalty( attacker.TimeUntilClean, penalty );
-
-			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
