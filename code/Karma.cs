@@ -58,11 +58,6 @@ public static class Karma
 		return GetHurtPenalty( victimKarma, KillPenalty );
 	}
 
-	private static float GetTimerPenalty( float cleanTimer, float penalty )
-	{
-		return Math.Max( cleanTimer * penalty * 0.2f, penalty );
-	}
-
 	/// <summary>
 	/// Compute the reward for hurting a traitor.
 	/// </summary>
@@ -82,6 +77,7 @@ public static class Karma
 	private static void GivePenalty( Player player, float penalty )
 	{
 		player.CurrentKarma = Math.Max( player.CurrentKarma - penalty, 0 );
+		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), MaxValue );
 	}
 
 	private static void GiveReward( Player player, float reward )
@@ -112,7 +108,8 @@ public static class Karma
 
 			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
 			GivePenalty( attacker, penalty );
-			attacker.TimeUntilClean = GetTimerPenalty( attacker.TimeUntilClean, penalty );
+
+			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -140,7 +137,8 @@ public static class Karma
 
 			float penalty = GetKillPenalty( player.CurrentKarma );
 			GivePenalty( attacker, penalty );
-			attacker.TimeUntilClean = GetTimerPenalty( attacker.TimeUntilClean, penalty );
+
+			Log.Info( attacker.TimeUntilClean );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
