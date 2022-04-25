@@ -72,12 +72,7 @@ public partial class Player
 	public TimeUntil TimeUntilClean
 	{
 		get => _timeUntilClean;
-		set
-		{
-			if ( _timeUntilClean )
-				_timeUntilClean = 0;
-			_timeUntilClean = value;
-		}
+		set { _timeUntilClean = Math.Min( value, float.MaxValue ); }
 	}
 	private TimeUntil _timeUntilClean = 0f;
 
