@@ -31,7 +31,7 @@ public partial class Player : Sandbox.Player
 		base.Spawn();
 
 		SetModel( "models/citizen/citizen.vmdl" );
-		SetRole( new NoneRole() );
+		Role = new NoneRole();
 
 		Health = 0;
 		LifeState = LifeState.Respawnable;
@@ -50,7 +50,7 @@ public partial class Player : Sandbox.Player
 	{
 		base.ClientSpawn();
 
-		SetRole( new NoneRole() );
+		Role = new NoneRole();
 	}
 
 	public override void Respawn()
@@ -58,7 +58,7 @@ public partial class Player : Sandbox.Player
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
-		Client.SetValue( Strings.Spectator, IsForcedSpectator );
+		IsSpectator = IsForcedSpectator;
 
 		CleanRound = true;
 		Confirmer = null;
@@ -70,7 +70,7 @@ public partial class Player : Sandbox.Player
 
 		DeleteFlashlight();
 		DeleteItems();
-		SetRole( new NoneRole() );
+		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
@@ -119,7 +119,7 @@ public partial class Player : Sandbox.Player
 			CreateFlashlight();
 
 		if ( !IsLocalPawn )
-			SetRole( new NoneRole() );
+			Role = new NoneRole();
 		else
 			ClearButtons();
 	}

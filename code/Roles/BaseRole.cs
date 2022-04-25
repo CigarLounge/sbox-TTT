@@ -79,19 +79,23 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 			return;
 		}
 
+		if ( !Host.IsServer )
+			return;
+
+		player.Client?.SetInt( "team", (int)Team );
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
 	}
 
 	public virtual void OnDeselect( Player player )
 	{
-		if ( player.IsLocalPawn )
-		{
-			player.ClearButtons();
+		if ( !player.IsLocalPawn )
+			return;
 
-			if ( Info.AvailableItems.Count > 0 )
-				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
-		}
+		player.ClearButtons();
+
+		if ( Info.AvailableItems.Count > 0 )
+			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 	}
 
 	public virtual void OnKilled( Player player ) { }

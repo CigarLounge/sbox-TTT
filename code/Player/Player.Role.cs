@@ -4,26 +4,30 @@ namespace TTT;
 
 public partial class Player
 {
-	public BaseRole Role { get; private set; }
-	public Team Team => Role.Team;
-
-	public void SetRole( BaseRole role )
+	public BaseRole Role
 	{
-		if ( role == Role )
-			return;
+		get => _role;
+		set
+		{
+			if ( _role == value )
+				return;
 
-		Role?.OnDeselect( this );
-		var oldRole = Role;
-		Role = role;
+			_role?.OnDeselect( this );
+			var oldRole = _role;
+			_role = value;
 
-		// Always send the role to this player's client
-		if ( IsServer )
-			SendRole();
+			// Always send the role to this player's client
+			if ( IsServer )
+				SendRole();
 
-		Role.OnSelect( this );
+			_role.OnSelect( this );
 
-		Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
+			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
+		}
 	}
+	private BaseRole _role;
+
+	public Team Team => Role.Team;
 
 	[ClientRpc]
 	private void ClientSetRole( int id )
@@ -34,12 +38,12 @@ public partial class Player
 
 	public void SetRole( string libraryName )
 	{
-		SetRole( Library.Create<BaseRole>( libraryName ) );
+		Role = Library.Create<BaseRole>( libraryName );
 	}
 
 	public void SetRole( int id )
 	{
-		SetRole( Asset.CreateFromId<BaseRole>( id ) );
+		Role = Asset.CreateFromId<BaseRole>( id );
 	}
 
 	/// <summary>

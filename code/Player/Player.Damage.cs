@@ -26,6 +26,18 @@ public enum HitboxIndex
 }
 */
 
+public struct HealthGroup
+{
+	public string Title;
+	public Color Color;
+
+	public HealthGroup( string title, Color color )
+	{
+		Title = title;
+		Color = color;
+	}
+}
+
 public enum HitboxGroup
 {
 	None = -1,
@@ -47,6 +59,12 @@ public partial class Player
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float LastDistanceToAttacker { get; set; } = 0f;
 	private static readonly float ArmorReductionPercentage = 0.7f;
+
+	public new float Health
+	{
+		get => base.Health;
+		set => base.Health = Math.Min( value, MaxHealth );
+	}
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -77,27 +95,13 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	public struct HealthGroup
-	{
-		public string Title;
-		public Color Color;
-		public int MinHealth;
-
-		public HealthGroup( string title, Color color, int minHealth )
-		{
-			Title = title;
-			Color = color;
-			MinHealth = minHealth;
-		}
-	}
-
 	private static readonly HealthGroup[] HealthGroupList = new HealthGroup[]
 	{
-		new HealthGroup("Near Death", Color.FromBytes(246, 6, 6), 0),
-		new HealthGroup("Badly Wounded", Color.FromBytes(234, 129, 4), 20),
-		new HealthGroup("Wounded", Color.FromBytes(213, 202, 4), 40),
-		new HealthGroup("Hurt", Color.FromBytes(171, 231, 3), 60),
-		new HealthGroup("Healthy", Color.FromBytes(44, 233, 44), 80)
+		new HealthGroup("Near Death", Color.FromBytes(246, 6, 6)),
+		new HealthGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
+		new HealthGroup("Wounded", Color.FromBytes(213, 202, 4)),
+		new HealthGroup("Hurt", Color.FromBytes(171, 231, 3)),
+		new HealthGroup("Healthy", Color.FromBytes(44, 233, 44))
 	};
 
 	public HealthGroup GetHealthGroup( float health )
@@ -107,13 +111,6 @@ public partial class Player
 
 		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
 		return HealthGroupList[index];
-	}
-
-	public void SetHealth( float health )
-	{
-		Host.AssertServer();
-
-		Health = Math.Min( health, MaxHealth );
 	}
 
 	public override void TakeDamage( DamageInfo info )

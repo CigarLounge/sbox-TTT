@@ -90,9 +90,9 @@ public class PreRound : BaseRound
 		players.Shuffle();
 
 		int index = 0;
-		while ( traitorCount-- > 0 ) players[index++].SetRole( new Traitor() );
-		while ( detectiveCount-- > 0 ) players[index++].SetRole( new Detective() );
-		while ( index < players.Count ) players[index++].SetRole( new Innocent() );
+		while ( traitorCount-- > 0 ) players[index++].Role = new Traitor();
+		while ( detectiveCount-- > 0 ) players[index++].Role = new Detective();
+		while ( index < players.Count ) players[index++].Role = new Innocent();
 	}
 
 	private static async void StartRespawnTimer( Player player )

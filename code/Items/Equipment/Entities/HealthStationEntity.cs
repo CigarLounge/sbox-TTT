@@ -47,7 +47,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 		float healAmount = Math.Min( StoredHealth, Math.Min( HealAmount * Time.Delta, healthNeeded ) );
 
-		player.SetHealth( player.Health + healAmount );
+		player.Health += healAmount;
 
 		StoredHealth -= healAmount;
 		_timeUntilRecharge = 1;
