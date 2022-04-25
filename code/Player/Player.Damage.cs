@@ -83,10 +83,11 @@ public partial class Player
 	public float DamageFactor { get; set; } = 1f;
 
 	/// <summary>
-	/// If a player does not damage team members in a round, he has a "clean" round
-	/// and gets a bonus for it.
+	/// If a player damages another team member that is "clean" (no active timer),
+	/// they'll end up with time being tacked onto this timer. A player will receive a
+	/// karma bonus for remaining "clean" (having no active timer) at the end of the round.
 	/// </summary>
-	public bool CleanRound { get; set; } = true;
+	public TimeUntil TimeUntilClean { get; set; } = 0f;
 
 	/// <summary>
 	/// The live karma starts equal to the base karma, but is updated "live" as the

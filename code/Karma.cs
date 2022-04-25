@@ -107,6 +107,7 @@ public static class Karma
 	private static void GivePenalty( Player player, float penalty )
 	{
 		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
+		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), int.MaxValue );
 	}
 
 	private static void GiveReward( Player player, float reward )
@@ -128,7 +129,7 @@ public static class Karma
 
 		float damage = Math.Min( player.Health, player.LastDamageInfo.Damage );
 
-		if ( attacker.Team == player.Team )
+		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
@@ -137,7 +138,6 @@ public static class Karma
 
 			float penalty = GetHurtPenalty( player.ActiveKarma, damage );
 			GivePenalty( attacker, penalty );
-			attacker.CleanRound = false;
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -156,7 +156,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		if ( attacker.Team == player.Team )
+		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
@@ -165,7 +165,6 @@ public static class Karma
 
 			float penalty = GetKillPenalty( player.ActiveKarma );
 			GivePenalty( attacker, penalty );
-			attacker.CleanRound = false;
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
@@ -182,7 +181,7 @@ public static class Karma
 
 		float reward = RoundHeal;
 
-		if ( player.CleanRound )
+		if ( player.TimeUntilClean )
 			reward += CleanBonus;
 
 		GiveReward( player, reward );
