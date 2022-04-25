@@ -59,10 +59,8 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnStart();
 
-		if ( Host.IsClient )
+		if ( Host.IsClient && Local.Pawn is Player localPlayer )
 		{
-			var localPlayer = Local.Pawn as Player;
-
 			UI.InfoFeed.Instance?.AddEntry( "Roles have been selected and the round has begun..." );
 			UI.InfoFeed.Instance?.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 

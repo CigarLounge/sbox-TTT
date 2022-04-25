@@ -17,15 +17,33 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
+	private static readonly string[] KarmaGroupList = new string[]
+	{
+		"Liability",
+		"Dangerous",
+		"Trigger-happy",
+		"Crude",
+		"Reputable",
+	};
+
+	public static string GetKarmaGroup( Player player )
+	{
+		if ( player.BaseKarma >= DefaultValue )
+			return KarmaGroupList[^1];
+
+		var index = (int)((player.BaseKarma - MinValue) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
+		return KarmaGroupList[index];
+	}
+
 	public static void Apply( Player player )
 	{
-		if ( !Game.KarmaEnabled || player.BaseKarma >= 1000 )
+		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
 		{
 			player.DamageFactor = 1f;
 			return;
 		}
 
-		float k = player.BaseKarma - 1000;
+		float k = player.BaseKarma - DefaultValue;
 		float damageFactor;
 
 		damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
@@ -35,14 +53,14 @@ public static class Karma
 
 	private static float DecayMultiplier( Player player )
 	{
-		if ( FallOff <= 0 || player.CurrentKarma < DefaultValue )
+		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
 			return 1;
 
-		if ( player.CurrentKarma >= MaxValue )
+		if ( player.ActiveKarma >= MaxValue )
 			return 1;
 
 		float baseDiff = MaxValue - DefaultValue;
-		float plyDiff = player.CurrentKarma - DefaultValue;
+		float plyDiff = player.ActiveKarma - DefaultValue;
 		float half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
@@ -76,13 +94,13 @@ public static class Karma
 
 	private static void GivePenalty( Player player, float penalty )
 	{
-		player.CurrentKarma = Math.Max( player.CurrentKarma - penalty, 0 );
+		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
 	}
 
 	private static void GiveReward( Player player, float reward )
 	{
 		reward = DecayMultiplier( player ) * reward;
-		player.CurrentKarma = Math.Min( player.CurrentKarma + reward, MaxValue );
+		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
 	}
 
 
@@ -105,7 +123,7 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetHurtPenalty( player.CurrentKarma, damage );
+			float penalty = GetHurtPenalty( player.ActiveKarma, damage );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
@@ -133,7 +151,7 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetKillPenalty( player.CurrentKarma );
+			float penalty = GetKillPenalty( player.ActiveKarma );
 			GivePenalty( attacker, penalty );
 			attacker.CleanRound = false;
 		}
@@ -179,6 +197,6 @@ public static class Karma
 
 	private static void Rebase( Player player )
 	{
-		player.BaseKarma = player.CurrentKarma;
+		player.BaseKarma = player.ActiveKarma;
 	}
 }

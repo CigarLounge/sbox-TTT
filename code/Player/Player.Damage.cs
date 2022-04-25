@@ -75,7 +75,7 @@ public partial class Player
 	/// player damages/kills others. When a player damages/kills another, the
 	/// live karma is used to determine his karma penalty.
 	/// </summary>
-	public float CurrentKarma { get; set; }
+	public float ActiveKarma { get; set; }
 
 	public struct HealthGroup
 	{
@@ -103,9 +103,9 @@ public partial class Player
 	public HealthGroup GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
-			return HealthGroupList[4];
+			return HealthGroupList[^1];
 
-		int index = (int)((health - 1f) / (MaxHealth / 5f));
+		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
 		return HealthGroupList[index];
 	}
 
