@@ -1,23 +1,22 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 
 namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
-	[Net]
 	public List<Player> Players { get; set; }
 
-	[Net]
 	public List<Player> Spectators { get; set; }
 
 	/// <summary>
-	/// Unique case where InProgressRound has a seperate timer which determines the actual end of the round.
-	/// This timer is only displayed to Traitors as it increments every play death during the round.
+	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
+	/// The real timer is only displayed to Traitors as it increments every player death during the round.
 	/// </summary>
 	[Net]
-	public TimeUntil TimeUntilActualRoundEnd { get; set; }
-	public string TimeUntilActualRoundEndFormatted => TimeUntilActualRoundEnd.Relative.TimerString();
+	public TimeUntil FakeTime { get; private set; }
+	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
 
 	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
@@ -28,7 +27,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerKilled( player );
 
-		TimeUntilActualRoundEnd += Game.InProgressSecondsPerDeath;
+		TimeLeft += Game.InProgressSecondsPerDeath;
 
 		Players.Remove( player );
 		Spectators.AddIfDoesNotContain( player );
@@ -58,27 +57,28 @@ public partial class InProgressRound : BaseRound
 
 	protected override void OnStart()
 	{
+		base.OnStart();
+
 		if ( Host.IsClient && Local.Pawn is Player localPlayer )
 		{
 			UI.InfoFeed.Instance?.AddEntry( "Roles have been selected and the round has begun..." );
 			UI.InfoFeed.Instance?.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
-			var karma = (int)localPlayer.BaseKarma;
+			float karma = MathF.Round( localPlayer.BaseKarma );
 			UI.InfoFeed.Instance?.AddEntry( karma >= 1000 ?
 											$"Your karma is {karma}, so you'll deal full damage this round." :
 											$"Your karma is {karma}, so you'll deal reduced damage this round." );
+
+			return;
 		}
 
-		if ( !Host.IsServer )
-			return;
-
-		TimeUntilActualRoundEnd = TimeUntilRoundEnd;
+		FakeTime = TimeLeft;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
 		if ( MapHandler.RandomWeaponCount == 0 )
 		{
-			foreach ( Player player in Players )
+			foreach ( var player in Players )
 			{
 				GiveFixedLoadout( player );
 			}
@@ -139,9 +139,9 @@ public partial class InProgressRound : BaseRound
 			return;
 
 		if ( Game.PreventWin )
-			TimeUntilActualRoundEnd += 1f;
+			TimeLeft += 1f;
 
-		if ( TimeUntilActualRoundEnd )
+		if ( TimeLeft )
 			OnTimeUp();
 
 		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.

@@ -14,32 +14,36 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( Game.Current.Round is null || Local.Pawn is not Player player )
+		if ( Game.Current.Round is null )
 			return;
 
+		var player = Local.Pawn as Player;
+
 		RoundName.Text = Game.Current.Round.RoundName;
-		Timer.Text = Game.Current.Round is not WaitingRound ?
-							$"{Game.Current.Round.TimeUntilRoundEndFormatted}" :
-							$"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
 
-		if ( Game.Current.Round is InProgressRound inProgressRound )
+		if ( Game.Current.Round is WaitingRound )
+			Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
+		else
+			Timer.Text = $"{Game.Current.Round.TimeLeftFormatted}";
+
+		if ( Game.Current.Round is not InProgressRound inProgressRound )
 		{
-			var isTeamTraitor = player.Team == Team.Traitors;
-			if ( isTeamTraitor && inProgressRound.TimeUntilRoundEnd != inProgressRound.TimeUntilActualRoundEnd )
-			{
-				SubText.Text = inProgressRound.TimeUntilActualRoundEndFormatted;
-				SubText.SetClass( "show", true );
-			}
-
-			if ( !isTeamTraitor && (int)inProgressRound.TimeUntilRoundEnd < 0 )
-			{
-				SubText.Text = "OVERTIME";
-				SubText.SetClass( "show", true );
-			}
-
+			SubText.SetClass( "show", false );
 			return;
 		}
 
-		SubText.SetClass( "show", false );
+		Timer.Text = inProgressRound.FakeTimeFormatted;
+		bool isTraitor = player.Team == Team.Traitors;
+
+		if ( isTraitor && inProgressRound.TimeLeft != inProgressRound.FakeTime )
+		{
+			SubText.Text = inProgressRound.TimeLeftFormatted;
+			SubText.SetClass( "show", true );
+		}
+		else if ( !isTraitor && (int)inProgressRound.FakeTime < 0 )
+		{
+			SubText.Text = "OVERTIME";
+			SubText.SetClass( "show", true );
+		}
 	}
 }
