@@ -37,15 +37,15 @@ public partial class InProgressRound : BaseRound
 		if ( player.Team is Team.Innocents )
 			InnocentTeamDeathCount += 1;
 
-		var pct = (float)InnocentTeamDeathCount / InnocentTeamCount;
-		if ( pct >= Game.CreditsAwardPercentage )
+		var percentageAlive = (float)InnocentTeamDeathCount / InnocentTeamCount;
+		if ( percentageAlive >= Game.CreditsAwardPercentage )
 		{
-			Utils.GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
+			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
 			InnocentTeamDeathCount = 0;
 		}
 
 		if ( player.Role is Traitor )
-			Utils.GivePlayersCredits( new Detective(), Game.DetectiveTraitorDeathReward );
+			GivePlayersCredits( new Detective(), Game.DetectiveTraitorDeathReward );
 		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
 			GiveTraitorCredits( p );
 
@@ -181,6 +181,23 @@ public partial class InProgressRound : BaseRound
 		}
 
 		return false;
+	}
+
+	private void GivePlayersCredits( BaseRole role, int credits )
+	{
+		var clients = Utils.GetAliveClientsWithRole( role );
+
+		clients.ForEach( ( cl ) =>
+		{
+			if ( cl.Pawn is Player p )
+				p.Credits += credits;
+		} );
+		UI.InfoFeed.DisplayRoleEntry
+		(
+			To.Multiple( clients ),
+			Asset.GetInfo<RoleInfo>( role.Title ),
+			$"You have been awarded {credits} credits for your performance."
+		);
 	}
 
 	private void GiveTraitorCredits( Player traitor )

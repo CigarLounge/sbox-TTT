@@ -51,28 +51,6 @@ public static class Utils
 	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
 
 	/// <summary>
-	/// Gives credits to every single player with the specified role.
-	/// </summary>
-	/// <param name="role">The specified role to give credits to.</param>
-	/// <param name="credits">The amount of credits to give.</param>
-	public static void GivePlayersCredits( BaseRole role, int credits )
-	{
-		var clients = GetAliveClientsWithRole( role );
-
-		clients.ForEach( ( cl ) =>
-		{
-			if ( cl.Pawn is Player p )
-				p.Credits += credits;
-		} );
-		UI.InfoFeed.DisplayRoleEntry
-		(
-			To.Multiple( clients ),
-			Asset.GetInfo<RoleInfo>( role.Title ),
-			$"You have been awarded {credits} credits for your performance."
-		);
-	}
-
-	/// <summary>
 	/// Returns an approximate value for meters given the Source engine units (for distances)
 	/// based on https://developer.valvesoftware.com/wiki/Dimensions
 	/// </summary>
