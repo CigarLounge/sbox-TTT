@@ -33,17 +33,4 @@ public class Detective : BaseRole
 		if ( Host.IsServer )
 			player.RemoveClothing();
 	}
-
-	public override void OnKilled( Player player )
-	{
-		base.OnKilled( player );
-
-		var killer = player.LastAttacker as Player;
-
-		if ( killer.IsValid() && killer.IsAlive() && killer.Team == Team.Traitors )
-		{
-			killer.Credits += 100;
-			UI.InfoFeed.DisplayClientEntry( To.Single( killer.Client ), "have received 100 credits for killing a Detective" );
-		}
-	}
 }

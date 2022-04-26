@@ -34,7 +34,7 @@ public partial class Game
 	public static bool KarmaLowAutoKick { get; set; } = true;
 	#endregion
 
-	#region Map Related
+	#region Map
 	[ServerVar( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
 
@@ -56,5 +56,20 @@ public partial class Game
 
 	[ServerVar( "ttt_afk_kick", Help = "Kick any players that get marked AFK.", Saved = true )]
 	public static bool KickAFKPlayers { get; set; } = false;
+	#endregion
+
+	#region Credits
+	[ServerVar( "ttt_credits_award_pct", Help = "When this percentage of Innocents are dead, Traitors are given credits.", Saved = true )]
+	public static float CreditsAwardPercentage { get; set; } = 0.35f;
+
+	[ServerVar( "ttt_credits_award_size", Help = "The number of credits awarded when the percentage is reached.", Saved = true )]
+	public static int CreditsAwarded { get; set; } = 100;
+
+
+	[ServerVar( "ttt_credits_traitordeath", Help = "The number of credits Detectives receive when a Traitor dies.", Saved = true )]
+	public static int DetectiveTraitorDeathReward { get; set; } = 100;
+
+	[ServerVar( "ttt_credits_detectivekill", Help = "The number of credits a Traitor receives when they kill a Detective.", Saved = true )]
+	public static int TraitorDetectiveKillReward { get; set; } = 100;
 	#endregion
 }

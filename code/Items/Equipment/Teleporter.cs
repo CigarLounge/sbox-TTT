@@ -51,7 +51,12 @@ public partial class Teleporter : Carriable
 			if ( TimeSinceStartedTeleporting >= 2f )
 			{
 				if ( IsServer )
+				{
 					Owner.Position = _teleportLocation;
+					foreach ( var ent in Entity.FindInBox( Owner.PhysicsBody.GetBounds() ) )
+						if ( ent is Player player && player != Owner )
+							TeleFrag( player );
+				}
 
 				if ( TimeSinceStartedTeleporting >= 4f )
 				{
@@ -113,13 +118,6 @@ public partial class Teleporter : Carriable
 			UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
 	}
 
-	protected override void OnDestroy()
-	{
-		base.OnDestroy();
-
-		_particle?.Destroy( true );
-	}
-
 	private void StartTeleport()
 	{
 		if ( !LocationIsSet )
@@ -128,6 +126,24 @@ public partial class Teleporter : Carriable
 		Charges -= 1;
 		IsTeleporting = true;
 		TimeSinceAction = 0;
-		TimeSinceStartedTeleporting = 0;	
+		TimeSinceStartedTeleporting = 0;
+	}
+
+	private void TeleFrag( Player player )
+	{
+		var damageInfo = DamageInfo.Generic( float.MaxValue )
+			.WithPosition( player.Position )
+			.WithFlag( DamageFlags.Beam )
+			.WithAttacker( Owner )
+			.WithWeapon( this );
+
+		player.TakeDamage( damageInfo );
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		_particle?.Destroy( true );
 	}
 }

@@ -29,7 +29,7 @@ public partial class ShopItem : Panel
 		_itemPriceLabel.AddClass( "text-color-info" );
 
 		_itemNameLabel.Text = itemInfo.Title;
-		_itemPriceLabel.Text = $"${itemInfo.Price}";
+		_itemPriceLabel.Text = itemInfo.Price.ToString();
 		_itemIcon.SetTexture( itemInfo.Icon );
 
 		ItemInfo = itemInfo;

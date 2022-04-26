@@ -1,19 +1,20 @@
 using Sandbox;
 using Sandbox.UI;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace TTT;
 
 public static class Utils
 {
-	public static List<Client> GetClients( Func<Player, bool> predicate = null )
+	private static List<Client> GetClients( Func<Player, bool> predicate )
 	{
 		List<Client> clients = new();
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && predicate.Invoke( player ) )
 			{
 				clients.Add( client );
 			}
@@ -22,13 +23,13 @@ public static class Utils
 		return clients;
 	}
 
-	public static List<Player> GetPlayers( Func<Player, bool> predicate = null )
+	private static List<Player> GetPlayers( Func<Player, bool> predicate )
 	{
 		List<Player> players = new();
 
 		foreach ( Client client in Client.All )
 		{
-			if ( client.Pawn is Player player && (predicate is null || predicate.Invoke( player )) )
+			if ( client.Pawn is Player player && predicate.Invoke( player ) )
 			{
 				players.Add( player );
 			}
@@ -38,25 +39,12 @@ public static class Utils
 	}
 
 	public static List<Client> GetAliveClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.IsAlive() && pl.Role == role );
+	public static List<Client> GetAliveClientsWithTeam( Team team ) => GetClients( ( pl ) => pl.IsAlive() && pl.Team == team );
 	public static List<Client> GetClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.Role == role );
-	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
 	public static List<Client> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );
 
-	public static List<Client> GiveAliveDetectivesCredits( int credits )
-	{
-		List<Client> players = new();
-
-		foreach ( Client client in Client.All )
-		{
-			if ( client.Pawn is Player player && player.IsAlive() && player.Role is Detective )
-			{
-				player.Credits += credits;
-				players.Add( client );
-			}
-		}
-
-		return players;
-	}
+	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
+	public static List<Player> GetAlivePlayersWithRole( BaseRole role ) => GetPlayers( ( pl ) => pl.IsAlive() && pl.Role == role );
 
 	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= Game.MinPlayers;
 
@@ -108,15 +96,6 @@ public static class Utils
 		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
 	}
 
-	/// <summary>
-	/// Adds the item to the IList if that IList does not already contain the item.
-	/// </summary>
-	public static void AddIfDoesNotContain<T>( this IList<T> list, T item )
-	{
-		if ( !list.Contains( item ) )
-			list.Add( item );
-	}
-
 	public static void Shuffle<T>( this IList<T> list )
 	{
 		Rand.SetSeed( Time.Tick );
@@ -125,9 +104,7 @@ public static class Utils
 		{
 			n--;
 			int k = Rand.Int( 0, n );
-			T value = list[k];
-			list[k] = list[n];
-			list[n] = value;
+			(list[n], list[k]) = (list[k], list[n]);
 		}
 	}
 

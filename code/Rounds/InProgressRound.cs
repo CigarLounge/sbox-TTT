@@ -6,9 +6,13 @@ namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
-	public List<Player> Players { get; set; }
-
+	public List<Player> AlivePlayers { get; set; }
 	public List<Player> Spectators { get; set; }
+
+	public int InnocentTeamCount { get; set; }
+	private int InnocentTeamDeathCount { get; set; }
+
+	public int TraitorTeamCount { get; set; }
 
 	/// <summary>
 	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
@@ -29,8 +33,24 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
-		Players.Remove( player );
-		Spectators.AddIfDoesNotContain( player );
+
+		if ( player.Team is Team.Innocents )
+			InnocentTeamDeathCount += 1;
+
+		var percentDead = (float)InnocentTeamDeathCount / InnocentTeamCount;
+		if ( percentDead >= Game.CreditsAwardPercentage )
+		{
+			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
+			InnocentTeamDeathCount = 0;
+		}
+
+		if ( player.Role is Traitor )
+			GivePlayersCredits( new Detective(), Game.DetectiveTraitorDeathReward );
+		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
+			GiveTraitorCredits( p );
+
+		AlivePlayers.Remove( player );
+		Spectators.Add( player );
 
 		Karma.OnPlayerKilled( player );
 		player.UpdateMissingInAction();
@@ -41,7 +61,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerJoin( player );
 
-		Spectators.AddIfDoesNotContain( player );
+		Spectators.Add( player );
 		SyncPlayer( player );
 	}
 
@@ -49,7 +69,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerLeave( player );
 
-		Players.Remove( player );
+		AlivePlayers.Remove( player );
 		Spectators.Remove( player );
 
 		ChangeRoundIfOver();
@@ -78,7 +98,7 @@ public partial class InProgressRound : BaseRound
 		// a fixed weapon loadout.
 		if ( MapHandler.RandomWeaponCount == 0 )
 		{
-			foreach ( var player in Players )
+			foreach ( var player in AlivePlayers )
 			{
 				GiveFixedLoadout( player );
 			}
@@ -113,7 +133,7 @@ public partial class InProgressRound : BaseRound
 	{
 		List<Team> aliveTeams = new();
 
-		foreach ( var player in Players )
+		foreach ( var player in AlivePlayers )
 		{
 			if ( !aliveTeams.Contains( player.Team ) )
 				aliveTeams.Add( player.Team );
@@ -161,6 +181,29 @@ public partial class InProgressRound : BaseRound
 		}
 
 		return false;
+	}
+
+	private void GivePlayersCredits( BaseRole role, int credits )
+	{
+		var clients = Utils.GetAliveClientsWithRole( role );
+
+		clients.ForEach( ( cl ) =>
+		{
+			if ( cl.Pawn is Player p )
+				p.Credits += credits;
+		} );
+		UI.InfoFeed.DisplayRoleEntry
+		(
+			To.Multiple( clients ),
+			Asset.GetInfo<RoleInfo>( role.Title ),
+			$"You have been awarded {credits} credits for your performance."
+		);
+	}
+
+	private void GiveTraitorCredits( Player traitor )
+	{
+		traitor.Credits += Game.TraitorDetectiveKillReward;
+		UI.InfoFeed.DisplayClientEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[TTTEvent.Player.RoleChanged]
