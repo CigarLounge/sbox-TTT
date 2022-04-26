@@ -92,7 +92,7 @@ public partial class Player
 			.Run();
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )
-			LastSeenPlayerName = player.Client?.Name;
+			LastSeenPlayerName = player.Client.Name;
 	}
 
 	[ClientRpc]

@@ -21,11 +21,8 @@ public partial class RoleButton : Entity
 	[Property( "Remove On Press", "Only allows button to be pressed once per round." )]
 	public bool RemoveOnPress { get; private set; } = false;
 
-	[Property( "Locked", "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input." )]
+	[Net, Property( "Locked", "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input." )]
 	public bool Locked { get; private set; } = false;
-
-	[Net]
-	public bool IsLocked { get; set; }
 
 	[Net]
 	public bool IsDelayed { get; set; }
@@ -33,7 +30,7 @@ public partial class RoleButton : Entity
 	[Net]
 	public bool IsRemoved { get; set; }
 
-	public bool IsDisabled => IsLocked || IsDelayed || IsRemoved;
+	public bool IsDisabled => Locked || IsDelayed || IsRemoved;
 	public bool HasDelay => Delay > 0.0f;
 	private TimeUntil NextUse { get; set; }
 	protected Output OnPressed { get; set; }
@@ -83,7 +80,7 @@ public partial class RoleButton : Entity
 	{
 		Host.AssertServer();
 
-		IsLocked = true;
+		Locked = true;
 	}
 
 	[Input]
@@ -91,7 +88,7 @@ public partial class RoleButton : Entity
 	{
 		Host.AssertServer();
 
-		IsLocked = false;
+		Locked = false;
 	}
 
 	[Input]
@@ -99,6 +96,6 @@ public partial class RoleButton : Entity
 	{
 		Host.AssertServer();
 
-		IsLocked = !IsLocked;
+		Locked = !Locked;
 	}
 }

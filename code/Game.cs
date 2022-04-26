@@ -50,11 +50,6 @@ public partial class Game : Sandbox.Game
 		Event.Run( TTTEvent.Game.RoundChanged, oldRound, Round );
 	}
 
-	public override void DoPlayerNoclip( Client client )
-	{
-		// Do nothing. The player can't noclip in this mode.
-	}
-
 	public override void OnKilled( Entity pawn )
 	{
 		// Do nothing. Base implementation just adds to a kill feed and prints to console.
@@ -63,7 +58,6 @@ public partial class Game : Sandbox.Game
 	public override void ClientJoined( Client client )
 	{
 		var player = new Player();
-
 		client.Pawn = player;
 
 		player.BaseKarma = Karma.DefaultValue;

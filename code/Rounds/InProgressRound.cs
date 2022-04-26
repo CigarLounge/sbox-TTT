@@ -33,11 +33,10 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
-
-		if ( player.Team is Team.Innocents )
+		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
 
-		var percentDead = (float)InnocentTeamDeathCount / InnocentTeamCount;
+		float percentDead = (float)InnocentTeamDeathCount / InnocentTeamCount;
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
