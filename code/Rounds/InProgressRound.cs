@@ -7,8 +7,12 @@ namespace TTT;
 public partial class InProgressRound : BaseRound
 {
 	public List<Player> AlivePlayers { get; set; }
-
 	public List<Player> Spectators { get; set; }
+
+	public int InnocentTeamCount { get; set; }
+	private int InnocentTeamDeathCount { get; set; }
+
+	public int TraitorTeamCount { get; set; }
 
 	/// <summary>
 	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
@@ -29,8 +33,19 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
+
+		if ( player.Team is Team.Innocents )
+			InnocentTeamDeathCount += 1;
+
+		var pct = (float)InnocentTeamDeathCount / InnocentTeamCount;
+		if ( pct >= Game.CreditsAwardPercentage )
+		{
+			Utils.GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
+			InnocentTeamDeathCount = 0;
+		}
+
 		if ( player.Role is Traitor )
-			GiveDetectivesCredits();
+			Utils.GivePlayersCredits( new Detective(), Game.DetectiveTraitorDeathReward );
 		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
 			GiveTraitorCredits( p );
 
@@ -78,7 +93,6 @@ public partial class InProgressRound : BaseRound
 		}
 
 		FakeTime = TimeLeft;
-		StartingPlayerCount = AlivePlayers.Count;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
@@ -167,20 +181,6 @@ public partial class InProgressRound : BaseRound
 		}
 
 		return false;
-	}
-
-	private void GiveDetectivesCredits()
-	{
-		var detective = new Detective();
-		var detectives = Utils.GetAliveClientsWithRole( detective );
-
-		detectives.ForEach( ( d ) => (Local.Pawn as Player).Credits += Game.DetectiveTraitorDeathReward );
-		UI.InfoFeed.DisplayRoleEntry
-		(
-			To.Multiple( detectives ),
-			Asset.GetInfo<RoleInfo>( detective.Title ),
-			$"You have been awarded {Game.DetectiveTraitorDeathReward} credits for your performance."
-		);
 	}
 
 	private void GiveTraitorCredits( Player traitor )

@@ -62,6 +62,9 @@ public partial class Game
 	[ServerVar( "ttt_credits_award_pct", Help = "When this percentage of Innocents are dead, Traitors are given credits.", Saved = true )]
 	public static float CreditsAwardPercentage { get; set; } = 0.35f;
 
+	[ServerVar( "ttt_credits_award_size", Help = "The number of credits awarded when the percentage is reached.", Saved = true )]
+	public static int CreditsAwarded { get; set; } = 100;
+
 
 	[ServerVar( "ttt_credits_traitordeath", Help = "The number of credits Detectives receive when a Traitor dies.", Saved = true )]
 	public static int DetectiveTraitorDeathReward { get; set; } = 100;

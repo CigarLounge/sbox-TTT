@@ -74,25 +74,24 @@ public class PreRound : BaseRound
 			players.Add( player );
 		}
 
-		AssignRoles( players );
-
-		Game.Current.ChangeRound( new InProgressRound
-		{
-			AlivePlayers = players,
-			Spectators = spectators
-		} );
-	}
-
-	private void AssignRoles( List<Player> players )
-	{
 		int traitorCount = Math.Max( players.Count >> 2, 1 );
 		int detectiveCount = players.Count >> 3;
 		players.Shuffle();
 
+		int traitorsAssigned = traitorCount;
+		int detectivesAssigned = detectiveCount;
 		int index = 0;
-		while ( traitorCount-- > 0 ) players[index++].Role = new Traitor();
-		while ( detectiveCount-- > 0 ) players[index++].Role = new Detective();
+		while ( traitorsAssigned-- > 0 ) players[index++].Role = new Traitor();
+		while ( detectivesAssigned-- > 0 ) players[index++].Role = new Detective();
 		while ( index < players.Count ) players[index++].Role = new Innocent();
+
+		Game.Current.ChangeRound( new InProgressRound
+		{
+			AlivePlayers = players,
+			Spectators = spectators,
+			InnocentTeamCount = players.Count - traitorCount,
+			TraitorTeamCount = traitorCount
+		} );
 	}
 
 	private static async void StartRespawnTimer( Player player )
