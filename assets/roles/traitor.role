@@ -3,7 +3,7 @@
 	data = 
 	{
 		team = "2"
-		defaultcredits = 100
+		defaultcredits = 200
 		libraryname = "ttt_role_traitor"
 		exclusiveitems = 
 		[
