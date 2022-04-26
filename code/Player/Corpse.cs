@@ -59,7 +59,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
 
 		var c4Note = player.Components.Get<C4Note>();
-		if ( c4Note != null )
+		if ( c4Note is not null )
 			C4Note = c4Note.SafeWireNumber.ToString();
 
 		LastSeenPlayerName = player.LastSeenPlayerName;

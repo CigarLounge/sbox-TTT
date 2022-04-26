@@ -176,8 +176,10 @@ public abstract partial class Weapon : Carriable
 
 		float oldPitch = input.ViewAngles.pitch;
 		float oldYaw = input.ViewAngles.yaw;
+
 		input.ViewAngles.pitch -= CurrentRecoilAmount.y * Time.Delta;
 		input.ViewAngles.yaw -= CurrentRecoilAmount.x * Time.Delta;
+
 		CurrentRecoilAmount -= CurrentRecoilAmount
 			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
 			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );

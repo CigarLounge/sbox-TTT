@@ -15,8 +15,6 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	private const float HealAmount = 5; // The amount of health given per second.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
-	private TimeUntil _timeUntilRecharge;
-
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -29,7 +27,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		if ( StoredHealth >= 200f || !_timeUntilRecharge )
+		if ( StoredHealth >= 200f )
 			return;
 
 		StoredHealth = Math.Min( StoredHealth + RechargeAmount * Time.Delta, 200f );
@@ -39,7 +37,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	{
 		if ( StoredHealth <= 0 )
 			return;
-
+	
 		float healthNeeded = player.MaxHealth - player.Health;
 
 		if ( healthNeeded <= 0 )
@@ -50,7 +48,6 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		player.Health += healAmount;
 
 		StoredHealth -= healAmount;
-		_timeUntilRecharge = 1;
 	}
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );

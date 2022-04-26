@@ -17,22 +17,18 @@ public partial class Player
 		}
 	}
 
-	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 	public bool IsSpectator
 	{
 		get => Client.GetValue( Strings.Spectator, false );
 		set => Client.SetValue( Strings.Spectator, value );
 	}
 
-
+	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 	private int _targetSpectatorIndex = 0;
 
 	public void ToggleForcedSpectator()
 	{
 		IsForcedSpectator = !IsForcedSpectator;
-
-		if ( Game.Current.Round is PreRound or WaitingRound )
-			Client.SetValue( Strings.Spectator, IsForcedSpectator );
 
 		if ( !IsForcedSpectator || !this.IsAlive() )
 			return;
@@ -63,12 +59,12 @@ public partial class Player
 
 	public void MakeSpectator( bool useRagdollCamera = true )
 	{
-		EnableAllCollisions = false;
-		EnableDrawing = false;
 		Controller = null;
 		CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
-		LifeState = LifeState.Dead;
+		EnableAllCollisions = false;
+		EnableDrawing = false;
 		Health = 0f;
+		LifeState = LifeState.Dead;	
 
 		DelayedDeathCameraChange();
 	}

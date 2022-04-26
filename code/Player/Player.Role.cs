@@ -4,6 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
+	private BaseRole _role;
 	public BaseRole Role
 	{
 		get => _role;
@@ -24,8 +25,7 @@ public partial class Player
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
 		}
-	}
-	private BaseRole _role;
+	}	
 
 	public Team Team => Role.Team;
 

@@ -107,7 +107,7 @@ public static class Karma
 	private static void GivePenalty( Player player, float penalty )
 	{
 		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
-		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), int.MaxValue );
+		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), float.MaxValue );
 	}
 
 	private static void GiveReward( Player player, float reward )
@@ -115,7 +115,6 @@ public static class Karma
 		reward = DecayMultiplier( player ) * reward;
 		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
 	}
-
 
 	public static void OnPlayerHurt( Player player )
 	{

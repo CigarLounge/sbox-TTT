@@ -4,7 +4,7 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_radio", Title = "Radio" )]
-public partial class Radio : Droppable<RadioEntity>
+public partial class Radio : Deployable<RadioEntity>
 {
 	protected override void OnDrop( Entity entity )
 	{
