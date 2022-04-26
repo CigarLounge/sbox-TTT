@@ -29,17 +29,4 @@ public class Traitor : BaseRole
 				otherPlayer.UpdateMissingInAction( player );
 		}
 	}
-
-	public override void OnKilled( Player player )
-	{
-		base.OnKilled( player );
-
-		var clients = Utils.GiveAliveDetectivesCredits( 100 );
-		UI.InfoFeed.DisplayRoleEntry
-		(
-			To.Multiple( clients ),
-			Asset.GetInfo<RoleInfo>( "ttt_role_detective" ),
-			"You have been awarded 100 credits for your performance."
-		);
-	}
 }

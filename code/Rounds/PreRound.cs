@@ -78,7 +78,7 @@ public class PreRound : BaseRound
 
 		Game.Current.ChangeRound( new InProgressRound
 		{
-			Players = players,
+			AlivePlayers = players,
 			Spectators = spectators
 		} );
 	}

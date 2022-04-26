@@ -6,7 +6,7 @@ namespace TTT;
 
 public partial class InProgressRound : BaseRound
 {
-	public List<Player> Players { get; set; }
+	public List<Player> AlivePlayers { get; set; }
 
 	public List<Player> Spectators { get; set; }
 
@@ -29,8 +29,13 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
-		Players.Remove( player );
-		Spectators.AddIfDoesNotContain( player );
+		if ( player.Role is Traitor )
+			GiveDetectivesCredits();
+		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
+			GiveTraitorCredits( p );
+
+		AlivePlayers.Remove( player );
+		Spectators.Add( player );
 
 		Karma.OnPlayerKilled( player );
 		player.UpdateMissingInAction();
@@ -41,7 +46,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerJoin( player );
 
-		Spectators.AddIfDoesNotContain( player );
+		Spectators.Add( player );
 		SyncPlayer( player );
 	}
 
@@ -49,7 +54,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnPlayerLeave( player );
 
-		Players.Remove( player );
+		AlivePlayers.Remove( player );
 		Spectators.Remove( player );
 
 		ChangeRoundIfOver();
@@ -73,12 +78,13 @@ public partial class InProgressRound : BaseRound
 		}
 
 		FakeTime = TimeLeft;
+		StartingPlayerCount = AlivePlayers.Count;
 
 		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
 		// a fixed weapon loadout.
 		if ( MapHandler.RandomWeaponCount == 0 )
 		{
-			foreach ( var player in Players )
+			foreach ( var player in AlivePlayers )
 			{
 				GiveFixedLoadout( player );
 			}
@@ -113,7 +119,7 @@ public partial class InProgressRound : BaseRound
 	{
 		List<Team> aliveTeams = new();
 
-		foreach ( var player in Players )
+		foreach ( var player in AlivePlayers )
 		{
 			if ( !aliveTeams.Contains( player.Team ) )
 				aliveTeams.Add( player.Team );
@@ -161,6 +167,26 @@ public partial class InProgressRound : BaseRound
 		}
 
 		return false;
+	}
+
+	private void GiveDetectivesCredits()
+	{
+		var detective = new Detective();
+		var detectives = Utils.GetAliveClientsWithRole( detective );
+
+		detectives.ForEach( ( d ) => (Local.Pawn as Player).Credits += Game.DetectiveTraitorDeathReward );
+		UI.InfoFeed.DisplayRoleEntry
+		(
+			To.Multiple( detectives ),
+			Asset.GetInfo<RoleInfo>( detective.Title ),
+			$"You have been awarded {Game.DetectiveTraitorDeathReward} credits for your performance."
+		);
+	}
+
+	private void GiveTraitorCredits( Player traitor )
+	{
+		traitor.Credits += Game.TraitorDetectiveKillReward;
+		UI.InfoFeed.DisplayClientEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[TTTEvent.Player.RoleChanged]
