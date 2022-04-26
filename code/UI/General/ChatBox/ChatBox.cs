@@ -132,7 +132,8 @@ public partial class ChatBox : Panel
 
 		if ( !player.IsAlive() )
 		{
-			AddChat( To.Multiple( Utils.GetDeadClients() ), player.Client.Name, message, Channel.Spectator );
+			var clients = Game.Current.Round is InProgressRound ? Utils.GetDeadClients() : Utils.GetClients();
+			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
 
