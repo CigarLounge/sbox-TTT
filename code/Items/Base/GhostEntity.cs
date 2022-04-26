@@ -22,22 +22,20 @@ public class GhostEntity : ModelEntity
 		RealEntity = entity;
 		Model = entity.Model;
 
-		RenderColor = RenderColor.WithAlpha( 0.5f );	
+		RenderColor = RenderColor.WithAlpha( 0.5f );
 		CollisionGroup = CollisionGroup.Trigger;
-		
+
 		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
 	}
 
 	public void ShowValid()
 	{
-		RenderColor = Color.Green.WithAlpha( 0.5f ); ;
-		//GlowColor = Color.Green;
+		RenderColor = Color.Green.WithAlpha( 0.5f );
 	}
 
 	public void ShowInvalid()
 	{
 		RenderColor = Color.Red.WithAlpha( 0.5f );
-		//GlowColor = Color.Red;
 	}
 
 	public bool IsPlacementValid( ref TraceResult trace )
@@ -45,11 +43,7 @@ public class GhostEntity : ModelEntity
 		var position = trace.EndPosition;
 		var bounds = CollisionBounds;
 		var entities = Entity.FindInBox( bounds + position );
-		/*
-		if ( IsClient && !Fog.IsAreaSeen( position ) )
-			return false;
-		*/
 
-		return entities.Count() == 0;
+		return !entities.Any();
 	}
 }
