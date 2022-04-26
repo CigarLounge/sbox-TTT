@@ -188,7 +188,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		UI.InfoFeed.Instance?.AddClientEntry
 		(
 			Local.Client,
-			$"found $ {credits} credits!"
+			$"found {credits} credits!"
 		);
 	}
 
