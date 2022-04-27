@@ -54,9 +54,7 @@ public class SettingsMenu : Panel
 	public void PopPage()
 	{
 		if ( !HasPreviousPages )
-		{
 			return;
-		}
 
 		Pages.GetChild( Pages.ChildrenCount - 1 ).Delete( true );
 		Pages.GetChild( Pages.ChildrenCount - 1 ).RemoveClass( "disabled" );
@@ -64,7 +62,7 @@ public class SettingsMenu : Panel
 		BackButton.SetClass( "inactive", !HasPreviousPages );
 		HomeButton.SetClass( "inactive", !HasPreviousPages );
 
-		ActivePage = Pages.GetChild( Pages.ChildrenCount - 1 ) as Panel;
+		ActivePage = Pages.GetChild( Pages.ChildrenCount - 1 );
 	}
 
 	/// <summary>
@@ -73,8 +71,6 @@ public class SettingsMenu : Panel
 	public void PopToHomePage()
 	{
 		while ( HasPreviousPages )
-		{
 			PopPage();
-		}
 	}
 }

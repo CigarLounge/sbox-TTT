@@ -78,19 +78,36 @@ public class PreRound : BaseRound
 		int detectiveCount = players.Count >> 3;
 		players.Shuffle();
 
-		int traitorsAssigned = traitorCount;
-		int detectivesAssigned = detectiveCount;
+		List<Player> innocents, detectives, traitors;
+		innocents = detectives = traitors = new();
+
+		// TODO: Matt cleanup before merging...
 		int index = 0;
-		while ( traitorsAssigned-- > 0 ) players[index++].Role = new Traitor();
-		while ( detectivesAssigned-- > 0 ) players[index++].Role = new Detective();
-		while ( index < players.Count ) players[index++].Role = new Innocent();
+		while ( traitorCount-- > 0 )
+		{
+			traitors.Add( players[index] );
+			players[index++].Role = new Traitor();
+		}
+
+		while ( detectiveCount-- > 0 )
+		{
+			detectives.Add( players[index] );
+			players[index++].Role = new Detective();
+		}
+
+		while ( index < players.Count )
+		{
+			innocents.Add( players[index] );
+			players[index++].Role = new Innocent();
+		}
 
 		Game.Current.ChangeRound( new InProgressRound
 		{
 			AlivePlayers = players,
 			Spectators = spectators,
-			InnocentTeamCount = players.Count - traitorCount,
-			TraitorTeamCount = traitorCount
+			Innocents = innocents.ToArray(),
+			Detectives = detectives.ToArray(),
+			Traitors = traitors.ToArray()
 		} );
 	}
 
