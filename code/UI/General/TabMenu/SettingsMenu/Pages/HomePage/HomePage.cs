@@ -11,6 +11,11 @@ public partial class HomePage : Panel
 
 	private bool _isRecordingModeEnabled = false;
 
+	public void GoToRoundSummaryPage()
+	{
+		SettingsMenu.Instance.AddPage( new RoundSummaryPage() );
+	}
+
 	public void GoToKeyBindingsPage()
 	{
 		SettingsMenu.Instance.AddPage( new KeyBindingsPage() );
@@ -44,7 +49,7 @@ public partial class HomePage : Panel
 
 		var player = Local.Pawn as Player;
 
-		ForceSpectatorButton.Text = $"Force Spectator Mode ({(player.IsForcedSpectator ? "Enabled" : "Disabled")})";
+		ForceSpectatorButton.Text = $"Force Spectator Mode - {(player.IsForcedSpectator ? "Enabled" : "Disabled")}";
 		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) );
 	}
 

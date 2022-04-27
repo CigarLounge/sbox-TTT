@@ -12,7 +12,7 @@ public class TabMenu : Panel
 	{
 		StyleSheet.Load( "/UI/General/TabMenu/TabMenu.scss" );
 
-		var scoreboardButton = new Button( "Settings", "settings", () =>
+		var scoreboardButton = new Button( "Menu", "dehaze", () =>
 		{
 			_scoreboard.EnableFade( false );
 			_settingsMenu.EnableFade( true );
