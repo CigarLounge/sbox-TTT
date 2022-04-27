@@ -166,7 +166,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			if ( !DeadPlayer.IsConfirmedDead )
 			{
 				DeadPlayer.Confirmer = searcher;
-				DeadPlayer.Confirm();
+				DeadPlayer.Confirm( To.Everyone );
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
@@ -247,7 +247,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		C4Note = c4Note;
 	}
 
-	// Detectives get additional information about a corpse.
+	/// <summary>
+	/// Detectives get additional information about a corpse.
+	/// </summary>
 	[ClientRpc]
 	private void DetectiveSendKillInfo( string lastSeenPlayerName )
 	{

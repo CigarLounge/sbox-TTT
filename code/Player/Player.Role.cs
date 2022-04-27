@@ -19,21 +19,25 @@ public partial class Player
 
 			// Always send the role to this player's client
 			if ( IsServer )
-				SendRole();
+				SendRole( To.Single( this ) );
 
 			_role.OnSelect( this );
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
 		}
-	}	
+	}
 
 	public Team Team => Role.Team;
 
-	[ClientRpc]
-	private void ClientSetRole( int id )
+	/// <summary>
+	/// Sends the role to the given target or - if no target was provided - the player itself
+	/// </summary>
+	/// <param name="to">optional - The target.</param>
+	public void SendRole( To to )
 	{
-		IsRoleKnown = true;
-		SetRole( id );
+		Host.AssertServer();
+
+		ClientSetRole( to, Role.Info );
 	}
 
 	public void SetRole( string libraryName )
@@ -41,19 +45,10 @@ public partial class Player
 		Role = Library.Create<BaseRole>( libraryName );
 	}
 
-	public void SetRole( int id )
+	[ClientRpc]
+	private void ClientSetRole( RoleInfo roleInfo )
 	{
-		Role = Asset.CreateFromId<BaseRole>( id );
-	}
-
-	/// <summary>
-	/// Sends the role to the given target or - if no target was provided - the player itself
-	/// </summary>
-	/// <param name="to">optional - The target.</param>
-	public void SendRole( To? to = null )
-	{
-		Host.AssertServer();
-
-		ClientSetRole( to ?? To.Single( this ), Role.Info.Id );
+		IsRoleKnown = true;
+		SetRole( roleInfo.LibraryName );
 	}
 }

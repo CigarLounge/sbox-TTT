@@ -59,7 +59,7 @@ public partial class Player
 		ClientMissingInAction( Team.Traitors.ToClients() );
 	}
 
-	public void Confirm( To? _to = null )
+	public void Confirm( To to )
 	{
 		Host.AssertServer();
 
@@ -72,8 +72,6 @@ public partial class Player
 			IsMissingInAction = false;
 			wasPreviouslyConfirmed = false;
 		}
-
-		var to = _to ?? To.Everyone;
 
 		if ( Corpse.IsValid() )
 			Corpse.SendPlayer( to );
