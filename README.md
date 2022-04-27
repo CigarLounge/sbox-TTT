@@ -2,20 +2,23 @@
 
 # s&box TTT
 
+[![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-red)](https://github.com/mzegar/sbox-TTT#license)
+[![Discord](https://img.shields.io/discord/949508550118481970?label=discord&style=plastic)](https://discord.gg/rrsrakF8N3)
+
 TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
 
 ## Credits
 
 ### Team
-- [Matthew Zegar](https://github.com/mzegar) - Programmer
-- [Kole](https://github.com/kolexxx) - Programmer 
+- [Matthew Zegar](https://github.com/mzegar)
+- [Kole](https://github.com/kolexxx)
 
 ### Direct Contributors
 - [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
 
 ### Community Shoutouts
 - Facepunch's open-source gamemodes
-- [Timm Luyten](https://github.com/timmybo5)
+- [Timm Luyten SWB](https://github.com/timmybo5/simple-weapon-base)
 
 ### Special Thanks
 - [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which this game is **heavily** based on
@@ -25,7 +28,9 @@ Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 
 ## License
 
-Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` do NOT fall under the GPL-3.0 License. These are compiled files which I am forced to distribute whenever a client downloads the game (therefore they might as well exist in the repo). I do have permission to use everything found within those folders only for this project. Everything else outside of those folders are is GPL-3.0 License, so go wild.
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+Please note that anything inside of `/models/`, `/materials/`, and `/sounds/` do **not** fall under the repo licensing. These are compiled files which I am forced to distribute whenever a client downloads the game (therefore they might as well exist in the repo). I do have permission to use everything found within those folders **only** for this project. Everything else outside of those folders falls under our repo license, so please follow it accordingly.
 
 ## Development
 
