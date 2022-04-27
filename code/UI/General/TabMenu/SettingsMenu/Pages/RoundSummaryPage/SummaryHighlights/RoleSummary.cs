@@ -37,8 +37,8 @@ public partial class RoleSummary : Panel
 		if ( !innocents.IsNullOrEmpty() )
 			Instance.CreateRoleList( new Innocent(), innocents );
 
-		// if ( !detectives.IsNullOrEmpty() )
-		// 	Instance.CreateRoleList( new Detective(), detectives );
+		if ( !detectives.IsNullOrEmpty() )
+			Instance.CreateRoleList( new Detective(), detectives );
 
 		if ( !traitors.IsNullOrEmpty() )
 			Instance.CreateRoleList( new Traitor(), traitors );
