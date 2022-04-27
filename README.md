@@ -3,7 +3,7 @@
 # s&box TTT
 
 [![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-red)](https://github.com/mzegar/sbox-TTT#license)
-[![Discord](https://img.shields.io/discord/949508550118481970?label=discord&style=plastic)](https://discord.gg/rrsrakF8N3)
+[![Discord](https://img.shields.io/discord/949508550118481970?label=discord)](https://discord.gg/rrsrakF8N3)
 
 TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in.
 
