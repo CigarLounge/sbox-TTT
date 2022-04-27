@@ -1,0 +1,38 @@
+PostRoundPopup
+{
+    position: absolute;
+    left: 50%;
+    top: 158px;
+    padding: 20px; 
+    opacity: 0.9;
+    transform: translateX(-50%) translateY(-50%);
+    transition: all 1s ease-in-out;
+    flex-direction: column;
+    text-align: center;
+
+    &:intro
+    {
+        top: 10px;
+        opacity: 0;
+    }
+
+    &:outro
+    {
+        top: -10px;
+        opacity: 0;
+    }
+
+    .header
+    {
+        text-transform: uppercase;
+        font-weight: bolder;
+        font-size: 50px;
+        width: 100%;
+    }
+
+    .content
+    {
+        font-size: 20px;
+        font-weight: 600;
+    }
+}

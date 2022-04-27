@@ -8,6 +8,7 @@ TabMenu
     justify-content: center;
     opacity: 0;
     bottom: -25px;
+    z-index: 1;
 
     &.show
     {

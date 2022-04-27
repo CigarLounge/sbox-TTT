@@ -149,7 +149,7 @@ public partial class InProgressRound : BaseRound
 		Game.Current.TotalRoundsPlayed++;
 		Game.Current.ForceRoundChange( new PostRound() );
 
-		UI.PostRoundMenu.DisplayWinner( winningTeam );
+		UI.PostRoundPopup.DisplayWinner( winningTeam );
 	}
 
 	public override void OnSecond()
