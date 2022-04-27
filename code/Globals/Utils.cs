@@ -78,7 +78,7 @@ public static class Utils
 
 	public static bool IsEnabled( this Panel panel )
 	{
-		return !panel.HasClass( "disabled" );
+		return panel.IsVisible;
 	}
 
 	public static void SetTexture( this Image image, Texture texture )

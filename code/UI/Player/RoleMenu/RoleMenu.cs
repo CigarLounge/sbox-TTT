@@ -56,7 +56,7 @@ public partial class RoleMenu : Panel
 
 		SetClass( "fade-in", Input.Down( InputButton.View ) );
 
-		if ( !HasClass( "fade-in" ) )
+		if ( !IsVisible )
 			return;
 
 		RoleHeader.Text = player.Role.Title;

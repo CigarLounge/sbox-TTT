@@ -82,7 +82,7 @@ public partial class Scoreboard : Panel
 	{
 		base.Tick();
 
-		if ( !HasClass( "fade-in" ) )
+		if ( !IsVisible )
 			return;
 
 		foreach ( var client in Client.All.Except( _entries.Keys ) )
