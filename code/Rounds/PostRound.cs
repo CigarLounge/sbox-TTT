@@ -12,7 +12,7 @@ public class PostRound : BaseRound
 	{
 		base.OnPlayerKilled( player );
 
-		player.Confirm();
+		player.Confirm( To.Everyone );
 	}
 
 	public override void OnPlayerJoin( Player player )
