@@ -12,7 +12,7 @@ public abstract class Asset : Sandbox.Asset
 	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
 	public string LibraryName { get; set; }
 
-	public string Title { get; set; }
+	public string Title { get; private set; }
 
 	public static T CreateFromId<T>( int id ) where T : LibraryClass
 	{

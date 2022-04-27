@@ -18,6 +18,12 @@ public partial class Player : Sandbox.Player
 
 	public Perks Perks { get; private init; }
 
+	public int Score
+	{
+		get => Client.GetInt( Strings.Score );
+		set => Client.SetInt( Strings.Score, value );
+	}
+
 	public const float DropVelocity = 300;
 
 	public Player()
