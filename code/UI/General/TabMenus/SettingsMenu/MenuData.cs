@@ -10,7 +10,7 @@ public struct MenuData
 	public Player[] Traitors { get; set; }
 }
 
-public partial class Menu : Panel
+public partial class GeneralMenu : Panel
 {
 	public MenuData Data;
 

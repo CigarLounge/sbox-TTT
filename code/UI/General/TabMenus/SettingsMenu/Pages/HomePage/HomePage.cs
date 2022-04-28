@@ -13,22 +13,22 @@ public partial class HomePage : Panel
 
 	public void GoToRoundSummaryPage()
 	{
-		Menu.Instance.AddPage( new RoundSummaryPage() );
+		GeneralMenu.Instance.AddPage( new RoundSummaryPage() );
 	}
 
 	public void GoToKeyBindingsPage()
 	{
-		Menu.Instance.AddPage( new KeyBindingsPage() );
+		GeneralMenu.Instance.AddPage( new KeyBindingsPage() );
 	}
 
 	public void GoToCrosshairPage()
 	{
-		Menu.Instance.AddPage( new CrosshairPage() );
+		GeneralMenu.Instance.AddPage( new CrosshairPage() );
 	}
 
 	public void GoToComponentTesting()
 	{
-		Menu.Instance.AddPage( new ComponentTestingPage() );
+		GeneralMenu.Instance.AddPage( new ComponentTestingPage() );
 	}
 
 	public void ToggleRecordingMode()
@@ -36,7 +36,7 @@ public partial class HomePage : Panel
 		_isRecordingModeEnabled = !_isRecordingModeEnabled;
 		foreach ( var child in Local.Hud.Children )
 		{
-			if ( child is TabController )
+			if ( child is TabMenus )
 				continue;
 
 			child.Enabled( !_isRecordingModeEnabled );
