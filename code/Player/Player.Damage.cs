@@ -26,12 +26,12 @@ public enum HitboxIndex
 }
 */
 
-public struct HealthGroup
+public struct Group
 {
-	public string Title;
 	public Color Color;
+	public string Title;
 
-	public HealthGroup( string title, Color color )
+	public Group( string title, Color color )
 	{
 		Title = title;
 		Color = color;
@@ -67,6 +67,12 @@ public partial class Player
 	}
 
 	/// <summary>
+	/// We count all player deaths not caused by
+	/// other players as suicides.
+	/// </summary>
+	public bool DiedBySuicide => LastAttacker is not Player;
+
+	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
 	/// damage penalty. It is networked and shown on clients.
 	/// </summary>
@@ -96,16 +102,16 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	private static readonly HealthGroup[] HealthGroupList = new HealthGroup[]
+	private static readonly Group[] HealthGroupList = new Group[]
 	{
-		new HealthGroup("Near Death", Color.FromBytes(246, 6, 6)),
-		new HealthGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
-		new HealthGroup("Wounded", Color.FromBytes(213, 202, 4)),
-		new HealthGroup("Hurt", Color.FromBytes(171, 231, 3)),
-		new HealthGroup("Healthy", Color.FromBytes(44, 233, 44))
+		new Group("Near Death", Color.FromBytes(246, 6, 6)),
+		new Group("Badly Wounded", Color.FromBytes(234, 129, 4)),
+		new Group("Wounded", Color.FromBytes(213, 202, 4)),
+		new Group("Hurt", Color.FromBytes(171, 231, 3)),
+		new Group("Healthy", Color.FromBytes(44, 233, 44))
 	};
 
-	public HealthGroup GetHealthGroup( float health )
+	public Group GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
 			return HealthGroupList[^1];
