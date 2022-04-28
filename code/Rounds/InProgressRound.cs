@@ -33,6 +33,20 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
+		#region Scoring
+		if ( player.DiedBySuicide )
+		{
+			player.RoundScore -= 1;
+		}
+		else if ( player.LastAttacker is Player attacker )
+		{
+			if ( attacker.Team != player.Team )
+				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
+			else
+				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
+		}
+		#endregion
+
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
 
