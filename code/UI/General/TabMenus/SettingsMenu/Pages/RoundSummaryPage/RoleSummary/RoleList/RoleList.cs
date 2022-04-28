@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -18,8 +19,12 @@ public class RoleList : Panel
 			AddPlayer( player );
 	}
 
+	// TODO: We need to handle null clients at some point.
 	private void AddPlayer( Player player )
 	{
+		if ( !player.IsValid() || player.Client == null )
+			return;
+
 		var playerContainer = PlayersContainer.Add.Panel( "player" );
 		playerContainer.Add.Image( $"avatar:{player.Client.PlayerId}", "avatar" );
 		playerContainer.Add.Label( player.Client.Name, "name-label" );
