@@ -26,12 +26,12 @@ public enum HitboxIndex
 }
 */
 
-public struct Group
+public struct ColorGroup
 {
 	public Color Color;
 	public string Title;
 
-	public Group( string title, Color color )
+	public ColorGroup( string title, Color color )
 	{
 		Title = title;
 		Color = color;
@@ -102,16 +102,16 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	private static readonly Group[] HealthGroupList = new Group[]
+	private static readonly ColorGroup[] HealthGroupList = new ColorGroup[]
 	{
-		new Group("Near Death", Color.FromBytes(246, 6, 6)),
-		new Group("Badly Wounded", Color.FromBytes(234, 129, 4)),
-		new Group("Wounded", Color.FromBytes(213, 202, 4)),
-		new Group("Hurt", Color.FromBytes(171, 231, 3)),
-		new Group("Healthy", Color.FromBytes(44, 233, 44))
+		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
+		new ColorGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
+		new ColorGroup("Wounded", Color.FromBytes(213, 202, 4)),
+		new ColorGroup("Hurt", Color.FromBytes(171, 231, 3)),
+		new ColorGroup("Healthy", Color.FromBytes(44, 233, 44))
 	};
 
-	public Group GetHealthGroup( float health )
+	public ColorGroup GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
 			return HealthGroupList[^1];

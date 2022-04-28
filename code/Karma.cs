@@ -17,16 +17,16 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	private static readonly Group[] KarmaGroupList = new Group[]
+	private static readonly ColorGroup[] KarmaGroupList = new ColorGroup[]
 	{
-		new Group("Liability", Color.FromBytes(255, 130, 0)),
-		new Group("Dangerous", Color.FromBytes(255, 180, 0)),
-		new Group("Trigger-happy", Color.FromBytes(245, 220, 60)),
-		new Group("Crude", Color.FromBytes(255, 240, 135)),
-		new Group("Reputable", Color.FromBytes(255, 255, 255))
+		new ColorGroup("Liability", Color.FromBytes(255, 130, 0)),
+		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
+		new ColorGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
+		new ColorGroup("Crude", Color.FromBytes(255, 240, 135)),
+		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
 
-	public static Group GetKarmaGroup( Player player )
+	public static ColorGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
 			return KarmaGroupList[^1];

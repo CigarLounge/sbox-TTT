@@ -21,19 +21,19 @@ public class ScoreboardEntry : Panel
 		if ( Client is null )
 			return;
 
+		if ( Client.Pawn is not Player player )
+			return;
+
 		PlayerName.Text = Client.Name;
 
 		Karma.Enabled( Game.KarmaEnabled );
 		if ( Karma.IsEnabled() )
-			Karma.Text = MathF.Round( Client.GetValue<float>( Strings.Karma ) ).ToString();
+			Karma.Text = MathF.Round( player.BaseKarma ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
-		Score.Text = Client.GetInt( Strings.Score ).ToString();
+		Score.Text = player.Score.ToString();
 
 		SetClass( "me", Client == Local.Client );
-
-		if ( Client.Pawn is not Player player )
-			return;
 
 		if ( player.Role is not NoneRole and not Innocent )
 			Style.BackgroundColor = player.Role.Color.WithAlpha( 0.15f );
