@@ -28,7 +28,7 @@ public class ScoreboardEntry : Panel
 			Karma.Text = MathF.Round( Client.GetValue<float>( Strings.Karma ) ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
-		Score.Text = MathF.Round( Client.GetValue<float>( Strings.Score ) ).ToString();
+		Score.Text = Client.GetInt( Strings.Score ).ToString();
 
 		SetClass( "me", Client == Local.Client );
 
