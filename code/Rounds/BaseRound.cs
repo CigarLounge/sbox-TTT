@@ -95,4 +95,12 @@ public abstract partial class BaseRound : BaseNetworkable
 				otherPlayer.SendRole( To.Single( player ) );
 		}
 	}
+
+	protected async void StartRespawnTimer( Player player )
+	{
+		await GameTask.DelaySeconds( 1 );
+
+		if ( player.IsValid() && Game.Current.Round == this )
+			player.Respawn();
+	}
 }

@@ -37,12 +37,4 @@ public class WaitingRound : BaseRound
 			player.Respawn();
 		}
 	}
-
-	private static async void StartRespawnTimer( Player player )
-	{
-		await GameTask.DelaySeconds( 1 );
-
-		if ( player.IsValid() && Game.Current.Round is WaitingRound )
-			player.Respawn();
-	}
 }
