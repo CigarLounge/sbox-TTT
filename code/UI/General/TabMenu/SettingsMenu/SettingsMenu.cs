@@ -49,6 +49,19 @@ public class SettingsMenu : Panel
 	}
 
 	/// <summary>
+	/// Pops back to the main menu and then adds the page you want to show.
+	/// <param name="page">The panel page to add and show.</param>
+	/// </summary>
+	public void GoToPage( Panel page )
+	{
+		if ( ActivePage == page )
+			return;
+
+		PopToHomePage();
+		AddPage( page );
+	}
+
+	/// <summary>
 	/// Deletes the current page and displays the next page in the stack.
 	/// </summary>
 	public void PopPage()
