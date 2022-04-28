@@ -13,6 +13,7 @@ public class ScoreboardEntry : Panel
 	private Image PlayerAvatar { get; set; }
 	private Label PlayerName { get; set; }
 	private Label Karma { get; set; }
+	private Label Score { get; set; }
 	private Label Ping { get; set; }
 
 	public virtual void Update()
@@ -27,6 +28,7 @@ public class ScoreboardEntry : Panel
 			Karma.Text = MathF.Round( Client.GetValue<float>( Strings.Karma ) ).ToString();
 
 		Ping.Text = Client.Ping.ToString();
+		Score.Text = MathF.Round( Client.GetValue<float>( Strings.Score ) ).ToString();
 
 		SetClass( "me", Client == Local.Client );
 
