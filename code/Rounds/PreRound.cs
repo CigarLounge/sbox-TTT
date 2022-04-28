@@ -20,6 +20,7 @@ public class PreRound : BaseRound
 	public override void OnPlayerJoin( Player player )
 	{
 		base.OnPlayerJoin( player );
+
 		player.Respawn();
 	}
 
@@ -56,7 +57,7 @@ public class PreRound : BaseRound
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.Client.SetValue( Strings.Spectator, player.IsForcedSpectator );
+			player.IsSpectator = player.IsForcedSpectator;
 
 			if ( player.IsForcedSpectator )
 			{
@@ -81,6 +82,7 @@ public class PreRound : BaseRound
 		int traitorsAssigned = traitorCount;
 		int detectivesAssigned = detectiveCount;
 		int index = 0;
+
 		while ( traitorsAssigned-- > 0 ) players[index++].Role = new Traitor();
 		while ( detectivesAssigned-- > 0 ) players[index++].Role = new Detective();
 		while ( index < players.Count ) players[index++].Role = new Innocent();
@@ -92,13 +94,5 @@ public class PreRound : BaseRound
 			InnocentTeamCount = players.Count - traitorCount,
 			TraitorTeamCount = traitorCount
 		} );
-	}
-
-	private static async void StartRespawnTimer( Player player )
-	{
-		await GameTask.DelaySeconds( 1 );
-
-		if ( player.IsValid() && Game.Current.Round is PreRound )
-			player.Respawn();
 	}
 }
