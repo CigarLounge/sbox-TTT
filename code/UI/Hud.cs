@@ -28,7 +28,7 @@ public partial class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<VoiceList>();
 		RootPanel.AddChild<InfoFeed>();
 		RootPanel.AddChild<FullScreenHintMenu>();
-		RootPanel.AddChild<TabMenu>();
+		RootPanel.AddChild<TabController>();
 		RootPanel.AddChild<Crosshair>();
 		RootPanel.AddChild<RoleMenu>();
 		RootPanel.AddChild<DamageIndicator>();

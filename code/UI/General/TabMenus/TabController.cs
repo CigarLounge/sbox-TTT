@@ -3,19 +3,15 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public partial class TabMenu : Panel
+public partial class TabController : Panel
 {
-	public static TabMenu Instance;
-
 	private readonly Scoreboard _scoreboard;
-	private readonly SettingsMenu _settingsMenu;
+	private readonly Menu _settingsMenu;
 	private bool _isViewingSummaryPage = false;
 
-	public TabMenu()
+	public TabController()
 	{
-		Instance = this;
-
-		StyleSheet.Load( "/UI/General/TabMenu/TabMenu.scss" );
+		StyleSheet.Load( "/UI/General/TabMenus/TabController.scss" );
 
 		var scoreboardButton = new Button( "Menu", "dehaze", SwapToMenu );
 		scoreboardButton.AddClass( "scoreboard-button" );
@@ -26,7 +22,7 @@ public partial class TabMenu : Panel
 		var settingsMenuButton = new Button( "Scoreboard", "people", SwapToScoreboard );
 		settingsMenuButton.AddClass( "settings-button" );
 
-		_settingsMenu = new SettingsMenu( this, settingsMenuButton );
+		_settingsMenu = new Menu( this, settingsMenuButton );
 		_settingsMenu.AddClass( "settings" );
 		_scoreboard.EnableFade( true );
 		_settingsMenu.EnableFade( false );
@@ -61,7 +57,7 @@ public partial class TabMenu : Panel
 		if ( isViewDown && !_isViewingSummaryPage )
 		{
 			SwapToMenu();
-			SettingsMenu.Instance.GoToPage( new RoundSummaryPage() );
+			Menu.Instance.GoToPage( new RoundSummaryPage() );
 			_isViewingSummaryPage = true;
 		}
 
