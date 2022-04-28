@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -161,6 +162,24 @@ public partial class InProgressRound : BaseRound
 	public void LoadPostRound( Team winningTeam )
 	{
 		Game.Current.TotalRoundsPlayed++;
+
+		int aliveWinningPlayers = Utils.GetAlivePlayers()
+			.Where( x => x.Team == winningTeam )
+			.Count();
+
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			if ( !player.IsAlive() )
+				continue;
+
+			player.RoundScore += 1;
+
+			if ( player.Team == winningTeam )
+				player.RoundScore += aliveWinningPlayers;
+		}
+
 		Game.Current.ForceRoundChange( new PostRound() );
 
 		UI.PostRoundMenu.DisplayWinner( winningTeam );
