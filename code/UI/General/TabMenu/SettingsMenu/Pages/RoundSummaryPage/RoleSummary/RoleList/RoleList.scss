@@ -1,3 +1,5 @@
+@import "/ui/Hud.scss";
+
 RoleList
 {
     width: 100%;
@@ -41,6 +43,17 @@ RoleList
             margin-left: 8px;
             font-size: 16px;
             font-weight: 600;
+        }
+
+        .score-label
+        {
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        .spacer
+        {
+            flex-grow: 1;
         }
     
         &:nth-child( odd )

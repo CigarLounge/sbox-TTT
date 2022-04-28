@@ -150,7 +150,7 @@ public partial class InProgressRound : BaseRound
 		Game.Current.ForceRoundChange( new PostRound() );
 
 		UI.PostRoundPopup.DisplayWinner( winningTeam );
-		UI.RoleSummary.LoadSummaryData( Innocents, Detectives, Traitors );
+		UI.TabMenu.LoadPlayerData( Innocents, Detectives, Traitors );
 	}
 
 	public override void OnSecond()

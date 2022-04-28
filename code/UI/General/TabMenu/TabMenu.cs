@@ -3,13 +3,17 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public class TabMenu : Panel
+public partial class TabMenu : Panel
 {
-	private Scoreboard _scoreboard;
-	private SettingsMenu _settingsMenu;
+	public static TabMenu Instance;
+
+	private readonly Scoreboard _scoreboard;
+	private readonly SettingsMenu _settingsMenu;
 
 	public TabMenu()
 	{
+		Instance = this;
+
 		StyleSheet.Load( "/UI/General/TabMenu/TabMenu.scss" );
 
 		var scoreboardButton = new Button( "Menu", "dehaze", () =>

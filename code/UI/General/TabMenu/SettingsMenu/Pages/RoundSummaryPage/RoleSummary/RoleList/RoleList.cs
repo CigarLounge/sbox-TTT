@@ -23,5 +23,7 @@ public class RoleList : Panel
 		var playerContainer = PlayersContainer.Add.Panel( "player" );
 		playerContainer.Add.Image( $"avatar:{player.Client.PlayerId}", "avatar" );
 		playerContainer.Add.Label( player.Client.Name, "name-label" );
+		playerContainer.Add.Panel( "spacer" );
+		playerContainer.Add.Label( player.Score.ToString(), "score-label" );
 	}
 }
