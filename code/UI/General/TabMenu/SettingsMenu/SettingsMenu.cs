@@ -3,7 +3,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class SettingsMenu : Panel
+public partial class SettingsMenu : Panel
 {
 	public static SettingsMenu Instance;
 

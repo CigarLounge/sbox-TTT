@@ -3,11 +3,16 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public partial class TabMenu : Panel
+public struct MenuData
 {
 	public Player[] Innocents { get; set; }
 	public Player[] Detectives { get; set; }
 	public Player[] Traitors { get; set; }
+}
+
+public partial class SettingsMenu : Panel
+{
+	public MenuData Data;
 
 	[ClientRpc]
 	public static void LoadPlayerData( Player[] innocents, Player[] detectives, Player[] traitors )
@@ -15,9 +20,9 @@ public partial class TabMenu : Panel
 		if ( Instance == null )
 			return;
 
-		Instance.Innocents = innocents;
-		Instance.Detectives = detectives;
-		Instance.Traitors = traitors;
+		Instance.Data.Innocents = innocents;
+		Instance.Data.Detectives = detectives;
+		Instance.Data.Traitors = traitors;
 
 		RoleSummary.Instance?.Init();
 	}

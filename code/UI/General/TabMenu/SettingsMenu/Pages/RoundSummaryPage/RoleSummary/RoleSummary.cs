@@ -21,9 +21,9 @@ public partial class RoleSummary : Panel
 	{
 		Roles.DeleteChildren( true );
 
-		CreateRoleList( new Innocent(), TabMenu.Instance?.Innocents );
-		CreateRoleList( new Detective(), TabMenu.Instance?.Detectives );
-		CreateRoleList( new Traitor(), TabMenu.Instance?.Traitors );
+		CreateRoleList( new Innocent(), SettingsMenu.Instance?.Data.Innocents );
+		CreateRoleList( new Detective(), SettingsMenu.Instance?.Data.Detectives );
+		CreateRoleList( new Traitor(), SettingsMenu.Instance?.Data.Traitors );
 
 		Empty.Enabled( !Roles.Children.Any() );
 	}
