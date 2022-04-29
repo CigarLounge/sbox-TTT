@@ -34,19 +34,7 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
-		#region Scoring
-		if ( player.DiedBySuicide )
-		{
-			player.RoundScore -= 1;
-		}
-		else if ( player.LastAttacker is Player attacker )
-		{
-			if ( attacker.Team != player.Team )
-				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
-			else
-				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
-		}
-		#endregion
+		ApplyScoring( player );
 
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
@@ -236,6 +224,21 @@ public partial class InProgressRound : BaseRound
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
 		UI.InfoFeed.DisplayClientEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
+	}
+
+	private void ApplyScoring( Player player )
+	{
+		if ( player.DiedBySuicide )
+		{
+			player.RoundScore -= 1;
+		}
+		else if ( player.LastAttacker is Player attacker )
+		{
+			if ( attacker.Team != player.Team )
+				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
+			else
+				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
+		}
 	}
 
 	[TTTEvent.Player.RoleChanged]
