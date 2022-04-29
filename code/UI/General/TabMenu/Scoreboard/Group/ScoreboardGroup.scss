@@ -35,14 +35,6 @@ ScoreboardGroup
         width: 125px;
     }
 
-    &:not(:first-child)
-    {
-        .stat
-        {
-            display: none;
-        }
-    }
-
     .group-content-panel
     {
         display: flex;
