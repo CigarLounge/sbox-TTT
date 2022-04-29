@@ -7,8 +7,8 @@
 		libraryname = "ttt_role_none"
 		exclusiveitems = [  ]
 		color = [ 0.784314, 0.784314, 0.784314, 1.0 ]
-		retrievecredits = false
 		canrolechat = false
 		icon = "ui/none.png"
+		canretrievecredits = false
 	}
 }

@@ -7,6 +7,9 @@ namespace TTT;
 [Library( "ttt_entity_corpse", Title = "Corpse" )]
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
+	[Net]
+	public int Credits { get; set; }
+
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
 	public Player DeadPlayer { get; private set; }
@@ -57,6 +60,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
+		Credits = player.Credits;
 
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )
@@ -141,19 +145,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// </summary>
 	/// <param name="searcher">The player who is searching this corpse.</param>
 	/// <param name="covert">Whether or not this is a covert search.</param>
-	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
-	public void Search( Player searcher, bool covert, bool retrieveCredits = true )
+	/// <param name="canRetrieveCredits">Should the searcher retrieve credits.</param>
+	public void Search( Player searcher, bool covert, bool canRetrieveCredits = true )
 	{
 		Host.AssertServer();
 
-		int credits = 0;
-		retrieveCredits &= searcher.Role.RetrieveCredits & searcher.IsAlive();
+		int creditsRetrieved = 0;
+		canRetrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
 
-		if ( retrieveCredits && DeadPlayer.Credits > 0 )
+		if ( canRetrieveCredits && Credits > 0 )
 		{
-			searcher.Credits += DeadPlayer.Credits;
-			credits = DeadPlayer.Credits;
-			DeadPlayer.Credits = 0;
+			searcher.Credits += Credits;
+			creditsRetrieved = Credits;
+			DeadPlayer.Credits = Credits = 0;
 		}
 
 		SendPlayer( To.Single( searcher ) );
@@ -174,21 +178,21 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				SendKillInfo( To.Everyone );
 		}
 
-		ClientSearch( To.Single( searcher ), credits );
+		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
 	[ClientRpc]
-	private void ClientSearch( int credits = 0 )
+	private void ClientSearch( int creditsRetrieved = 0 )
 	{
 		DeadPlayer.IsMissingInAction = !DeadPlayer.IsConfirmedDead;
 
-		if ( credits <= 0 )
+		if ( creditsRetrieved <= 0 )
 			return;
 
 		UI.InfoFeed.Instance?.AddClientEntry
 		(
 			Local.Client,
-			$"found {credits} credits!"
+			$"found {creditsRetrieved} credits!"
 		);
 	}
 
@@ -283,7 +287,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
+	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( player, this );
 
 	void IEntityHint.Tick( Player player )
 	{

@@ -21,6 +21,12 @@ corpsehint
         flex-direction: column;
         align-items: center;
 
+        .credit-hint
+        {
+            color: $info;
+            transition: all 5s ease-out;
+        }
+
         label
         {
             font-size: 15px;
@@ -28,7 +34,7 @@ corpsehint
 
         inputglyph
         {
-            margin: 5px;
+            margin: 5 5 5 5;
         }
     }
 

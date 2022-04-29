@@ -18,9 +18,7 @@ public partial class MapSelectionRound : BaseRound
 
 		if ( Votes.Count == 0 )
 		{
-			Log.Warning( "No viable TTT-support maps found on server. Restarting game on default map." );
 			Global.ChangeLevel( Game.DefaultMap );
-
 			return;
 		}
 
