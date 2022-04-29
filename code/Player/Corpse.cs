@@ -175,8 +175,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				DeadPlayer.Confirmer = searcher;
 				DeadPlayer.Confirm( To.Everyone );
 
-				if ( searcher.Team != Team.Traitors )
-					searcher.RoundScore += searcher.Role is Detective ? 3 : 1;
+				Scoring.OnBodyFound( searcher );
 			}
 
 			// If the searcher is a detective, send kill info to everyone.

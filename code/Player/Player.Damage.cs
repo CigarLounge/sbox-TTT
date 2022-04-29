@@ -58,7 +58,6 @@ public partial class Player
 	public const float MaxHealth = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
-	private static readonly float ArmorReductionPercentage = 0.7f;
 
 	public new float Health
 	{
@@ -95,9 +94,9 @@ public partial class Player
 	public TimeUntil TimeUntilClean { get; set; } = 0f;
 
 	/// <summary>
-	/// The live karma starts equal to the base karma, but is updated "live" as the
+	/// The active karma starts equal to the base karma, but is updated as the
 	/// player damages/kills others. When a player damages/kills another, the
-	/// live karma is used to determine his karma penalty.
+	/// active karma is used to determine his karma penalty.
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
@@ -157,7 +156,7 @@ public partial class Player
 		}
 
 		if ( !isHeadShot && Perks.Has( typeof( BodyArmor ) ) )
-			damageMultiplier *= ArmorReductionPercentage;
+			damageMultiplier *= BodyArmor.ReductionPercentage;
 
 		return damageMultiplier;
 	}

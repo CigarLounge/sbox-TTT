@@ -30,17 +30,6 @@ public class PostRound : BaseRound
 			return;
 
 		RevealEveryone();
-
-		// Add the score gained this round to the actual score.
-		foreach ( var client in Client.All )
-		{
-			var player = client.Pawn as Player;
-
-			player.Score += player.RoundScore;
-			player.RoundScore = 0;
-		}
-
-		Karma.OnRoundEnd();
 	}
 
 	protected override void OnFinish()

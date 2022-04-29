@@ -13,6 +13,7 @@ public partial class Game : Sandbox.Game
 
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
+
 	public int RTVCount { get; set; }
 
 	public MapHandler MapHandler { get; private set; }
