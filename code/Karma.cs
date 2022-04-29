@@ -162,7 +162,7 @@ public static class Karma
 
 	private static void RoundIncrement( Player player )
 	{
-		if ( player.IsSpectator || player.DiedBySuicide )
+		if ( player.IsSpectator || (!player.IsAlive() && player.DiedBySuicide) )
 			return;
 
 		float reward = RoundHeal;
