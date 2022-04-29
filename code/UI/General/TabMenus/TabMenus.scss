@@ -18,16 +18,7 @@ TabMenus
     .fade-in 
     {
         bottom: 25px;
-
-        &.settings 
-        {
-            opacity: 0.9;
-        }
-
-        &.scoreboard 
-        {
-            opacity: 0.96;
-        }
+        opacity: 0.985;
     }
 
     .scoreboard-button
