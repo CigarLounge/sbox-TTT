@@ -68,7 +68,7 @@ public class PreRound : BaseRound
 			}
 
 			if ( player.IsAlive() )
-				player.Health = player.MaxHealth;
+				player.Health = Player.MaxHealth;
 			else
 				player.Respawn();
 

@@ -38,7 +38,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		if ( StoredHealth <= 0 )
 			return;
 	
-		float healthNeeded = player.MaxHealth - player.Health;
+		float healthNeeded = Player.MaxHealth - player.Health;
 
 		if ( healthNeeded <= 0 )
 			return;
@@ -57,7 +57,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		var player = user as Player;
 		HealPlayer( player );
 
-		return player.Health < player.MaxHealth && StoredHealth > 0;
+		return player.Health < Player.MaxHealth && StoredHealth > 0;
 	}
 
 	bool IUse.IsUsable( Entity user )
@@ -65,7 +65,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		if ( StoredHealth <= 0 )
 			return false;
 
-		if ( user is not Player player || player.Health >= player.MaxHealth )
+		if ( user is not Player player || player.Health >= Player.MaxHealth )
 			return false;
 
 		return true;

@@ -55,7 +55,7 @@ public enum HitboxGroup
 
 public partial class Player
 {
-	public float MaxHealth { get; set; } = 100f;
+	public const float MaxHealth = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
 	private static readonly float ArmorReductionPercentage = 0.7f;
