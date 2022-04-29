@@ -7,8 +7,6 @@ namespace TTT;
 [Hammer.EditorModel( "models/weapons/w_frag.vmdl" )]
 public class Discombobulator : Grenade
 {
-	private const bool AllowJump = false;
-
 	private const string ExplodeSound = "discombobulator_explode-1";
 	private const string Particle = "particles/discombobulator_explode.vpcf";
 
@@ -66,7 +64,7 @@ public class Discombobulator : Grenade
 			var targetPos = target.PhysicsBody.MassCenter;
 
 			if ( target is Player )
-				targetPos += Vector3.Up * 40;
+				targetPos += Vector3.Up * 63;
 
 			var dist = Vector3.DistanceBetween( Position, targetPos );
 			if ( dist > radius )
@@ -83,11 +81,6 @@ public class Discombobulator : Grenade
 			float distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
 			float force = pushForce * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
-
-			if ( target == PreviousOwner && !AllowJump )
-			{
-				// TODO: Mess with discombobulator jumps.
-			}
 
 			target.GroundEntity = null;
 			target.Velocity += force * forceDir;
