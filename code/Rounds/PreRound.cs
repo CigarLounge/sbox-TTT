@@ -121,12 +121,4 @@ public class PreRound : BaseRound
 
 		return (innocents, detectives, traitors);
 	}
-
-	private static new async void StartRespawnTimer( Player player )
-	{
-		await GameTask.DelaySeconds( 1 );
-
-		if ( player.IsValid() && Game.Current.Round is PreRound )
-			player.Respawn();
-	}
 }
