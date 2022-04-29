@@ -1,24 +1,21 @@
 PostRoundPopup
 {
     position: absolute;
-    left: 50%;
-    top: 158px;
-    padding: 20px; 
-    opacity: 0.9;
-    transform: translateX(-50%) translateY(-50%);
-    transition: all 1s ease-in-out;
+    top: 82px;
+    padding: 15px; 
+    transition: all 0.5s ease-in-out;
     flex-direction: column;
     text-align: center;
+    width: 100%;
+    opacity: 0.96;
 
     &:intro
     {
-        top: 10px;
         opacity: 0;
     }
 
     &:outro
     {
-        top: -10px;
         opacity: 0;
     }
 
@@ -32,8 +29,7 @@ PostRoundPopup
 
     .content
     {
-        font-size: 20px;
-        font-weight: 600;
+        font-size: 18px;
         align-items: center;
         justify-content: center;
     }
