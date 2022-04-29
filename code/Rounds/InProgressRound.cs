@@ -35,7 +35,7 @@ public partial class InProgressRound : BaseRound
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
-		HandleScoring( player );
+		ApplyScoring( player );
 
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
@@ -251,7 +251,7 @@ public partial class InProgressRound : BaseRound
 		}
 	}
 
-	private void HandleScoring( Player player )
+	private void ApplyScoring( Player player )
 	{
 		if ( player.DiedBySuicide )
 		{
