@@ -11,7 +11,7 @@
 	]
 	defaultcredits(integer) : "Default Credits" : 0 : "The amount of credits players spawn with."
 	exclusiveitems(array:string) : "Exclusive Items" :  : ""
-	retrievecredits(boolean) : "Retrieve Credits" : 0 : "Players can retrieve credits from corpses."
+	canretrievecredits(boolean) : "Can Retrieve Credits" : 0 : "Whether or not a player can retrieve credits from corpses."
 	canrolechat(boolean) : "Can Role Chat" : 0 : ""
 	color(color1) { group = "UI" } : "Color" :  : ""
 	icon(string) { group = "UI" editor = "AssetBrowse(png)" } : "Icon" : "ui/none.png" : ""

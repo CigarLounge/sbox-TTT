@@ -19,8 +19,8 @@ public class RoleInfo : Asset
 	[Property]
 	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	[Property( "retrievecredits", "Players can retrieve credits from corpses." )]
-	public bool RetrieveCredits { get; set; } = false;
+	[Property( "CanRetrieveCredits", "Whether or not a player can retrieve credits from corpses." )]
+	public bool CanRetrieveCredits { get; set; } = false;
 
 	[Property]
 	public bool CanRoleChat { get; set; } = false;
@@ -55,7 +55,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
 	public HashSet<string> AvailableItems => Info.AvailableItems;
-	public bool RetrieveCredits => Info.RetrieveCredits;
+	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
 	public string Title => Info.Title;
 
