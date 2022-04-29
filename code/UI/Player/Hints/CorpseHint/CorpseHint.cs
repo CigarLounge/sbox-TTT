@@ -49,7 +49,9 @@ public class CorpseHint : EntityHintPanel
 			SubText.Text = "to identify.";
 		}
 
-		CreditHint.Enabled( _corpse.Credits > 0 && _searcher.Role.CanRetrieveCredits && _searcher.IsAlive() );
+		var canFetchCredits = _corpse.Credits > 0 && _searcher.Role.CanRetrieveCredits && _searcher.IsAlive();
+		if ( !canFetchCredits )
+			CreditHint?.Delete();
 
 		// We do not want to show the bottom "actions" panel if we are far away, or we are not currently using binoculars.
 		if ( !_corpse.CanSearch() )

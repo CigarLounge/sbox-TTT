@@ -24,7 +24,13 @@ corpsehint
         .credit-hint
         {
             color: $info;
-            transition: all 5s ease-out;
+            transition: all 0.1s ease-in;
+
+            &:outro
+            {
+                height: 0;
+                opacity: 0;
+            }
         }
 
         label
