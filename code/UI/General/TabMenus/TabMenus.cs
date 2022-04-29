@@ -5,12 +5,16 @@ namespace TTT.UI;
 
 public partial class TabMenus : Panel
 {
+	public static TabMenus Instance;
+
 	private readonly Scoreboard _scoreboard;
 	private readonly GeneralMenu _settingsMenu;
 	private bool _isViewingSummaryPage = false;
 
 	public TabMenus()
 	{
+		Instance = this;
+
 		StyleSheet.Load( "/UI/General/TabMenus/TabMenus.scss" );
 
 		var scoreboardButton = new Button( "Menu", "dehaze", SwapToMenu );
@@ -28,13 +32,13 @@ public partial class TabMenus : Panel
 		_settingsMenu.EnableFade( false );
 	}
 
-	private void SwapToMenu()
+	public void SwapToMenu()
 	{
 		_scoreboard.EnableFade( false );
 		_settingsMenu.EnableFade( true );
 	}
 
-	private void SwapToScoreboard()
+	public void SwapToScoreboard()
 	{
 		_scoreboard.EnableFade( true );
 		_settingsMenu.EnableFade( false );
