@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace TTT;
 
-public enum Team : byte
+public enum Team
 {
-	None,
-	Innocents,
-	Traitors
+	None = 0,
+	Innocents = 1,
+	Traitors = 2
 }
 
 public static class TeamExtensions

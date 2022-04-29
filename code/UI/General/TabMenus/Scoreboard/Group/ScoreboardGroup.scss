@@ -29,20 +29,10 @@ ScoreboardGroup
         flex-grow: 1;
     }
 
-    .group-karma-label,
-    .group-ping-label
+    .stat
     {
         text-align: center;
         width: 125px;
-    }
-
-    &:not(:first-child)
-    {
-        .group-karma-label,
-        .group-ping-label
-        {
-            display: none;
-        }
     }
 
     .group-content-panel

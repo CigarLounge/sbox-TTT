@@ -20,7 +20,7 @@ public class Nameplate : EntityHintPanel
 		if ( !_player.IsValid() )
 			return;
 
-		var health = _player.Health / _player.MaxHealth * 100;
+		var health = _player.Health / Player.MaxHealth * 100;
 		var healthGroup = _player.GetHealthGroup( health );
 
 		HealthStatus.Style.FontColor = healthGroup.Color;

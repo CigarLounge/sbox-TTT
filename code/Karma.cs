@@ -3,18 +3,6 @@ using System;
 
 namespace TTT;
 
-public struct KarmaGroup
-{
-	public string Title;
-	public Color Color;
-
-	public KarmaGroup( string title, Color color )
-	{
-		Title = title;
-		Color = color;
-	}
-}
-
 public static class Karma
 {
 	// Maybe turn the values into ServerVars down the line.
@@ -29,16 +17,16 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	private static readonly KarmaGroup[] KarmaGroupList = new KarmaGroup[]
+	private static readonly ColorGroup[] KarmaGroupList = new ColorGroup[]
 	{
-		new KarmaGroup("Liability", Color.FromBytes(255, 130, 0)),
-		new KarmaGroup("Dangerous", Color.FromBytes(255, 180, 0)),
-		new KarmaGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
-		new KarmaGroup("Crude", Color.FromBytes(255, 240, 135)),
-		new KarmaGroup("Reputable", Color.FromBytes(255, 255, 255))
+		new ColorGroup("Liability", Color.FromBytes(255, 130, 0)),
+		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
+		new ColorGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
+		new ColorGroup("Crude", Color.FromBytes(255, 240, 135)),
+		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
 
-	public static KarmaGroup GetKarmaGroup( Player player )
+	public static ColorGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
 			return KarmaGroupList[^1];
@@ -174,8 +162,7 @@ public static class Karma
 
 	private static void RoundIncrement( Player player )
 	{
-		// TODO: Figure out a way to check if the player died by suicide.
-		if ( player.IsSpectator )
+		if ( player.IsSpectator || player.DiedBySuicide )
 			return;
 
 		float reward = RoundHeal;

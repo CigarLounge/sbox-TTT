@@ -20,6 +20,7 @@ public class PreRound : BaseRound
 	public override void OnPlayerJoin( Player player )
 	{
 		base.OnPlayerJoin( player );
+
 		player.Respawn();
 	}
 
@@ -56,7 +57,7 @@ public class PreRound : BaseRound
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.Client.SetValue( Strings.Spectator, player.IsForcedSpectator );
+			player.IsSpectator = player.IsForcedSpectator;
 
 			if ( player.IsForcedSpectator )
 			{
@@ -67,7 +68,7 @@ public class PreRound : BaseRound
 			}
 
 			if ( player.IsAlive() )
-				player.Health = player.MaxHealth;
+				player.Health = Player.MaxHealth;
 			else
 				player.Respawn();
 
@@ -121,7 +122,7 @@ public class PreRound : BaseRound
 		return (innocents, detectives, traitors);
 	}
 
-	private static async void StartRespawnTimer( Player player )
+	private static new async void StartRespawnTimer( Player player )
 	{
 		await GameTask.DelaySeconds( 1 );
 
