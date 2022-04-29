@@ -8,7 +8,7 @@ namespace TTT;
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
 	[Net]
-	public int Credits { get; set; }
+	public bool HasCredits { get; private set; }
 
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
@@ -60,7 +60,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
-		Credits = player.Credits;
+		HasCredits = player.Credits > 0;
 
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )
@@ -153,11 +153,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		int creditsRetrieved = 0;
 		canRetrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
 
-		if ( canRetrieveCredits && Credits > 0 )
+		if ( canRetrieveCredits && HasCredits )
 		{
-			searcher.Credits += Credits;
-			creditsRetrieved = Credits;
-			DeadPlayer.Credits = Credits = 0;
+			searcher.Credits += DeadPlayer.Credits;
+			creditsRetrieved = DeadPlayer.Credits;
+			DeadPlayer.Credits = 0;
+			HasCredits = false;
 		}
 
 		SendPlayer( To.Single( searcher ) );
