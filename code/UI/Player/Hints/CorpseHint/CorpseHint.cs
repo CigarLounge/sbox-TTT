@@ -49,7 +49,7 @@ public class CorpseHint : EntityHintPanel
 			SubText.Text = "to identify.";
 		}
 
-		var canFetchCredits = _corpse.Credits > 0 && _searcher.Role.CanRetrieveCredits && _searcher.IsAlive();
+		bool canFetchCredits = _corpse.Credits > 0 && _searcher.Role.CanRetrieveCredits && _searcher.IsAlive();
 		if ( !canFetchCredits )
 			CreditHint?.Delete();
 

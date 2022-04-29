@@ -19,7 +19,7 @@ public class RoleInfo : Asset
 	[Property]
 	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	[Property( "CanRetrieveCredits", "Whether or not a player can retrieve credits from corpses." )]
+	[Property( "canretrievecredits", "Whether or not a player can retrieve credits from corpses." )]
 	public bool CanRetrieveCredits { get; set; } = false;
 
 	[Property]
