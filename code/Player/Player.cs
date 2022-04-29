@@ -24,6 +24,12 @@ public partial class Player : Sandbox.Player
 		set => Client.SetInt( Strings.Score, value );
 	}
 
+	/// <summary>
+	/// The score gained during a single round. This later gets added
+	/// to the actual score.
+	/// </summary>
+	public int RoundScore { get; set; }
+
 	public const float DropVelocity = 300;
 
 	public Player()

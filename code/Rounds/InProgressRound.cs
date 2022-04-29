@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -26,12 +27,15 @@ public partial class InProgressRound : BaseRound
 	public override int RoundDuration => Game.InProgressRoundTime;
 
 	private readonly List<RoleButton> _logicButtons = new();
+	private bool _timeUp = false;
 
 	public override void OnPlayerKilled( Player player )
 	{
 		base.OnPlayerKilled( player );
 
 		TimeLeft += Game.InProgressSecondsPerDeath;
+
+		ApplyScoring( player );
 
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
@@ -125,6 +129,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnTimeUp();
 
+		_timeUp = true;
 		LoadPostRound( Team.Innocents );
 	}
 
@@ -147,6 +152,9 @@ public partial class InProgressRound : BaseRound
 	public void LoadPostRound( Team winningTeam )
 	{
 		Game.Current.TotalRoundsPlayed++;
+
+		HandleTeamBonus();
+
 		Game.Current.ForceRoundChange( new PostRound() );
 
 		UI.PostRoundMenu.DisplayWinner( winningTeam );
@@ -203,6 +211,59 @@ public partial class InProgressRound : BaseRound
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
 		UI.InfoFeed.DisplayClientEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
+	}
+
+	private void HandleTeamBonus()
+	{
+		var alivePlayersCount = new List<int>( new int[3] );
+		var deadPlayersCount = new List<int>( new int[3] );
+
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			if ( !player.IsAlive() )
+			{
+				deadPlayersCount[(int)player.Team]++;
+				continue;
+			}
+
+			player.RoundScore++;
+			alivePlayersCount[(int)player.Team]++;
+		}
+
+		int traitorBonus = (int)MathF.Ceiling( deadPlayersCount[1] / 2f );
+		int innocentBonus = alivePlayersCount[1];
+
+		if ( !_timeUp )
+			traitorBonus += alivePlayersCount[2];
+		else
+			traitorBonus -= (int)MathF.Floor( alivePlayersCount[1] / 2f );
+
+		foreach ( var client in Client.All )
+		{
+			var player = client.Pawn as Player;
+
+			if ( player.Team == Team.Innocents )
+				player.RoundScore += innocentBonus;
+			else if ( player.Team == Team.Traitors )
+				player.RoundScore += traitorBonus;
+		}
+	}
+
+	private void ApplyScoring( Player player )
+	{
+		if ( player.DiedBySuicide )
+		{
+			player.RoundScore -= 1;
+		}
+		else if ( player.LastAttacker is Player attacker )
+		{
+			if ( attacker.Team != player.Team )
+				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
+			else
+				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
+		}
 	}
 
 	[TTTEvent.Player.RoleChanged]

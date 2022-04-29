@@ -31,7 +31,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	private readonly HashSet<int> _playersWhoGotKillInfo = new();
 	private readonly HashSet<int> _playersWhoGotPlayerData = new();
 
-	// Only display the inspect menu if this is true;
+	// Only display the inspect menu if this is true.
 	private bool _receivedKillInfo;
 
 	public override void Spawn()
@@ -160,13 +160,18 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		DeadPlayer.SendRole( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
 
-		covert &= searcher.IsAlive();
+		// Dead players will always covert search.
+		covert |= !searcher.IsAlive();
+
 		if ( !covert )
 		{
 			if ( !DeadPlayer.IsConfirmedDead )
 			{
 				DeadPlayer.Confirmer = searcher;
 				DeadPlayer.Confirm( To.Everyone );
+
+				if ( searcher.Team != Team.Traitors )
+					searcher.RoundScore += searcher.Role is Detective ? 3 : 1;
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
@@ -297,12 +302,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		// For now, let's not let people inspect outside of InProgressRound.
-		// we should probably create an "empty" corpse instead.
+		if ( user is not Player player )
+			return false;
+
 		if ( Game.Current.Round is WaitingRound or PreRound )
 			return false;
 
-		var player = user as Player;
 		Search( player, Input.Down( InputButton.Run ) );
 
 		return true;

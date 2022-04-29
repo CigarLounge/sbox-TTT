@@ -26,12 +26,12 @@ public enum HitboxIndex
 }
 */
 
-public struct HealthGroup
+public struct ColorGroup
 {
-	public string Title;
 	public Color Color;
+	public string Title;
 
-	public HealthGroup( string title, Color color )
+	public ColorGroup( string title, Color color )
 	{
 		Title = title;
 		Color = color;
@@ -55,9 +55,9 @@ public enum HitboxGroup
 
 public partial class Player
 {
-	public float MaxHealth { get; set; } = 100f;
+	public const float MaxHealth = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
-	public float LastDistanceToAttacker { get; set; } = 0f;
+	public float DistanceToAttacker { get; set; }
 	private static readonly float ArmorReductionPercentage = 0.7f;
 
 	public new float Health
@@ -65,6 +65,11 @@ public partial class Player
 		get => base.Health;
 		set => base.Health = Math.Min( value, MaxHealth );
 	}
+
+	/// <summary>
+	/// We count all player deaths not caused by other players as suicides.
+	/// </summary>
+	public bool DiedBySuicide => LastAttacker is not Player || LastAttacker == this;
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -96,16 +101,16 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	private static readonly HealthGroup[] HealthGroupList = new HealthGroup[]
+	private static readonly ColorGroup[] HealthGroupList = new ColorGroup[]
 	{
-		new HealthGroup("Near Death", Color.FromBytes(246, 6, 6)),
-		new HealthGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
-		new HealthGroup("Wounded", Color.FromBytes(213, 202, 4)),
-		new HealthGroup("Hurt", Color.FromBytes(171, 231, 3)),
-		new HealthGroup("Healthy", Color.FromBytes(44, 233, 44))
+		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
+		new ColorGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
+		new ColorGroup("Wounded", Color.FromBytes(213, 202, 4)),
+		new ColorGroup("Hurt", Color.FromBytes(171, 231, 3)),
+		new ColorGroup("Healthy", Color.FromBytes(44, 233, 44))
 	};
 
-	public HealthGroup GetHealthGroup( float health )
+	public ColorGroup GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
 			return HealthGroupList[^1];
