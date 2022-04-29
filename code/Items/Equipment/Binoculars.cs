@@ -60,7 +60,7 @@ public partial class Binoculars : Carriable
 			return;
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
-			_corpse.Search( Owner, Input.Down( InputButton.Run ) );
+			_corpse.Search( Owner, Input.Down( InputButton.Run ), false );
 	}
 
 	public override void BuildInput( InputBuilder input )
