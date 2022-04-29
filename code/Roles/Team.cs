@@ -32,13 +32,13 @@ public static class TeamExtensions
 		_properties[Team.Innocents] = new TeamProperties
 		{
 			Title = "Innocents",
-			Color = Color.FromBytes( 27, 197, 78 )
+			Color = Color.FromBytes( 26, 196, 77 )
 		};
 
 		_properties[Team.Traitors] = new TeamProperties
 		{
 			Title = "Traitors",
-			Color = Color.FromBytes( 223, 41, 53 )
+			Color = Color.FromBytes( 223, 40, 52 )
 		};
 	}
 

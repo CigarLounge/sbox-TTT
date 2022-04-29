@@ -48,7 +48,7 @@ public class PostRound : BaseRound
 		base.OnFinish();
 
 		if ( Host.IsClient )
-			UI.PostRoundMenu.Instance?.Close();
+			UI.PostRoundPopup.Instance?.Close();
 	}
 
 	protected override void OnTimeUp()

@@ -1,0 +1,80 @@
+@import "/ui/Hud.scss";
+
+RoleList
+{
+    width: 100%;
+    padding: 5px;
+    flex-direction: column;
+    
+    .header
+    {
+        font-size: 25px;
+        border-radius: 8 8 0 0;
+        font-weight: 600;
+        align-items: center;
+        padding: 3px;
+    }
+
+    .player-container
+    {
+        flex-direction: column;
+        overflow: scroll;
+    }
+
+    .player
+    {
+        height: 40px;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 500;
+        display: flex;
+        padding: 10px;
+        flex-shrink: 0;
+    
+        .avatar
+        {
+            height: 25px;
+            width: 25px;
+            border-radius: 8px;
+        }
+    
+        .name-label
+        {
+            margin-left: 8px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .score-label
+        {
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        .spacer
+        {
+            flex-grow: 1;
+        }
+    
+        &:nth-child( odd )
+        {
+            background-color: #0a0a0a66;
+        }
+    
+        &:nth-child( even )
+        {
+            background-color: #4b4b4b15;
+        }
+    
+        &.me:nth-child(1)
+        {
+            background-color: #f2b42d1a;
+        }
+    
+        &:last-child
+        {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+    }
+}

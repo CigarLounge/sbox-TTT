@@ -1,6 +1,6 @@
 @import "/ui/Hud.scss";
 
-TabMenu 
+TabMenus 
 {  
     pointer-events: all;
     width: 100%;
@@ -8,6 +8,7 @@ TabMenu
     justify-content: center;
     opacity: 0;
     bottom: -25px;
+    z-index: 1;
 
     &.show
     {
@@ -17,16 +18,7 @@ TabMenu
     .fade-in 
     {
         bottom: 25px;
-
-        &.settings 
-        {
-            opacity: 0.9;
-        }
-
-        &.scoreboard 
-        {
-            opacity: 0.96;
-        }
+        opacity: 0.985;
     }
 
     .scoreboard-button

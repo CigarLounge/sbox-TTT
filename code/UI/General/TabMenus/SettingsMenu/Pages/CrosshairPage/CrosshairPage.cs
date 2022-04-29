@@ -35,7 +35,7 @@ public partial class CrosshairPage : Panel
 	{
 		if ( Crosshair.Instance is not null )
 			FileSystem.Data.WriteJson( "crosshair.json", Crosshair.Instance.Config );
-		SettingsMenu.Instance.PopPage();
+		GeneralMenu.Instance.PopPage();
 	}
 
 	public override void Tick()

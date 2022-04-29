@@ -10,10 +10,9 @@ public partial class InProgressRound : BaseRound
 	public List<Player> AlivePlayers { get; set; }
 	public List<Player> Spectators { get; set; }
 
-	public int InnocentTeamCount { get; set; }
-	private int InnocentTeamDeathCount { get; set; }
-
-	public int TraitorTeamCount { get; set; }
+	public Player[] Innocents { get; set; }
+	public Player[] Detectives { get; set; }
+	public Player[] Traitors { get; set; }
 
 	/// <summary>
 	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
@@ -26,6 +25,7 @@ public partial class InProgressRound : BaseRound
 	public override string RoundName => "In Progress";
 	public override int RoundDuration => Game.InProgressRoundTime;
 
+	private int InnocentTeamDeathCount { get; set; }
 	private readonly List<RoleButton> _logicButtons = new();
 	private bool _timeUp = false;
 
@@ -40,7 +40,7 @@ public partial class InProgressRound : BaseRound
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
 
-		float percentDead = (float)InnocentTeamDeathCount / InnocentTeamCount;
+		float percentDead = (float)InnocentTeamDeathCount / (Innocents.Length + Detectives.Length);
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
@@ -157,7 +157,8 @@ public partial class InProgressRound : BaseRound
 
 		Game.Current.ForceRoundChange( new PostRound() );
 
-		UI.PostRoundMenu.DisplayWinner( winningTeam );
+		UI.PostRoundPopup.DisplayWinner( winningTeam );
+		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
 	}
 
 	public override void OnSecond()

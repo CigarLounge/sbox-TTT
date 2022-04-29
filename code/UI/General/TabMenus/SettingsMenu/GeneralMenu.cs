@@ -3,9 +3,9 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class SettingsMenu : Panel
+public partial class GeneralMenu : Panel
 {
-	public static SettingsMenu Instance;
+	public static GeneralMenu Instance;
 
 	public Panel ActivePage { get; private set; }
 
@@ -20,7 +20,7 @@ public class SettingsMenu : Panel
 	private Button BackButton { get; set; }
 	private Button HomeButton { get; set; }
 
-	public SettingsMenu( Panel parent, Button swapButton )
+	public GeneralMenu( Panel parent, Button swapButton )
 	{
 		Parent = parent;
 		Instance = this;
@@ -49,14 +49,25 @@ public class SettingsMenu : Panel
 	}
 
 	/// <summary>
+	/// Pops back to the main menu and then adds the page you want to show.
+	/// <param name="page">The panel page to add and show.</param>
+	/// </summary>
+	public void GoToPage( Panel page )
+	{
+		if ( ActivePage == page )
+			return;
+
+		PopToHomePage();
+		AddPage( page );
+	}
+
+	/// <summary>
 	/// Deletes the current page and displays the next page in the stack.
 	/// </summary>
 	public void PopPage()
 	{
 		if ( !HasPreviousPages )
-		{
 			return;
-		}
 
 		Pages.GetChild( Pages.ChildrenCount - 1 ).Delete( true );
 		Pages.GetChild( Pages.ChildrenCount - 1 ).RemoveClass( "disabled" );
@@ -64,7 +75,7 @@ public class SettingsMenu : Panel
 		BackButton.SetClass( "inactive", !HasPreviousPages );
 		HomeButton.SetClass( "inactive", !HasPreviousPages );
 
-		ActivePage = Pages.GetChild( Pages.ChildrenCount - 1 ) as Panel;
+		ActivePage = Pages.GetChild( Pages.ChildrenCount - 1 );
 	}
 
 	/// <summary>
@@ -73,8 +84,6 @@ public class SettingsMenu : Panel
 	public void PopToHomePage()
 	{
 		while ( HasPreviousPages )
-		{
 			PopPage();
-		}
 	}
 }
