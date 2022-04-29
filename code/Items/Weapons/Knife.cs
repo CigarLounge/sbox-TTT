@@ -78,7 +78,7 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player player )
 		{
-			player.LastDistanceToAttacker = 0;
+			player.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
 			Owner.Inventory.DropActive();
 			Delete();
@@ -163,7 +163,7 @@ public partial class Knife : Carriable
 					.WithAttacker( _thrower )
 					.WithWeapon( this );
 
-				player.LastDistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();
+				player.DistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();
 				player.TakeDamage( damageInfo );
 
 				Delete();

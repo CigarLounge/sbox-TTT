@@ -57,7 +57,7 @@ public partial class Player
 {
 	public float MaxHealth { get; set; } = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
-	public float LastDistanceToAttacker { get; set; } = 0f;
+	public float DistanceToAttacker { get; set; }
 	private static readonly float ArmorReductionPercentage = 0.7f;
 
 	public new float Health
@@ -67,10 +67,9 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// We count all player deaths not caused by
-	/// other players as suicides.
+	/// We count all player deaths not caused by other players as suicides.
 	/// </summary>
-	public bool DiedBySuicide => LastAttacker is not Player;
+	public bool DiedBySuicide => LastAttacker is not Player || LastAttacker == this;
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's

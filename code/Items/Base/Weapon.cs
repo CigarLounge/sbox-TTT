@@ -334,7 +334,7 @@ public abstract partial class Weapon : Carriable
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
-						player.LastDistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
+						player.DistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
 
 					trace.Entity.TakeDamage( damageInfo );
 				}
