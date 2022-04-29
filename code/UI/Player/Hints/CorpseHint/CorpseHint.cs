@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -5,7 +6,6 @@ namespace TTT.UI;
 [UseTemplate]
 public class CorpseHint : EntityHintPanel
 {
-	private readonly Player _searcher;
 	private readonly Corpse _corpse;
 
 	private Label Title { get; set; }
@@ -16,17 +16,15 @@ public class CorpseHint : EntityHintPanel
 	private Panel ActionPanel { get; set; }
 	private Panel CovertSearchPanel { get; set; }
 
-	public CorpseHint() { }
+	public CorpseHint( Corpse corpse ) => _corpse = corpse;
 
-	public CorpseHint( Player searcher, Corpse corpse )
-	{
-		_searcher = searcher;
-		_corpse = corpse;
-	}
 
 	public override void Tick()
 	{
 		base.Tick();
+
+		if ( Local.Pawn is not Player player )
+			return;
 
 		Title.Text = _corpse.PlayerName ?? "Unidentified body";
 		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Color;
@@ -49,7 +47,7 @@ public class CorpseHint : EntityHintPanel
 			SubText.Text = "to identify.";
 		}
 
-		bool canFetchCredits = _corpse.Credits > 0 && _searcher.Role.CanRetrieveCredits && _searcher.IsAlive();
+		bool canFetchCredits = _corpse.Credits > 0 && player.Role.CanRetrieveCredits && player.IsAlive();
 		if ( !canFetchCredits )
 			CreditHint?.Delete();
 
