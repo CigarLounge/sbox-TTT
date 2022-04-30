@@ -50,7 +50,6 @@ public partial class HomePage : Panel
 
 		var player = Local.Pawn as Player;
 
-		RoundSummaryButton.SetClass( "inactive", !UI.GeneralMenu.Instance.HasRoundData );
 		ForceSpectatorButton.Text = $"Force Spectator Mode - {(player.IsForcedSpectator ? "Enabled" : "Disabled")}";
 		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) );
 	}

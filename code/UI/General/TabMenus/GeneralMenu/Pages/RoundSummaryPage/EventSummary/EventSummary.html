@@ -1,9 +1,11 @@
 ﻿<link rel="stylesheet" href="EventSummary.scss" />
 
 <root>
-    <div style="flex-direction: column; width: 100%;">
-        <br />
-        <div class="header">
+    <div style="flex-direction: column;">
+        <div @ref="Empty" class="empty">
+            <text>No previous round history found... consider playing a round!</text>
+        </div>
+        <div @ref="Header" class="header">
             <text style="width: 10%;">Type</text>
             <text style="width: 10%;">Time</text>
             <text style="width: 80%;">Event</text>

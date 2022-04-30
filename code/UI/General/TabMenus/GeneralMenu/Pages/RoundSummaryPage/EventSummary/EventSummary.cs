@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
@@ -8,6 +9,8 @@ public partial class EventSummary : Panel
 {
 	public static EventSummary Instance;
 
+	private Panel Empty { get; init; }
+	private Panel Header { get; init; }
 	private Panel Events { get; init; }
 
 	public EventSummary()
@@ -33,6 +36,9 @@ public partial class EventSummary : Panel
 		AddEvent( "flag", 523, "The round has started!" );
 		AddEvent( "flag", 523, "The round has started!" );
 		AddEvent( "flag", 523, "The round has started!" );
+
+		Empty.Enabled( !Events.Children.Any() );
+		Header.Enabled( Events.Children.Any() );
 	}
 
 	// TODO: Add proper hookups to event data...

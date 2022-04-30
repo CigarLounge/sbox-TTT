@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -7,9 +8,10 @@ public partial class RoleSummary : Panel
 {
 	public static RoleSummary Instance;
 
-	private Panel Innocents { get; set; }
-	private Panel Detectives { get; set; }
-	private Panel Traitors { get; set; }
+	private Panel Empty { get; init; }
+	private Panel Innocents { get; init; }
+	private Panel Detectives { get; init; }
+	private Panel Traitors { get; init; }
 
 	public RoleSummary()
 	{
@@ -34,5 +36,7 @@ public partial class RoleSummary : Panel
 
 		if ( !GeneralMenu.Instance.Data.Traitors.IsNullOrEmpty() )
 			Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.Data.Traitors ) );
+
+		Empty.Enabled( !Innocents.Children.Any() && !Detectives.Children.Any() && !Traitors.Children.Any() );
 	}
 }

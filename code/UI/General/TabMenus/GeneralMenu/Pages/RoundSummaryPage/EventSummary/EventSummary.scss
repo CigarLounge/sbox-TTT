@@ -2,10 +2,17 @@
 
 EventSummary
 {
+    .empty
+    {
+        min-height: 100%;
+        min-width: 100%;
+    }
+
     .header
     {
+        margin-top: 3px;
         background-color: #353535;
-        padding: 5 0 5 8;
+        padding: 3 8 3 8;
         border-radius: 8 8 0 0;
         font-weight: 600;
     }
@@ -14,7 +21,7 @@ EventSummary
     {
         flex-direction: column;
         overflow: scroll;
-        height: 80%;
+        height: 82%;
 
         .event
         {

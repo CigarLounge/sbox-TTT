@@ -3,6 +3,9 @@
 <root>
     <div>
         <br />
+        <div @ref="Empty" class="disabled empty">
+            <text>No previous round history found... consider playing a round!</text>
+        </div>
         <div @ref="Innocents" style="width: 50%;" />
         <div style="flex-direction: column; width: 50%;">
             <div @ref="Detectives" />

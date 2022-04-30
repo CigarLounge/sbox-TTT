@@ -1,12 +1,8 @@
 RoleSummary
 {
-    .container
+    .empty
     {
-        flex-direction: column;
-    }
-
-    .role-list-container
-    {
-        justify-content: space-around;
+        min-height: 100%;
+        min-width: 100%;
     }
 }
