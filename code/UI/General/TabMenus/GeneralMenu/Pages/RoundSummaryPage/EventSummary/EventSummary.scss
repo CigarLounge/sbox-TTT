@@ -1,0 +1,62 @@
+@import "/ui/Hud.scss";
+
+EventSummary
+{
+    .header
+    {
+        background-color: #353535;
+        padding: 5 0 5 8;
+        border-radius: 8 8 0 0;
+        font-weight: 600;
+    }
+
+    .events
+    {
+        flex-direction: column;
+        overflow: scroll;
+        height: 80%;
+
+        .event
+        {
+            width: 100%;
+            padding: 8px;
+            flex-shrink: 0;
+
+            .icon
+            {
+                width: 10%;
+            }
+
+            .time
+            {
+                width: 10%;
+            }
+
+            .desc
+            {
+                width: 80%;
+            }
+
+            &:nth-child( odd )
+            {
+                background-color: #0a0a0a66;
+            }
+        
+            &:nth-child( even )
+            {
+                background-color: #4b4b4b15;
+            }
+        
+            &.me:nth-child(1)
+            {
+                background-color: #f2b42d1a;
+            }
+        
+            &:last-child
+            {
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+            }
+        }
+    }
+}
