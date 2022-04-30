@@ -14,31 +14,31 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( Game.Current.Round is null || Local.Pawn is not Player player )
+		if ( Game.Current.State is null || Local.Pawn is not Player player )
 			return;
 
-		RoundName.Text = Game.Current.Round.Name;
+		RoundName.Text = Game.Current.State.Name;
 
-		if ( Game.Current.Round is WaitingState )
+		if ( Game.Current.State is WaitingState )
 			Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
 		else
-			Timer.Text = $"{Game.Current.Round.TimeLeftFormatted}";
+			Timer.Text = $"{Game.Current.State.TimeLeftFormatted}";
 
-		if ( Game.Current.Round is not InProgress inProgressRound )
+		if ( Game.Current.State is not InProgress inProgress )
 		{
 			SubText.SetClass( "show", false );
 			return;
 		}
 
-		Timer.Text = inProgressRound.FakeTimeFormatted;
+		Timer.Text = inProgress.FakeTimeFormatted;
 		bool isTraitor = player.Team == Team.Traitors;
 
-		if ( isTraitor && inProgressRound.TimeLeft != inProgressRound.FakeTime )
+		if ( isTraitor && inProgress.TimeLeft != inProgress.FakeTime )
 		{
-			SubText.Text = inProgressRound.TimeLeftFormatted;
+			SubText.Text = inProgress.TimeLeftFormatted;
 			SubText.SetClass( "show", true );
 		}
-		else if ( !isTraitor && (int)inProgressRound.FakeTime < 0 )
+		else if ( !isTraitor && (int)inProgress.FakeTime < 0 )
 		{
 			SubText.Text = "OVERTIME";
 			SubText.SetClass( "show", true );

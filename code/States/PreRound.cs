@@ -78,7 +78,7 @@ public class PreRound : BaseState
 
 		(var innocents, var detectives, var traitors) = AssignRoles( players );
 
-		Game.Current.ChangeRound( new InProgress
+		Game.Current.ChangeState( new InProgress
 		{
 			AlivePlayers = players,
 			Spectators = spectators,

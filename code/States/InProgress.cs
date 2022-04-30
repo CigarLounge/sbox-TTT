@@ -22,7 +22,7 @@ public partial class InProgress : BaseState
 	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
 
 	public override string Name => "In Progress";
-	public override int Duration => Game.InProgressRoundTime;
+	public override int Duration => Game.InProgressTime;
 
 	private int InnocentTeamDeathCount { get; set; }
 	private readonly List<RoleButton> _logicButtons = new();
@@ -156,7 +156,7 @@ public partial class InProgress : BaseState
 		Karma.OnRoundEnd();
 		Scoring.OnRoundEnd( winType == WinType.TimeUp );
 
-		Game.Current.ForceRoundChange( new PostRound( winningTeam, winType ) );
+		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 
 		UI.PostRoundPopup.DisplayWinner( winningTeam );
 		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
@@ -176,7 +176,7 @@ public partial class InProgress : BaseState
 		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
 		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-			Game.Current.ForceRoundChange( new WaitingState() );
+			Game.Current.ForceStateChange( new WaitingState() );
 	}
 
 	private bool ChangeRoundIfOver()
@@ -221,7 +221,7 @@ public partial class InProgress : BaseState
 		if ( Host.IsClient )
 			return;
 
-		if ( Game.Current.Round is InProgress inProgressRound )
-			inProgressRound.ChangeRoundIfOver();
+		if ( Game.Current.State is InProgress inProgress )
+			inProgress.ChangeRoundIfOver();
 	}
 }

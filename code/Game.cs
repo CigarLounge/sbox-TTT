@@ -8,8 +8,8 @@ public partial class Game : Sandbox.Game
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
-	public BaseState Round { get; private set; }
-	private BaseState _lastRound;
+	public BaseState State { get; private set; }
+	private BaseState _lastState;
 
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
@@ -25,30 +25,30 @@ public partial class Game : Sandbox.Game
 	}
 
 	/// <summary>
-	/// Changes the round if minimum players is met. Otherwise, force changes to "WaitingRound"
+	/// Changes the state if minimum players is met. Otherwise, force changes to "WaitingState"
 	/// </summary>
-	/// <param name="round"> The round to change to if minimum players is met.</param>
-	public void ChangeRound( BaseState round )
+	/// <param name="state"> The state to change to if minimum players is met.</param>
+	public void ChangeState( BaseState state )
 	{
-		Assert.NotNull( round );
+		Assert.NotNull( state );
 
-		ForceRoundChange( Utils.HasMinimumPlayers() ? round : new WaitingState() );
+		ForceStateChange( Utils.HasMinimumPlayers() ? state : new WaitingState() );
 	}
 
 	/// <summary>
-	/// Force changes a round regardless of player count.
+	/// Force changes a state regardless of player count.
 	/// </summary>
-	/// <param name="round"> The round to change to.</param>
-	public void ForceRoundChange( BaseState round )
+	/// <param name="state"> The state to change to.</param>
+	public void ForceStateChange( BaseState state )
 	{
 		Host.AssertServer();
 
-		Round?.Finish();
-		var oldRound = Round;
-		Round = round;
-		Round.Start();
+		State?.Finish();
+		var oldState = State;
+		State = state;
+		State.Start();
 
-		Event.Run( TTTEvent.Game.StateChanged, oldRound, Round );
+		Event.Run( TTTEvent.Game.StateChanged, oldState, State );
 	}
 
 	public override void OnKilled( Entity pawn )
@@ -66,14 +66,14 @@ public partial class Game : Sandbox.Game
 
 		player.IsSpectator = true;
 
-		Round.OnPlayerJoin( player );
+		State.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Round.OnPlayerLeave( client.Pawn as Player );
+		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
 
@@ -90,7 +90,7 @@ public partial class Game : Sandbox.Game
 		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
 			return true;
 
-		if ( Round is InProgress && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
+		if ( State is InProgress && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
 			return false;
 
 		return true;
@@ -112,22 +112,22 @@ public partial class Game : Sandbox.Game
 	{
 		base.PostLevelLoaded();
 
-		ForceRoundChange( new WaitingState() );
+		ForceStateChange( new WaitingState() );
 		MapHandler = new();
 	}
 
 	[Event.Tick]
 	private void Tick()
 	{
-		Round?.OnTick();
+		State?.OnTick();
 	}
 
-	private void OnRoundChanged( BaseState oldRound, BaseState newRound )
+	private void OnStateChanged( BaseState oldState, BaseState newState )
 	{
-		_lastRound?.Finish();
-		_lastRound = newRound;
-		_lastRound.Start();
+		_lastState?.Finish();
+		_lastState = newState;
+		_lastState.Start();
 
-		Event.Run( TTTEvent.Game.StateChanged, oldRound, newRound );
+		Event.Run( TTTEvent.Game.StateChanged, oldState, newState );
 	}
 }

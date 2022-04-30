@@ -41,7 +41,7 @@ public partial class Game
 	[AdminCmd( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
-		if ( Game.Current.Round is not InProgress )
+		if ( Game.Current.State is not InProgress )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -61,7 +61,7 @@ public partial class Game
 	[AdminCmd( Name = "ttt_force_restart" )]
 	public static void ForceRestart()
 	{
-		Game.Current.ChangeRound( new PreRound() );
+		Game.Current.ChangeState( new PreRound() );
 	}
 
 	[ServerCmd( Name = "ttt_forcespec" )]

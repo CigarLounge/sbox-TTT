@@ -100,7 +100,7 @@ public abstract partial class BaseState : BaseNetworkable
 	{
 		await GameTask.DelaySeconds( 1 );
 
-		if ( player.IsValid() && Game.Current.Round == this )
+		if ( player.IsValid() && Game.Current.State == this )
 			player.Respawn();
 	}
 }

@@ -54,14 +54,14 @@ public partial class MapVotePanel : Panel
 
 	public override void Tick()
 	{
-		var mapSelectionRound = Game.Current.Round as MapSelectionState;
+		var mapSelectionState = Game.Current.State as MapSelectionState;
 
-		TimeText.Text = mapSelectionRound.TimeLeftFormatted;
+		TimeText.Text = mapSelectionState.TimeLeftFormatted;
 
 		foreach ( var icon in MapIcons )
 			icon.VoteCount = "0";
 
-		foreach ( var group in mapSelectionRound.Votes.GroupBy( x => x.Value ).OrderByDescending( x => x.Count() ) )
+		foreach ( var group in mapSelectionState.Votes.GroupBy( x => x.Value ).OrderByDescending( x => x.Count() ) )
 		{
 			var icon = AddMap( group.Key );
 			icon.VoteCount = group.Count().ToString( "n0" );

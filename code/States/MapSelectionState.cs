@@ -44,10 +44,13 @@ public partial class MapSelectionState : BaseState
 	[ServerCmd]
 	public static void SetVote( string map )
 	{
-		if ( Game.Current.Round is not MapSelectionState round || ConsoleSystem.Caller.Pawn is not Player player )
+		if ( Game.Current.State is not MapSelectionState state )
 			return;
 
-		round.CullInvalidClients();
-		round.Votes[player.Client] = map;
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		state.CullInvalidClients();
+		state.Votes[player.Client] = map;
 	}
 }
