@@ -82,17 +82,17 @@ public class PreRound : BaseState
 		{
 			AlivePlayers = players,
 			Spectators = spectators,
-			Innocents = innocents.ToArray(),
-			Detectives = detectives.ToArray(),
-			Traitors = traitors.ToArray()
+			InnocentClientIds = innocents.ToArray(),
+			DetectiveClientIds = detectives.ToArray(),
+			TraitorClientIds = traitors.ToArray()
 		} );
 	}
 
-	private (List<Player>, List<Player>, List<Player>) AssignRoles( List<Player> players )
+	private (List<long>, List<long>, List<long>) AssignRoles( List<Player> players )
 	{
-		List<Player> innocents = new();
-		List<Player> detectives = new();
-		List<Player> traitors = new();
+		List<long> innocents = new();
+		List<long> detectives = new();
+		List<long> traitors = new();
 
 		int traitorCount = Math.Max( players.Count >> 2, 1 );
 		int detectiveCount = players.Count >> 3;
@@ -103,21 +103,21 @@ public class PreRound : BaseState
 		{
 			var player = players[index++];
 			player.Role = new Traitor();
-			traitors.Add( player );
+			traitors.Add( player.Client.PlayerId );
 		}
 
 		while ( detectiveCount-- > 0 )
 		{
 			var player = players[index++];
 			player.Role = new Detective();
-			detectives.Add( player );
+			detectives.Add( player.Client.PlayerId );
 		}
 
 		while ( index < players.Count )
 		{
 			var player = players[index++];
 			player.Role = new Innocent();
-			innocents.Add( player );
+			innocents.Add( player.Client.PlayerId );
 		}
 
 		return (innocents, detectives, traitors);

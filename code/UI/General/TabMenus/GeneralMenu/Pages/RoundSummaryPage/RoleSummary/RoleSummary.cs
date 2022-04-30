@@ -28,14 +28,14 @@ public partial class RoleSummary : Panel
 		if ( GeneralMenu.Instance == null )
 			return;
 
-		if ( !GeneralMenu.Instance.Data.Innocents.IsNullOrEmpty() )
-			Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.Data.Innocents ) );
+		if ( !GeneralMenu.Instance.Data.InnocentClientIds.IsNullOrEmpty() )
+			Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.Data.InnocentClientIds ) );
 
-		if ( !GeneralMenu.Instance.Data.Detectives.IsNullOrEmpty() )
-			Detectives.AddChild( new RoleList( new Detective(), GeneralMenu.Instance.Data.Detectives ) );
+		if ( !GeneralMenu.Instance.Data.DetectiveClientIds.IsNullOrEmpty() )
+			Detectives.AddChild( new RoleList( new Detective(), GeneralMenu.Instance.Data.DetectiveClientIds ) );
 
-		if ( !GeneralMenu.Instance.Data.Traitors.IsNullOrEmpty() )
-			Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.Data.Traitors ) );
+		if ( !GeneralMenu.Instance.Data.TraitorClientIds.IsNullOrEmpty() )
+			Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.Data.TraitorClientIds ) );
 
 		Empty.Enabled( !Innocents.Children.Any() && !Detectives.Children.Any() && !Traitors.Children.Any() );
 	}

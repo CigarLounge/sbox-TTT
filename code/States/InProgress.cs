@@ -9,9 +9,9 @@ public partial class InProgress : BaseState
 	public List<Player> AlivePlayers { get; set; }
 	public List<Player> Spectators { get; set; }
 
-	public Player[] Innocents { get; set; }
-	public Player[] Detectives { get; set; }
-	public Player[] Traitors { get; set; }
+	public long[] InnocentClientIds { get; set; }
+	public long[] DetectiveClientIds { get; set; }
+	public long[] TraitorClientIds { get; set; }
 
 	/// <summary>
 	/// Unique case where InProgress has a seperate fake timer for Innocents.
@@ -36,7 +36,7 @@ public partial class InProgress : BaseState
 		if ( player.Team == Team.Innocents )
 			InnocentTeamDeathCount += 1;
 
-		float percentDead = (float)InnocentTeamDeathCount / (Innocents.Length + Detectives.Length);
+		float percentDead = (float)InnocentTeamDeathCount / (InnocentClientIds.Length + DetectiveClientIds.Length);
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
@@ -159,7 +159,7 @@ public partial class InProgress : BaseState
 		Game.Current.ForceRoundChange( new PostRound( winningTeam, winType ) );
 
 		UI.PostRoundPopup.DisplayWinner( winningTeam );
-		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
+		UI.GeneralMenu.LoadPlayerData( InnocentClientIds, DetectiveClientIds, TraitorClientIds );
 	}
 
 	public override void OnSecond()

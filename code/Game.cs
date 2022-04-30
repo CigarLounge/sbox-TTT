@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TTT;
@@ -13,6 +14,9 @@ public partial class Game : Sandbox.Game
 
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
+
+	[Net]
+	public IDictionary<long, SavedClient> SavedClients { get; set; }
 
 	public int RTVCount { get; set; }
 
@@ -63,19 +67,22 @@ public partial class Game : Sandbox.Game
 
 		player.BaseKarma = Karma.DefaultValue;
 		player.ActiveKarma = player.BaseKarma;
-
 		player.IsSpectator = true;
 
 		Round.OnPlayerJoin( player );
-
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
+
+		SavedClients[client.PlayerId] = SavedClient.CopyFrom( player );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Round.OnPlayerLeave( client.Pawn as Player );
+		var player = client.Pawn as Player;
 
+		Round.OnPlayerLeave( player );
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
+
+		SavedClients[client.PlayerId] = SavedClient.CopyFrom( player );
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
@@ -116,12 +123,6 @@ public partial class Game : Sandbox.Game
 		MapHandler = new();
 	}
 
-	[Event.Tick]
-	private void Tick()
-	{
-		Round?.OnTick();
-	}
-
 	private void OnRoundChanged( BaseState oldRound, BaseState newRound )
 	{
 		_lastRound?.Finish();
@@ -129,5 +130,11 @@ public partial class Game : Sandbox.Game
 		_lastRound.Start();
 
 		Event.Run( TTTEvent.Game.StateChanged, oldRound, newRound );
+	}
+
+	[Event.Tick]
+	private void Tick()
+	{
+		Round?.OnTick();
 	}
 }
