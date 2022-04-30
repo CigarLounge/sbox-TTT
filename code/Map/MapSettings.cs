@@ -30,7 +30,7 @@ public partial class MapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
-	[TTTEvent.Game.RoundChanged]
+	[TTTEvent.Game.StateChanged]
 	private void FireRoundChange( BaseRound _, BaseRound newRound )
 	{
 		switch ( newRound )

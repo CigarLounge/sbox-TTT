@@ -48,7 +48,7 @@ public partial class Game : Sandbox.Game
 		Round = round;
 		Round.Start();
 
-		Event.Run( TTTEvent.Game.RoundChanged, oldRound, Round );
+		Event.Run( TTTEvent.Game.StateChanged, oldRound, Round );
 	}
 
 	public override void OnKilled( Entity pawn )
@@ -128,6 +128,6 @@ public partial class Game : Sandbox.Game
 		_lastRound = newRound;
 		_lastRound.Start();
 
-		Event.Run( TTTEvent.Game.RoundChanged, oldRound, newRound );
+		Event.Run( TTTEvent.Game.StateChanged, oldRound, newRound );
 	}
 }

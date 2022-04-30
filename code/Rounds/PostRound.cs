@@ -3,10 +3,28 @@ using Sandbox;
 
 namespace TTT;
 
+public enum WinType
+{
+	TimeUp,
+	Elimination,
+	Objective,
+}
+
 public class PostRound : BaseRound
 {
+	public Team WinningTeam { get; init; }
+	public WinType WinType { get; init; }
+
 	public override string RoundName => "Post";
 	public override int RoundDuration => Game.PostRoundTime;
+
+	public PostRound() { }
+
+	public PostRound( Team winningTeam, WinType winType )
+	{
+		WinningTeam = winningTeam;
+		WinType = winType;
+	}
 
 	public override void OnPlayerKilled( Player player )
 	{
@@ -25,10 +43,13 @@ public class PostRound : BaseRound
 	protected override void OnStart()
 	{
 		base.OnStart();
+		
+		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
 
 		if ( !Host.IsServer )
 			return;
 
+		Game.Current.TotalRoundsPlayed++;
 		RevealEveryone();
 	}
 

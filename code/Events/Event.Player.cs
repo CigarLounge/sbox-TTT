@@ -17,7 +17,7 @@ public static partial class TTTEvent
 			public KilledAttribute() : base( Killed ) { }
 		}
 
-		public const string RoleChanged = "ttt.player.rolechanged";
+		public const string RoleChanged = "ttt.player.role-changed";
 
 		/// <summary>
 		/// Occurs when a player selects their role.

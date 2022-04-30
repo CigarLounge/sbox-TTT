@@ -1,7 +1,6 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TTT;
 
@@ -27,7 +26,6 @@ public partial class InProgressRound : BaseRound
 
 	private int InnocentTeamDeathCount { get; set; }
 	private readonly List<RoleButton> _logicButtons = new();
-	private bool _timeUp = false;
 
 	public override void OnPlayerKilled( Player player )
 	{
@@ -82,6 +80,8 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnStart();
 
+		Event.Run( TTTEvent.Round.RolesAssigned );
+
 		if ( Host.IsClient && Local.Pawn is Player localPlayer )
 		{
 			if ( !UI.TabMenus.Instance.IsVisible )
@@ -132,8 +132,7 @@ public partial class InProgressRound : BaseRound
 	{
 		base.OnTimeUp();
 
-		_timeUp = true;
-		LoadPostRound( Team.Innocents );
+		LoadPostRound( Team.Innocents, WinType.TimeUp );
 	}
 
 	private Team IsRoundOver()
@@ -152,13 +151,12 @@ public partial class InProgressRound : BaseRound
 		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
 	}
 
-	public void LoadPostRound( Team winningTeam )
+	public void LoadPostRound( Team winningTeam, WinType winType )
 	{
 		Karma.OnRoundEnd();
-		Scoring.OnRoundEnd( _timeUp );
+		Scoring.OnRoundEnd( winType == WinType.TimeUp );
 
-		Game.Current.TotalRoundsPlayed++;
-		Game.Current.ForceRoundChange( new PostRound() );
+		Game.Current.ForceRoundChange( new PostRound( winningTeam, winType ) );
 
 		UI.PostRoundPopup.DisplayWinner( winningTeam );
 		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
@@ -187,7 +185,7 @@ public partial class InProgressRound : BaseRound
 
 		if ( result != Team.None && !Game.PreventWin )
 		{
-			LoadPostRound( result );
+			LoadPostRound( result, WinType.Elimination );
 			return true;
 		}
 

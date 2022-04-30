@@ -6,16 +6,16 @@ public static partial class TTTEvent
 {
 	public static class Game
 	{
-		public const string RoundChanged = "ttt.game.roundchanged";
+		public const string StateChanged = "ttt.game.state-changed";
 
 		/// <summary>
-		/// Called everytime the round changes.
-		/// <para>Event is passed the <strong><see cref="TTT.BaseRound"/></strong> instance of the old round.</para>
-		/// <para>Event is passed the <strong><see cref="TTT.BaseRound"/></strong> instance of the new round.</para>
+		/// Called everytime the state changes.
+		/// <para>Event is passed the <strong><see cref="TTT.BaseRound"/></strong> instance of the old state
+		/// and the <strong><see cref="TTT.BaseRound"/></strong> instance of the new state.</para>
 		/// </summary>
-		public class RoundChangedAttribute : EventAttribute
+		public class StateChangedAttribute : EventAttribute
 		{
-			public RoundChangedAttribute() : base( RoundChanged ) { }
+			public StateChangedAttribute() : base( StateChanged ) { }
 		}
 	}
 }

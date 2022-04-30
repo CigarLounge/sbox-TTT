@@ -6,9 +6,9 @@ namespace TTT;
 
 public enum Team
 {
-	None = 0,
-	Innocents = 1,
-	Traitors = 2
+	None,
+	Innocents,
+	Traitors
 }
 
 public static class TeamExtensions

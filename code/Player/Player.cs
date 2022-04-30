@@ -25,7 +25,8 @@ public partial class Player : Sandbox.Player
 	}
 
 	/// <summary>
-	/// The score gained during a single round. This later gets added to the actual score.
+	/// The score gained during a single round. This gets added to the actual score
+	/// at the end of a round.
 	/// </summary>
 	public int RoundScore { get; set; }
 
