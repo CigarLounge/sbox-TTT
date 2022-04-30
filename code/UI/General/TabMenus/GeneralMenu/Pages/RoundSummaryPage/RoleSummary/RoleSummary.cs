@@ -9,7 +9,6 @@ public partial class RoleSummary : Panel
 	public static RoleSummary Instance;
 
 	private Panel Roles { get; set; }
-	private Label Empty { get; set; }
 
 	public RoleSummary()
 	{
@@ -24,8 +23,6 @@ public partial class RoleSummary : Panel
 		CreateRoleList( new Innocent(), GeneralMenu.Instance?.Data.Innocents );
 		CreateRoleList( new Detective(), GeneralMenu.Instance?.Data.Detectives );
 		CreateRoleList( new Traitor(), GeneralMenu.Instance?.Data.Traitors );
-
-		Empty.Enabled( !Roles.Children.Any() );
 	}
 
 	private void CreateRoleList( BaseRole role, Player[] players )
