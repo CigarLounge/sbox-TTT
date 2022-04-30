@@ -10,13 +10,13 @@ public enum WinType
 	Objective,
 }
 
-public class PostRound : BaseRound
+public class PostRound : BaseState
 {
 	public Team WinningTeam { get; init; }
 	public WinType WinType { get; init; }
 
-	public override string RoundName => "Post";
-	public override int RoundDuration => Game.PostRoundTime;
+	public override string Name => "Post";
+	public override int Duration => Game.PostRoundTime;
 
 	public PostRound() { }
 
@@ -43,7 +43,7 @@ public class PostRound : BaseRound
 	protected override void OnStart()
 	{
 		base.OnStart();
-		
+
 		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
 
 		if ( !Host.IsServer )
@@ -66,7 +66,7 @@ public class PostRound : BaseRound
 		base.OnTimeUp();
 
 		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
-		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionRound() : new PreRound() );
+		Game.Current.ChangeRound( shouldChangeMap ? new MapSelectionState() : new PreRound() );
 	}
 
 }

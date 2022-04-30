@@ -41,7 +41,7 @@ public partial class Game
 	[AdminCmd( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
-		if ( Game.Current.Round is not InProgressRound )
+		if ( Game.Current.Round is not InProgress )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;

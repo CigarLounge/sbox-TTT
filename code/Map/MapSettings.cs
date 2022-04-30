@@ -31,7 +31,7 @@ public partial class MapSettings : Entity
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
 	[TTTEvent.Game.StateChanged]
-	private void FireRoundChange( BaseRound _, BaseRound newRound )
+	private void FireRoundChange( BaseState _, BaseState newRound )
 	{
 		switch ( newRound )
 		{
@@ -40,7 +40,7 @@ public partial class MapSettings : Entity
 
 				break;
 
-			case InProgressRound:
+			case InProgress:
 				RoundStart.Fire( this );
 
 				break;

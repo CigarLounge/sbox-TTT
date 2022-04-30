@@ -8,8 +8,8 @@ public partial class Game : Sandbox.Game
 	public new static Game Current => Sandbox.Game.Current as Game;
 
 	[Net, Change]
-	public BaseRound Round { get; private set; }
-	private BaseRound _lastRound;
+	public BaseState Round { get; private set; }
+	private BaseState _lastRound;
 
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
@@ -28,18 +28,18 @@ public partial class Game : Sandbox.Game
 	/// Changes the round if minimum players is met. Otherwise, force changes to "WaitingRound"
 	/// </summary>
 	/// <param name="round"> The round to change to if minimum players is met.</param>
-	public void ChangeRound( BaseRound round )
+	public void ChangeRound( BaseState round )
 	{
 		Assert.NotNull( round );
 
-		ForceRoundChange( Utils.HasMinimumPlayers() ? round : new WaitingRound() );
+		ForceRoundChange( Utils.HasMinimumPlayers() ? round : new WaitingState() );
 	}
 
 	/// <summary>
 	/// Force changes a round regardless of player count.
 	/// </summary>
 	/// <param name="round"> The round to change to.</param>
-	public void ForceRoundChange( BaseRound round )
+	public void ForceRoundChange( BaseState round )
 	{
 		Host.AssertServer();
 
@@ -90,7 +90,7 @@ public partial class Game : Sandbox.Game
 		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
 			return true;
 
-		if ( Round is InProgressRound && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
+		if ( Round is InProgress && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
 			return false;
 
 		return true;
@@ -112,7 +112,7 @@ public partial class Game : Sandbox.Game
 	{
 		base.PostLevelLoaded();
 
-		ForceRoundChange( new WaitingRound() );
+		ForceRoundChange( new WaitingState() );
 		MapHandler = new();
 	}
 
@@ -122,7 +122,7 @@ public partial class Game : Sandbox.Game
 		Round?.OnTick();
 	}
 
-	private void OnRoundChanged( BaseRound oldRound, BaseRound newRound )
+	private void OnRoundChanged( BaseState oldRound, BaseState newRound )
 	{
 		_lastRound?.Finish();
 		_lastRound = newRound;

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public class PreRound : BaseRound
+public class PreRound : BaseState
 {
-	public override string RoundName => "Preparing";
-	public override int RoundDuration => Game.Current.TotalRoundsPlayed == 0 ? Game.PreRoundTime * 2 : Game.PreRoundTime;
+	public override string Name => "Preparing";
+	public override int Duration => Game.Current.TotalRoundsPlayed == 0 ? Game.PreRoundTime * 2 : Game.PreRoundTime;
 
 	public override void OnPlayerSpawned( Player player )
 	{
@@ -78,7 +78,7 @@ public class PreRound : BaseRound
 
 		(var innocents, var detectives, var traitors) = AssignRoles( players );
 
-		Game.Current.ChangeRound( new InProgressRound
+		Game.Current.ChangeRound( new InProgress
 		{
 			AlivePlayers = players,
 			Spectators = spectators,

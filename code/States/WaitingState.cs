@@ -2,9 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-public class WaitingRound : BaseRound
+public class WaitingState : BaseState
 {
-	public override string RoundName => "Waiting";
+	public override string Name => "Waiting";
 
 	public override void OnSecond()
 	{

@@ -17,14 +17,14 @@ public class RoundTimer : Panel
 		if ( Game.Current.Round is null || Local.Pawn is not Player player )
 			return;
 
-		RoundName.Text = Game.Current.Round.RoundName;
+		RoundName.Text = Game.Current.Round.Name;
 
-		if ( Game.Current.Round is WaitingRound )
+		if ( Game.Current.Round is WaitingState )
 			Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
 		else
 			Timer.Text = $"{Game.Current.Round.TimeLeftFormatted}";
 
-		if ( Game.Current.Round is not InProgressRound inProgressRound )
+		if ( Game.Current.Round is not InProgress inProgressRound )
 		{
 			SubText.SetClass( "show", false );
 			return;

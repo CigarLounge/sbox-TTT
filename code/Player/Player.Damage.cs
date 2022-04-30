@@ -122,7 +122,7 @@ public partial class Player
 	{
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-			if ( Game.Current.Round is not InProgressRound and not PostRound )
+			if ( Game.Current.Round is not InProgress and not PostRound )
 				return;
 
 			if ( info.Flags != DamageFlags.Slash )
@@ -137,7 +137,7 @@ public partial class Player
 
 		LastDamageInfo = info;
 
-		if ( Game.Current.Round is InProgressRound )
+		if ( Game.Current.Round is InProgress )
 			Karma.OnPlayerHurt( this );
 
 		base.TakeDamage( info );

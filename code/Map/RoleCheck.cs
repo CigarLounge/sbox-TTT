@@ -21,7 +21,7 @@ public partial class RoleCheck : Entity
 	[Input]
 	public void Activate( Entity activator )
 	{
-		if ( activator is Player player && Game.Current.Round is InProgressRound )
+		if ( activator is Player player && Game.Current.Round is InProgress )
 		{
 			if ( player.Role == Role )
 			{

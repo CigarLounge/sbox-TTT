@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public partial class InProgressRound : BaseRound
+public partial class InProgress : BaseState
 {
 	public List<Player> AlivePlayers { get; set; }
 	public List<Player> Spectators { get; set; }
@@ -14,15 +14,15 @@ public partial class InProgressRound : BaseRound
 	public Player[] Traitors { get; set; }
 
 	/// <summary>
-	/// Unique case where InProgressRound has a seperate fake timer for Innocents.
+	/// Unique case where InProgress has a seperate fake timer for Innocents.
 	/// The real timer is only displayed to Traitors as it increments every player death during the round.
 	/// </summary>
 	[Net]
 	public TimeUntil FakeTime { get; private set; }
 	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
 
-	public override string RoundName => "In Progress";
-	public override int RoundDuration => Game.InProgressRoundTime;
+	public override string Name => "In Progress";
+	public override int Duration => Game.InProgressRoundTime;
 
 	private int InnocentTeamDeathCount { get; set; }
 	private readonly List<RoleButton> _logicButtons = new();
@@ -176,7 +176,7 @@ public partial class InProgressRound : BaseRound
 		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
 		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-			Game.Current.ForceRoundChange( new WaitingRound() );
+			Game.Current.ForceRoundChange( new WaitingState() );
 	}
 
 	private bool ChangeRoundIfOver()
@@ -221,7 +221,7 @@ public partial class InProgressRound : BaseRound
 		if ( Host.IsClient )
 			return;
 
-		if ( Game.Current.Round is InProgressRound inProgressRound )
+		if ( Game.Current.Round is InProgress inProgressRound )
 			inProgressRound.ChangeRoundIfOver();
 	}
 }

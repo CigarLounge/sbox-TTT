@@ -290,7 +290,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
-	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgressRound or PostRound;
+	bool IEntityHint.CanHint( Player player ) => Game.Current.Round is InProgress or PostRound;
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
 
@@ -309,7 +309,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( user is not Player player )
 			return false;
 
-		if ( Game.Current.Round is WaitingRound or PreRound )
+		if ( Game.Current.Round is WaitingState or PreRound )
 			return false;
 
 		Search( player, Input.Down( InputButton.Run ) );

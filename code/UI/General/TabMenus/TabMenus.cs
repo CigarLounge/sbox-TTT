@@ -51,7 +51,7 @@ public partial class TabMenus : Panel
 
 		SetClass( "show", isScoreDown );
 
-		if ( Game.Current.Round is InProgressRound )
+		if ( Game.Current.Round is InProgress )
 			return;
 
 		if ( input.Released( InputButton.View ) )

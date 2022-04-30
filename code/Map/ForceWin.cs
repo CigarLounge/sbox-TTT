@@ -26,7 +26,7 @@ public class ForceWin : Entity
 
 	private static void ForceEndRound( Team team )
 	{
-		if ( Game.Current.Round is InProgressRound inProgressRound )
+		if ( Game.Current.Round is InProgress inProgressRound )
 			inProgressRound.LoadPostRound( team, WinType.Objective );
 	}
 }

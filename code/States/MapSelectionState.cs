@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace TTT;
 
-public partial class MapSelectionRound : BaseRound
+public partial class MapSelectionState : BaseState
 {
 	[Net]
 	public IDictionary<Client, string> Votes { get; set; }
 
-	public override string RoundName => "Map Selection";
-	public override int RoundDuration => Game.MapSelectionTime;
+	public override string Name => "Map Selection";
+	public override int Duration => Game.MapSelectionTime;
 
 	protected override void OnTimeUp()
 	{
@@ -44,7 +44,7 @@ public partial class MapSelectionRound : BaseRound
 	[ServerCmd]
 	public static void SetVote( string map )
 	{
-		if ( Game.Current.Round is not MapSelectionRound round || ConsoleSystem.Caller.Pawn is not Player player )
+		if ( Game.Current.Round is not MapSelectionState round || ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		round.CullInvalidClients();

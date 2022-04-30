@@ -11,7 +11,7 @@ public partial class CreditAdjust : Entity
 	[Input]
 	public void ExchangeCredits( Entity activator )
 	{
-		if ( Game.Current.Round is not InProgressRound )
+		if ( Game.Current.Round is not InProgress )
 			return;
 
 		if ( activator is not Player player )

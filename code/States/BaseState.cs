@@ -2,21 +2,21 @@ using Sandbox;
 
 namespace TTT;
 
-public abstract partial class BaseRound : BaseNetworkable
+public abstract partial class BaseState : BaseNetworkable
 {
 	[Net]
 	public TimeUntil TimeLeft { get; protected set; }
 
-	public virtual int RoundDuration => 0;
-	public virtual string RoundName => string.Empty;
+	public virtual int Duration => 0;
+	public virtual string Name => string.Empty;
 	public string TimeLeftFormatted => TimeLeft.Relative.TimerString();
 
 	private TimeUntil _nextSecondTime = 0f;
 
 	public void Start()
 	{
-		if ( Host.IsServer && RoundDuration > 0 )
-			TimeLeft = RoundDuration;
+		if ( Host.IsServer && Duration > 0 )
+			TimeLeft = Duration;
 
 		OnStart();
 	}

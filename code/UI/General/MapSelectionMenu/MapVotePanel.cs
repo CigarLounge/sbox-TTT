@@ -45,7 +45,7 @@ public partial class MapVotePanel : Panel
 			return icon;
 
 		icon = new MapIcon( fullIdent );
-		icon.AddEventListener( "onclick", () => MapSelectionRound.SetVote( fullIdent ) );
+		icon.AddEventListener( "onclick", () => MapSelectionState.SetVote( fullIdent ) );
 		Body.AddChild( icon );
 
 		MapIcons.Add( icon );
@@ -54,7 +54,7 @@ public partial class MapVotePanel : Panel
 
 	public override void Tick()
 	{
-		var mapSelectionRound = Game.Current.Round as MapSelectionRound;
+		var mapSelectionRound = Game.Current.Round as MapSelectionState;
 
 		TimeText.Text = mapSelectionRound.TimeLeftFormatted;
 
