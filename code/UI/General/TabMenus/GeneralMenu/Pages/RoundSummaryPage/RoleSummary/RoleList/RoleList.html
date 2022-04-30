@@ -1,6 +1,10 @@
 <link rel="stylesheet" href="RoleList.scss">
 
 <root class="text-shadow">
-    <text @ref="RoleHeader" class="header"></text>
+    <div @ref="Header" class="header">
+        <text @ref="Role" class="role"></text>
+        <text class="karma">Karma</text>
+        <text class="score">Score</text>
+    </div>
     <div @ref="PlayersContainer" class="player-container" />
 </root>

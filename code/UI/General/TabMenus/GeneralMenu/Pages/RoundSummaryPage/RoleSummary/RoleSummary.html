@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="RoleSummary.scss" />
 
 <root>
-    <div class="container">
+    <div>
         <br />
-        <div @ref="Roles" class="role-list-container" />
+        <div @ref="Innocents" style="width: 50%;" />
+        <div style="flex-direction: column; width: 50%;">
+            <div @ref="Detectives" />
+            <div @ref="Traitors" />
         </div>
 </root>

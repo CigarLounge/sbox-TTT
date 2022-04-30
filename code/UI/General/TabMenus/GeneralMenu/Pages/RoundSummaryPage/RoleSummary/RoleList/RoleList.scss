@@ -8,11 +8,27 @@ RoleList
     
     .header
     {
-        font-size: 25px;
         border-radius: 8 8 0 0;
         font-weight: 600;
         align-items: center;
-        padding: 3px;
+        padding: 3 8 3 8;
+
+        .role
+        {
+            flex-grow: 1;
+        }
+
+        .karma
+        {
+            width: 90px;
+		    text-align: right;
+        }
+
+        .score
+        {
+            width: 90px;
+		    text-align: right;
+        }
     }
 
     .player-container
@@ -25,11 +41,10 @@ RoleList
     {
         height: 40px;
         align-items: center;
-        font-size: 14px;
         font-weight: 500;
         display: flex;
-        padding: 10px;
         flex-shrink: 0;
+        padding: 3 8 3 8;
     
         .avatar
         {
@@ -41,14 +56,19 @@ RoleList
         .name-label
         {
             margin-left: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            max-width: 240px;
+        }
+
+        .karma-label
+        {
+            width: 90px;
+		    text-align: right;
         }
 
         .score-label
         {
-            font-size: 16px;
-            border-radius: 8px;
+            width: 90px;
+		    text-align: right;
         }
 
         .spacer
