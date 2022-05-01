@@ -27,12 +27,12 @@ public class CorpseHint : EntityHintPanel
 			return;
 
 		Title.Text = _corpse.PlayerName ?? "Unidentified body";
-		Title.Style.FontColor = _corpse.DeadPlayer?.Role.Color;
-		Title.SetClass( "unidentified", _corpse.DeadPlayer is null );
+		Title.Style.FontColor = _corpse.Player?.Role.Color;
+		Title.SetClass( "unidentified", _corpse.Player is null );
 
-		if ( _corpse.DeadPlayer is not null )
+		if ( _corpse.Player is not null )
 		{
-			if ( _corpse.DeadPlayer.IsConfirmedDead )
+			if ( _corpse.Player.IsConfirmedDead )
 			{
 				SubText.Text = "to search.";
 				CovertSearchPanel?.Delete();

@@ -139,9 +139,6 @@ public partial class InProgress : BaseState
 
 	public void LoadPostRound( Team winningTeam, WinType winType )
 	{
-		Karma.OnRoundEnd();
-		Scoring.OnRoundEnd( winType == WinType.TimeUp );
-
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 
 		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );

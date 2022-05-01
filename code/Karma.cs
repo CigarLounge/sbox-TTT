@@ -178,8 +178,12 @@ public static class Karma
 		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
 	}
 
-	public static void OnRoundEnd()
+	[TTTEvent.Round.Ended]
+	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
+		if ( !Host.IsServer )
+			return;
+
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;

@@ -12,7 +12,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
-	public Player DeadPlayer { get; private set; }
+	public Player Player { get; private set; }
 	public DamageInfo KillInfo { get; private set; }
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
@@ -55,7 +55,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
-		DeadPlayer = player;
+		Player = player;
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
@@ -92,10 +92,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		Player.SetClothingBodyGroups( this, 1 );
 
-		Perks = new PerkInfo[DeadPlayer.Perks.Count];
-		for ( int i = 0; i < DeadPlayer.Perks.Count; i++ )
+		Perks = new PerkInfo[Player.Perks.Count];
+		for ( int i = 0; i < Player.Perks.Count; i++ )
 		{
-			Perks[i] = DeadPlayer.Perks[i].Info;
+			Perks[i] = Player.Perks[i].Info;
 		}
 
 		foreach ( var entity in attachedEnts )
@@ -155,14 +155,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( canRetrieveCredits && HasCredits )
 		{
-			searcher.Credits += DeadPlayer.Credits;
-			creditsRetrieved = DeadPlayer.Credits;
-			DeadPlayer.Credits = 0;
+			searcher.Credits += Player.Credits;
+			creditsRetrieved = Player.Credits;
+			Player.Credits = 0;
 			HasCredits = false;
 		}
 
 		SendPlayer( To.Single( searcher ) );
-		DeadPlayer.SendRole( To.Single( searcher ) );
+		Player.SendRole( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
 
 		// Dead players will always covert search.
@@ -170,13 +170,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( !covert )
 		{
-			if ( !DeadPlayer.IsConfirmedDead )
+			if ( !Player.IsConfirmedDead )
 			{
-				DeadPlayer.Confirmer = searcher;
-				DeadPlayer.Confirm( To.Everyone );
+				Player.Confirm( To.Everyone, searcher );
 
-				Event.Run( TTTEvent.Player.CorpseFound, DeadPlayer );
-				Scoring.OnBodyFound( searcher );
+				Event.Run( TTTEvent.Player.CorpseFound, Player );
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
@@ -190,7 +188,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		DeadPlayer.IsMissingInAction = !DeadPlayer.IsConfirmedDead;
+		Player.IsMissingInAction = !Player.IsConfirmedDead;
 
 		if ( creditsRetrieved <= 0 )
 			return;
@@ -275,18 +273,18 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
 
-			SendPlayer( To.Single( client ), DeadPlayer, PlayerId, PlayerName, Perks );
+			SendPlayer( To.Single( client ), Player, PlayerId, PlayerName, Perks );
 		}
 	}
 
 	[ClientRpc]
 	private void SendPlayer( Player deadPlayer, long playerId, string name, PerkInfo[] perks )
 	{
-		DeadPlayer = deadPlayer;
+		Player = deadPlayer;
 		PlayerId = playerId;
 		PlayerName = name;
 		Perks = perks;
-		DeadPlayer.Corpse = this;
+		Player.Corpse = this;
 	}
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;

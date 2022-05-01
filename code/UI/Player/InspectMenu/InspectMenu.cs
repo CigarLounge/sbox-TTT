@@ -29,7 +29,7 @@ public partial class InspectMenu : Panel
 
 	public InspectMenu( Corpse corpse )
 	{
-		if ( corpse.DeadPlayer is null )
+		if ( corpse.Player is null )
 			return;
 
 		_timeSinceDeath = new InspectEntry( IconsContainer );
@@ -68,8 +68,8 @@ public partial class InspectMenu : Panel
 	{
 		PlayerAvatar.SetTexture( $"avatar:{_corpse.PlayerId}" );
 		PlayerName.Text = _corpse.PlayerName;
-		RoleName.Text = _corpse.DeadPlayer.Role.Title;
-		RoleName.Style.FontColor = _corpse.DeadPlayer.Role.Color;
+		RoleName.Text = _corpse.Player.Role.Title;
+		RoleName.Style.FontColor = _corpse.Player.Role.Color;
 
 		_headshot.Enabled( _corpse.WasHeadshot );
 		_headshot.SetImage( "/ui/inspectmenu/headshot.png" );
@@ -166,7 +166,7 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		CallDetectiveButton.Enabled( _corpse.DeadPlayer.IsConfirmedDead );
+		CallDetectiveButton.Enabled( _corpse.Player.IsConfirmedDead );
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
 		string timeSinceDeath = (Time.Now - _corpse.KilledTime).TimerString();

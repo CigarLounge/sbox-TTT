@@ -59,7 +59,7 @@ public partial class Player
 		ClientMissingInAction( Team.Traitors.ToClients() );
 	}
 
-	public void Confirm( To to )
+	public void Confirm( To to, Player confirmer = null )
 	{
 		Host.AssertServer();
 
@@ -67,6 +67,7 @@ public partial class Player
 
 		if ( !IsConfirmedDead )
 		{
+			Confirmer = confirmer;
 			IsConfirmedDead = true;
 			IsRoleKnown = true;
 			IsMissingInAction = false;
