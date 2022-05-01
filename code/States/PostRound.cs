@@ -10,10 +10,13 @@ public enum WinType
 	Objective,
 }
 
-public class PostRound : BaseState
+public partial class PostRound : BaseState
 {
-	public Team WinningTeam { get; init; }
-	public WinType WinType { get; init; }
+	[Net]
+	public Team WinningTeam { get; private set; }
+
+	[Net]
+	public WinType WinType { get; private set; }
 
 	public override string Name => "Post";
 	public override int Duration => Game.PostRoundTime;
@@ -51,14 +54,6 @@ public class PostRound : BaseState
 
 		Game.Current.TotalRoundsPlayed++;
 		RevealEveryone();
-	}
-
-	protected override void OnFinish()
-	{
-		base.OnFinish();
-
-		if ( Host.IsClient )
-			UI.PostRoundPopup.Instance?.Close();
 	}
 
 	protected override void OnTimeUp()

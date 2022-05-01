@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using System;
 
 namespace TTT.UI;
 
@@ -8,26 +9,23 @@ public partial class InfoFeed : Panel
 {
 	public static InfoFeed Instance;
 
-	public InfoFeed()
-	{
-		Instance = this;
-	}
+	public InfoFeed() => Instance = this;
 
 	public void AddEntry( string method, Color? color = null )
 	{
-		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
-		Label label = e.AddLabel( method, "method" );
+		var e = Instance.AddChild<InfoFeedEntry>();
+		var label = e.AddLabel( method, "method" );
 		label.Style.FontColor = color ?? Color.White;
 	}
 
 	public void AddClientEntry( Client leftClient, string message )
 	{
-		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
+		var e = Instance.AddChild<InfoFeedEntry>();
 
 		bool isLeftLocal = leftClient == Local.Client;
-		Player leftPlayer = leftClient.Pawn as Player;
+		var leftPlayer = leftClient.Pawn as Player;
 
-		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
+		var leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
 
 		e.AddLabel( message, "method" );
@@ -35,9 +33,9 @@ public partial class InfoFeed : Panel
 
 	public void AddRoleEntry( RoleInfo roleInfo, string interaction )
 	{
-		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
+		var e = Instance.AddChild<InfoFeedEntry>();
 
-		Label leftLabel = e.AddLabel( $"{roleInfo.Title}s", "left" );
+		var leftLabel = e.AddLabel( $"{roleInfo.Title}s", "left" );
 		leftLabel.Style.FontColor = roleInfo.Color;
 
 		e.AddLabel( interaction, "method" );
@@ -45,19 +43,19 @@ public partial class InfoFeed : Panel
 
 	public void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string postfix = "" )
 	{
-		InfoFeedEntry e = Instance.AddChild<InfoFeedEntry>();
+		var e = Instance.AddChild<InfoFeedEntry>();
 
 		bool isLeftLocal = leftClient == Local.Client;
 		bool isRightLocal = rightClientName == Local.Client.Name;
 
-		Player leftPlayer = leftClient.Pawn as Player;
+		var leftPlayer = leftClient.Pawn as Player;
 
-		Label leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
+		var leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
 
 		e.AddLabel( method, "method" );
 
-		Label rightLabel = e.AddLabel( isRightLocal ? "You" : rightClientName, "right" );
+		var rightLabel = e.AddLabel( isRightLocal ? "You" : rightClientName, "right" );
 		rightLabel.Style.FontColor = rightClientRoleColor;
 
 		if ( !string.IsNullOrEmpty( postfix ) )
@@ -86,5 +84,23 @@ public partial class InfoFeed : Panel
 	public static void DisplayRoleEntry( RoleInfo roleInfo, string message )
 	{
 		Instance?.AddRoleEntry( roleInfo, message );
+	}
+
+	[TTTEvent.Round.RolesAssigned]
+	private void OnRolesAssigned()
+	{
+		if ( !TabMenus.Instance.IsVisible )
+			TabMenus.Instance.SwapToScoreboard();
+
+		Instance.AddEntry( "Roles have been selected and the round has begun..." );
+		Instance.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
+
+		if ( Local.Pawn is not Player player )
+			return;
+
+		float karma = MathF.Round( player.BaseKarma );
+		Instance.AddEntry( karma >= 1000 ?
+										$"Your karma is {karma}, so you'll deal full damage this round." :
+										$"Your karma is {karma}, so you'll deal reduced damage this round." );
 	}
 }

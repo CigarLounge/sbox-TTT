@@ -82,21 +82,8 @@ public partial class InProgress : BaseState
 
 		Event.Run( TTTEvent.Round.RolesAssigned );
 
-		if ( Host.IsClient && Local.Pawn is Player localPlayer )
-		{
-			if ( !UI.TabMenus.Instance.IsVisible )
-				UI.TabMenus.Instance.SwapToScoreboard();
-
-			UI.InfoFeed.Instance.AddEntry( "Roles have been selected and the round has begun..." );
-			UI.InfoFeed.Instance.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
-
-			float karma = MathF.Round( localPlayer.BaseKarma );
-			UI.InfoFeed.Instance.AddEntry( karma >= 1000 ?
-											$"Your karma is {karma}, so you'll deal full damage this round." :
-											$"Your karma is {karma}, so you'll deal reduced damage this round." );
-
+		if ( !Host.IsServer )
 			return;
-		}
 
 		FakeTime = TimeLeft;
 
@@ -158,7 +145,6 @@ public partial class InProgress : BaseState
 
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 
-		UI.PostRoundPopup.DisplayWinner( winningTeam );
 		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
 	}
 
@@ -201,6 +187,7 @@ public partial class InProgress : BaseState
 			if ( cl.Pawn is Player p )
 				p.Credits += credits;
 		} );
+
 		UI.InfoFeed.DisplayRoleEntry
 		(
 			To.Multiple( clients ),
