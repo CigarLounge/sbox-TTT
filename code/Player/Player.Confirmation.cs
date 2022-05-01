@@ -103,6 +103,8 @@ public partial class Player
 		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
 
+		Event.Run( TTTEvent.Player.BodyFound, this, Corpse );
+
 		UI.InfoFeed.Instance.AddClientToClientEntry
 		(
 			Confirmer.Client,

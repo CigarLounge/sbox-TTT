@@ -22,7 +22,12 @@ public partial class MapSelectionState : BaseState
 			return;
 		}
 
-		Global.ChangeLevel( Votes.GroupBy( x => x.Value ).OrderBy( x => x.Count() ).First().Key );
+		Global.ChangeLevel
+		( 
+			Votes.GroupBy( x => x.Value )
+			.OrderBy( x => x.Count() )
+			.First().Key 
+		);
 	}
 
 	protected override void OnStart()
