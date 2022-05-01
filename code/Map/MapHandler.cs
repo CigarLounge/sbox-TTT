@@ -22,7 +22,8 @@ public class MapHandler
 		}
 	}
 
-	public static void CleanUp()
+	[TTTEvent.Round.Started]
+	private static void CleanUp()
 	{
 		Map.Reset( Game.DefaultCleanupFilter );
 		Sandbox.Internal.Decals.RemoveFromWorld();

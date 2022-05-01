@@ -35,7 +35,6 @@ public class PreRound : BaseState
 	{
 		base.OnStart();
 
-		MapHandler.CleanUp();
 		Event.Run( TTTEvent.Round.Started );
 
 		if ( !Host.IsServer )

@@ -10,7 +10,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a corpse has been found and confirmed.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who's body was found .</para>
+		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who's corpse was found .</para>
 		/// </summary>
 		public class CorpseFoundAttribute : EventAttribute
 		{
