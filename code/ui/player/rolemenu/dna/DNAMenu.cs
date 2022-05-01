@@ -41,7 +41,8 @@ public partial class DNAMenu : Panel
 				dnaPanel?.Delete();
 			}
 
-			dnaPanel.SetClass( "selected", scanner?.SelectedSample?.NetworkIdent == dnaPanel.DNA.NetworkIdent );
+			// TODO: Once network indents are a thing...
+			// dnaPanel.SetClass( "selected", scanner?.SelectedSample?.NetworkIdent == dnaPanel.DNA.NetworkIdent );
 		}
 	}
 
@@ -66,54 +67,54 @@ public partial class DNAMenu : Panel
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
 			deleteButton.AddEventListener( "onclick", () =>
 			{
-				DeleteSample( dna.NetworkIdent );
+				// DeleteSample( dna.NetworkIdent );
 			} );
 
 			Add.Button( $"{dna.DNAType}", () =>
 			{
-				SetActiveSample( dna.NetworkIdent );
+				// SetActiveSample( dna.NetworkIdent );
 			} );
 		}
 	}
 
-	[ServerCmd]
-	public static void SetActiveSample( int ident )
-	{
-		Player player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() )
-			return;
+	// TODO: Network indents on components don't work... waiting on facepunch.
+	// [ServerCmd]
+	// public static void SetActiveSample( int ident )
+	// {
+	// 	Player player = ConsoleSystem.Caller.Pawn as Player;
+	// 	if ( !player.IsValid() )
+	// 		return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
-			return;
+	// 	if ( player.ActiveChild is not DNAScanner scanner )
+	// 		return;
 
-		foreach ( var dna in scanner.DNACollected )
-		{
-			if ( dna.NetworkIdent == ident )
-			{
-				Log.Info( "found one" );
-				scanner.SelectedSample = dna;
-				return;
-			}
-		}
-	}
+	// 	foreach ( var dna in scanner.DNACollected )
+	// 	{
+	// 		if ( dna.NetworkIdent == ident )
+	// 		{
+	// 			return;
+	// 		}
+	// 	}
+	// }
 
-	[ServerCmd]
-	public static void DeleteSample( int ident )
-	{
-		Player player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() )
-			return;
+	// TODO: Network indents on components don't work... waiting on facepunch.
+	// [ServerCmd]
+	// public static void DeleteSample( int ident )
+	// {
+	// 	Player player = ConsoleSystem.Caller.Pawn as Player;
+	// 	if ( !player.IsValid() )
+	// 		return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
-			return;
+	// 	if ( player.ActiveChild is not DNAScanner scanner )
+	// 		return;
 
-		foreach ( var dna in scanner.DNACollected )
-		{
-			if ( dna.NetworkIdent == ident )
-			{
-				scanner.DNACollected.Remove( dna );
-				return;
-			}
-		}
-	}
+	// 	foreach ( var dna in scanner.DNACollected )
+	// 	{
+	// 		if ( dna.NetworkIdent == ident )
+	// 		{
+	// 			scanner.DNACollected.Remove( dna );
+	// 			return;
+	// 		}
+	// 	}
+	// }
 }
