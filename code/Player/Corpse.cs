@@ -175,7 +175,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				DeadPlayer.Confirmer = searcher;
 				DeadPlayer.Confirm( To.Everyone );
 
-				Event.Run( TTTEvent.Player.BodyFound, DeadPlayer, this );
+				Event.Run( TTTEvent.Player.CorpseFound, DeadPlayer, this );
 				Scoring.OnBodyFound( searcher );
 			}
 
