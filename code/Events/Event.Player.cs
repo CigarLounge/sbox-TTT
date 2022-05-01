@@ -10,8 +10,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a corpse has been found and confirmed.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who's body was
-		/// found and the player's <strong><see cref="TTT.Corpse"/></strong>.</para>
+		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who's body was found .</para>
 		/// </summary>
 		public class CorpseFoundAttribute : EventAttribute
 		{
@@ -22,7 +21,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player dies.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> instance of the player who died.</para>
+		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who died.</para>
 		/// </summary>
 		public class KilledAttribute : EventAttribute
 		{
@@ -33,8 +32,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player selects their role.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> instance of the player whose role was set
-		/// and the <strong><see cref="TTT.BaseRole"/></strong> instance of the previous Role.</para>
+		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> whose role was changed
+		/// and the previous <strong><see cref="TTT.BaseRole"/></strong>.</para>
 		/// </summary>
 		public class RoleChangedAttribute : EventAttribute
 		{

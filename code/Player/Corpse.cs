@@ -175,7 +175,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				DeadPlayer.Confirmer = searcher;
 				DeadPlayer.Confirm( To.Everyone );
 
-				Event.Run( TTTEvent.Player.CorpseFound, DeadPlayer, this );
+				Event.Run( TTTEvent.Player.CorpseFound, DeadPlayer );
 				Scoring.OnBodyFound( searcher );
 			}
 
@@ -195,7 +195,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( creditsRetrieved <= 0 )
 			return;
 
-		UI.InfoFeed.Instance?.AddClientEntry
+		UI.InfoFeed.Instance?.AddEntry
 		(
 			Local.Client,
 			$"found {creditsRetrieved} credits!"

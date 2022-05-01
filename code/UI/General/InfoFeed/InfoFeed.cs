@@ -18,15 +18,15 @@ public partial class InfoFeed : Panel
 		label.Style.FontColor = color ?? Color.White;
 	}
 
-	public void AddClientEntry( Client leftClient, string message )
+	public void AddEntry( Client client, string message )
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
-		bool isLeftLocal = leftClient == Local.Client;
-		var leftPlayer = leftClient.Pawn as Player;
+		bool isLocal = client == Local.Client;
+		var player = client.Pawn as Player;
 
-		var leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
-		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
+		var leftLabel = e.AddLabel( isLocal ? "You" : client.Name, "left" );
+		leftLabel.Style.FontColor = player.Role is NoneRole ? Color.White : player.Role.Color;
 
 		e.AddLabel( message, "method" );
 	}
@@ -77,7 +77,7 @@ public partial class InfoFeed : Panel
 	[ClientRpc]
 	public static void DisplayClientEntry( string message )
 	{
-		Instance?.AddClientEntry( Local.Client, message );
+		Instance?.AddEntry( Local.Client, message );
 	}
 
 	[ClientRpc]
@@ -86,21 +86,39 @@ public partial class InfoFeed : Panel
 		Instance?.AddRoleEntry( roleInfo, message );
 	}
 
+	[TTTEvent.Player.CorpseFound]
+	private void OnCorpseFound( Player player )
+	{
+		AddClientToClientEntry
+		(
+			player.Confirmer.Client,
+			player.Corpse.PlayerName,
+			player.Role.Color,
+			"found the body of",
+			$"({player.Role.Title})"
+		);
+	}
+
 	[TTTEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		if ( !TabMenus.Instance.IsVisible )
 			TabMenus.Instance.SwapToScoreboard();
 
-		Instance.AddEntry( "Roles have been selected and the round has begun..." );
+		Instance.AddEntry( "Roles have been assigned and the round has begun..." );
 		Instance.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
 		if ( Local.Pawn is not Player player )
 			return;
 
 		float karma = MathF.Round( player.BaseKarma );
-		Instance.AddEntry( karma >= 1000 ?
-										$"Your karma is {karma}, so you'll deal full damage this round." :
-										$"Your karma is {karma}, so you'll deal reduced damage this round." );
+
+		string text;
+		if ( karma >= 1000 )
+			text = $"Your karma is {karma}, you'll deal full damage this round.";
+		else
+			text = $"Your karma is {karma}, you'll deal reduced damage this round.";
+
+		Instance.AddEntry( text );
 	}
 }
