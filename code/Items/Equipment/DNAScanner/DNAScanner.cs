@@ -38,10 +38,7 @@ public partial class DNAScanner : Carriable
 
 	private void AttemptScan()
 	{
-		if ( Charge < MAX_CHARGE )
-			return;
-
-		if ( SelectedDNA == null || SelectedDNA.Target == null )
+		if ( Charge < MAX_CHARGE || SelectedDNA == null || SelectedDNA.Target == null )
 			return;
 
 		Charge -= 50;

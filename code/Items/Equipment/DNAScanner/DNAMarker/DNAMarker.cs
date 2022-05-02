@@ -7,13 +7,12 @@ namespace TTT.UI;
 [UseTemplate]
 public class DNAMarker : Panel
 {
-	public readonly Vector3 TargetPosition;
-
 	private Label Distance { get; init; }
+	private readonly Vector3 _targetPosition;
 
 	public DNAMarker( Vector3 position )
 	{
-		TargetPosition = position;
+		_targetPosition = position;
 		WorldPoints.Instance.AddChild( this );
 	}
 
@@ -22,9 +21,9 @@ public class DNAMarker : Panel
 		base.Tick();
 
 		var player = Local.Pawn as Player;
-		Distance.Text = $"{player.Position.Distance( TargetPosition ).SourceUnitsToMeters():n0}m";
+		Distance.Text = $"{player.Position.Distance( _targetPosition ).SourceUnitsToMeters():n0}m";
 
-		var screenPos = TargetPosition.ToScreen();
+		var screenPos = _targetPosition.ToScreen();
 		this.Enabled( screenPos.z > 0f );
 
 		if ( !this.IsEnabled() )
