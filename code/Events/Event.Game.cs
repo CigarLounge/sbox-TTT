@@ -9,7 +9,7 @@ public static partial class TTTEvent
 		public const string StateChanged = "ttt.game.state-changed";
 
 		/// <summary>
-		/// Called everytime the state changes.
+		/// Called everytime the game state changes.
 		/// <para>Event is passed the <strong><see cref="TTT.BaseState"/></strong> instance of the old state
 		/// and the <strong><see cref="TTT.BaseState"/></strong> instance of the new state.</para>
 		/// </summary>

@@ -3,7 +3,7 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public partial class Hud : HudEntity<RootPanel>
+public class Hud : HudEntity<RootPanel>
 {
 	public Hud()
 	{

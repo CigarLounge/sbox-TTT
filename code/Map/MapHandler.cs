@@ -2,9 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-public class MapHandler
+public static class MapHandler
 {
-	public MapSettings MapSettings { get; private set; }
 	public static int RandomWeaponCount = 0;
 
 	[Event.Entity.PostSpawn]

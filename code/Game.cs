@@ -16,8 +16,6 @@ public partial class Game : Sandbox.Game
 
 	public int RTVCount { get; set; }
 
-	public MapHandler MapHandler { get; private set; }
-
 	public Game()
 	{
 		if ( IsServer )
@@ -113,7 +111,6 @@ public partial class Game : Sandbox.Game
 		base.PostLevelLoaded();
 
 		ForceStateChange( new WaitingState() );
-		MapHandler = new();
 	}
 
 	[Event.Tick]

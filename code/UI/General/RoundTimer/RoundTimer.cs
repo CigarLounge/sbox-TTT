@@ -14,7 +14,10 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( Game.Current.State is null || Local.Pawn is not Player player )
+		if ( Game.Current.State is null )
+			return;
+
+		if ( Local.Pawn is not Player player )
 			return;
 
 		RoundName.Text = Game.Current.State.Name;
