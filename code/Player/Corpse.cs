@@ -17,6 +17,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float KilledTime { get; private set; }
+	public float DistanceKilledFrom { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 
@@ -60,6 +61,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
+		DistanceKilledFrom = player.DistanceToAttacker;
 		HasCredits = player.Credits > 0;
 
 		var c4Note = player.Components.Get<C4Note>();

@@ -116,12 +116,15 @@ public class DNA : EntityComponent<Entity>
 
 	protected override void OnActivate()
 	{
+		if ( Host.IsClient )
+			return;
+
 		switch ( Entity )
 		{
 			case Corpse corpse:
 			{
 				DNAType = Type.Corpse;
-				TimeUntilDecayed = 900000;
+				TimeUntilDecayed = (float)Math.Pow( 0.74803 * corpse.DistanceKilledFrom, 2 ) + 100;
 				Target = corpse.KillInfo.Attacker;
 			}
 			break;
