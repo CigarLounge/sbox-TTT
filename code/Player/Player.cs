@@ -131,7 +131,7 @@ public partial class Player : Sandbox.Player
 			CreateFlashlight();
 
 		if ( !IsLocalPawn )
-			Role = new NoneRole();
+			Role = new Innocent();
 		else
 			ClearButtons();
 	}

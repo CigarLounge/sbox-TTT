@@ -19,6 +19,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
 	[Net]
 	public int CurrentCount { get; private set; }
+
 	public Player Dropper { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;

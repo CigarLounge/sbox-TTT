@@ -103,7 +103,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 
-		if ( string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
+		if ( string.IsNullOrWhiteSpace( ClassInfo.Name ) )
 		{
 			Log.Error( this + " doesn't have a Library name!" );
 			return;
@@ -117,7 +117,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrWhiteSpace( ClassInfo?.Name ) )
+		if ( !string.IsNullOrWhiteSpace( ClassInfo.Name ) )
 			Info = Asset.GetInfo<CarriableInfo>( this );
 	}
 
@@ -168,8 +168,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 				Owner = Owner,
 				Position = Position
 			};
-
-			ViewModelEntity.Model = Info.ViewModel;
 		}
 
 		if ( Info.HandsModel is not null )
