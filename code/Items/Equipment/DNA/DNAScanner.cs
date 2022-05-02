@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sandbox;
 using TTT.UI;
 
@@ -23,7 +22,7 @@ public partial class DNAScanner : Carriable
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 5f;
+	private const float CHARGE_PER_SECOND = 5f; // TODO: Find proper calculate rate.
 	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
@@ -60,17 +59,16 @@ public partial class DNAScanner : Carriable
 		if ( !trace.Entity.IsValid() )
 			return;
 
+		// TODO: We apparently shouldn't allow DNA fetching on unconfirmed bodies.
+
 		var DNA = trace.Entity.Components.Get<DNA>();
 		if ( DNA == null )
-			return;
+			return; // TODO Display InfoFeed message.
 
 		trace.Entity.Components.Remove( DNA );
 
 		if ( DNA.TimeUntilDecayed )
-		{
-			// TODO: Display a message in info feed.
-			return;
-		}
+			return; // TODO Display InfoFeed message.
 
 		DNACollected.Add( DNA );
 	}
