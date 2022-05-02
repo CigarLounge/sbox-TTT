@@ -70,7 +70,7 @@ public partial class DNAMenu : Panel
 				DeleteSample( dna.Id );
 			} );
 
-			Add.Button( $"{dna.Id} - {dna.DNAType} - {dna.TimeCollected.TimerString()}", () =>
+			Add.Button( $"#{dna.Id} - {dna.DNAType} - {dna.TimeCollected.TimerString()}", () =>
 			{
 				SetActiveSample( dna.Id );
 			} );

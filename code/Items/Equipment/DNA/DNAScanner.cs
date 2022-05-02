@@ -35,10 +35,10 @@ public partial class DNAScanner : Carriable
 			FetchDNA();
 
 		if ( Input.Pressed( InputButton.Attack2 ) )
-			AttemptScan();
+			Scan();
 	}
 
-	private void AttemptScan()
+	private void Scan()
 	{
 		if ( Charge < MAX_CHARGE )
 			return;
@@ -66,12 +66,11 @@ public partial class DNAScanner : Carriable
 		if ( DNA == null )
 			return;
 
-		// TODO: Remove DNA sample once fetched.
+		trace.Entity.Components.Remove( DNA );
 
 		if ( DNA.TimeUntilDecayed )
 		{
 			// TODO: Display a message in info feed.
-			Log.Info( "DNA is decayed, we need to remove it." );
 			return;
 		}
 
@@ -94,7 +93,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		Charge = Math.Min( Charge + CHARGE_PER_SECOND * Time.Delta, MAX_CHARGE );
-		AttemptScan();
+		Scan();
 	}
 
 	public override void CreateHudElements()
@@ -115,6 +114,7 @@ public partial class DNAScanner : Carriable
 	[ClientRpc]
 	private void UpdateMarker( Vector3 pos )
 	{
+		PlaySound( "dna-beep" );
 		_dnaMarker?.Delete();
 		_dnaMarker = new DNAMarker( pos );
 	}
@@ -125,7 +125,10 @@ public partial class DNA : EntityComponent<Entity>
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net]
 	public int Id { get; private set; }
-	private static int internalId = 0; // Start ID at a random number.
+	private static int internalId = Rand.Int( 0, 500 );
+
+	[Net]
+	public float TimeCollected { get; private set; }
 
 	public enum Type
 	{
@@ -134,7 +137,6 @@ public partial class DNA : EntityComponent<Entity>
 
 	public Type DNAType { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
-	public float TimeCollected { get; private set; }
 	public Entity Target { get; private set; }
 
 	protected override void OnActivate()
