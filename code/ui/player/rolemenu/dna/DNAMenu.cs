@@ -13,7 +13,6 @@ public partial class DNAMenu : Panel
 
 	private Panel SampleContainer { get; set; }
 	private Label Charge { get; set; }
-	private Label ChargeStatus { get; set; }
 	private Button ScanButton { get; set; }
 	private Checkbox AutoRepeat { get; set; }
 
@@ -26,6 +25,8 @@ public partial class DNAMenu : Panel
 
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
+
+		Charge.Text = scanner.SlotText;
 
 		foreach ( var dna in scanner.DNACollected )
 		{

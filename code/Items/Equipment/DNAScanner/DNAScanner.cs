@@ -12,13 +12,13 @@ public partial class DNAScanner : Carriable
 	[Net, Local]
 	public IList<DNA> DNACollected { get; set; }
 
+	[Net, Local]
+	public float Charge { get; set; } = 0;
+
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	public DNA SelectedDNA => DNACollected.IsNullOrEmpty() ? null : DNACollected[0];
 
 	public override string SlotText => $"{(int)Charge}%";
-
-	[Net, Local]
-	public float Charge { get; set; } = 0;
 
 	private const float MAX_CHARGE = 100f;
 	private const float CHARGE_PER_SECOND = 30f;
@@ -33,11 +33,14 @@ public partial class DNAScanner : Carriable
 			FetchDNA();
 
 		if ( Input.Pressed( InputButton.Attack2 ) )
-			Scan();
+			AttemptScan();
 	}
 
-	private void Scan()
+	private void AttemptScan()
 	{
+		if ( Charge < MAX_CHARGE )
+			return;
+
 		if ( SelectedDNA == null || SelectedDNA.Target == null )
 			return;
 
@@ -77,9 +80,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		Charge = Math.Min( Charge + CHARGE_PER_SECOND * Time.Delta, MAX_CHARGE );
-
-		if ( Charge == MAX_CHARGE )
-			Scan();
+		AttemptScan();
 	}
 
 	public override void CreateHudElements()
@@ -94,7 +95,7 @@ public partial class DNAScanner : Carriable
 		base.DestroyHudElements();
 
 		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
-		_dnaMarker?.Delete();
+		_dnaMarker?.Delete( true );
 	}
 
 	[ClientRpc]
