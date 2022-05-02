@@ -20,16 +20,10 @@ DNAMenu
         justify-content: center;
         text-align: center;
         height: 325px;
-        max-height: 325px;
 
         .charge
         {
             font-size: 50px;
-            font-weight: 600;
-        }
-
-        .charge-status
-        {
             font-weight: 600;
             color: $info;
         }
