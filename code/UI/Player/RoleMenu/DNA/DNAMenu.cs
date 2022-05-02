@@ -58,22 +58,16 @@ public partial class DNAMenu : Panel
 
 	public class DNASample : Panel
 	{
-		public DNA DNA;
+		public DNA DNA { get; private set; }
 
 		public DNASample( DNA dna )
 		{
 			DNA = dna;
 
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
-			deleteButton.AddEventListener( "onclick", () =>
-			{
-				DeleteSample( dna.Id );
-			} );
+			deleteButton.AddEventListener( "onclick", () => { DeleteSample( dna.Id ); } );
 
-			Add.Button( $"#{dna.Id} - {dna.DNAType} - {dna.TimeCollected.TimerString()}", () =>
-			{
-				SetActiveSample( dna.Id );
-			} );
+			Add.Button( $"#{dna.Id} - {dna.Source} - {dna.TimeCollected.TimerString()}", () => { SetActiveSample( dna.Id ); } );
 		}
 	}
 

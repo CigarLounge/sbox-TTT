@@ -28,9 +28,6 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( IsClient )
-			return;
-
 		if ( Input.Pressed( InputButton.Attack1 ) )
 			FetchDNA();
 
@@ -103,9 +100,12 @@ public partial class DNAScanner : Carriable
 		RoleMenu.Instance?.AddDNATab();
 	}
 
-	public override void DestroyHudElements()
+	public override void ActiveEnd( Entity entity, bool dropped )
 	{
-		base.DestroyHudElements();
+		base.ActiveEnd( entity, dropped );
+
+		if ( !dropped || IsServer )
+			return;
 
 		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
 		_dnaMarker?.Delete( true );
@@ -130,12 +130,12 @@ public partial class DNA : EntityComponent<Entity>
 	[Net]
 	public float TimeCollected { get; private set; }
 
-	public enum Type
+	public enum SourceType
 	{
 		Corpse
 	}
 
-	public Type DNAType { get; private set; }
+	public SourceType Source { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
 	public Entity Target { get; private set; }
 
@@ -153,7 +153,7 @@ public partial class DNA : EntityComponent<Entity>
 		{
 			case Corpse corpse:
 			{
-				DNAType = Type.Corpse;
+				Source = SourceType.Corpse;
 				TimeUntilDecayed = (float)Math.Pow( 0.74803 * corpse.DistanceKilledFrom, 2 ) + 100;
 				Target = corpse.KillInfo.Attacker;
 			}
