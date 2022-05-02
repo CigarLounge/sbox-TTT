@@ -2,8 +2,8 @@
 
 namespace TTT;
 
-[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
 [Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
+[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
 public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;
@@ -53,7 +53,7 @@ public partial class Bekas : Weapon
 	}
 
 	[ClientRpc]
-	public void FinishReload()
+	protected void FinishReload()
 	{
 		ViewModelEntity?.SetAnimParameter( "reload_finished", true );
 	}

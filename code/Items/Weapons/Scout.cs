@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_weapon_scout", Title = "Scout" )]
 [Hammer.EditorModel( "models/weapons/w_spr.vmdl" )]
+[Library( "ttt_weapon_scout", Title = "Scout" )]
 public class Scout : Weapon
 {
 	public bool IsScoped { get; private set; }
