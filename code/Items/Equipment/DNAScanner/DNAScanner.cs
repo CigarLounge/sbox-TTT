@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Sandbox;
+using TTT.UI;
 
 namespace TTT;
 
@@ -21,10 +22,11 @@ public partial class DNAScanner : Carriable
 
 	private const float MAX_CHARGE = 100f;
 	private const float CHARGE_PER_SECOND = 30f;
+	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
 	{
-		if ( !IsServer )
+		if ( IsClient )
 			return;
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
@@ -36,10 +38,11 @@ public partial class DNAScanner : Carriable
 
 	private void Scan()
 	{
-		if ( SelectedDNA == null )
+		if ( SelectedDNA == null || SelectedDNA.Target == null )
 			return;
 
 		Charge -= 50;
+		UpdateMarker( SelectedDNA.Target.Position );
 	}
 
 	private void FetchDNA()
@@ -47,14 +50,10 @@ public partial class DNAScanner : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
-			.EntitiesOnly()
+			.HitLayer( CollisionLayer.Debris )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )
-			return;
-
-		// Unique case where corpse needs to be identified before fetching DNA.
-		if ( trace.Entity is Corpse corpse && !corpse.DeadPlayer.IsValid() )
 			return;
 
 		var DNA = trace.Entity.Components.Get<DNA>();
@@ -83,20 +82,26 @@ public partial class DNAScanner : Carriable
 			Scan();
 	}
 
-	public override void ActiveStart( Entity ent )
+	public override void CreateHudElements()
 	{
-		base.ActiveStart( ent );
+		base.CreateHudElements();
 
-		if ( IsLocalPawn )
-			UI.RoleMenu.Instance.AddDNATab();
+		RoleMenu.Instance?.AddDNATab();
 	}
 
-	public override void ActiveEnd( Entity ent, bool dropped )
+	public override void DestroyHudElements()
 	{
-		base.ActiveEnd( ent, dropped );
+		base.DestroyHudElements();
 
-		if ( IsLocalPawn )
-			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.DNATab );
+		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
+		_dnaMarker?.Delete();
+	}
+
+	[ClientRpc]
+	private void UpdateMarker( Vector3 pos )
+	{
+		_dnaMarker?.Delete();
+		_dnaMarker = new DNAMarker( pos );
 	}
 }
 
