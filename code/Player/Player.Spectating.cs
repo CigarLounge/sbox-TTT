@@ -5,7 +5,7 @@ namespace TTT;
 public partial class Player
 {
 	[Net, Local]
-	public bool IsForcedSpectator { get; set; } = false;
+	public bool IsForcedSpectator { get; private set; } = false;
 
 	private Player _spectatedPlayer;
 	public Player CurrentPlayer
