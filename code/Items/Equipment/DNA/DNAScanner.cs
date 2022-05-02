@@ -14,7 +14,7 @@ public partial class DNAScanner : Carriable
 	public IList<DNA> DNACollected { get; set; }
 
 	[Net, Local]
-	public float Charge { get; set; } = 0;
+	public float Charge { get; set; } = MAX_CHARGE;
 
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net, Local]
@@ -23,7 +23,7 @@ public partial class DNAScanner : Carriable
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 30f;
+	private const float CHARGE_PER_SECOND = 5f;
 	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
@@ -44,7 +44,8 @@ public partial class DNAScanner : Carriable
 		if ( selectedDNA == null || selectedDNA.Target == null )
 			return;
 
-		Charge -= 50;
+		var dist = Owner.Position.Distance( selectedDNA.Target.Position ).SourceUnitsToMeters();
+		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 2.16f ) );
 		UpdateMarker( selectedDNA.Target.Position );
 	}
 
