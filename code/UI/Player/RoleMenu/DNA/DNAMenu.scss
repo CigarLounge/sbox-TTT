@@ -4,6 +4,7 @@ DNAMenu
 {
     width: 100%;
     justify-content: center;
+    padding: 20px;
 
     .sample-container
     {
@@ -11,6 +12,17 @@ DNAMenu
         max-height: 325px;
         flex-direction: column;
         overflow: scroll;
+        width: 60%;
+        margin-right: 10px;
+        
+        .empty
+        {
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
     }
 
     .info-container
@@ -37,18 +49,12 @@ DNAMenu
 
     DNASample 
     {
-        margin: 0 10 10 10;
-        min-height: 45px;
-        min-width: 300px;
-        max-width: 300px;
-        justify-content: center;
+        padding: 5px;
+        align-items: center;
         text-shadow: 0px 0px 2px black, 0px 0px 2px black;
 
         .delete-button
         {
-            position: absolute;
-            left: -11px;
-            top: 10px;
             font-size: 23px;
             color: $info;
             cursor: pointer;

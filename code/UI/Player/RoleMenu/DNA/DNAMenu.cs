@@ -11,10 +11,11 @@ public partial class DNAMenu : Panel
 {
 	private readonly Dictionary<DNA, DNASample> _entries = new();
 
-	private Panel SampleContainer { get; set; }
-	private Label Charge { get; set; }
-	private Button ScanButton { get; set; }
-	private Checkbox AutoRepeat { get; set; }
+	private Panel SampleContainer { get; init; }
+	private Panel Empty { get; init; }
+	private Label Charge { get; init; }
+	private Button ScanButton { get; init; }
+	private Checkbox AutoRepeat { get; init; }
 
 	public override void Tick()
 	{
@@ -42,9 +43,10 @@ public partial class DNAMenu : Panel
 				dnaPanel?.Delete();
 			}
 
-			// TODO: Once network indents are a thing...
-			// dnaPanel.SetClass( "selected", scanner?.SelectedSample?.NetworkIdent == dnaPanel.DNA.NetworkIdent );
+			dnaPanel.SetClass( "selected", scanner?.SelectedId == dnaPanel.DNA.Id );
 		}
+
+		Empty.Enabled( !_entries.Any() );
 	}
 
 	private DNASample AddDNASample( DNA dna )
@@ -62,60 +64,56 @@ public partial class DNAMenu : Panel
 		{
 			DNA = dna;
 
-			AddClass( "rounded" );
-			AddClass( "background-color-primary" );
-
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
 			deleteButton.AddEventListener( "onclick", () =>
 			{
-				// DeleteSample( dna.NetworkIdent );
+				DeleteSample( dna.Id );
 			} );
 
-			Add.Button( $"{dna.DNAType}", () =>
+			Add.Button( $"{dna.Id} - {dna.DNAType} - {dna.TimeCollected.TimerString()}", () =>
 			{
-				// SetActiveSample( dna.NetworkIdent );
+				SetActiveSample( dna.Id );
 			} );
 		}
 	}
 
-	// TODO: Network indents on components don't work... waiting on facepunch.
-	// [ServerCmd]
-	// public static void SetActiveSample( int ident )
-	// {
-	// 	Player player = ConsoleSystem.Caller.Pawn as Player;
-	// 	if ( !player.IsValid() )
-	// 		return;
+	[ServerCmd]
+	public static void SetActiveSample( int id )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
 
-	// 	if ( player.ActiveChild is not DNAScanner scanner )
-	// 		return;
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
 
-	// 	foreach ( var dna in scanner.DNACollected )
-	// 	{
-	// 		if ( dna.NetworkIdent == ident )
-	// 		{
-	// 			return;
-	// 		}
-	// 	}
-	// }
+		foreach ( var dna in scanner.DNACollected )
+		{
+			if ( dna.Id == id )
+			{
+				scanner.SelectedId = id;
+				return;
+			}
+		}
+	}
 
-	// TODO: Network indents on components don't work... waiting on facepunch.
-	// [ServerCmd]
-	// public static void DeleteSample( int ident )
-	// {
-	// 	Player player = ConsoleSystem.Caller.Pawn as Player;
-	// 	if ( !player.IsValid() )
-	// 		return;
+	[ServerCmd]
+	public static void DeleteSample( int id )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
 
-	// 	if ( player.ActiveChild is not DNAScanner scanner )
-	// 		return;
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
 
-	// 	foreach ( var dna in scanner.DNACollected )
-	// 	{
-	// 		if ( dna.NetworkIdent == ident )
-	// 		{
-	// 			scanner.DNACollected.Remove( dna );
-	// 			return;
-	// 		}
-	// 	}
-	// }
+		foreach ( var dna in scanner.DNACollected )
+		{
+			if ( dna.Id == id )
+			{
+				scanner.DNACollected.Remove( dna );
+				return;
+			}
+		}
+	}
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using TTT.UI;
 
@@ -16,7 +17,8 @@ public partial class DNAScanner : Carriable
 	public float Charge { get; set; } = 0;
 
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
-	public DNA SelectedDNA => DNACollected.IsNullOrEmpty() ? null : DNACollected[0];
+	[Net, Local]
+	public int SelectedId { get; set; }
 
 	public override string SlotText => $"{(int)Charge}%";
 
@@ -38,11 +40,15 @@ public partial class DNAScanner : Carriable
 
 	private void AttemptScan()
 	{
-		if ( Charge < MAX_CHARGE || SelectedDNA == null || SelectedDNA.Target == null )
+		if ( Charge < MAX_CHARGE )
+			return;
+
+		var selectedDNA = FindSelectedDNA( SelectedId );
+		if ( selectedDNA == null || selectedDNA.Target == null )
 			return;
 
 		Charge -= 50;
-		UpdateMarker( SelectedDNA.Target.Position );
+		UpdateMarker( selectedDNA.Target.Position );
 	}
 
 	private void FetchDNA()
@@ -60,6 +66,8 @@ public partial class DNAScanner : Carriable
 		if ( DNA == null )
 			return;
 
+		// TODO: Remove DNA sample once fetched.
+
 		if ( DNA.TimeUntilDecayed )
 		{
 			// TODO: Display a message in info feed.
@@ -68,6 +76,15 @@ public partial class DNAScanner : Carriable
 		}
 
 		DNACollected.Add( DNA );
+	}
+
+	private DNA FindSelectedDNA( int id )
+	{
+		foreach ( var sample in DNACollected )
+			if ( sample.Id == id )
+				return sample;
+
+		return null;
 	}
 
 	[Event.Tick.Server]
@@ -103,8 +120,13 @@ public partial class DNAScanner : Carriable
 	}
 }
 
-public class DNA : EntityComponent<Entity>
+public partial class DNA : EntityComponent<Entity>
 {
+	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
+	[Net]
+	public int Id { get; private set; }
+	private static int internalId = 0; // Start ID at a random number.
+
 	public enum Type
 	{
 		Corpse
@@ -112,12 +134,18 @@ public class DNA : EntityComponent<Entity>
 
 	public Type DNAType { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
+	public float TimeCollected { get; private set; }
 	public Entity Target { get; private set; }
 
 	protected override void OnActivate()
 	{
 		if ( Host.IsClient )
 			return;
+
+		Id = internalId++;
+
+		if ( Game.Current.State is InProgress inProgress )
+			TimeCollected = inProgress.FakeTime;
 
 		switch ( Entity )
 		{
