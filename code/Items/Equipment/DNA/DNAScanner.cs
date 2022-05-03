@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using TTT.UI;
 
@@ -27,6 +28,9 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
+		if ( Host.IsClient )
+			return;
+
 		if ( Input.Pressed( InputButton.Attack1 ) )
 			FetchDNA();
 
@@ -60,17 +64,18 @@ public partial class DNAScanner : Carriable
 			return;
 
 		// TODO: We apparently shouldn't allow DNA fetching on unconfirmed bodies.
+		// TODO: We shouldn't fetch DNA from an armed c4? 
 
-		var DNA = trace.Entity.Components.Get<DNA>();
-		if ( DNA == null )
-			return; // TODO Display InfoFeed message.
+		var samples = trace.Entity.Components.GetAll<DNA>();
+		if ( !samples.Any() )
+			return;
 
-		trace.Entity.Components.Remove( DNA );
-
-		if ( DNA.TimeUntilDecayed )
-			return; // TODO Display InfoFeed message.
-
-		DNACollected.Add( DNA );
+		foreach ( var dna in samples )
+		{
+			if ( !dna.TimeUntilDecayed )
+				DNACollected.Add( dna ); // TODO: Display a message of how many we fetch, or if it decayed.
+			dna.Enabled = false;
+		}
 	}
 
 	private DNA FindSelectedDNA( int id )
@@ -127,18 +132,17 @@ public partial class DNA : EntityComponent<Entity>
 	private static int internalId = Rand.Int( 0, 500 );
 
 	[Net]
-	public string Source { get; private set; }
+	public string SourceName { get; private set; }
 
-	public Vector3 Target => _player.IsAlive() ? _player.Position : _player.Corpse.Position;
+	public Vector3 Target => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position;
+	public Player TargetPlayer { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
-
-	private readonly Player _player;
 
 	public DNA() { }
 
 	public DNA( Player player )
 	{
-		_player = player;
+		TargetPlayer = player;
 	}
 
 	protected override void OnActivate()
@@ -152,13 +156,13 @@ public partial class DNA : EntityComponent<Entity>
 		{
 			case Corpse corpse:
 			{
-				Source = $"{corpse.PlayerName}'s corpse";
+				SourceName = $"{corpse.PlayerName}'s corpse";
 				TimeUntilDecayed = (float)Math.Pow( 0.74803 * corpse.DistanceKilledFrom, 2 ) + 100;
 			}
 			break;
 			default:
 			{
-				Source = Entity.ClassInfo.Title;
+				SourceName = Entity.ClassInfo.Title;
 				TimeUntilDecayed = float.MaxValue; // Never should decay.
 			}
 			break;

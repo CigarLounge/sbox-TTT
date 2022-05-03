@@ -1,5 +1,7 @@
 using Sandbox;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace TTT;
@@ -142,6 +144,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		}
 
 		TimeSinceDeployed = 0;
+
+		if ( Host.IsClient )
+			return;
+
+		if ( !Components.GetAll<DNA>( true ).Any( ( dna ) => dna.TargetPlayer == Owner ) )
+			Components.Add( new DNA( Owner ) );
 	}
 
 	public override void ActiveEnd( Entity entity, bool dropped )
