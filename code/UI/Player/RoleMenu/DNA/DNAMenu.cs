@@ -14,13 +14,10 @@ public partial class DNAMenu : Panel
 	private Panel SampleContainer { get; init; }
 	private Panel Empty { get; init; }
 	private Label Charge { get; init; }
-	private Button ScanButton { get; init; }
 	private Checkbox AutoRepeat { get; init; }
 
 	public override void Tick()
 	{
-		ScanButton.SetClass( "inactive", AutoRepeat.Checked );
-
 		if ( Local.Pawn is not Player player )
 			return;
 
