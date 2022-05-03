@@ -13,7 +13,7 @@ public partial class Player
 	/// <summary>
 	/// The player who confirmed this player's corpse.
 	/// </summary>
-	public Player Confirmer { get; set; }
+	public Player Confirmer { get; private set; }
 
 	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
@@ -95,6 +95,16 @@ public partial class Player
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )
 			LastSeenPlayerName = player.Client.Name;
+	}
+
+	private void ResetConfirmationData()
+	{
+		Confirmer = null;
+		Corpse = null;
+		LastSeenPlayerName = string.Empty;
+		IsConfirmedDead = false;
+		IsMissingInAction = false;
+		IsRoleKnown = false;
 	}
 
 	[ClientRpc]

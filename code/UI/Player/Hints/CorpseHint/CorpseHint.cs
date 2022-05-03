@@ -8,16 +8,15 @@ public class CorpseHint : EntityHintPanel
 {
 	private readonly Corpse _corpse;
 
-	private Label Title { get; set; }
-	private Label SubText { get; set; }
-	private Label CreditHint { get; set; }
-	private InputGlyph TopButton { get; set; }
-	private InputGlyph BottomButton { get; set; }
-	private Panel ActionPanel { get; set; }
-	private Panel CovertSearchPanel { get; set; }
+	private Label Title { get; init; }
+	private Label SubText { get; init; }
+	private Label CreditHint { get; init; }
+	private InputGlyph TopButton { get; init; }
+	private InputGlyph BottomButton { get; init; }
+	private Panel ActionPanel { get; init; }
+	private Panel CovertSearchPanel { get; init; }
 
 	public CorpseHint( Corpse corpse ) => _corpse = corpse;
-
 
 	public override void Tick()
 	{

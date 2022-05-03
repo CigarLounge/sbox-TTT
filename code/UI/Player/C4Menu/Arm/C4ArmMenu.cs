@@ -8,8 +8,8 @@ public class C4ArmMenu : EntityHintPanel
 {
 	public int Timer { get; set; } = 45;
 
-	private Label TimerDisplay { get; set; }
-	private Label Wires { get; set; }
+	private Label TimerDisplay { get; init; }
+	private Label Wires { get; init; }
 
 	private readonly C4Entity _c4;
 

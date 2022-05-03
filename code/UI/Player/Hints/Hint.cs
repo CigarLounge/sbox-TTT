@@ -21,7 +21,7 @@ public class HintDisplay : Panel
 [UseTemplate]
 public class Hint : EntityHintPanel
 {
-	private Label HintLabel { get; set; }
+	private Label HintLabel { get; init; }
 
 	public Hint( string text )
 	{

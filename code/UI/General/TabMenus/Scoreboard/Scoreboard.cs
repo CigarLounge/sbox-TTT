@@ -6,19 +6,18 @@ using System.Linq;
 namespace TTT.UI;
 
 [UseTemplate]
-public partial class Scoreboard : Panel
+public class Scoreboard : Panel
 {
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
 	private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
 
-	private readonly string _alive = "Alive";
-	private readonly string _missingInAction = "Missing In Action";
-	private readonly string _confirmedDead = "Confirmed Dead";
-	private readonly string _spectator = "Spectator";
+	private const string _alive = "Alive";
+	private const string _missingInAction = "Missing In Action";
+	private const string _confirmedDead = "Confirmed Dead";
+	private const string _spectator = "Spectator";
 
-	private Panel Container { get; set; }
-	private ScoreboardHeader Header { get; set; }
-	private Panel Content { get; set; }
+	private Panel Container { get; init; }
+	private Panel Content { get; init; }
 
 	public Scoreboard( Panel parent, Button swapButton ) : base()
 	{
@@ -46,7 +45,7 @@ public partial class Scoreboard : Panel
 		if ( client is null )
 			return;
 
-		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
+		if ( !_entries.TryGetValue( client, out var panel ) )
 			return;
 
 		var scoreboardGroup = GetScoreboardGroup( client );
@@ -66,10 +65,10 @@ public partial class Scoreboard : Panel
 
 	private void RemoveClient( Client client )
 	{
-		if ( !_entries.TryGetValue( client, out ScoreboardEntry panel ) )
+		if ( !_entries.TryGetValue( client, out var panel ) )
 			return;
 
-		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out ScoreboardGroup scoreboardGroup );
+		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out var scoreboardGroup );
 
 		if ( scoreboardGroup is not null )
 			scoreboardGroup.GroupMembers--;

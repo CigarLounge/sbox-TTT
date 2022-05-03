@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public partial class BaseClothing : ModelEntity
+public class BaseClothing : ModelEntity
 {
 	public Player Wearer => Parent as Player;
 	public virtual void Attached() { }

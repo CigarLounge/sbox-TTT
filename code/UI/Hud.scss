@@ -14,13 +14,13 @@ $button-secondary-fg: #dadada !default;
 $button-dark: #1b3039 !default;
 $button-size: 45px;
 
-@import "/ui/components/styles/tabcontainer.scss";
-@import "/ui/components/styles/button.scss";
-@import "/ui/components/styles/checkbox.scss";
-@import "/ui/components/styles/dropdown.scss";
-@import "/ui/components/styles/label.scss";
-@import "/ui/components/styles/textentry.scss";
-@import "/ui/components/styles/slider.scss";
+@import "/ui/styles/tabcontainer.scss";
+@import "/ui/styles/button.scss";
+@import "/ui/styles/checkbox.scss";
+@import "/ui/styles/dropdown.scss";
+@import "/ui/styles/label.scss";
+@import "/ui/styles/textentry.scss";
+@import "/ui/styles/slider.scss";
 
 @import "/ui/components/coloreditor/coloreditor.scss";
 @import "/ui/components/linebreak/linebreak.scss";
