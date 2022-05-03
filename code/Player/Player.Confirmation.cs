@@ -94,6 +94,16 @@ public partial class Player
 			LastSeenPlayerName = player.Client.Name;
 	}
 
+	private void ResetConfirmationData()
+	{
+		Confirmer = null;
+		Corpse = null;
+		LastSeenPlayerName = string.Empty;
+		IsConfirmedDead = false;
+		IsMissingInAction = false;
+		IsRoleKnown = false;
+	}
+
 	[ClientRpc]
 	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{

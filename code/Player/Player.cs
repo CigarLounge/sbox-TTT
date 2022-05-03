@@ -72,23 +72,17 @@ public partial class Player : Sandbox.Player
 		LifeState = LifeState.Respawnable;
 		IsSpectator = IsForcedSpectator;
 
-		TimeUntilClean = 0;
-		Confirmer = null;
-		Corpse = null;
-		LastSeenPlayerName = string.Empty;
-		IsConfirmedDead = false;
-		IsMissingInAction = false;
-		IsRoleKnown = false;
-
 		DeleteFlashlight();
 		DeleteItems();
+		ResetConfirmationData();
 		Role = new NoneRole();
 
+		TimeUntilClean = 0;
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
 		Credits = 0;
 
-		if ( !IsSpectator )
+		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
 			LifeState = LifeState.Alive;
@@ -118,13 +112,7 @@ public partial class Player : Sandbox.Player
 	{
 		Host.AssertClient();
 
-		Confirmer = null;
-		Corpse = null;
-		LastSeenPlayerName = string.Empty;
-		IsConfirmedDead = false;
-		IsMissingInAction = false;
-		IsRoleKnown = false;
-
+		ResetConfirmationData();
 		DeleteFlashlight();
 
 		if ( this.IsAlive() )
