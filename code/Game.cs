@@ -28,6 +28,7 @@ public partial class Game : Sandbox.Game
 	/// <param name="state"> The state to change to if minimum players is met.</param>
 	public void ChangeState( BaseState state )
 	{
+		Host.AssertServer();
 		Assert.NotNull( state );
 
 		ForceStateChange( Utils.HasMinimumPlayers() ? state : new WaitingState() );

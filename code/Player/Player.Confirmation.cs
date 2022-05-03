@@ -13,7 +13,7 @@ public partial class Player
 	/// <summary>
 	/// The player who confirmed this player's corpse.
 	/// </summary>
-	public Player Confirmer { get; set; }
+	public Player Confirmer { get; private set; }
 
 	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;

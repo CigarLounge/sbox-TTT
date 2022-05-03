@@ -7,8 +7,8 @@ namespace TTT.UI;
 public class C4Hint : EntityHintPanel
 {
 	private readonly C4Entity _c4;
-	private Label SubText { get; set; }
-	private Panel DefuserPanel { get; set; }
+	private Label SubText { get; init; }
+	private Panel DefuserPanel { get; init; }
 
 	public C4Hint( C4Entity c4 ) => _c4 = c4;
 

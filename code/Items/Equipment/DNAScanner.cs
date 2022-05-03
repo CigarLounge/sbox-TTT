@@ -47,7 +47,7 @@ public partial class DNAScanner : Carriable
 		// If body, check if its identified, otherwise prompt the user a message.
 
 		var DNA = trace.Entity.Components.Get<DNA>();
-		if ( DNA != null )
+		if ( DNA is not null )
 		{
 			// trace.Entity.Components.Remove( DNA );
 
