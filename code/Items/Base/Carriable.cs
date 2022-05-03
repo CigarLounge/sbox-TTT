@@ -82,7 +82,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public new Player Owner
 	{
-		get => base.Owner as Player;
+		get => (Player)base.Owner;
 		set => base.Owner = value;
 	}
 
