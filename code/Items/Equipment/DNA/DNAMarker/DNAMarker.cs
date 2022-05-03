@@ -1,4 +1,3 @@
-using System;
 using Sandbox;
 using Sandbox.UI;
 

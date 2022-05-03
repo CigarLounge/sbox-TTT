@@ -23,7 +23,7 @@ public partial class DNAScanner : Carriable
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 5f; // TODO: Find proper calculate rate.
+	private const float CHARGE_PER_SECOND = 1f; // TODO: Find proper calculate rate.
 	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
