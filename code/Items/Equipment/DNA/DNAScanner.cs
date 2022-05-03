@@ -23,7 +23,7 @@ public partial class DNAScanner : Carriable
 	public override string SlotText => $"{(int)Charge}%";
 
 	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 1f; // TODO: Find proper calculate rate.
+	private const float CHARGE_PER_SECOND = 2.2f; // TODO: Find proper calculate rate.
 	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
@@ -44,8 +44,9 @@ public partial class DNAScanner : Carriable
 		if ( selectedDNA == null )
 			return;
 
-		var dist = Owner.Position.Distance( selectedDNA.Target ).SourceUnitsToMeters();
-		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 2.16f ) );
+		var dist = Owner.Position.Distance( selectedDNA.Target );
+		Log.Info( dist );
+		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
 		UpdateMarker( selectedDNA.Target );
 	}
 
