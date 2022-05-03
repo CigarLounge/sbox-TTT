@@ -67,7 +67,7 @@ public partial class DNAMenu : Panel
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
 			deleteButton.AddEventListener( "onclick", () => { DeleteSample( dna.Id ); } );
 
-			Add.Button( $"#{dna.Id} - {dna.Source} - {dna.TimeCollected.TimerString()}", () => { SetActiveSample( dna.Id ); } );
+			Add.Button( $"#{dna.Id} - {dna.Source}", () => { SetActiveSample( dna.Id ); } );
 		}
 	}
 

@@ -40,12 +40,12 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
-		if ( selectedDNA == null || selectedDNA.Target == null )
+		if ( selectedDNA == null )
 			return;
 
-		var dist = Owner.Position.Distance( selectedDNA.Target.Position ).SourceUnitsToMeters();
+		var dist = Owner.Position.Distance( selectedDNA.Target ).SourceUnitsToMeters();
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 2.16f ) );
-		UpdateMarker( selectedDNA.Target.Position );
+		UpdateMarker( selectedDNA.Target );
 	}
 
 	private void FetchDNA()
@@ -127,16 +127,19 @@ public partial class DNA : EntityComponent<Entity>
 	private static int internalId = Rand.Int( 0, 500 );
 
 	[Net]
-	public float TimeCollected { get; private set; }
+	public string Source { get; private set; }
 
-	public enum SourceType
-	{
-		Corpse
-	}
-
-	public SourceType Source { get; private set; }
+	public Vector3 Target => _player.IsAlive() ? _player.Position : _player.Corpse.Position;
 	public TimeUntil TimeUntilDecayed { get; private set; }
-	public Entity Target { get; private set; }
+
+	private readonly Player _player;
+
+	public DNA() { }
+
+	public DNA( Player player )
+	{
+		_player = player;
+	}
 
 	protected override void OnActivate()
 	{
@@ -145,18 +148,26 @@ public partial class DNA : EntityComponent<Entity>
 
 		Id = internalId++;
 
-		if ( Game.Current.State is InProgress inProgress )
-			TimeCollected = inProgress.FakeTime;
-
 		switch ( Entity )
 		{
 			case Corpse corpse:
 			{
-				Source = SourceType.Corpse;
+				Source = $"{corpse.PlayerName}'s corpse";
 				TimeUntilDecayed = (float)Math.Pow( 0.74803 * corpse.DistanceKilledFrom, 2 ) + 100;
-				Target = corpse.KillInfo.Attacker;
+			}
+			break;
+			default:
+			{
+				Source = Entity.ClassInfo.Title;
+				TimeUntilDecayed = float.MaxValue; // Never should decay.
 			}
 			break;
 		}
+	}
+
+	[TTTEvent.Round.RolesAssigned]
+	private void OnRolesAssigned()
+	{
+		internalId = Rand.Int( 0, 500 );
 	}
 }
