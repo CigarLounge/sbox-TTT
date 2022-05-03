@@ -42,8 +42,12 @@ public partial class Player
 		corpse.CopyFrom( this );
 		corpse.ApplyForceToBone( LastDamageInfo.Force, GetHitboxBone( LastDamageInfo.HitboxIndex ) );
 
-		if ( corpse.KillInfo.Flags == DamageFlags.Bullet && corpse.KillInfo.Attacker is Player killer )
-			corpse.Components.Add( new DNA( killer ) );
+		if ( LastDamageInfo.Flags == DamageFlags.Bullet && LastDamageInfo.Attacker is Player killer )
+		{
+			var dna = new DNA( killer );
+			corpse.Components.Add( dna );
+			corpse.TimeUntilDNADecay = dna.TimeUntilDecayed;
+		}
 
 		Corpse = corpse;
 	}

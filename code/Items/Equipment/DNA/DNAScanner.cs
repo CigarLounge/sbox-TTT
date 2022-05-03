@@ -45,12 +45,12 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
-		if ( selectedDNA == null )
+		if ( selectedDNA == null || !selectedDNA.TargetPlayer.IsValid() )
 			return;
 
-		var dist = Owner.Position.Distance( selectedDNA.Target );
+		var dist = Owner.Position.Distance( selectedDNA.TargetPosition );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
-		UpdateMarker( selectedDNA.Target );
+		UpdateMarker( selectedDNA.TargetPosition );
 	}
 
 	private void FetchDNA()
@@ -137,7 +137,7 @@ public partial class DNA : EntityComponent<Entity>
 	[Net]
 	public string SourceName { get; private set; }
 
-	public Vector3 Target => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position; // TODO: Null check just incase.
+	public Vector3 TargetPosition => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position;
 	public Player TargetPlayer { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
 

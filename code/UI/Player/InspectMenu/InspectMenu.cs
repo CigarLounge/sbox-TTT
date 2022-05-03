@@ -16,6 +16,7 @@ public partial class InspectMenu : Panel
 	private readonly InspectEntry _deathCause;
 	private readonly InspectEntry _weapon;
 	private readonly InspectEntry _headshot;
+	private readonly InspectEntry _dna;
 	private readonly InspectEntry _lastSeen;
 	private readonly InspectEntry _c4Note;
 
@@ -49,6 +50,10 @@ public partial class InspectMenu : Panel
 		_headshot.Enabled( false );
 		_inspectionEntries.Add( _headshot );
 
+		_dna = new InspectEntry( IconsContainer );
+		_dna.Enabled( false );
+		_inspectionEntries.Add( _dna );
+
 		_lastSeen = new InspectEntry( IconsContainer );
 		_lastSeen.Enabled( false );
 		_inspectionEntries.Add( _lastSeen );
@@ -71,16 +76,23 @@ public partial class InspectMenu : Panel
 		RoleName.Text = _corpse.Player.Role.Title;
 		RoleName.Style.FontColor = _corpse.Player.Role.Color;
 
-		_headshot.Enabled( _corpse.WasHeadshot );
-		_headshot.SetImage( "/ui/inspectmenu/headshot.png" );
-		_headshot.SetImageText( "Headshot" );
-		_headshot.SetActiveText( "The fatal wound was a headshot. No time to scream." );
-
 		var (name, imageText, activeText) = GetCauseOfDeathStrings();
 		_deathCause.Enabled( true );
 		_deathCause.SetImage( $"/ui/inspectmenu/{name}.png" );
 		_deathCause.SetImageText( imageText );
 		_deathCause.SetActiveText( activeText );
+
+		_headshot.Enabled( _corpse.WasHeadshot );
+		if ( _headshot.IsEnabled() )
+		{
+			_headshot.SetImage( "/ui/inspectmenu/headshot.png" );
+			_headshot.SetImageText( "Headshot" );
+			_headshot.SetActiveText( "The fatal wound was a headshot. No time to scream." );
+		}
+
+		_dna.Enabled( !_corpse.TimeUntilDNADecay );
+		if ( _dna.IsEnabled() )
+			_dna.SetImage( "/ui/inspectmenu/dna.png" );
 
 		_lastSeen.Enabled( !string.IsNullOrEmpty( _corpse.LastSeenPlayerName ) );
 		if ( _lastSeen.IsEnabled() )
@@ -137,12 +149,11 @@ public partial class InspectMenu : Panel
 
 	private void UpdateCurrentInspectDescription()
 	{
-		_inspectDetailsLabel.SetClass( "fade-in", _selectedInspectEntry is not null );
+		var isEnabled = _selectedInspectEntry is not null;
+		_inspectDetailsLabel.SetClass( "fade-in", isEnabled );
 
-		if ( _selectedInspectEntry is null )
-			return;
-
-		_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
+		if ( isEnabled )
+			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
@@ -173,8 +184,14 @@ public partial class InspectMenu : Panel
 		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
 		_timeSinceDeath.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
 
-		if ( _selectedInspectEntry is not null && _selectedInspectEntry == _timeSinceDeath )
-			UpdateCurrentInspectDescription();
+		_dna.Enabled( !_corpse.TimeUntilDNADecay );
+		if ( _dna.IsEnabled() )
+		{
+			_dna.SetActiveText( $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}." );
+			_dna.SetImageText( $"DNA: {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+		}
+
+		UpdateCurrentInspectDescription();
 	}
 
 	// Called from UI panel

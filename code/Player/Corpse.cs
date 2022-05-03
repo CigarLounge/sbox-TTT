@@ -21,6 +21,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 
+	public TimeUntil TimeUntilDNADecay { get; set; } // TODO: Move this out, do something else here.
+
 	// Detective information
 	public string LastSeenPlayerName { get; private set; }
 
@@ -226,7 +228,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			SendMiscInfo
 			(
-				C4Note
+				C4Note,
+				TimeUntilDNADecay
 			);
 
 			if ( client.Pawn is Player player && player.Role is Detective )
@@ -252,9 +255,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( string c4Note )
+	private void SendMiscInfo( string c4Note, TimeUntil dnaDecay )
 	{
 		C4Note = c4Note;
+		TimeUntilDNADecay = dnaDecay;
 	}
 
 	/// <summary>
