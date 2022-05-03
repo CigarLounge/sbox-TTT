@@ -13,14 +13,18 @@ public partial class DNAScanner : Carriable
 	[Net, Local]
 	public IList<DNA> DNACollected { get; set; }
 
-	[Net, Local]
-	public float Charge { get; set; } = MAX_CHARGE;
-
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net, Local]
 	public int SelectedId { get; set; }
 
+	[Net, Local]
+	public bool AutoScan { get; set; } = false;
+
+	[Net, Local]
+	private float Charge { get; set; } = MAX_CHARGE;
+
 	public override string SlotText => $"{(int)Charge}%";
+	public bool IsCharging => Charge < MAX_CHARGE;
 
 	private const float MAX_CHARGE = 100f;
 	private const float CHARGE_PER_SECOND = 2.2f; // TODO: Find proper calculate rate.
@@ -35,9 +39,9 @@ public partial class DNAScanner : Carriable
 			Scan();
 	}
 
-	private void Scan()
+	public void Scan()
 	{
-		if ( Charge < MAX_CHARGE )
+		if ( IsCharging || IsClient )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
@@ -45,7 +49,6 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var dist = Owner.Position.Distance( selectedDNA.Target );
-		Log.Info( dist );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
 		UpdateMarker( selectedDNA.Target );
 	}
@@ -92,7 +95,9 @@ public partial class DNAScanner : Carriable
 			return;
 
 		Charge = Math.Min( Charge + CHARGE_PER_SECOND * Time.Delta, MAX_CHARGE );
-		Scan();
+
+		if ( AutoScan )
+			Scan();
 	}
 
 	public override void CreateHudElements()
@@ -132,7 +137,7 @@ public partial class DNA : EntityComponent<Entity>
 	[Net]
 	public string SourceName { get; private set; }
 
-	public Vector3 Target => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position;
+	public Vector3 Target => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position; // TODO: Null check just incase.
 	public Player TargetPlayer { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
 

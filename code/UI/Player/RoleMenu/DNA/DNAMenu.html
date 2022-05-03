@@ -7,7 +7,12 @@
         </div>
     </div>
     <div class="info-container rounded background-color-primary box-shadow">
-        <label @ref="Charge" class="charge"></label>
-        <Checkbox @ref="AutoRepeat">Auto-repeat</Checkbox>
+        <text @ref="Charge" class="charge"></text>
+        <text @ref="ChargeStatus" class="charge-status"></text>
+        <div style="align-items: center;">
+            <text> Scan - </text>
+            <inputglyph button="Attack2" />
+        </div>
+        <Checkbox @ref="AutoScan">Auto-scan</Checkbox>
     </div>
 </root>

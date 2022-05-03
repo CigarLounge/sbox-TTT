@@ -14,7 +14,8 @@ public partial class DNAMenu : Panel
 	private Panel SampleContainer { get; init; }
 	private Panel Empty { get; init; }
 	private Label Charge { get; init; }
-	private Checkbox AutoRepeat { get; init; }
+	private Label ChargeStatus { get; init; }
+	private Checkbox AutoScan { get; init; }
 
 	public override void Tick()
 	{
@@ -23,6 +24,12 @@ public partial class DNAMenu : Panel
 
 		if ( player.ActiveChild is not DNAScanner scanner )
 			return;
+
+		var isCharging = scanner.IsCharging;
+		ChargeStatus.Text = isCharging ? "CHARGING" : "READY";
+
+		if ( scanner.AutoScan != AutoScan.Checked )
+			SetAutoScan( AutoScan.Checked );
 
 		Charge.Text = scanner.SlotText;
 
@@ -106,5 +113,18 @@ public partial class DNAMenu : Panel
 				return;
 			}
 		}
+	}
+
+	[ServerCmd]
+	public static void SetAutoScan( bool enabled )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		if ( player.ActiveChild is not DNAScanner scanner )
+			return;
+
+		scanner.AutoScan = enabled;
 	}
 }
