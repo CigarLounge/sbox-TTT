@@ -137,7 +137,7 @@ public partial class DNA : EntityComponent<Entity>
 	[Net]
 	public string SourceName { get; private set; }
 
-	public Vector3 TargetPosition => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position;
+	public Vector3 TargetPosition => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position; // TODO: Handle DECOYs
 	public Player TargetPlayer { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
 
