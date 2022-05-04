@@ -10,6 +10,7 @@ namespace TTT.UI;
 public partial class DNAMenu : Panel
 {
 	private readonly Dictionary<DNA, DNASample> _entries = new();
+	private DNAScanner _dnaScanner;
 
 	private Panel SampleContainer { get; init; }
 	private Panel Empty { get; init; }
@@ -22,18 +23,19 @@ public partial class DNAMenu : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner ) // TODO: We either only show menu when equipped, or make sure to scan for the item.
+		_dnaScanner ??= player.Inventory.Find<DNAScanner>();
+		if ( !_dnaScanner.IsValid() )
 			return;
 
-		var isCharging = scanner.IsCharging;
+		var isCharging = _dnaScanner.IsCharged;
 		ChargeStatus.Text = isCharging ? "CHARGING" : "READY";
 
-		if ( scanner.AutoScan != AutoScan.Checked )
+		if ( _dnaScanner.AutoScan != AutoScan.Checked )
 			SetAutoScan( AutoScan.Checked );
 
-		Charge.Text = scanner.SlotText;
+		Charge.Text = _dnaScanner.SlotText;
 
-		foreach ( var dna in scanner.DNACollected )
+		foreach ( var dna in _dnaScanner.DNACollected )
 		{
 			if ( !_entries.ContainsKey( dna ) )
 				_entries[dna] = AddDNASample( dna );
@@ -41,13 +43,13 @@ public partial class DNAMenu : Panel
 
 		foreach ( var dnaPanel in _entries.Values )
 		{
-			if ( !scanner.DNACollected.Contains( dnaPanel.DNA ) )
+			if ( !_dnaScanner.DNACollected.Contains( dnaPanel.DNA ) )
 			{
 				_entries.Remove( dnaPanel.DNA );
 				dnaPanel?.Delete();
 			}
 
-			dnaPanel.SetClass( "selected", scanner?.SelectedId == dnaPanel.DNA.Id );
+			dnaPanel.SetClass( "selected", _dnaScanner?.SelectedId == dnaPanel.DNA.Id );
 		}
 
 		Empty.Enabled( !_entries.Any() );
@@ -82,7 +84,8 @@ public partial class DNAMenu : Panel
 		if ( !player.IsValid() )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
 			return;
 
 		foreach ( var dna in scanner.DNACollected )
@@ -102,7 +105,8 @@ public partial class DNAMenu : Panel
 		if ( !player.IsValid() )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
 			return;
 
 		foreach ( var dna in scanner.DNACollected )
@@ -122,7 +126,8 @@ public partial class DNAMenu : Panel
 		if ( !player.IsValid() )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
 			return;
 
 		scanner.AutoScan = enabled;

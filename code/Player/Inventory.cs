@@ -142,6 +142,18 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return _list.Any( x => x.ClassInfo?.Name == libraryName );
 	}
 
+	public T Find<T>() where T : Carriable
+	{
+		foreach ( var carriable in _list )
+		{
+			if ( carriable is not T t || t.Equals( default( T ) ) )
+				continue;
+
+			return t;
+		}
+		return default;
+	}
+
 	public bool Drop( Entity entity )
 	{
 		if ( !Host.IsServer )
