@@ -133,27 +133,9 @@ public partial class InspectMenu : Panel
 
 		foreach ( var entry in _inspectionEntries )
 		{
-			entry.AddEventListener( "onmouseover", () =>
-			 {
-				 _selectedInspectEntry = entry;
-				 UpdateActiveText();
-			 } );
-
-			entry.AddEventListener( "onmouseout", () =>
-			 {
-				 _selectedInspectEntry = null;
-				 UpdateActiveText();
-			 } );
+			entry.AddEventListener( "onmouseover", () => { _selectedInspectEntry = entry; } );
+			entry.AddEventListener( "onmouseout", () => { _selectedInspectEntry = null; } );
 		}
-	}
-
-	private void UpdateActiveText()
-	{
-		var isShowing = _selectedInspectEntry is not null;
-		_inspectDetailsLabel.SetClass( "fade-in", isShowing );
-
-		if ( isShowing )
-			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
@@ -191,7 +173,11 @@ public partial class InspectMenu : Panel
 			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
 		}
 
-		UpdateActiveText();
+		var isShowing = _selectedInspectEntry is not null;
+		_inspectDetailsLabel.SetClass( "fade-in", isShowing );
+
+		if ( isShowing )
+			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	// Called from UI panel
