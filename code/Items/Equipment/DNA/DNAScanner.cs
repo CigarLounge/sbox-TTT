@@ -49,7 +49,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var target = selectedDNA.GetTarget();
-		if ( !target.IsValid() )
+		if ( !target.IsValid() ) // TODO: Need to handle if it is null, that means no DNA exists at all.
 			return;
 
 		var dist = Owner.Position.Distance( target.Position );
@@ -112,7 +112,6 @@ public partial class DNAScanner : Carriable
 	public override void CreateHudElements()
 	{
 		base.CreateHudElements();
-
 		RoleMenu.Instance?.AddDNATab();
 	}
 

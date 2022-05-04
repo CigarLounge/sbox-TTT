@@ -136,23 +136,23 @@ public partial class InspectMenu : Panel
 			entry.AddEventListener( "onmouseover", () =>
 			 {
 				 _selectedInspectEntry = entry;
-				 UpdateCurrentInspectDescription();
+				 UpdateActiveText();
 			 } );
 
 			entry.AddEventListener( "onmouseout", () =>
 			 {
 				 _selectedInspectEntry = null;
-				 UpdateCurrentInspectDescription();
+				 UpdateActiveText();
 			 } );
 		}
 	}
 
-	private void UpdateCurrentInspectDescription()
+	private void UpdateActiveText()
 	{
-		var isEnabled = _selectedInspectEntry is not null;
-		_inspectDetailsLabel.SetClass( "fade-in", isEnabled );
+		var isShowing = _selectedInspectEntry is not null;
+		_inspectDetailsLabel.SetClass( "fade-in", isShowing );
 
-		if ( isEnabled )
+		if ( isShowing )
 			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
 	}
 
@@ -188,10 +188,10 @@ public partial class InspectMenu : Panel
 		if ( _dna.IsEnabled() )
 		{
 			_dna.SetActiveText( $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}." );
-			_dna.SetImageText( $"DNA: {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
 		}
 
-		UpdateCurrentInspectDescription();
+		UpdateActiveText();
 	}
 
 	// Called from UI panel
