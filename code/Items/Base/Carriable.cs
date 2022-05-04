@@ -147,7 +147,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		if ( Host.IsClient )
 			return;
 
-		if ( !Components.GetAll<DNA>( true ).Any( ( dna ) => dna.TargetPlayer == Owner ) )
+		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
 			Components.Add( new DNA( Owner ) );
 	}
 

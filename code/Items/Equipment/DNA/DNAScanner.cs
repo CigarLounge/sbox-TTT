@@ -27,7 +27,7 @@ public partial class DNAScanner : Carriable
 	public bool IsCharging => Charge < MAX_CHARGE;
 
 	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 2.2f; // TODO: Find proper calculate rate.
+	private const float CHARGE_PER_SECOND = 2.2f;
 	private DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
@@ -45,12 +45,16 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
-		if ( selectedDNA == null || !selectedDNA.TargetPlayer.IsValid() )
+		if ( selectedDNA == null )
 			return;
 
-		var dist = Owner.Position.Distance( selectedDNA.TargetPosition );
+		var target = selectedDNA.GetTarget();
+		if ( !target.IsValid() )
+			return;
+
+		var dist = Owner.Position.Distance( target.Position );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
-		UpdateMarker( selectedDNA.TargetPosition );
+		UpdateMarker( target.Position );
 	}
 
 	private void FetchDNA()
@@ -73,9 +77,14 @@ public partial class DNAScanner : Carriable
 
 		foreach ( var dna in samples )
 		{
-			if ( !dna.TimeUntilDecayed )
-				DNACollected.Add( dna ); // TODO: Display a message of how many we fetch, or if it decayed.
-			dna.Enabled = false;
+			if ( dna.TimeUntilDecayed )
+			{
+				dna.Enabled = false;
+				continue;
+			}
+
+			if ( !DNACollected.Contains( dna ) ) // TODO: Display a message of how many we fetch, or if it decayed.
+				DNACollected.Add( dna );
 		}
 	}
 
@@ -137,7 +146,6 @@ public partial class DNA : EntityComponent<Entity>
 	[Net]
 	public string SourceName { get; private set; }
 
-	public Vector3 TargetPosition => TargetPlayer.IsAlive() ? TargetPlayer.Position : TargetPlayer.Corpse.Position; // TODO: Handle DECOYs
 	public Player TargetPlayer { get; private set; }
 	public TimeUntil TimeUntilDecayed { get; private set; }
 
@@ -170,6 +178,18 @@ public partial class DNA : EntityComponent<Entity>
 			}
 			break;
 		}
+	}
+
+	public Entity GetTarget()
+	{
+		if ( !TargetPlayer.IsValid() )
+			return null;
+
+		var decoyComponent = TargetPlayer.Components.Get<DecoyComponent>();
+		if ( decoyComponent != null && decoyComponent.Decoy.IsValid() )
+			return decoyComponent.Decoy;
+
+		return TargetPlayer.IsAlive() ? TargetPlayer : TargetPlayer.Corpse;
 	}
 
 	[TTTEvent.Round.RolesAssigned]

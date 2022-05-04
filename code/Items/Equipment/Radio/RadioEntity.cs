@@ -20,7 +20,6 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 	protected override void OnDestroy()
 	{
 		Owner?.Components.RemoveAny<RadioComponent>();
-
 		base.OnDestroy();
 	}
 
