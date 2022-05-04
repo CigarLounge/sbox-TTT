@@ -54,7 +54,7 @@ public partial class DNAScanner : Carriable
 
 		var dist = Owner.Position.Distance( target.Position );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
-		UpdateMarker( target.Position );
+		UpdateMarker( To.Single( Owner ), target.Position );
 	}
 
 	private void FetchDNA()
@@ -132,6 +132,12 @@ public partial class DNAScanner : Carriable
 		PlaySound( "dna-beep" );
 		_dnaMarker?.Delete();
 		_dnaMarker = new DNAMarker( pos );
+	}
+
+	[ClientRpc]
+	public void DeleteMarker()
+	{
+		_dnaMarker?.Delete();
 	}
 }
 

@@ -114,6 +114,7 @@ public partial class DNAMenu : Panel
 			if ( dna.Id == id )
 			{
 				scanner.DNACollected.Remove( dna );
+				scanner.DeleteMarker( To.Single( player ) );
 				return;
 			}
 		}
