@@ -75,6 +75,7 @@ public partial class DNAScanner : Carriable
 		if ( !samples.Any() )
 			return;
 
+		var totalCollected = 0;
 		foreach ( var dna in samples )
 		{
 			if ( dna.TimeUntilDecayed )
@@ -83,9 +84,15 @@ public partial class DNAScanner : Carriable
 				continue;
 			}
 
-			if ( !DNACollected.Contains( dna ) ) // TODO: Display a message of how many we fetch, or if it decayed.
+			if ( !DNACollected.Contains( dna ) )
+			{
 				DNACollected.Add( dna );
+				totalCollected += 1;
+			}
 		}
+
+		if ( totalCollected > 0 )
+			UI.InfoFeed.DisplayEntry( To.Single( Owner ), $"Collected {totalCollected} new DNA sample(s)." );
 	}
 
 	private DNA FindSelectedDNA( int id )
