@@ -17,11 +17,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public CarriableInfo KillerWeapon { get; private set; }
 	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
 	public float KilledTime { get; private set; }
+	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public float DistanceKilledFrom { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
-
-	public TimeUntil TimeUntilDNADecay { get; set; } // TODO: Move this out, do something else here.
 
 	// Detective information
 	public string LastSeenPlayerName { get; private set; }
@@ -65,6 +64,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
 		DistanceKilledFrom = player.DistanceToAttacker;
 		HasCredits = player.Credits > 0;
+
+		if ( KillInfo.Flags == DamageFlags.Bullet && KillInfo.Attacker is Player killer )
+		{
+			var dna = new DNA( killer );
+			Components.Add( dna );
+			TimeUntilDNADecay = dna.TimeUntilDecayed;
+		}
 
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )
