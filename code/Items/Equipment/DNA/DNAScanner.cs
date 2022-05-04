@@ -41,7 +41,7 @@ public partial class DNAScanner : Carriable
 
 	public void Scan()
 	{
-		if ( IsCharging || IsClient )
+		if ( IsCharging )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );

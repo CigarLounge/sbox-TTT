@@ -22,7 +22,7 @@ public partial class DNAMenu : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		if ( player.ActiveChild is not DNAScanner scanner ) // TODO: We either only show menu when equipped, or make sure to scan for the item.
 			return;
 
 		var isCharging = scanner.IsCharging;
