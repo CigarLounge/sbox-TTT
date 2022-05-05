@@ -284,6 +284,9 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		var carriable = child as Carriable;
 		_list.Add( carriable );
 
+		if ( Host.IsClient )
+			carriable.OnClientCarryStart( Owner );
+
 		if ( !Host.IsServer )
 			return;
 
@@ -299,6 +302,12 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return;
 
 		if ( !_list.Remove( carriable ) )
+			return;
+
+		if ( Host.IsClient )
+			carriable.OnClientCarryDrop( Owner );
+
+		if ( !Host.IsServer )
 			return;
 
 		SlotCapacity[(int)carriable.Info.Slot] += 1;

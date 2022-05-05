@@ -123,19 +123,13 @@ public partial class DNAScanner : Carriable
 			Scan();
 	}
 
-	public override void CreateHudElements()
+	public override void OnClientCarryStart( Entity carrier )
 	{
-		base.CreateHudElements();
 		RoleMenu.Instance?.AddDNATab();
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void OnClientCarryDrop( Entity carrier )
 	{
-		base.ActiveEnd( entity, dropped );
-
-		if ( !dropped || IsServer )
-			return;
-
 		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
 		_dnaMarker?.Delete( true );
 	}

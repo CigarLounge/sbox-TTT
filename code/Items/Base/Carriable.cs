@@ -151,11 +151,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Components.Add( new DNA( Owner ) );
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
-	{
-		base.ActiveEnd( entity, dropped );
-	}
-
 	public override void Simulate( Client client ) { }
 
 	public override void FrameSimulate( Client client ) { }
@@ -219,11 +214,21 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		PreviousOwner = Owner;
 	}
 
+	public virtual void OnClientCarryStart( Entity carrier )
+	{
+
+	}
+
 	public override void OnCarryDrop( Entity dropper )
 	{
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
+	}
+
+	public virtual void OnClientCarryDrop( Entity carrier )
+	{
+
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )
