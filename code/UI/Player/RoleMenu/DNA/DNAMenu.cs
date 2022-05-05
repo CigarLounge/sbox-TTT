@@ -27,11 +27,10 @@ public partial class DNAMenu : Panel
 		if ( !_dnaScanner.IsValid() )
 			return;
 
-		var isCharging = _dnaScanner.IsCharged;
-		ChargeStatus.Text = isCharging ? "CHARGING" : "READY";
+		ChargeStatus.Text = _dnaScanner.IsCharging ? "CHARGING" : "READY";
 
 		if ( _dnaScanner.AutoScan != AutoScan.Checked )
-			SetAutoScan( AutoScan.Checked );
+			_dnaScanner.AutoScan = AutoScan.Checked;
 
 		Charge.Text = _dnaScanner.SlotText;
 

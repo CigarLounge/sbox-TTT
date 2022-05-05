@@ -25,7 +25,7 @@ public partial class DNAScanner : Carriable
 	private float Charge { get; set; } = MAX_CHARGE;
 
 	public override string SlotText => $"{(int)Charge}%";
-	public bool IsCharged => Charge < MAX_CHARGE;
+	public bool IsCharging => Charge < MAX_CHARGE;
 
 	private const float MAX_CHARGE = 100f;
 	private const float CHARGE_PER_SECOND = 2.2f;
@@ -45,7 +45,7 @@ public partial class DNAScanner : Carriable
 
 	public void Scan()
 	{
-		if ( IsClient || IsCharged )
+		if ( IsClient || IsCharging )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
