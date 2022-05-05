@@ -45,7 +45,7 @@ public partial class DNAScanner : Carriable
 
 	public void Scan()
 	{
-		if ( IsCharged || IsClient )
+		if ( IsClient || IsCharged )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
@@ -78,7 +78,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		// TODO: We apparently shouldn't allow DNA fetching on unconfirmed bodies.
-		// TODO: We shouldn't fetch DNA from an armed c4? 
+		// TODO: We shouldn't be able to fetch from armed C4, double check which ent should have DNA.
 
 		var samples = trace.Entity.Components.GetAll<DNA>();
 		if ( !samples.Any() )
