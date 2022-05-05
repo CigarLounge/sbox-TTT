@@ -14,8 +14,9 @@ public partial class DNAScanner : Carriable
 	public IList<DNA> DNACollected { get; set; }
 
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
+	// Unable to network "DNA" by itself due to s&box...
 	[Net, Local]
-	public int SelectedId { get; set; }
+	public int? SelectedId { get; set; }
 
 	[Net, Local]
 	public bool AutoScan { get; set; } = false;
@@ -32,6 +33,9 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
+		if ( IsClient && SelectedId == null )
+			_dnaMarker?.Delete();
+
 		if ( Input.Pressed( InputButton.Attack1 ) )
 			FetchDNA();
 
@@ -95,8 +99,11 @@ public partial class DNAScanner : Carriable
 			UI.InfoFeed.DisplayEntry( To.Single( Owner ), $"Collected {totalCollected} new DNA sample(s)." );
 	}
 
-	private DNA FindSelectedDNA( int id )
+	private DNA FindSelectedDNA( int? id )
 	{
+		if ( id == null )
+			return null;
+
 		foreach ( var sample in DNACollected )
 			if ( sample.Id == id )
 				return sample;
@@ -139,12 +146,6 @@ public partial class DNAScanner : Carriable
 		PlaySound( "dna-beep" );
 		_dnaMarker?.Delete();
 		_dnaMarker = new DNAMarker( pos );
-	}
-
-	[ClientRpc]
-	public void DeleteMarker()
-	{
-		_dnaMarker?.Delete();
 	}
 }
 

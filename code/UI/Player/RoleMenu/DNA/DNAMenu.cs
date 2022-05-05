@@ -20,7 +20,7 @@ public partial class DNAMenu : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( !IsVisible || Local.Pawn is not Player player )
 			return;
 
 		_dnaScanner ??= player.Inventory.Find<DNAScanner>();
@@ -113,8 +113,8 @@ public partial class DNAMenu : Panel
 		{
 			if ( dna.Id == id )
 			{
+				scanner.SelectedId = null;
 				scanner.DNACollected.Remove( dna );
-				scanner.DeleteMarker( To.Single( player ) );
 				return;
 			}
 		}
