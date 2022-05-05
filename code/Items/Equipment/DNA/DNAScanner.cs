@@ -53,8 +53,13 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var target = selectedDNA.GetTarget();
-		if ( !target.IsValid() ) // TODO: Need to handle if it is null, that means no DNA exists at all.
+		if ( !target.IsValid() )
+		{
+			SelectedId = null;
+			DNACollected.Remove( selectedDNA );
+			UI.InfoFeed.DisplayEntry( To.Single( Owner ), "DNA not detected in area." );
 			return;
+		}
 
 		var dist = Owner.Position.Distance( target.Position );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
