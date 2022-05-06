@@ -3,35 +3,29 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public enum BuyError
-{
-	None,
-	InventoryBlocked,
-	NotEnoughCredits,
-	LimitReached
-}
-
 public partial class Player
 {
 	[Net, Local]
 	public IList<string> PurchasedLimitedShopItems { get; set; }
 
-	/// <summary>
-	/// Local clientside check before server does exact same checks in "PurchaseItem(...)".
-	/// IsLimited check 
-	/// </summary>
-	public BuyError CanPurchase( ItemInfo item )
+	public bool CanPurchase( ItemInfo item )
 	{
-		if ( Credits < item.Price )
-			return BuyError.NotEnoughCredits;
+		if ( !item.Buyable )
+			return false;
 
-		if ( PurchasedLimitedShopItems.Contains( item.LibraryName ) )
-			return BuyError.LimitReached;
+		if ( Credits < item.Price )
+			return false;
 
 		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
-			return BuyError.InventoryBlocked;
+			return false;
 
-		return BuyError.None;
+		if ( !Role.AvailableItems.Contains( item.LibraryName ) )
+			return false;
+
+		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.LibraryName ) )
+			return false;
+
+		return true;
 	}
 
 	public static void PurchaseItem( string libraryName )
@@ -50,13 +44,7 @@ public partial class Player
 		if ( itemInfo is null )
 			return;
 
-		if ( !player.Role.AvailableItems.Contains( itemInfo.LibraryName ) )
-			return;
-
-		if ( !itemInfo.Buyable || (itemInfo.IsLimited && player.PurchasedLimitedShopItems.Contains( itemInfo.LibraryName )) )
-			return;
-
-		if ( player.Credits < itemInfo.Price )
+		if ( !player.CanPurchase( itemInfo ) )
 			return;
 
 		if ( itemInfo.IsLimited )
