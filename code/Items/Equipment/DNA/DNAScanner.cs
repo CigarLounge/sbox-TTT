@@ -140,13 +140,13 @@ public partial class DNAScanner : Carriable
 
 	public override void OnClientCarryStart( Entity carrier )
 	{
-		if ( IsLocalPawn )
+		if ( carrier.IsLocalPawn )
 			UI.RoleMenu.Instance?.AddDNATab();
 	}
 
 	public override void OnClientCarryDrop( Entity carrier )
 	{
-		if ( !IsLocalPawn )
+		if ( !carrier.IsLocalPawn )
 			return;
 
 		UI.RoleMenu.Instance?.RemoveTab( UI.RoleMenu.DNATab );
