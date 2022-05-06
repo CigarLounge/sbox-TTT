@@ -11,9 +11,9 @@ public partial class MapSettings : Entity
 	protected Output SettingsSpawned { get; set; }
 
 	/// <summary>
-	/// Fired once Preround begins.
+	/// Fired once round starts and roles are assigned.
 	/// </summary>
-	protected Output RoundPreparation { get; set; }
+	protected Output RolesAssigned { get; set; }
 
 	/// <summary>
 	/// Fired once round starts and roles are assigned.
@@ -21,34 +21,30 @@ public partial class MapSettings : Entity
 	protected Output RoundStart { get; set; }
 
 	/// <summary>
-	/// Fired once a win condition is met.
+	/// Fired once Preround begins.
 	/// </summary>
-	protected Output RoundEnd { get; set; }
+	protected Output<Team> RoundEnd { get; set; }
 
 	/// <summary>
 	/// Does not run on entity awake/spawn, is called explicitly by the TTT gamemode to trigger.
 	/// </summary>
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
-	[TTTEvent.Game.StateChanged]
-	private void FireRoundChange( BaseState _, BaseState newRound )
+	[TTTEvent.Round.Started]
+	private void OnRoundStarted()
 	{
-		switch ( newRound )
-		{
-			case PreRound:
-				RoundPreparation.Fire( this );
+		RoundStart.Fire( this );
+	}
 
-				break;
+	[TTTEvent.Round.RolesAssigned]
+	private void OnRolesAssigned()
+	{
+		RolesAssigned.Fire( this );
+	}
 
-			case InProgress:
-				RoundStart.Fire( this );
-
-				break;
-
-			case PostRound:
-				RoundEnd.Fire( this );
-
-				break;
-		}
+	[TTTEvent.Round.Ended]
+	private void OnRoundEnded( Team winningTeam, WinType winType )
+	{
+		RoundEnd.Fire( this, winningTeam );
 	}
 }
