@@ -56,7 +56,7 @@ public class TabContainer : Panel
 	/// <summary>
 	/// Add a tab to the sheet
 	/// </summary>
-	public void AddTab( Panel panel, string title, string icon = null )
+	public void AddTab( Panel panel, string title, string icon = null, bool hasPriority = false )
 	{
 		if ( Tabs.Any( ( t ) => t.Title == title ) )
 			return;
@@ -66,11 +66,14 @@ public class TabContainer : Panel
 		var tab = new Tab( this, title, icon, panel );
 		Tabs.Add( tab );
 
+		if ( hasPriority )
+			TabsContainer.SortChildren( ( t ) => t == tab.Button ? 0 : 1 );
+
 		var cookieIndex = string.IsNullOrWhiteSpace( TabCookie ) ? -1 : Cookie.Get( $"dropdown.{TabCookie}", -1 );
 
 		panel.Parent = SheetContainer;
 
-		if ( index == 0 || cookieIndex == index )
+		if ( index == 0 || hasPriority || cookieIndex == index )
 			SwitchTab( tab, false );
 		else
 			tab.Active = false;
@@ -78,12 +81,14 @@ public class TabContainer : Panel
 
 	public void RemoveTab( string title )
 	{
+		var isActive = false;
 		for ( int i = Tabs.Count - 1; i >= 0; --i )
 		{
 			var tab = Tabs[i];
 
 			if ( tab.Title == title )
 			{
+				isActive = tab.Active;
 				tab.Page.Delete( true );
 				tab.Button.Delete( true );
 				Tabs.RemoveAt( i );
@@ -91,7 +96,7 @@ public class TabContainer : Panel
 			}
 		}
 
-		if ( Tabs.Count > 0 )
+		if ( isActive && Tabs.Count > 0 )
 			SwitchTab( Tabs[^1] );
 	}
 

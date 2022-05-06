@@ -27,7 +27,7 @@ public partial class RoleMenu : Panel
 
 	public void AddShopTab()
 	{
-		TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart" );
+		TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart", true );
 	}
 
 	public void AddRadioTab()
