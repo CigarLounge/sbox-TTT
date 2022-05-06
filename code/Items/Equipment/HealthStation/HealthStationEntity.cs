@@ -37,7 +37,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	{
 		if ( StoredHealth <= 0 )
 			return;
-	
+
 		float healthNeeded = Player.MaxHealth - player.Health;
 
 		if ( healthNeeded <= 0 )

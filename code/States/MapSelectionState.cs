@@ -23,10 +23,10 @@ public partial class MapSelectionState : BaseState
 		}
 
 		Global.ChangeLevel
-		( 
+		(
 			Votes.GroupBy( x => x.Value )
 			.OrderBy( x => x.Count() )
-			.First().Key 
+			.First().Key
 		);
 	}
 

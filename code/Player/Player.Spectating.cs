@@ -64,7 +64,7 @@ public partial class Player
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		Health = 0f;
-		LifeState = LifeState.Dead;	
+		LifeState = LifeState.Dead;
 
 		DelayedDeathCameraChange();
 	}
