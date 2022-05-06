@@ -10,24 +10,31 @@ namespace TTT.UI;
 public partial class DNAMenu : Panel
 {
 	private readonly Dictionary<DNA, DNASample> _entries = new();
+	private DNAScanner _dnaScanner;
 
-	private Panel SampleContainer { get; set; }
-	private Label Charge { get; set; }
-	private Label ChargeStatus { get; set; }
-	private Button ScanButton { get; set; }
-	private Checkbox AutoRepeat { get; set; }
+	private Panel SampleContainer { get; init; }
+	private Panel Empty { get; init; }
+	private Label Charge { get; init; }
+	private Label ChargeStatus { get; init; }
+	private Checkbox AutoScan { get; init; }
 
 	public override void Tick()
 	{
-		ScanButton.SetClass( "inactive", AutoRepeat.Checked );
-
-		if ( Local.Pawn is not Player player )
+		if ( !IsVisible || Local.Pawn is not Player player )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		_dnaScanner ??= player.Inventory.Find<DNAScanner>();
+		if ( !_dnaScanner.IsValid() )
 			return;
 
-		foreach ( var dna in scanner.DNACollected )
+		ChargeStatus.Text = _dnaScanner.IsCharging ? "CHARGING" : "READY";
+
+		if ( _dnaScanner.AutoScan != AutoScan.Checked )
+			SetAutoScan( AutoScan.Checked );
+
+		Charge.Text = _dnaScanner.SlotText;
+
+		foreach ( var dna in _dnaScanner.DNACollected )
 		{
 			if ( !_entries.ContainsKey( dna ) )
 				_entries[dna] = AddDNASample( dna );
@@ -35,14 +42,16 @@ public partial class DNAMenu : Panel
 
 		foreach ( var dnaPanel in _entries.Values )
 		{
-			if ( !scanner.DNACollected.Contains( dnaPanel.DNA ) )
+			if ( !_dnaScanner.DNACollected.Contains( dnaPanel.DNA ) )
 			{
 				_entries.Remove( dnaPanel.DNA );
 				dnaPanel?.Delete();
 			}
 
-			dnaPanel.SetClass( "selected", scanner?.SelectedSample?.NetworkIdent == dnaPanel.DNA.NetworkIdent );
+			dnaPanel.SetClass( "selected", _dnaScanner?.SelectedId == dnaPanel.DNA.Id );
 		}
+
+		Empty.Enabled( !_entries.Any() );
 	}
 
 	private DNASample AddDNASample( DNA dna )
@@ -54,66 +63,72 @@ public partial class DNAMenu : Panel
 
 	public class DNASample : Panel
 	{
-		public DNA DNA;
+		public DNA DNA { get; private set; }
 
 		public DNASample( DNA dna )
 		{
 			DNA = dna;
 
-			AddClass( "rounded" );
-			AddClass( "background-color-primary" );
-
 			var deleteButton = Add.Icon( "cancel", "delete-button" );
-			deleteButton.AddEventListener( "onclick", () =>
-			{
-				DeleteSample( dna.NetworkIdent );
-			} );
+			deleteButton.AddEventListener( "onclick", () => { DeleteSample( dna.Id ); } );
 
-			Add.Button( $"{dna.DNAType}", () =>
-			{
-				SetActiveSample( dna.NetworkIdent );
-			} );
+			Add.Button( $"#{dna.Id} - {dna.SourceName}", () => { SetActiveSample( dna.Id ); } );
 		}
 	}
 
 	[ServerCmd]
-	public static void SetActiveSample( int ident )
+	public static void SetActiveSample( int id )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
 			return;
 
 		foreach ( var dna in scanner.DNACollected )
 		{
-			if ( dna.NetworkIdent == ident )
+			if ( dna.Id == id )
 			{
-				Log.Info( "found one" );
-				scanner.SelectedSample = dna;
+				scanner.SelectedId = id;
 				return;
 			}
 		}
 	}
 
 	[ServerCmd]
-	public static void DeleteSample( int ident )
+	public static void DeleteSample( int id )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
-		if ( player.ActiveChild is not DNAScanner scanner )
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
 			return;
 
 		foreach ( var dna in scanner.DNACollected )
 		{
-			if ( dna.NetworkIdent == ident )
+			if ( dna.Id == id )
 			{
-				scanner.DNACollected.Remove( dna );
+				scanner.RemoveDNA( dna );
 				return;
 			}
 		}
+	}
+
+	[ServerCmd]
+	public static void SetAutoScan( bool enabled )
+	{
+		Player player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		var scanner = player.Inventory.Find<DNAScanner>();
+		if ( !scanner.IsValid() )
+			return;
+
+		scanner.AutoScan = enabled;
 	}
 }

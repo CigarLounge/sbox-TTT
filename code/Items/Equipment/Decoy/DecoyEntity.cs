@@ -17,6 +17,12 @@ public partial class DecoyEntity : Prop, IEntityHint, IUse
 		Health = 100f;
 	}
 
+	protected override void OnDestroy()
+	{
+		Owner?.Components.RemoveAny<DecoyComponent>();
+		base.OnDestroy();
+	}
+
 	bool IUse.OnUse( Entity user )
 	{
 		var player = user as Player;

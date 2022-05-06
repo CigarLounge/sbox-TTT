@@ -68,7 +68,7 @@ public partial class Shop : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( !IsVisible || Local.Pawn is not Player player )
 			return;
 
 		if ( player.Role.AvailableItems.Count == 0 )
