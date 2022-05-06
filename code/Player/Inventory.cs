@@ -285,10 +285,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		_list.Add( carriable );
 
 		if ( Host.IsClient )
+		{
 			carriable.OnClientCarryStart( Owner );
-
-		if ( !Host.IsServer )
 			return;
+		}
 
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
 
@@ -305,10 +305,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return;
 
 		if ( Host.IsClient )
+		{
 			carriable.OnClientCarryDrop( Owner );
-
-		if ( !Host.IsServer )
 			return;
+		}
 
 		SlotCapacity[(int)carriable.Info.Slot] += 1;
 

@@ -17,6 +17,5 @@ public class Decoy : Deployable<DecoyEntity>
 
 public partial class DecoyComponent : EntityComponent<Player>
 {
-	[Net, Local]
 	public DecoyEntity Decoy { get; set; }
 }

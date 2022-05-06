@@ -147,7 +147,7 @@ public partial class DNAScanner : Carriable
 	public override void OnClientCarryDrop( Entity carrier )
 	{
 		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
-		_dnaMarker?.Delete( true );
+		_dnaMarker?.Delete();
 	}
 
 	[ClientRpc]
