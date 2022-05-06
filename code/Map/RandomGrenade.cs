@@ -14,6 +14,7 @@ public class RandomGrenade : Entity
 	static RandomGrenade()
 	{
 		var grenadeTypes = Library.GetAll<Grenade>();
+
 		foreach ( var grenadeType in grenadeTypes )
 		{
 			var grenadeInfo = Asset.GetInfo<CarriableInfo>( Library.GetAttribute( grenadeType ).Name );

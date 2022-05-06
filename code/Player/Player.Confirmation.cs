@@ -6,7 +6,7 @@ public partial class Player
 {
 	public new Corpse Corpse
 	{
-		get => base.Corpse as Corpse;
+		get => (Corpse)base.Corpse;
 		set => base.Corpse = value;
 	}
 
