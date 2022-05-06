@@ -1,5 +1,6 @@
 using Sandbox;
 using System.ComponentModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace TTT;
@@ -82,7 +83,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public new Player Owner
 	{
-		get => base.Owner as Player;
+		get => (Player)base.Owner;
 		set => base.Owner = value;
 	}
 
@@ -142,11 +143,12 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		}
 
 		TimeSinceDeployed = 0;
-	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
-	{
-		base.ActiveEnd( entity, dropped );
+		if ( Host.IsClient )
+			return;
+
+		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
+			Components.Add( new DNA( Owner ) );
 	}
 
 	public override void Simulate( Client client ) { }
@@ -212,11 +214,21 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		PreviousOwner = Owner;
 	}
 
+	public virtual void OnClientCarryStart( Entity carrier )
+	{
+
+	}
+
 	public override void OnCarryDrop( Entity dropper )
 	{
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
+	}
+
+	public virtual void OnClientCarryDrop( Entity carrier )
+	{
+
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )

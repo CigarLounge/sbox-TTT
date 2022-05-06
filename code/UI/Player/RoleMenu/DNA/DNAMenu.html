@@ -1,13 +1,18 @@
 <link rel="stylesheet" href="DNAMenu.scss" />
 
 <root>
-    <div @ref="SampleContainer" class="sample-container">
-
+    <div @ref="SampleContainer" class="sample-container rounded background-color-primary box-shadow">
+        <div @ref="Empty" class="empty">
+            <text>No DNA samples collected.</text>
+        </div>
     </div>
-    <div class="info-container rounded background-color-primary">
-        <label @ref="Charge" class="charge"></label>
-        <label @ref="ChargeStatus" class="charge-status"></label>
-        <Button @ref="ScanButton" icon="radar" class="scan-button">Scan</Button>
-        <Checkbox @ref="AutoRepeat">Auto-repeat</Checkbox>
+    <div class="info-container rounded background-color-primary box-shadow">
+        <text @ref="Charge" class="charge"></text>
+        <text @ref="ChargeStatus" class="charge-status"></text>
+        <div style="align-items: center;">
+            <text> Scan - </text>
+            <inputglyph button="Attack2" />
+        </div>
+        <Checkbox @ref="AutoScan">Auto-scan</Checkbox>
     </div>
 </root>

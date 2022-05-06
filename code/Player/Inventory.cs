@@ -142,6 +142,18 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return _list.Any( x => x.ClassInfo?.Name == libraryName );
 	}
 
+	public T Find<T>() where T : Carriable
+	{
+		foreach ( var carriable in _list )
+		{
+			if ( carriable is not T t || t.Equals( default( T ) ) )
+				continue;
+
+			return t;
+		}
+		return default;
+	}
+
 	public bool Drop( Entity entity )
 	{
 		if ( !Host.IsServer )
@@ -272,8 +284,11 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		var carriable = child as Carriable;
 		_list.Add( carriable );
 
-		if ( !Host.IsServer )
+		if ( Host.IsClient )
+		{
+			carriable.OnClientCarryStart( Owner );
 			return;
+		}
 
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
 
@@ -288,6 +303,12 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 		if ( !_list.Remove( carriable ) )
 			return;
+
+		if ( Host.IsClient )
+		{
+			carriable.OnClientCarryDrop( Owner );
+			return;
+		}
 
 		SlotCapacity[(int)carriable.Info.Slot] += 1;
 

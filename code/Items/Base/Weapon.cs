@@ -112,7 +112,7 @@ public abstract partial class Weapon : Carriable
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
 
-	public new WeaponInfo Info => base.Info as WeaponInfo;
+	public new WeaponInfo Info => (WeaponInfo)base.Info;
 
 	public override void Spawn()
 	{

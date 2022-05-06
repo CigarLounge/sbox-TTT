@@ -10,7 +10,7 @@ public static class Scoring
 	{
 		if ( player.DiedBySuicide )
 		{
-			player.RoundScore -= 1;
+			player.RoundScore--;
 		}
 		else if ( player.LastAttacker is Player attacker )
 		{

@@ -12,7 +12,7 @@ public partial class Player : Sandbox.Player
 
 	public new Inventory Inventory
 	{
-		get => base.Inventory as Inventory;
+		get => (Inventory)base.Inventory;
 		private init => base.Inventory = value;
 	}
 
