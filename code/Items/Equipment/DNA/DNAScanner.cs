@@ -33,9 +33,6 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( IsClient && SelectedId == null )
-			_dnaMarker?.Delete();
-
 		if ( Input.Pressed( InputButton.Attack1 ) )
 			FetchDNA();
 
@@ -55,8 +52,7 @@ public partial class DNAScanner : Carriable
 		var target = selectedDNA.GetTarget();
 		if ( !target.IsValid() )
 		{
-			SelectedId = null;
-			DNACollected.Remove( selectedDNA );
+			RemoveDNA( selectedDNA );
 			UI.InfoFeed.DisplayEntry( To.Single( Owner ), "DNA not detected in area." );
 			return;
 		}
@@ -66,8 +62,20 @@ public partial class DNAScanner : Carriable
 		UpdateMarker( To.Single( Owner ), target.Position );
 	}
 
+	public void RemoveDNA( DNA dna )
+	{
+		Host.AssertServer();
+
+		SelectedId = null;
+		DNACollected.Remove( dna );
+		DeleteMarker( To.Single( Owner ) );
+	}
+
 	private void FetchDNA()
 	{
+		if ( IsClient )
+			return;
+
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
@@ -77,8 +85,11 @@ public partial class DNAScanner : Carriable
 		if ( !trace.Entity.IsValid() )
 			return;
 
-		// TODO: We apparently shouldn't allow DNA fetching on unconfirmed bodies.
-		// TODO: We shouldn't be able to fetch from armed C4, double check which ent should have DNA.
+		if ( trace.Entity is Corpse corpse && !corpse.Player.IsConfirmedDead )
+		{
+			UI.InfoFeed.DisplayEntry( To.Single( Owner ), "Corpse must be identified to retrieve DNA sample." );
+			return;
+		}
 
 		var samples = trace.Entity.Components.GetAll<DNA>();
 		if ( !samples.Any() )
@@ -145,6 +156,12 @@ public partial class DNAScanner : Carriable
 		PlaySound( "dna-beep" );
 		_dnaMarker?.Delete();
 		_dnaMarker = new DNAMarker( pos );
+	}
+
+	[ClientRpc]
+	private void DeleteMarker()
+	{
+		_dnaMarker?.Delete();
 	}
 }
 

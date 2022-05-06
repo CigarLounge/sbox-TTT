@@ -30,7 +30,7 @@ public partial class DNAMenu : Panel
 		ChargeStatus.Text = _dnaScanner.IsCharging ? "CHARGING" : "READY";
 
 		if ( _dnaScanner.AutoScan != AutoScan.Checked )
-			_dnaScanner.AutoScan = AutoScan.Checked;
+			SetAutoScan( AutoScan.Checked );
 
 		Charge.Text = _dnaScanner.SlotText;
 
@@ -112,8 +112,7 @@ public partial class DNAMenu : Panel
 		{
 			if ( dna.Id == id )
 			{
-				scanner.SelectedId = null;
-				scanner.DNACollected.Remove( dna );
+				scanner.RemoveDNA( dna );
 				return;
 			}
 		}
