@@ -11,17 +11,17 @@ public partial class MapSettings : Entity
 	protected Output SettingsSpawned { get; set; }
 
 	/// <summary>
-	/// Fired once round starts and roles are assigned.
-	/// </summary>
-	protected Output RolesAssigned { get; set; }
-
-	/// <summary>
-	/// Fired once round starts and roles are assigned.
+	/// Fired once a new round starts.
 	/// </summary>
 	protected Output RoundStart { get; set; }
 
 	/// <summary>
-	/// Fired once Preround begins.
+	/// Fired once the roles have been assigned to each player.
+	/// </summary>
+	protected Output RolesAssigned { get; set; }
+
+	/// <summary>
+	/// Fired once a round has ended.
 	/// </summary>
 	protected Output<Team> RoundEnd { get; set; }
 
