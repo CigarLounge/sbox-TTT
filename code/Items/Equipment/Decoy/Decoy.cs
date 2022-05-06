@@ -6,12 +6,12 @@ namespace TTT;
 [Library( "ttt_equipment_decoy", Title = "Decoy" )]
 public class Decoy : Deployable<DecoyEntity>
 {
-	protected override void OnDrop( Entity entity )
+	protected override void OnDeploy( DecoyEntity entity )
 	{
-		base.OnDrop( entity );
+		base.OnDeploy( entity );
 
 		var decoyComponent = PreviousOwner.Components.GetOrCreate<DecoyComponent>();
-		decoyComponent.Decoy = entity as DecoyEntity;
+		decoyComponent.Decoy = entity;
 	}
 }
 

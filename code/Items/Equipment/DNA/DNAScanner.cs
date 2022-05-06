@@ -57,7 +57,7 @@ public partial class DNAScanner : Carriable
 		}
 
 		var dist = Owner.Position.Distance( target.Position );
-		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25 ) );
+		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25f ) );
 		UpdateMarker( To.Single( Owner ), target.Position );
 	}
 
@@ -116,7 +116,7 @@ public partial class DNAScanner : Carriable
 
 	private DNA FindSelectedDNA( int? id )
 	{
-		if ( id == null )
+		if ( id is null )
 			return null;
 
 		foreach ( var sample in DNACollected )
@@ -164,7 +164,7 @@ public partial class DNAScanner : Carriable
 	}
 }
 
-public partial class DNA : EntityComponent<Entity>
+public partial class DNA : EntityComponent
 {
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net]
@@ -197,14 +197,16 @@ public partial class DNA : EntityComponent<Entity>
 			{
 				SourceName = $"{corpse.PlayerName}'s corpse";
 				TimeUntilDecayed = MathF.Pow( 0.74803f * corpse.DistanceKilledFrom, 2 ) + 100;
+
+				break;
 			}
-			break;
 			default:
 			{
 				SourceName = Entity.ClassInfo.Title;
 				TimeUntilDecayed = float.MaxValue; // Never should decay.
+
+				break;
 			}
-			break;
 		}
 	}
 

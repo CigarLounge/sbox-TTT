@@ -242,8 +242,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		if ( user is Player player )
-			player.Inventory.Swap( this );
+		var player = (Player)user;
+		player.Inventory.Swap( this );
 
 		return false;
 	}

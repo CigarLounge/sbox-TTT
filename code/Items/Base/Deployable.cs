@@ -34,7 +34,7 @@ public abstract class Deployable<T> : Carriable where T : Prop, new()
 
 		if ( Input.Pressed( InputButton.Attack1 ) )
 		{
-			OnDrop( Owner.Inventory.DropEntity<T>( this ) );
+			OnDeploy( Owner.Inventory.DropEntity<T>( this ) );
 			return;
 		}
 
@@ -68,7 +68,8 @@ public abstract class Deployable<T> : Carriable where T : Prop, new()
 		dropped.MoveType = MoveType.None;
 		dropped.Transform = GhostEntity.Transform;
 		dropped.Velocity = 0;
-		OnDrop( dropped );
+
+		OnDeploy( dropped );
 	}
 
 	public override void FrameSimulate( Client client )
@@ -108,5 +109,5 @@ public abstract class Deployable<T> : Carriable where T : Prop, new()
 			GhostEntity.ShowInvalid();
 	}
 
-	protected virtual void OnDrop( Entity entity ) { }
+	protected virtual void OnDeploy( T entity ) { }
 }

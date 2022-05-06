@@ -221,7 +221,7 @@ public abstract partial class Weapon : Carriable
 			return;
 		}
 
-		AmmoClip -= 1;
+		AmmoClip--;
 
 		Owner.SetAnimParameter( "b_attack", true );
 		ShootEffects();
