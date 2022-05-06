@@ -19,7 +19,7 @@ public partial class Player
 
 	public bool IsSpectator
 	{
-		get => Client.GetValue( Strings.Spectator, false );
+		get => Client.GetValue( Strings.Spectator, true );
 		set => Client.SetValue( Strings.Spectator, value );
 	}
 

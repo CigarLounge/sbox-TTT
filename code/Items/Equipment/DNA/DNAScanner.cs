@@ -1,8 +1,7 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox;
-using TTT.UI;
 
 namespace TTT;
 
@@ -29,7 +28,7 @@ public partial class DNAScanner : Carriable
 
 	private const float MAX_CHARGE = 100f;
 	private const float CHARGE_PER_SECOND = 2.2f;
-	private DNAMarker _dnaMarker;
+	private UI.DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
 	{
@@ -141,12 +140,12 @@ public partial class DNAScanner : Carriable
 
 	public override void OnClientCarryStart( Entity carrier )
 	{
-		RoleMenu.Instance?.AddDNATab();
+		UI.RoleMenu.Instance?.AddDNATab();
 	}
 
 	public override void OnClientCarryDrop( Entity carrier )
 	{
-		RoleMenu.Instance?.RemoveTab( RoleMenu.DNATab );
+		UI.RoleMenu.Instance?.RemoveTab( UI.RoleMenu.DNATab );
 		_dnaMarker?.Delete();
 	}
 
@@ -155,7 +154,7 @@ public partial class DNAScanner : Carriable
 	{
 		PlaySound( "dna-beep" );
 		_dnaMarker?.Delete();
-		_dnaMarker = new DNAMarker( pos );
+		_dnaMarker = new UI.DNAMarker( pos );
 	}
 
 	[ClientRpc]
@@ -197,7 +196,7 @@ public partial class DNA : EntityComponent<Entity>
 			case Corpse corpse:
 			{
 				SourceName = $"{corpse.PlayerName}'s corpse";
-				TimeUntilDecayed = (float)Math.Pow( 0.74803 * corpse.DistanceKilledFrom, 2 ) + 100;
+				TimeUntilDecayed = MathF.Pow( 0.74803f * corpse.DistanceKilledFrom, 2 ) + 100;
 			}
 			break;
 			default:
@@ -215,7 +214,7 @@ public partial class DNA : EntityComponent<Entity>
 			return null;
 
 		var decoyComponent = TargetPlayer.Components.Get<DecoyComponent>();
-		if ( decoyComponent != null && decoyComponent.Decoy.IsValid() )
+		if ( decoyComponent is not null && decoyComponent.Decoy.IsValid() )
 			return decoyComponent.Decoy;
 
 		return TargetPlayer.IsAlive() ? TargetPlayer : TargetPlayer.Corpse;
