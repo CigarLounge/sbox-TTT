@@ -32,6 +32,6 @@ public class Detective : BaseRole
 		base.OnDeselect( player );
 
 		if ( Host.IsServer )
-			player.RemoveClothing();
+			player.RemoveClothing( "models/detective_hat/detective_hat.vmdl" );
 	}
 }

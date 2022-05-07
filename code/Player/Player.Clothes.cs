@@ -5,9 +5,7 @@ namespace TTT;
 
 public class BaseClothing : ModelEntity
 {
-	public Player Wearer => Parent as Player;
-	public virtual void Attached() { }
-	public virtual void Detatched() { }
+	public string ModelPath { get; set; }
 }
 
 public partial class Player
@@ -18,7 +16,6 @@ public partial class Player
 	{
 		AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
-		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
 		AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
 		AttachClothing( "models/citizen_clothes/shoes/trainers/trainers.vmdl" );
@@ -26,36 +23,42 @@ public partial class Player
 		SetClothingBodyGroups( this, 1 );
 	}
 
-	public BaseClothing AttachClothing( string modelName )
+	public void AttachClothing( string path )
 	{
 		var entity = new BaseClothing();
-		entity.SetModel( modelName );
+		entity.ModelPath = path;
+		entity.SetModel( path );
 		AttachClothing( entity );
-
-		return entity;
 	}
 
-	public void AttachClothing( BaseClothing clothing )
+	public void RemoveClothing( string path )
+	{
+		for ( int i = Clothing.Count - 1; i >= 0; --i )
+		{
+			var clothingPiece = Clothing[i];
+			if ( clothingPiece.ModelPath == path )
+			{
+				clothingPiece.Delete();
+				Clothing.RemoveAt( i );
+			}
+		}
+	}
+
+	public void RemoveAllClothing()
+	{
+		foreach ( var clothing in Clothing )
+			clothing.Delete();
+		Clothing.Clear();
+
+		SetClothingBodyGroups( this, 1 );
+	}
+
+	private void AttachClothing( BaseClothing clothing )
 	{
 		clothing.SetParent( this, true );
 		clothing.EnableShadowInFirstPerson = true;
 		clothing.EnableHideInFirstPerson = true;
-		clothing.Attached();
-
 		Clothing.Add( clothing );
-	}
-
-	public void RemoveClothing()
-	{
-		Clothing.ForEach( ( entity ) =>
-		{
-			entity.Detatched();
-			entity.Delete();
-		} );
-
-		Clothing.Clear();
-
-		SetClothingBodyGroups( this, 0 );
 	}
 
 	// So that the clothes we use don't clip with the player model.

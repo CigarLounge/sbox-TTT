@@ -222,7 +222,7 @@ public partial class Player : Sandbox.Player
 		Components.RemoveAll();
 		ClearAmmo();
 		Inventory?.DeleteContents();
-		RemoveClothing();
+		RemoveAllClothing();
 	}
 
 	private void CheckPlayerDropCarriable()
