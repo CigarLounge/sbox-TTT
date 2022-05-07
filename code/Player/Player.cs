@@ -299,4 +299,7 @@ public partial class Player : Sandbox.Player
 
 		player.ClientOnKilled();
 	}
+	das das
+	dasdasdsad sa
+	dasd
 }
