@@ -15,15 +15,7 @@ public partial class RoleMenu : Panel
 	private Label RoleHeader { get; set; }
 	private TabContainer TabContainer { get; set; }
 
-	public RoleMenu()
-	{
-		Instance = this;
-
-		var backgroundPanel = Add.Panel( "background" );
-		backgroundPanel.AddClass( "background-color-secondary" );
-		backgroundPanel.AddClass( "opacity-medium" );
-		backgroundPanel.AddClass( "fullscreen" );
-	}
+	public RoleMenu() => Instance = this;
 
 	public void AddShopTab()
 	{

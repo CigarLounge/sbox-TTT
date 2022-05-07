@@ -1,20 +1,18 @@
-$primary: #282828;
-$secondary: #1e1e1e;
 $alive: #17ad44;
 $missing: #50754f;
 $dead: #c65b3a;
 $spectator: #fcdb38;
+
+$primary: #282828;
+$secondary: #1e1e1e;
 $info: #fdc418;
 
 $button-primary: #ffffff !default;
-$button-primary-bottom: $button-primary !default;
 $button-primary-fg: #ffffff !default;
 $button-secondary: #282828 !default;
 $button-secondary-fg: #dadada !default;
-$button-dark: #1b3039 !default;
 $button-size: 45px;
 
-@import "/ui/styles/tabcontainer.scss";
 @import "/ui/styles/button.scss";
 @import "/ui/styles/checkbox.scss";
 @import "/ui/styles/dropdown.scss";
@@ -22,6 +20,7 @@ $button-size: 45px;
 @import "/ui/styles/textentry.scss";
 @import "/ui/styles/slider.scss";
 
+@import "/ui/components/TabContainer/tabcontainer.scss";
 @import "/ui/components/coloreditor/coloreditor.scss";
 @import "/ui/components/linebreak/linebreak.scss";
 
@@ -61,16 +60,6 @@ rootpanel
     border-radius: 8px;
 }
 
-.rounded-top-left
-{
-    border-top-left-radius: 8px;
-}
-
-.rounded-bottom-left
-{
-    border-bottom-left-radius: 8px;
-}
-
 .rounded-top
 {
     border-top-left-radius: 8px;
@@ -106,14 +95,6 @@ rootpanel
     position: absolute;
     left: 50%;
     top: 75%;
-    transform: translateX(-50%) translateY(-50%);
-}
-
-.centered-vertical-10
-{
-    position: absolute;
-    left: 50%;
-    top: 10%;
     transform: translateX(-50%) translateY(-50%);
 }
 
@@ -157,18 +138,4 @@ rootpanel
 .background-color-secondary
 {
     background-color: $secondary;
-}
-
-.h1
-{
-    color: white;
-    font-weight: bold;
-    font-family: Poppins;
-    text-decoration: underline;
-    margin-bottom: 5px;
-
-    &.label
-    {
-        font-size: 25px;
-    }
 }

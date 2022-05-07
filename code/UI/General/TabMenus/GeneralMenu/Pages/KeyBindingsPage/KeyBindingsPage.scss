@@ -9,7 +9,16 @@ keybindingspage
 
     .h1
     {
+        color: white;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-bottom: 5px;
         margin-bottom: 40px;
+
+        &.label
+        {
+            font-size: 25px;
+        }
     }
 
     .help
