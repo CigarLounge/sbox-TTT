@@ -38,6 +38,16 @@ public partial class Game
 			player.Perks.Add( Library.Create<Perk>( itemInfo.LibraryName ) );
 	}
 
+	[AdminCmd( Name = "ttt_givecredits" )]
+	public static void GiveCredits( int credits )
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.Credits += credits;
+	}
+
 	[AdminCmd( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
