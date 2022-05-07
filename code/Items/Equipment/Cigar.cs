@@ -2,9 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_equipment_cigar", Title = "Cigar" )]
 [Hammer.EditorModel( "models/cigar/cigar.vmdl" )]
-public partial class Cigar : Carriable
+[Library( "ttt_equipment_cigar", Title = "Cigar" )]
+public class Cigar : Carriable
 {
 	private TimeUntil _timeUntilNextSmoke = 0;
 	private Particles _trailParticle;
@@ -23,7 +23,9 @@ public partial class Cigar : Carriable
 		_trailParticle = null;
 		_trailParticle ??= Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
 
-		Owner.TakeDamage( DamageInfo.Generic( 1 )
+		Owner.TakeDamage
+		( 
+			DamageInfo.Generic( 1 )
 			.WithAttacker( Owner )
 			.WithWeapon( this )
 		);

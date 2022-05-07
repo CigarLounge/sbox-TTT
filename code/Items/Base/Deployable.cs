@@ -3,7 +3,7 @@ using System;
 
 namespace TTT;
 
-public abstract class Deployable<T> : Carriable where T : Prop, new()
+public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
 	public GhostEntity GhostEntity { get; private set; }
 

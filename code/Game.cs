@@ -5,7 +5,7 @@ namespace TTT;
 
 public partial class Game : Sandbox.Game
 {
-	public new static Game Current => Sandbox.Game.Current as Game;
+	public new static Game Current => (Game)Sandbox.Game.Current;
 
 	[Net, Change]
 	public BaseState State { get; private set; }

@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_grenade_smoke", Title = "Smoke Grenade" )]
 [Hammer.EditorModel( "models/weapons/w_smoke.vmdl" )]
+[Library( "ttt_grenade_smoke", Title = "Smoke Grenade" )]
 public class SmokeGrenade : Grenade
 {
 	private const string ExplodeSound = "smoke_explode-1";
