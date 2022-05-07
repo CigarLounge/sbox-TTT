@@ -29,11 +29,6 @@ public class TabContainer : Panel
 	/// </summary>
 	public List<Tab> Tabs = new();
 
-	/// <summary>
-	/// If a cookie is set then the selected tab will be saved and restored.
-	/// </summary>
-	public string TabCookie { get; set; }
-
 	public TabContainer()
 	{
 		AddClass( "tabcontainer" );
@@ -42,21 +37,10 @@ public class TabContainer : Panel
 		SheetContainer = Add.Panel( "sheets" );
 	}
 
-	public override void SetProperty( string name, string value )
-	{
-		if ( name == "cookie" )
-		{
-			TabCookie = value;
-			return;
-		}
-
-		base.SetProperty( name, value );
-	}
-
 	/// <summary>
 	/// Add a tab to the sheet
 	/// </summary>
-	public void AddTab( Panel panel, string title, string icon = null, bool hasPriority = false )
+	public void AddTab( Panel panel, string title, string icon = null, bool hasSortPriority = false )
 	{
 		if ( Tabs.Any( ( t ) => t.Title == title ) )
 			return;
@@ -66,15 +50,13 @@ public class TabContainer : Panel
 		var tab = new Tab( this, title, icon, panel );
 		Tabs.Add( tab );
 
-		if ( hasPriority )
+		if ( hasSortPriority )
 			TabsContainer.SortChildren( ( t ) => t == tab.Button ? 0 : 1 );
-
-		var cookieIndex = string.IsNullOrWhiteSpace( TabCookie ) ? -1 : Cookie.Get( $"dropdown.{TabCookie}", -1 );
 
 		panel.Parent = SheetContainer;
 
-		if ( index == 0 || hasPriority || cookieIndex == index )
-			SwitchTab( tab, false );
+		if ( index == 0 || hasSortPriority )
+			SwitchTab( tab );
 		else
 			tab.Active = false;
 	}
@@ -114,16 +96,11 @@ public class TabContainer : Panel
 	/// <summary>
 	/// Switch to a specific tab
 	/// </summary>
-	public void SwitchTab( Tab tab, bool setCookie = true )
+	public void SwitchTab( Tab tab )
 	{
 		foreach ( var page in Tabs )
 		{
 			page.Active = page == tab;
-		}
-
-		if ( setCookie && !string.IsNullOrEmpty( TabCookie ) )
-		{
-			Cookie.Set( $"dropdown.{TabCookie}", Tabs.IndexOf( tab ) );
 		}
 	}
 
@@ -143,8 +120,10 @@ public class TabContainer : Panel
 			Page = panel;
 			Title = title;
 
-			Button = new( title, icon, () => Parent?.SwitchTab( this, true ) );
-			Button.Parent = tabControl.TabsContainer;
+			Button = new( title, icon, () => Parent?.SwitchTab( this ) )
+			{
+				Parent = tabControl.TabsContainer
+			};
 		}
 
 		bool active;
