@@ -25,17 +25,17 @@ public partial class RoleSummary : Panel
 		Detectives.DeleteChildren( true );
 		Traitors.DeleteChildren( true );
 
-		if ( GeneralMenu.Instance == null )
-			return;
+		if ( GeneralMenu.Instance != null )
+		{
+			if ( !GeneralMenu.Instance.LastRoleSummaryData.Innocents.IsNullOrEmpty() )
+				Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.LastRoleSummaryData.Innocents ) );
 
-		if ( !GeneralMenu.Instance.Data.Innocents.IsNullOrEmpty() )
-			Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.Data.Innocents ) );
+			if ( !GeneralMenu.Instance.LastRoleSummaryData.Detectives.IsNullOrEmpty() )
+				Detectives.AddChild( new RoleList( new Detective(), GeneralMenu.Instance.LastRoleSummaryData.Detectives ) );
 
-		if ( !GeneralMenu.Instance.Data.Detectives.IsNullOrEmpty() )
-			Detectives.AddChild( new RoleList( new Detective(), GeneralMenu.Instance.Data.Detectives ) );
-
-		if ( !GeneralMenu.Instance.Data.Traitors.IsNullOrEmpty() )
-			Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.Data.Traitors ) );
+			if ( !GeneralMenu.Instance.LastRoleSummaryData.Traitors.IsNullOrEmpty() )
+				Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.LastRoleSummaryData.Traitors ) );
+		}
 
 		Empty.Enabled( !Innocents.Children.Any() && !Detectives.Children.Any() && !Traitors.Children.Any() );
 	}

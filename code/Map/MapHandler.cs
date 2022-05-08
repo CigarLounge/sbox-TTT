@@ -15,9 +15,7 @@ public static class MapHandler
 		foreach ( var ent in Entity.All )
 		{
 			if ( ent is Weapon || ent is Ammo || ent is RandomWeapon )
-			{
 				RandomWeaponCount += 1;
-			}
 		}
 	}
 

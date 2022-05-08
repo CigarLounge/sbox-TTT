@@ -10,7 +10,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a corpse has been found and confirmed.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who's corpse was found .</para>
+		/// <para><strong><see cref="TTT.Player"/></strong> the player whose corpse was found.</para>
 		/// </summary>
 		public class CorpseFoundAttribute : EventAttribute
 		{
@@ -21,7 +21,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player dies.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who died.</para>
+		/// <para><strong><see cref="TTT.Player"/></strong> the player who died.</para>
 		/// </summary>
 		public class KilledAttribute : EventAttribute
 		{
@@ -32,13 +32,24 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player selects their role.
-		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> whose role was changed
-		/// and the previous <strong><see cref="TTT.BaseRole"/></strong>.</para>
+		/// <para><strong><see cref="TTT.Player"/></strong> the player whose role has changed. </para>
+		/// <para><strong><see cref="TTT.BaseRole"/></strong> their old role. </para>
 		/// </summary>
 		public class RoleChangedAttribute : EventAttribute
 		{
 			public RoleChangedAttribute() : base( RoleChanged ) { }
 		}
 
+		public const string CreditsFound = "ttt.player.credits-found";
+
+		/// <summary>
+		/// Occurs when a player finds credits on a corpse.
+		/// <para><strong><see cref="TTT.Player"/></strong> the player who found the credits on the corpse. </para>
+		/// <para><strong><see cref="int"/></strong> credits that were found on the corpse.</para>
+		/// </summary>
+		public class CreditsFoundAttribute : EventAttribute
+		{
+			public CreditsFoundAttribute() : base( CreditsFound ) { }
+		}
 	}
 }

@@ -23,7 +23,7 @@ public partial class InProgress : BaseState
 	public override string Name => "In Progress";
 	public override int Duration => Game.InProgressTime;
 
-	private int InnocentTeamDeathCount { get; set; }
+	private int _innocentTeamDeathCount = 0;
 	private readonly List<RoleButton> _logicButtons = new();
 
 	public override void OnPlayerKilled( Player player )
@@ -33,13 +33,13 @@ public partial class InProgress : BaseState
 		TimeLeft += Game.InProgressSecondsPerDeath;
 
 		if ( player.Team == Team.Innocents )
-			InnocentTeamDeathCount += 1;
+			_innocentTeamDeathCount += 1;
 
-		float percentDead = (float)InnocentTeamDeathCount / (Innocents.Length + Detectives.Length);
+		float percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
-			InnocentTeamDeathCount = 0;
+			_innocentTeamDeathCount = 0;
 		}
 
 		if ( player.Role is Traitor )
@@ -140,8 +140,8 @@ public partial class InProgress : BaseState
 	public void LoadPostRound( Team winningTeam, WinType winType )
 	{
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
-
-		UI.GeneralMenu.LoadPlayerData( Innocents, Detectives, Traitors );
+		UI.GeneralMenu.SendRoleSummaryData( Innocents, Detectives, Traitors );
+		UI.GeneralMenu.SendEventSummaryData( Game.Current.EventLogger.Events.ToArray(), Game.Current.EventLogger.EventDescriptions.ToArray() );
 	}
 
 	public override void OnSecond()

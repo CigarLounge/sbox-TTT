@@ -99,6 +99,16 @@ public partial class InfoFeed : Panel
 		);
 	}
 
+	[TTTEvent.Player.CreditsFound]
+	private void OnCreditsFound( Player player, int creditsFound )
+	{
+		AddEntry
+		(
+			player.Client,
+			$"found {creditsFound} credits!"
+		);
+	}
+
 	[TTTEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{

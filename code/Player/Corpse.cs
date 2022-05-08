@@ -169,6 +169,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			creditsRetrieved = Player.Credits;
 			Player.Credits = 0;
 			HasCredits = false;
+
+			Event.Run( TTTEvent.Player.CreditsFound, searcher, creditsRetrieved );
 		}
 
 		SendPlayer( To.Single( searcher ) );
@@ -203,11 +205,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( creditsRetrieved <= 0 )
 			return;
 
-		UI.InfoFeed.Instance?.AddEntry
-		(
-			Local.Client,
-			$"found {creditsRetrieved} credits!"
-		);
+		Event.Run( TTTEvent.Player.CreditsFound, Local.Pawn as Player, creditsRetrieved );
 	}
 
 	public void SendKillInfo( To to )
