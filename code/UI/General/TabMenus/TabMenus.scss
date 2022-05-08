@@ -14,7 +14,12 @@ TabMenus
     {
         opacity: 1;
     }
-    
+
+    &.show-override
+    {
+        opacity: 1;
+    }
+
     .fade-in 
     {
         bottom: 25px;

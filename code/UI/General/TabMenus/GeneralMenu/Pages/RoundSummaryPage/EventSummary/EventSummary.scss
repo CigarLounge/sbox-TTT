@@ -4,8 +4,7 @@ EventSummary
 {
     .empty
     {
-        min-height: 100%;
-        min-width: 100%;
+        margin-top: 1px;
     }
 
     .header
@@ -15,13 +14,14 @@ EventSummary
         padding: 3 8 3 8;
         border-radius: 8 8 0 0;
         font-weight: 600;
+        flex-shrink: 0;
     }
 
     .events
     {
         flex-direction: column;
         overflow: scroll;
-        height: 82%;
+        height: 85%;
 
         .event
         {

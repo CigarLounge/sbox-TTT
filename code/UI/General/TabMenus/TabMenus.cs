@@ -52,7 +52,10 @@ public partial class TabMenus : Panel
 		SetClass( "show", isScoreDown );
 
 		if ( Game.Current.State is InProgress )
+		{
+			SetClass( "show-override", false );
 			return;
+		}
 
 		if ( input.Released( InputButton.View ) )
 			_isViewingSummaryPage = false;
@@ -65,6 +68,6 @@ public partial class TabMenus : Panel
 			_isViewingSummaryPage = true;
 		}
 
-		SetClass( "show", isViewDown || isScoreDown );
+		SetClass( "show-override", isViewDown || isScoreDown );
 	}
 }

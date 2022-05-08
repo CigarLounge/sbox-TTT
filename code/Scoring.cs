@@ -71,8 +71,6 @@ public static class Scoring
 		else
 			traitorBonus -= (int)MathF.Floor( alivePlayersCount[1] / 2f );
 
-		Log.Info( traitorBonus );
-
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
