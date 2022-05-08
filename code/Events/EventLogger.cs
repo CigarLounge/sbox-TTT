@@ -8,7 +8,7 @@ public enum EventType
 	Round,
 	PlayerKill,
 	PlayerSuicide,
-	Identification
+	PlayerFind
 }
 
 public struct EventInfo
@@ -63,12 +63,12 @@ public static partial class EventLogger
 	[TTTEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player deadPlayer )
 	{
-		LogEvent( EventType.Identification, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
+		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
 	}
 
 	[TTTEvent.Player.CreditsFound]
 	private static void OnCreditsFound( Player player, int creditsFound )
 	{
-		LogEvent( EventType.Identification, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
+		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
 	}
 }

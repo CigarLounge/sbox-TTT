@@ -59,7 +59,7 @@ public partial class EventSummary : Panel
 			EventType.Round => "flag",
 			EventType.PlayerKill => "group",
 			EventType.PlayerSuicide => "person",
-			EventType.Identification => "search",
+			EventType.PlayerFind => "search",
 			_ => string.Empty,
 		};
 	}
