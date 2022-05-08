@@ -98,8 +98,6 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 	}
 
-	public virtual void OnKilled( Player player ) { }
-
 	protected List<RoleButton> GetRoleButtons()
 	{
 		Host.AssertClient();
