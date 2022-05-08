@@ -17,7 +17,7 @@ public struct EventInfo
 	public float Time { get; set; }
 }
 
-public static partial class EventLogger
+public static class EventLogger
 {
 	// s&box doesn't allow for string types in structs, so we need a seperate array for them meanwhile...
 	public static readonly List<EventInfo> Events = new();
