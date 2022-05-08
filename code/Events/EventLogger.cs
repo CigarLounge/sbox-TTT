@@ -15,23 +15,13 @@ public struct EventInfo
 	public float Time { get; set; }
 }
 
-public partial class EventLogger
+public static partial class EventLogger
 {
 	// s&box doesn't allow for string types in structs, so we need a seperate array for them meanwhile...
-	public readonly List<EventInfo> Events = new();
-	public readonly List<string> EventDescriptions = new();
+	public static readonly List<EventInfo> Events = new();
+	public static readonly List<string> EventDescriptions = new();
 
-	public EventLogger()
-	{
-		Event.Register( this );
-	}
-
-	~EventLogger()
-	{
-		Event.Unregister( this );
-	}
-
-	private void LogEvent( EventType eventType, float time, string description )
+	private static void LogEvent( EventType eventType, float time, string description )
 	{
 		if ( Host.IsClient )
 			return;
@@ -47,7 +37,7 @@ public partial class EventLogger
 	}
 
 	[TTTEvent.Round.Started]
-	private void OnRoundStart()
+	private static void OnRoundStart()
 	{
 		Events.Clear();
 		EventDescriptions.Clear();
@@ -56,19 +46,19 @@ public partial class EventLogger
 	}
 
 	[TTTEvent.Round.Ended]
-	private void OnRoundEnd( Team winningTeam, WinType winType )
+	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"The {winningTeam.GetTitle()} won the round!" );
 	}
 
 	[TTTEvent.Player.CorpseFound]
-	private void OnCorpseFound( Player deadPlayer )
+	private static void OnCorpseFound( Player deadPlayer )
 	{
 		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
 	}
 
 	[TTTEvent.Player.CreditsFound]
-	private void OnCreditsFound( Player player, int creditsFound )
+	private static void OnCreditsFound( Player player, int creditsFound )
 	{
 		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
 	}

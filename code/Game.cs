@@ -14,7 +14,6 @@ public partial class Game : Sandbox.Game
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
 
-	public EventLogger EventLogger { get; private set; } = new();
 	public int RTVCount { get; set; }
 
 	public Game()
