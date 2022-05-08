@@ -25,9 +25,6 @@ public static partial class EventLogger
 
 	private static void LogEvent( EventType eventType, float time, string description )
 	{
-		if ( Host.IsClient )
-			return;
-
 		EventInfo eventInfo = new()
 		{
 			EventType = eventType,
@@ -50,7 +47,8 @@ public static partial class EventLogger
 	[TTTEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
+		if ( Events.Count != 0 )
+			LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
 	}
 
 	[TTTEvent.Player.Killed]
