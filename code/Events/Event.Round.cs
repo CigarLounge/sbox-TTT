@@ -30,6 +30,7 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a round has ended.
+		/// <para>Parameters:</para>
 		/// <para><strong><see cref="TTT.Team"/></strong> the team that won the round. </para>
 		/// <para><strong><see cref="TTT.WinType"/></strong> which type of win the team achieved. </para>
 		/// </summary>
