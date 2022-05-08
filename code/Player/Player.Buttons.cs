@@ -31,7 +31,7 @@ public partial class Player
 
 		var entity = FindByIndex( networkIdent );
 
-		if ( entity is null || entity is not RoleButton button )
+		if ( entity is not RoleButton button )
 			return;
 
 		if ( (button.Role == "All" || player.Role == button.Role) && !button.IsDisabled )
