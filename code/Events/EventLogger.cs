@@ -50,7 +50,7 @@ public static partial class EventLogger
 	[TTTEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		LogEvent( EventType.Round, 0, $"The {winningTeam.GetTitle()} won the round!" );
+		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
 	}
 
 	[TTTEvent.Player.Killed]
