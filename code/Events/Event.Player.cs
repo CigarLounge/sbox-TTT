@@ -11,7 +11,7 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a corpse has been found and confirmed.
 		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> the player whose corpse was found.</para>
+		/// <para>The <strong><see cref="TTT.Player"/></strong> whose corpse was found.</para>
 		/// </summary>
 		public class CorpseFoundAttribute : EventAttribute
 		{
@@ -23,7 +23,7 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a player dies.
 		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> the player who died.</para>
+		/// <para>The <strong><see cref="TTT.Player"/></strong> who died.</para>
 		/// </summary>
 		public class KilledAttribute : EventAttribute
 		{
@@ -36,7 +36,7 @@ public static partial class TTTEvent
 		/// Occurs when a player selects their role.
 		/// <para>Parameters:</para>
 		/// <para><strong><see cref="TTT.Player"/></strong> the player whose role has changed. </para>
-		/// <para><strong><see cref="TTT.BaseRole"/></strong> their old role. </para>
+		/// <para><strong><see cref="BaseRole"/></strong> their old role. </para>
 		/// </summary>
 		public class RoleChangedAttribute : EventAttribute
 		{
@@ -48,8 +48,8 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a player finds credits on a corpse.
 		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> the player who found the credits on the corpse. </para>
-		/// <para><strong><see cref="int"/></strong> credits that were found on the corpse.</para>
+		/// <para>The <strong><see cref="TTT.Player"/></strong> who found the credits on the corpse. </para>
+		/// <para>The <strong><see cref="int"/></strong> credits that were found on the corpse.</para>
 		/// </summary>
 		public class CreditsFoundAttribute : EventAttribute
 		{
@@ -61,7 +61,7 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a player spawns.
 		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> the player who spawned.</para>
+		/// <para><strong><see cref="TTT.Player"/></strong> who spawned.</para>
 		/// </summary>
 		public class SpawnedAttribute : EventAttribute
 		{

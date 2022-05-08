@@ -11,8 +11,8 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Called everytime the game state changes.
 		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.BaseState"/></strong> the old state.</para>
-		/// <para><strong><see cref="TTT.BaseState"/></strong> the new state.</para>
+		/// <para>The old <strong><see cref="BaseState"/></strong>.</para>
+		/// <para>The new <strong><see cref="BaseState"/></strong>.</para>
 		/// </summary>
 		public class StateChangedAttribute : EventAttribute
 		{
