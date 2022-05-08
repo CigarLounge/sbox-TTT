@@ -35,8 +35,15 @@ public static class Karma
 		return KarmaGroupList[index];
 	}
 
-	public static void Apply( Player player )
+	[TTTEvent.Player.Spawned]
+	private static void Apply( Player player )
 	{
+		if ( !Host.IsServer )
+			return;
+
+		if ( Game.Current.State is not PreRound )
+			return;
+
 		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
 		{
 			player.DamageFactor = 1f;
@@ -133,8 +140,15 @@ public static class Karma
 		}
 	}
 
-	public static void OnPlayerKilled( Player player )
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
 	{
+		if ( !Host.IsServer )
+			return;
+
+		if ( Game.Current.State is not InProgress )
+			return;
+
 		var attacker = player.LastAttacker as Player;
 
 		if ( !attacker.IsValid() || !player.IsValid() )

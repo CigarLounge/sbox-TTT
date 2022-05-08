@@ -37,8 +37,8 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( !CanAdd( entity ) )
 			return false;
 
-		var carriable = entity as Carriable;
-		carriable.OnCarryStart( Owner );
+		var carriable = (Carriable)entity;
+		carriable.Parent = Owner;
 
 		if ( makeActive )
 			SetActive( carriable );
@@ -162,12 +162,12 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( !Contains( entity ) )
 			return false;
 
-		var carriable = entity as Carriable;
+		var carriable = (Carriable)entity;
 
 		if ( !carriable.Info.CanDrop )
 			return false;
 
-		carriable.OnCarryDrop( Owner );
+		carriable.Parent = null;
 
 		return true;
 	}
@@ -281,14 +281,13 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( _list.Contains( child ) )
 			throw new System.Exception( "Trying to add to inventory multiple times. This is gated by Entity:OnChildAdded and should never happen!" );
 
-		var carriable = child as Carriable;
+		var carriable = (Carriable)child;
 		_list.Add( carriable );
 
-		if ( Host.IsClient )
-		{
-			carriable.OnClientCarryStart( Owner );
+		carriable.OnCarryStart( Owner );
+
+		if ( !Host.IsServer )
 			return;
-		}
 
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
 
@@ -304,11 +303,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( !_list.Remove( carriable ) )
 			return;
 
-		if ( Host.IsClient )
-		{
-			carriable.OnClientCarryDrop( Owner );
+		carriable.OnCarryDrop( Owner );
+
+		if ( !Host.IsServer )
 			return;
-		}
 
 		SlotCapacity[(int)carriable.Info.Slot] += 1;
 

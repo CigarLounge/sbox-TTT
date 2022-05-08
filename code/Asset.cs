@@ -14,11 +14,6 @@ public abstract class Asset : Sandbox.Asset
 
 	public string Title { get; private set; }
 
-	public static T CreateFromId<T>( int id ) where T : LibraryClass
-	{
-		return Library.Create<T>( FromId<Asset>( id ).LibraryName );
-	}
-
 	public static T GetInfo<T>( LibraryClass libraryClass ) where T : Asset
 	{
 		if ( libraryClass is null || !Collection.ContainsKey( libraryClass.ClassInfo.Name ) )

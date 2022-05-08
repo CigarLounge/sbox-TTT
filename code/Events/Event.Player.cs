@@ -51,5 +51,16 @@ public static partial class TTTEvent
 		{
 			public CreditsFoundAttribute() : base( CreditsFound ) { }
 		}
+
+		public const string Spawned = "ttt.player.spawned";
+
+		/// <summary>
+		/// Occurs when a player spawns.
+		/// <para><strong><see cref="TTT.Player"/></strong> the player who spawned.</para>
+		/// </summary>
+		public class SpawnedAttribute : EventAttribute
+		{
+			public SpawnedAttribute() : base( Spawned ) { }
+		}
 	}
 }

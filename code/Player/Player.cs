@@ -98,7 +98,8 @@ public partial class Player : Sandbox.Player
 			DressPlayer();
 			ResetInterpolation();
 
-			Game.Current.State.OnPlayerSpawned( this );
+			Event.Run( TTTEvent.Player.Spawned, this );
+			Game.Current.State.OnPlayerSpawned( this );			
 		}
 		else
 		{
@@ -115,13 +116,16 @@ public partial class Player : Sandbox.Player
 		ResetConfirmationData();
 		DeleteFlashlight();
 
-		if ( this.IsAlive() )
-			CreateFlashlight();
-
 		if ( !IsLocalPawn )
 			Role = new Innocent();
 		else
 			ClearButtons();
+
+		if ( !this.IsAlive() )
+			return;
+
+		CreateFlashlight();
+		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
 	public override void OnKilled()
@@ -138,9 +142,8 @@ public partial class Player : Sandbox.Player
 		DeleteFlashlight();
 		DeleteItems();
 
-		Game.Current.State.OnPlayerKilled( this );
-		Role?.OnKilled( this );
 		Event.Run( TTTEvent.Player.Killed, this );
+		Game.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
 	}
@@ -153,7 +156,6 @@ public partial class Player : Sandbox.Player
 			ClearButtons();
 
 		DeleteFlashlight();
-
 		Event.Run( TTTEvent.Player.Killed, this );
 	}
 

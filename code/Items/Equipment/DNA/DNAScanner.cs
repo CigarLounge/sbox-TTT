@@ -39,6 +39,25 @@ public partial class DNAScanner : Carriable
 			Scan();
 	}
 
+	public override void OnCarryStart( Entity carrier )
+	{
+		base.OnCarryStart( carrier );
+
+		if ( carrier.IsLocalPawn )
+			UI.RoleMenu.Instance?.AddDNATab();
+	}
+
+	public override void OnCarryDrop( Entity dropper )
+	{
+		base.OnCarryDrop( dropper );
+
+		if ( !dropper.IsLocalPawn )
+			return;
+
+		UI.RoleMenu.Instance?.RemoveTab( UI.RoleMenu.DNATab );
+		_dnaMarker?.Delete();
+	}
+
 	public void Scan()
 	{
 		if ( IsClient || IsCharging )
@@ -136,21 +155,6 @@ public partial class DNAScanner : Carriable
 
 		if ( AutoScan )
 			Scan();
-	}
-
-	public override void OnClientCarryStart( Entity carrier )
-	{
-		if ( carrier.IsLocalPawn )
-			UI.RoleMenu.Instance?.AddDNATab();
-	}
-
-	public override void OnClientCarryDrop( Entity carrier )
-	{
-		if ( !carrier.IsLocalPawn )
-			return;
-
-		UI.RoleMenu.Instance?.RemoveTab( UI.RoleMenu.DNATab );
-		_dnaMarker?.Delete();
 	}
 
 	[ClientRpc]

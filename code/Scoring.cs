@@ -6,8 +6,15 @@ namespace TTT;
 
 public static class Scoring
 {
-	public static void OnPlayerKilled( Player player )
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
 	{
+		if ( !Host.IsServer )
+			return;
+
+		if ( Game.Current.State is not InProgress )
+			return;
+
 		if ( player.DiedBySuicide )
 		{
 			player.RoundScore--;
@@ -63,6 +70,8 @@ public static class Scoring
 			traitorBonus += alivePlayersCount[2];
 		else
 			traitorBonus -= (int)MathF.Floor( alivePlayersCount[1] / 2f );
+
+		Log.Info( traitorBonus );
 
 		foreach ( var client in Client.All )
 		{

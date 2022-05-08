@@ -214,21 +214,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		PreviousOwner = Owner;
 	}
 
-	public virtual void OnClientCarryStart( Entity carrier )
-	{
-
-	}
-
 	public override void OnCarryDrop( Entity dropper )
 	{
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
-	}
-
-	public virtual void OnClientCarryDrop( Entity carrier )
-	{
-
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )
