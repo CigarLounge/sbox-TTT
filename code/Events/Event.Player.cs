@@ -40,5 +40,15 @@ public static partial class TTTEvent
 			public RoleChangedAttribute() : base( RoleChanged ) { }
 		}
 
+		public const string Spawned = "ttt.player.spawned";
+
+		/// <summary>
+		/// Occurs when a player spawns.
+		/// <para>Event is passed the <strong><see cref="TTT.Player"/></strong> who spawned.</para>
+		/// </summary>
+		public class SpawnedAttribute : EventAttribute
+		{
+			public SpawnedAttribute() : base( Spawned ) { }
+		}
 	}
 }
