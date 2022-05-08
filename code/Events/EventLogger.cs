@@ -38,7 +38,7 @@ public static class EventLogger
 	[TTTEvent.Round.Started]
 	private static void OnRoundStart()
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		Events.Clear();
@@ -50,7 +50,7 @@ public static class EventLogger
 	[TTTEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
@@ -59,10 +59,8 @@ public static class EventLogger
 	[TTTEvent.Player.Killed]
 	private static void OnPlayerKilled( Player deadPlayer )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
-
-		Assert.True( Game.Current.State is InProgress );
 
 		if ( deadPlayer.LastDamageInfo.Attacker is Player attacker )
 			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} was killed by {attacker.Client.Name}" );
@@ -73,7 +71,7 @@ public static class EventLogger
 	[TTTEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player deadPlayer )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
@@ -82,7 +80,7 @@ public static class EventLogger
 	[TTTEvent.Player.CreditsFound]
 	private static void OnCreditsFound( Player player, int creditsFound )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
