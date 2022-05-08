@@ -6,7 +6,9 @@ namespace TTT;
 public enum EventType
 {
 	Round,
-	Player
+	PlayerKill,
+	PlayerSuicide,
+	Identification
 }
 
 public struct EventInfo
@@ -55,20 +57,20 @@ public static partial class EventLogger
 	private static void OnPlayerKilled( Player deadPlayer )
 	{
 		if ( deadPlayer.LastDamageInfo.Attacker is Player attacker )
-			LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} was killed by {attacker.Client.Name}" );
+			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} was killed by {attacker.Client.Name}" );
 		else if ( deadPlayer.LastDamageInfo.Flags == DamageFlags.Fall )
-			LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} fell to their death." );
+			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} fell to their death." );
 	}
 
 	[TTTEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player deadPlayer )
 	{
-		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
+		LogEvent( EventType.Identification, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
 	}
 
 	[TTTEvent.Player.CreditsFound]
 	private static void OnCreditsFound( Player player, int creditsFound )
 	{
-		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
+		LogEvent( EventType.Identification, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
 	}
 }

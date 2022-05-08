@@ -57,8 +57,10 @@ public partial class EventSummary : Panel
 		return eventType switch
 		{
 			EventType.Round => "flag",
-			EventType.Player => "flag",
-			_ => "none",
+			EventType.PlayerKill => "group",
+			EventType.PlayerSuicide => "person",
+			EventType.Identification => "search",
+			_ => string.Empty,
 		};
 	}
 }
