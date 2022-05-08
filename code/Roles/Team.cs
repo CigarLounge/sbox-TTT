@@ -19,6 +19,8 @@ public static class TeamExtensions
 		public Color Color { get; init; }
 	}
 
+	private static readonly Dictionary<Team, TeamProperties> _properties = new();
+
 	static TeamExtensions()
 	{
 		// Default teams.
@@ -41,8 +43,6 @@ public static class TeamExtensions
 			Color = Color.FromBytes( 223, 40, 52 )
 		};
 	}
-
-	private static readonly Dictionary<Team, TeamProperties> _properties = new();
 
 	public static string GetTitle( this Team team )
 	{
