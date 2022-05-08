@@ -13,7 +13,6 @@ public class PreRound : BaseState
 	{
 		base.OnPlayerSpawned( player );
 
-		Karma.Apply( player );
 		player.Inventory.Add( new Hands() );
 	}
 

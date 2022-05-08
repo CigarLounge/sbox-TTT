@@ -50,9 +50,6 @@ public partial class InProgress : BaseState
 		AlivePlayers.Remove( player );
 		Spectators.Add( player );
 
-		Karma.OnPlayerKilled( player );
-		Scoring.OnPlayerKilled( player );
-
 		player.UpdateMissingInAction();
 		ChangeRoundIfOver();
 	}
