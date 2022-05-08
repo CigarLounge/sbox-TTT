@@ -25,12 +25,18 @@ public partial class EventSummary : Panel
 
 		if ( GeneralMenu.Instance != null )
 		{
+			// We should remove this once we can just send everything down as one list.
 			var eventCount = GeneralMenu.Instance.LastEventSummaryData.Events?.Length ?? 0;
-			for ( int i = 0; i < eventCount; ++i )
+			var eventDescriptionCount = GeneralMenu.Instance.LastEventSummaryData.EventDescriptions?.Length ?? 0;
+
+			if ( eventCount == eventDescriptionCount )
 			{
-				var eventInfo = GeneralMenu.Instance.LastEventSummaryData.Events[i];
-				var eventDescription = GeneralMenu.Instance.LastEventSummaryData.EventDescriptions[i];
-				AddEvent( eventInfo, eventDescription );
+				for ( int i = 0; i < eventCount; ++i )
+				{
+					var eventInfo = GeneralMenu.Instance.LastEventSummaryData.Events[i];
+					var eventDescription = GeneralMenu.Instance.LastEventSummaryData.EventDescriptions[i];
+					AddEvent( eventInfo, eventDescription );
+				}
 			}
 		}
 

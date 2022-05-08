@@ -51,6 +51,15 @@ public static partial class EventLogger
 		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"The {winningTeam.GetTitle()} won the round!" );
 	}
 
+	[TTTEvent.Player.Killed]
+	private static void OnPlayerKilled( Player deadPlayer )
+	{
+		if ( deadPlayer.LastDamageInfo.Attacker is Player attacker )
+			LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} was killed by {attacker.Client.Name}" );
+		else if ( deadPlayer.LastDamageInfo.Flags == DamageFlags.Fall )
+			LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} fell to their death." );
+	}
+
 	[TTTEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player deadPlayer )
 	{
