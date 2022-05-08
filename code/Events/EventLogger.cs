@@ -44,13 +44,13 @@ public static partial class EventLogger
 		Events.Clear();
 		EventDescriptions.Clear();
 
-		LogEvent( EventType.Round, Game.Current.State.TimeLeft, "The round started." );
+		LogEvent( EventType.Round, Game.InProgressTime, "The round started." );
 	}
 
 	[TTTEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		LogEvent( EventType.Round, Game.Current.State.TimeLeft, $"The {winningTeam.GetTitle()} won the round!" );
+		LogEvent( EventType.Round, 0, $"The {winningTeam.GetTitle()} won the round!" );
 	}
 
 	[TTTEvent.Player.Killed]
