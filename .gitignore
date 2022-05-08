@@ -7,7 +7,6 @@ _bakeresourcecache
 tools_asset_info.bin
 tools_thumbnail_cache.bin
 *.los
-*.generated.vtex_c
 
 # Uncompiled models/sounds/textures
 *.vanmgrph
