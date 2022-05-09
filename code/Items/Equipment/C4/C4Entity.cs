@@ -104,10 +104,10 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		float radius = 590;
+		float radius = 1500;
 
 		if ( defusalDetonation )
-			radius /= 2.5f;
+			radius /= 1.5f;
 
 		Explosion( radius );
 		Sound.FromWorld( ExplodeSound, Position );
@@ -116,21 +116,14 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explosion( float radius )
 	{
-		// We should probably just use FindInSphere here...
-		// Just replicating old TTT code for now.
-		foreach ( var client in Client.All )
+		foreach ( var entity in FindInSphere( Position, radius ) )
 		{
-			var player = client.Pawn as Player;
-
-			if ( !player.IsAlive() || player.IsSpectator )
+			if ( entity is not Player player || !player.IsAlive() )
 				continue;
 
 			var diff = player.Position - Position;
 			float dist = Vector3.DistanceBetween( Position, player.Position );
-
-			// TODO: Better way to calculate falloff.
-			dist = Math.Max( 0, dist - 490 );
-			float damage = 125 - 0.01f * (dist * dist);
+			float damage = 225 - (0.1f * dist);
 
 			if ( damage <= 0 )
 				continue;
