@@ -30,9 +30,9 @@ public partial class Player
 	public Team Team => Role.Team;
 
 	/// <summary>
-	/// Sends the role to the given target or - if no target was provided - the player itself
+	/// Sends the role to the given target.
 	/// </summary>
-	/// <param name="to">optional - The target.</param>
+	/// <param name="to">The target.</param>
 	public void SendRole( To to )
 	{
 		Host.AssertServer();

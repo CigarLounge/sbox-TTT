@@ -57,24 +57,24 @@ public static class EventLogger
 	}
 
 	[TTTEvent.Player.Killed]
-	private static void OnPlayerKilled( Player deadPlayer )
+	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
 			return;
 
-		if ( deadPlayer.LastDamageInfo.Attacker is Player attacker )
-			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} was killed by {attacker.Client.Name}" );
-		else if ( deadPlayer.LastDamageInfo.Flags == DamageFlags.Fall )
-			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{deadPlayer.Client.Name} fell to their death." );
+		if ( player.LastDamageInfo.Attacker is Player attacker )
+			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.Client.Name} was killed by {attacker.Client.Name}" );
+		else if ( player.LastDamageInfo.Flags == DamageFlags.Fall )
+			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.Client.Name} fell to their death." );
 	}
 
 	[TTTEvent.Player.CorpseFound]
-	private static void OnCorpseFound( Player deadPlayer )
+	private static void OnCorpseFound( Player player )
 	{
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{deadPlayer.Confirmer.Client.Name} found the corpse of {deadPlayer.Corpse.PlayerName}" );
+		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{player.Confirmer.Client.Name} found the corpse of {player.Corpse.PlayerName}" );
 	}
 
 	[TTTEvent.Player.CreditsFound]

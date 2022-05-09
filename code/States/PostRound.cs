@@ -60,8 +60,11 @@ public partial class PostRound : BaseState
 	{
 		base.OnTimeUp();
 
-		bool shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit || Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
+		bool shouldChangeMap;
+
+		shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
+		shouldChangeMap |= Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
+
 		Game.Current.ChangeState( shouldChangeMap ? new MapSelectionState() : new PreRound() );
 	}
-
 }

@@ -151,6 +151,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 			return t;
 		}
+
 		return default;
 	}
 
