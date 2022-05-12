@@ -138,9 +138,9 @@ public partial class ChatBox : Panel
 		}
 
 		if ( channel == Channel.All )
-			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.Id : -1 );
+			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
 		else if ( channel == Channel.Role && player.Role.CanRoleChat )
-			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.Id );
+			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.ResourceId );
 	}
 
 	[ClientCmd( "chat_add", CanBeCalledFromServer = true )]

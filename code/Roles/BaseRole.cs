@@ -139,7 +139,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		if ( Object.ReferenceEquals( this, other ) )
 			return true;
 
-		return Info.Id == other.Info.Id;
+		return Info.ResourceId == other.Info.ResourceId;
 	}
 
 	public bool Equals( string other )
@@ -155,7 +155,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 
 	public override bool Equals( object obj ) => Equals( obj as BaseRole );
 
-	public override int GetHashCode() => Info.Id.GetHashCode();
+	public override int GetHashCode() => Info.ResourceId.GetHashCode();
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

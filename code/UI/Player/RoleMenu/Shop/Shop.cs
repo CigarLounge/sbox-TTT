@@ -60,7 +60,7 @@ public partial class Shop : Panel
 			if ( item.IsDisabled )
 				return;
 
-			Player.PurchaseItem( itemInfo.Id );
+			Player.PurchaseItem( itemInfo.ResourceId );
 		} );
 
 		_shopItems.Add( item );

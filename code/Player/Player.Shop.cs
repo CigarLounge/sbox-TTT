@@ -28,11 +28,6 @@ public partial class Player
 		return true;
 	}
 
-	public static void PurchaseItem( string libraryName )
-	{
-		PurchaseItem( Asset.GetInfo<ItemInfo>( libraryName ).Id );
-	}
-
 	[ServerCmd]
 	public static void PurchaseItem( int itemId )
 	{
