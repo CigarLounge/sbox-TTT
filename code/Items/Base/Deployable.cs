@@ -28,6 +28,9 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		if ( !IsServer )
 			return;
 
+		if ( !Owner.IsValid() )
+			return;
+
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.WorldOnly()
 			.Run();
