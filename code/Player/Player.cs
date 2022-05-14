@@ -99,7 +99,7 @@ public partial class Player : Sandbox.Player
 			ResetInterpolation();
 
 			Event.Run( TTTEvent.Player.Spawned, this );
-			Game.Current.State.OnPlayerSpawned( this );			
+			Game.Current.State.OnPlayerSpawned( this );
 		}
 		else
 		{
@@ -265,16 +265,14 @@ public partial class Player : Sandbox.Player
 	{
 		base.OnComponentAdded( component );
 
-		if ( Host.IsClient && component is Perk perk )
-			Perks.Add( perk );
+		Perks?.OnComponentAdded( component );
 	}
 
 	protected override void OnComponentRemoved( EntityComponent component )
 	{
 		base.OnComponentAdded( component );
 
-		if ( component is Perk perk )
-			Perks.Remove( perk );
+		Perks?.OnComponentRemoved( component );
 	}
 
 	protected override void OnDestroy()
