@@ -47,11 +47,13 @@ public class InventorySelection : Panel
 				slot?.Delete();
 			}
 
-			slot.SetClass( "rounded-top", slot == Children.First() as InventorySlot );
-			slot.SetClass( "rounded-bottom", slot == Children.Last() as InventorySlot );
+			var isFirst = slot == Children.First() as InventorySlot;
+			slot.SetClass( "rounded-top", isFirst );
+			slot.SlotLabel.SetClass( "rounded-top-left", isFirst );
 
-			slot.SlotLabel.SetClass( "rounded-top-left", slot == Children.First() as InventorySlot );
-			slot.SlotLabel.SetClass( "rounded-bottom-left", slot == Children.Last() as InventorySlot );
+			var isLast = slot == Children.Last() as InventorySlot;
+			slot.SetClass( "rounded-bottom", isLast );
+			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
 
 			slot.SetClass( "active", slot.Carriable.IsActiveChild );
 			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveChild );
