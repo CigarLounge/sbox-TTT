@@ -28,9 +28,9 @@ public class Perks : IEnumerable<Perk>
 		Owner.Components.Remove( perk );
 	}
 
-	public bool Has( Type t )
+	public bool Has<T>()
 	{
-		return _list.Any( x => x.GetType() == t );
+		return _list.Any( x => x is T );
 	}
 
 	public bool Contains( Perk perk ) => _list.Contains( perk );

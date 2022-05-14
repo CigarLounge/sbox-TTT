@@ -155,7 +155,7 @@ public partial class Player
 				damageMultiplier *= weaponInfo.HeadshotMultiplier;
 		}
 
-		if ( !isHeadShot && Perks.Has( typeof( BodyArmor ) ) )
+		if ( !isHeadShot && Perks.Has<BodyArmor>() )
 			damageMultiplier *= BodyArmor.ReductionPercentage;
 
 		return damageMultiplier;

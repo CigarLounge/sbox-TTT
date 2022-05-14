@@ -7,11 +7,18 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
 	public GhostEntity GhostEntity { get; private set; }
 
+	protected virtual bool CanDrop => true;
+	protected virtual bool CanPlant => true;
+
 	public override void ActiveStart( Entity entity )
 	{
 		base.ActiveStart( entity );
 
 		EnableDrawing = false;
+
+		if ( !CanPlant )
+			return;
+
 		GhostEntity = new();
 		GhostEntity.SetEntity( this );
 	}
@@ -20,7 +27,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 	{
 		base.ActiveEnd( entity, dropped );
 
-		GhostEntity.Delete();
+		GhostEntity?.Delete();
 	}
 
 	public override void Simulate( Client client )
@@ -28,15 +35,18 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		if ( !IsServer )
 			return;
 
+		if ( CanDrop && Input.Pressed( InputButton.Attack1 ) )
+		{
+			OnDeploy( Owner.Inventory.DropEntity( this ) );
+			return;
+		}
+
+		if ( !CanPlant )
+			return;
+
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.WorldOnly()
 			.Run();
-
-		if ( Input.Pressed( InputButton.Attack1 ) )
-		{
-			OnDeploy( Owner.Inventory.DropEntity<T>( this ) );
-			return;
-		}
 
 		if ( !trace.Hit )
 		{

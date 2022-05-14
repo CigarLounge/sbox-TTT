@@ -309,7 +309,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
-	public T DropEntity<T>( Entity self ) where T : Entity, new()
+	public T DropEntity<T>( Deployable<T> self ) where T : ModelEntity, new()
 	{
 		Host.AssertServer();
 
