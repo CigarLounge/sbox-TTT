@@ -32,7 +32,7 @@ public class VoiceChatEntry : Panel
 
 		Name = Add.Label( Friend.Name, "name" );
 
-		AddClass( "background-color-primary" );
+		AddClass( "background-color-gradient" );
 		AddClass( "rounded" );
 		AddClass( "opacity-heavy" );
 		AddClass( "text-shadow" );

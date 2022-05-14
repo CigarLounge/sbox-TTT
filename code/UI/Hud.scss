@@ -3,8 +3,8 @@ $missing: #50754f;
 $dead: #c65b3a;
 $spectator: #fcdb38;
 
-$primary: #282828;
-$secondary: #1e1e1e;
+$primary: #303030;
+$secondary: #1a1a1a;
 $info: #fdc418;
 
 $button-primary: #ffffff !default;
@@ -125,14 +125,19 @@ rootpanel
     color: $info;
 }
 
-.background-color-primary
-{
-    background-color: $primary;
-}
-
 .background-color-spectator
 {
     background-color: $spectator;
+}
+
+.background-color-gradient
+{
+    background: linear-gradient($primary, $secondary);
+}
+
+.background-color-primary
+{
+    background-color: $primary;
 }
 
 .background-color-secondary

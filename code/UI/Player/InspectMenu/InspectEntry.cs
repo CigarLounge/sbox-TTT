@@ -16,7 +16,7 @@ public class InspectEntry : Panel
 
 		AddClass( "rounded" );
 		AddClass( "text-shadow" );
-		AddClass( "background-color-secondary" );
+		AddClass( "background-color-gradient" );
 
 		_inspectIcon = Add.Image();
 		_inspectIcon.AddClass( "inspect-icon" );
