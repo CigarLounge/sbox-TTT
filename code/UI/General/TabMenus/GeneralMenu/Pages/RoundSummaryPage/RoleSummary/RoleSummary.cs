@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public partial class RoleSummary : Panel
+public class RoleSummary : Panel
 {
 	public static RoleSummary Instance;
 
@@ -25,7 +25,7 @@ public partial class RoleSummary : Panel
 		Detectives.DeleteChildren( true );
 		Traitors.DeleteChildren( true );
 
-		if ( GeneralMenu.Instance != null )
+		if ( GeneralMenu.Instance is not null )
 		{
 			if ( !GeneralMenu.Instance.LastRoleSummaryData.Innocents.IsNullOrEmpty() )
 				Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.LastRoleSummaryData.Innocents ) );

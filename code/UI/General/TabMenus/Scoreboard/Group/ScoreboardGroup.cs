@@ -4,13 +4,13 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public partial class ScoreboardGroup : Panel
+public class ScoreboardGroup : Panel
 {
 	public readonly string GroupTitle;
 	public int GroupMembers = 0;
 
-	private Label Title { get; set; }
-	private Panel Content { get; set; }
+	private Label Title { get; init; }
+	private Panel Content { get; init; }
 
 	public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
 	{
@@ -21,10 +21,13 @@ public partial class ScoreboardGroup : Panel
 
 	public ScoreboardEntry AddEntry( Client client )
 	{
-		ScoreboardEntry scoreboardEntry = Content.AddChild<ScoreboardEntry>();
-		scoreboardEntry.ScoreboardGroupName = GroupTitle;
-		scoreboardEntry.Client = client;
+		var scoreboardEntry = new ScoreboardEntry( Content, client )
+		{
+			ScoreboardGroupName = GroupTitle
+		};
+
 		scoreboardEntry.Update();
+
 		return scoreboardEntry;
 	}
 }

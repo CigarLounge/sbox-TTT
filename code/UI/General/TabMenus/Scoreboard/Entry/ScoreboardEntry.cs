@@ -8,38 +8,41 @@ namespace TTT.UI;
 public class ScoreboardEntry : Panel
 {
 	public string ScoreboardGroupName;
-	public Client Client;
+	private readonly Client _client;
 
-	private Image PlayerAvatar { get; set; }
-	private Label PlayerName { get; set; }
-	private Label Karma { get; set; }
-	private Label Score { get; set; }
-	private Label Ping { get; set; }
+	private Image PlayerAvatar { get; init; }
+	private Label PlayerName { get; init; }
+	private Label Karma { get; init; }
+	private Label Score { get; init; }
+	private Label Ping { get; init; }
 
-	public virtual void Update()
+	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
-		if ( Client is null )
+		_client = client;
+	}
+
+	public void Update()
+	{
+		if ( _client.Pawn is not Player player )
 			return;
 
-		if ( Client.Pawn is not Player player )
-			return;
-
-		PlayerName.Text = Client.Name;
+		PlayerName.Text = _client.Name;
 
 		Karma.Enabled( Game.KarmaEnabled );
+
 		if ( Karma.IsEnabled() )
 			Karma.Text = MathF.Round( player.BaseKarma ).ToString();
 
-		Ping.Text = Client.Ping.ToString();
+		Ping.Text = _client.IsBot ? "BOT" : _client.Ping.ToString();
 		Score.Text = player.Score.ToString();
 
-		SetClass( "me", Client == Local.Client );
+		SetClass( "me", _client == Local.Client );
 
 		if ( player.Role is not NoneRole and not Innocent )
 			Style.BackgroundColor = player.Role.Color.WithAlpha( 0.15f );
 		else
 			Style.BackgroundColor = null;
 
-		PlayerAvatar.SetTexture( $"avatar:{Client.PlayerId}" );
+		PlayerAvatar.SetTexture( $"avatar:{_client.PlayerId}" );
 	}
 }

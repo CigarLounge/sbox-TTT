@@ -33,12 +33,13 @@ public class InventorySelection : Panel
 
 		foreach ( var carriable in player.Inventory )
 		{
-			if ( !_entries.ContainsKey( carriable ) && carriable.Owner is not null )
+			if ( !_entries.ContainsKey( carriable ) )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
 		var activeItem = player.ActiveChild as Carriable;
-		var activeItemTitle = activeItem is not null ? Asset.GetInfo<CarriableInfo>( activeItem ).Title : string.Empty;
+		var activeItemTitle = activeItem is not null ? activeItem.ClassInfo.Title : string.Empty;
+
 		foreach ( var slot in _entries.Values )
 		{
 			if ( !player.Inventory.Contains( slot.Carriable ) )
@@ -47,11 +48,11 @@ public class InventorySelection : Panel
 				slot?.Delete();
 			}
 
-			var isFirst = slot == Children.First() as InventorySlot;
+			bool isFirst = slot == Children.First() as InventorySlot;
 			slot.SetClass( "rounded-top", isFirst );
 			slot.SlotLabel.SetClass( "rounded-top-left", isFirst );
 
-			var isLast = slot == Children.Last() as InventorySlot;
+			bool isLast = slot == Children.Last() as InventorySlot;
 			slot.SetClass( "rounded-bottom", isLast );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
 
@@ -87,19 +88,20 @@ public class InventorySelection : Panel
 	/// You can both read and write to input, to affect what happens down the line.
 	/// </summary>
 	[Event.BuildInput]
-	private void ProcessClientInventorySelectionInput( InputBuilder input )
+	private void BuildInput( InputBuilder input )
 	{
 		var player = Local.Pawn as Player;
+
 		if ( !player.IsAlive() )
 			return;
 
-		if ( Children is null || !Children.Any() )
+		if ( !Children.Any() )
 			return;
 
 		var childrenList = Children.ToList();
-
 		var activeCarriable = player.ActiveChild as Carriable;
 		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
+
 		if ( keyboardIndexPressed != -1 )
 		{
 			List<Carriable> weaponsOfSlotTypeSelected = new();
