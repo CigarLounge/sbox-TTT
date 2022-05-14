@@ -1,4 +1,4 @@
-using System;
+using Sandbox;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,13 +18,15 @@ public class Perks : IEnumerable<Perk>
 
 	public void Add( Perk perk )
 	{
-		_list.Add( perk );
+		Host.AssertServer();
+
 		Owner.Components.Add( perk );
 	}
 
 	public void Remove( Perk perk )
 	{
-		_list.Remove( perk );
+		Host.AssertServer();
+
 		Owner.Components.Remove( perk );
 	}
 
@@ -45,6 +47,25 @@ public class Perks : IEnumerable<Perk>
 			return t;
 		}
 		return default;
+	}
+
+	public void OnComponentAdded( EntityComponent component )
+	{
+		if ( component is not Perk perk )
+			return;
+
+		if ( _list.Contains( perk ) )
+			throw new System.Exception( "Trying to add to perks multiple times. This is gated by Entity:OnComponentAdded and should never happen!" );
+
+		_list.Add( perk );
+	}
+
+	public void OnComponentRemoved( EntityComponent component )
+	{
+		if ( component is not Perk perk )
+			return;
+
+		_list.Remove( perk );
 	}
 
 	public IEnumerator<Perk> GetEnumerator() => _list.GetEnumerator();
