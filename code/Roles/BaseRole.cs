@@ -136,7 +136,7 @@ public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<
 		if ( other is null )
 			return false;
 
-		if ( Object.ReferenceEquals( this, other ) )
+		if ( object.ReferenceEquals( this, other ) )
 			return true;
 
 		return Info.ResourceId == other.Info.ResourceId;

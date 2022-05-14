@@ -38,14 +38,6 @@ public abstract partial class Grenade : Carriable
 			TimeUntilExplode = Seconds;
 	}
 
-	public async Task ExplodeIn( float seconds )
-	{
-		await GameTask.DelaySeconds( seconds );
-
-		OnExplode();
-		Delete();
-	}
-
 	protected virtual void OnExplode() { }
 
 	protected void Throw()
@@ -68,5 +60,13 @@ public abstract partial class Grenade : Carriable
 			_isThrown = true;
 			_ = ExplodeIn( TimeUntilExplode );
 		}
+	}
+
+	private async Task ExplodeIn( float seconds )
+	{
+		await GameTask.DelaySeconds( seconds );
+
+		OnExplode();
+		Delete();
 	}
 }

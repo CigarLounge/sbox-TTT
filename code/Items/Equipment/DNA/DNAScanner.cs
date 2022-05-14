@@ -60,7 +60,7 @@ public partial class DNAScanner : Carriable
 
 	public void Scan()
 	{
-		if ( IsClient || IsCharging )
+		if ( !IsServer || IsCharging )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
@@ -75,7 +75,7 @@ public partial class DNAScanner : Carriable
 			return;
 		}
 
-		var dist = Owner.Position.Distance( target.Position );
+		float dist = Owner.Position.Distance( target.Position );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25f ) );
 		UpdateMarker( To.Single( Owner ), target.Position );
 	}
@@ -91,7 +91,7 @@ public partial class DNAScanner : Carriable
 
 	private void FetchDNA()
 	{
-		if ( IsClient )
+		if ( !IsServer )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -113,7 +113,7 @@ public partial class DNAScanner : Carriable
 		if ( !samples.Any() )
 			return;
 
-		var totalCollected = 0;
+		int totalCollected = 0;
 		foreach ( var dna in samples )
 		{
 			if ( dna.TimeUntilDecayed )

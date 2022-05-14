@@ -161,6 +161,24 @@ public partial class Player : Sandbox.Player
 
 	public override void Simulate( Client client )
 	{
+		var controller = GetActiveController();
+		controller?.Simulate( client, this, GetActiveAnimator() );
+
+		if ( Input.Pressed( InputButton.Menu ) )
+		{
+			if ( ActiveChild.IsValid() && LastActiveChild.IsValid() )
+				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
+		}
+
+		SimulateActiveChild( client, ActiveChild );
+
+		if ( this.IsAlive() )
+		{
+			SimulateFlashlight();
+			SimulateCarriableSwitch();
+			SimulatePerks();
+		}
+
 		if ( IsClient )
 		{
 			ActivateRoleButton();
@@ -179,23 +197,6 @@ public partial class Player : Sandbox.Player
 			CheckPlayerDropCarriable();
 			CheckLastSeenPlayer();
 		}
-
-		if ( Input.Pressed( InputButton.Menu ) )
-		{
-			if ( ActiveChild.IsValid() && LastActiveChild.IsValid() )
-				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
-		}
-
-		if ( this.IsAlive() )
-		{
-			SimulateFlashlight();
-			SimulateCarriableSwitch();
-			SimulatePerks();
-		}
-
-		SimulateActiveChild( client, ActiveChild );
-		var controller = GetActiveController();
-		controller?.Simulate( client, this, GetActiveAnimator() );
 	}
 
 	public override void FrameSimulate( Client client )

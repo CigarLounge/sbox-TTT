@@ -15,7 +15,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		set => Owner.ActiveChild = value;
 	}
 
-	public Carriable this[int i] => GetSlot( i ) as Carriable;
+	public Carriable this[int i] => _list[i];
 
 	private readonly List<Carriable> _list = new();
 
@@ -137,11 +137,6 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return true;
 	}
 
-	public bool IsCarrying( string libraryName )
-	{
-		return _list.Any( x => x.ClassInfo?.Name == libraryName );
-	}
-
 	public T Find<T>() where T : Carriable
 	{
 		foreach ( var carriable in _list )
@@ -247,7 +242,6 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return SetActiveSlot( nextSlot, false );
 	}
 
-
 	public void DropAll()
 	{
 		Host.AssertServer();
@@ -315,7 +309,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
-	public T DropEntity<T>( Entity self ) where T : Entity, new()
+	public T DropEntity<T>( Deployable<T> self ) where T : ModelEntity, new()
 	{
 		Host.AssertServer();
 
@@ -323,7 +317,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		if ( !carriable.IsValid() || !Contains( carriable ) )
 			return null;
 
-		carriable.OnCarryDrop( Owner );
+		carriable.Parent = null;
 		carriable.Delete();
 
 		var droppedEntity = new T

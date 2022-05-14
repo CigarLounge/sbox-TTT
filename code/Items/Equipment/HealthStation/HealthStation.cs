@@ -4,16 +4,7 @@ namespace TTT;
 
 [Hammer.Skip]
 [Library( "ttt_equipment_healthstation", Title = "Health Station" )]
-public class HealthStation : Carriable
+public class HealthStation : Deployable<HealthStationEntity>
 {
-	public override void Simulate( Client client )
-	{
-		if ( !IsServer )
-			return;
-
-		if ( !Input.Pressed( InputButton.Attack1 ) )
-			return;
-
-		Owner.Inventory.DropEntity<HealthStationEntity>( this );
-	}
+	protected override bool CanPlant => false;
 }
