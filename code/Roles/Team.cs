@@ -80,4 +80,3 @@ public static class TeamExtensions
 		return To.Multiple( Client.All.Where( x => x.Pawn is Player player && player.Team == team && player.IsAlive() ) );
 	}
 }
-

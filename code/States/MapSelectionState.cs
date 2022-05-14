@@ -7,7 +7,7 @@ namespace TTT;
 public partial class MapSelectionState : BaseState
 {
 	[Net]
-	public IDictionary<Client, string> Votes { get; set; }
+	public IDictionary<Client, string> Votes { get; private set; }
 
 	public override string Name => "Map Selection";
 	public override int Duration => Game.MapSelectionTime;
