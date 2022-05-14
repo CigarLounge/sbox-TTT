@@ -24,7 +24,7 @@ public partial class GeneralMenu : Panel
 	[ClientRpc]
 	public static void SendRoleSummaryData( Player[] innocents, Player[] detectives, Player[] traitors )
 	{
-		if ( Instance == null )
+		if ( Instance is null )
 			return;
 
 		Instance.LastRoleSummaryData.Innocents = innocents;
@@ -37,7 +37,7 @@ public partial class GeneralMenu : Panel
 	[ClientRpc]
 	public static void SendEventSummaryData( EventInfo[] events, string[] eventDescriptions )
 	{
-		if ( Instance == null )
+		if ( Instance is null )
 			return;
 
 		Instance.LastEventSummaryData.Events = events;

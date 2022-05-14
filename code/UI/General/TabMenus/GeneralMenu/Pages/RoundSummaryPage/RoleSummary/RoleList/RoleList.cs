@@ -24,7 +24,7 @@ public class RoleList : Panel
 	// TODO: We need to handle null clients at some point.
 	private void AddPlayer( Player player )
 	{
-		if ( !player.IsValid() || player.Client == null )
+		if ( !player.IsValid() || player.Client is null )
 			return;
 
 		var playerContainer = PlayersContainer.Add.Panel( "player" );

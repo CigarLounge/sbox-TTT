@@ -23,7 +23,7 @@ public partial class EventSummary : Panel
 	{
 		Events.DeleteChildren();
 
-		if ( GeneralMenu.Instance != null )
+		if ( GeneralMenu.Instance is not null )
 		{
 			// We should remove this once we can just send everything down as one list.
 			var eventCount = GeneralMenu.Instance.LastEventSummaryData.Events?.Length ?? 0;

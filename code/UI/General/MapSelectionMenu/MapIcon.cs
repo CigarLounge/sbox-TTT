@@ -25,7 +25,7 @@ public class MapIcon : Panel
 	private async Task FetchMapInformation()
 	{
 		var package = await Package.Fetch( Ident, true );
-		if ( package == null )
+		if ( package is null )
 			return;
 
 		if ( package.PackageType != Package.Type.Map )

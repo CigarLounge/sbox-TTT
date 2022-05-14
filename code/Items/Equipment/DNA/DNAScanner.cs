@@ -64,7 +64,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
-		if ( selectedDNA == null )
+		if ( selectedDNA is null )
 			return;
 
 		var target = selectedDNA.GetTarget();
