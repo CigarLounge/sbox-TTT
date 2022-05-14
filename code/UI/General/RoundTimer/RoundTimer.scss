@@ -8,13 +8,13 @@ RoundTimer
     transform: translateX(-50%) translateY(-50%);
     justify-content: center;
     align-items: center;
-    border-radius: 8px;
+    border-radius: 4px;
 
     .round-name-wrapper
     {
         min-width: 175px;
         justify-content: center;
-        border-radius: 8px;
+        border-radius: 4px;
         font-size: 24px;
         padding: 8px;
         text-transform: uppercase;
@@ -26,7 +26,7 @@ RoundTimer
     {
         justify-content: center;
         min-width: 110px;
-        border-radius: 0 8px 8px 0;
+        border-radius: 0 4px 4px 0;
         padding: 8px;
         font-size: 24px;
         font-weight: bold;

@@ -46,8 +46,8 @@ public class PlayerInfo : Panel
 		if ( player.CurrentPlayer.Role is NoneRole )
 		{
 			RoleContainer.Enabled( false );
-			HealthContainer.Style.BorderTopLeftRadius = 8;
-			HealthContainer.Style.BorderBottomLeftRadius = 8;
+			HealthContainer.Style.BorderTopLeftRadius = 4;
+			HealthContainer.Style.BorderBottomLeftRadius = 4;
 		}
 		else
 		{

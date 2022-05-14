@@ -6,7 +6,7 @@ dropdown
     cursor: pointer;
     background-color: $button-secondary;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 4px;
     color: $button-primary-fg;
     align-items: center;
     min-height: $button-size;
@@ -27,7 +27,7 @@ dropdown
     {
         background-color: $button-secondary;
         color: $button-secondary-fg;
-        border-radius: 8px 8px 0px 0px;
+        border-radius: 4px 4px 0px 0px;
     }
 
     &:active
@@ -70,6 +70,6 @@ popup
     }
 
     button:last-child {
-        border-radius: 0px 0px 8px 8px;
+        border-radius: 0px 0px 4px 4px;
     }
 }
