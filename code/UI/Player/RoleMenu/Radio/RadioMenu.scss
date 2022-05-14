@@ -1,3 +1,5 @@
+@import "/ui/Hud.scss";
+
 RadioMenu
 {
     flex-wrap: wrap;
@@ -5,11 +7,12 @@ RadioMenu
     button 
     {
         font-size: 25px;
-        background-color: #282828;
         padding: 20px;
         min-width: 215px;
         min-height: 100px;
         justify-content: center;
         margin: 5px;
+        background-color: $secondary;
+        opacity: 0.95;
     }
 }
