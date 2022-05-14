@@ -16,7 +16,7 @@ public partial class ShopItem : Panel
 	{
 		AddClass( "rounded" );
 		AddClass( "text-shadow" );
-		AddClass( "background-color-primary" );
+		AddClass( "background-color-gradient" );
 
 		_itemIcon = Add.Image();
 		_itemIcon.AddClass( "item-icon" );
