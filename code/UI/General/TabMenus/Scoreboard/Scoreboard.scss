@@ -26,14 +26,9 @@ Scoreboard
         .scoreboard-content
         {
             flex-direction: column;
-            padding: 8px;
-            max-height: 73%;
+            padding: 8 8 12 8;
+            max-height: 77%;
             overflow: scroll;
-        }
-
-        .scoreboard-footer
-        {
-            height: 41px;
         }
     }
 }

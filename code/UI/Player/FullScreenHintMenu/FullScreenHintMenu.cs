@@ -2,6 +2,7 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class FullScreenHintMenu : Panel
 {
 	public static FullScreenHintMenu Instance;
@@ -13,14 +14,6 @@ public class FullScreenHintMenu : Panel
 	public FullScreenHintMenu()
 	{
 		Instance = this;
-
-		StyleSheet.Load( "/UI/Player/FullScreenHintMenu/FullScreenHintMenu.scss" );
-
-		AddClass( "background-color-gradient" );
-		AddClass( "fullscreen" );
-
-		Style.ZIndex = 2;
-
 		this.EnableFade( false );
 	}
 
@@ -48,7 +41,9 @@ public class FullScreenHintMenu : Panel
 
 	public void Close()
 	{
-		if ( ActivePanel is null || _isForcedOpen ) return;
+		if ( ActivePanel is null || _isForcedOpen )
+			return;
+
 		this.EnableFade( false );
 		DeleteChildren( true );
 		ActivePanel = null;
