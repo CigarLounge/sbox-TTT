@@ -4,10 +4,12 @@ RoleList
 {
     width: 100%;
     flex-direction: column;
+    padding-bottom: 5px;
     
     .header
     {
         border-radius: 4 4 0 0;
+        flex-shrink: 0;
         font-weight: 600;
         align-items: center;
         padding: 3 8 3 8;
