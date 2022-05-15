@@ -15,10 +15,10 @@ public partial class Game
 	public static int InProgressSecondsPerDeath { get; set; } = 15;
 
 	[ServerVar( "ttt_postround_time", Help = "The length of the postround time.", Saved = true )]
-	public static int PostRoundTime { get; set; } = 10;
+	public static int PostRoundTime { get; set; } = 15;
 
 	[ServerVar( "ttt_mapselection_time", Help = "The length of the map selection period.", Saved = true )]
-	public static int MapSelectionTime { get; set; } = 10;
+	public static int MapSelectionTime { get; set; } = 15;
 	#endregion
 
 	#region Debug
