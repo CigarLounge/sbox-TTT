@@ -32,10 +32,10 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( Input.Pressed( InputButton.Attack1 ) )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			FetchDNA();
 
-		if ( Input.Pressed( InputButton.Attack2 ) )
+		if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			Scan();
 	}
 

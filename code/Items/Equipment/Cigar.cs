@@ -11,7 +11,7 @@ public class Cigar : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( Input.Pressed( InputButton.Attack1 ) && _timeUntilNextSmoke )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) && _timeUntilNextSmoke )
 			Smoke();
 	}
 
@@ -24,7 +24,7 @@ public class Cigar : Carriable
 		_trailParticle ??= Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
 
 		Owner.TakeDamage
-		( 
+		(
 			DamageInfo.Generic( 1 )
 			.WithAttacker( Owner )
 			.WithWeapon( this )

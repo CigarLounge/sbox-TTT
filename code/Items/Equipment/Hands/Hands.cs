@@ -41,14 +41,14 @@ public partial class Hands : Carriable
 
 		using ( Prediction.Off() )
 		{
-			if ( Input.Pressed( InputButton.Attack1 ) )
+			if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			{
 				if ( IsHoldingEntity )
 					GrabbedEntity?.SecondaryAction();
 				else
 					TryGrabEntity();
 			}
-			else if ( Input.Pressed( InputButton.Attack2 ) )
+			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			{
 				if ( IsHoldingEntity )
 					GrabbedEntity?.Drop();

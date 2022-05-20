@@ -76,11 +76,11 @@ public partial class Teleporter : Carriable
 		if ( Owner.GroundEntity is not WorldEntity )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 		{
 			StartTeleport();
 		}
-		else if ( Input.Pressed( InputButton.Attack2 ) )
+		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{

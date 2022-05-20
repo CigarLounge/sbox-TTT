@@ -32,7 +32,7 @@ public partial class Bekas : Weapon
 	{
 		base.Simulate( owner );
 
-		if ( IsReloading && Input.Pressed( InputButton.Attack1 ) )
+		if ( IsReloading && Input.Pressed( InputButton.PrimaryAttack ) )
 			_attackedDuringReload = true;
 	}
 

@@ -7,7 +7,7 @@ public class Defuser : Carriable
 {
 	public override void Simulate( Client client )
 	{
-		if ( !Input.Pressed( InputButton.Attack1 ) )
+		if ( !Input.Pressed( InputButton.PrimaryAttack ) )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )

@@ -40,9 +40,9 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 	{
 		if ( Local.Pawn is Player player )
 		{
-			if ( input.Pressed( InputButton.Attack1 ) )
+			if ( input.Pressed( InputButton.PrimaryAttack ) )
 				player.UpdateSpectatedPlayer( 1 );
-			else if ( input.Pressed( InputButton.Attack2 ) )
+			else if ( input.Pressed( InputButton.SecondaryAttack ) )
 				player.UpdateSpectatedPlayer( -1 );
 		}
 

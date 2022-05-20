@@ -24,7 +24,7 @@ public class Scout : Weapon
 		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
 
-		if ( IsClient && Input.Pressed( InputButton.Attack2 ) )
+		if ( IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
 		{
 			if ( Prediction.FirstTime )
 			{

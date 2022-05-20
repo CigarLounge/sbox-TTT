@@ -332,7 +332,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var searchButton = GetSearchButton();
 
-		if ( searchButton == InputButton.Attack1 )
+		if ( searchButton == InputButton.PrimaryAttack )
 			return true;
 
 		return CurrentView.Position.Distance( Position ) <= Player.UseDistance;
@@ -350,6 +350,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( !binoculars.IsZoomed )
 			return InputButton.Use;
 
-		return InputButton.Attack1;
+		return InputButton.PrimaryAttack;
 	}
 }

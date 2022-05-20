@@ -35,7 +35,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		if ( !IsServer )
 			return;
 
-		if ( CanDrop && Input.Pressed( InputButton.Attack1 ) )
+		if ( CanDrop && Input.Pressed( InputButton.PrimaryAttack ) )
 		{
 			OnDeploy( Owner.Inventory.DropEntity( this ) );
 			return;
@@ -71,7 +71,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 
 		bool valid = GhostEntity.IsPlacementValid( ref trace );
 
-		if ( !valid || !Input.Pressed( InputButton.Attack2 ) )
+		if ( !valid || !Input.Pressed( InputButton.SecondaryAttack ) )
 			return;
 
 		var dropped = Owner.Inventory.DropEntity<T>( this );

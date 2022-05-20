@@ -35,7 +35,7 @@ public partial class Binoculars : Carriable
 		if ( TimeSinceDeployed < Info.DeployTime )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack2 ) )
+		if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			ChangeZoomLevel();
 
 		if ( Input.Pressed( InputButton.Reload ) )
@@ -59,7 +59,7 @@ public partial class Binoculars : Carriable
 		if ( !IsServer || !_corpse.IsValid() )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			_corpse.Search( Owner, Input.Down( InputButton.Run ), false );
 	}
 

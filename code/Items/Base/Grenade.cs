@@ -28,13 +28,13 @@ public abstract partial class Grenade : Carriable
 		if ( TimeSinceDropped < Info.DeployTime )
 			return;
 
-		if ( Input.Pressed( InputButton.Attack1 ) )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			ViewModelEntity?.SetAnimParameter( "fire", true );
 
-		if ( Input.Released( InputButton.Attack1 ) || TimeUntilExplode )
+		if ( Input.Released( InputButton.PrimaryAttack ) || TimeUntilExplode )
 			Throw();
 
-		if ( !Input.Down( InputButton.Attack1 ) )
+		if ( !Input.Down( InputButton.PrimaryAttack ) )
 			TimeUntilExplode = Seconds;
 	}
 

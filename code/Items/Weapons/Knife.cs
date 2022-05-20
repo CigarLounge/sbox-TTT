@@ -25,7 +25,7 @@ public partial class Knife : Carriable
 		if ( TimeSinceStab < 1f )
 			return;
 
-		if ( Input.Down( InputButton.Attack1 ) )
+		if ( Input.Down( InputButton.PrimaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{
@@ -33,7 +33,7 @@ public partial class Knife : Carriable
 				MeleeAttack( 100f, 100f, 8f );
 			}
 		}
-		else if ( Input.Released( InputButton.Attack2 ) )
+		else if ( Input.Released( InputButton.SecondaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{

@@ -187,9 +187,9 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual bool CanPrimaryAttack()
 	{
-		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.Attack1 ) )
+		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.PrimaryAttack ) )
 			return false;
-		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputButton.Attack1 ) )
+		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputButton.PrimaryAttack ) )
 			return false;
 
 		float rate = Info.PrimaryRate;
@@ -201,7 +201,7 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual bool CanSecondaryAttack()
 	{
-		if ( !Input.Pressed( InputButton.Attack2 ) )
+		if ( !Input.Pressed( InputButton.SecondaryAttack ) )
 			return false;
 
 		float rate = Info.SecondaryRate;
