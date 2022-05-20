@@ -28,7 +28,7 @@ public partial class Player
 		return true;
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void PurchaseItem( int itemId )
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;

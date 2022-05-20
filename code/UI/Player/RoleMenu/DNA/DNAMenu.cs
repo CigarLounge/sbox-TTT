@@ -76,7 +76,7 @@ public partial class DNAMenu : Panel
 		}
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void SetActiveSample( int id )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
@@ -97,7 +97,7 @@ public partial class DNAMenu : Panel
 		}
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void DeleteSample( int id )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;
@@ -118,7 +118,7 @@ public partial class DNAMenu : Panel
 		}
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void SetAutoScan( bool enabled )
 	{
 		Player player = ConsoleSystem.Caller.Pawn as Player;

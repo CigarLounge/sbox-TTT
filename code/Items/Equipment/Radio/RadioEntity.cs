@@ -38,7 +38,7 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 		return user is Player && (Owner is null || user == Owner);
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void PlayRadio( int id, string sound )
 	{
 		var radio = Entity.FindByIndex( id ) as RadioEntity;

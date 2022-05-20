@@ -178,7 +178,7 @@ public partial class C4Entity : Prop, IEntityHint
 			Explode();
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void ArmC4( int networkIdent, int time )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -192,7 +192,7 @@ public partial class C4Entity : Prop, IEntityHint
 		c4.Arm( player, time );
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void Defuse( int wire, int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -206,7 +206,7 @@ public partial class C4Entity : Prop, IEntityHint
 		c4.AttemptDefuse( player, wire );
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void Pickup( int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -221,7 +221,7 @@ public partial class C4Entity : Prop, IEntityHint
 		c4.Delete();
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void DeleteC4( int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player )

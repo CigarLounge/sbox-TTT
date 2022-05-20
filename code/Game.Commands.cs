@@ -5,7 +5,7 @@ namespace TTT;
 
 public partial class Game
 {
-	[AdminCmd( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
+	[ConCmd.Admin( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( int id = 0 )
 	{
 		var player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
@@ -15,7 +15,7 @@ public partial class Game
 		player.Respawn();
 	}
 
-	[AdminCmd( Name = "ttt_giveitem" )]
+	[ConCmd.Admin( Name = "ttt_giveitem" )]
 	public static void GiveItem( string itemName )
 	{
 		if ( string.IsNullOrEmpty( itemName ) )
@@ -38,7 +38,7 @@ public partial class Game
 			player.Perks.Add( Library.Create<Perk>( itemInfo.LibraryName ) );
 	}
 
-	[AdminCmd( Name = "ttt_givecredits" )]
+	[ConCmd.Admin( Name = "ttt_givecredits" )]
 	public static void GiveCredits( int credits )
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -48,7 +48,7 @@ public partial class Game
 		player.Credits += credits;
 	}
 
-	[AdminCmd( Name = "ttt_setrole" )]
+	[ConCmd.Admin( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
 		if ( Game.Current.State is not InProgress )
@@ -68,13 +68,13 @@ public partial class Game
 		player.SetRole( roleInfo.LibraryName );
 	}
 
-	[AdminCmd( Name = "ttt_force_restart" )]
+	[ConCmd.Admin( Name = "ttt_force_restart" )]
 	public static void ForceRestart()
 	{
 		Game.Current.ChangeState( new PreRound() );
 	}
 
-	[ServerCmd( Name = "ttt_forcespec" )]
+	[ConCmd.Server( Name = "ttt_forcespec" )]
 	public static void ToggleForceSpectator()
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -84,7 +84,7 @@ public partial class Game
 		player.ToggleForcedSpectator();
 	}
 
-	[ServerCmd( Name = "ttt_rtv" )]
+	[ConCmd.Server( Name = "ttt_rtv" )]
 	public static void RockTheVote()
 	{
 		var client = ConsoleSystem.Caller;

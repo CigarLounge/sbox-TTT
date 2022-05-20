@@ -46,7 +46,7 @@ public partial class MapSelectionState : BaseState
 		}
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void SetVote( string map )
 	{
 		if ( Game.Current.State is not MapSelectionState state )

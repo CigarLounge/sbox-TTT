@@ -23,7 +23,7 @@ public partial class Player
 		FocusedButton = null;
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	public static void ActivateRoleButton( int networkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )

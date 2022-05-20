@@ -190,7 +190,7 @@ public partial class InspectMenu : Panel
 		_corpse.HasCalledDetective = true;
 	}
 
-	[ServerCmd]
+	[ConCmd.Server]
 	private static void CallDetectives( int ident )
 	{
 		var ent = Entity.FindByIndex( ident );
