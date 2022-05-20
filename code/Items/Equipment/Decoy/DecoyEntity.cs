@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_entity_decoy", Title = "Decoy" )]
-[Hammer.EditorModel( "models/decoy/decoy.vmdl" )]
+[EditorModel( "models/decoy/decoy.vmdl" )]
 public partial class DecoyEntity : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/decoy/decoy.vmdl" );

@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/weapons/w_bekas.vmdl" )]
+[EditorModel( "models/weapons/w_bekas.vmdl" )]
 [Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
 public partial class Bekas : Weapon
 {

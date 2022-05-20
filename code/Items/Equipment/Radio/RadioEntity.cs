@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [Library( "ttt_entity_radio", Title = "Radio" )]
-[Hammer.EditorModel( "models/radio/radio.vmdl" )]
+[EditorModel( "models/radio/radio.vmdl" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );

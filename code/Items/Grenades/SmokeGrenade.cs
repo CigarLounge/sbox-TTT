@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/weapons/w_smoke.vmdl" )]
+[EditorModel( "models/weapons/w_smoke.vmdl" )]
 [Library( "ttt_grenade_smoke", Title = "Smoke Grenade" )]
 public class SmokeGrenade : Grenade
 {

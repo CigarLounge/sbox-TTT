@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-[Hammer.EditorModel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" )]
+[EditorModel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" )]
 [Library( "ttt_ammo_magnum", Title = "Magnum Ammo" )]
 public class MagnumAmmo : Ammo
 {
