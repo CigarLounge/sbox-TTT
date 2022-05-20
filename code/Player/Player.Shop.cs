@@ -46,6 +46,7 @@ public partial class Player
 			player.PurchasedLimitedShopItems.Add( itemInfo.LibraryName );
 
 		player.Credits -= itemInfo.Price;
+
 		if ( itemInfo is CarriableInfo )
 			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.LibraryName ) );
 		else if ( itemInfo is PerkInfo )

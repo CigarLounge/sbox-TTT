@@ -53,7 +53,7 @@ public partial class Teleporter : Carriable
 				if ( IsServer )
 				{
 					Owner.Position = _teleportLocation;
-					foreach ( var ent in Entity.FindInBox( Owner.PhysicsBody.GetBounds() ) )
+					foreach ( var ent in Entity.FindInBox( Owner.CollisionBounds ) )
 						if ( ent is Player player && player != Owner )
 							TeleFrag( player );
 				}

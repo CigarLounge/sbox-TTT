@@ -25,7 +25,7 @@ public enum HoldType
 	Fists
 }
 
-[Library( "carri" ), AutoGenerate]
+[GameResource( "Carriable", "carri", "TTT carriable template." )]
 public class CarriableInfo : ItemInfo
 {
 	[Property, Category( "Important" )]
@@ -55,12 +55,15 @@ public class CarriableInfo : ItemInfo
 	[Property, Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	[JsonPropertyName( "cached-handsmodel" )]
 	public Model HandsModel { get; private set; }
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	[JsonPropertyName( "cached-viewmodel" )]
 	public Model ViewModel { get; private set; }
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	[JsonPropertyName( "cached-worldmodel" )]
 	public Model WorldModel { get; private set; }
 
@@ -104,13 +107,13 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 
-		if ( string.IsNullOrWhiteSpace( ClassInfo.Name ) )
+		if ( string.IsNullOrWhiteSpace( ClassName ) )
 		{
 			Log.Error( this + " doesn't have a Library name!" );
 			return;
 		}
 
-		Info = Asset.GetInfo<CarriableInfo>( this );
+		Info = Asset.GetInfo<CarriableInfo>( ClassName );
 		Model = Info.WorldModel;
 	}
 
@@ -118,8 +121,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrWhiteSpace( ClassInfo.Name ) )
-			Info = Asset.GetInfo<CarriableInfo>( this );
+		if ( !string.IsNullOrWhiteSpace( ClassName ) )
+			Info = Asset.GetInfo<CarriableInfo>( ClassName );
 	}
 
 	public override void ActiveStart( Entity entity )

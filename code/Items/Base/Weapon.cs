@@ -12,13 +12,13 @@ public enum FireMode
 	Burst = 2
 }
 
-[Library( "weapon" ), AutoGenerate]
+[GameResource( "Weapon", "weapon", "TTT weapon template." )]
 public class WeaponInfo : CarriableInfo
 {
-	[Property, Category( "Sounds" )]
+	[Property, Category( "Sounds" ), ResourceType( "sound" )]
 	public string FireSound { get; set; } = "";
 
-	[Property, Category( "Sounds" )]
+	[Property, Category( "Sounds" ), ResourceType( "sound" )]
 	public string DryFireSound { get; set; } = "";
 
 	[Property( "ammotype", "The ammo type. Set this to None if you want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]

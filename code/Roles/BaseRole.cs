@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace TTT;
 
-[Library( "role" ), AutoGenerate]
+[GameResource( "Role", "role", "TTT role template." )]
 public class RoleInfo : Asset
 {
 	[Property]
@@ -48,7 +48,7 @@ public class RoleInfo : Asset
 	}
 }
 
-public abstract class BaseRole : LibraryClass, IEquatable<BaseRole>, IEquatable<string>
+public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 {
 	public RoleInfo Info { get; private set; }
 

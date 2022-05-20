@@ -45,13 +45,13 @@ public partial class Player
 			return null;
 
 		// First try a direct 0 width line
-		var tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
+		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.Run();
 
 		// See if any of the parent entities are usable if we ain't.
-		var ent = tr.Entity;
+		var ent = trace.Entity;
 		while ( ent.IsValid() && !IsValidUseEntity( ent ) )
 		{
 			ent = ent.Parent;
@@ -60,14 +60,14 @@ public partial class Player
 		// Nothing found, try a wider search
 		if ( !IsValidUseEntity( ent ) )
 		{
-			tr = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
+			trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
 			.Radius( 2 )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
 			.Run();
 
 			// See if any of the parent entities are usable if we ain't.
-			ent = tr.Entity;
+			ent = trace.Entity;
 			while ( ent.IsValid() && !IsValidUseEntity( ent ) )
 			{
 				ent = ent.Parent;

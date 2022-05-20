@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[HideInEditor]
 [Library( "ttt_weapon_knife", Title = "Knife" )]
 public partial class Knife : Carriable
 {

@@ -14,14 +14,6 @@ public abstract class Asset : GameResource
 
 	public string Title { get; private set; }
 
-	public static T GetInfo<T>( LibraryClass libraryClass ) where T : Asset
-	{
-		if ( libraryClass is null || !Collection.ContainsKey( libraryClass.ClassInfo.Name ) )
-			return null;
-
-		return Collection[libraryClass.ClassInfo.Name] as T;
-	}
-
 	public static T GetInfo<T>( string name ) where T : Asset
 	{
 		if ( string.IsNullOrEmpty( name ) || !Collection.ContainsKey( name ) )
