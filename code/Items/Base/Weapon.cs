@@ -274,7 +274,6 @@ public abstract partial class Weapon : Carriable
 			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
-		CrosshairPanel?.CreateEvent( "fire" );
 
 		CurrentRecoilAmount += RecoilOnShot;
 	}

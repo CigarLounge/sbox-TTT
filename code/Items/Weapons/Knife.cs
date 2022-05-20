@@ -120,7 +120,6 @@ public partial class Knife : Carriable
 	protected void SwingEffects()
 	{
 		ViewModelEntity?.SetAnimParameter( "fire", true );
-		CrosshairPanel?.CreateEvent( "fire" );
 	}
 
 	[Event.Tick.Server]
