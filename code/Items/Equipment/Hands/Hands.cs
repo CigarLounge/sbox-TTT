@@ -12,7 +12,7 @@ public interface IGrabbable
 	void SecondaryAction();
 }
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_hands", Title = "Hands" )]
 public partial class Hands : Carriable
 {

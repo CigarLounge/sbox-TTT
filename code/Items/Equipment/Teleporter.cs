@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_teleporter", Title = "Teleporter" )]
 public partial class Teleporter : Carriable
 {

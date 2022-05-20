@@ -3,7 +3,7 @@ using System;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_binoculars", Title = "Binoculars" )]
 public partial class Binoculars : Carriable
 {

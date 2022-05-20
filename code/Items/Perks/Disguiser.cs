@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_perk_disguiser", Title = "Disguiser" )]
 public partial class Disguiser : Perk
 {

@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_flaregun", Title = "Flare Gun" )]
 public class FlareGun : Weapon
 {

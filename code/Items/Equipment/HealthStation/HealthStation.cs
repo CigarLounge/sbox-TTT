@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_healthstation", Title = "Health Station" )]
 public class HealthStation : Deployable<HealthStationEntity>
 {

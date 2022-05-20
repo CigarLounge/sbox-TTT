@@ -2,6 +2,6 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_c4", Title = "C4" )]
 public class C4 : Deployable<C4Entity> { }

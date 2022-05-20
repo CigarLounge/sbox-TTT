@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_entity_corpse", Title = "Corpse" )]
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {

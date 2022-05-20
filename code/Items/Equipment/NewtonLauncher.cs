@@ -3,7 +3,7 @@ using System;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_newtonlauncher", Title = "Newton Launcher" )]
 public partial class NewtonLauncher : Weapon
 {

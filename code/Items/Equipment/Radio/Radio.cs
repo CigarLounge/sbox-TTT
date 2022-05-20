@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_equipment_radio", Title = "Radio" )]
 public class Radio : Deployable<RadioEntity>
 {

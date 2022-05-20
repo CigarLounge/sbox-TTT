@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Skip]
+[HideInEditor]
 [Library( "ttt_entity_poltergeist" )]
 public partial class PoltergeistEntity : Prop
 {
