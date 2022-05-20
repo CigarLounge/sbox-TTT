@@ -270,9 +270,6 @@ public abstract partial class Weapon : Carriable
 		if ( !string.IsNullOrEmpty( Info.MuzzleFlashParticle ) )
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
-		if ( IsLocalPawn )
-			_ = new Sandbox.ScreenShake.Perlin( 1f, 0.2f, 0.8f );
-
 		ViewModelEntity?.SetAnimParameter( "fire", true );
 
 		CurrentRecoilAmount += RecoilOnShot;

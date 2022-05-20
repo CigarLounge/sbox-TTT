@@ -36,8 +36,6 @@ public class WalkController : Sandbox.WalkController
 
 		if ( fallVelocity > _fallDamageThreshold )
 		{
-			_ = new Sandbox.ScreenShake.Perlin( 1.5f, 1.75f, 3f );
-
 			var damage = (MathF.Abs( fallVelocity ) - _fallDamageThreshold) * _fallDamageScale;
 			Pawn.TakeDamage( new DamageInfo
 			{
