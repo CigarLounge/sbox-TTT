@@ -33,7 +33,7 @@ public class RandomGrenade : Entity
 		if ( _cachedGrenadeTypes.Count <= 0 )
 			return;
 
-		var grenade = Library.Create<Grenade>( Rand.FromList( _cachedGrenadeTypes ) );
+		var grenade = TypeLibrary.Create<Grenade>( Rand.FromList( _cachedGrenadeTypes ) );
 		if ( grenade is null )
 			return;
 

@@ -42,7 +42,7 @@ public partial class Player
 
 	public void SetRole( string libraryName )
 	{
-		Role = Library.Create<BaseRole>( libraryName );
+		Role = TypeLibrary.Create<BaseRole>( libraryName );
 	}
 
 	[ClientRpc]

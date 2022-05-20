@@ -33,9 +33,9 @@ public partial class Game
 		}
 
 		if ( itemInfo is CarriableInfo )
-			player.Inventory.Add( Library.Create<Carriable>( itemInfo.LibraryName ) );
+			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.LibraryName ) );
 		else if ( itemInfo is PerkInfo )
-			player.Perks.Add( Library.Create<Perk>( itemInfo.LibraryName ) );
+			player.Perks.Add( TypeLibrary.Create<Perk>( itemInfo.LibraryName ) );
 	}
 
 	[ConCmd.Admin( Name = "ttt_givecredits" )]

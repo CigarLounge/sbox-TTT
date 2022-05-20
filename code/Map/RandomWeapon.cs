@@ -58,7 +58,7 @@ public class RandomWeapon : Entity
 		if ( weaponTypes.Count <= 0 )
 			return;
 
-		var weapon = Library.Create<Weapon>( Rand.FromList( weaponTypes ) );
+		var weapon = TypeLibrary.Create<Weapon>( Rand.FromList( weaponTypes ) );
 		if ( weapon is null )
 			return;
 
