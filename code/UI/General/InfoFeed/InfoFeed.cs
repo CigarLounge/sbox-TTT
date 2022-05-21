@@ -22,10 +22,8 @@ public partial class InfoFeed : Panel
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
-		bool isLocal = client == Local.Client;
 		var player = client.Pawn as Player;
-
-		var leftLabel = e.AddLabel( isLocal ? "You" : client.Name, "left" );
+		var leftLabel = e.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
 		leftLabel.Style.FontColor = player.Role is NoneRole ? Color.White : player.Role.Color;
 
 		e.AddLabel( message, "method" );
@@ -41,25 +39,21 @@ public partial class InfoFeed : Panel
 		e.AddLabel( interaction, "method" );
 	}
 
-	public void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string postfix = "" )
+	public void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
-		bool isLeftLocal = leftClient == Local.Client;
-		bool isRightLocal = rightClientName == Local.Client.Name;
-
 		var leftPlayer = leftClient.Pawn as Player;
-
-		var leftLabel = e.AddLabel( isLeftLocal ? "You" : leftClient.Name, "left" );
+		var leftLabel = e.AddLabel( leftClient == Local.Client ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
 
 		e.AddLabel( method, "method" );
 
-		var rightLabel = e.AddLabel( isRightLocal ? "You" : rightClientName, "right" );
+		var rightLabel = e.AddLabel( rightClientName == Local.Client.Name ? "You" : rightClientName, "right" );
 		rightLabel.Style.FontColor = rightClientRoleColor;
 
-		if ( !string.IsNullOrEmpty( postfix ) )
-			e.AddLabel( postfix, "append" );
+		if ( !string.IsNullOrEmpty( suffix ) )
+			e.AddLabel( suffix, "append" );
 	}
 
 	[ClientRpc]
