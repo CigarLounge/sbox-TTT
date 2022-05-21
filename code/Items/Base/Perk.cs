@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "perk" ), AutoGenerate]
+[GameResource( "Perk", "perk", "TTT perk template." )]
 public class PerkInfo : ItemInfo { }
 
 public abstract class Perk : EntityComponent<Player>
