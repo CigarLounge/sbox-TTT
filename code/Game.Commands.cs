@@ -33,9 +33,9 @@ public partial class Game
 		}
 
 		if ( itemInfo is CarriableInfo )
-			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.LibraryName ) );
+			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.ClassName ) );
 		else if ( itemInfo is PerkInfo )
-			player.Perks.Add( TypeLibrary.Create<Perk>( itemInfo.LibraryName ) );
+			player.Perks.Add( TypeLibrary.Create<Perk>( itemInfo.ClassName ) );
 	}
 
 	[ConCmd.Admin( Name = "ttt_givecredits" )]
@@ -65,7 +65,7 @@ public partial class Game
 			return;
 		}
 
-		player.SetRole( roleInfo.LibraryName );
+		player.SetRole( roleInfo.ClassName );
 	}
 
 	[ConCmd.Admin( Name = "ttt_force_restart" )]

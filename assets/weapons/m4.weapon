@@ -28,7 +28,7 @@
 		price = 0
 		icon = "ui/weapons/m4.png"
 		worldmodel = resource:"models/weapons/w_m4.vmdl"
-		libraryname = "ttt_weapon_m4"
+		classname = "ttt_weapon_m4"
 		verticalrecoil = 20.0
 		horizontalrecoilrange = 3.0
 		recoilrecoveryscale = 10.0

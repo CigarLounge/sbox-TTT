@@ -35,7 +35,7 @@
 		price = 100
 		icon = ""
 		description = "Can be used to burn corpses so that they are never found. Limited ammo."
-		libraryname = "ttt_equipment_flaregun"
+		classname = "ttt_equipment_flaregun"
 		tracerparticle = resource:"particles/tracer.standard.vpcf"
 	}
 }

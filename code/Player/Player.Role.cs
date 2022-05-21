@@ -49,6 +49,6 @@ public partial class Player
 	private void ClientSetRole( RoleInfo roleInfo )
 	{
 		IsRoleKnown = true;
-		SetRole( roleInfo.LibraryName );
+		SetRole( roleInfo.ClassName );
 	}
 }

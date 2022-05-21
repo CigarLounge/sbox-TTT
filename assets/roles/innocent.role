@@ -4,7 +4,7 @@
 	{
 		team = "1"
 		defaultcredits = 0
-		libraryname = "ttt_role_innocent"
+		classname = "ttt_role_innocent"
 		exclusiveitems = [  ]
 		color = [ 0.105882, 0.772549, 0.305882, 1.0 ]
 		canrolechat = false

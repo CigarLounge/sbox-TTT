@@ -13,7 +13,7 @@
 		price = 100
 		icon = "ui/equipment/decoy.png"
 		worldmodel = resource:"models/decoy/decoy.vmdl"
-		libraryname = "ttt_equipment_decoy"
+		classname = "ttt_equipment_decoy"
 		candrop = false
 		description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
 	}

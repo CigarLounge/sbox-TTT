@@ -6,7 +6,7 @@
 		islimited = true
 		price = 100
 		icon = "ui/perks/radar.png"
-		libraryname = "ttt_perk_radar"
+		classname = "ttt_perk_radar"
 		description = "Allows you to scan for life signs."
 	}
 }

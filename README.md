@@ -34,7 +34,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/
 Alongside abiding the `CC BY-NC-SA 4.0` license, we also request you follow the two additional licencing conditions for this project...
 
 1. Anything inside of `/models/`, `/materials/`, and `/sounds/` do **not** fall under the repo licensing. These are compiled files which I am forced to distribute whenever a client downloads the game (therefore they might as well exist in the repo). I do have permission to use everything found within those folders **only** for this project. Everything else outside of those folders falls under our repo license, so please follow it accordingly.
-2. If you plan to use any part of this project for a derivative `TTT` like game, we would like further attribution in the form of listing our full names and a link to this repository in-game. Otherwise, if it is unrelated to the concept of `TTT`, feel free to just attribute us normally.
+2. If you plan to use this project for a derivative `TTT` like game, we request that you keep the attribution found in the scoreboard and in our menu.
 
 ## Development
 

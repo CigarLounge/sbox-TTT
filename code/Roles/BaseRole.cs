@@ -10,30 +10,29 @@ namespace TTT;
 [GameResource( "Role", "role", "TTT role template." )]
 public class RoleInfo : Asset
 {
-	[Property]
 	public Team Team { get; set; } = Team.None;
 
-	[Property( "defaultcredits", "The amount of credits players spawn with." )]
+	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; } = 0;
 
-	[Property]
 	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	[Property( "canretrievecredits", "Whether or not a player can retrieve credits from corpses." )]
+	[Description( "Whether or not a player can retrieve credits from corpses." )]
 	public bool CanRetrieveCredits { get; set; } = false;
 
-	[Property]
 	public bool CanRoleChat { get; set; } = false;
 
-	[Property, Category( "UI" )]
+	[Category( "UI" )]
 	public Color Color { get; set; }
 
 	[JsonPropertyName( "icon" )]
-	[Property( "icon", title: "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	public HashSet<string> AvailableItems { get; private set; }
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
@@ -147,7 +146,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 		if ( Info.Title.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
-		if ( Info.LibraryName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
+		if ( Info.ClassName.Equals( other, StringComparison.OrdinalIgnoreCase ) )
 			return true;
 
 		return false;

@@ -15,67 +15,70 @@ public enum FireMode
 [GameResource( "Weapon", "weapon", "TTT weapon template." )]
 public class WeaponInfo : CarriableInfo
 {
-	[Property, Category( "Sounds" ), ResourceType( "sound" )]
+	[Category( "Sounds" ), ResourceType( "sound" )]
 	public string FireSound { get; set; } = "";
 
-	[Property, Category( "Sounds" ), ResourceType( "sound" )]
+	[Category( "Sounds" ), ResourceType( "sound" )]
 	public string DryFireSound { get; set; } = "";
 
-	[Property( "ammotype", "The ammo type. Set this to None if you want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." ), Category( "Important" )]
+	[Category( "Important" )]
+	[Description( "The ammo type. Set this to None if you want the ammo for your weapon to be limited (you can't pick up or drop ammo for it)." )]
 	public AmmoType AmmoType { get; set; } = AmmoType.None;
 
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public FireMode FireMode { get; set; } = FireMode.Automatic;
 
-	[Property( "bulletsperfire", "The amount of bullets that come out in one shot." ), Category( "Stats" )]
+	[Category( "Stats" )]
+	[Description( "The amount of bullets that come out in one shot." )]
 	public int BulletsPerFire { get; set; } = 1;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public int ClipSize { get; set; } = 30;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float Damage { get; set; } = 20;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float DamageFallOffStart { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float DamageFallOffEnd { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float HeadshotMultiplier { get; set; } = 1f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float Spread { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float PrimaryRate { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float SecondaryRate { get; set; } = 0f;
 
-	[Property( "reserveammo", "The amount of ammo this weapon spawns with if the ammo type is set to None." ), Category( "Stats" )]
+	[Category( "Stats" )]
+	[Description( "The amount of ammo this weapon spawns with if the ammo type is set to None." )]
 	public int ReserveAmmo { get; set; } = 0;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float ReloadTime { get; set; } = 2f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float VerticalRecoil { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float HorizontalRecoilRange { get; set; } = 0f;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float RecoilRecoveryScale { get; set; } = 0f;
 
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	[Category( "VFX" ), ResourceType( "vpcf" )]
 	public string EjectParticle { get; set; } = "";
 
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	[Category( "VFX" ), ResourceType( "vpcf" )]
 	public string MuzzleFlashParticle { get; set; } = "";
 
-	[Property, Category( "VFX" ), ResourceType( "vpcf" )]
+	[Category( "VFX" ), ResourceType( "vpcf" )]
 	public string TracerParticle { get; set; } = "";
 
 	protected override void PostLoad()

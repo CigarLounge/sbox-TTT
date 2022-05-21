@@ -35,7 +35,7 @@
 		price = 100
 		icon = ""
 		description = "WIP"
-		libraryname = "ttt_equipment_poltergeist"
+		classname = "ttt_equipment_poltergeist"
 		tracerparticle = resource:"particles/tracer.standard.vpcf"
 	}
 }

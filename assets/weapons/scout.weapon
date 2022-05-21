@@ -28,7 +28,7 @@
 		price = 0
 		icon = "ui/weapons/scout.png"
 		worldmodel = resource:"models/weapons/w_spr.vmdl"
-		libraryname = "ttt_weapon_scout"
+		classname = "ttt_weapon_scout"
 		verticalrecoil = 35.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 30.0

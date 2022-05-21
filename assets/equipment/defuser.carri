@@ -15,6 +15,6 @@
 		price = 100
 		icon = "ui/equipment/defuser.png"
 		description = "Instantly defuse a C4 explosive, unlimited uses."
-		libraryname = "ttt_equipment_defuser"
+		classname = "ttt_equipment_defuser"
 	}
 }
