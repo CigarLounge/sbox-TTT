@@ -4,7 +4,7 @@
 	{
 		team = "2"
 		defaultcredits = 200
-		libraryname = "ttt_role_traitor"
+		classname = "ttt_role_traitor"
 		exclusiveitems = 
 		[
 			"ttt_perk_bodyarmor",

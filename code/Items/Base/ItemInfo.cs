@@ -6,22 +6,23 @@ namespace TTT;
 
 public abstract class ItemInfo : Asset
 {
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public bool Buyable { get; set; } = false;
 
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public bool IsLimited { get; set; } = false;
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public int Price { get; set; } = 0;
 
 	[JsonPropertyName( "icon" )]
-	[Property( "icon", title: "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "";
 
-	[Property, Category( "UI" )]
+	[Category( "UI" )]
 	public string Description { get; set; } = "";
 
+	[EditorBrowsable( EditorBrowsableState.Never )]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 

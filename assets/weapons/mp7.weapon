@@ -28,7 +28,7 @@
 		price = 0
 		icon = "ui/weapons/mp7.png"
 		worldmodel = resource:"models/weapons/w_mp7.vmdl"
-		libraryname = "ttt_weapon_mp7"
+		classname = "ttt_weapon_mp7"
 		verticalrecoil = 10.0
 		horizontalrecoilrange = 2.0
 		recoilrecoveryscale = 10.0

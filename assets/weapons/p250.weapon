@@ -21,7 +21,7 @@
 		price = 0
 		icon = "ui/weapons/p250.png"
 		worldmodel = resource:"models/weapons/w_p250.vmdl"
-		libraryname = "ttt_weapon_p250"
+		classname = "ttt_weapon_p250"
 		spread = 0.03
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		ammotype = "1"

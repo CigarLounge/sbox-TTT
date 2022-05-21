@@ -15,6 +15,6 @@
 		price = 100
 		icon = "ui/equipment/binoculars.png"
 		description = "Zoom in on corpses and identify them from a long distance away."
-		libraryname = "ttt_equipment_binoculars"
+		classname = "ttt_equipment_binoculars"
 	}
 }

@@ -21,7 +21,7 @@
 		price = 100
 		icon = "ui/weapons/silenced-pistol.png"
 		worldmodel = resource:"models/weapons/w_vertec-silenced.vmdl"
-		libraryname = "ttt_weapon_silencedpistol"
+		classname = "ttt_weapon_silencedpistol"
 		spread = 0.03
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
 		ammotype = "0"

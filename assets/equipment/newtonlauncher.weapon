@@ -35,7 +35,7 @@
 		price = 100
 		icon = "ui/equipment/newton_launcher.png"
 		description = "Push people from a safe distance. Infinite ammo, but slow to fire."
-		libraryname = "ttt_equipment_newtonlauncher"
+		classname = "ttt_equipment_newtonlauncher"
 		tracerparticle = resource:"particles/tracer.standard.vpcf"
 	}
 }

@@ -15,6 +15,6 @@
 		price = 0
 		icon = ""
 		description = ""
-		libraryname = "ttt_grenade_discombobulator"
+		classname = "ttt_grenade_discombobulator"
 	}
 }

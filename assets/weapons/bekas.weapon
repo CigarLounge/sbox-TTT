@@ -23,7 +23,7 @@
 		price = 0
 		icon = "ui/weapons/bekas.png"
 		worldmodel = resource:"models/weapons/w_bekas.vmdl"
-		libraryname = "ttt_weapon_bekas"
+		classname = "ttt_weapon_bekas"
 		ammotype = "2"
 		damagefalloffstart = 0.0
 		damagefalloffend = 0.0

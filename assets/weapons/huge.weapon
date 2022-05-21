@@ -28,7 +28,7 @@
 		price = 0
 		icon = "ui/weapons/huge.png"
 		worldmodel = resource:"models/weapons/w_mg4.vmdl"
-		libraryname = "ttt_weapon_huge"
+		classname = "ttt_weapon_huge"
 		verticalrecoil = 30.0
 		horizontalrecoilrange = 7.0
 		recoilrecoveryscale = 10.0

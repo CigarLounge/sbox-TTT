@@ -15,6 +15,6 @@
 		price = 0
 		icon = "ui/equipment/cigar.png"
 		description = "Didn\'t you know that cigars contain benzopyrene, a chemical that leads to lung cancer\?"
-		libraryname = "ttt_equipment_cigar"
+		classname = "ttt_equipment_cigar"
 	}
 }

@@ -15,6 +15,6 @@
 		icon = "ui/equipment/teleporter.png"
 		description = ""
 		worldmodel = resource:"models/teleporter/teleporter.vmdl"
-		libraryname = "ttt_equipment_teleporter"
+		classname = "ttt_equipment_teleporter"
 	}
 }

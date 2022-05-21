@@ -9,10 +9,14 @@ public abstract class Asset : GameResource
 {
 	private static readonly Dictionary<string, Asset> Collection = new( StringComparer.OrdinalIgnoreCase );
 
-	[Property, Category( "Important" )]
-	public string LibraryName { get; set; }
+	[Category( "Important" )]
+	public string ClassName { get; set; }
 
-	public string Title { get; private set; }
+	[EditorBrowsable( EditorBrowsableState.Never )]
+	public TypeDescription TypeDescription { get; private set; }
+
+	[EditorBrowsable( EditorBrowsableState.Never )]
+	public string Title => TypeDescription.Title;
 
 	public static T GetInfo<T>( Type type ) where T : Asset
 	{
@@ -34,16 +38,17 @@ public abstract class Asset : GameResource
 	{
 		base.PostLoad();
 
-		if ( string.IsNullOrWhiteSpace( LibraryName ) )
+		if ( string.IsNullOrWhiteSpace( ClassName ) )
 			return;
 
-		var description = TypeLibrary.GetDescription<object>( LibraryName );
+		TypeDescription = TypeLibrary.GetDescription<object>( ClassName );
 
-		if ( description is null )
+		if ( TypeDescription is null )
 			return;
 
-		Title = description.Title;
-		Collection[LibraryName] = this;
+		Collection[ClassName] = this;
+
+		Log.Info( ClassName );
 
 		if ( !string.IsNullOrWhiteSpace( Title ) )
 			Collection[Title] = this;

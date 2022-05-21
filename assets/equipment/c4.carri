@@ -13,7 +13,7 @@
 		price = 100
 		icon = ""
 		worldmodel = resource:"models/c4/c4.vmdl"
-		libraryname = "ttt_equipment_c4"
+		classname = "ttt_equipment_c4"
 		candrop = false
 		description = "Powerful timed explosive."
 	}

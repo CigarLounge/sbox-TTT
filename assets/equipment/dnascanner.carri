@@ -15,6 +15,6 @@
 		price = 100
 		icon = ""
 		description = ""
-		libraryname = "ttt_equipment_dnascanner"
+		classname = "ttt_equipment_dnascanner"
 	}
 }

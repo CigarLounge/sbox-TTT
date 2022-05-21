@@ -19,10 +19,10 @@ public partial class Player
 		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
 			return false;
 
-		if ( !Role.AvailableItems.Contains( item.LibraryName ) )
+		if ( !Role.AvailableItems.Contains( item.ClassName ) )
 			return false;
 
-		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.LibraryName ) )
+		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.ClassName ) )
 			return false;
 
 		return true;
@@ -43,13 +43,13 @@ public partial class Player
 			return;
 
 		if ( itemInfo.IsLimited )
-			player.PurchasedLimitedShopItems.Add( itemInfo.LibraryName );
+			player.PurchasedLimitedShopItems.Add( itemInfo.ClassName );
 
 		player.Credits -= itemInfo.Price;
 
 		if ( itemInfo is CarriableInfo )
-			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.LibraryName ) );
+			player.Inventory.Add( TypeLibrary.Create<Carriable>( itemInfo.ClassName ) );
 		else if ( itemInfo is PerkInfo )
-			player.Perks.Add( TypeLibrary.Create<Perk>( itemInfo.LibraryName ) );
+			player.Perks.Add( TypeLibrary.Create<Perk>( itemInfo.ClassName ) );
 	}
 }

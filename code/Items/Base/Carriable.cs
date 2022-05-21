@@ -28,31 +28,31 @@ public enum HoldType
 [GameResource( "Carriable", "carri", "TTT carriable template." )]
 public class CarriableInfo : ItemInfo
 {
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public SlotType Slot { get; set; } = SlotType.Primary;
 
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public bool Spawnable { get; set; } = false;
 
-	[Property, Category( "Important" )]
+	[Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
 	[JsonPropertyName( "viewmodel" )]
-	[Property( "viewmodel", title: "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	[Title( "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string ViewModelPath { get; set; } = "";
 
 	[JsonPropertyName( "handsmodel" )]
-	[Property( "handsmodel", title: "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
+	[Title( "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string HandsModelPath { get; set; } = "";
 
-	[Property, Category( "WorldModels" )]
+	[Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
 
 	[JsonPropertyName( "worldmodel" )]
-	[Property( "worldmodel", title: "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
+	[Title( "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModelPath { get; set; } = "";
 
-	[Property, Category( "Stats" )]
+	[Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
 	[EditorBrowsable( EditorBrowsableState.Never )]
