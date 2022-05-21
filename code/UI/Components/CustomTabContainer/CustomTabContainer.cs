@@ -7,12 +7,11 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 /// <summary>
-/// A container with tabs, allowing you to switch between different sheets.
-/// 
-/// You can position the tabs by adding the class tabs-bottom, tabs-left, tabs-right (default is tabs top)
+/// A modified custom tab container used for the role menu.
+/// We should rewrite this and ensure we keep all functionality.
 /// </summary>
-[Library( "tabcontainer" ), Alias( "tabcontrol", "tabs" )]
-public class TabContainer : Panel
+[Library( "customtabcontainer" ), Alias( "tabcontrol", "tabs" )]
+public class CustomTabContainer : Panel
 {
 	/// <summary>
 	/// A control housing the tabs
@@ -29,7 +28,7 @@ public class TabContainer : Panel
 	/// </summary>
 	public List<Tab> Tabs = new();
 
-	public TabContainer()
+	public CustomTabContainer()
 	{
 		AddClass( "tabcontainer" );
 
@@ -109,12 +108,12 @@ public class TabContainer : Panel
 	/// </summary>
 	public class Tab
 	{
-		private TabContainer Parent;
+		private CustomTabContainer Parent;
 		public Button Button { get; protected set; }
 		public Panel Page { get; protected set; }
 		public string Title { get; protected set; }
 
-		public Tab( TabContainer tabControl, string title, string icon, Panel panel )
+		public Tab( CustomTabContainer tabControl, string title, string icon, Panel panel )
 		{
 			Parent = tabControl;
 			Page = panel;

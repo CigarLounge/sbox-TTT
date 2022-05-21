@@ -13,7 +13,7 @@ public partial class RoleMenu : Panel
 	public const string DNATab = "DNA";
 
 	private Label RoleHeader { get; set; }
-	private TabContainer TabContainer { get; set; }
+	private CustomTabContainer TabContainer { get; set; }
 
 	public RoleMenu() => Instance = this;
 
