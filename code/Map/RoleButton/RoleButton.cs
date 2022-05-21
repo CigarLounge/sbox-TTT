@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Hammer.Sphere( "radius" )]
+[SandboxEditor.Sphere( "radius" )]
 [Library( "ttt_role_button", Title = "Role Button" )]
 public partial class RoleButton : Entity
 {

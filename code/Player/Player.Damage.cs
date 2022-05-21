@@ -145,12 +145,13 @@ public partial class Player
 
 	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
-		var damageMultiplier = 1f;
+		float damageMultiplier = 1f;
+		bool isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 
-		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 		if ( isHeadShot )
 		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon );
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon.ClassName );
+
 			if ( weaponInfo is not null )
 				damageMultiplier *= weaponInfo.HeadshotMultiplier;
 		}

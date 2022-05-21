@@ -35,7 +35,7 @@ public partial class Player
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Asset.FromId<ItemInfo>( itemId );
+		var itemInfo = ResourceLibrary.Get<ItemInfo>( itemId );
 		if ( itemInfo is null )
 			return;
 

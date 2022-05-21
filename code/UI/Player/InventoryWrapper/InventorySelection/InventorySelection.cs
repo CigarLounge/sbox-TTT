@@ -38,7 +38,7 @@ public class InventorySelection : Panel
 		}
 
 		var activeItem = player.ActiveChild as Carriable;
-		var activeItemTitle = activeItem is not null ? activeItem.ClassInfo.Title : string.Empty;
+		var activeItemTitle = activeItem is not null ? activeItem.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
 		{

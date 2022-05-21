@@ -13,11 +13,11 @@ public class RandomGrenade : Entity
 
 	static RandomGrenade()
 	{
-		var grenadeTypes = Library.GetAll<Grenade>();
+		var grenadeTypes = TypeLibrary.GetTypes<Grenade>();
 
 		foreach ( var grenadeType in grenadeTypes )
 		{
-			var grenadeInfo = Asset.GetInfo<CarriableInfo>( Library.GetAttribute( grenadeType ).Name );
+			var grenadeInfo = Asset.GetInfo<CarriableInfo>( grenadeType );
 
 			if ( grenadeInfo is not null && grenadeInfo.Spawnable )
 				_cachedGrenadeTypes.Add( grenadeType );

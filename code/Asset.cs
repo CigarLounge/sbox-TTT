@@ -9,17 +9,25 @@ public abstract class Asset : GameResource
 {
 	private static readonly Dictionary<string, Asset> Collection = new( StringComparer.OrdinalIgnoreCase );
 
-	[Property( "libraryname", "The name you define in the Library Attribute in code." ), Category( "Important" )]
+	[Property, Category( "Important" )]
 	public string LibraryName { get; set; }
 
 	public string Title { get; private set; }
 
-	public static T GetInfo<T>( string name ) where T : Asset
+	public static T GetInfo<T>( Type type ) where T : Asset
 	{
-		if ( string.IsNullOrEmpty( name ) || !Collection.ContainsKey( name ) )
+		if ( type is null )
 			return null;
 
-		return Collection[name] as T;
+		return GetInfo<T>( TypeLibrary.GetDescription( type ).ClassName );
+	}
+
+	public static T GetInfo<T>( string className ) where T : Asset
+	{
+		if ( string.IsNullOrEmpty( className ) || !Collection.ContainsKey( className ) )
+			return null;
+
+		return Collection[className] as T;
 	}
 
 	protected override void PostLoad()
@@ -29,12 +37,12 @@ public abstract class Asset : GameResource
 		if ( string.IsNullOrWhiteSpace( LibraryName ) )
 			return;
 
-		var attribute = Library.GetAttribute( LibraryName );
+		var description = TypeLibrary.GetDescription<object>( LibraryName );
 
-		if ( attribute is null )
+		if ( description is null )
 			return;
 
-		Title = attribute.Title;
+		Title = description.Title;
 		Collection[LibraryName] = this;
 
 		if ( !string.IsNullOrWhiteSpace( Title ) )

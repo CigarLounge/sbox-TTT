@@ -27,10 +27,11 @@ public class RandomWeapon : Entity
 
 	static RandomWeapon()
 	{
-		var weapons = Library.GetAll<Weapon>();
+		var weapons = TypeLibrary.GetTypes<Weapon>();
+
 		foreach ( var weaponType in weapons )
 		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( weaponType ).Name );
+			var weaponInfo = Asset.GetInfo<WeaponInfo>( weaponType );
 
 			if ( weaponInfo is not null && weaponInfo.Spawnable )
 				_cachedWeaponTypes.Add( weaponType );
@@ -49,7 +50,7 @@ public class RandomWeapon : Entity
 			weaponTypes = new List<Type>();
 			foreach ( var type in _cachedWeaponTypes )
 			{
-				var weaponInfo = Asset.GetInfo<WeaponInfo>( Library.GetAttribute( type ).Name );
+				var weaponInfo = Asset.GetInfo<WeaponInfo>( type );
 				if ( weaponInfo is not null && weaponInfo.AmmoType == SelectedAmmoType )
 					weaponTypes.Add( type );
 			}

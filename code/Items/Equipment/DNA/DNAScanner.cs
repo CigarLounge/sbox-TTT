@@ -210,7 +210,8 @@ public partial class DNA : EntityComponent
 			}
 			default:
 			{
-				SourceName = Entity.ClassInfo.Title;
+				// Use: DisplayInfo.For( this ).Name
+				SourceName = Entity.ClassName;
 				TimeUntilDecayed = float.MaxValue; // Never should decay.
 
 				break;

@@ -19,7 +19,7 @@ public interface IEntityHint
 	/// </summary>
 	UI.EntityHintPanel DisplayHint( Player player )
 	{
-		return new UI.Hint( ((Entity)this).ClassInfo.Title );
+		return new UI.Hint( ((Entity)this).ClassName );
 	}
 
 	/// <summary>

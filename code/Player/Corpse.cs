@@ -61,7 +61,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		PlayerName = player.Client.Name;
 		PlayerId = player.Client.PlayerId;
 		KillInfo = player.LastDamageInfo;
-		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon );
+		KillerWeapon = Asset.GetInfo<CarriableInfo>( KillInfo.Weapon.ClassName );
 		DistanceKilledFrom = player.DistanceToAttacker;
 		HasCredits = player.Credits > 0;
 

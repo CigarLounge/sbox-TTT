@@ -61,7 +61,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public BaseRole()
 	{
-		Info = Asset.GetInfo<RoleInfo>( this );
+		Info = Asset.GetInfo<RoleInfo>( GetType() );
 	}
 
 	public virtual void OnSelect( Player player )
@@ -161,7 +161,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		Info = Asset.GetInfo<RoleInfo>( this );
+		Info = Asset.GetInfo<RoleInfo>( GetType() );
 		Player.RoleButtons = GetRoleButtons();
 	}
 #endif

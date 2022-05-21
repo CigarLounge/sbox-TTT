@@ -247,7 +247,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		Info = Asset.GetInfo<CarriableInfo>( this );
+		Info = Asset.GetInfo<CarriableInfo>( ClassName );
 	}
 #endif
 }

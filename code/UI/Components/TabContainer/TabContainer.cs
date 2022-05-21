@@ -11,7 +11,7 @@ namespace TTT.UI;
 /// 
 /// You can position the tabs by adding the class tabs-bottom, tabs-left, tabs-right (default is tabs top)
 /// </summary>
-[Library( "tabcontainer", Alias = new[] { "tabcontrol", "tabs" } )]
+[Library( "tabcontainer" ), Alias( "tabcontrol", "tabs" )]
 public class TabContainer : Panel
 {
 	/// <summary>
