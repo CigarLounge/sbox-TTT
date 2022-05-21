@@ -48,8 +48,6 @@ public abstract class Asset : GameResource
 
 		Collection[ClassName] = this;
 
-		Log.Info( ClassName );
-
 		if ( !string.IsNullOrWhiteSpace( Title ) )
 			Collection[Title] = this;
 	}
