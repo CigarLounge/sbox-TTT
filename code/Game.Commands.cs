@@ -25,7 +25,7 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
-		var itemInfo = Asset.GetInfo<ItemInfo>( itemName );
+		var itemInfo = GameResource.GetInfo<ItemInfo>( itemName );
 		if ( itemInfo is null )
 		{
 			Log.Error( $"{itemName} isn't a valid Item!" );
@@ -58,7 +58,7 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
-		var roleInfo = Asset.GetInfo<RoleInfo>( roleName );
+		var roleInfo = GameResource.GetInfo<RoleInfo>( roleName );
 		if ( roleInfo is null )
 		{
 			Log.Error( $"{roleName} isn't a valid Role!" );

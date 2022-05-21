@@ -17,7 +17,7 @@ public class RandomGrenade : Entity
 
 		foreach ( var grenadeType in grenadeTypes )
 		{
-			var grenadeInfo = Asset.GetInfo<CarriableInfo>( grenadeType );
+			var grenadeInfo = GameResource.GetInfo<CarriableInfo>( grenadeType );
 
 			if ( grenadeInfo is not null && grenadeInfo.Spawnable )
 				_cachedGrenadeTypes.Add( grenadeType );

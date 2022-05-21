@@ -31,7 +31,7 @@ public class RandomWeapon : Entity
 
 		foreach ( var weaponType in weapons )
 		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( weaponType );
+			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponType );
 
 			if ( weaponInfo is not null && weaponInfo.Spawnable )
 				_cachedWeaponTypes.Add( weaponType );
@@ -50,7 +50,7 @@ public class RandomWeapon : Entity
 			weaponTypes = new List<Type>();
 			foreach ( var type in _cachedWeaponTypes )
 			{
-				var weaponInfo = Asset.GetInfo<WeaponInfo>( type );
+				var weaponInfo = GameResource.GetInfo<WeaponInfo>( type );
 				if ( weaponInfo is not null && weaponInfo.AmmoType == SelectedAmmoType )
 					weaponTypes.Add( type );
 			}

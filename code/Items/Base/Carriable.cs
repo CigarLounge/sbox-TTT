@@ -113,7 +113,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			return;
 		}
 
-		Info = Asset.GetInfo<CarriableInfo>( ClassName );
+		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 		Model = Info.WorldModel;
 	}
 
@@ -122,7 +122,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.ClientSpawn();
 
 		if ( !string.IsNullOrWhiteSpace( ClassName ) )
-			Info = Asset.GetInfo<CarriableInfo>( ClassName );
+			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 
 	public override void ActiveStart( Entity entity )
@@ -247,7 +247,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		Info = Asset.GetInfo<CarriableInfo>( ClassName );
+		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 #endif
 }

@@ -150,7 +150,7 @@ public partial class Player
 
 		if ( isHeadShot )
 		{
-			var weaponInfo = Asset.GetInfo<WeaponInfo>( info.Weapon.ClassName );
+			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
 
 			if ( weaponInfo is not null )
 				damageMultiplier *= weaponInfo.HeadshotMultiplier;

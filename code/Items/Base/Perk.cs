@@ -12,7 +12,7 @@ public abstract class Perk : EntityComponent<Player>
 
 	public Perk()
 	{
-		Info = Asset.GetInfo<PerkInfo>( GetType() );
+		Info = GameResource.GetInfo<PerkInfo>( GetType() );
 	}
 
 	public virtual void Simulate( Client client ) { }
@@ -21,7 +21,7 @@ public abstract class Perk : EntityComponent<Player>
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		Info = Asset.GetInfo<PerkInfo>( GetType() );
+		Info = GameResource.GetInfo<PerkInfo>( GetType() );
 	}
 #endif
 }

@@ -5,9 +5,9 @@ using System.ComponentModel;
 
 namespace TTT;
 
-public abstract class Asset : GameResource
+public abstract class GameResource : Sandbox.GameResource
 {
-	private static readonly Dictionary<string, Asset> Collection = new( StringComparer.OrdinalIgnoreCase );
+	private static readonly Dictionary<string, GameResource> Collection = new( StringComparer.OrdinalIgnoreCase );
 
 	[Category( "Important" )]
 	public string ClassName { get; set; }
@@ -18,7 +18,7 @@ public abstract class Asset : GameResource
 	[EditorBrowsable( EditorBrowsableState.Never )]
 	public string Title => TypeDescription.Title;
 
-	public static T GetInfo<T>( Type type ) where T : Asset
+	public static T GetInfo<T>( Type type ) where T : GameResource
 	{
 		if ( type is null )
 			return null;
@@ -26,7 +26,7 @@ public abstract class Asset : GameResource
 		return GetInfo<T>( TypeLibrary.GetDescription( type ).ClassName );
 	}
 
-	public static T GetInfo<T>( string className ) where T : Asset
+	public static T GetInfo<T>( string className ) where T : GameResource
 	{
 		if ( string.IsNullOrEmpty( className ) || !Collection.ContainsKey( className ) )
 			return null;

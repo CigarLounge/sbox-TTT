@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace TTT;
 
 [GameResource( "Role", "role", "TTT role template." )]
-public class RoleInfo : Asset
+public class RoleInfo : GameResource
 {
 	public Team Team { get; set; } = Team.None;
 
@@ -60,7 +60,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public BaseRole()
 	{
-		Info = Asset.GetInfo<RoleInfo>( GetType() );
+		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 	}
 
 	public virtual void OnSelect( Player player )
@@ -160,7 +160,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		Info = Asset.GetInfo<RoleInfo>( GetType() );
+		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 		Player.RoleButtons = GetRoleButtons();
 	}
 #endif

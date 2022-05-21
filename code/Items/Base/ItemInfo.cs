@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace TTT;
 
-public abstract class ItemInfo : Asset
+public abstract class ItemInfo : GameResource
 {
 	[Category( "Important" )]
 	public bool Buyable { get; set; } = false;

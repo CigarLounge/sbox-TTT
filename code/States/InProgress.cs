@@ -184,7 +184,7 @@ public partial class InProgress : BaseState
 		UI.InfoFeed.DisplayRoleEntry
 		(
 			To.Multiple( clients ),
-			Asset.GetInfo<RoleInfo>( role.Title ),
+			GameResource.GetInfo<RoleInfo>( role.Title ),
 			$"You have been awarded {credits} credits for your performance."
 		);
 	}

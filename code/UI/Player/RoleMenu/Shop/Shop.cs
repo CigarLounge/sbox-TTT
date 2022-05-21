@@ -41,7 +41,7 @@ public partial class Shop : Panel
 	{
 		foreach ( var libraryName in player.Role.AvailableItems )
 		{
-			var itemInfo = Asset.GetInfo<ItemInfo>( libraryName );
+			var itemInfo = GameResource.GetInfo<ItemInfo>( libraryName );
 			if ( itemInfo is null )
 				continue;
 
