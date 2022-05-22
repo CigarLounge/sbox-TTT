@@ -15,6 +15,6 @@
 		worldmodel = resource:""
 		libraryname = "ttt_equipment_healthstation"
 		candrop = false
-		classname = "A modified microwave which dispenses health to any injured players. "
+		classname = "ttt_equipment_healthstation"
 	}
 }
