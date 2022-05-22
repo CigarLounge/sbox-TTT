@@ -1,8 +1,9 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
-[Library( "ttt_map_settings" )]
+[Library( "ttt_map_settings" ), HammerEntity]
 public partial class MapSettings : Entity
 {
 	/// <summary>

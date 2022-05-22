@@ -1,9 +1,10 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [EditorModel( "models/cigar/cigar.vmdl" )]
-[Library( "ttt_equipment_cigar", Title = "Cigar" )]
+[Library( "ttt_equipment_cigar", Title = "Cigar" ), HammerEntity]
 public class Cigar : Carriable
 {
 	private TimeUntil _timeUntilNextSmoke = 0;

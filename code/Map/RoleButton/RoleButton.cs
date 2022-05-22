@@ -1,9 +1,10 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [SandboxEditor.Sphere( "radius" )]
-[Library( "ttt_role_button", Title = "Role Button" )]
+[Library( "ttt_role_button", Title = "Role Button" ), HammerEntity]
 public partial class RoleButton : Entity
 {
 	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]

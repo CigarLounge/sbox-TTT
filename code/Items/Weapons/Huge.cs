@@ -1,10 +1,11 @@
 using Sandbox;
+using SandboxEditor;
 using System;
 
 namespace TTT;
 
 [EditorModel( "models/weapons/w_mg4.vmdl" )]
-[Library( "ttt_weapon_huge", Title = "H.U.G.E" )]
+[Library( "ttt_weapon_huge", Title = "H.U.G.E" ), HammerEntity]
 public class Huge : Weapon
 {
 	private const string BulletsBodyGroup = "bullets";

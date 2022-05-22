@@ -1,9 +1,10 @@
 ﻿using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [EditorModel( "models/weapons/w_bekas.vmdl" )]
-[Library( "ttt_weapon_bekas", Title = "Bekas-M" )]
+[Library( "ttt_weapon_bekas", Title = "Bekas-M" ), HammerEntity]
 public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;

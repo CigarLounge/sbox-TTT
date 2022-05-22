@@ -1,8 +1,9 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
-[Library( "ttt_force_win", Title = "Force Win", Description = "Forces round to end and win be awarded to team depending on input." )]
+[Library( "ttt_force_win", Title = "Force Win", Description = "Forces round to end and win be awarded to team depending on input." ), HammerEntity]
 public class ForceWin : Entity
 {
 	[Property( "Team", "The team that will be forced to win." )]

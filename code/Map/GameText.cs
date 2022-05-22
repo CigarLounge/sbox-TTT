@@ -1,4 +1,5 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
@@ -10,7 +11,7 @@ public enum EntryType : byte
 	Traitors,
 }
 
-[Library( "ttt_game_text", Title = "Game Text", Description = "Add text entry to the game feed when input fired." )]
+[Library( "ttt_game_text", Title = "Game Text", Description = "Add text entry to the game feed when input fired." ), HammerEntity]
 public class GameText : Entity
 {
 	[Property( "Message" )]

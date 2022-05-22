@@ -1,11 +1,12 @@
 using Sandbox;
+using SandboxEditor;
 using System;
 using System.Collections.Generic;
 
 namespace TTT;
 
 [EditorModel( "models/weapons/w_mp5.vmdl" )]
-[Library( "ttt_weapon_random", Title = "Random Weapon" )]
+[Library( "ttt_weapon_random", Title = "Random Weapon" ), HammerEntity]
 public class RandomWeapon : Entity
 {
 	/// <summary>

@@ -1,10 +1,11 @@
 ﻿using Sandbox;
+using SandboxEditor;
 using System;
 
 namespace TTT;
 
 [Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
-[EditorModel( "models/weapons/w_frag.vmdl" )]
+[EditorModel( "models/weapons/w_frag.vmdl" ), HammerEntity]
 public class Discombobulator : Grenade
 {
 	private const string ExplodeSound = "discombobulator_explode-1";

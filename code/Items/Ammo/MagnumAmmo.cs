@@ -1,9 +1,10 @@
 ﻿using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [EditorModel( "models/ammo/ammo_magnum/ammo_magnum.vmdl" )]
-[Library( "ttt_ammo_magnum", Title = "Magnum Ammo" )]
+[Library( "ttt_ammo_magnum", Title = "Magnum Ammo" ), HammerEntity]
 public class MagnumAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Magnum;

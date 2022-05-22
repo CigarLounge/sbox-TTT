@@ -1,9 +1,10 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [EditorModel( "models/weapons/w_spr.vmdl" )]
-[Library( "ttt_weapon_scout", Title = "Scout" )]
+[Library( "ttt_weapon_scout", Title = "Scout" ), HammerEntity]
 public class Scout : Weapon
 {
 	public bool IsScoped { get; private set; }
