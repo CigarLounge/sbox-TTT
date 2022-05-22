@@ -32,6 +32,11 @@ public partial class HomePage : Panel
 		GeneralMenu.Instance.AddPage( new ComponentTestingPage() );
 	}
 
+	public void GoToProjectInfoPage()
+	{
+		GeneralMenu.Instance.AddPage( new ProjectInfoPage() );
+	}
+
 	public void ToggleRecordingMode()
 	{
 		_isRecordingModeEnabled = !_isRecordingModeEnabled;
