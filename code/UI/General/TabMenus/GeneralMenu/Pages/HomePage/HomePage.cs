@@ -27,28 +27,6 @@ public partial class HomePage : Panel
 		GeneralMenu.Instance.AddPage( new CrosshairPage() );
 	}
 
-	public void GoToComponentTesting()
-	{
-		GeneralMenu.Instance.AddPage( new ComponentTestingPage() );
-	}
-
-	public void GoToProjectInfoPage()
-	{
-		GeneralMenu.Instance.AddPage( new ProjectInfoPage() );
-	}
-
-	public void ToggleRecordingMode()
-	{
-		_isRecordingModeEnabled = !_isRecordingModeEnabled;
-		foreach ( var child in Local.Hud.Children )
-		{
-			if ( child is TabMenus )
-				continue;
-
-			child.Enabled( !_isRecordingModeEnabled );
-		}
-	}
-
 	public override void Tick()
 	{
 		base.Tick();
