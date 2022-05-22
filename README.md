@@ -12,7 +12,7 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 
 ### Team
 - [Matthew Zegar](https://github.com/mzegar)
-- [Kole](https://github.com/kolexxx)
+- [Kosta Novosel](https://github.com/kolexxx)
 
 ### Direct Contributors
 - [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
