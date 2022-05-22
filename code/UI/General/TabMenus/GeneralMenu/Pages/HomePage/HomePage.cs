@@ -9,8 +9,6 @@ public partial class HomePage : Panel
 	private Button ForceSpectatorButton { get; init; }
 	private Button RockTheVoteButton { get; init; }
 
-	private bool _isRecordingModeEnabled = false;
-
 	public void GoToRoundSummaryPage()
 	{
 		GeneralMenu.Instance.AddPage( new RoundSummaryPage() );
