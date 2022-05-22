@@ -25,7 +25,7 @@ public class RandomWeapon : Entity
 	[Property( Title = "Amount of Ammo" )]
 	public int AmmoToSpawn { get; set; } = 0;
 
-	static RandomWeapon()
+	public static void CacheWeaponTypes()
 	{
 		var weapons = TypeLibrary.GetTypes<Weapon>();
 

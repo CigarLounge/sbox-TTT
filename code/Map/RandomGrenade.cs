@@ -11,7 +11,7 @@ public class RandomGrenade : Entity
 	private static readonly List<Type> _cachedGrenadeTypes = new();
 	private const int GRENADE_DISTANCE_UP = 4;
 
-	static RandomGrenade()
+	public static void CacheGrenadeTypes()
 	{
 		var grenadeTypes = TypeLibrary.GetTypes<Grenade>();
 
