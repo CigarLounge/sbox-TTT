@@ -6,7 +6,6 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class HomePage : Panel
 {
-	private Button RoundSummaryButton { get; init; }
 	private Button ForceSpectatorButton { get; init; }
 	private Button RockTheVoteButton { get; init; }
 
