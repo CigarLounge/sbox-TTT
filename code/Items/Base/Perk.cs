@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-[GameResource( "Perk", "perk", "TTT perk template." )]
+[GameResource( "Perk", "perk", "TTT perk template.", Icon = "admin_panel_settings" )]
 public class PerkInfo : ItemInfo { }
 
 public abstract class Perk : EntityComponent<Player>

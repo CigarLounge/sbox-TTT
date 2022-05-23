@@ -2,10 +2,9 @@
 {
 	data = 
 	{
-		team = "1"
-		defaultcredits = 100
-		classname = "ttt_role_detective"
-		exclusiveitems = 
+		Team = 1
+		DefaultCredits = 100
+		ExclusiveItems = 
 		[
 			"ttt_perk_radar",
 			"ttt_weapon_p90",
@@ -15,9 +14,13 @@
 			"ttt_equipment_defuser",
 			"ttt_equipment_cigar",
 		]
-		color = [ 0.098039, 0.4, 1.0, 1.0 ]
-		canrolechat = true
-		icon = "ui/detective-icon.png"
-		canretrievecredits = true
+		CanRetrieveCredits = true
+		CanRoleChat = true
+		Color = "0.09804,0.4,1,1"
+		icon = resource:"ui/detective-icon.jpg"
+		AvailableItems = null
+		"cached-icon" = null
+		ClassName = "ttt_role_detective"
+		Title = null
 	}
 }

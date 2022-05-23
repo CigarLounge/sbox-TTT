@@ -1,4 +1,3 @@
-using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,10 +12,7 @@ public abstract class GameResource : Sandbox.GameResource
 	public string ClassName { get; set; }
 
 	[EditorBrowsable( EditorBrowsableState.Never )]
-	public TypeDescription TypeDescription { get; private set; }
-
-	[EditorBrowsable( EditorBrowsableState.Never )]
-	public string Title => TypeDescription.Title;
+	public string Title { get; set; }
 
 	public static T GetInfo<T>( Type type ) where T : GameResource
 	{
@@ -41,11 +37,11 @@ public abstract class GameResource : Sandbox.GameResource
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 			return;
 
-		TypeDescription = TypeLibrary.GetDescription<object>( ClassName );
-
-		if ( TypeDescription is null )
+		var typeDescription = TypeLibrary.GetDescription<object>( ClassName );
+		if ( typeDescription is null )
 			return;
 
+		Title = typeDescription.Title;
 		Collection[ClassName] = this;
 
 		if ( !string.IsNullOrWhiteSpace( Title ) )

@@ -2,19 +2,24 @@
 {
 	data = 
 	{
-		slot = "4"
-		spawnable = false
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
-		deploytime = 0.0
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/equipment/microwave.png"
-		worldmodel = resource:""
-		libraryname = "ttt_equipment_healthstation"
-		candrop = false
-		classname = "ttt_equipment_healthstation"
+		Slot = 4
+		Spawnable = false
+		CanDrop = false
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
+		worldmodel = ""
+		DeployTime = 0
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = null
+		Buyable = true
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/equipment/microwave.jpg"
+		Description = "A modified microwave which dispenses health to any injured players."
+		"cached-icon" = null
+		ClassName = "ttt_equipment_healthstation"
+		Title = null
 	}
 }

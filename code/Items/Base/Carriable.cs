@@ -25,7 +25,7 @@ public enum HoldType
 	Fists
 }
 
-[GameResource( "Carriable", "carri", "TTT carriable template." )]
+[GameResource( "Carriable", "carri", "TTT carriable template.", Icon = "inventory_2" )]
 public class CarriableInfo : ItemInfo
 {
 	[Category( "Important" )]

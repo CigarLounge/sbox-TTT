@@ -24,8 +24,7 @@ public partial class Game : Sandbox.Game
 		{
 			_ = new UI.Hud();
 
-			// TODO: A static constructor should call these but there is a s&box bug that completely
-			// breaks the game. Let's change this once the bug is fixed...
+			// https://github.com/Facepunch/sbox-issues/issues/1857
 			RandomWeapon.CacheWeaponTypes();
 			RandomGrenade.CacheGrenadeTypes();
 		}

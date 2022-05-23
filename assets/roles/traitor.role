@@ -2,10 +2,9 @@
 {
 	data = 
 	{
-		team = "2"
-		defaultcredits = 200
-		classname = "ttt_role_traitor"
-		exclusiveitems = 
+		Team = 2
+		DefaultCredits = 200
+		ExclusiveItems = 
 		[
 			"ttt_perk_bodyarmor",
 			"ttt_perk_disguiser",
@@ -19,9 +18,13 @@
 			"ttt_equipment_newtonlauncher",
 			"ttt_equipment_c4",
 		]
-		color = [ 0.87451, 0.160784, 0.207843, 1.0 ]
-		canrolechat = true
-		icon = "ui/traitor-icon.png"
-		canretrievecredits = true
+		CanRetrieveCredits = true
+		CanRoleChat = true
+		Color = "0.87451,0.16078,0.20784,1"
+		icon = resource:"ui/traitor-icon.jpg"
+		AvailableItems = null
+		"cached-icon" = null
+		ClassName = "ttt_role_traitor"
+		Title = null
 	}
 }
