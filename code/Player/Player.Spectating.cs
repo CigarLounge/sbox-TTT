@@ -60,11 +60,13 @@ public partial class Player
 	public void MakeSpectator( bool useRagdollCamera = true )
 	{
 		Controller = null;
-		CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
+
+		if ( CameraMode is not ISpectateCamera )
+			CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
 		DelayedDeathCameraChange();
 	}
@@ -111,6 +113,7 @@ public partial class Player
 			return;
 
 		var localPlayer = Local.Pawn as Player;
+
 		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
 			localPlayer.CameraMode = new FreeSpectateCamera();
 	}
