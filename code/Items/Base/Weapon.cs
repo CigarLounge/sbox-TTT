@@ -12,7 +12,7 @@ public enum FireMode
 	Burst = 2
 }
 
-[GameResource( "Weapon", "weapon", "TTT weapon template." )]
+[GameResource( "Weapon", "weapon", "TTT weapon template.", Icon = "🔫" )]
 public class WeaponInfo : CarriableInfo
 {
 	[Category( "Sounds" ), ResourceType( "sound" )]

@@ -1,4 +1,4 @@
-using Sandbox;
+﻿using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 namespace TTT;
 
-[GameResource( "Role", "role", "TTT role template." )]
+[GameResource( "Role", "role", "TTT role template.", Icon = "🎭" )]
 public class RoleInfo : GameResource
 {
 	public Team Team { get; set; } = Team.None;
