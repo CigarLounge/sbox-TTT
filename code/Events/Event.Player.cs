@@ -43,19 +43,6 @@ public static partial class TTTEvent
 			public RoleChangedAttribute() : base( RoleChanged ) { }
 		}
 
-		public const string CreditsFound = "ttt.player.credits-found";
-
-		/// <summary>
-		/// Occurs when a player finds credits on a corpse.
-		/// <para>Parameters:</para>
-		/// <para>The <strong><see cref="TTT.Player"/></strong> who found the credits on the corpse. </para>
-		/// <para>The <strong><see cref="int"/></strong> credits that were found on the corpse.</para>
-		/// </summary>
-		public class CreditsFoundAttribute : EventAttribute
-		{
-			public CreditsFoundAttribute() : base( CreditsFound ) { }
-		}
-
 		public const string Spawned = "ttt.player.spawned";
 
 		/// <summary>

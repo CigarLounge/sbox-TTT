@@ -5,7 +5,7 @@ using Sandbox.UI.Construct;
 namespace TTT.UI;
 
 [UseTemplate]
-public partial class EventSummary : Panel
+public class EventSummary : Panel
 {
 	public static EventSummary Instance;
 
@@ -26,8 +26,8 @@ public partial class EventSummary : Panel
 		if ( GeneralMenu.Instance is not null )
 		{
 			// We should remove this once we can just send everything down as one list.
-			var eventCount = GeneralMenu.Instance.LastEventSummaryData.Events?.Length ?? 0;
-			var eventDescriptionCount = GeneralMenu.Instance.LastEventSummaryData.EventDescriptions?.Length ?? 0;
+			int eventCount = GeneralMenu.Instance.LastEventSummaryData.Events?.Length ?? 0;
+			int eventDescriptionCount = GeneralMenu.Instance.LastEventSummaryData.EventDescriptions?.Length ?? 0;
 
 			if ( eventCount == eventDescriptionCount )
 			{

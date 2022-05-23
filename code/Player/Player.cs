@@ -10,14 +10,23 @@ public partial class Player : Sandbox.Player
 	[Net, Local]
 	public int Credits { get; set; } = 0;
 
+	private Inventory _inventory;
 	public new Inventory Inventory
 	{
-		get => (Inventory)base.Inventory;
-		private init => base.Inventory = value;
+		get => _inventory;
+		private init
+		{
+			_inventory = value;
+			base.Inventory = value;
+		}
 	}
 
 	public Perks Perks { get; private init; }
 
+	/// <summary>
+	/// The player earns score by killing players on opposite teams, confirming bodies
+	/// and surviving the round.
+	/// </summary>
 	public int Score
 	{
 		get => Client.GetInt( Strings.Score );

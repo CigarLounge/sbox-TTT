@@ -62,8 +62,11 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		if ( player.LastDamageInfo.Attacker is Player attacker )
-			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.Client.Name} was killed by {attacker.Client.Name}" );
+		if ( Game.Current.State is not InProgress )
+			return;
+
+		if ( !player.DiedBySuicide )
+			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.Client.Name} was killed by {player.LastAttacker.Client.Name}" );
 		else if ( player.LastDamageInfo.Flags == DamageFlags.Fall )
 			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.Client.Name} fell to their death." );
 	}
@@ -75,14 +78,5 @@ public static class EventLogger
 			return;
 
 		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{player.Confirmer.Client.Name} found the corpse of {player.Corpse.PlayerName}" );
-	}
-
-	[TTTEvent.Player.CreditsFound]
-	private static void OnCreditsFound( Player player, int creditsFound )
-	{
-		if ( !Host.IsServer )
-			return;
-
-		LogEvent( EventType.PlayerFind, Game.Current.State.TimeLeft, $"{player.Client.Name} found {creditsFound} credits." );
 	}
 }
