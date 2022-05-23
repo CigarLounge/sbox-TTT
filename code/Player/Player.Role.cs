@@ -51,4 +51,16 @@ public partial class Player
 		IsRoleKnown = true;
 		SetRole( roleInfo.ClassName );
 	}
+
+	[TTTEvent.Round.RolesAssigned]
+	private void OnRolesAssigned()
+	{
+		if ( !IsClient || IsLocalPawn )
+			return;
+
+		// After the roles have been assigned, set everyone
+		// to being innocent clientside.
+		if ( !IsRoleKnown )
+			Role = new Innocent();
+	}
 }

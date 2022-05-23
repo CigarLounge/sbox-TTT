@@ -25,7 +25,7 @@ public partial class Player : Sandbox.Player
 
 	/// <summary>
 	/// The player earns score by killing players on opposite teams, confirming bodies
-	/// and surviving the round.
+	/// or surviving the round.
 	/// </summary>
 	public int Score
 	{
@@ -126,7 +126,7 @@ public partial class Player : Sandbox.Player
 		DeleteFlashlight();
 
 		if ( !IsLocalPawn )
-			Role = new Innocent();
+			Role = new NoneRole();
 		else
 			ClearButtons();
 
