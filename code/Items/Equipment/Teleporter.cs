@@ -2,8 +2,8 @@
 
 namespace TTT;
 
-[HideInEditor]
-[Library( "ttt_equipment_teleporter", Title = "Teleporter" )]
+[Library( "ttt_equipment_teleporter" )]
+[Title( "Teleporter" )]
 public partial class Teleporter : Carriable
 {
 	[Net, Predicted]
@@ -22,6 +22,9 @@ public partial class Teleporter : Carriable
 	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	public override string SlotText => Charges.ToString();
+
+	private const float TeleportTime = 4f;
+	private bool _hasReachedLocation;
 	private Vector3 _teleportLocation;
 	private Particles _particle;
 
@@ -48,17 +51,12 @@ public partial class Teleporter : Carriable
 		{
 			_particle ??= Particles.Create( "particles/teleport.vpcf", Owner, true );
 
-			if ( TimeSinceStartedTeleporting >= 2f )
+			if ( TimeSinceStartedTeleporting >= TeleportTime / 2 )
 			{
-				if ( IsServer )
-				{
-					Owner.Position = _teleportLocation;
-					foreach ( var ent in Entity.FindInBox( Owner.CollisionBounds ) )
-						if ( ent is Player player && player != Owner )
-							TeleFrag( player );
-				}
+				if ( IsServer && !_hasReachedLocation )
+					Teleport();
 
-				if ( TimeSinceStartedTeleporting >= 4f )
+				if ( TimeSinceStartedTeleporting >= TeleportTime )
 				{
 					IsTeleporting = false;
 					_particle?.Destroy();
@@ -127,17 +125,31 @@ public partial class Teleporter : Carriable
 		IsTeleporting = true;
 		TimeSinceAction = 0;
 		TimeSinceStartedTeleporting = 0;
+		_hasReachedLocation = false;
 	}
 
-	private void TeleFrag( Player player )
+	private void Teleport()
 	{
-		var damageInfo = DamageInfo.Generic( float.MaxValue )
-			.WithPosition( player.Position )
+		_hasReachedLocation = true;
+		Owner.Position = _teleportLocation;
+
+		var bbox = Owner.CollisionBounds + Owner.Position;
+
+		foreach ( var entity in Entity.FindInBox( bbox ) )
+		{
+			if ( entity is Player && entity != Owner )
+				TeleFrag( entity );
+		}
+	}
+
+	private void TeleFrag( Entity entity )
+	{
+		var damageInfo = DamageInfo.Generic( entity.Health )
 			.WithFlag( DamageFlags.Beam )
 			.WithAttacker( Owner )
 			.WithWeapon( this );
 
-		player.TakeDamage( damageInfo );
+		entity.TakeDamage( damageInfo );
 	}
 
 	protected override void OnDestroy()
