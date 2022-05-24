@@ -18,14 +18,15 @@ public class RandomWeapon : Entity
 
 	private const int WEAPON_DISTANCE_UP = 4;
 
-
-	[Property( "Ammo Type to Spawn", "If changed, will only spawn weapons of the selected ammo type." )]
+	[Description( "If changed, will only spawn weapons of the selected ammo type." )]
+	[Property]
 	public AmmoType SelectedAmmoType { get; set; } = AmmoType.None;
 
 	/// <summary>
 	/// Defines the amount of matching ammo entities that should be spawned near the weapons.
 	/// </summary>
-	[Property( Title = "Amount of Ammo" )]
+	[Title( "Amount of ammo" )]
+	[Property]
 	public int AmmoToSpawn { get; set; } = 0;
 
 	public static void CacheWeaponTypes()

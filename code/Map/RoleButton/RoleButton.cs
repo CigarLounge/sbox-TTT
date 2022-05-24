@@ -10,22 +10,28 @@ namespace TTT;
 [Title( "Role Button" )]
 public partial class RoleButton : Entity
 {
-	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	[Net, Property]
 	public string Role { get; set; } = "Traitor";
 
-	[Net, Property( "Description", "On screen tooltip shown on button." )]
+	[Description( "On screen tooltip shown on button." )]
+	[Net, Property]
 	public string Description { get; private set; }
 
-	[Net, Property( "Radius", "Maximum radius a player can see and activate a button. Buttons are fully opaque within 512 units." )]
+	[Description( "Maximum radius a player can see and activate a button. Buttons are fully opaque within 512 units." )]
+	[Net, Property]
 	public int Radius { get; private set; } = 1024;
 
-	[Property( "Delay", "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers." )]
+	[Description( "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers." )]
+	[Property]
 	public int Delay { get; private set; } = 1;
 
-	[Property( "Remove On Press", "Only allows button to be pressed once per round." )]
+	[Description( "Only allows button to be pressed once per round." )]
+	[Property]
 	public bool RemoveOnPress { get; private set; } = false;
 
-	[Net, Property( "Locked", "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input." )]
+	[Description( "Is the button locked? If enabled, button needs to be unlocked with the `Unlock` or `Toggle` input." )]
+	[Net, Property]
 	public bool Locked { get; private set; } = false;
 
 	[Net]

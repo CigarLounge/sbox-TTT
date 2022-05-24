@@ -17,13 +17,14 @@ public enum EntryType : byte
 [Title( "Game Text" )]
 public class GameText : Entity
 {
-	[Property( "Message" )]
+	[Property]
 	public string Message { get; set; } = "";
 
-	[Property( "Receiver", "Who will this message go to?" )]
+	[Description( "Who will this message go to?" )]
+	[Property]
 	public EntryType Receiver { get; set; } = EntryType.Activator;
 
-	[Property( "Text color" )]
+	[Property]
 	public Color Color { get; set; } = Color.White;
 
 	[Input]

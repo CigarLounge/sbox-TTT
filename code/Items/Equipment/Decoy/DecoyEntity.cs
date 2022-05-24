@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
+[ClassName( "ttt_entity_decoy" )]
 [EditorModel( "models/decoy/decoy.vmdl" )]
-[Library( "ttt_entity_decoy" )]
 [Title( "Decoy" )]
 public partial class DecoyEntity : Prop, IEntityHint, IUse
 {

@@ -9,7 +9,9 @@ namespace TTT;
 [Title( "Role Check" )]
 public partial class RoleCheck : Entity
 {
-	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	[Title( "Check Value" )]
+	[Property]
 	public string Role { get; set; } = "Traitor";
 
 	/// <summary>

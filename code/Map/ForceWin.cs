@@ -9,10 +9,12 @@ namespace TTT;
 [Title( "Force Win" )]
 public class ForceWin : Entity
 {
-	[Property( "Team", "The team that will be forced to win." )]
+	[Description( "The team that will be forced to win." )]
+	[Property]
 	public Team Team { get; set; }
 
-	[Property( "Use Activators Team", "OVERRIDES `Team` PROPERTY. When ActivateForceWin() is fired, this will award a win to the team of the activating player." )]
+	[Description( "OVERRIDES `Team` PROPERTY. When ActivateForceWin() is fired, this will award a win to the team of the activating player." )]
+	[Property]
 	public bool UseActivatorsTeam { get; set; } = false;
 
 	[Input]
