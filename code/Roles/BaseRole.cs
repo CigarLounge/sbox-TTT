@@ -29,10 +29,10 @@ public class RoleInfo : GameResource
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	public HashSet<string> AvailableItems { get; private set; }
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 

@@ -11,7 +11,7 @@ public abstract class GameResource : Sandbox.GameResource
 	[Category( "Important" )]
 	public string ClassName { get; set; }
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	public string Title { get; set; }
 
 	public static T GetInfo<T>( Type type ) where T : GameResource

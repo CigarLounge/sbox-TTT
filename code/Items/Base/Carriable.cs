@@ -55,15 +55,15 @@ public class CarriableInfo : ItemInfo
 	[Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	[JsonPropertyName( "cached-handsmodel" )]
 	public Model HandsModel { get; private set; }
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	[JsonPropertyName( "cached-viewmodel" )]
 	public Model ViewModel { get; private set; }
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	[JsonPropertyName( "cached-worldmodel" )]
 	public Model WorldModel { get; private set; }
 

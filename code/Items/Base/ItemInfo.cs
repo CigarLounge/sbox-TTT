@@ -22,7 +22,7 @@ public abstract class ItemInfo : GameResource
 	[Category( "UI" )]
 	public string Description { get; set; } = "";
 
-	[EditorBrowsable( EditorBrowsableState.Never )]
+	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
