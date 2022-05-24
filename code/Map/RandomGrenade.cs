@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+[ClassName( "ttt_grenade_random" )]
 [EditorModel( "models/weapons/w_frag.vmdl" )]
-[Library( "ttt_grenade_random", Title = "Random Grenade" ), HammerEntity]
+[HammerEntity]
+[Title( "Random Grenade" )]
 public class RandomGrenade : Entity
 {
 	private static readonly List<Type> _cachedGrenadeTypes = new();

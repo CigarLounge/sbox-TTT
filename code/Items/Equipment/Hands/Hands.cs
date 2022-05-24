@@ -12,8 +12,9 @@ public interface IGrabbable
 	void SecondaryAction();
 }
 
+[ClassName( "ttt_equipment_hands" )]
 [HideInEditor]
-[Library( "ttt_equipment_hands", Title = "Hands" )]
+[Title( "Hands" )]
 public partial class Hands : Carriable
 {
 	public const float MAX_INTERACT_DISTANCE = Player.UseDistance;

@@ -3,6 +3,8 @@ using SandboxEditor;
 
 namespace TTT;
 
+[ClassName( "ttt_weapon_m4" )]
 [EditorModel( "models/weapons/w_m4.vmdl" )]
-[Library( "ttt_weapon_m4", Title = "M4" ), HammerEntity]
+[HammerEntity]
+[Title( "M4" )]
 public class M4 : Weapon { }

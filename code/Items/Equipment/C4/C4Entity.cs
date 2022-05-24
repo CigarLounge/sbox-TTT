@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace TTT;
 
-[Library( "ttt_entity_c4", Title = "C4" )]
+[ClassName( "ttt_entity_c4" )]
 [EditorModel( "models/c4/c4.vmdl" )]
+[Title( "C4" )]
 public partial class C4Entity : Prop, IEntityHint
 {
 	public const string BeepSound = "c4_beep-1";

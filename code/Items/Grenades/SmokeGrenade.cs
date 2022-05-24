@@ -3,8 +3,10 @@ using SandboxEditor;
 
 namespace TTT;
 
+[ClassName( "ttt_grenade_smoke" )]
 [EditorModel( "models/weapons/w_smoke.vmdl" )]
-[Library( "ttt_grenade_smoke", Title = "Smoke Grenade" ), HammerEntity]
+[HammerEntity]
+[Title( "Smoke Grenade" )]
 public class SmokeGrenade : Grenade
 {
 	private const string ExplodeSound = "smoke_explode-1";

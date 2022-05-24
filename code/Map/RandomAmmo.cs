@@ -3,8 +3,10 @@ using SandboxEditor;
 
 namespace TTT;
 
+[ClassName( "ttt_ammo_random" )]
 [EditorModel( "models/ammo/ammo_smg/ammo_smg.vmdl" )]
-[Library( "ttt_ammo_random", Title = "Random Ammo" ), HammerEntity]
+[HammerEntity]
+[Title( "Random Ammo" )]
 public class RandomAmmo : Entity
 {
 	public override void Spawn()

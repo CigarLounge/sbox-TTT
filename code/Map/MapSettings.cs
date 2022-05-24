@@ -3,7 +3,8 @@ using SandboxEditor;
 
 namespace TTT;
 
-[Library( "ttt_map_settings" ), HammerEntity]
+[ClassName( "ttt_settings" )]
+[HammerEntity]
 public partial class MapSettings : Entity
 {
 	/// <summary>

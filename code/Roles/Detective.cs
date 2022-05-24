@@ -2,7 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_role_detective", Title = "Detective" )]
+[ClassName( "ttt_role_detective" )]
+[Title( "Detective" )]
 public class Detective : BaseRole
 {
 	public override void OnSelect( Player player )

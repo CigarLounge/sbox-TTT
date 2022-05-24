@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_entity_radio", Title = "Radio" )]
+[ClassName( "ttt_entity_radio" )]
 [EditorModel( "models/radio/radio.vmdl" )]
+[Title( "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );

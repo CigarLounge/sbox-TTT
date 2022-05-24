@@ -3,7 +3,10 @@ using SandboxEditor;
 
 namespace TTT;
 
-[Library( "ttt_role_check", Title = "Role Check" ), HammerEntity]
+[ClassName( "ttt_role_check" )]
+[Description( "Checks for the specified role." )]
+[HammerEntity]
+[Title( "Role Check" )]
 public partial class RoleCheck : Entity
 {
 	[Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]

@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[HideInEditor]
-[Library( "ttt_equipment_radio", Title = "Radio" )]
+[ClassName( "ttt_equipment_radio" )]
+[Title( "Radio" )]
 public class Radio : Deployable<RadioEntity>
 {
 	protected override void OnDeploy( RadioEntity entity )

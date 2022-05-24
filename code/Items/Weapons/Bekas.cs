@@ -4,7 +4,9 @@ using SandboxEditor;
 namespace TTT;
 
 [EditorModel( "models/weapons/w_bekas.vmdl" )]
-[Library( "ttt_weapon_bekas", Title = "Bekas-M" ), HammerEntity]
+[HammerEntity]
+[Library( "ttt_weapon_bekas" )]
+[Title( "Bekas-M" )]
 public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;

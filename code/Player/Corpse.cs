@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+[ClassName( "ttt_entity_corpse" )]
 [HideInEditor]
-[Library( "ttt_entity_corpse", Title = "Corpse" )]
+[Title( "Player corpse" )]
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
 	[Net]

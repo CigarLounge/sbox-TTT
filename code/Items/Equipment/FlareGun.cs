@@ -2,8 +2,8 @@
 
 namespace TTT;
 
-[HideInEditor]
-[Library( "ttt_equipment_flaregun", Title = "Flare Gun" )]
+[ClassName( "ttt_equipment_flaregun" )]
+[Title( "Flare Gun" )]
 public class FlareGun : Weapon
 {
 	public override string SlotText => AmmoClip.ToString();

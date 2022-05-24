@@ -4,8 +4,10 @@ using System;
 
 namespace TTT;
 
-[Library( "ttt_grenade_discombobulator", Title = "Discombobulator" )]
-[EditorModel( "models/weapons/w_frag.vmdl" ), HammerEntity]
+[ClassName( "ttt_grenade_discombobulator" )]
+[EditorModel( "models/weapons/w_frag.vmdl" )]
+[HammerEntity]
+[Title( "Discombobulator" )]
 public class Discombobulator : Grenade
 {
 	private const string ExplodeSound = "discombobulator_explode-1";

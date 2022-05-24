@@ -1,10 +1,11 @@
-﻿using Sandbox;
-using SandboxEditor;
+﻿using SandboxEditor;
 
 namespace TTT;
 
+[ClassName( "ttt_ammo_sniper" )]
 [EditorModel( "models/ammo/ammo_sniper/ammo_sniper.vmdl" )]
-[Library( "ttt_ammo_sniper", Title = "Sniper Ammo" ), HammerEntity]
+[HammerEntity]
+[Title( "Sniper Ammo" )]
 public class SniperAmmo : Ammo
 {
 	public override AmmoType Type => AmmoType.Sniper;

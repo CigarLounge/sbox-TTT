@@ -4,8 +4,10 @@ using System;
 
 namespace TTT;
 
+[ClassName( "ttt_weapon_huge" )]
 [EditorModel( "models/weapons/w_mg4.vmdl" )]
-[Library( "ttt_weapon_huge", Title = "H.U.G.E" ), HammerEntity]
+[HammerEntity]
+[Title( "H.U.G.E" )]
 public class Huge : Weapon
 {
 	private const string BulletsBodyGroup = "bullets";

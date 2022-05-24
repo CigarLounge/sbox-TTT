@@ -3,8 +3,11 @@ using SandboxEditor;
 
 namespace TTT;
 
-[SandboxEditor.Sphere( "radius" )]
-[Library( "ttt_role_button", Title = "Role Button" ), HammerEntity]
+[ClassName( "ttt_role_button" )]
+[Description( "On-screen button that can be pressed by users with the specified role." )]
+[HammerEntity]
+[Sphere( "radius" )]
+[Title( "Role Button" )]
 public partial class RoleButton : Entity
 {
 	[Net, Property( "Check Value", "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]

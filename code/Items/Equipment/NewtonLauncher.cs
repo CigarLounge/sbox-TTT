@@ -3,8 +3,8 @@ using System;
 
 namespace TTT;
 
-[HideInEditor]
-[Library( "ttt_equipment_newtonlauncher", Title = "Newton Launcher" )]
+[ClassName( "ttt_equipment_newtonlauncher" )]
+[Title( "Newton Launcher" )]
 public partial class NewtonLauncher : Weapon
 {
 	[Net, Predicted]

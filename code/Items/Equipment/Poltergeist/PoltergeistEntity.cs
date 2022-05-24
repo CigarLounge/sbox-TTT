@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
+[ClassName( "ttt_entity_poltergeist" )]
 [HideInEditor]
-[Library( "ttt_entity_poltergeist" )]
 public partial class PoltergeistEntity : Prop
 {
 	private static readonly Model WorldModel = Model.Load( "models/poltergeist/poltergeist_attachment.vmdl" );

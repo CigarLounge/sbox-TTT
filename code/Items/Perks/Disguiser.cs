@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 
 namespace TTT;
 
-[Library( "ttt_perk_disguiser", Title = "Disguiser" )]
+[ClassName( "ttt_perk_disguiser" )]
+[Title( "Disguiser" )]
 public partial class Disguiser : Perk
 {
 	[Net, Local]

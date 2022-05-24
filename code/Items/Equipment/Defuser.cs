@@ -2,7 +2,8 @@ using Sandbox;
 
 namespace TTT;
 
-[Library( "ttt_equipment_defuser", Title = "Defuser" )]
+[ClassName( "ttt_equipment_defuser" )]
+[Title( "Defuser" )]
 public class Defuser : Carriable
 {
 	public override void Simulate( Client client )

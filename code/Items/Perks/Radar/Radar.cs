@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-[Library( "ttt_perk_radar", Title = "Radar" )]
+[ClassName( "ttt_perk_radar" )]
+[Title( "Radar" )]
 public partial class Radar : Perk
 {
 	[Net, Local]

@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-[Library( "ttt_equipment_teleporter" )]
+[ClassName( "ttt_equipment_teleporter" )]
 [Title( "Teleporter" )]
 public partial class Teleporter : Carriable
 {

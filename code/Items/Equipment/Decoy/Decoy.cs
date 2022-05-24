@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
+[ClassName( "ttt_equipment_decoy" )]
 [HideInEditor]
-[Library( "ttt_equipment_decoy", Title = "Decoy" )]
+[Title( "Decoy" )]
 public class Decoy : Deployable<DecoyEntity>
 {
 	protected override void OnDeploy( DecoyEntity entity )

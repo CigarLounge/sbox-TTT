@@ -3,8 +3,8 @@ using System;
 
 namespace TTT;
 
-[HideInEditor]
-[Library( "ttt_equipment_binoculars", Title = "Binoculars" )]
+[ClassName( "ttt_equipment_binoculars" )]
+[Title( "Binoculars" )]
 public partial class Binoculars : Carriable
 {
 	[Net, Predicted]

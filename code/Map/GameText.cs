@@ -11,7 +11,10 @@ public enum EntryType : byte
 	Traitors,
 }
 
-[Library( "ttt_game_text", Title = "Game Text", Description = "Add text entry to the game feed when input fired." ), HammerEntity]
+[ClassName( "ttt_game_text" )]
+[Description( "Add text entry to the game feed when input fired." )]
+[HammerEntity]
+[Title( "Game Text" )]
 public class GameText : Entity
 {
 	[Property( "Message" )]

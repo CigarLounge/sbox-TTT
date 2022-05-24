@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace TTT;
 
+[ClassName( "ttt_equipment_dnascanner" )]
 [HideInEditor]
-[Library( "ttt_equipment_dnascanner", Title = "DNA Scanner" )]
+[Title( "DNA Scanner" )]
 public partial class DNAScanner : Carriable
 {
 	[Net, Local]

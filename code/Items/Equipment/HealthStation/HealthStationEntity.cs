@@ -3,8 +3,9 @@ using System;
 
 namespace TTT;
 
-[Library( "ttt_entity_healthstation", Title = "Health Station" )]
+[ClassName( "ttt_entity_healthstation" )]
 [EditorModel( "models/health_station/health_station.vmdl" )]
+[Title( "Health Station" )]
 public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {
 	private static readonly Model WorldModel = Model.Load( "models/health_station/health_station.vmdl" );
