@@ -44,7 +44,7 @@ public partial class Player
 		if ( IsUseDisabled() )
 			return null;
 
-		// First try a direct 0 width line
+		// First try a direct 0 width line.
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
@@ -57,7 +57,7 @@ public partial class Player
 			ent = ent.Parent;
 		}
 
-		// Nothing found, try a wider search
+		// Nothing found, try a wider search.
 		if ( !IsValidUseEntity( ent ) )
 		{
 			trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )

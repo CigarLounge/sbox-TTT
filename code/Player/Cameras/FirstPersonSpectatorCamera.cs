@@ -4,7 +4,7 @@ namespace TTT;
 
 public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 {
-	private const float SMOOTH_SPEED = 25f;
+	private const float SmoothSpeed = 25f;
 
 	public override void Activated()
 	{
@@ -32,8 +32,8 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Position = Vector3.Lerp( Position, player.CurrentPlayer.EyePosition, SMOOTH_SPEED * Time.Delta );
-		Rotation = Rotation.Slerp( Rotation, player.CurrentPlayer.EyeRotation, SMOOTH_SPEED * Time.Delta );
+		Position = Vector3.Lerp( Position, player.CurrentPlayer.EyePosition, SmoothSpeed * Time.Delta );
+		Rotation = Rotation.Slerp( Rotation, player.CurrentPlayer.EyeRotation, SmoothSpeed * Time.Delta );
 	}
 
 	public override void BuildInput( InputBuilder input )

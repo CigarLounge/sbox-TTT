@@ -255,11 +255,11 @@ public partial class Player : Sandbox.Player
 
 	private void SimulateCarriableSwitch()
 	{
-		if ( Input.ActiveChild is not null )
-		{
-			LastActiveChild = ActiveChild;
-			ActiveChild = Input.ActiveChild;
-		}
+		if ( Input.ActiveChild is null )
+			return;
+
+		LastActiveChild = ActiveChild;
+		ActiveChild = Input.ActiveChild;
 	}
 
 	private void SimulatePerks()
