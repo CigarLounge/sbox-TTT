@@ -235,6 +235,7 @@ public partial class Player : Sandbox.Player
 			return;
 
 		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5 );
+		DisplayWorldHints( screenSize );
 	}
 
 	public void DeleteItems()
