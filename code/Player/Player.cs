@@ -224,7 +224,7 @@ public partial class Player : Sandbox.Player
 		if ( ActiveChild is Carriable carriable )
 			carriable.RenderHud( screenSize );
 
-		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5 );
+		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild is Weapon w ? w.CrosshairLastShoot.Relative : 1f );
 	}
 
 	public override void StartTouch( Entity other )

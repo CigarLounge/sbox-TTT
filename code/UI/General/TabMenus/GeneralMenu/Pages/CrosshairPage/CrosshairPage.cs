@@ -6,6 +6,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class CrosshairPage : Panel
 {
+	public bool IsDynamic { get; set; } = false;
 	public bool ShowTop { get; set; } = false;
 	public bool ShowDot { get; set; } = true;
 
@@ -21,6 +22,7 @@ public partial class CrosshairPage : Panel
 		if ( crosshairConfig is null )
 			return;
 
+		IsDynamic = crosshairConfig.IsDynamic;
 		ShowTop = crosshairConfig.ShowTop;
 		ShowDot = crosshairConfig.ShowDot;
 		Size = crosshairConfig.Size;
@@ -41,6 +43,7 @@ public partial class CrosshairPage : Panel
 	public override void Tick()
 	{
 		Crosshair.Instance.Config = new Crosshair.Properties(
+			IsDynamic,
 			ShowTop,
 			ShowDot,
 			Size,

@@ -8,6 +8,7 @@ public class Crosshair : Panel
 {
 	public class Properties
 	{
+		public bool IsDynamic { get; set; }
 		public bool ShowTop { get; set; }
 		public bool ShowDot { get; set; }
 		public int Size { get; set; }
@@ -16,6 +17,7 @@ public class Crosshair : Panel
 		public Color Color { get; set; }
 
 		public Properties(
+			bool IsDynamic,
 			bool ShowTop,
 			bool ShowDot,
 			int Size,
@@ -23,6 +25,7 @@ public class Crosshair : Panel
 			int Gap,
 			Color Color )
 		{
+			this.IsDynamic = IsDynamic;
 			this.ShowTop = ShowTop;
 			this.ShowDot = ShowDot;
 			this.Size = Size;
@@ -38,10 +41,10 @@ public class Crosshair : Panel
 	public Crosshair()
 	{
 		Instance = this;
-		Config = FileSystem.Data.ReadJson<Properties>( "crosshair.json" ) ?? new Properties( false, true, 0, 5, 0, Color.White );
+		Config = FileSystem.Data.ReadJson<Properties>( "crosshair.json" ) ?? new Properties( false, false, true, 10, 5, 0, Color.White );
 	}
 
-	public void RenderCrosshair( Vector2 center )
+	public void RenderCrosshair( Vector2 center, float timeSinceLastAttack )
 	{
 		var draw = Render.Draw2D;
 		draw.Color = Config.Color;
@@ -49,8 +52,9 @@ public class Crosshair : Panel
 		if ( Config.ShowDot )
 			draw.Box( new Rect( center.x - (Config.Thickness / 2), center.y - (Config.Thickness / 2), Config.Thickness, Config.Thickness ) );
 
-		var startingOffset = Config.Thickness + Config.Gap;
-		var endingOffset = Config.Thickness + Config.Gap + Config.Size;
+		var shootEase = Config.IsDynamic ? Easing.EaseIn( timeSinceLastAttack.LerpInverse( 0.2f, 0.0f ) * 5 ) : 0;
+		var startingOffset = Config.Thickness + Config.Gap + shootEase;
+		var endingOffset = startingOffset + Config.Size;
 
 		if ( Config.ShowTop )
 			draw.Line( Config.Thickness, center - Vector2.Up * startingOffset, center - Vector2.Up * endingOffset );

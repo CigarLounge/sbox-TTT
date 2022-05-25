@@ -114,6 +114,7 @@ public abstract partial class Weapon : Carriable
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
 	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
+	public TimeSince CrosshairLastShoot { get; set; }
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 
@@ -274,8 +275,8 @@ public abstract partial class Weapon : Carriable
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
-
 		CurrentRecoilAmount += RecoilOnShot;
+		CrosshairLastShoot = 0;
 	}
 
 	[ClientRpc]
