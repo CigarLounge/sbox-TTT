@@ -92,6 +92,19 @@ public partial class Game : Sandbox.Game
 		client.Pawn = null;
 	}
 
+	public override void RenderHud()
+	{
+		if ( Local.Pawn is not Player player )
+			return;
+
+		var scale = Screen.Height / 1080.0f;
+		var screenSize = Screen.Size / scale;
+		var matrix = Matrix.CreateScale( scale );
+
+		using ( Render.Draw2D.MatrixScope( matrix ) )
+			player.RenderHud( screenSize );
+	}
+
 	public override bool CanHearPlayerVoice( Client source, Client dest )
 	{
 		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )

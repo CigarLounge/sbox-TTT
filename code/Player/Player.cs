@@ -229,6 +229,14 @@ public partial class Player : Sandbox.Player
 			Inventory.Pickup( other );
 	}
 
+	public void RenderHud( Vector2 screenSize )
+	{
+		if ( !this.IsAlive() )
+			return;
+
+		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5 );
+	}
+
 	public void DeleteItems()
 	{
 		Components.RemoveAll();

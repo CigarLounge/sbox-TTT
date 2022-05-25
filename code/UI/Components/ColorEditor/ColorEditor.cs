@@ -91,6 +91,7 @@ public class ColorEditor : Panel
 		var a = Canvas.Add.Slider( 0, 1, 0.001f );
 		a.AddClass( "alpha_slider" );
 		a.Bind( "value", this, "AlphaValue" );
+		AlphaValue = 1;
 	}
 
 

@@ -12,7 +12,6 @@ public partial class CrosshairPage : Panel
 	public int Size { get; set; } = 0;
 	public int Thickness { get; set; } = 5;
 	public int Gap { get; set; } = 0;
-	public int OutlineThickness { get; set; } = 0;
 
 	public Color SelectedColor { get; set; } = Color.White;
 
@@ -27,27 +26,27 @@ public partial class CrosshairPage : Panel
 		Size = crosshairConfig.Size;
 		Thickness = crosshairConfig.Thickness;
 		Gap = crosshairConfig.Gap;
-		OutlineThickness = crosshairConfig.OutlineThickness;
 		SelectedColor = crosshairConfig.Color;
 	}
 
+	// Called from CrosshairPage.html
 	public void SaveCrosshairData()
 	{
 		if ( Crosshair.Instance is not null )
 			FileSystem.Data.WriteJson( "crosshair.json", Crosshair.Instance.Config );
+
 		GeneralMenu.Instance.PopPage();
 	}
 
 	public override void Tick()
 	{
-		Crosshair.Instance?.SetupCrosshair( new Crosshair.Properties(
+		Crosshair.Instance.Config = new Crosshair.Properties(
 			ShowTop,
 			ShowDot,
 			Size,
 			Thickness,
-			OutlineThickness,
 			Gap,
 			SelectedColor
-		) );
+		);
 	}
 }
