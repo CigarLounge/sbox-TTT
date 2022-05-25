@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
@@ -6,30 +5,32 @@ namespace TTT.UI;
 
 public class Crosshair : Panel
 {
+	private const string FilePath = "crosshair.json";
+
 	public class Properties
 	{
+		public bool IsDynamic { get; set; }
 		public bool ShowTop { get; set; }
 		public bool ShowDot { get; set; }
 		public int Size { get; set; }
 		public int Thickness { get; set; }
-		public int OutlineThickness { get; set; }
 		public int Gap { get; set; }
 		public Color Color { get; set; }
 
 		public Properties(
+			bool IsDynamic,
 			bool ShowTop,
 			bool ShowDot,
 			int Size,
 			int Thickness,
-			int OutlineThickness,
 			int Gap,
 			Color Color )
 		{
+			this.IsDynamic = IsDynamic;
 			this.ShowTop = ShowTop;
 			this.ShowDot = ShowDot;
 			this.Size = Size;
 			this.Thickness = Thickness;
-			this.OutlineThickness = OutlineThickness;
 			this.Gap = Gap;
 			this.Color = Color;
 		}
@@ -38,85 +39,37 @@ public class Crosshair : Panel
 	public static Crosshair Instance;
 	public Properties Config { get; set; }
 
-	private readonly List<Panel> _lines = new();
-	private readonly Panel _topLine;
-	private readonly Panel _leftLine;
-	private readonly Panel _rightLine;
-	private readonly Panel _bottomLine;
-	private readonly Panel _dot;
-
 	public Crosshair()
 	{
 		Instance = this;
-		StyleSheet.Load( "/UI/Player/Crosshair/Crosshair.scss" );
-		_topLine = Add.Panel( "line" );
-		_leftLine = Add.Panel( "line" );
-		_rightLine = Add.Panel( "line" );
-		_bottomLine = Add.Panel( "line" );
-		_dot = Add.Panel( "dot" );
-
-		_lines.Add( _leftLine );
-		_lines.Add( _bottomLine );
-		_lines.Add( _rightLine );
-		_lines.Add( _topLine );
-
-		var crosshairConfig = FileSystem.Data.ReadJson<Properties>( "crosshair.json" );
-		SetupCrosshair( crosshairConfig ?? new Properties( false, true, 0, 5, 0, 0, Color.White ) );
+		Config = GetActiveConfig();
 	}
 
-	public void SetupCrosshair( Properties crosshairProperties )
+	public void RenderCrosshair( Vector2 center, Entity activeChild )
 	{
-		for ( int i = 0; i < _lines.Count; ++i )
-		{
-			var isHorizontal = i % 2 == 0;
-			var crosshairLine = _lines[i];
+		var draw = Render.Draw2D;
+		draw.Color = Config.Color;
 
-			crosshairLine.Style.BackgroundColor = crosshairProperties.Color;
-			crosshairLine.Style.Width = isHorizontal
-				? crosshairProperties.Size
-				: crosshairProperties.Thickness;
-			crosshairLine.Style.Height = isHorizontal ? crosshairProperties.Thickness : crosshairProperties.Size;
-			crosshairLine.Style.BorderColor = Color.Black;
-			crosshairLine.Style.BorderWidth = crosshairProperties.OutlineThickness;
+		if ( Config.ShowDot )
+			draw.Box( new Rect( center.x - (Config.Thickness / 2), center.y - (Config.Thickness / 2), Config.Thickness, Config.Thickness ) );
 
-			switch ( i )
-			{
-				case 0: // Left element
-					crosshairLine.Style.Left = Length.Pixels( crosshairProperties.Size + crosshairProperties.Gap );
-					break;
-				case 1: // Bottom element
-					crosshairLine.Style.Top = Length.Pixels( crosshairProperties.Size + crosshairProperties.Gap );
-					break;
-				case 2: // Right element
-					crosshairLine.Style.Left = Length.Pixels( -crosshairProperties.Size - crosshairProperties.Gap );
-					break;
-				case 3: // Top element
-					crosshairLine.Style.Top = Length.Pixels( -crosshairProperties.Size - crosshairProperties.Gap );
-					break;
-			}
-		}
+		var shootEase = 0f;
+		if ( Config.IsDynamic && activeChild is Weapon weapon )
+			shootEase = Easing.EaseIn( ((float)weapon.TimeSinceLastClientShoot).LerpInverse( 0.2f, 0.0f ) * 5 );
 
-		if ( crosshairProperties.ShowDot )
-		{
-			_dot.Style.BackgroundColor = crosshairProperties.Color;
-			_dot.Style.Width = crosshairProperties.Thickness;
-			_dot.Style.Height = crosshairProperties.Thickness;
-			_dot.Style.Opacity = crosshairProperties.Color.a;
-			_dot.Style.BorderColor = Color.Black;
-			_dot.Style.BorderWidth = crosshairProperties.OutlineThickness;
-		}
-		else
-		{
-			_dot.Style.Opacity = 0;
-		}
+		var startingOffset = Config.Thickness + Config.Gap + shootEase;
+		var endingOffset = startingOffset + Config.Size;
 
-		_topLine.Style.Opacity = crosshairProperties.ShowTop ? crosshairProperties.Color.a : 0;
+		if ( Config.ShowTop )
+			draw.Line( Config.Thickness, center - Vector2.Up * startingOffset, center - Vector2.Up * endingOffset );
 
-		Config = crosshairProperties;
+		draw.Line( Config.Thickness, center + Vector2.Up * startingOffset, center + Vector2.Up * endingOffset );
+		draw.Line( Config.Thickness, center + Vector2.Left * startingOffset, center + Vector2.Left * endingOffset );
+		draw.Line( Config.Thickness, center - Vector2.Left * startingOffset, center - Vector2.Left * endingOffset );
 	}
 
-	public override void Tick()
+	public static Properties GetActiveConfig()
 	{
-		this.Enabled( Local.Pawn.IsAlive() );
+		return FileSystem.Data.ReadJson<Properties>( FilePath ) ?? Instance?.Config ?? new Properties( true, true, true, 0, 5, 0, Color.White );
 	}
 }

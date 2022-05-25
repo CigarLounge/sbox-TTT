@@ -158,6 +158,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void FrameSimulate( Client client ) { }
 
+	public virtual void RenderHud( in Vector2 screenSize ) { }
+
 	public override void BuildInput( InputBuilder input ) { }
 
 	public override void CreateViewModel()

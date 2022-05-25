@@ -4,6 +4,9 @@
     <button icon="save" onclick="SaveCrosshairData()">Save Crosshair</button>
     <br />
 
+    <checkbox @checked="IsDynamic">Dynamic</checkbox>
+    <br />
+
     <checkbox @checked="ShowTop">Show Top</checkbox>
     <br />
 
@@ -26,12 +29,6 @@
     <br />
     <br />
     <SliderEntry min="-20" max="100" @value="Gap"></SliderEntry>
-    <br />
-
-    <text>Outline Thickness</text>
-    <br />
-    <br />
-    <SliderEntry min="0" max="25" @value="OutlineThickness"></SliderEntry>
     <br />
 
     <br />

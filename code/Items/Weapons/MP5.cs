@@ -6,5 +6,5 @@ namespace TTT;
 [ClassName( "ttt_weapon_mp5" )]
 [EditorModel( "models/weapons/w_mp5.vmdl" )]
 [HammerEntity]
-[Title( "M9" )]
+[Title( "MP5" )]
 public class MP5 : Weapon { }
