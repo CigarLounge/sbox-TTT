@@ -216,6 +216,17 @@ public partial class Player : Sandbox.Player
 		ActiveChild?.FrameSimulate( client );
 	}
 
+	public void RenderHud( Vector2 screenSize )
+	{
+		if ( !this.IsAlive() )
+			return;
+
+		if ( ActiveChild is Carriable carriable )
+			carriable.RenderHud( screenSize );
+
+		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5 );
+	}
+
 	public override void StartTouch( Entity other )
 	{
 		if ( other is PickupTrigger )
@@ -227,14 +238,6 @@ public partial class Player : Sandbox.Player
 
 		if ( IsServer )
 			Inventory.Pickup( other );
-	}
-
-	public void RenderHud( Vector2 screenSize )
-	{
-		if ( !this.IsAlive() )
-			return;
-
-		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5 );
 	}
 
 	public void DeleteItems()
