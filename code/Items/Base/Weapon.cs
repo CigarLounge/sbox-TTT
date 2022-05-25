@@ -111,12 +111,12 @@ public abstract partial class Weapon : Carriable
 	[Net, Local, Predicted]
 	public TimeSince TimeSinceReload { get; protected set; }
 
-	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	public Vector3 RecoilOnShot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
-	public Vector3 CurrentRecoilAmount { get; private set; } = Vector3.Zero;
-	public TimeSince CrosshairLastShoot { get; set; }
-
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
+	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
+	public TimeSince TimeSinceLastClientShoot { get; set; }
+
+	private Vector3 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
+	private Vector3 CurrentRecoil { get; set; } = Vector3.Zero;
 
 	public override void Spawn()
 	{
@@ -181,10 +181,10 @@ public abstract partial class Weapon : Carriable
 		float oldPitch = input.ViewAngles.pitch;
 		float oldYaw = input.ViewAngles.yaw;
 
-		input.ViewAngles.pitch -= CurrentRecoilAmount.y * Time.Delta;
-		input.ViewAngles.yaw -= CurrentRecoilAmount.x * Time.Delta;
+		input.ViewAngles.pitch -= CurrentRecoil.y * Time.Delta;
+		input.ViewAngles.yaw -= CurrentRecoil.x * Time.Delta;
 
-		CurrentRecoilAmount -= CurrentRecoilAmount
+		CurrentRecoil -= CurrentRecoil
 			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
 			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
@@ -275,8 +275,8 @@ public abstract partial class Weapon : Carriable
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
-		CurrentRecoilAmount += RecoilOnShot;
-		CrosshairLastShoot = 0;
+		CurrentRecoil += RecoilOnShoot;
+		TimeSinceLastClientShoot = 0;
 	}
 
 	[ClientRpc]
