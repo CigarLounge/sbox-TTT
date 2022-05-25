@@ -34,11 +34,17 @@ public abstract class GameResource : Sandbox.GameResource
 	{
 		base.PostLoad();
 
+		if ( TypeLibrary is null )
+			return;
+
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 			return;
 
-		if ( TypeLibrary == null )
+		if ( Collection.ContainsKey( ClassName ) )
+		{
+			Log.Error( $"There is already a resource tied to {ClassName}" );
 			return;
+		}
 
 		var typeDescription = TypeLibrary.GetDescription<object>( ClassName );
 		if ( typeDescription is null )
