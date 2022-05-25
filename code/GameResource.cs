@@ -37,6 +37,9 @@ public abstract class GameResource : Sandbox.GameResource
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 			return;
 
+		if ( TypeLibrary == null )
+			return;
+
 		var typeDescription = TypeLibrary.GetDescription<object>( ClassName );
 		if ( typeDescription is null )
 			return;
