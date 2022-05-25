@@ -6,8 +6,8 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class CrosshairPage : Panel
 {
-	public bool IsDynamic { get; set; } = false;
-	public bool ShowTop { get; set; } = false;
+	public bool IsDynamic { get; set; } = true;
+	public bool ShowTop { get; set; } = true;
 	public bool ShowDot { get; set; } = true;
 
 	public int Size { get; set; } = 0;
@@ -18,7 +18,7 @@ public partial class CrosshairPage : Panel
 
 	public CrosshairPage()
 	{
-		var crosshairConfig = FileSystem.Data.ReadJson<Crosshair.Properties>( "crosshair.json" );
+		var crosshairConfig = Crosshair.GetActiveConfig();
 		if ( crosshairConfig is null )
 			return;
 

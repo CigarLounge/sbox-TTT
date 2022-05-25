@@ -113,7 +113,7 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	public TimeSince TimeSinceLastClientShoot { get; set; }
+	public TimeSince TimeSinceLastClientShoot { get; private set; }
 
 	private Vector3 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	private Vector3 CurrentRecoil { get; set; } = Vector3.Zero;
