@@ -97,7 +97,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
-	public void Swap( Carriable carriable )
+	public void OnUse( Carriable carriable )
 	{
 		Host.AssertServer();
 

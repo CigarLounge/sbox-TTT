@@ -8,10 +8,9 @@ namespace TTT;
 public partial class Binoculars : Carriable
 {
 	[Net, Predicted]
-	private float ZoomLevel { get; set; }
+	private int ZoomLevel { get; set; }
 
 	public bool IsZoomed => ZoomLevel > 0;
-
 	private Corpse _corpse;
 	private float _defaultFOV;
 
@@ -75,7 +74,7 @@ public partial class Binoculars : Carriable
 	{
 		base.DestroyHudElements();
 
-		(Local.Pawn as Player).CameraMode.FieldOfView = _defaultFOV;
+		PreviousOwner.CameraMode.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
