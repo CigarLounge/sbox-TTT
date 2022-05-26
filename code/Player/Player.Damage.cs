@@ -134,6 +134,7 @@ public partial class Player
 
 		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
 		OnDamageTaken( To.Single( Client ), damageLocation );
+		Event.Run( TTTEvent.Player.Damaged, this, info );
 
 		LastDamageInfo = info;
 

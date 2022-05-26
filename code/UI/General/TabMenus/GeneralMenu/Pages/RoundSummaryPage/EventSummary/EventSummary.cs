@@ -57,9 +57,10 @@ public class EventSummary : Panel
 		return eventType switch
 		{
 			EventType.Round => "flag",
+			EventType.PlayerDamaged => "error",
 			EventType.PlayerKill => "group",
 			EventType.PlayerSuicide => "person",
-			EventType.PlayerFind => "search",
+			EventType.PlayerCorpseFound => "search",
 			_ => string.Empty,
 		};
 	}
