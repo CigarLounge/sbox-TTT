@@ -101,7 +101,7 @@ public static class EventLogger
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )
 			FileSystem.Data.CreateDirectory( LogFolder );
 
-		var mapFolderPath = $"{LogFolder}/{Global.MapName}";
+		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
 		if ( !FileSystem.Data.DirectoryExists( mapFolderPath ) )
 			FileSystem.Data.CreateDirectory( mapFolderPath );
 
