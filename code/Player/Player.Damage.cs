@@ -62,7 +62,7 @@ public partial class Player
 	public new float Health
 	{
 		get => base.Health;
-		set => base.Health = Math.Min( value, MaxHealth );
+		set => base.Health = Math.Clamp( value, 0, MaxHealth );
 	}
 
 	/// <summary>
@@ -132,17 +132,28 @@ public partial class Player
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.Flags == DamageFlags.Bullet )
+		if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( info );
 
+		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
+			Deafen( To.Single( Client ), info.Damage.LerpInverse( 0, 60 ) );
+
+		info.Damage = Math.Min( Health, info.Damage );
+
+		LastAttacker = info.Attacker;
+		LastAttackerWeapon = info.Weapon;
 		LastDamageInfo = info;
 
 		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
 		OnDamageTaken( To.Single( Client ), damageLocation );
 
+		Health -= info.Damage;
 		Event.Run( TTTEvent.Player.TookDamage, this );
 
-		base.TakeDamage( info );
+		this.ProceduralHitReaction( info );
+
+		if ( Health <= 0f )
+			OnKilled();
 	}
 
 	private float GetBulletDamageMultipliers( DamageInfo info )

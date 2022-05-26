@@ -125,7 +125,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		float damage = Math.Min( player.Health, player.LastDamageInfo.Damage );
+		float damage = player.LastDamageInfo.Damage;
 
 		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
