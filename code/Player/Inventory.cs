@@ -12,7 +12,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	public Entity Active
 	{
 		get => Owner.ActiveChild;
-		set => Owner.ActiveChild = value;
+		set => Owner.ActiveChild = value as Carriable;
 	}
 
 	public Carriable this[int i] => _list[i];

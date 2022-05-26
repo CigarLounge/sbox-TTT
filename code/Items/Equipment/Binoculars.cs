@@ -18,7 +18,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveStart( entity );
 
-		_defaultFOV = Owner.CameraMode.FieldOfView;
+		_defaultFOV = Owner.Camera.FieldOfView;
 	}
 
 	public override void ActiveEnd( Entity entity, bool dropped )
@@ -74,7 +74,7 @@ public partial class Binoculars : Carriable
 	{
 		base.DestroyHudElements();
 
-		PreviousOwner.CameraMode.FieldOfView = _defaultFOV;
+		PreviousOwner.Camera.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
@@ -83,13 +83,13 @@ public partial class Binoculars : Carriable
 		{
 			_corpse = null;
 			ZoomLevel = 0;
-			Owner.CameraMode.FieldOfView = _defaultFOV;
+			Owner.Camera.FieldOfView = _defaultFOV;
 
 			return;
 		}
 
 		PlaySound( Strings.ScopeInSound );
 		ZoomLevel++;
-		Owner.CameraMode.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
+		Owner.Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}
 }

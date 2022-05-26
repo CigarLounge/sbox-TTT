@@ -53,7 +53,7 @@ public partial class Player
 			CurrentPlayer = players[_targetSpectatorIndex];
 		}
 
-		if ( CameraMode is ISpectateCamera camera )
+		if ( Camera is ISpectateCamera camera )
 			camera.OnUpdateSpectatedPlayer( oldSpectatedPlayer, CurrentPlayer );
 	}
 
@@ -65,8 +65,8 @@ public partial class Player
 		Health = 0f;
 		LifeState = LifeState.Dead;
 
-		if ( CameraMode is not ISpectateCamera )
-			CameraMode = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+		if ( Camera is not ISpectateCamera )
+			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
 
 		DelayedDeathCameraChange();
 	}
@@ -77,8 +77,8 @@ public partial class Player
 		// move them to a free spectate camera.
 		await GameTask.DelaySeconds( 2 );
 
-		if ( CameraMode is RagdollSpectateCamera )
-			CameraMode = new FreeSpectateCamera();
+		if ( Camera is RagdollSpectateCamera )
+			Camera = new FreeSpectateCamera();
 	}
 
 	private void ChangeSpectateCamera()
@@ -86,24 +86,24 @@ public partial class Player
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
-		if ( CameraMode is RagdollSpectateCamera || CameraMode is FirstPersonSpectatorCamera )
+		if ( Camera is RagdollSpectateCamera || Camera is FirstPersonSpectatorCamera )
 		{
-			CameraMode = new FreeSpectateCamera();
+			Camera = new FreeSpectateCamera();
 			return;
 		}
 
 		var spectatablePlayers = Utils.GetAlivePlayers().Count > 0;
 		if ( !spectatablePlayers )
 		{
-			if ( CameraMode is not FreeSpectateCamera )
-				CameraMode = new FreeSpectateCamera();
+			if ( Camera is not FreeSpectateCamera )
+				Camera = new FreeSpectateCamera();
 			return;
 		}
 
-		if ( CameraMode is FreeSpectateCamera )
-			CameraMode = new ThirdPersonSpectateCamera();
-		else if ( CameraMode is ThirdPersonSpectateCamera )
-			CameraMode = new FirstPersonSpectatorCamera();
+		if ( Camera is FreeSpectateCamera )
+			Camera = new ThirdPersonSpectateCamera();
+		else if ( Camera is ThirdPersonSpectateCamera )
+			Camera = new FirstPersonSpectatorCamera();
 	}
 
 	[TTTEvent.Player.Killed]
@@ -115,6 +115,6 @@ public partial class Player
 		var localPlayer = Local.Pawn as Player;
 
 		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
-			localPlayer.CameraMode = new FreeSpectateCamera();
+			localPlayer.Camera = new FreeSpectateCamera();
 	}
 }

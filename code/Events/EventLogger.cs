@@ -106,21 +106,21 @@ public static class EventLogger
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )
 			FileSystem.Data.CreateDirectory( LogFolder );
 
-		string mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
+		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
 		if ( !FileSystem.Data.DirectoryExists( mapFolderPath ) )
 			FileSystem.Data.CreateDirectory( mapFolderPath );
 
-		string logFilePath = $"{mapFolderPath}/{DateTime.Now:yyyy-MM-dd HH.mm.ss}.txt";
+		var logFilePath = $"{mapFolderPath}/{DateTime.Now:yyyy-MM-dd HH.mm.ss}.txt";
 		FileSystem.Data.WriteAllText( logFilePath, GetEventSummary() );
 	}
 
 	private static string GetEventSummary()
 	{
-		string summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
+		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
 		if ( Events.Count != EventDescriptions.Count )
 			return summary;
 
-		for ( int i = 0; i < Events.Count; ++i )
+		for ( var i = 0; i < Events.Count; ++i )
 			summary += $"{Events[i].Time.TimerString()} - {EventDescriptions[i]}\n";
 
 		return summary;

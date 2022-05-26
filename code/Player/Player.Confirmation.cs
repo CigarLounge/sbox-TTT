@@ -4,17 +4,11 @@ namespace TTT;
 
 public partial class Player
 {
-	public new Corpse Corpse
-	{
-		get => (Corpse)base.Corpse;
-		set => base.Corpse = value;
-	}
-
 	/// <summary>
 	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-
+	public Corpse Corpse { get; set; }
 	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;

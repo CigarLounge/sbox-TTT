@@ -73,11 +73,8 @@ public partial class Player
 		int ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
 		{
-			using ( Prediction.Off() )
-			{
-				SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
-				PlaySound( Strings.AmmoPickupSound );
-			}
+			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
+			PlaySound( Strings.AmmoPickupSound );
 		}
 
 		return ammoPickedUp;

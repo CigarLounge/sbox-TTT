@@ -131,7 +131,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 		if ( entity is Player player )
 		{
-			var animator = player.GetActiveAnimator();
+			var animator = player.Animator;
 
 			if ( animator is not null )
 				SimulateAnimator( animator );

@@ -103,7 +103,7 @@ public partial class Player
 			Color = Color.White,
 			InnerConeAngle = 20,
 			OuterConeAngle = 40,
-			FogStength = 1.0f,
+			FogStrength = 1.0f,
 			Owner = this,
 			Parent = this,
 			LightCookie = Texture.Load( "materials/effects/lightcookie.vtex" )

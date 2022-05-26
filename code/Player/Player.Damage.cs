@@ -55,7 +55,9 @@ public enum HitboxGroup
 
 public partial class Player
 {
-	public const float MaxHealth = 100f;
+	[Net]
+	public TimeSince TimeSinceDeath { get; private set; }
+
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
 
@@ -100,6 +102,8 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
+	public const float MaxHealth = 100f;
+
 	private static readonly ColorGroup[] HealthGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
@@ -116,6 +120,44 @@ public partial class Player
 
 		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
 		return HealthGroupList[index];
+	}
+
+	public override void OnKilled()
+	{
+		TimeSinceDeath = 0;
+		LifeState = LifeState.Dead;
+		StopUsing();
+
+		Client?.AddInt( "deaths", 1 );
+
+		if ( !DiedBySuicide )
+			LastAttacker.Client.AddInt( "kills" );
+
+		BecomeCorpse();
+		RemoveAllDecals();
+
+		EnableAllCollisions = false;
+		EnableDrawing = false;
+
+		Inventory.DropAll();
+		DeleteFlashlight();
+		DeleteItems();
+
+		Event.Run( TTTEvent.Player.Killed, this );
+		Game.Current.State.OnPlayerKilled( this );
+
+		ClientOnKilled( this );
+	}
+
+	private void ClientOnKilled()
+	{
+		Host.AssertClient();
+
+		if ( IsLocalPawn )
+			ClearButtons();
+
+		DeleteFlashlight();
+		Event.Run( TTTEvent.Player.Killed, this );
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -136,7 +178,7 @@ public partial class Player
 			info.Damage *= GetBulletDamageMultipliers( info );
 
 		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
-			Deafen( To.Single( Client ), info.Damage.LerpInverse( 0, 60 ) );
+			Deafen( info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
 
@@ -175,6 +217,12 @@ public partial class Player
 	}
 
 	[ClientRpc]
+	public void Deafen( float strength )
+	{
+		Audio.SetEffect( "flashbang", strength, velocity: 20.0f, fadeOut: 4.0f * strength );
+	}
+
+	[ClientRpc]
 	private void SendDamageInfo( Entity attacker, Entity weapon, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position )
 	{
 		var info = DamageInfo.Generic( damage )
@@ -189,5 +237,14 @@ public partial class Player
 
 		if ( IsLocalPawn )
 			Event.Run( TTTEvent.Player.TookDamage, this );
+	}
+
+	[ClientRpc]
+	public static void ClientOnKilled( Player player )
+	{
+		if ( !player.IsValid() )
+			return;
+
+		player.ClientOnKilled();
 	}
 }

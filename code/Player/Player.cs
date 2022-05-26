@@ -2,26 +2,25 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class Player : Sandbox.Player
+[Title( "Player" ), Icon( "emoji_people" )]
+public partial class Player : AnimatedEntity
 {
-	[Net, Local, Predicted]
-	public Entity LastActiveChild { get; set; }
+	public Inventory Inventory { get; private init; }
+	public Perks Perks { get; private init; }
 
-	[Net, Local]
-	public int Credits { get; set; } = 0;
-
-	private Inventory _inventory;
-	public new Inventory Inventory
+	public CameraMode Camera
 	{
-		get => _inventory;
-		private init
+		get => Components.Get<CameraMode>();
+		set
 		{
-			_inventory = value;
-			base.Inventory = value;
+			var current = Camera;
+			if ( current == value )
+				return;
+
+			Components.RemoveAny<CameraMode>();
+			Components.Add( value );
 		}
 	}
-
-	public Perks Perks { get; private init; }
 
 	/// <summary>
 	/// The player earns score by killing players on opposite teams, confirming bodies
@@ -51,6 +50,7 @@ public partial class Player : Sandbox.Player
 	{
 		base.Spawn();
 
+		Tags.Add( "player" );
 		SetModel( "models/citizen/citizen.vmdl" );
 		Role = new NoneRole();
 
@@ -61,10 +61,11 @@ public partial class Player : Sandbox.Player
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
+		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
 
 		Animator = new StandardPlayerAnimator();
-		CameraMode = new FreeSpectateCamera();
+		Camera = new FreeSpectateCamera();
 	}
 
 	public override void ClientSpawn()
@@ -74,7 +75,7 @@ public partial class Player : Sandbox.Player
 		Role = new NoneRole();
 	}
 
-	public override void Respawn()
+	public void Respawn()
 	{
 		Host.AssertServer();
 
@@ -100,7 +101,7 @@ public partial class Player : Sandbox.Player
 			EnableDrawing = true;
 
 			Controller = new WalkController();
-			CameraMode = new FirstPersonCamera();
+			Camera = new FirstPersonCamera();
 
 			CreateHull();
 			CreateFlashlight();
@@ -137,44 +138,10 @@ public partial class Player : Sandbox.Player
 		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
-	public override void OnKilled()
-	{
-		base.OnKilled();
-
-		if ( !DiedBySuicide )
-			LastAttacker.Client.AddInt( "kills" );
-
-		BecomeCorpse();
-		RemoveAllDecals();
-
-		EnableAllCollisions = false;
-		EnableDrawing = false;
-
-		Inventory.DropAll();
-		DeleteFlashlight();
-		DeleteItems();
-
-		Event.Run( TTTEvent.Player.Killed, this );
-		Game.Current.State.OnPlayerKilled( this );
-
-		ClientOnKilled( this );
-	}
-
-	private void ClientOnKilled()
-	{
-		Host.AssertClient();
-
-		if ( IsLocalPawn )
-			ClearButtons();
-
-		DeleteFlashlight();
-		Event.Run( TTTEvent.Player.Killed, this );
-	}
-
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.Simulate( client, this, GetActiveAnimator() );
+		controller?.Simulate( client, this, Animator );
 
 		if ( Input.Pressed( InputButton.Menu ) )
 		{
@@ -213,10 +180,50 @@ public partial class Player : Sandbox.Player
 
 	public override void FrameSimulate( Client client )
 	{
-		base.FrameSimulate( client );
+		Host.AssertClient( "FrameSimulate" );
+
+		var controller = GetActiveController();
+		controller?.FrameSimulate( client, this, Animator );
+
+		if ( WaterLevel > 0.9f )
+		{
+			Audio.SetEffect( "underwater", 1, velocity: 5.0f );
+		}
+		else
+		{
+			Audio.SetEffect( "underwater", 0, velocity: 1.0f );
+		}
 
 		DisplayEntityHints();
 		ActiveChild?.FrameSimulate( client );
+	}
+
+	/// <summary>
+	/// Called after the camera setup logic has run. Allow the player to
+	/// do stuff to the camera, or using the camera. Such as positioning entities
+	/// relative to it, like viewmodels etc.
+	/// </summary>
+	public override void PostCameraSetup( ref CameraSetup setup )
+	{
+		ActiveChild?.PostCameraSetup( ref setup );
+	}
+
+	/// <summary>
+	/// Called from the gamemode, clientside only.
+	/// </summary>
+	public override void BuildInput( InputBuilder input )
+	{
+		if ( input.StopProcessing )
+			return;
+
+		ActiveChild?.BuildInput( input );
+
+		GetActiveController()?.BuildInput( input );
+
+		if ( input.StopProcessing )
+			return;
+
+		Animator?.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -228,6 +235,32 @@ public partial class Player : Sandbox.Player
 			carriable.RenderHud( screenSize );
 
 		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild );
+	}
+
+	[Net, Predicted]
+	public PawnAnimator Animator { get; set; }
+
+	#region Controller
+	[Net, Predicted]
+	public PawnController Controller { get; set; }
+
+	[Net, Predicted]
+	public PawnController DevController { get; set; }
+
+	public PawnController GetActiveController()
+	{
+		return DevController ?? Controller;
+	}
+	#endregion
+
+	public void CreateHull()
+	{
+		CollisionGroup = CollisionGroup.Player;
+		AddCollisionLayer( CollisionLayer.Player );
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
+
+		MoveType = MoveType.MOVETYPE_WALK;
+		EnableHitboxes = true;
 	}
 
 	public override void StartTouch( Entity other )
@@ -251,6 +284,35 @@ public partial class Player : Sandbox.Player
 		RemoveAllClothing();
 	}
 
+	#region ActiveChild
+	[Net, Predicted]
+	public Carriable ActiveChild { get; set; }
+
+	[Predicted]
+	public Carriable LastActiveChild { get; set; }
+
+	public void SimulateActiveChild( Client client, Carriable child )
+	{
+		if ( LastActiveChild != child )
+		{
+			OnActiveChildChanged( LastActiveChild, child );
+			LastActiveChild = child;
+		}
+
+		if ( !LastActiveChild.IsValid() )
+			return;
+
+		if ( LastActiveChild.IsAuthority )
+			LastActiveChild.Simulate( client );
+	}
+
+	public void OnActiveChildChanged( Carriable previous, Carriable next )
+	{
+		previous?.ActiveEnd( this, previous.Owner != this );
+		next?.ActiveStart( this );
+	}
+	#endregion
+
 	private void CheckPlayerDropCarriable()
 	{
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
@@ -273,7 +335,7 @@ public partial class Player : Sandbox.Player
 			return;
 
 		LastActiveChild = ActiveChild;
-		ActiveChild = Input.ActiveChild;
+		ActiveChild = Input.ActiveChild as Carriable;
 	}
 
 	private void SimulatePerks()
@@ -284,17 +346,23 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
+	public override void OnChildAdded( Entity child )
+	{
+		Inventory?.OnChildAdded( child );
+	}
+
+	public override void OnChildRemoved( Entity child )
+	{
+		Inventory?.OnChildRemoved( child );
+	}
+
 	protected override void OnComponentAdded( EntityComponent component )
 	{
-		base.OnComponentAdded( component );
-
 		Perks?.OnComponentAdded( component );
 	}
 
 	protected override void OnComponentRemoved( EntityComponent component )
 	{
-		base.OnComponentAdded( component );
-
 		Perks?.OnComponentRemoved( component );
 	}
 
@@ -313,14 +381,5 @@ public partial class Player : Sandbox.Player
 			return;
 
 		player.ClientRespawn();
-	}
-
-	[ClientRpc]
-	public static void ClientOnKilled( Player player )
-	{
-		if ( !player.IsValid() )
-			return;
-
-		player.ClientOnKilled();
 	}
 }
