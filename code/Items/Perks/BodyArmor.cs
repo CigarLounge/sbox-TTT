@@ -1,5 +1,3 @@
-using Sandbox;
-
 namespace TTT;
 
 [ClassName( "ttt_perk_bodyarmor" )]

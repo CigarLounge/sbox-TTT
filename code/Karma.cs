@@ -111,8 +111,12 @@ public static class Karma
 		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
 	}
 
-	public static void OnPlayerHurt( Player player )
+	[TTTEvent.Player.TookDamage]
+	private static void OnPlayerTookDamage( Player player )
 	{
+		if ( Game.Current.State is not InProgress )
+			return;
+
 		var attacker = player.LastDamageInfo.Attacker as Player;
 
 		if ( !attacker.IsValid() || !player.IsValid() )
@@ -121,7 +125,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		float damage = Math.Min( player.Health, player.LastDamageInfo.Damage );
+		float damage = player.LastDamageInfo.Damage;
 
 		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{

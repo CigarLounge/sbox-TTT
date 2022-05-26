@@ -54,5 +54,17 @@ public static partial class TTTEvent
 		{
 			public SpawnedAttribute() : base( Spawned ) { }
 		}
+
+		public const string TookDamage = "ttt.player.took-damage";
+
+		/// <summary>
+		/// Occurs when a player takes damage.
+		/// <para>Parameters:</para>
+		/// <para>The <strong><see cref="TTT.Player"/></strong> who was damaged.</para>
+		/// </summary>
+		public class TookDamageAttribute : EventAttribute
+		{
+			public TookDamageAttribute() : base( TookDamage ) { }
+		}
 	}
 }

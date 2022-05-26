@@ -3,7 +3,7 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public partial class ShopItem : Panel
+public class ShopItem : Panel
 {
 	public ItemInfo ItemInfo { get; init; }
 	public bool IsDisabled { get; private set; }

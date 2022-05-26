@@ -141,6 +141,9 @@ public partial class Player : Sandbox.Player
 	{
 		base.OnKilled();
 
+		if ( !DiedBySuicide )
+			LastAttacker.Client.AddInt( "kills" );
+
 		BecomeCorpse();
 		RemoveAllDecals();
 

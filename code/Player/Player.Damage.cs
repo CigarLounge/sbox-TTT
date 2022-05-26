@@ -62,7 +62,7 @@ public partial class Player
 	public new float Health
 	{
 		get => base.Health;
-		set => base.Health = Math.Min( value, MaxHealth );
+		set => base.Health = Math.Clamp( value, 0, MaxHealth );
 	}
 
 	/// <summary>
@@ -120,6 +120,9 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
+		if ( !this.IsAlive() )
+			return;
+
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 			if ( Game.Current.State is not InProgress and not PostRound )
@@ -129,18 +132,27 @@ public partial class Player
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.Flags == DamageFlags.Bullet )
+		if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( info );
 
-		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
-		OnDamageTaken( To.Single( Client ), damageLocation );
+		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
+			Deafen( To.Single( Client ), info.Damage.LerpInverse( 0, 60 ) );
 
+		info.Damage = Math.Min( Health, info.Damage );
+
+		LastAttacker = info.Attacker;
+		LastAttackerWeapon = info.Weapon;
 		LastDamageInfo = info;
 
-		if ( Game.Current.State is InProgress )
-			Karma.OnPlayerHurt( this );
+		Health -= info.Damage;
+		Event.Run( TTTEvent.Player.TookDamage, this );
 
-		base.TakeDamage( info );
+		SendDamageInfo( To.Single( this ), LastAttacker, LastAttackerWeapon, info.Damage, info.Flags, info.HitboxIndex, info.Position );
+
+		this.ProceduralHitReaction( info );
+
+		if ( Health <= 0f )
+			OnKilled();
 	}
 
 	private float GetBulletDamageMultipliers( DamageInfo info )
@@ -163,9 +175,19 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void OnDamageTaken( Vector3 position )
+	private void SendDamageInfo( Entity attacker, Entity weapon, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position )
 	{
-		UI.DamageIndicator.Instance?.OnHit( position );
-		UI.PlayerInfo.Instance?.OnHit();
+		var info = DamageInfo.Generic( damage )
+			.WithAttacker( attacker )
+			.WithWeapon( weapon )
+			.WithFlag( damageFlag )
+			.WithHitbox( hitboxIndex )
+			.WithPosition( position );
+
+		LastAttacker = info.Attacker;
+		LastDamageInfo = info;
+
+		if ( IsLocalPawn )
+			Event.Run( TTTEvent.Player.TookDamage, this );
 	}
 }

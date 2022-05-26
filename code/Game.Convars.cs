@@ -4,6 +4,11 @@ namespace TTT;
 
 public partial class Game
 {
+	#region Logging
+	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
+	public static bool LoggerEnabled { get; set; } = false;
+	#endregion
+
 	#region Round
 	[ConVar.Server( "ttt_preround_time", Help = "The length of the preround time.", Saved = true )]
 	public static int PreRoundTime { get; set; } = 20;
