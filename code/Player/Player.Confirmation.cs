@@ -86,8 +86,8 @@ public partial class Player
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
-			.UseHitboxes()
 			.EntitiesOnly()
+			.WithTag( "player" )
 			.Run();
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )
