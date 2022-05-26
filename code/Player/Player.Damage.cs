@@ -120,6 +120,9 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
+		if ( !this.IsAlive() )
+			return;
+
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 			if ( Game.Current.State is not InProgress and not PostRound )
@@ -132,14 +135,12 @@ public partial class Player
 		if ( info.Flags == DamageFlags.Bullet )
 			info.Damage *= GetBulletDamageMultipliers( info );
 
-		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
-		OnDamageTaken( To.Single( Client ), damageLocation );
-		Event.Run( TTTEvent.Player.Damaged, this, info );
-
 		LastDamageInfo = info;
 
-		if ( Game.Current.State is InProgress )
-			Karma.OnPlayerHurt( this );
+		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
+		OnDamageTaken( To.Single( Client ), damageLocation );
+
+		Event.Run( TTTEvent.Player.TookDamage, this );
 
 		base.TakeDamage( info );
 	}
