@@ -18,19 +18,6 @@ public static partial class TTTEvent
 			public CorpseFoundAttribute() : base( CorpseFound ) { }
 		}
 
-		public const string Damaged = "ttt.player.damaged";
-
-		/// <summary>
-		/// Occurs when a player is damaged.
-		/// <para>Parameters:</para>
-		/// <para>The <strong><see cref="TTT.Player"/></strong> who was damaged.</para>
-		/// <para><strong><see cref="DamageInfo"/></strong> containing the source of damage and amount of damage.</para>
-		/// </summary>
-		public class DamagedAttribute : EventAttribute
-		{
-			public DamagedAttribute() : base( Damaged ) { }
-		}
-
 		public const string Killed = "ttt.player.killed";
 
 		/// <summary>
@@ -66,6 +53,18 @@ public static partial class TTTEvent
 		public class SpawnedAttribute : EventAttribute
 		{
 			public SpawnedAttribute() : base( Spawned ) { }
+		}
+
+		public const string TookDamage = "ttt.player.took-damage";
+
+		/// <summary>
+		/// Occurs when a player takes damage.
+		/// <para>Parameters:</para>
+		/// <para>The <strong><see cref="TTT.Player"/></strong> who was damaged.</para>
+		/// </summary>
+		public class TookDamageAttribute : EventAttribute
+		{
+			public TookDamageAttribute() : base( TookDamage ) { }
 		}
 	}
 }

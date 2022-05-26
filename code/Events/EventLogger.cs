@@ -7,7 +7,7 @@ namespace TTT;
 public enum EventType
 {
 	Round,
-	PlayerDamaged,
+	PlayerTookDamage,
 	PlayerKill,
 	PlayerSuicide,
 	PlayerCorpseFound
@@ -25,7 +25,7 @@ public static class EventLogger
 	public static readonly List<EventInfo> Events = new();
 	public static readonly List<string> EventDescriptions = new();
 
-	private static readonly string LogFolder = "round-logs";
+	private const string LogFolder = "round-logs";
 
 	private static void LogEvent( EventType eventType, float time, string description )
 	{
@@ -63,16 +63,19 @@ public static class EventLogger
 			WriteEvents();
 	}
 
-	[TTTEvent.Player.Damaged]
-	private static void OnPlayerDamaged( Player player, DamageInfo info )
+	[TTTEvent.Player.TookDamage]
+	private static void OnPlayerTookDamage( Player player )
 	{
 		if ( !Host.IsServer )
 			return;
 
-		if ( info.Attacker is Player other )
-			LogEvent( EventType.PlayerDamaged, Game.Current.State.TimeLeft, $"{other.Client.Name} did {info.Damage} damage to {player.Client.Name}" );
+		var info = player.LastDamageInfo;
+		var attacker = info.Attacker;
+
+		if ( attacker is Player && attacker != player )
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{attacker.Client.Name} did {info.Damage} damage to {player.Client.Name}" );
 		else
-			LogEvent( EventType.PlayerDamaged, Game.Current.State.TimeLeft, $"{player.Client.Name} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.Client.Name} took {info.Damage} damage." );
 	}
 
 	[TTTEvent.Player.Killed]
