@@ -15,9 +15,13 @@ public class DamageIndicator : Panel
 		StyleSheet.Load( "/UI/Player/DamageIndicator/DamageIndicator.scss" );
 	}
 
-	public void OnHit( Vector3 pos )
+	[TTTEvent.Player.TookDamage]
+	private void OnHit( Player player )
 	{
-		_ = new HitPoint( pos )
+		var info = player.LastDamageInfo;
+		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : player.Position;
+
+		_ = new HitPoint( damageLocation )
 		{
 			Parent = this
 		};
@@ -41,7 +45,7 @@ public class DamageIndicator : Panel
 			var wpos = CurrentView.Rotation.Inverse * (Position.WithZ( 0 ) - CurrentView.Position.WithZ( 0 )).Normal;
 			wpos = wpos.WithZ( 0 ).Normal;
 
-			var angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
+			float angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
 
 			var pt = new PanelTransform();
 

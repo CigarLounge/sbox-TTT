@@ -144,11 +144,10 @@ public partial class Player
 		LastAttackerWeapon = info.Weapon;
 		LastDamageInfo = info;
 
-		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : Position;
-		OnDamageTaken( To.Single( Client ), damageLocation );
-
 		Health -= info.Damage;
 		Event.Run( TTTEvent.Player.TookDamage, this );
+
+		SendDamageInfo( To.Single( this ), LastAttacker, LastAttackerWeapon, info.Damage, info.Flags, info.HitboxIndex, info.Position );
 
 		this.ProceduralHitReaction( info );
 
@@ -176,9 +175,19 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void OnDamageTaken( Vector3 position )
+	private void SendDamageInfo( Entity attacker, Entity weapon, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position )
 	{
-		UI.DamageIndicator.Instance?.OnHit( position );
-		UI.PlayerInfo.Instance?.OnHit();
+		var info = DamageInfo.Generic( damage )
+			.WithAttacker( attacker )
+			.WithWeapon( weapon )
+			.WithFlag( damageFlag )
+			.WithHitbox( hitboxIndex )
+			.WithPosition( position );
+
+		LastAttacker = info.Attacker;
+		LastDamageInfo = info;
+
+		if ( IsLocalPawn )
+			Event.Run( TTTEvent.Player.TookDamage, this );
 	}
 }

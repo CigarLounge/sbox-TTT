@@ -20,13 +20,15 @@ public class PlayerInfo : Panel
 		Instance = this;
 	}
 
-	public void OnHit()
+	[TTTEvent.Player.TookDamage]
+	private void OnHit( Player player )
 	{
 		if ( !this.IsEnabled() )
 			return;
 
 		_ = TakeHit();
 	}
+
 
 	private async Task TakeHit()
 	{

@@ -59,8 +59,7 @@ public static class EventLogger
 
 		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
 
-		if ( Game.LoggerEnabled )
-			WriteEvents();
+		WriteEvents();
 	}
 
 	[TTTEvent.Player.TookDamage]
@@ -101,20 +100,23 @@ public static class EventLogger
 
 	private static void WriteEvents()
 	{
+		if ( !Game.LoggerEnabled )
+			return;
+
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )
 			FileSystem.Data.CreateDirectory( LogFolder );
 
-		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
+		string mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
 		if ( !FileSystem.Data.DirectoryExists( mapFolderPath ) )
 			FileSystem.Data.CreateDirectory( mapFolderPath );
 
-		var logFilePath = $"{mapFolderPath}/{DateTime.Now:yyyy-MM-dd HH.mm.ss}.txt";
+		string logFilePath = $"{mapFolderPath}/{DateTime.Now:yyyy-MM-dd HH.mm.ss}.txt";
 		FileSystem.Data.WriteAllText( logFilePath, GetEventSummary() );
 	}
 
 	private static string GetEventSummary()
 	{
-		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
+		string summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
 		if ( Events.Count != EventDescriptions.Count )
 			return summary;
 
