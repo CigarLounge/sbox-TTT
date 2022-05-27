@@ -64,7 +64,7 @@ public partial class Player : AnimatedEntity
 		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
 
-		Animator = new StandardPlayerAnimator();
+		Animator = new PlayerAnimator();
 		Camera = new FreeSpectateCamera();
 	}
 
@@ -141,20 +141,16 @@ public partial class Player : AnimatedEntity
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.Simulate( client, this, Animator );
+		controller?.Simulate( client, this, GetActiveAnimator() );
 
-		if ( Input.Pressed( InputButton.Menu ) )
-		{
-			if ( ActiveChild.IsValid() && LastActiveChild.IsValid() )
-				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
-		}
+		if ( Input.ActiveChild is Carriable carriable )
+			ActiveChild = carriable;
 
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )
 		{
 			SimulateFlashlight();
-			SimulateCarriableSwitch();
 			SimulatePerks();
 		}
 
@@ -180,10 +176,8 @@ public partial class Player : AnimatedEntity
 
 	public override void FrameSimulate( Client client )
 	{
-		Host.AssertClient( "FrameSimulate" );
-
 		var controller = GetActiveController();
-		controller?.FrameSimulate( client, this, Animator );
+		controller?.FrameSimulate( client, this, GetActiveAnimator() );
 
 		if ( WaterLevel > 0.9f )
 		{
@@ -223,7 +217,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		Animator?.BuildInput( input );
+		GetActiveAnimator()?.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -231,14 +225,16 @@ public partial class Player : AnimatedEntity
 		if ( !this.IsAlive() )
 			return;
 
-		if ( ActiveChild is Carriable carriable )
-			carriable.RenderHud( screenSize );
-
+		ActiveChild?.RenderHud( screenSize );
 		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild );
 	}
 
+	#region Animator
 	[Net, Predicted]
 	public PawnAnimator Animator { get; set; }
+
+	public PawnAnimator GetActiveAnimator() => Animator;
+	#endregion
 
 	#region Controller
 	[Net, Predicted]
@@ -272,15 +268,15 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
-		if ( IsServer )
-			Inventory.Pickup( other );
+		if ( IsServer && other is Carriable carriable )
+			Inventory.Pickup( carriable );
 	}
 
 	public void DeleteItems()
 	{
 		Components.RemoveAll();
 		ClearAmmo();
-		Inventory?.DeleteContents();
+		Inventory.DeleteContents();
 		RemoveAllClothing();
 	}
 
@@ -288,7 +284,7 @@ public partial class Player : AnimatedEntity
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
-	[Predicted]
+	[Net, Local, Predicted]
 	public Carriable LastActiveChild { get; set; }
 
 	public void SimulateActiveChild( Client client, Carriable child )
@@ -302,7 +298,10 @@ public partial class Player : AnimatedEntity
 		if ( !LastActiveChild.IsValid() )
 			return;
 
-		if ( LastActiveChild.IsAuthority )
+		if ( !LastActiveChild.IsAuthority )
+			return;
+
+		if ( LastActiveChild.TimeSinceDeployed > LastActiveChild.Info.DeployTime )
 			LastActiveChild.Simulate( client );
 	}
 
@@ -327,15 +326,6 @@ public partial class Player : AnimatedEntity
 				}
 			}
 		}
-	}
-
-	private void SimulateCarriableSwitch()
-	{
-		if ( Input.ActiveChild is null )
-			return;
-
-		LastActiveChild = ActiveChild;
-		ActiveChild = Input.ActiveChild as Carriable;
 	}
 
 	private void SimulatePerks()
