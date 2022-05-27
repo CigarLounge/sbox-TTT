@@ -147,7 +147,7 @@ public partial class Hands : Carriable
 		base.OnDestroy();
 	}
 
-	public override void SimulateAnimator( PawnAnimator anim )
+	public override void SimulateAnimator( PawnAnimator animator )
 	{
 		if ( !IsServer )
 			return;
@@ -157,12 +157,12 @@ public partial class Hands : Carriable
 
 		if ( IsHoldingEntity )
 		{
-			anim.SetAnimParameter( "holdtype", 4 );
-			anim.SetAnimParameter( "holdtype_handedness", 0 );
+			animator.SetAnimParameter( "holdtype", 4 );
+			animator.SetAnimParameter( "holdtype_handedness", 0 );
 		}
 		else
 		{
-			anim.SetAnimParameter( "holdtype", 0 );
+			animator.SetAnimParameter( "holdtype", 0 );
 		}
 	}
 

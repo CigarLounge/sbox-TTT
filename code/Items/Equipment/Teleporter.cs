@@ -44,9 +44,6 @@ public partial class Teleporter : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( IsTeleporting )
 		{
 			_particle ??= Particles.Create( "particles/teleport.vpcf", Owner, true );

@@ -25,9 +25,6 @@ public abstract partial class Grenade : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDropped < Info.DeployTime )
-			return;
-
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			ViewModelEntity?.SetAnimParameter( "fire", true );
 

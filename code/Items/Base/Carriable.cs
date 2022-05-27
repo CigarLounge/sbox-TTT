@@ -131,7 +131,7 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 		if ( entity is Player player )
 		{
-			var animator = player.Animator;
+			var animator = player.GetActiveAnimator();
 
 			if ( animator is not null )
 				SimulateAnimator( animator );
@@ -226,11 +226,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		TimeSinceDropped = 0;
 	}
 
-	public override void SimulateAnimator( PawnAnimator anim )
+	public override void SimulateAnimator( PawnAnimator animator )
 	{
-		base.SimulateAnimator( anim );
-
-		anim.SetAnimParameter( "holdtype", (int)Info.HoldType );
+		animator.SetAnimParameter( "holdtype", (int)Info.HoldType );
+		animator.SetAnimParameter( "aim_body_weight", 1.0f );
+		animator.SetAnimParameter( "holdtype_handedness", 0 );
 	}
 
 	bool IEntityHint.CanHint( Player player ) => Owner is null;

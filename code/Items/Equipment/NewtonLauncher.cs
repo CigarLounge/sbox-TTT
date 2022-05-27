@@ -35,9 +35,6 @@ public partial class NewtonLauncher : Weapon
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( TimeSincePrimaryAttack < Info.PrimaryRate )
 			return;
 
