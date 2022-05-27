@@ -45,7 +45,7 @@ public class Crosshair : Panel
 		Config = GetActiveConfig();
 	}
 
-	public void RenderCrosshair( Vector2 center, Entity activeChild )
+	public void RenderCrosshair( Vector2 center, Carriable activeChild )
 	{
 		var draw = Render.Draw2D;
 		draw.Color = Config.Color;

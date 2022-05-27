@@ -20,10 +20,10 @@ public class PlayerAnimator : PawnAnimator
 		//
 		// Let the animation graph know some shit
 		//
-		bool sitting = HasTag( "sitting" );
-		bool noclip = HasTag( "noclip" ) && !sitting;
+		var sitting = HasTag( "sitting" );
+		var noclip = HasTag( "noclip" ) && !sitting;
 
-		SetAnimParameter( "b_grounded", GroundEntity != null || noclip || sitting );
+		SetAnimParameter( "b_grounded", GroundEntity is not null || noclip || sitting );
 		SetAnimParameter( "b_noclip", noclip );
 		SetAnimParameter( "b_sit", sitting );
 		SetAnimParameter( "b_swim", Pawn.WaterLevel > 0.5f && !sitting );
@@ -33,8 +33,8 @@ public class PlayerAnimator : PawnAnimator
 			SetAnimParameter( "voice", Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f );
 		}
 
-		Vector3 aimPos = Pawn.EyePosition + Input.Rotation.Forward * 200;
-		Vector3 lookPos = aimPos;
+		var aimPos = Pawn.EyePosition + Input.Rotation.Forward * 200;
+		var lookPos = aimPos;
 
 		//
 		// Look in the direction what the player's input is facing
@@ -48,9 +48,9 @@ public class PlayerAnimator : PawnAnimator
 
 		SetAnimParameter( "duck", duck );
 
-		if ( player != null && player.ActiveChild is Carriable carry )
+		if ( player is not null && player.ActiveChild.IsValid() )
 		{
-			carry.SimulateAnimator( this );
+			player.ActiveChild.SimulateAnimator( this );
 		}
 		else
 		{

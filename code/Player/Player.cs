@@ -234,6 +234,42 @@ public partial class Player : AnimatedEntity
 	public PawnAnimator Animator { get; set; }
 
 	public PawnAnimator GetActiveAnimator() => Animator;
+
+	TimeSince _timeSinceLastFootstep;
+
+	/// <summary>
+	/// A foostep has arrived!
+	/// </summary>
+	public override void OnAnimEventFootstep( Vector3 pos, int foot, float volume )
+	{
+		if ( !this.IsAlive() )
+			return;
+
+		if ( !IsClient )
+			return;
+
+		if ( _timeSinceLastFootstep < 0.2f )
+			return;
+
+		volume *= FootstepVolume();
+
+		_timeSinceLastFootstep = 0;
+
+		var tr = Trace.Ray( pos, pos + Vector3.Down * 20 )
+			.Radius( 1 )
+			.Ignore( this )
+			.Run();
+
+		if ( !tr.Hit )
+			return;
+
+		tr.Surface.DoFootstep( this, tr, foot, volume );
+	}
+
+	public float FootstepVolume()
+	{
+		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 0.2f;
+	}
 	#endregion
 
 	#region Controller
@@ -284,7 +320,7 @@ public partial class Player : AnimatedEntity
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
-	[Net, Local, Predicted]
+	//[Predicted] doesn't work?!
 	public Carriable LastActiveChild { get; set; }
 
 	public void SimulateActiveChild( Client client, Carriable child )
