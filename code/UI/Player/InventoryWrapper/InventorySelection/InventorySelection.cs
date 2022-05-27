@@ -99,15 +99,15 @@ public class InventorySelection : Panel
 			return;
 
 		var childrenList = Children.ToList();
-		var activeCarriable = player.ActiveChild as Carriable;
-		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
+		var activeCarriable = player.ActiveChild;
+		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
 
 		if ( keyboardIndexPressed != -1 )
 		{
 			List<Carriable> weaponsOfSlotTypeSelected = new();
-			int activeCarriableOfSlotTypeIndex = -1;
+			var activeCarriableOfSlotTypeIndex = -1;
 
-			for ( int i = 0; i < childrenList.Count; ++i )
+			for ( var i = 0; i < childrenList.Count; ++i )
 			{
 				if ( childrenList[i] is InventorySlot slot )
 				{
