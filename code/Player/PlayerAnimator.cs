@@ -59,7 +59,7 @@ public class PlayerAnimator : PawnAnimator
 		}
 	}
 
-	public virtual void DoRotation( Rotation idealRotation )
+	public void DoRotation( Rotation idealRotation )
 	{
 		var player = Pawn as Player;
 
@@ -68,7 +68,7 @@ public class PlayerAnimator : PawnAnimator
 		//
 		var allowYawDiff = player?.ActiveChild == null ? 90 : 50;
 
-		float turnSpeed = 0.01f;
+		var turnSpeed = 0.01f;
 		if ( HasTag( "ducked" ) ) turnSpeed = 0.1f;
 
 		//

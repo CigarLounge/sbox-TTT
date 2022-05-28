@@ -154,6 +154,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Components.Add( new DNA( Owner ) );
 	}
 
+	public override void ActiveEnd( Entity entity, bool dropped )
+	{
+		base.ActiveEnd( entity, dropped );
+	}
+
 	public override void Simulate( Client client ) { }
 
 	public override void FrameSimulate( Client client ) { }

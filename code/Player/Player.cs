@@ -58,6 +58,7 @@ public partial class Player : AnimatedEntity
 		LifeState = LifeState.Respawnable;
 		Transmit = TransmitType.Always;
 
+		Predictable = true;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
@@ -138,13 +139,17 @@ public partial class Player : AnimatedEntity
 		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
+	/// <summary>
+	/// Called every tick to simulate the player. This is called on the
+	/// client as well as the server (for prediction). So be careful!
+	/// </summary>
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
 		controller?.Simulate( client, this, GetActiveAnimator() );
 
 		if ( Input.ActiveChild is Carriable carriable )
-			ActiveChild = carriable;
+			Inventory.SetActive( carriable );
 
 		SimulateActiveChild( client, ActiveChild );
 
@@ -316,11 +321,9 @@ public partial class Player : AnimatedEntity
 		RemoveAllClothing();
 	}
 
-	#region ActiveChild
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
-	//[Predicted] doesn't work?!
 	public Carriable LastActiveChild { get; set; }
 
 	public void SimulateActiveChild( Client client, Carriable child )
@@ -346,7 +349,6 @@ public partial class Player : AnimatedEntity
 		previous?.ActiveEnd( this, previous.Owner != this );
 		next?.ActiveStart( this );
 	}
-	#endregion
 
 	private void CheckPlayerDropCarriable()
 	{

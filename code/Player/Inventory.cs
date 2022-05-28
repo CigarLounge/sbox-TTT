@@ -1,7 +1,6 @@
 using Sandbox;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TTT;
 
@@ -64,20 +63,6 @@ public sealed class Inventory : IEnumerable<Carriable>
 	}
 
 	public bool Contains( Carriable entity ) => _list.Contains( entity );
-
-	/// <summary>
-	/// Get the item in this slot
-	/// </summary>
-	public Entity GetSlot( int i )
-	{
-		if ( _list.Count <= i )
-			return null;
-
-		if ( i < 0 )
-			return null;
-
-		return _list[i];
-	}
 
 	public void Pickup( Carriable carriable )
 	{
