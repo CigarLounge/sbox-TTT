@@ -1,4 +1,3 @@
-# s&box related
 code/*.csproj
 code/obj
 code/Properties
@@ -7,6 +6,9 @@ _bakeresourcecache
 tools_asset_info.bin
 tools_thumbnail_cache.bin
 *.los
+
+# Generated assets
+*.generated.*
 
 # Uncompiled models/sounds/textures
 *.vanmgrph

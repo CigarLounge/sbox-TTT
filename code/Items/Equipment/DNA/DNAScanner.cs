@@ -85,9 +85,13 @@ public partial class DNAScanner : Carriable
 	{
 		Host.AssertServer();
 
-		SelectedId = null;
+		if ( dna.Id == SelectedId )
+		{
+			SelectedId = null;
+			DeleteMarker( To.Single( Owner ) );
+		}
+
 		DNACollected.Remove( dna );
-		DeleteMarker( To.Single( Owner ) );
 	}
 
 	private void FetchDNA()
