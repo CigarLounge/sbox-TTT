@@ -151,7 +151,7 @@ public partial class Player
 
 		this.ProceduralHitReaction( info );
 
-		if ( Health <= 0f )
+		if ( IsServer && Health <= 0f )
 			OnKilled();
 	}
 
