@@ -77,6 +77,7 @@ public class CarriableInfo : ItemInfo
 	}
 }
 
+[Title( "Carriable" ), Icon( "luggage" )]
 public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 {
 	[Net, Local, Predicted]
@@ -245,16 +246,20 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public virtual void OnCarryStart( Player carrier )
 	{
-		if ( IsServer )
-		{
-			SetParent( carrier, true );
-			Owner = carrier;
-			MoveType = MoveType.None;
-			EnableAllCollisions = false;
-			EnableDrawing = false;
-		}
+		PreviousOwner = carrier;
 
-		PreviousOwner = Owner;
+		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
+		if ( IsClient )
+			Info = GameResource.GetInfo<CarriableInfo>( GetType() );
+
+		if ( !IsServer )
+			return;
+
+		SetParent( carrier, true );
+		Owner = carrier;
+		MoveType = MoveType.None;
+		EnableAllCollisions = false;
+		EnableDrawing = false;
 	}
 
 	public virtual void OnCarryDrop( Player dropper )

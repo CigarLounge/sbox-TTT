@@ -91,6 +91,7 @@ public class WeaponInfo : CarriableInfo
 	}
 }
 
+[Title( "Weapon" ), Icon( "sports_martial_arts" )]
 public abstract partial class Weapon : Carriable
 {
 	[Net, Predicted]
