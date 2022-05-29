@@ -281,9 +281,6 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 		carriable.OnCarryStart( Owner );
 
-		if ( !Host.IsServer )
-			return;
-
 		SlotCapacity[(int)carriable.Info.Slot] -= 1;
 
 		if ( carriable is Weapon weapon )
@@ -299,9 +296,6 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return;
 
 		carriable.OnCarryDrop( Owner );
-
-		if ( !Host.IsServer )
-			return;
 
 		SlotCapacity[(int)carriable.Info.Slot] += 1;
 

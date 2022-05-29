@@ -216,6 +216,10 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	{
 		base.OnCarryStart( carrier );
 
+		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
+		if ( IsClient )
+			Info = GameResource.GetInfo<CarriableInfo>( GetType() );
+
 		PreviousOwner = Owner;
 	}
 
