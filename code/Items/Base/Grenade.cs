@@ -11,14 +11,14 @@ public abstract partial class Grenade : Carriable
 	protected virtual float Seconds => 3f;
 	private bool _isThrown = false;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		TimeUntilExplode = Seconds;
 	}
 
-	public override bool CanCarry( Entity carrier )
+	public override bool CanCarry( Player carrier )
 	{
 		return !_isThrown && base.CanCarry( carrier );
 	}

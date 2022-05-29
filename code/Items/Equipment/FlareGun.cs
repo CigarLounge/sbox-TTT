@@ -8,11 +8,11 @@ public class FlareGun : Weapon
 {
 	public override string SlotText => AmmoClip.ToString();
 
-	public override void SimulateAnimator( PawnAnimator anim )
+	public override void SimulateAnimator( PawnAnimator animator )
 	{
-		base.SimulateAnimator( anim );
+		base.SimulateAnimator( animator );
 
-		anim.SetAnimParameter( "holdtype_handedness", 2 );
+		animator.SetAnimParameter( "holdtype_handedness", 2 );
 	}
 
 	protected override void OnHit( TraceResult trace )

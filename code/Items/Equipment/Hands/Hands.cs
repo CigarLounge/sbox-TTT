@@ -133,11 +133,11 @@ public partial class Hands : Carriable
 		}
 	}
 
-	public override void ActiveEnd( Entity ent, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
 		GrabbedEntity?.Drop();
 
-		base.ActiveEnd( ent, dropped );
+		base.ActiveEnd( player, dropped );
 	}
 
 	protected override void OnDestroy()

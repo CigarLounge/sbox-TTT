@@ -14,12 +14,12 @@ public class Scout : Weapon
 	private float _defaultFOV;
 	private UI.Scope _sniperScopePanel;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		IsScoped = false;
-		_defaultFOV = Owner.Camera.FieldOfView;
+		_defaultFOV = player.Camera.FieldOfView;
 	}
 
 	public override void Simulate( Client client )

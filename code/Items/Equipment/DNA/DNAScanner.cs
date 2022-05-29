@@ -40,15 +40,15 @@ public partial class DNAScanner : Carriable
 			Scan();
 	}
 
-	public override void OnCarryStart( Entity carrier )
+	public override void OnCarryStart( Player player )
 	{
-		base.OnCarryStart( carrier );
+		base.OnCarryStart( player );
 
-		if ( carrier.IsLocalPawn )
+		if ( player.IsLocalPawn )
 			UI.RoleMenu.Instance?.AddDNATab();
 	}
 
-	public override void OnCarryDrop( Entity dropper )
+	public override void OnCarryDrop( Player dropper )
 	{
 		base.OnCarryDrop( dropper );
 

@@ -28,16 +28,16 @@ public partial class Teleporter : Carriable
 	private Vector3 _teleportLocation;
 	private Particles _particle;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		IsTeleporting = false;
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		_particle?.Destroy( true );
 	}

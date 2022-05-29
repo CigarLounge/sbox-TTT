@@ -128,9 +128,9 @@ public abstract partial class Weapon : Carriable
 			ReserveAmmo = Info.ReserveAmmo;
 	}
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		IsReloading = false;
 		TimeSinceReload = 0;

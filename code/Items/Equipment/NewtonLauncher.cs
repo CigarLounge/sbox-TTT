@@ -25,9 +25,9 @@ public partial class NewtonLauncher : Weapon
 	private float _forwardForce;
 	private float _upwardForce;
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		Charge = 0;
 		IsCharging = false;

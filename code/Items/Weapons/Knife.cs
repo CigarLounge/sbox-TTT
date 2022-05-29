@@ -41,7 +41,7 @@ public partial class Knife : Carriable
 		}
 	}
 
-	public override bool CanCarry( Entity carrier )
+	public override bool CanCarry( Player carrier )
 	{
 		return !_isThrown && base.CanCarry( carrier );
 	}

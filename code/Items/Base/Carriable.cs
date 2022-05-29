@@ -77,7 +77,7 @@ public class CarriableInfo : ItemInfo
 	}
 }
 
-public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
+public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 {
 	[Net, Local, Predicted]
 	public TimeSince TimeSinceDeployed { get; private set; }
@@ -91,19 +91,30 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 	}
 
 	public BaseViewModel HandsModelEntity { get; private set; }
+	public CarriableInfo Info { get; private set; }
 	public Player PreviousOwner { get; private set; }
+	public BaseViewModel ViewModelEntity { get; protected set; }
+
+	/// <summary>
+	/// Utility - return the entity we should be spawning particles from etc
+	/// </summary>
+	public virtual ModelEntity EffectEntity => (ViewModelEntity.IsValid() && IsFirstPersonMode) ? ViewModelEntity : this;
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
 	public bool IsActiveChild => Owner?.ActiveChild == this;
-	public CarriableInfo Info { get; private set; }
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
+		MoveType = MoveType.Physics;
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 
@@ -125,17 +136,14 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 
-	public override void ActiveStart( Entity entity )
+	public virtual void ActiveStart( Player player )
 	{
 		EnableDrawing = true;
 
-		if ( entity is Player player )
-		{
-			var animator = player.GetActiveAnimator();
+		var animator = player.GetActiveAnimator();
 
-			if ( animator is not null )
-				SimulateAnimator( animator );
-		}
+		if ( animator is not null )
+			SimulateAnimator( animator );
 
 		if ( IsLocalPawn )
 		{
@@ -154,9 +162,18 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 			Components.Add( new DNA( Owner ) );
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public virtual void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		if ( !dropped )
+		{
+			EnableDrawing = false;
+		}
+
+		if ( IsClient )
+		{
+			DestroyViewModel();
+			DestroyHudElements();
+		}
 	}
 
 	public override void Simulate( Client client ) { }
@@ -167,7 +184,11 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 
 	public override void BuildInput( InputBuilder input ) { }
 
-	public override void CreateViewModel()
+	/// <summary>
+	/// Create the viewmodel. You can override this in your base classes if you want
+	/// to create a certain viewmodel entity.
+	/// </summary>
+	public virtual void CreateViewModel()
 	{
 		Host.AssertClient();
 
@@ -196,19 +217,24 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		}
 	}
 
-	public override void CreateHudElements() { }
-
-	public override void DestroyViewModel()
+	/// <summary>
+	/// We're done with the viewmodel - delete it
+	/// </summary>
+	public virtual void DestroyViewModel()
 	{
-		base.DestroyViewModel();
-
+		ViewModelEntity?.Delete();
+		ViewModelEntity = null;
 		HandsModelEntity?.Delete();
 		HandsModelEntity = null;
 	}
 
-	public override bool CanCarry( Entity carrier )
+	public virtual void CreateHudElements() { }
+
+	public virtual void DestroyHudElements() { }
+
+	public virtual bool CanCarry( Player carrier )
 	{
-		if ( Owner is not null || carrier is not Player )
+		if ( Owner is not null )
 			return false;
 
 		if ( carrier == PreviousOwner && TimeSinceDropped < 1f )
@@ -217,25 +243,49 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		return true;
 	}
 
-	public override void OnCarryStart( Entity carrier )
+	public virtual void OnCarryStart( Player carrier )
 	{
-		base.OnCarryStart( carrier );
+		if ( IsServer )
+		{
+			SetParent( carrier, true );
+			Owner = carrier;
+			MoveType = MoveType.None;
+			EnableAllCollisions = false;
+			EnableDrawing = false;
+		}
 
 		PreviousOwner = Owner;
 	}
 
-	public override void OnCarryDrop( Entity dropper )
+	public virtual void OnCarryDrop( Player dropper )
 	{
-		base.OnCarryDrop( dropper );
+		if ( IsClient )
+			return;
 
+		SetParent( null );
+		Owner = null;
+		MoveType = MoveType.Physics;
+		EnableDrawing = true;
+		EnableAllCollisions = true;
 		TimeSinceDropped = 0;
 	}
 
-	public override void SimulateAnimator( PawnAnimator animator )
+	public virtual void SimulateAnimator( PawnAnimator animator )
 	{
 		animator.SetAnimParameter( "holdtype", (int)Info.HoldType );
 		animator.SetAnimParameter( "aim_body_weight", 1.0f );
 		animator.SetAnimParameter( "holdtype_handedness", 0 );
+	}
+
+	protected override void OnDestroy()
+	{
+		base.OnDestroy();
+
+		if ( IsClient )
+		{
+			DestroyViewModel();
+			DestroyHudElements();
+		}
 	}
 
 	bool IEntityHint.CanHint( Player player ) => Owner is null;

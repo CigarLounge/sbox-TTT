@@ -14,16 +14,16 @@ public partial class Binoculars : Carriable
 	private Corpse _corpse;
 	private float _defaultFOV;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		_defaultFOV = Owner.Camera.FieldOfView;
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		_corpse = null;
 		ZoomLevel = 0;

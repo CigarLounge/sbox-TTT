@@ -10,9 +10,9 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 	protected virtual bool CanDrop => true;
 	protected virtual bool CanPlant => true;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		EnableDrawing = false;
 
@@ -23,9 +23,9 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		GhostEntity.SetEntity( this );
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		GhostEntity?.Delete();
 	}
