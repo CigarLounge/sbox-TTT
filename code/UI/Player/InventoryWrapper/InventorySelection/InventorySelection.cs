@@ -37,8 +37,8 @@ public class InventorySelection : Panel
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeItem = player.ActiveChild as Carriable;
-		var activeItemTitle = activeItem is not null ? activeItem.Info.Title : string.Empty;
+		var activeChild = player.ActiveChild;
+		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
 		{
@@ -48,11 +48,11 @@ public class InventorySelection : Panel
 				slot?.Delete();
 			}
 
-			bool isFirst = slot == Children.First() as InventorySlot;
+			var isFirst = slot == Children.First() as InventorySlot;
 			slot.SetClass( "rounded-top", isFirst );
 			slot.SlotLabel.SetClass( "rounded-top-left", isFirst );
 
-			bool isLast = slot == Children.Last() as InventorySlot;
+			var isLast = slot == Children.Last() as InventorySlot;
 			slot.SetClass( "rounded-bottom", isLast );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
 
