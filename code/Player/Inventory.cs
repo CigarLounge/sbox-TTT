@@ -246,12 +246,10 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 	{
 		Host.AssertServer();
 
-		// Cache due to "collections modified error"
 		Active = null;
+
 		foreach ( var carriable in _list.ToArray() )
-		{
 			Drop( carriable );
-		}
 
 		DeleteContents();
 	}
@@ -261,9 +259,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		Host.AssertServer();
 
 		foreach ( var carriable in _list.ToArray() )
-		{
 			carriable.Delete();
-		}
 
 		_list.Clear();
 	}

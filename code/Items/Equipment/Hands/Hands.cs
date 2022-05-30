@@ -17,6 +17,8 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
+	public Entity GrabPoint { get; private set; }
+
 	public const float MAX_INTERACT_DISTANCE = Player.UseDistance;
 	public const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
 
@@ -114,27 +116,42 @@ public partial class Hands : Carriable
 				GrabbedEntity = new GrabbableCorpse( Owner, corpse, corpse.PhysicsBody, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
-				GrabbedEntity = new GrabbableProp( Owner, trace.Entity as ModelEntity, this );
+				GrabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
 			case ModelEntity model:
 				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MAX_PICKUP_SIZE ) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS )
-					GrabbedEntity = new GrabbableProp( Owner, model, this );
+					GrabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
 				break;
 		}
+	}
+
+	public override void OnCarryStart( Entity carrier )
+	{
+		base.OnCarryStart( carrier );
+
+		if ( !Host.IsServer )
+			return;
+
+		GrabPoint = new ModelEntity( "models/hands/grabpoint.vmdl" );
+		GrabPoint.EnableHideInFirstPerson = false;
+		GrabPoint.SetParent( carrier, MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
+	}
+
+	public override void OnCarryDrop( Entity carrier )
+	{
+		base.OnCarryStart( carrier );
+
+		if ( !Host.IsServer )
+			return;
+
+		GrabbedEntity?.Drop();
+		GrabPoint?.Delete();
 	}
 
 	public override void ActiveEnd( Entity ent, bool dropped )
 	{
 		GrabbedEntity?.Drop();
-
 		base.ActiveEnd( ent, dropped );
-	}
-
-	protected override void OnDestroy()
-	{
-		GrabbedEntity?.Drop();
-
-		base.OnDestroy();
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )

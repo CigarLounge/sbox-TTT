@@ -8,7 +8,7 @@
 		viewmodel = ""
 		handsmodel = ""
 		HoldType = 0
-		worldmodel = resource:"models/hands/hands.vmdl"
+		worldmodel = null
 		DeployTime = 0.6
 		"cached-handsmodel" = null
 		"cached-viewmodel" = null
