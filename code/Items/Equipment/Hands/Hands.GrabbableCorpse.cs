@@ -7,7 +7,6 @@ public class GrabbableCorpse : IGrabbable
 	private readonly Player _owner;
 	private readonly Corpse _corpse;
 	private PhysicsBody _handPhysicsBody;
-	private readonly int _corpseBone;
 	private readonly FixedJoint _joint;
 
 	public bool IsHolding
@@ -15,11 +14,10 @@ public class GrabbableCorpse : IGrabbable
 		get => _joint.IsValid();
 	}
 
-	public GrabbableCorpse( Player player, Corpse corpse, int corpseBone )
+	public GrabbableCorpse( Player player, Corpse corpse )
 	{
 		_owner = player;
 		_corpse = corpse;
-		_corpseBone = corpseBone;
 
 		_handPhysicsBody = new( Map.Physics );
 		_handPhysicsBody.BodyType = PhysicsBodyType.Keyframed;
