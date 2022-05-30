@@ -199,8 +199,8 @@ public partial class Player
 
 	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
-		float damageMultiplier = 1f;
-		bool isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
+		var damageMultiplier = 1f;
+		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 
 		if ( isHeadShot )
 		{

@@ -55,7 +55,7 @@ public class Crosshair : Panel
 
 		var shootEase = 0f;
 		if ( Config.IsDynamic && activeChild is Weapon weapon )
-			shootEase = Easing.EaseIn( ((float)weapon.TimeSinceLastClientShoot).LerpInverse( 0.2f, 0.0f ) * 5 );
+			shootEase = Easing.EaseIn( ((float)weapon.TimeSincePrimaryAttack).LerpInverse( 0.2f, 0.0f ) * 5 );
 
 		var startingOffset = Config.Thickness + Config.Gap + shootEase;
 		var endingOffset = startingOffset + Config.Size;
