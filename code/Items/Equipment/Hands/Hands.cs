@@ -28,37 +28,27 @@ public partial class Hands : Carriable
 	private bool IsHoldingEntity => GrabbedEntity is not null && (GrabbedEntity?.IsHolding ?? false);
 	private bool IsPushingEntity = false;
 
-	public override void Spawn()
-	{
-		base.Spawn();
-
-		RenderColor = Color.Transparent;
-	}
-
 	public override void Simulate( Client client )
 	{
 		if ( !IsServer )
 			return;
 
-		using ( Prediction.Off() )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 		{
-			if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					GrabbedEntity?.SecondaryAction();
-				else
-					TryGrabEntity();
-			}
-			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					GrabbedEntity?.Drop();
-				else
-					PushEntity();
-			}
-
-			GrabbedEntity?.Update( Owner );
+			if ( IsHoldingEntity )
+				GrabbedEntity?.SecondaryAction();
+			else
+				TryGrabEntity();
 		}
+		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		{
+			if ( IsHoldingEntity )
+				GrabbedEntity?.Drop();
+			else
+				PushEntity();
+		}
+
+		GrabbedEntity?.Update( Owner );
 	}
 
 	private void PushEntity()
@@ -124,11 +114,11 @@ public partial class Hands : Carriable
 				GrabbedEntity = new GrabbableCorpse( Owner, corpse, corpse.PhysicsBody, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
-				GrabbedEntity = new GrabbableProp( Owner, trace.Entity as ModelEntity );
+				GrabbedEntity = new GrabbableProp( Owner, trace.Entity as ModelEntity, this );
 				break;
 			case ModelEntity model:
 				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MAX_PICKUP_SIZE ) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS )
-					GrabbedEntity = new GrabbableProp( Owner, model );
+					GrabbedEntity = new GrabbableProp( Owner, model, this );
 				break;
 		}
 	}

@@ -12,14 +12,14 @@ public class GrabbableProp : IGrabbable
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false; // Needed to maintain the Holding animation.
 
-	public GrabbableProp( Player player, ModelEntity ent )
+	public GrabbableProp( Player player, ModelEntity ent, Hands hands )
 	{
 		_owner = player;
 
 		GrabbedEntity = ent;
 		GrabbedEntity.EnableTouch = false;
-		GrabbedEntity.SetParent( player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
 		GrabbedEntity.EnableHideInFirstPerson = false;
+		GrabbedEntity.SetParent( hands, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
 	}
 
 	public void Drop()
