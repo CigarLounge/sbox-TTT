@@ -65,7 +65,7 @@ public class GrabbableCorpse : IGrabbable
 			.Ignore( _owner )
 			.Run();
 
-		_corpse.ClearAttachments();
+		_corpse.RemoveRopeAttachments();
 
 		if ( !trace.Hit || !trace.Entity.IsWorld )
 			return;

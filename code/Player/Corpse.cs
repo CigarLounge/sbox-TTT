@@ -26,11 +26,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	// Detective information
 	public string LastSeenPlayerName { get; private set; }
 
-	public List<Particles> Ropes = new();
-	public List<PhysicsJoint> RopeSprings = new();
-
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
+
+	public List<Particles> Ropes { get; private set; } = new();
+	public List<PhysicsJoint> RopeSprings { get; private set; } = new();
 
 	// We need this so we don't send information to players multiple times
 	// The HashSet consists of NetworkIds
@@ -130,17 +130,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			PhysicsGroup.AddVelocity( force );
 	}
 
-	public void ClearAttachments()
+	public void RemoveRopeAttachments()
 	{
 		foreach ( var rope in Ropes )
-		{
 			rope.Destroy( true );
-		}
 
 		foreach ( var spring in RopeSprings )
-		{
 			spring.Remove();
-		}
 
 		Ropes.Clear();
 		RopeSprings.Clear();
@@ -148,7 +144,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	protected override void OnDestroy()
 	{
-		ClearAttachments();
+		RemoveRopeAttachments();
 	}
 
 	/// <summary>
@@ -161,7 +157,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
-		int creditsRetrieved = 0;
+		var creditsRetrieved = 0;
 		canRetrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
 
 		if ( canRetrieveCredits && HasCredits )
