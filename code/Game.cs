@@ -147,7 +147,7 @@ public partial class Game : Sandbox.Game
 	{
 		_lastState?.Finish();
 		_lastState = newState;
-		_lastState.Start();
+		_lastState?.Start();
 
 		Event.Run( TTTEvent.Game.StateChanged, oldState, newState );
 	}
