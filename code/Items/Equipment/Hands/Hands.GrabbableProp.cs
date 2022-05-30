@@ -5,10 +5,10 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public const float ThrowForce = 500;
 	public ModelEntity GrabbedEntity { get; set; }
-	public Player _owner;
 
+	private const float ThrowForce = 500;
+	private readonly Player _owner;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false;
 

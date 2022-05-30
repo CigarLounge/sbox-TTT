@@ -20,13 +20,13 @@ public partial class Hands : Carriable
 	public Entity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
-	private IGrabbable GrabbedEntity;
-	private bool IsHoldingEntity => GrabbedEntity is not null && (GrabbedEntity?.IsHolding ?? false);
-	private bool IsPushingEntity = false;
+	private bool IsHoldingEntity => _grabbedEntity is not null && (_grabbedEntity?.IsHolding ?? false);
+	private bool _isPushingEntity = false;
+	private IGrabbable _grabbedEntity;
 
 	private const float MaxPickupMass = 205;
 	private const float PushForce = 350f;
-	private readonly Vector3 MaxPickupSize = new( 75, 75, 75 );
+	private readonly Vector3 _maxPickupSize = new( 75, 75, 75 );
 
 	public override void Simulate( Client client )
 	{
@@ -38,25 +38,25 @@ public partial class Hands : Carriable
 			if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			{
 				if ( IsHoldingEntity )
-					GrabbedEntity?.SecondaryAction();
+					_grabbedEntity?.SecondaryAction();
 				else
 					TryGrabEntity();
 			}
 			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			{
 				if ( IsHoldingEntity )
-					GrabbedEntity?.Drop();
+					_grabbedEntity?.Drop();
 				else
 					PushEntity();
 			}
 
-			GrabbedEntity?.Update( Owner );
+			_grabbedEntity?.Update( Owner );
 		}
 	}
 
 	private void PushEntity()
 	{
-		if ( IsPushingEntity )
+		if ( _isPushingEntity )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -67,7 +67,7 @@ public partial class Hands : Carriable
 		if ( !trace.Hit || !trace.Entity.IsValid() )
 			return;
 
-		IsPushingEntity = true;
+		_isPushingEntity = true;
 
 		Owner.SetAnimParameter( "b_attack", true );
 		Owner.SetAnimParameter( "holdtype", 4 );
@@ -81,7 +81,7 @@ public partial class Hands : Carriable
 	private async Task WaitForAnimationFinish()
 	{
 		await GameTask.DelaySeconds( 0.6f );
-		IsPushingEntity = false;
+		_isPushingEntity = false;
 	}
 
 	private void TryGrabEntity()
@@ -114,14 +114,14 @@ public partial class Hands : Carriable
 		switch ( trace.Entity )
 		{
 			case Corpse corpse:
-				GrabbedEntity = new GrabbableCorpse( Owner, corpse );
+				_grabbedEntity = new GrabbableCorpse( Owner, corpse );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
-				GrabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
+				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
 			case ModelEntity model:
-				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MaxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
-					GrabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
+				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( _maxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
+					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
 				break;
 		}
 	}
@@ -145,13 +145,13 @@ public partial class Hands : Carriable
 		if ( !Host.IsServer )
 			return;
 
-		GrabbedEntity?.Drop();
+		_grabbedEntity?.Drop();
 		GrabPoint?.Delete();
 	}
 
 	public override void ActiveEnd( Entity ent, bool dropped )
 	{
-		GrabbedEntity?.Drop();
+		_grabbedEntity?.Drop();
 		base.ActiveEnd( ent, dropped );
 	}
 
@@ -160,7 +160,7 @@ public partial class Hands : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( IsPushingEntity )
+		if ( _isPushingEntity )
 			return;
 
 		if ( IsHoldingEntity )
@@ -177,6 +177,6 @@ public partial class Hands : Carriable
 	[Event.Entity.PreCleanup]
 	private void OnPreCleanup()
 	{
-		GrabbedEntity?.Drop();
+		_grabbedEntity?.Drop();
 	}
 }
