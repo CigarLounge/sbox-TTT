@@ -33,22 +33,25 @@ public partial class Hands : Carriable
 		if ( !IsServer )
 			return;
 
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+		using ( Prediction.Off() )
 		{
-			if ( IsHoldingEntity )
-				GrabbedEntity?.SecondaryAction();
-			else
-				TryGrabEntity();
-		}
-		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
-		{
-			if ( IsHoldingEntity )
-				GrabbedEntity?.Drop();
-			else
-				PushEntity();
-		}
+			if ( Input.Pressed( InputButton.PrimaryAttack ) )
+			{
+				if ( IsHoldingEntity )
+					GrabbedEntity?.SecondaryAction();
+				else
+					TryGrabEntity();
+			}
+			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+			{
+				if ( IsHoldingEntity )
+					GrabbedEntity?.Drop();
+				else
+					PushEntity();
+			}
 
-		GrabbedEntity?.Update( Owner );
+			GrabbedEntity?.Update( Owner );
+		}
 	}
 
 	private void PushEntity()

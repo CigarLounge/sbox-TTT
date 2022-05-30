@@ -63,26 +63,20 @@ public class GrabbableCorpse : IGrabbable
 			.Ignore( _owner )
 			.Run();
 
-		if ( !trace.Hit || !trace.Entity.IsValid() )
+		if ( !trace.Hit || !trace.Entity.IsWorld )
 		{
 			_corpse.ClearAttachments();
 			return;
 		}
 
-		var attachEnt = trace.Body.IsValid() ? trace.Body.GetEntity() : trace.Entity;
-		if ( !attachEnt.IsWorld )
-		{
-			_corpse.ClearAttachments();
-			return;
-		}
+		var rope = Particles.Create( "particles/rope.vpcf", _corpse );
+		var worldLocalPos = trace.Body.Transform.PointToLocal( trace.EndPosition );
+		rope.SetPosition( 1, worldLocalPos );
 
-		var rope = Particles.Create( "particles/rope.vpcf" );
-		rope.SetEntityBone( 0, _corpse.PhysicsBody.GetEntity(), _corpseBone, new Transform( _corpse.PhysicsBody.Transform.PointToLocal( _corpse.PhysicsBody.Position ) * (1.0f / _corpse.PhysicsBody.GetEntity().Scale) ) );
-		rope.SetPosition( 1, trace.Body.Transform.PointToLocal( trace.EndPosition ) );
-
-		var from = new PhysicsPoint( _corpse.PhysicsBody, _corpse.PhysicsBody.Transform.PointToLocal( _corpse.PhysicsBody.Position ) );
-		var to = new PhysicsPoint( trace.Body, trace.Body.Transform.PointToLocal( trace.EndPosition ) );
-		var spring = PhysicsJoint.CreateSpring( from, to, 0f, 10f );
+		var spring = PhysicsJoint.CreateLength( _corpse.PhysicsBody, trace.Body.LocalPoint( worldLocalPos ), 10 );
+		spring.SpringLinear = new( 5, 0.3f );
+		spring.Collisions = true;
+		spring.EnableAngularConstraint = false;
 
 		_corpse.Ropes.Add( rope );
 		_corpse.RopeSprings.Add( spring );
