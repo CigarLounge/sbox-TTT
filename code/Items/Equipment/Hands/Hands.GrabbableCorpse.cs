@@ -44,10 +44,14 @@ public class GrabbableCorpse : IGrabbable
 		if ( _handPhysicsBody is null )
 			return;
 
-		// If the player grabs the corpse while it is attached with a rope, we should automatically
-		// drop it if they walk away far enough. We need to bug FacePunch about giving us access
-		// about the set point and the current position of the body.
-		// TODO: Matt.
+		foreach ( var spring in _corpse?.RopeSprings )
+		{
+			if ( Vector3.DistanceBetween( spring.Body1.Position, spring.Point2.LocalPosition ) > Player.UseDistance * 1.5 )
+			{
+				Drop();
+				return;
+			}
+		}
 
 		var attachment = player.GetAttachment( Hands.MiddleHandsAttachment )!.Value;
 		_handPhysicsBody.Position = attachment.Position;
@@ -63,11 +67,10 @@ public class GrabbableCorpse : IGrabbable
 			.Ignore( _owner )
 			.Run();
 
+		_corpse.ClearAttachments();
+
 		if ( !trace.Hit || !trace.Entity.IsWorld )
-		{
-			_corpse.ClearAttachments();
 			return;
-		}
 
 		var rope = Particles.Create( "particles/rope.vpcf", _corpse );
 		var worldLocalPos = trace.Body.Transform.PointToLocal( trace.EndPosition );
