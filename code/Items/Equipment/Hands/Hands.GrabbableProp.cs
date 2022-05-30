@@ -5,12 +5,12 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public const float THROW_FORCE = 500;
+	public const float ThrowForce = 500;
 	public ModelEntity GrabbedEntity { get; set; }
 	public Player _owner;
 
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
-	private bool _isThrowing = false; // Needed to maintain the Holding animation.
+	private bool _isThrowing = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
@@ -19,7 +19,7 @@ public class GrabbableProp : IGrabbable
 		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
-		GrabbedEntity.SetParent( grabPoint, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero ) );
+		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
 
 	public void Drop()
@@ -52,7 +52,7 @@ public class GrabbableProp : IGrabbable
 		_owner.SetAnimParameter( "b_attack", true );
 
 		if ( GrabbedEntity.IsValid() )
-			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * ThrowForce;
 		Drop();
 
 		_ = WaitForAnimationFinish();

@@ -18,17 +18,15 @@ public interface IGrabbable
 public partial class Hands : Carriable
 {
 	public Entity GrabPoint { get; private set; }
-
-	public const float MAX_INTERACT_DISTANCE = Player.UseDistance;
-	public const string MIDDLE_HANDS_ATTACHMENT = "middle_of_both_hands";
-
-	private const float MAX_PICKUP_MASS = 205;
-	private readonly Vector3 MAX_PICKUP_SIZE = new( 75, 75, 75 );
-	private const float PUSHING_FORCE = 350f;
+	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
 	private IGrabbable GrabbedEntity;
 	private bool IsHoldingEntity => GrabbedEntity is not null && (GrabbedEntity?.IsHolding ?? false);
 	private bool IsPushingEntity = false;
+
+	private const float MaxPickupMass = 205;
+	private const float PushForce = 350f;
+	private readonly Vector3 MaxPickupSize = new( 75, 75, 75 );
 
 	public override void Simulate( Client client )
 	{
@@ -58,7 +56,7 @@ public partial class Hands : Carriable
 		if ( IsPushingEntity )
 			return;
 
-		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * MAX_INTERACT_DISTANCE )
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 				.EntitiesOnly()
 				.Ignore( Owner )
 				.Run();
@@ -72,7 +70,7 @@ public partial class Hands : Carriable
 		Owner.SetAnimParameter( "holdtype", 4 );
 		Owner.SetAnimParameter( "holdtype_handedness", 0 );
 
-		trace.Entity.Velocity += Owner.EyeRotation.Forward * PUSHING_FORCE;
+		trace.Entity.Velocity += Owner.EyeRotation.Forward * PushForce;
 
 		_ = WaitForAnimationFinish();
 	}
@@ -91,7 +89,7 @@ public partial class Hands : Carriable
 		var eyePos = Owner.EyePosition;
 		var eyeDir = Owner.EyeRotation.Forward;
 
-		var trace = Trace.Ray( eyePos, eyePos + eyeDir * MAX_INTERACT_DISTANCE )
+		var trace = Trace.Ray( eyePos, eyePos + eyeDir * Player.UseDistance )
 			.UseHitboxes()
 			.Ignore( Owner )
 			.HitLayer( CollisionLayer.Debris )
@@ -113,13 +111,13 @@ public partial class Hands : Carriable
 		switch ( trace.Entity )
 		{
 			case Corpse corpse:
-				GrabbedEntity = new GrabbableCorpse( Owner, corpse, corpse.PhysicsBody, trace.Bone );
+				GrabbedEntity = new GrabbableCorpse( Owner, corpse, trace.Bone );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
 				GrabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
 			case ModelEntity model:
-				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MAX_PICKUP_SIZE ) && model.PhysicsGroup.Mass < MAX_PICKUP_MASS )
+				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( MaxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
 					GrabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
 				break;
 		}
@@ -134,7 +132,7 @@ public partial class Hands : Carriable
 
 		GrabPoint = new ModelEntity( "models/hands/grabpoint.vmdl" );
 		GrabPoint.EnableHideInFirstPerson = false;
-		GrabPoint.SetParent( carrier, MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
+		GrabPoint.SetParent( carrier, MiddleHandsAttachment, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
 	}
 
 	public override void OnCarryDrop( Entity carrier )
