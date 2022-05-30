@@ -12,7 +12,7 @@
 		DeployTime = 0.6
 		"cached-handsmodel" = null
 		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/hands/hands.vmdl"
+		"cached-worldmodel" = null
 		Buyable = false
 		IsLimited = false
 		Price = 0
