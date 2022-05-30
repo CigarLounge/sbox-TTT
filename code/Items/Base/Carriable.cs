@@ -246,8 +246,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public virtual void OnCarryStart( Player carrier )
 	{
-		PreviousOwner = carrier;
-
 		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
 		if ( IsClient )
 			Info = GameResource.GetInfo<CarriableInfo>( GetType() );
@@ -264,10 +262,12 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public virtual void OnCarryDrop( Player dropper )
 	{
+		PreviousOwner = dropper;
+
 		if ( IsClient )
 			return;
 
-		SetParent( null );
+		SetParent( null );		
 		Owner = null;
 		MoveType = MoveType.Physics;
 		EnableDrawing = true;
