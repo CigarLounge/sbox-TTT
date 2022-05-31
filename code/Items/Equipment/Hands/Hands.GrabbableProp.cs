@@ -17,16 +17,29 @@ public class GrabbableProp : IGrabbable
 		_owner = owner;
 
 		GrabbedEntity = grabbedEntity;
-		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+	}
+
+	public void Update( Player player )
+	{
+		// Incase someone walks up and picks up the carriable from the player's hands
+		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
+		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
+		if ( carriableHasOwner )
+		{
+			GrabbedEntity.EnableHideInFirstPerson = true;
+			GrabbedEntity = null;
+		}
+
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
+			Drop();
 	}
 
 	public void Drop()
 	{
 		if ( GrabbedEntity.IsValid() )
 		{
-			GrabbedEntity.EnableTouch = true;
 			GrabbedEntity.EnableHideInFirstPerson = true;
 			GrabbedEntity.SetParent( null );
 
@@ -35,15 +48,6 @@ public class GrabbableProp : IGrabbable
 		}
 
 		GrabbedEntity = null;
-	}
-
-	public void Update( Player player )
-	{
-		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
-		{
-			Drop();
-			return;
-		}
 	}
 
 	public void SecondaryAction()

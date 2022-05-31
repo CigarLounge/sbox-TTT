@@ -219,8 +219,6 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
 		if ( IsClient )
 			Info = GameResource.GetInfo<CarriableInfo>( GetType() );
-
-		PreviousOwner = Owner;
 	}
 
 	public override void OnCarryDrop( Entity dropper )
@@ -228,6 +226,8 @@ public abstract partial class Carriable : BaseCarriable, IEntityHint, IUse
 		base.OnCarryDrop( dropper );
 
 		TimeSinceDropped = 0;
+		if ( dropper is Player player )
+			PreviousOwner = player;
 	}
 
 	public override void SimulateAnimator( PawnAnimator anim )
