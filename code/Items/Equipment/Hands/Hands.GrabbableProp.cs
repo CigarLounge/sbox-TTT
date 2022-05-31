@@ -5,42 +5,49 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public const float THROW_FORCE = 500;
 	public ModelEntity GrabbedEntity { get; set; }
-	public Player _owner;
 
+	private const float ThrowForce = 500;
+	private readonly Player _owner;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
-	private bool _isThrowing = false; // Needed to maintain the Holding animation.
+	private bool _isThrowing = false;
 
-	public GrabbableProp( Player player, ModelEntity ent )
+	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
-		_owner = player;
+		_owner = owner;
 
-		GrabbedEntity = ent;
-		GrabbedEntity.EnableTouch = false;
-		GrabbedEntity.SetParent( player, Hands.MIDDLE_HANDS_ATTACHMENT, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
+		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableHideInFirstPerson = false;
+		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+	}
+
+	public void Update( Player player )
+	{
+		// Incase someone walks up and picks up the carriable from the player's hands
+		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
+		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
+		if ( carriableHasOwner )
+		{
+			GrabbedEntity.EnableHideInFirstPerson = true;
+			GrabbedEntity = null;
+		}
+
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
+			Drop();
 	}
 
 	public void Drop()
 	{
 		if ( GrabbedEntity.IsValid() )
 		{
-			GrabbedEntity.EnableTouch = true;
 			GrabbedEntity.EnableHideInFirstPerson = true;
 			GrabbedEntity.SetParent( null );
+
+			if ( GrabbedEntity is Carriable carriable )
+				carriable.OnCarryDrop( _owner );
 		}
 
 		GrabbedEntity = null;
-	}
-
-	public void Update( Player player )
-	{
-		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
-		{
-			Drop();
-			return;
-		}
 	}
 
 	public void SecondaryAction()
@@ -49,7 +56,7 @@ public class GrabbableProp : IGrabbable
 		_owner.SetAnimParameter( "b_attack", true );
 
 		if ( GrabbedEntity.IsValid() )
-			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * THROW_FORCE;
+			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * ThrowForce;
 		Drop();
 
 		_ = WaitForAnimationFinish();

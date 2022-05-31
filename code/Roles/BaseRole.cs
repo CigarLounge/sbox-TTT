@@ -15,12 +15,14 @@ public class RoleInfo : GameResource
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; } = 0;
 
+	[Description( "The shop items available for purchase." )]
 	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
 
-	[Description( "Whether or not a player can retrieve credits from corpses." )]
 	public bool CanRetrieveCredits { get; set; } = false;
 
 	public bool CanRoleChat { get; set; } = false;
+
+	public bool CanAttachCorpses { get; set; } = false;
 
 	[Category( "UI" )]
 	public Color Color { get; set; }
@@ -56,6 +58,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public HashSet<string> AvailableItems => Info.AvailableItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
+	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
 
 	public BaseRole()
