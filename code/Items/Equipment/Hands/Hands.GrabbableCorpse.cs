@@ -58,7 +58,7 @@ public class GrabbableCorpse : IGrabbable
 
 	public void SecondaryAction()
 	{
-		if ( _owner.Team != Team.Traitors )
+		if ( !_owner.Role.CanAttachCorpses )
 			return;
 
 		var trace = Trace.Ray( _owner.EyePosition, _owner.EyePosition + _owner.EyeRotation.Forward * Player.UseDistance )
