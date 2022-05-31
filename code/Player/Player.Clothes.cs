@@ -16,6 +16,7 @@ public partial class Player
 	{
 		AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
+		AttachClothing( "models/citizen_clothes/gloves/leather_gloves/models/leather_gloves.vmdl" );
 		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
 		AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
 		AttachClothing( "models/citizen_clothes/shoes/trainers/trainers.vmdl" );
@@ -67,5 +68,6 @@ public partial class Player
 		ent.SetBodyGroup( "Chest", value );
 		ent.SetBodyGroup( "Legs", value );
 		ent.SetBodyGroup( "Feet", value );
+		ent.SetBodyGroup( "Hands", value );
 	}
 }
