@@ -167,11 +167,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 	{
 		Host.AssertServer();
 
-		// Cache due to "collections modified error"
 		foreach ( var carriable in _list.ToArray() )
-		{
 			Drop( carriable );
-		}
 
 		Active = null;
 
@@ -181,11 +178,9 @@ public sealed class Inventory : IEnumerable<Carriable>
 	public void DeleteContents()
 	{
 		Host.AssertServer();
-	
+
 		foreach ( var carriable in _list.ToArray() )
-		{
 			carriable.Delete();
-		}
 
 		Active = null;
 

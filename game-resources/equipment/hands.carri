@@ -2,18 +2,24 @@
 {
 	data = 
 	{
-		slot = "4"
-		spawnable = false
-		candrop = false
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
-		deploytime = 0.6
-		buyable = false
-		islimited = false
-		price = 0
+		Slot = 4
+		Spawnable = false
+		CanDrop = false
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
+		worldmodel = null
+		DeployTime = 0.6
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = null
+		Buyable = false
+		IsLimited = false
+		Price = 0
 		icon = ""
-		worldmodel = resource:""
-		classname = "ttt_equipment_hands"
+		Description = ""
+		"cached-icon" = null
+		ClassName = "ttt_equipment_hands"
+		Title = null
 	}
 }

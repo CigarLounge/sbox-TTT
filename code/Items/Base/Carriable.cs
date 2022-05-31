@@ -267,7 +267,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		if ( IsClient )
 			return;
 
-		SetParent( null );		
+		SetParent( null );
 		Owner = null;
 		MoveType = MoveType.Physics;
 		EnableDrawing = true;
