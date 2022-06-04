@@ -16,7 +16,7 @@
 		Buyable = true
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/microwave.jpg"
+		icon = resource:"ui/equipment/microwave.png"
 		Description = "A modified microwave which dispenses health to any injured players."
 		"cached-icon" = null
 		ClassName = "ttt_equipment_healthstation"

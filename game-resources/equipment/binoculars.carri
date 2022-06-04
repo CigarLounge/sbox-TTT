@@ -2,19 +2,24 @@
 {
 	data = 
 	{
-		slot = "4"
-		spawnable = false
-		candrop = true
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
+		Slot = 4
+		Spawnable = false
+		CanDrop = true
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
 		worldmodel = resource:"models/binoculars/binoculars.vmdl"
-		deploytime = 0.0
-		buyable = true
-		islimited = false
-		price = 100
-		icon = "ui/equipment/binoculars.png"
-		description = "Zoom in on corpses and identify them from a long distance away."
-		classname = "ttt_equipment_binoculars"
+		DeployTime = 0
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = resource:"models/binoculars/binoculars.vmdl"
+		Buyable = true
+		IsLimited = false
+		Price = 100
+		icon = resource:"ui/equipment/binoculars.png"
+		Description = "Zoom in on corpses and identify them from a long distance away."
+		"cached-icon" = null
+		ClassName = "ttt_equipment_binoculars"
+		Title = null
 	}
 }

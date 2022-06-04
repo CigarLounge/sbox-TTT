@@ -16,7 +16,7 @@ public abstract class ItemInfo : GameResource
 	public int Price { get; set; } = 0;
 
 	[JsonPropertyName( "icon" )]
-	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	[Title( "Icon" ), Category( "UI" )]
 	public string IconPath { get; set; } = "";
 
 	[Category( "UI" )]

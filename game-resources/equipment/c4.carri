@@ -2,19 +2,24 @@
 {
 	data = 
 	{
-		slot = "3"
-		spawnable = false
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
-		deploytime = 0.0
-		buyable = true
-		islimited = true
-		price = 100
-		icon = ""
+		Slot = 3
+		Spawnable = false
+		CanDrop = false
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
 		worldmodel = resource:"models/c4/c4.vmdl"
-		classname = "ttt_equipment_c4"
-		candrop = false
-		description = "Powerful timed explosive."
+		DeployTime = 0
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = resource:"models/c4/c4.vmdl"
+		Buyable = true
+		IsLimited = true
+		Price = 100
+		icon = ""
+		Description = "Powerful timed explosive."
+		"cached-icon" = null
+		ClassName = "ttt_equipment_c4"
+		Title = null
 	}
 }

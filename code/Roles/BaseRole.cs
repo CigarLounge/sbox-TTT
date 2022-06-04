@@ -28,7 +28,7 @@ public class RoleInfo : GameResource
 	public Color Color { get; set; }
 
 	[JsonPropertyName( "icon" )]
-	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	[Title( "Icon" ), Category( "UI" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]

@@ -18,7 +18,7 @@
 		CanRoleChat = true
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
-		icon = resource:"ui/detective-icon.jpg"
+		icon = resource:"ui/detective-icon.png"
 		AvailableItems = 
 		[
 			"ttt_perk_radar",

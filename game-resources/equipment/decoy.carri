@@ -2,19 +2,24 @@
 {
 	data = 
 	{
-		slot = "4"
-		spawnable = false
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
-		deploytime = 0.0
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/equipment/decoy.png"
+		Slot = 4
+		Spawnable = false
+		CanDrop = false
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
 		worldmodel = resource:"models/decoy/decoy.vmdl"
-		classname = "ttt_equipment_decoy"
-		candrop = false
-		description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
+		DeployTime = 0
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = resource:"models/decoy/decoy.vmdl"
+		Buyable = true
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/equipment/decoy.png"
+		Description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
+		"cached-icon" = null
+		ClassName = "ttt_equipment_decoy"
+		Title = null
 	}
 }

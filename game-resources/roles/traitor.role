@@ -22,7 +22,7 @@
 		CanRoleChat = true
 		CanAttachCorpses = true
 		Color = "0.87451,0.16078,0.20784,1"
-		icon = resource:"ui/traitor-icon.jpg"
+		icon = resource:"ui/traitor-icon.png"
 		AvailableItems = 
 		[
 			"ttt_perk_bodyarmor",
