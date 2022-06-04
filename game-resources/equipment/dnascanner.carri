@@ -13,7 +13,6 @@
 		"cached-handsmodel" = null
 		"cached-viewmodel" = null
 		"cached-worldmodel" = resource:"models/dnascanner/huladoll.vmdl"
-		Buyable = false
 		IsLimited = false
 		Price = 100
 		icon = ""

@@ -13,7 +13,6 @@
 		"cached-handsmodel" = null
 		"cached-viewmodel" = null
 		"cached-worldmodel" = resource:"models/binoculars/binoculars.vmdl"
-		Buyable = true
 		IsLimited = false
 		Price = 100
 		icon = resource:"ui/equipment/binoculars.png"

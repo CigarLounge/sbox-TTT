@@ -2,11 +2,12 @@
 {
 	data = 
 	{
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/perks/radar.png"
-		classname = "ttt_perk_radar"
-		description = "Allows you to scan for life signs."
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/perks/radar.png"
+		Description = "Allows you to scan for life signs."
+		"cached-icon" = null
+		ClassName = "ttt_perk_radar"
+		Title = null
 	}
 }

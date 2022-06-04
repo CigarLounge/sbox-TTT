@@ -4,28 +4,22 @@
 	{
 		Team = 1
 		DefaultCredits = 100
-		Weapons = 
+		ShopItems = 
 		[
-			resource:"game-resources/weapons/p90.weapon",
-		]
-		Carriables = 
-		[
-			resource:"game-resources/equipment/healthstation.carri",
-			resource:"game-resources/equipment/teleporter.carri",
-			resource:"game-resources/equipment/binoculars.carri",
-			resource:"game-resources/equipment/defuser.carri",
-			resource:"game-resources/equipment/cigar.carri",
-		]
-		Perks = 
-		[
-			resource:"game-resources/perks/radar.perk",
+			"ttt_perk_radar",
+			"ttt_weapon_p90",
+			"ttt_equipment_healthstation",
+			"ttt_equipment_teleporter",
+			"ttt_equipment_binoculars",
+			"ttt_equipment_defuser",
+			"ttt_equipment_cigar",
 		]
 		CanRetrieveCredits = true
 		CanRoleChat = true
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
 		icon = resource:"ui/detective-icon.png"
-		AvailableItems = null
+		ShopItemLibraryNames = [  ]
 		"cached-icon" = null
 		ClassName = "ttt_role_detective"
 		Title = null

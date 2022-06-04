@@ -7,9 +7,6 @@ namespace TTT;
 public abstract class ItemInfo : GameResource
 {
 	[Category( "Important" )]
-	public bool Buyable { get; set; } = false;
-
-	[Category( "Important" )]
 	public bool IsLimited { get; set; } = false;
 
 	[Category( "Stats" )]

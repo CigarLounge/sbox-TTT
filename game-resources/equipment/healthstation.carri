@@ -13,7 +13,6 @@
 		"cached-handsmodel" = null
 		"cached-viewmodel" = null
 		"cached-worldmodel" = null
-		Buyable = true
 		IsLimited = true
 		Price = 100
 		icon = resource:"ui/equipment/microwave.png"

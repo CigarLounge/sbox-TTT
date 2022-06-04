@@ -39,8 +39,14 @@ public partial class Shop : Panel
 
 	public void AddRoleShopItems( Player player )
 	{
-		foreach ( var itemInfo in player.Role.ShopItems )
+		foreach ( var libraryName in player.Role.ShopItems )
+		{
+			var itemInfo = GameResource.GetInfo<ItemInfo>( libraryName );
+			if ( itemInfo is null )
+				continue;
+
 			AddRoleShopItem( itemInfo );
+		}
 	}
 
 	private void AddRoleShopItem( ItemInfo itemInfo )

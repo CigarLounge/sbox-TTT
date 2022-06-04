@@ -4,32 +4,26 @@
 	{
 		Team = 2
 		DefaultCredits = 200
-		Weapons = 
+		ShopItems = 
 		[
-			resource:"game-resources/weapons/silencedpistol.weapon",
-			resource:"game-resources/equipment/flaregun.weapon",
-			resource:"game-resources/equipment/newtonlauncher.weapon",
-		]
-		Carriables = 
-		[
-			resource:"game-resources/weapons/knife.carri",
-			resource:"game-resources/equipment/teleporter.carri",
-			resource:"game-resources/equipment/decoy.carri",
-			resource:"game-resources/equipment/radio.carri",
-			resource:"game-resources/equipment/c4.carri",
-		]
-		Perks = 
-		[
-			resource:"game-resources/perks/bodyarmor.perk",
-			resource:"game-resources/perks/disguiser.perk",
-			resource:"game-resources/perks/radar.perk",
+			"ttt_perk_bodyarmor",
+			"ttt_perk_disguiser",
+			"ttt_perk_radar",
+			"ttt_weapon_silencedpistol",
+			"ttt_weapon_knife",
+			"ttt_equipment_teleporter",
+			"ttt_equipment_flaregun",
+			"ttt_equipment_decoy",
+			"ttt_equipment_radio",
+			"ttt_equipment_newtonlauncher",
+			"ttt_equipment_c4",
 		]
 		CanRetrieveCredits = true
 		CanRoleChat = true
 		CanAttachCorpses = true
 		Color = "0.87451,0.15686,0.20392,1"
 		icon = resource:"ui/traitor-icon.png"
-		AvailableItems = null
+		ShopItemLibraryNames = [  ]
 		"cached-icon" = null
 		ClassName = "ttt_role_traitor"
 		Title = null
