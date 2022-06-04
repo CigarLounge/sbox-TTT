@@ -48,7 +48,7 @@ public class RoleInfo : GameResource
 	{
 		base.PostLoad();
 
-		var itemPaths = new HashSet<string>( Weapons.Concat( Carriables ).Concat( Perks ) );
+		var itemPaths = Weapons.Concat( Carriables ).Concat( Perks );
 		foreach ( var itemPath in itemPaths )
 		{
 			var itemInfo = ResourceLibrary.Get<ItemInfo>( itemPath );
