@@ -39,7 +39,7 @@ public partial class Shop : Panel
 
 	public void AddRoleShopItems( Player player )
 	{
-		foreach ( var itemInfo in player.Role.AvailableShopItems )
+		foreach ( var itemInfo in player.Role.ShopItems )
 			AddRoleShopItem( itemInfo );
 	}
 
@@ -65,7 +65,7 @@ public partial class Shop : Panel
 		if ( !IsVisible || Local.Pawn is not Player player )
 			return;
 
-		if ( player.Role.AvailableShopItems.Count == 0 )
+		if ( player.Role.ShopItems.Count == 0 )
 			return;
 
 		_creditLabel.Text = $"{player.Credits} credits";

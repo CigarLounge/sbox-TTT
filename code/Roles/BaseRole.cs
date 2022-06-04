@@ -38,7 +38,7 @@ public class RoleInfo : GameResource
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]
-	public HashSet<ItemInfo> AvailableShopItems { get; private set; } = new();
+	public HashSet<ItemInfo> ShopItems { get; private set; } = new();
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
@@ -55,7 +55,7 @@ public class RoleInfo : GameResource
 			if ( itemInfo is null )
 				continue;
 
-			AvailableShopItems.Add( itemInfo );
+			ShopItems.Add( itemInfo );
 		}
 
 		if ( Host.IsClient )
@@ -69,7 +69,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public HashSet<ItemInfo> AvailableShopItems => Info.AvailableShopItems;
+	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
@@ -84,7 +84,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	{
 		if ( player.IsLocalPawn )
 		{
-			if ( Info.AvailableShopItems.Count > 0 )
+			if ( Info.ShopItems.Count > 0 )
 				UI.RoleMenu.Instance.AddShopTab();
 
 			Player.RoleButtons = GetRoleButtons();
@@ -110,7 +110,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 		player.ClearButtons();
 
-		if ( Info.AvailableShopItems.Count > 0 )
+		if ( Info.ShopItems.Count > 0 )
 			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 	}
 
