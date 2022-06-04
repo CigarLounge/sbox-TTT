@@ -19,7 +19,7 @@ public partial class Player
 		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
 			return false;
 
-		if ( !Role.AvailableItems.Contains( item.ClassName ) )
+		if ( !Role.AvailableShopItems.Contains( item ) )
 			return false;
 
 		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.ClassName ) )

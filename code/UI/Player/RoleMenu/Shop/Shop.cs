@@ -39,14 +39,8 @@ public partial class Shop : Panel
 
 	public void AddRoleShopItems( Player player )
 	{
-		foreach ( var libraryName in player.Role.AvailableItems )
-		{
-			var itemInfo = GameResource.GetInfo<ItemInfo>( libraryName );
-			if ( itemInfo is null )
-				continue;
-
+		foreach ( var itemInfo in player.Role.AvailableShopItems )
 			AddRoleShopItem( itemInfo );
-		}
 	}
 
 	private void AddRoleShopItem( ItemInfo itemInfo )
@@ -71,7 +65,7 @@ public partial class Shop : Panel
 		if ( !IsVisible || Local.Pawn is not Player player )
 			return;
 
-		if ( player.Role.AvailableItems.Count == 0 )
+		if ( player.Role.AvailableShopItems.Count == 0 )
 			return;
 
 		_creditLabel.Text = $"{player.Credits} credits";

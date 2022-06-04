@@ -15,8 +15,14 @@ public class RoleInfo : GameResource
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; } = 0;
 
-	[Description( "The shop items available for purchase." )]
-	public List<string> ExclusiveItems { get; set; } // It'd be cool if s&box let us select `Assets` here.
+	[Category( "Shop" ), ResourceType( "weapon" )]
+	public List<string> Weapons { get; set; } = new();
+
+	[Category( "Shop" ), ResourceType( "carri" )]
+	public List<string> Carriables { get; set; } = new();
+
+	[Category( "Shop" ), ResourceType( "perk" )]
+	public List<string> Perks { get; set; } = new();
 
 	public bool CanRetrieveCredits { get; set; } = false;
 
@@ -32,7 +38,7 @@ public class RoleInfo : GameResource
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]
-	public HashSet<string> AvailableItems { get; private set; }
+	public HashSet<ItemInfo> AvailableShopItems { get; private set; } = new();
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
@@ -42,7 +48,15 @@ public class RoleInfo : GameResource
 	{
 		base.PostLoad();
 
-		AvailableItems = new HashSet<string>( ExclusiveItems );
+		var itemPaths = new HashSet<string>( Weapons.Concat( Carriables ).Concat( Perks ) );
+		foreach ( var itemPath in itemPaths )
+		{
+			var itemInfo = ResourceLibrary.Get<ItemInfo>( itemPath );
+			if ( itemInfo is null )
+				continue;
+
+			AvailableShopItems.Add( itemInfo );
+		}
 
 		if ( Host.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, IconPath );
@@ -55,7 +69,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public HashSet<string> AvailableItems => Info.AvailableItems;
+	public HashSet<ItemInfo> AvailableShopItems => Info.AvailableShopItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
@@ -70,7 +84,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	{
 		if ( player.IsLocalPawn )
 		{
-			if ( Info.AvailableItems.Count > 0 )
+			if ( Info.AvailableShopItems.Count > 0 )
 				UI.RoleMenu.Instance.AddShopTab();
 
 			Player.RoleButtons = GetRoleButtons();
@@ -96,7 +110,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 		player.ClearButtons();
 
-		if ( Info.AvailableItems.Count > 0 )
+		if ( Info.AvailableShopItems.Count > 0 )
 			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 	}
 
