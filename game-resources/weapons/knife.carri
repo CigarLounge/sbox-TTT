@@ -2,19 +2,23 @@
 {
 	data = 
 	{
-		slot = "3"
-		spawnable = false
-		candrop = true
+		Slot = 3
+		Spawnable = false
+		CanDrop = true
 		viewmodel = resource:"models/weapons/v_knife.vmdl"
 		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		holdtype = "5"
-		deploytime = 0.6
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/weapons/knife.png"
-		description = "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire."
+		HoldType = 5
 		worldmodel = resource:"models/weapons/w_knife.vmdl"
-		classname = "ttt_weapon_knife"
+		DeployTime = 0.6
+		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
+		"cached-viewmodel" = resource:"models/weapons/v_knife.vmdl"
+		"cached-worldmodel" = resource:"models/weapons/w_knife.vmdl"
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/weapons/knife.png"
+		Description = "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire."
+		"cached-icon" = null
+		ClassName = "ttt_weapon_knife"
+		Title = null
 	}
 }

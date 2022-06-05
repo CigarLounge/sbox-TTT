@@ -13,16 +13,13 @@ public partial class Player
 
 	public bool CanPurchase( ItemInfo item )
 	{
-		if ( !item.Buyable )
-			return false;
-
 		if ( Credits < item.Price )
 			return false;
 
 		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
 			return false;
 
-		if ( !Role.AvailableItems.Contains( item.ClassName ) )
+		if ( !Role.ShopItems.Contains( item.ClassName ) )
 			return false;
 
 		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.ClassName ) )

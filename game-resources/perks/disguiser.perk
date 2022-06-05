@@ -2,11 +2,12 @@
 {
 	data = 
 	{
-		buyable = true
-		islimited = true
-		price = 100
+		IsLimited = true
+		Price = 100
 		icon = ""
-		classname = "ttt_perk_disguiser"
-		description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
+		Description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
+		"cached-icon" = null
+		ClassName = "ttt_perk_disguiser"
+		Title = null
 	}
 }

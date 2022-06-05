@@ -2,19 +2,23 @@
 {
 	data = 
 	{
-		slot = "4"
-		spawnable = false
-		candrop = true
-		viewmodel = resource:""
-		handsmodel = resource:""
-		holdtype = "0"
+		Slot = 4
+		Spawnable = false
+		CanDrop = true
+		viewmodel = ""
+		handsmodel = ""
+		HoldType = 0
 		worldmodel = resource:"models/defuser/defuser.vmdl"
-		deploytime = 0.0
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/equipment/defuser.png"
-		description = "Instantly defuse a C4 explosive, unlimited uses."
-		classname = "ttt_equipment_defuser"
+		DeployTime = 0
+		"cached-handsmodel" = null
+		"cached-viewmodel" = null
+		"cached-worldmodel" = resource:"models/defuser/defuser.vmdl"
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/equipment/defuser.png"
+		Description = "Instantly defuse a C4 explosive, unlimited uses."
+		"cached-icon" = null
+		ClassName = "ttt_equipment_defuser"
+		Title = null
 	}
 }

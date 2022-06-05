@@ -7,16 +7,13 @@ namespace TTT;
 public abstract class ItemInfo : GameResource
 {
 	[Category( "Important" )]
-	public bool Buyable { get; set; } = false;
-
-	[Category( "Important" )]
 	public bool IsLimited { get; set; } = false;
 
 	[Category( "Stats" )]
 	public int Price { get; set; } = 0;
 
 	[JsonPropertyName( "icon" )]
-	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
+	[Title( "Icon" ), Category( "UI" )]
 	public string IconPath { get; set; } = "";
 
 	[Category( "UI" )]

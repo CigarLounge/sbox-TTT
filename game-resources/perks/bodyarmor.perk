@@ -2,11 +2,12 @@
 {
 	data = 
 	{
-		buyable = true
-		islimited = true
-		price = 100
-		icon = "ui/perks/bodyarmor.png"
-		classname = "ttt_perk_bodyarmor"
-		description = "Reduces bullet damage by 30% when you get hit in the body."
+		IsLimited = true
+		Price = 100
+		icon = resource:"ui/perks/bodyarmor.png"
+		Description = "Reduces bullet damage by 30% when you get hit in the body."
+		"cached-icon" = null
+		ClassName = "ttt_perk_bodyarmor"
+		Title = null
 	}
 }
