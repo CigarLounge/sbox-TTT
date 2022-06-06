@@ -19,8 +19,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 	public int Count => _list.Count;
 	private readonly List<Carriable> _list = new();
 
-	private readonly int[] SlotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	private readonly int[] WeaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
+	private readonly int[] _weaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
 	private const float DropPositionOffset = 3f;
 	private const float DropVelocity = 500f;
@@ -72,12 +72,12 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool HasFreeSlot( SlotType slotType )
 	{
-		return SlotCapacity[(int)slotType] > 0;
+		return _slotCapacity[(int)slotType] > 0;
 	}
 
 	public bool HasWeaponOfAmmoType( AmmoType ammoType )
 	{
-		return ammoType != AmmoType.None && WeaponsOfAmmoType[(int)ammoType] > 0;
+		return ammoType != AmmoType.None && _weaponsOfAmmoType[(int)ammoType] > 0;
 	}
 
 	public void OnUse( Carriable carriable )
@@ -202,10 +202,10 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 		carriable.OnCarryStart( Owner );
 
-		SlotCapacity[(int)carriable.Info.Slot] -= 1;
+		_slotCapacity[(int)carriable.Info.Slot] -= 1;
 
 		if ( carriable is Weapon weapon )
-			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
+			_weaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
 	}
 
 	public void OnChildRemoved( Entity child )
@@ -218,10 +218,10 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 		carriable.OnCarryDrop( Owner );
 
-		SlotCapacity[(int)carriable.Info.Slot] += 1;
+		_slotCapacity[(int)carriable.Info.Slot] += 1;
 
 		if ( carriable is Weapon weapon )
-			WeaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
+			_weaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
 	}
 
 	public T DropEntity<T>( Deployable<T> self ) where T : ModelEntity, new()
