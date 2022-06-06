@@ -309,8 +309,22 @@ public partial class Player : AnimatedEntity
 			return;
 		}
 
-		if ( IsServer && other is Carriable carriable )
-			Inventory.Pickup( carriable );
+		if ( !IsServer )
+			return;
+
+		switch ( other )
+		{
+			case Ammo ammo:
+			{
+				ammo.StartTouch( this );
+				break;
+			}
+			case Carriable carriable:
+			{
+				Inventory.Pickup( carriable );
+				break;
+			}
+		}
 	}
 
 	public void DeleteItems()

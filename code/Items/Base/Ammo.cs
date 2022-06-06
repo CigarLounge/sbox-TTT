@@ -21,6 +21,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	public int CurrentCount { get; private set; }
 
 	public Player Dropper { get; set; }
+	public PickupTrigger PickupTrigger { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
@@ -30,7 +31,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	{
 		Host.AssertServer();
 
-		Ammo ammo = ammoType switch
+		var ammo = ammoType switch
 		{
 			AmmoType.None => null,
 			AmmoType.PistolSMG => new SMGAmmo(),
@@ -38,7 +39,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 			AmmoType.Sniper => new SniperAmmo(),
 			AmmoType.Magnum => new MagnumAmmo(),
 			AmmoType.Rifle => new RifleAmmo(),
-			_ => null,
+			_ => default( Ammo ),
 		};
 
 
@@ -59,6 +60,11 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		CollisionGroup = CollisionGroup.Weapon;
 		SetInteractsAs( CollisionLayer.Debris );
 		CurrentCount = DefaultAmmoCount;
+
+		PickupTrigger = new PickupTrigger
+		{
+			Parent = this
+		};
 	}
 
 	public override void StartTouch( Entity other )
