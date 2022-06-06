@@ -239,7 +239,12 @@ public partial class Player : Sandbox.Player
 			return;
 		}
 
-		if ( IsServer )
+		if ( !IsServer )
+			return;
+
+		if ( other is Ammo ammo )
+			ammo.StartTouch( this );
+		else
 			Inventory.Pickup( other );
 	}
 
