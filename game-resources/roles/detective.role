@@ -19,7 +19,16 @@
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
 		icon = resource:"ui/detective-icon.png"
-		ShopItemLibraryNames = [  ]
+		ShopItemLibraryNames = 
+		[
+			"ttt_perk_radar",
+			"ttt_weapon_p90",
+			"ttt_equipment_healthstation",
+			"ttt_equipment_teleporter",
+			"ttt_equipment_binoculars",
+			"ttt_equipment_defuser",
+			"ttt_equipment_cigar",
+		]
 		"cached-icon" = null
 		ClassName = "ttt_role_detective"
 		Title = null
