@@ -61,7 +61,7 @@ public class Scout : Weapon
 	{
 		base.DestroyHudElements();
 
-		PreviousOwner.CameraMode.FieldOfView = _defaultFOV;
+		(Owner ?? PreviousOwner).CameraMode.FieldOfView = _defaultFOV;
 		_sniperScopePanel.Delete( true );
 	}
 

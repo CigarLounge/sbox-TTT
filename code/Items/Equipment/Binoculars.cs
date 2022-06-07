@@ -74,7 +74,7 @@ public partial class Binoculars : Carriable
 	{
 		base.DestroyHudElements();
 
-		PreviousOwner.CameraMode.FieldOfView = _defaultFOV;
+		(Owner ?? PreviousOwner).CameraMode.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
