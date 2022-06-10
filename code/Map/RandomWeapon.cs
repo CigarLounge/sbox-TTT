@@ -15,7 +15,6 @@ public class RandomWeapon : Entity
 	/// Cached weapons list to use when `ExcludedWeapons` is NOT provided.
 	/// </summary>
 	private static readonly List<Type> _cachedWeaponTypes = new();
-
 	private const int WEAPON_DISTANCE_UP = 4;
 
 	[Description( "If changed, will only spawn weapons of the selected ammo type." )]
@@ -29,26 +28,14 @@ public class RandomWeapon : Entity
 	[Property]
 	public int AmmoToSpawn { get; set; } = 0;
 
-	public static void CacheWeaponTypes()
-	{
-		var weapons = TypeLibrary.GetTypes<Weapon>();
-
-		foreach ( var weaponType in weapons )
-		{
-			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponType );
-
-			if ( weaponInfo is not null && weaponInfo.Spawnable )
-				_cachedWeaponTypes.Add( weaponType );
-		}
-	}
-
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		Transmit = TransmitType.Never;
-		var weaponTypes = _cachedWeaponTypes;
+		CacheWeaponTypes();
 
+		var weaponTypes = _cachedWeaponTypes;
 		if ( SelectedAmmoType != AmmoType.None )
 		{
 			weaponTypes = new List<Type>();
@@ -60,7 +47,7 @@ public class RandomWeapon : Entity
 			}
 		}
 
-		if ( weaponTypes.Count <= 0 )
+		if ( weaponTypes.IsNullOrEmpty() )
 			return;
 
 		var weapon = TypeLibrary.Create<Weapon>( Rand.FromList( weaponTypes ) );
@@ -73,11 +60,25 @@ public class RandomWeapon : Entity
 		if ( weapon.Info.AmmoType == AmmoType.None )
 			return;
 
-		for ( int i = 0; i < AmmoToSpawn; ++i )
+		for ( var i = 0; i < AmmoToSpawn; ++i )
 		{
 			var ammo = Ammo.Create( weapon.Info.AmmoType );
 			ammo.Position = Position;
 			ammo.Rotation = Rotation;
+		}
+	}
+
+	private void CacheWeaponTypes()
+	{
+		if ( !_cachedWeaponTypes.IsNullOrEmpty() )
+			return;
+
+		var weapons = TypeLibrary.GetTypes<Weapon>();
+		foreach ( var weaponType in weapons )
+		{
+			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponType );
+			if ( weaponInfo is not null && weaponInfo.Spawnable )
+				_cachedWeaponTypes.Add( weaponType );
 		}
 	}
 }

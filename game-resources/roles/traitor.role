@@ -23,7 +23,20 @@
 		CanAttachCorpses = true
 		Color = "0.87451,0.15686,0.20392,1"
 		icon = resource:"ui/traitor-icon.png"
-		ShopItemLibraryNames = [  ]
+		ShopItemLibraryNames = 
+		[
+			"ttt_perk_bodyarmor",
+			"ttt_perk_disguiser",
+			"ttt_perk_radar",
+			"ttt_weapon_silencedpistol",
+			"ttt_weapon_knife",
+			"ttt_equipment_teleporter",
+			"ttt_equipment_flaregun",
+			"ttt_equipment_decoy",
+			"ttt_equipment_radio",
+			"ttt_equipment_newtonlauncher",
+			"ttt_equipment_c4",
+		]
 		"cached-icon" = null
 		ClassName = "ttt_role_traitor"
 		Title = null

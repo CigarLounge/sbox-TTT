@@ -21,13 +21,7 @@ public partial class Game : Sandbox.Game
 		Current = this;
 
 		if ( IsServer )
-		{
 			_ = new UI.Hud();
-
-			// https://github.com/Facepunch/sbox-issues/issues/1857
-			RandomWeapon.CacheWeaponTypes();
-			RandomGrenade.CacheGrenadeTypes();
-		}
 	}
 
 	/// <summary>
