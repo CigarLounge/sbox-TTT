@@ -105,7 +105,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 		return Entity.All
 				.OfType<RoleButton>()
-				.Where( x => x.IsValid() && (x.Role == "All" || this == x.Role) )
+				.Where( x => x.IsValid() && (x.RoleName == "All" || this == x.RoleName) )
 				.ToList();
 	}
 

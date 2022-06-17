@@ -11,8 +11,9 @@ namespace TTT;
 public partial class RoleButton : Entity
 {
 	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
+	[Title( "Role" )]
 	[Net, Property]
-	public string Role { get; set; } = "Traitor";
+	public string RoleName { get; private set; } = "Traitor";
 
 	[Description( "On screen tooltip shown on button." )]
 	[Net, Property]
@@ -40,10 +41,10 @@ public partial class RoleButton : Entity
 	[Net]
 	public bool IsRemoved { get; set; }
 
-	public bool IsDisabled => Locked || IsDelayed || IsRemoved;
-	public bool HasDelay => Delay > 0.0f;
 	private TimeUntil NextUse { get; set; }
 	protected Output OnPressed { get; set; }
+	public bool IsDisabled => Locked || IsDelayed || IsRemoved;
+	public bool HasDelay => Delay > 0.0f;
 
 	public override void Spawn()
 	{

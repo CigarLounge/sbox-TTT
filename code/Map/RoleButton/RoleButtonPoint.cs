@@ -26,7 +26,7 @@ public class RoleButtonPoint : Panel
 		StyleSheet.Load( "/map/rolebutton/RoleButtonPoint.scss" );
 		Local.Hud.AddChild( this );
 
-		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.Role );
+		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.RoleName );
 		var pointer = Add.Label( "ads_click", "pointer" );
 
 		if ( roleInfo is not null )
