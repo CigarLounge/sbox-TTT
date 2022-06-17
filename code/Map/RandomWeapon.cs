@@ -21,9 +21,7 @@ public class RandomWeapon : Entity
 	[Property]
 	public AmmoType SelectedAmmoType { get; set; } = AmmoType.None;
 
-	/// <summary>
-	/// Defines the amount of matching ammo entities that should be spawned near the weapons.
-	/// </summary>
+	[Description( "Defines the amount of matching ammo entities that should be spawned near the weapons" )]
 	[Title( "Amount of ammo" )]
 	[Property]
 	public int AmmoToSpawn { get; set; } = 0;
