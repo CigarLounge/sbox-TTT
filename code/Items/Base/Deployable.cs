@@ -69,7 +69,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			);
 		}
 
-		bool valid = GhostEntity.IsPlacementValid( ref trace );
+		var valid = GhostEntity.IsPlacementValid( ref trace );
 
 		if ( !valid || !Input.Pressed( InputButton.SecondaryAttack ) )
 			return;
@@ -114,7 +114,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			);
 		}
 
-		bool valid = GhostEntity.IsPlacementValid( ref trace );
+		var valid = GhostEntity.IsPlacementValid( ref trace );
 
 		if ( valid )
 			GhostEntity.ShowValid();
