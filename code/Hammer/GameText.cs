@@ -9,13 +9,13 @@ namespace TTT;
 [Title( "Game Text" )]
 public partial class GameText : Entity
 {
+	[Net, Property]
+	public string Message { get; private set; }
+
 	[Description( "The team that will be forced to win. If set to `None`, the message will be sent to everyone." )]
 	[Title( "Target Team" )]
 	[Property]
 	public Team Team { get; private set; } = Team.None;
-
-	[Net, Property]
-	public string Message { get; private set; }
 
 	[Description( "OVERRIDES `Target Team` PROPERTY. When DisplayMessage() is fired, the message will only be sent to the activator's team." )]
 	[Property]

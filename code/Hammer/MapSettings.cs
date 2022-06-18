@@ -15,17 +15,17 @@ public partial class MapSettings : Entity
 	/// <summary>
 	/// Fired once a new round starts.
 	/// </summary>
-	protected Output RoundStart { get; set; }
+	protected Output OnRoundStart { get; set; }
 
 	/// <summary>
 	/// Fired once the roles have been assigned to each player.
 	/// </summary>
-	protected Output RolesAssigned { get; set; }
+	protected Output OnRolesAssigned { get; set; }
 
 	/// <summary>
 	/// Fired once a round has ended.
 	/// </summary>
-	protected Output<Team> RoundEnd { get; set; }
+	protected Output<Team> OnRoundEnd { get; set; }
 
 	/// <summary>
 	/// Does not run on entity awake/spawn, is called explicitly by the TTT gamemode to trigger.
@@ -33,20 +33,20 @@ public partial class MapSettings : Entity
 	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
 
 	[TTTEvent.Round.Started]
-	private void OnRoundStarted()
+	private void RoundStarted()
 	{
-		RoundStart.Fire( this );
+		OnRoundStart.Fire( this );
 	}
 
 	[TTTEvent.Round.RolesAssigned]
-	private void OnRolesAssigned()
+	private void RolesAssigned()
 	{
-		RolesAssigned.Fire( this );
+		OnRolesAssigned.Fire( this );
 	}
 
 	[TTTEvent.Round.Ended]
-	private void OnRoundEnded( Team winningTeam, WinType winType )
+	private void RoundEnded( Team winningTeam, WinType winType )
 	{
-		RoundEnd.Fire( this, winningTeam );
+		OnRoundEnd.Fire( this, winningTeam );
 	}
 }

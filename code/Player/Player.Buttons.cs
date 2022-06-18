@@ -34,7 +34,7 @@ public partial class Player
 		if ( entity is not RoleButton button )
 			return;
 
-		if ( (button.RoleName == "All" || player.Role == button.RoleName) && !button.IsDisabled )
+		if ( button.CanUse( player ) )
 			button.Press( player );
 	}
 

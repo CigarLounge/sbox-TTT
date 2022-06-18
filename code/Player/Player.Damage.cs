@@ -209,8 +209,7 @@ public partial class Player
 			if ( weaponInfo is not null )
 				damageMultiplier *= weaponInfo.HeadshotMultiplier;
 		}
-
-		if ( !isHeadShot && Perks.Has<BodyArmor>() )
+		else if ( Perks.Has<BodyArmor>() )
 			damageMultiplier *= BodyArmor.ReductionPercentage;
 
 		return damageMultiplier;
@@ -233,6 +232,7 @@ public partial class Player
 			.WithPosition( position );
 
 		LastAttacker = info.Attacker;
+		LastAttackerWeapon = info.Weapon;
 		LastDamageInfo = info;
 
 		if ( IsLocalPawn )
