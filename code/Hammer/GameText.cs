@@ -3,50 +3,47 @@ using SandboxEditor;
 
 namespace TTT;
 
-public enum EntryType : byte
-{
-	All,
-	Activator,
-	Innocents,
-	Traitors,
-}
-
 [ClassName( "ttt_game_text" )]
 [Description( "Add text entry to the game feed when input fired." )]
 [HammerEntity]
 [Title( "Game Text" )]
-public class GameText : Entity
+public partial class GameText : Entity
 {
+	[Description( "The team that will be forced to win. If set to `None`, the message will be sent to everyone." )]
+	[Title( "Target Team" )]
 	[Property]
-	public string Message { get; set; } = "";
+	public Team Team { get; private set; } = Team.None;
 
-	[Description( "Who will this message go to?" )]
-	[Property]
-	public EntryType Receiver { get; set; } = EntryType.Activator;
+	[Net, Property]
+	public string Message { get; private set; }
 
+	[Description( "OVERRIDES `Target Team` PROPERTY. When DisplayMessage() is fired, the message will only be sent to the activator's team." )]
 	[Property]
-	public Color Color { get; set; } = Color.White;
+	public bool UseActivatorsTeam { get; private set; }
+
+	[Net, Property]
+	public Color Color { get; private set; } = Color.White;
 
 	[Input]
 	public void DisplayMessage( Entity activator )
 	{
-		switch ( Receiver )
+		if ( UseActivatorsTeam )
 		{
-			case EntryType.Activator:
-				UI.InfoFeed.DisplayEntry( To.Single( activator ), Message, Color );
-				break;
+			if ( activator is Player player )
+				DisplayMessage( player.Team.ToClients() );
 
-			case EntryType.All:
-				UI.InfoFeed.DisplayEntry( To.Everyone, Message, Color );
-				break;
-
-			case EntryType.Innocents:
-				UI.InfoFeed.DisplayEntry( Team.Innocents.ToClients(), Message, Color );
-				break;
-
-			case EntryType.Traitors:
-				UI.InfoFeed.DisplayEntry( Team.Traitors.ToClients(), Message, Color );
-				break;
+			return;
 		}
+
+		if ( Team == Team.None )
+			DisplayMessage( To.Everyone );
+		else
+			DisplayMessage( Team.ToClients() );
+	}
+
+	[ClientRpc]
+	private void DisplayMessage()
+	{
+		UI.InfoFeed.DisplayEntry( Message, Color );
 	}
 }
