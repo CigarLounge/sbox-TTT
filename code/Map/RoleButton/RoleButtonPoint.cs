@@ -1,10 +1,10 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class RoleButtonPoint : Panel
 {
 	private const int CenterPercent = 50;
@@ -12,6 +12,8 @@ public class RoleButtonPoint : Panel
 	private readonly float _maxViewDistance = 1024;
 	private readonly float _focusSize = 2.5f;
 
+	private Label Pointer { get; set; }
+	private Label Description { get; set; }
 	private readonly RoleButton _roleButton;
 
 	public RoleButtonPoint( RoleButton roleButton )
@@ -20,27 +22,25 @@ public class RoleButtonPoint : Panel
 		_maxViewDistance = roleButton.Radius;
 		_minViewDistance = Math.Min( _minViewDistance, _maxViewDistance / 2 );
 
-		StyleSheet.Load( "/map/rolebutton/RoleButtonPoint.scss" );
 		Local.Hud.AddChild( this );
 
 		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.Role );
-		var pointer = Add.Label( "ads_click", "pointer" );
-
 		if ( roleInfo is not null )
 		{
-			pointer.Style.TextStrokeColor = roleInfo.Color;
-			pointer.Style.TextStrokeWidth = 2f;
+			Pointer.Style.TextStrokeColor = roleInfo.Color;
+			Pointer.Style.TextStrokeWidth = 2f;
 		}
 
-		Add.Label( _roleButton.Description, "text-shadow description" );
+		Description.Text = roleButton.Description;
 	}
 
 	public override void Tick()
 	{
-		base.Tick();
+		if ( Local.Pawn is not Player player )
+			return;
 
-		var player = Local.Pawn as Player;
 		var screenPos = _roleButton.Position.ToScreen();
+
 		this.Enabled( screenPos.z > 0f );
 		this.Enabled( !_roleButton.IsDisabled );
 
