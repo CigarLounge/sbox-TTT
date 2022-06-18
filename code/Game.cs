@@ -93,7 +93,7 @@ public partial class Game : Sandbox.Game
 		if ( Local.Pawn is not Player player )
 			return;
 
-		float scale = Screen.Height / 1080.0f;
+		var scale = Screen.Height / 1080.0f;
 		var screenSize = Screen.Size / scale;
 		var matrix = Matrix.CreateScale( scale );
 
