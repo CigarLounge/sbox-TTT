@@ -17,7 +17,7 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	private static readonly ColorGroup[] KarmaGroupList = new ColorGroup[]
+	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Liability", Color.FromBytes(255, 130, 0)),
 		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
@@ -29,10 +29,10 @@ public static class Karma
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
-			return KarmaGroupList[^1];
+			return _karmaGroupList[^1];
 
-		var index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
-		return KarmaGroupList[index];
+		var index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / _karmaGroupList.Length));
+		return _karmaGroupList[index];
 	}
 
 	[TTTEvent.Player.Spawned]

@@ -9,7 +9,7 @@ public partial class Player
 	[Net]
 	public List<int> Ammo { get; set; } = new();
 
-	private static readonly int[] AmmoCap = new int[] { 0, 60, 16, 20, 12, 60 };
+	private static readonly int[] _ammoCap = new int[] { 0, 60, 16, 20, 12, 60 };
 
 	public void ClearAmmo()
 	{
@@ -18,7 +18,7 @@ public partial class Player
 
 	public int AmmoCount( AmmoType type )
 	{
-		int iType = (int)type;
+		var iType = (int)type;
 
 		if ( Ammo is null )
 			return 0;
@@ -31,7 +31,7 @@ public partial class Player
 
 	public bool SetAmmo( AmmoType type, int amount )
 	{
-		int iType = (int)type;
+		var iType = (int)type;
 
 		if ( !Host.IsServer )
 			return false;
@@ -70,7 +70,7 @@ public partial class Player
 		if ( !Host.IsServer || Ammo is null )
 			return 0;
 
-		int ammoPickedUp = Math.Min( amount, AmmoCap[(int)type] - AmmoCount( type ) );
+		var ammoPickedUp = Math.Min( amount, _ammoCap[(int)type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
 		{
 			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
@@ -85,7 +85,7 @@ public partial class Player
 		if ( Ammo is null )
 			return 0;
 
-		int available = AmmoCount( type );
+		var available = AmmoCount( type );
 		amount = Math.Min( available, amount );
 
 		SetAmmo( type, available - amount );
