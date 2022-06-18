@@ -90,7 +90,7 @@ public class RoleButtonPoint : Panel
 	public bool IsLengthWithinCamerasFocus()
 	{
 		// We have to adjust the top check by the screen's aspect ratio in order to compensate for screen size
-		float topHeight = _focusSize * Screen.Aspect;
+		var topHeight = _focusSize * Screen.Aspect;
 
 		// I think we could alternatively use
 		return Style.Left.Value.Value > _centerPercent - _focusSize && Style.Left.Value.Value < _centerPercent + _focusSize
