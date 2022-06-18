@@ -152,8 +152,6 @@ public partial class InProgress : BaseState
 		if ( TimeLeft )
 			OnTimeUp();
 
-		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
-
 		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
 			Game.Current.ForceStateChange( new WaitingState() );
 	}
