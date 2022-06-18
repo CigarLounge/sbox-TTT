@@ -35,7 +35,7 @@ public partial class InProgress : BaseState
 		if ( player.Team == Team.Innocents )
 			_innocentTeamDeathCount += 1;
 
-		float percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
+		var percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );

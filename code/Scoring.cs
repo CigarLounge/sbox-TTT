@@ -63,10 +63,10 @@ public static class Scoring
 			alivePlayersCount[(int)player.Team]++;
 		}
 
-		int traitorBonus = (int)MathF.Ceiling( deadPlayersCount[1] / 2f );
-		int innocentBonus = alivePlayersCount[1];
+		var traitorBonus = (int)MathF.Ceiling( deadPlayersCount[1] / 2f );
+		var innocentBonus = alivePlayersCount[1];
 
-		if ( winType != WinType.TimeUp )
+		if ( winType != WinType.TimeUp ) 
 			traitorBonus += alivePlayersCount[2];
 		else
 			traitorBonus -= (int)MathF.Floor( alivePlayersCount[1] / 2f );
@@ -75,7 +75,7 @@ public static class Scoring
 		{
 			var player = client.Pawn as Player;
 
-			int bonus = player.Team == Team.Traitors ? traitorBonus : innocentBonus;
+			var bonus = player.Team == Team.Traitors ? traitorBonus : innocentBonus;
 			player.RoundScore += bonus;
 
 			// Add the score gained this round to the actual score.
