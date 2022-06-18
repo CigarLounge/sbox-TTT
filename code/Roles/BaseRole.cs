@@ -1,7 +1,6 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -31,7 +30,7 @@ public class RoleInfo : GameResource
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]
-	public HashSet<string> ShopItemLibraryNames { get; private set; } = new();
+	public HashSet<string> ShopItemClassNames { get; private set; } = new();
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
@@ -41,7 +40,7 @@ public class RoleInfo : GameResource
 	{
 		base.PostLoad();
 
-		ShopItemLibraryNames = new HashSet<string>( ShopItems );
+		ShopItemClassNames = new HashSet<string>( ShopItems );
 
 		if ( Host.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, IconPath );
@@ -54,7 +53,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public HashSet<string> ShopItems => Info.ShopItemLibraryNames;
+	public HashSet<string> ShopItems => Info.ShopItemClassNames;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
@@ -160,7 +159,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]
-	private void OnHotReload()
+	private void OnHotload()
 	{
 		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 		Player.RoleButtons = GetRoleButtons();

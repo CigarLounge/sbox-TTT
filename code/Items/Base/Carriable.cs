@@ -1,5 +1,4 @@
 using Sandbox;
-using System.ComponentModel;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -307,7 +306,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]
-	private void OnHotReload()
+	private void OnHotload()
 	{
 		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
