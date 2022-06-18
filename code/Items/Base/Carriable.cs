@@ -286,7 +286,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.OnDestroy();
 
-		if ( IsClient )
+		if ( IsFirstPersonMode )
 		{
 			DestroyViewModel();
 			DestroyHudElements();
