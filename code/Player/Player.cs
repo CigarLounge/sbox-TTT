@@ -63,7 +63,7 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		Animator = new StandardPlayerAnimator();
+		Animator = new PlayerAnimator();
 		CameraMode = new FreeSpectateCamera();
 	}
 
@@ -214,14 +214,10 @@ public partial class Player : Sandbox.Player
 	public override void OnActiveChildChanged( Entity previous, Entity next )
 	{
 		if ( previous is Carriable previousBc )
-		{
 			previousBc?.ActiveEnd( this, previousBc.Owner != this );
-		}
 
 		if ( next is Carriable nextBc )
-		{
 			nextBc?.ActiveStart( this );
-		}
 	}
 
 	public override void FrameSimulate( Client client )
