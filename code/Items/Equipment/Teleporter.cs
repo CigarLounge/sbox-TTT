@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_teleporter" )]
 [Title( "Teleporter" )]
 public partial class Teleporter : Carriable

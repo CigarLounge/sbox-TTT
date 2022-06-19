@@ -3,6 +3,7 @@ using System;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_newtonlauncher" )]
 [Title( "Newton Launcher" )]
 public partial class NewtonLauncher : Weapon

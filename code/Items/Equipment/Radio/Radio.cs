@@ -2,6 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_radio" )]
 [Title( "Radio" )]
 public class Radio : Deployable<RadioEntity>

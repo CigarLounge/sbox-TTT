@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_dnascanner" )]
 [HideInEditor]
 [Title( "DNA Scanner" )]

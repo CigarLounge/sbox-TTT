@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [ClassName( "ttt_weapon_scout" )]
 [EditorModel( "models/weapons/w_spr.vmdl" )]
 [HammerEntity]
@@ -62,7 +63,7 @@ public class Scout : Weapon
 		_sniperScopePanel.Delete( true );
 	}
 
-	public void SetScoped( bool isScoped )
+	private void SetScoped( bool isScoped )
 	{
 		IsScoped = isScoped;
 

@@ -4,6 +4,7 @@ using System;
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [ClassName( "ttt_weapon_huge" )]
 [EditorModel( "models/weapons/w_mg4.vmdl" )]
 [HammerEntity]

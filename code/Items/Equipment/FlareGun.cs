@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_flaregun" )]
 [Title( "Flare Gun" )]
 public class FlareGun : Weapon

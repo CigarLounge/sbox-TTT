@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Grenades" )]
 [ClassName( "ttt_grenade_smoke" )]
 [EditorModel( "models/weapons/w_smoke.vmdl" )]
 [HammerEntity]

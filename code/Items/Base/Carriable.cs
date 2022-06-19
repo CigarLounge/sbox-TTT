@@ -306,7 +306,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]
-	private void OnHotload()
+	private void OnHotReload()
 	{
 		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}

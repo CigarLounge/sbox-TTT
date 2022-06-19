@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_cigar" )]
 [EditorModel( "models/cigar/cigar.vmdl" )]
 [HammerEntity]

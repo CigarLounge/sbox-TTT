@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [EditorModel( "models/weapons/w_bekas.vmdl" )]
 [HammerEntity]
 [Library( "ttt_weapon_bekas" )]

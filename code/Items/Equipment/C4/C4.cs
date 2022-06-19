@@ -1,5 +1,6 @@
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_c4" )]
 [HideInEditor]
 [Title( "C4" )]

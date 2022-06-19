@@ -3,11 +3,12 @@ using System;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_binoculars" )]
 [Title( "Binoculars" )]
 public partial class Binoculars : Carriable
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	private int ZoomLevel { get; set; }
 
 	public bool IsZoomed => ZoomLevel > 0;
