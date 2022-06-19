@@ -42,7 +42,7 @@ public partial class RoleButton : Entity
 	public bool IsRemoved { get; private set; }
 
 	protected Output OnPressed { get; set; }
-	public bool IsDisabled => Locked || !NextUse;
+	public bool IsDisabled => !NextUse || Locked || IsRemoved;
 
 	public override void Spawn()
 	{
@@ -79,7 +79,6 @@ public partial class RoleButton : Entity
 		}
 	}
 
-	// Hammer IO
 	[Input]
 	public void Lock()
 	{

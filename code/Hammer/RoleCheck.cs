@@ -27,19 +27,18 @@ public partial class RoleCheck : Entity
 	[Input]
 	public void Activate( Entity activator )
 	{
-		if ( activator is Player player && Game.Current.State is InProgress )
+		if ( Game.Current.State is not InProgress )
+			return;
+
+		if ( activator is Player player )
 		{
 			if ( player.Role == Role )
 			{
 				_ = OnPass.Fire( this );
 				return;
 			}
+		}
 
-			_ = OnFail.Fire( this );
-		}
-		else
-		{
-			_ = OnFail.Fire( this );
-		}
+		_ = OnFail.Fire( this );
 	}
 }
