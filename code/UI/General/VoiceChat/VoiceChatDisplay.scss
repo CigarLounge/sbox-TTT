@@ -5,6 +5,7 @@ VoiceChatDisplay
     left: 25px;
     flex-direction: column;
     width: 240px;
+    z-index: 100;
 
     VoiceChatEntry
     {
