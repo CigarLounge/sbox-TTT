@@ -32,7 +32,7 @@ public class RandomGrenade : Entity
 		grenade.Rotation = Rotation;
 	}
 
-	private void CacheGrenadeTypes()
+	private static void CacheGrenadeTypes()
 	{
 		if ( !_cachedGrenadeTypes.IsNullOrEmpty() )
 			return;
