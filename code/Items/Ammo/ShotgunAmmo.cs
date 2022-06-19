@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[Category( "Ammo" )]
 [ClassName( "ttt_ammo_shotgun" )]
 [EditorModel( "models/ammo/ammo_shotgun/ammo_shotgun.vmdl" )]
 [HammerEntity]
