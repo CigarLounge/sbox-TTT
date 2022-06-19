@@ -136,6 +136,9 @@ public abstract partial class Weapon : Carriable
 
 	public override void Simulate( Client client )
 	{
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
 		if ( CanReload() )
 		{
 			Reload();

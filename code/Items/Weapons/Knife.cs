@@ -22,6 +22,9 @@ public partial class Knife : Carriable
 
 	public override void Simulate( Client client )
 	{
+		if ( TimeSinceDeployed < Info.DeployTime )
+			return;
+
 		if ( TimeSinceStab < 1f )
 			return;
 
