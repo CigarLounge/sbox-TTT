@@ -4,11 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public new Corpse Corpse
-	{
-		get => (Corpse)base.Corpse;
-		set => base.Corpse = value;
-	}
+	public new Corpse Corpse { get; set; }
 
 	/// <summary>
 	/// The player who confirmed this player's corpse.
@@ -63,7 +59,7 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		bool wasPreviouslyConfirmed = true;
+		var wasPreviouslyConfirmed = true;
 
 		if ( !IsConfirmedDead )
 		{
