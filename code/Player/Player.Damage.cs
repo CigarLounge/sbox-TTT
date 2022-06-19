@@ -55,6 +55,9 @@ public enum HitboxGroup
 
 public partial class Player
 {
+	[Net]
+	public TimeSince TimeSinceDeath { get; private set; }
+
 	public const float MaxHealth = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
@@ -100,7 +103,7 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	private static readonly ColorGroup[] HealthGroupList = new ColorGroup[]
+	private static readonly ColorGroup[] _healthGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
 		new ColorGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
@@ -112,10 +115,48 @@ public partial class Player
 	public ColorGroup GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
-			return HealthGroupList[^1];
+			return _healthGroupList[^1];
 
-		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
-		return HealthGroupList[index];
+		var index = (int)((health - 1f) / (MaxHealth / _healthGroupList.Length));
+		return _healthGroupList[index];
+	}
+
+	public override void OnKilled()
+	{
+		TimeSinceDeath = 0;
+		LifeState = LifeState.Dead;
+		StopUsing();
+
+		Client?.AddInt( "deaths", 1 );
+
+		if ( !DiedBySuicide )
+			LastAttacker.Client.AddInt( "kills" );
+
+		BecomeCorpse();
+		RemoveAllDecals();
+
+		EnableAllCollisions = false;
+		EnableDrawing = false;
+
+		Inventory.DropAll();
+		DeleteFlashlight();
+		DeleteItems();
+
+		Event.Run( TTTEvent.Player.Killed, this );
+		Game.Current.State.OnPlayerKilled( this );
+
+		ClientOnKilled( this );
+	}
+
+	private void ClientOnKilled()
+	{
+		Host.AssertClient();
+
+		if ( IsLocalPawn )
+			ClearButtons();
+
+		DeleteFlashlight();
+		Event.Run( TTTEvent.Player.Killed, this );
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -147,7 +188,7 @@ public partial class Player
 		Health -= info.Damage;
 		Event.Run( TTTEvent.Player.TookDamage, this );
 
-		SendDamageInfo( To.Single( this ), LastAttacker, LastAttackerWeapon, info.Damage, info.Flags, info.HitboxIndex, info.Position );
+		SendDamageInfo( To.Single( this ) );
 
 		this.ProceduralHitReaction( info );
 
@@ -155,10 +196,24 @@ public partial class Player
 			OnKilled();
 	}
 
+	public void SendDamageInfo( To to )
+	{
+		SendDamageInfo
+		(
+			to,
+			LastAttacker,
+			LastAttackerWeapon,
+			LastDamageInfo.Damage,
+			LastDamageInfo.Flags,
+			LastDamageInfo.HitboxIndex,
+			LastDamageInfo.Position
+		);
+	}
+
 	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
-		float damageMultiplier = 1f;
-		bool isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
+		var damageMultiplier = 1f;
+		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 
 		if ( isHeadShot )
 		{
@@ -189,5 +244,14 @@ public partial class Player
 
 		if ( IsLocalPawn )
 			Event.Run( TTTEvent.Player.TookDamage, this );
+	}
+
+	[ClientRpc]
+	public static void ClientOnKilled( Player player )
+	{
+		if ( !player.IsValid() )
+			return;
+
+		player.ClientOnKilled();
 	}
 }

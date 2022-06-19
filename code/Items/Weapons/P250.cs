@@ -1,8 +1,8 @@
-﻿using Sandbox;
-using SandboxEditor;
+﻿using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [ClassName( "ttt_weapon_p250" )]
 [EditorModel( "models/weapons/w_p250.vmdl" )]
 [HammerEntity]

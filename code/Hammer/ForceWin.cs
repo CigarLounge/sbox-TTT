@@ -23,9 +23,14 @@ public class ForceWin : Entity
 		if ( Game.Current.State is not InProgress inProgress )
 			return;
 
-		if ( UseActivatorsTeam && activator is Player player )
-			inProgress.LoadPostRound( player.Team, WinType.Objective );
-		else
-			inProgress.LoadPostRound( Team, WinType.Objective );
+		if ( UseActivatorsTeam )
+		{
+			if ( activator is Player player )
+				inProgress.LoadPostRound( player.Team, WinType.Objective );
+
+			return;
+		}
+
+		inProgress.LoadPostRound( Team, WinType.Objective );
 	}
 }

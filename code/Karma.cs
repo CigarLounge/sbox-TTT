@@ -17,7 +17,7 @@ public static class Karma
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
-	private static readonly ColorGroup[] KarmaGroupList = new ColorGroup[]
+	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Liability", Color.FromBytes(255, 130, 0)),
 		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
@@ -29,10 +29,10 @@ public static class Karma
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
-			return KarmaGroupList[^1];
+			return _karmaGroupList[^1];
 
-		int index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / KarmaGroupList.Length));
-		return KarmaGroupList[index];
+		var index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / _karmaGroupList.Length));
+		return _karmaGroupList[index];
 	}
 
 	[TTTEvent.Player.Spawned]
@@ -50,10 +50,8 @@ public static class Karma
 			return;
 		}
 
-		float k = player.BaseKarma - DefaultValue;
-		float damageFactor;
-
-		damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
+		var k = player.BaseKarma - DefaultValue;
+		var damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 
 		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 	}
@@ -66,9 +64,9 @@ public static class Karma
 		if ( player.ActiveKarma >= MaxValue )
 			return 1;
 
-		float baseDiff = MaxValue - DefaultValue;
-		float plyDiff = player.ActiveKarma - DefaultValue;
-		float half = Math.Clamp( FallOff, 0.1f, 0.99f );
+		var baseDiff = MaxValue - DefaultValue;
+		var plyDiff = player.ActiveKarma - DefaultValue;
+		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
 	}
@@ -125,7 +123,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		float damage = player.LastDamageInfo.Damage;
+		var damage = player.LastDamageInfo.Damage;
 
 		if ( attacker.Team == player.Team && player.TimeUntilClean )
 		{
@@ -134,12 +132,12 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetHurtPenalty( player.ActiveKarma, damage );
+			var penalty = GetHurtPenalty( player.ActiveKarma, damage );
 			GivePenalty( attacker, penalty );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
-			float reward = GetHurtReward( damage );
+			var reward = GetHurtReward( damage );
 			GiveReward( attacker, reward );
 		}
 	}
@@ -168,12 +166,12 @@ public static class Karma
 			 *		return;
 			 */
 
-			float penalty = GetKillPenalty( player.ActiveKarma );
+			var penalty = GetKillPenalty( player.ActiveKarma );
 			GivePenalty( attacker, penalty );
 		}
 		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
 		{
-			float reward = GetKillReward();
+			var reward = GetKillReward();
 			GiveReward( attacker, reward );
 		}
 	}
@@ -183,7 +181,7 @@ public static class Karma
 		if ( (!player.IsAlive() && player.DiedBySuicide) || player.IsSpectator )
 			return;
 
-		float reward = RoundHeal;
+		var reward = RoundHeal;
 
 		if ( player.TimeUntilClean )
 			reward += CleanBonus;

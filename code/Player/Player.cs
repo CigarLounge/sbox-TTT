@@ -63,7 +63,7 @@ public partial class Player : Sandbox.Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		Animator = new StandardPlayerAnimator();
+		Animator = new PlayerAnimator();
 		CameraMode = new FreeSpectateCamera();
 	}
 
@@ -137,40 +137,6 @@ public partial class Player : Sandbox.Player
 		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
-	public override void OnKilled()
-	{
-		base.OnKilled();
-
-		if ( !DiedBySuicide )
-			LastAttacker.Client.AddInt( "kills" );
-
-		BecomeCorpse();
-		RemoveAllDecals();
-
-		EnableAllCollisions = false;
-		EnableDrawing = false;
-
-		Inventory.DropAll();
-		DeleteFlashlight();
-		DeleteItems();
-
-		Event.Run( TTTEvent.Player.Killed, this );
-		Game.Current.State.OnPlayerKilled( this );
-
-		ClientOnKilled( this );
-	}
-
-	private void ClientOnKilled()
-	{
-		Host.AssertClient();
-
-		if ( IsLocalPawn )
-			ClearButtons();
-
-		DeleteFlashlight();
-		Event.Run( TTTEvent.Player.Killed, this );
-	}
-
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
@@ -182,12 +148,12 @@ public partial class Player : Sandbox.Player
 				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
 		}
 
+		SimulateCarriableSwitch();
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )
 		{
 			SimulateFlashlight();
-			SimulateCarriableSwitch();
 			SimulatePerks();
 		}
 
@@ -213,10 +179,57 @@ public partial class Player : Sandbox.Player
 
 	public override void FrameSimulate( Client client )
 	{
-		base.FrameSimulate( client );
+		var controller = GetActiveController();
+		controller?.FrameSimulate( client, this, GetActiveAnimator() );
+
+		if ( WaterLevel > 0.9f )
+		{
+			Audio.SetEffect( "underwater", 1, velocity: 5.0f );
+		}
+		else
+		{
+			Audio.SetEffect( "underwater", 0, velocity: 1.0f );
+		}
 
 		DisplayEntityHints();
 		ActiveChild?.FrameSimulate( client );
+	}
+
+	/// <summary>
+	/// Called after the camera setup logic has run. Allow the player to
+	/// do stuff to the camera, or using the camera. Such as positioning entities
+	/// relative to it, like viewmodels etc.
+	/// </summary>
+	public override void PostCameraSetup( ref CameraSetup setup )
+	{
+		ActiveChild?.PostCameraSetup( ref setup );
+	}
+
+	/// <summary>
+	/// Called from the gamemode, clientside only.
+	/// </summary>
+	public override void BuildInput( InputBuilder input )
+	{
+		if ( input.StopProcessing )
+			return;
+
+		ActiveChild?.BuildInput( input );
+
+		GetActiveController()?.BuildInput( input );
+
+		if ( input.StopProcessing )
+			return;
+
+		GetActiveAnimator()?.BuildInput( input );
+	}
+
+	public override void OnActiveChildChanged( Entity previous, Entity next )
+	{
+		if ( previous is Carriable previousBc )
+			previousBc?.ActiveEnd( this, previousBc.Owner != this );
+
+		if ( next is Carriable nextBc )
+			nextBc?.ActiveStart( this );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -242,10 +255,19 @@ public partial class Player : Sandbox.Player
 		if ( !IsServer )
 			return;
 
-		if ( other is Ammo ammo )
-			ammo.StartTouch( this );
-		else
-			Inventory.Pickup( other );
+		switch ( other )
+		{
+			case Ammo ammo:
+			{
+				ammo.StartTouch( this );
+				break;
+			}
+			case Carriable carriable:
+			{
+				Inventory.Pickup( carriable );
+				break;
+			}
+		}
 	}
 
 	public void DeleteItems()
@@ -318,14 +340,5 @@ public partial class Player : Sandbox.Player
 			return;
 
 		player.ClientRespawn();
-	}
-
-	[ClientRpc]
-	public static void ClientOnKilled( Player player )
-	{
-		if ( !player.IsValid() )
-			return;
-
-		player.ClientOnKilled();
 	}
 }

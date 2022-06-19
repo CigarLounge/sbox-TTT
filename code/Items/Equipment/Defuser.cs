@@ -2,6 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_defuser" )]
 [Title( "Defuser" )]
 public class Defuser : Carriable

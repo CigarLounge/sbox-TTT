@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_teleporter" )]
 [Title( "Teleporter" )]
 public partial class Teleporter : Carriable
@@ -28,25 +29,22 @@ public partial class Teleporter : Carriable
 	private Vector3 _teleportLocation;
 	private Particles _particle;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		IsTeleporting = false;
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		_particle?.Destroy( true );
 	}
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( IsTeleporting )
 		{
 			_particle ??= Particles.Create( "particles/teleport.vpcf", Owner, true );

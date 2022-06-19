@@ -24,7 +24,7 @@ public class RoleButtonPoint : Panel
 
 		Local.Hud.AddChild( this );
 
-		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.Role );
+		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.RoleName );
 		if ( roleInfo is not null )
 		{
 			Pointer.Style.TextStrokeColor = roleInfo.Color;

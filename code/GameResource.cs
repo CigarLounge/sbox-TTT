@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace TTT;
 
 public abstract class GameResource : Sandbox.GameResource
 {
-	private static readonly Dictionary<string, GameResource> Collection = new( StringComparer.OrdinalIgnoreCase );
+	private static readonly Dictionary<string, GameResource> _collection = new( StringComparer.OrdinalIgnoreCase );
 
 	[Category( "Important" )]
 	public string ClassName { get; set; }
@@ -24,10 +23,10 @@ public abstract class GameResource : Sandbox.GameResource
 
 	public static T GetInfo<T>( string className ) where T : GameResource
 	{
-		if ( string.IsNullOrEmpty( className ) || !Collection.ContainsKey( className ) )
+		if ( string.IsNullOrEmpty( className ) || !_collection.ContainsKey( className ) )
 			return null;
 
-		return Collection[className] as T;
+		return _collection[className] as T;
 	}
 
 	protected override void PostLoad()
@@ -40,7 +39,7 @@ public abstract class GameResource : Sandbox.GameResource
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 			return;
 
-		if ( Collection.ContainsKey( ClassName ) )
+		if ( _collection.ContainsKey( ClassName ) )
 		{
 			Log.Error( $"There is already a resource tied to {ClassName}" );
 			return;
@@ -51,9 +50,9 @@ public abstract class GameResource : Sandbox.GameResource
 			return;
 
 		Title = typeDescription.Title;
-		Collection[ClassName] = this;
+		_collection[ClassName] = this;
 
 		if ( !string.IsNullOrWhiteSpace( Title ) )
-			Collection[Title] = this;
+			_collection[Title] = this;
 	}
 }

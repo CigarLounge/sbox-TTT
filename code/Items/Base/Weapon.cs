@@ -1,7 +1,6 @@
 ﻿using Sandbox;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace TTT;
 
@@ -91,6 +90,7 @@ public class WeaponInfo : CarriableInfo
 	}
 }
 
+[Title( "Weapon" ), Icon( "sports_martial_arts" )]
 public abstract partial class Weapon : Carriable
 {
 	[Net, Predicted]
@@ -113,8 +113,6 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	public TimeSince TimeSinceLastClientShoot { get; private set; }
-
 	private Vector3 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
 	private Vector3 CurrentRecoil { get; set; } = Vector3.Zero;
 
@@ -128,9 +126,9 @@ public abstract partial class Weapon : Carriable
 			ReserveAmmo = Info.ReserveAmmo;
 	}
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		IsReloading = false;
 		TimeSinceReload = 0;
@@ -178,8 +176,8 @@ public abstract partial class Weapon : Carriable
 	{
 		base.BuildInput( input );
 
-		float oldPitch = input.ViewAngles.pitch;
-		float oldYaw = input.ViewAngles.yaw;
+		var oldPitch = input.ViewAngles.pitch;
+		var oldYaw = input.ViewAngles.yaw;
 
 		input.ViewAngles.pitch -= CurrentRecoil.y * Time.Delta;
 		input.ViewAngles.yaw -= CurrentRecoil.x * Time.Delta;
@@ -196,7 +194,7 @@ public abstract partial class Weapon : Carriable
 		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputButton.PrimaryAttack ) )
 			return false;
 
-		float rate = Info.PrimaryRate;
+		var rate = Info.PrimaryRate;
 		if ( rate <= 0 )
 			return true;
 
@@ -208,7 +206,7 @@ public abstract partial class Weapon : Carriable
 		if ( !Input.Pressed( InputButton.SecondaryAttack ) )
 			return false;
 
-		float rate = Info.SecondaryRate;
+		var rate = Info.SecondaryRate;
 		if ( rate <= 0 )
 			return true;
 
@@ -276,7 +274,6 @@ public abstract partial class Weapon : Carriable
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
 		CurrentRecoil += RecoilOnShoot;
-		TimeSinceLastClientShoot = 0;
 	}
 
 	[ClientRpc]
@@ -354,7 +351,7 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
-		bool InWater = Map.Physics.IsPointWater( start );
+		var InWater = Map.Physics.IsPointWater( start );
 
 		var trace = Trace.Ray( start, end )
 			.UseHitboxes()
@@ -391,7 +388,7 @@ public abstract partial class Weapon : Carriable
 
 	protected int TakeAmmo( int ammo )
 	{
-		int available = Math.Min( Info.AmmoType == AmmoType.None ? ReserveAmmo : Owner.AmmoCount( Info.AmmoType ), ammo );
+		var available = Math.Min( Info.AmmoType == AmmoType.None ? ReserveAmmo : Owner.AmmoCount( Info.AmmoType ), ammo );
 
 		if ( Info.AmmoType == AmmoType.None )
 			ReserveAmmo -= available;
@@ -410,8 +407,8 @@ public abstract partial class Weapon : Carriable
 				if ( distance < start )
 					return damage;
 
-				float falloffRange = end - start;
-				float difference = (distance - start);
+				var falloffRange = end - start;
+				var difference = (distance - start);
 
 				return Math.Max( damage - (damage / falloffRange) * difference, 0f );
 			}

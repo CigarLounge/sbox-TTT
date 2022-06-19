@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_cigar" )]
 [EditorModel( "models/cigar/cigar.vmdl" )]
 [HammerEntity]
@@ -11,6 +12,13 @@ public class Cigar : Carriable
 {
 	private TimeUntil _timeUntilNextSmoke = 0;
 	private Particles _trailParticle;
+
+	public override void ActiveEnd( Player player, bool dropped )
+	{
+		base.ActiveEnd( player, dropped );
+
+		_trailParticle?.Destroy( true );
+	}
 
 	public override void Simulate( Client client )
 	{
@@ -32,12 +40,5 @@ public class Cigar : Carriable
 			.WithAttacker( Owner )
 			.WithWeapon( this )
 		);
-	}
-
-	public override void ActiveEnd( Entity entity, bool dropped )
-	{
-		base.ActiveEnd( entity, dropped );
-
-		_trailParticle?.Destroy( true );
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+[Category( "Perks" )]
 [ClassName( "ttt_perk_radar" )]
 [Title( "Radar" )]
 public partial class Radar : Perk

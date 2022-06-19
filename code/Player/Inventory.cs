@@ -38,7 +38,7 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 			return false;
 
 		var carriable = (Carriable)entity;
-		carriable.Parent = Owner;
+		carriable.SetParent( Owner, true );
 
 		if ( makeActive )
 			SetActive( carriable );

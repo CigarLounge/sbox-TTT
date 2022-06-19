@@ -35,7 +35,7 @@ public partial class InProgress : BaseState
 		if ( player.Team == Team.Innocents )
 			_innocentTeamDeathCount += 1;
 
-		float percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
+		var percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
@@ -151,8 +151,6 @@ public partial class InProgress : BaseState
 
 		if ( TimeLeft )
 			OnTimeUp();
-
-		_logicButtons.ForEach( x => x.OnSecond() ); // Tick role button delay timer.
 
 		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
 			Game.Current.ForceStateChange( new WaitingState() );
