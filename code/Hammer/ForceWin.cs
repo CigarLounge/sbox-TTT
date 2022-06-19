@@ -11,11 +11,11 @@ public class ForceWin : Entity
 {
 	[Description( "The team that will be forced to win." )]
 	[Property]
-	public Team Team { get; set; }
+	public Team Team { get; set; } = Team.Innocents;
 
 	[Description( "OVERRIDES `Team` PROPERTY. When ActivateForceWin() is fired, this will award a win to the team of the activating player." )]
 	[Property]
-	public bool UseActivatorsTeam { get; set; } = false;
+	public bool UseActivatorsTeam { get; set; }
 
 	[Input]
 	public void ActivateForceWin( Entity activator )
