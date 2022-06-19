@@ -127,7 +127,7 @@ public partial class Player
 		LifeState = LifeState.Dead;
 		StopUsing();
 
-		Client?.AddInt( "deaths", 1 );
+		Client?.AddInt( "deaths" );
 
 		if ( !DiedBySuicide )
 			LastAttacker.Client.AddInt( "kills" );
@@ -240,6 +240,7 @@ public partial class Player
 			.WithPosition( position );
 
 		LastAttacker = info.Attacker;
+		LastAttackerWeapon = info.Weapon;
 		LastDamageInfo = info;
 
 		if ( IsLocalPawn )
