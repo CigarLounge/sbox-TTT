@@ -104,7 +104,7 @@ public partial class Player
 
 	public const float MaxHealth = 100f;
 
-	private static readonly ColorGroup[] HealthGroupList = new ColorGroup[]
+	private static readonly ColorGroup[] _healthGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
 		new ColorGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
@@ -116,10 +116,10 @@ public partial class Player
 	public ColorGroup GetHealthGroup( float health )
 	{
 		if ( Health > MaxHealth )
-			return HealthGroupList[^1];
+			return _healthGroupList[^1];
 
-		int index = (int)((health - 1f) / (MaxHealth / HealthGroupList.Length));
-		return HealthGroupList[index];
+		var index = (int)((health - 1f) / (MaxHealth / _healthGroupList.Length));
+		return _healthGroupList[index];
 	}
 
 	public override void OnKilled()
@@ -189,12 +189,26 @@ public partial class Player
 		Health -= info.Damage;
 		Event.Run( TTTEvent.Player.TookDamage, this );
 
-		SendDamageInfo( To.Single( this ), LastAttacker, LastAttackerWeapon, info.Damage, info.Flags, info.HitboxIndex, info.Position );
+		SendDamageInfo( To.Single( this ) );
 
 		this.ProceduralHitReaction( info );
 
 		if ( IsServer && Health <= 0f )
 			OnKilled();
+	}
+
+	public void SendDamageInfo( To to )
+	{
+		SendDamageInfo
+		( 
+			to, 
+			LastAttacker, 
+			LastAttackerWeapon, 
+			LastDamageInfo.Damage, 
+			LastDamageInfo.Flags, 
+			LastDamageInfo.HitboxIndex, 
+			LastDamageInfo.Position 
+		);
 	}
 
 	private float GetBulletDamageMultipliers( DamageInfo info )
