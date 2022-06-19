@@ -131,23 +131,19 @@ public partial class Teleporter : Carriable
 		_hasReachedLocation = true;
 		Owner.Position = _teleportLocation;
 
+		// TeleFrag players.
 		var bbox = Owner.CollisionBounds + Owner.Position;
 
-		foreach ( var entity in Entity.FindInBox( bbox ) )
-		{
-			if ( entity is Player && entity != Owner )
-				TeleFrag( entity );
-		}
-	}
-
-	private void TeleFrag( Entity entity )
-	{
-		var damageInfo = DamageInfo.Generic( entity.Health )
+		var damageInfo = DamageInfo.Generic( Player.MaxHealth )
 			.WithFlag( DamageFlags.Beam )
 			.WithAttacker( Owner )
 			.WithWeapon( this );
 
-		entity.TakeDamage( damageInfo );
+		foreach ( var entity in Entity.FindInBox( bbox ) )
+		{
+			if ( entity is Player && entity != Owner )
+				entity.TakeDamage( damageInfo );
+		}
 	}
 
 	protected override void OnDestroy()
