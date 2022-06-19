@@ -120,7 +120,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 		{
-			Log.Error( this + " doesn't have a Library name!" );
+			Log.Error( this + " doesn't have a class name!" );
 			return;
 		}
 
@@ -252,7 +252,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		if ( !IsServer )
 			return;
 
-		SetParent( carrier, true );
 		Owner = carrier;
 		MoveType = MoveType.None;
 		EnableAllCollisions = false;
@@ -266,7 +265,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		if ( IsClient )
 			return;
 
-		SetParent( null );
 		Owner = null;
 		MoveType = MoveType.Physics;
 		EnableDrawing = true;
@@ -306,7 +304,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]
-	private void OnHotReload()
+	private void OnHotload()
 	{
 		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
