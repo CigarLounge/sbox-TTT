@@ -2,6 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
+[Category( "Roles" )]
 [ClassName( "ttt_role_traitor" )]
 [Title( "Traitor" )]
 public class Traitor : BaseRole
