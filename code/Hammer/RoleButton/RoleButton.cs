@@ -10,9 +10,10 @@ namespace TTT;
 [Title( "Role Button" )]
 public partial class RoleButton : Entity
 {
+	[Title( "Role" )]
 	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
 	[Net, Property]
-	public string Role { get; set; } = "Traitor";
+	public string RoleName { get; private set; } = "Traitor";
 
 	[Description( "On screen tooltip shown on button." )]
 	[Net, Property]
@@ -35,15 +36,13 @@ public partial class RoleButton : Entity
 	public bool Locked { get; private set; } = false;
 
 	[Net]
-	public bool IsDelayed { get; set; }
+	public TimeUntil NextUse { get; private set; }
 
 	[Net]
-	public bool IsRemoved { get; set; }
+	public bool IsRemoved { get; private set; }
 
-	public bool IsDisabled => Locked || IsDelayed || IsRemoved;
-	public bool HasDelay => Delay > 0.0f;
-	private TimeUntil NextUse { get; set; }
 	protected Output OnPressed { get; set; }
+	public bool IsDisabled => !NextUse || Locked || IsRemoved;
 
 	public override void Spawn()
 	{
@@ -52,22 +51,23 @@ public partial class RoleButton : Entity
 		Transmit = TransmitType.Always;
 	}
 
-	public void OnSecond()
+	public bool CanUse( Player player )
 	{
-		Host.AssertServer();
+		if ( IsDisabled )
+			return false;
 
-		if ( HasDelay && IsDelayed && !IsRemoved && NextUse <= 0 )
-			IsDelayed = false;
+		return RoleName == "All" || player.Role == RoleName;
 	}
 
 	[Input]
 	public void Press( Entity activator )
 	{
-		Host.AssertServer();
+		if ( activator is not Player player )
+			return;
 
-		if ( !IsDisabled )
+		if ( CanUse( player ) )
 		{
-			OnPressed.Fire( activator );
+			_ = OnPressed.Fire( player );
 
 			if ( RemoveOnPress )
 			{
@@ -75,37 +75,25 @@ public partial class RoleButton : Entity
 				return;
 			}
 
-			if ( Delay > 0.0f )
-			{
-				IsDelayed = true;
-				NextUse = Delay;
-				return;
-			}
+			NextUse = Delay;
 		}
 	}
 
-	// Hammer IO
 	[Input]
 	public void Lock()
 	{
-		Host.AssertServer();
-
 		Locked = true;
 	}
 
 	[Input]
 	public void Unlock()
 	{
-		Host.AssertServer();
-
 		Locked = false;
 	}
 
 	[Input]
 	public void Toggle()
 	{
-		Host.AssertServer();
-
 		Locked = !Locked;
 	}
 }

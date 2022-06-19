@@ -4,6 +4,7 @@ using System;
 
 namespace TTT;
 
+[Category( "Grenades" )]
 [ClassName( "ttt_grenade_discombobulator" )]
 [EditorModel( "models/weapons/w_frag.vmdl" )]
 [HammerEntity]
@@ -20,8 +21,8 @@ public class Discombobulator : Grenade
 		Particles.Create( Particle, Position );
 		Sound.FromWorld( ExplodeSound, Position );
 
-		float radius = 400;
-		float pushForce = 1024;
+		var radius = 400f;
+		var pushForce = 1024f;
 
 		foreach ( var entity in Entity.FindInSphere( Position, radius ) )
 		{
@@ -41,26 +42,22 @@ public class Discombobulator : Grenade
 			/*		
 			var dir = (targetPos - Position).Normal;
 			var phys = entity.PhysicsBody;
-
 			if ( entity is Player )
 			{
 				dir.z = Math.Abs( dir.z ) + 1;
 				var push = dir * pushForce;
 				var velocity = entity.Velocity + push;
 				velocity.z = Math.Min( velocity.z, pushForce );
-
 				if ( entity == PreviousOwner && !AllowJump )
 				{
 					velocity = Vector3.Random * velocity.Length;
 					velocity.z = Math.Abs( velocity.z );
 				}
-
 				entity.Velocity = velocity;
 			}
 			else
 			{
 				phys.ApplyForceAt( phys.MassCenter, physForce );
-
 			}
 			*/
 
@@ -81,8 +78,8 @@ public class Discombobulator : Grenade
 			if ( trace.Fraction < 0.98f )
 				continue;
 
-			float distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
-			float force = pushForce * distanceMul;
+			var distanceMul = 1.0f - Math.Clamp( dist / radius, 0.0f, 1.0f );
+			var force = pushForce * distanceMul;
 			var forceDir = (targetPos - Position).Normal;
 
 			target.GroundEntity = null;

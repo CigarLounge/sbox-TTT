@@ -211,6 +211,19 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
+	public override void OnActiveChildChanged( Entity previous, Entity next )
+	{
+		if ( previous is Carriable previousBc )
+		{
+			previousBc?.ActiveEnd( this, previousBc.Owner != this );
+		}
+
+		if ( next is Carriable nextBc )
+		{
+			nextBc?.ActiveStart( this );
+		}
+	}
+
 	public override void FrameSimulate( Client client )
 	{
 		base.FrameSimulate( client );
@@ -245,7 +258,7 @@ public partial class Player : Sandbox.Player
 		if ( other is Ammo ammo )
 			ammo.StartTouch( this );
 		else
-			Inventory.Pickup( other );
+			Inventory.Pickup( other as Carriable );
 	}
 
 	public void DeleteItems()

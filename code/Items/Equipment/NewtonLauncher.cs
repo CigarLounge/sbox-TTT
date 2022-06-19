@@ -3,6 +3,7 @@ using System;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_newtonlauncher" )]
 [Title( "Newton Launcher" )]
 public partial class NewtonLauncher : Weapon
@@ -25,9 +26,9 @@ public partial class NewtonLauncher : Weapon
 	private float _forwardForce;
 	private float _upwardForce;
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		Charge = 0;
 		IsCharging = false;
@@ -35,9 +36,6 @@ public partial class NewtonLauncher : Weapon
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( TimeSincePrimaryAttack < Info.PrimaryRate )
 			return;
 

@@ -3,27 +3,28 @@ using System;
 
 namespace TTT;
 
+[Category( "Equipment" )]
 [ClassName( "ttt_equipment_binoculars" )]
 [Title( "Binoculars" )]
 public partial class Binoculars : Carriable
 {
-	[Net, Predicted]
+	[Net, Local, Predicted]
 	private int ZoomLevel { get; set; }
 
 	public bool IsZoomed => ZoomLevel > 0;
 	private Corpse _corpse;
 	private float _defaultFOV;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		_defaultFOV = Owner.CameraMode.FieldOfView;
 	}
 
-	public override void ActiveEnd( Entity entity, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
-		base.ActiveEnd( entity, dropped );
+		base.ActiveEnd( player, dropped );
 
 		_corpse = null;
 		ZoomLevel = 0;
@@ -31,9 +32,6 @@ public partial class Binoculars : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			ChangeZoomLevel();
 

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-
 using Sandbox;
 
 namespace TTT;
@@ -126,21 +125,21 @@ public partial class Hands : Carriable
 		}
 	}
 
-	public override void OnCarryStart( Entity carrier )
+	public override void OnCarryStart( Player player )
 	{
-		base.OnCarryStart( carrier );
+		base.OnCarryStart( player );
 
 		if ( !Host.IsServer )
 			return;
 
 		GrabPoint = new ModelEntity( "models/hands/grabpoint.vmdl" );
 		GrabPoint.EnableHideInFirstPerson = false;
-		GrabPoint.SetParent( carrier, MiddleHandsAttachment, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
+		GrabPoint.SetParent( player, MiddleHandsAttachment, new Transform( Vector3.Zero, Rotation.FromRoll( -90 ) ) );
 	}
 
-	public override void OnCarryDrop( Entity carrier )
+	public override void OnCarryDrop( Player player )
 	{
-		base.OnCarryStart( carrier );
+		base.OnCarryStart( player );
 
 		if ( !Host.IsServer )
 			return;
@@ -149,13 +148,13 @@ public partial class Hands : Carriable
 		GrabPoint?.Delete();
 	}
 
-	public override void ActiveEnd( Entity ent, bool dropped )
+	public override void ActiveEnd( Player player, bool dropped )
 	{
 		_grabbedEntity?.Drop();
-		base.ActiveEnd( ent, dropped );
+		base.ActiveEnd( player, dropped );
 	}
 
-	public override void SimulateAnimator( PawnAnimator anim )
+	public override void SimulateAnimator( PawnAnimator animator )
 	{
 		if ( !IsServer )
 			return;
@@ -165,12 +164,12 @@ public partial class Hands : Carriable
 
 		if ( IsHoldingEntity )
 		{
-			anim.SetAnimParameter( "holdtype", 4 );
-			anim.SetAnimParameter( "holdtype_handedness", 0 );
+			animator.SetAnimParameter( "holdtype", 4 );
+			animator.SetAnimParameter( "holdtype_handedness", 0 );
 		}
 		else
 		{
-			anim.SetAnimParameter( "holdtype", 0 );
+			animator.SetAnimParameter( "holdtype", 0 );
 		}
 	}
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace TTT;
 
+[Category( "Perks" )]
 [ClassName( "ttt_perk_disguiser" )]
 [Title( "Disguiser" )]
 public partial class Disguiser : Perk

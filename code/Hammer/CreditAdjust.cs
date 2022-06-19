@@ -9,9 +9,9 @@ namespace TTT;
 [Title( "Credit Adjust" )]
 public partial class CreditAdjust : Entity
 {
-	[Description( "Amount of credits to remove from activator. Negative numbers add credits. Removes 1 credit by default." )]
+	[Description( "Amount of credits to remove from activator. Negative numbers add credits." )]
 	[Property]
-	public int Credits { get; set; } = 100;
+	public int Credits { get; private set; } = 100;
 
 	[Input]
 	public void ExchangeCredits( Entity activator )

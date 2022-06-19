@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [EditorModel( "models/weapons/w_bekas.vmdl" )]
 [HammerEntity]
 [Library( "ttt_weapon_bekas" )]
@@ -11,9 +12,9 @@ public partial class Bekas : Weapon
 {
 	private bool _attackedDuringReload = false;
 
-	public override void ActiveStart( Entity entity )
+	public override void ActiveStart( Player player )
 	{
-		base.ActiveStart( entity );
+		base.ActiveStart( player );
 
 		_attackedDuringReload = false;
 		TimeSinceReload = 0f;

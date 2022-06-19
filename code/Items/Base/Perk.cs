@@ -19,7 +19,7 @@ public abstract class Perk : EntityComponent<Player>
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]
-	private void OnHotReload()
+	private void OnHotload()
 	{
 		Info = GameResource.GetInfo<PerkInfo>( GetType() );
 	}

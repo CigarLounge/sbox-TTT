@@ -2,6 +2,7 @@
 
 namespace TTT;
 
+[Category( "Weapons" )]
 [ClassName( "ttt_weapon_knife" )]
 [HideInEditor]
 [Title( "Knife" )]
@@ -21,9 +22,6 @@ public partial class Knife : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( TimeSinceDeployed < Info.DeployTime )
-			return;
-
 		if ( TimeSinceStab < 1f )
 			return;
 
@@ -44,7 +42,7 @@ public partial class Knife : Carriable
 		}
 	}
 
-	public override bool CanCarry( Entity carrier )
+	public override bool CanCarry( Player carrier )
 	{
 		return !_isThrown && base.CanCarry( carrier );
 	}
@@ -99,7 +97,7 @@ public partial class Knife : Carriable
 		_isThrown = true;
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
-		Owner.Inventory.SetActive( Owner.LastActiveChild );
+		Owner.Inventory.SetActive( Owner.LastActiveChild as Carriable );
 
 		if ( !IsServer )
 			return;
