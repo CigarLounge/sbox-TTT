@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "mr96_fire-1"
-		DryFireSound = "dryfire_pistol-1"
-		AmmoType = 4
-		FireMode = 1
+		FireSound = resource:"sounds/weapons/mr96/mr96_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_pistol-1.sound"
+		AmmoType = "Magnum"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 6
 		Damage = 37
@@ -23,22 +23,22 @@
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_small.vpcf"
 		TracerParticle = ""
-		Slot = 1
+		Slot = "Secondary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_mr96.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 1
-		worldmodel = resource:"models/weapons/w_mr96.vmdl"
+		ViewModelPath = resource:"models/weapons/v_mr96.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Pistol"
+		WorldModelPath = resource:"models/weapons/w_mr96.vmdl"
 		DeployTime = 1.2
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_mr96.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_mr96.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/revolver.png"
+		IconPath = resource:"ui/weapons/revolver.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_revolver"
 		Title = null
 	}

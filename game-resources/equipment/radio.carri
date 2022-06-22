@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = false
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/radio/radio.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = ""
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/radio/radio.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/radio.png"
+		IconPath = resource:"ui/equipment/radio.jpg"
 		Description = "Place the radio somewhere, and then play sounds on it using the Radio tab in this menu."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_radio"
 		Title = null
 	}

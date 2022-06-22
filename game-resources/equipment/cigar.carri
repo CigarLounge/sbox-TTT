@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/cigar/cigar.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/cigar/cigar.vmdl"
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/cigar/cigar.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 0
-		icon = resource:"ui/equipment/cigar.png"
+		IconPath = resource:"ui/equipment/cigar.jpg"
 		Description = "Didn\'t you know that cigars contain benzopyrene, a chemical that leads to lung cancer\?"
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_cigar"
 		Title = null
 	}

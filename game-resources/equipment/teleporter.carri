@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/teleporter/teleporter.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/teleporter/teleporter.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/teleporter/teleporter.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/teleporter.png"
+		IconPath = resource:"ui/equipment/teleporter.jpg"
 		Description = "Teleport to a previously marked spot."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_teleporter"
 		Title = null
 	}

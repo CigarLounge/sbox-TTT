@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "newton_fire-1"
-		DryFireSound = "newton_charge-1"
-		AmmoType = 0
-		FireMode = 1
+		FireSound = resource:"sounds/equipment/newton_launcher/newton_fire-1.sound"
+		DryFireSound = null
+		AmmoType = "None"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 1
 		Damage = 6
@@ -23,22 +23,22 @@
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
 		TracerParticle = resource:"particles/tracer.standard.vpcf"
-		Slot = 3
+		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = resource:"models/newton_launcher/v_newton_launcher.vmdl"
-		handsmodel = ""
-		HoldType = 2
-		worldmodel = resource:"models/newton_launcher/newton_launcher.vmdl"
+		ViewModelPath = resource:"models/newton_launcher/v_newton_launcher.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/newton_launcher/newton_launcher.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = null
-		"cached-viewmodel" = resource:"models/newton_launcher/v_newton_launcher.vmdl"
-		"cached-worldmodel" = resource:"models/newton_launcher/newton_launcher.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/newton_launcher.png"
+		IconPath = resource:"ui/equipment/newton_launcher.jpg"
 		Description = "Push people from a safe distance. Infinite ammo, but slow to fire."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_newtonlauncher"
 		Title = null
 	}

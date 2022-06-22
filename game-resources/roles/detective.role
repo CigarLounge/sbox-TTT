@@ -2,7 +2,7 @@
 {
 	data = 
 	{
-		Team = 1
+		Team = "Innocents"
 		DefaultCredits = 100
 		ShopItems = 
 		[
@@ -18,8 +18,8 @@
 		CanRoleChat = true
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
-		icon = resource:"ui/detective-icon.png"
-		ShopItemLibraryNames = 
+		IconPath = resource:"ui/detective-icon.jpg"
+		ShopItemClassNames = 
 		[
 			"ttt_perk_radar",
 			"ttt_weapon_p90",
@@ -29,7 +29,7 @@
 			"ttt_equipment_defuser",
 			"ttt_equipment_cigar",
 		]
-		"cached-icon" = null
+		Icon = resource:"ui/detective-icon.png"
 		ClassName = "ttt_role_detective"
 		Title = null
 	}

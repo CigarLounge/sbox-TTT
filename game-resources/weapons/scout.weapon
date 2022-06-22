@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "spr_fire-1"
-		DryFireSound = "dryfire_rifle-1"
-		AmmoType = 3
-		FireMode = 1
+		FireSound = resource:"sounds/weapons/spr/spr_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
+		AmmoType = "Sniper"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 10
 		Damage = 50
@@ -23,22 +23,22 @@
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		TracerParticle = ""
-		Slot = 0
+		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_spr.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 2
-		worldmodel = resource:"models/weapons/w_spr.vmdl"
+		ViewModelPath = resource:"models/weapons/v_spr.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/weapons/w_spr.vmdl"
 		DeployTime = 1.2
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_spr.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_spr.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/scout.png"
+		IconPath = resource:"ui/weapons/scout.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_scout"
 		Title = null
 	}

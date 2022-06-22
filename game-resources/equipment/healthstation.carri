@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = false
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = ""
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = ""
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = null
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/microwave.png"
+		IconPath = resource:"ui/equipment/microwave.jpg"
 		Description = "A modified microwave which dispenses health to any injured players."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_healthstation"
 		Title = null
 	}

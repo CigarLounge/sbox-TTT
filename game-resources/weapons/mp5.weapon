@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "mp5_fire-1"
-		DryFireSound = "dryfire_pistol-1"
-		AmmoType = 1
-		FireMode = 0
+		FireSound = resource:"sounds/weapons/mp5/mp5_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_pistol-1.sound"
+		AmmoType = "PistolSMG"
+		FireMode = "Automatic"
 		BulletsPerFire = 1
 		ClipSize = 30
 		Damage = 15
@@ -23,22 +23,22 @@
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
 		TracerParticle = ""
-		Slot = 0
+		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_mp5.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 2
-		worldmodel = resource:"models/weapons/w_mp5.vmdl"
+		ViewModelPath = resource:"models/weapons/v_mp5.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/weapons/w_mp5.vmdl"
 		DeployTime = 1
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_mp5.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_mp5.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/mp5.png"
+		IconPath = resource:"ui/weapons/mp5.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_mp5"
 		Title = null
 	}

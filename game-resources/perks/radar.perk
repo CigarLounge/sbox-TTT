@@ -4,9 +4,9 @@
 	{
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/perks/radar.png"
+		IconPath = resource:"ui/perks/radar.jpg"
 		Description = "Allows you to scan for life signs."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_perk_radar"
 		Title = null
 	}

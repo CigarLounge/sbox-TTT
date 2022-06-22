@@ -2,13 +2,17 @@
 {
 	data = 
 	{
-		team = "1"
-		defaultcredits = 0
-		classname = "ttt_role_innocent"
-		exclusiveitems = [  ]
-		color = [ 0.105882, 0.772549, 0.305882, 1.0 ]
-		canrolechat = false
-		icon = "ui/innocent-icon.png"
-		canretrievecredits = false
+		Team = "Innocents"
+		DefaultCredits = 0
+		ShopItems = [  ]
+		CanRetrieveCredits = false
+		CanRoleChat = false
+		CanAttachCorpses = false
+		Color = "0.10588,0.77255,0.30588,1"
+		IconPath = resource:"ui/innocent-icon.jpg"
+		ShopItemClassNames = [  ]
+		Icon = resource:"ui/innocent-icon.png"
+		ClassName = "ttt_role_innocent"
+		Title = null
 	}
 }

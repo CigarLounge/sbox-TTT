@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/binoculars/binoculars.vmdl"
+		ViewModelPath = null
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/binoculars/binoculars.vmdl"
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/binoculars/binoculars.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 100
-		icon = resource:"ui/equipment/binoculars.png"
+		IconPath = resource:"ui/equipment/binoculars.jpg"
 		Description = "Zoom in on corpses and identify them from a long distance away."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_binoculars"
 		Title = null
 	}

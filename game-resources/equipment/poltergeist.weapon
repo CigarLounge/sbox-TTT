@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "flaregun_fire-1"
+		FireSound = resource:"sounds/equipment/flaregun/flaregun_fire-1.sound"
 		DryFireSound = ""
-		AmmoType = 0
-		FireMode = 1
+		AmmoType = "None"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 6
 		Damage = 0
@@ -23,22 +23,22 @@
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
 		TracerParticle = resource:"particles/tracer.standard.vpcf"
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = resource:"models/poltergeist/poltergeist.vmdl"
-		handsmodel = ""
-		HoldType = 2
-		worldmodel = resource:"models/poltergeist/poltergeist.vmdl"
+		ViewModelPath = resource:"models/poltergeist/poltergeist.vmdl"
+		HandsModelPath = ""
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/poltergeist/poltergeist.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = null
-		"cached-viewmodel" = resource:"models/poltergeist/poltergeist.vmdl"
-		"cached-worldmodel" = resource:"models/poltergeist/poltergeist.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = ""
+		IconPath = ""
 		Description = "WIP"
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_poltergeist"
 		Title = null
 	}
