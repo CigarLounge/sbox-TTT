@@ -19,7 +19,6 @@ TTT is aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) bu
 
 ### Community Shoutouts
 - Facepunch's open-source gamemodes
-- [Timm Luyten SWB](https://github.com/timmybo5/simple-weapon-base) - Weapon particles
 
 ### Special Thanks
 - [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which this game is **heavily** based on
@@ -38,4 +37,4 @@ Alongside abiding the `CC BY-NC-SA 4.0` license, we also request you follow the 
 
 ## Development
 
-You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg).
+You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg). [We also have a website that showcases some gameplay screenshots!](https://sbox-ttt.github.io/)
