@@ -37,4 +37,4 @@ Alongside abiding the `CC BY-NC-SA 4.0` license, we also request you follow the 
 
 ## Development
 
-You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg). [We also have a website that showcases some gameplay screenshots!](https://sbox-ttt.github.io/)
+You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg). We also have a [website](https://sbox-ttt.github.io/) that showcases some gameplay screenshots.
