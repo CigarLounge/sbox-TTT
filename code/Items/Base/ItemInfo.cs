@@ -27,6 +27,6 @@ public abstract class ItemInfo : GameResource
 		base.PostLoad();
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, IconPath );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }

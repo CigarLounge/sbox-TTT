@@ -29,6 +29,18 @@ public abstract class GameResource : Sandbox.GameResource
 		return _collection[className] as T;
 	}
 
+	// TODO: Fix when https://github.com/Facepunch/sbox-issues/issues/1853 is resolved.
+	protected static string GetPNGPath( string path )
+	{
+		if ( string.IsNullOrEmpty( path ) )
+			return path;
+
+		if ( path.EndsWith( ".jpg" ) )
+			return path.Replace( ".jpg", ".png" );
+
+		return path;
+	}
+
 	protected override void PostLoad()
 	{
 		base.PostLoad();

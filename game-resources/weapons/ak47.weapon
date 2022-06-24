@@ -31,9 +31,9 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_ak47.vmdl"
 		DeployTime = 1.5
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
+		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
+		ViewModel = resource:"models/weapons/v_ak47.vmdl"
+		WorldModel = resource:"models/weapons/w_ak47.vmdl"
 		IsLimited = false
 		Price = 0
 		IconPath = resource:"ui/weapons/ak47.jpg"

@@ -43,7 +43,7 @@ public class RoleInfo : GameResource
 		ShopItemClassNames = new HashSet<string>( ShopItems );
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, IconPath );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }
 
