@@ -42,7 +42,7 @@
 			{
 				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_flLiteralValue = 6.0
+				m_flLiteralValue = 10.0
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
 				m_nVectorAttribute = 6
@@ -789,8 +789,8 @@
 						{
 							x = 0.0
 							y = 7.0
-							m_flSlopeIncoming = -4.767224
-							m_flSlopeOutgoing = -4.767224
+							m_flSlopeIncoming = -4.767223
+							m_flSlopeOutgoing = -4.767223
 						},
 						{
 							x = 0.519212
@@ -801,8 +801,8 @@
 						{
 							x = 1.0
 							y = 0.0
-							m_flSlopeIncoming = -9.411217
-							m_flSlopeOutgoing = -9.411217
+							m_flSlopeIncoming = -9.411218
+							m_flSlopeOutgoing = -9.411218
 						},
 					]
 					m_tangents = 
@@ -1175,7 +1175,7 @@
 	[
 		{
 			_class = "C_OP_BasicMovement"
-			m_fDrag = 0.85
+			m_fDrag = 0.683
 		},
 		{
 			_class = "C_OP_FadeAndKill"
@@ -1507,14 +1507,14 @@
 				}
 			}
 			m_bFogParticles = true
-			m_hTexture = resource:"particles/swb/muzzle/flash.vtex"
+			m_hTexture = resource:"particles/muzzle/flash.vtex"
 			m_bCannotBeRefracted = false
 			m_bGammaCorrectVertexColors = false
 			m_flRadiusScale = 
 			{
 				m_nType = "PF_TYPE_LITERAL"
 				m_nMapType = "PF_MAP_TYPE_DIRECT"
-				m_flLiteralValue = 0.4
+				m_flLiteralValue = 0.75
 				m_nControlPoint = 0
 				m_nScalarAttribute = 3
 				m_nVectorAttribute = 6
@@ -1555,12 +1555,6 @@
 					m_vDomainMaxs = [ 0.0, 0.0 ]
 				}
 			}
-		},
-	]
-	m_Children = 
-	[
-		{
-			m_ChildRef = resource:"particles/swb/muzzle/sparks_medium.vpcf"
 		},
 	]
 }

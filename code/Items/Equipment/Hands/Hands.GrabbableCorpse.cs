@@ -70,7 +70,7 @@ public class GrabbableCorpse : IGrabbable
 		if ( !trace.Hit || !trace.Entity.IsWorld )
 			return;
 
-		var rope = Particles.Create( "particles/rope.vpcf", _corpse );
+		var rope = Particles.Create( "particles/rope/rope.vpcf", _corpse );
 		var worldLocalPos = trace.Body.Transform.PointToLocal( trace.EndPosition );
 		rope.SetPosition( 1, worldLocalPos );
 

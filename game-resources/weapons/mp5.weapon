@@ -21,7 +21,7 @@
 		HorizontalRecoilRange = 2
 		RecoilRecoveryScale = 10
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_medium.vpcf"
 		TracerParticle = ""
 		Slot = "Primary"
 		Spawnable = true
@@ -31,9 +31,9 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_mp5.vmdl"
 		DeployTime = 1
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
+		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
+		ViewModel = resource:"models/weapons/v_mp5.vmdl"
+		WorldModel = resource:"models/weapons/w_mp5.vmdl"
 		IsLimited = false
 		Price = 0
 		IconPath = resource:"ui/weapons/mp5.jpg"

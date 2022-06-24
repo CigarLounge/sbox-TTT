@@ -21,7 +21,7 @@
 		HorizontalRecoilRange = 10
 		RecoilRecoveryScale = 10
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_small.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_small.vpcf"
 		TracerParticle = ""
 		Slot = "Secondary"
 		Spawnable = true
