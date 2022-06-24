@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "ak47_fire-1"
-		DryFireSound = "dryfire_rifle-1"
-		AmmoType = 5
-		FireMode = 0
+		FireSound = resource:"sounds/weapons/ak47/ak47_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
+		AmmoType = "Rifle"
+		FireMode = "Automatic"
 		BulletsPerFire = 1
 		ClipSize = 30
 		Damage = 23
@@ -21,24 +21,24 @@
 		HorizontalRecoilRange = 4
 		RecoilRecoveryScale = 10
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_medium.vpcf"
 		TracerParticle = ""
-		Slot = 0
+		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_ak47.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 2
-		worldmodel = resource:"models/weapons/w_ak47.vmdl"
+		ViewModelPath = resource:"models/weapons/v_ak47.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/weapons/w_ak47.vmdl"
 		DeployTime = 1.5
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_ak47.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_ak47.vmdl"
+		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
+		ViewModel = resource:"models/weapons/v_ak47.vmdl"
+		WorldModel = resource:"models/weapons/w_ak47.vmdl"
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/ak47.png"
+		IconPath = resource:"ui/weapons/ak47.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_ak47"
 		Title = null
 	}

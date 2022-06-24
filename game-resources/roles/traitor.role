@@ -2,7 +2,7 @@
 {
 	data = 
 	{
-		Team = 2
+		Team = "Traitors"
 		DefaultCredits = 200
 		ShopItems = 
 		[
@@ -22,8 +22,8 @@
 		CanRoleChat = true
 		CanAttachCorpses = true
 		Color = "0.87451,0.15686,0.20392,1"
-		icon = resource:"ui/traitor-icon.png"
-		ShopItemLibraryNames = 
+		IconPath = resource:"ui/traitor-icon.jpg"
+		ShopItemClassNames = 
 		[
 			"ttt_perk_bodyarmor",
 			"ttt_perk_disguiser",
@@ -37,7 +37,7 @@
 			"ttt_equipment_newtonlauncher",
 			"ttt_equipment_c4",
 		]
-		"cached-icon" = null
+		Icon = resource:"ui/traitor-icon.png"
 		ClassName = "ttt_role_traitor"
 		Title = null
 	}

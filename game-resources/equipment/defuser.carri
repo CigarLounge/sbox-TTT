@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/defuser/defuser.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/defuser/defuser.vmdl"
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/defuser/defuser.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/equipment/defuser.png"
+		IconPath = resource:"ui/equipment/defuser.jpg"
 		Description = "Instantly defuse a C4 explosive, unlimited uses."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_defuser"
 		Title = null
 	}

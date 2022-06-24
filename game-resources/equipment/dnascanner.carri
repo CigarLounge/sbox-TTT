@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/dnascanner/huladoll.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/dnascanner/huladoll.vmdl"
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/dnascanner/huladoll.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 100
-		icon = ""
+		IconPath = ""
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_dnascanner"
 		Title = null
 	}

@@ -2,22 +2,22 @@
 {
 	data = 
 	{
-		Slot = 5
+		Slot = "Grenade"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_frag.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 0
-		worldmodel = resource:"models/weapons/w_frag.vmdl"
+		ViewModelPath = resource:"models/weapons/v_frag.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "None"
+		WorldModelPath = resource:"models/weapons/w_frag.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_frag.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_frag.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = ""
+		IconPath = ""
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_grenade_discombobulator"
 		Title = null
 	}

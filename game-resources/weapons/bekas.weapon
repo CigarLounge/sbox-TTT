@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "bekas_fire-1"
-		DryFireSound = "dryfire_rifle-1"
-		AmmoType = 2
-		FireMode = 1
+		FireSound = resource:"sounds/weapons/bekas/bekas_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
+		AmmoType = "Shotgun"
+		FireMode = "Semi"
 		BulletsPerFire = 4
 		ClipSize = 8
 		Damage = 25
@@ -23,22 +23,22 @@
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/pistol_muzzleflash.vpcf"
 		TracerParticle = ""
-		Slot = 0
+		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_bekas.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 3
-		worldmodel = resource:"models/weapons/w_bekas.vmdl"
+		ViewModelPath = resource:"models/weapons/v_bekas.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Shotgun"
+		WorldModelPath = resource:"models/weapons/w_bekas.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_bekas.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_bekas.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/bekas.png"
+		IconPath = resource:"ui/weapons/bekas.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_bekas"
 		Title = null
 	}

@@ -26,7 +26,7 @@ public class RoleInfo : GameResource
 	public Color Color { get; set; }
 
 	[JsonPropertyName( "icon" )]
-	[Title( "Icon" ), Category( "UI" )]
+	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]
@@ -43,7 +43,7 @@ public class RoleInfo : GameResource
 		ShopItemClassNames = new HashSet<string>( ShopItems );
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, IconPath );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }
 

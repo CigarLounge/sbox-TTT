@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "m4_fire-1"
-		DryFireSound = "dryfire_rifle-1"
-		AmmoType = 5
-		FireMode = 0
+		FireSound = resource:"sounds/weapons/m4/m4_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
+		AmmoType = "Rifle"
+		FireMode = "Automatic"
 		BulletsPerFire = 1
 		ClipSize = 30
 		Damage = 20
@@ -21,24 +21,24 @@
 		HorizontalRecoilRange = 3
 		RecoilRecoveryScale = 10
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_medium.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_medium.vpcf"
 		TracerParticle = ""
-		Slot = 0
+		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_m4.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 2
-		worldmodel = resource:"models/weapons/w_m4.vmdl"
+		ViewModelPath = resource:"models/weapons/v_m4.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/weapons/w_m4.vmdl"
 		DeployTime = 0.8
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_m4.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_m4.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/m4.png"
+		IconPath = resource:"ui/weapons/m4.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_m4"
 		Title = null
 	}

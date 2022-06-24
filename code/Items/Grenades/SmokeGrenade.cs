@@ -11,7 +11,7 @@ namespace TTT;
 public class SmokeGrenade : Grenade
 {
 	private const string ExplodeSound = "smoke_explode-1";
-	private const string Particle = "particles/smoke_explode.vpcf";
+	private const string Particle = "particles/smokegrenade/explode.vpcf";
 
 	protected override void OnExplode()
 	{

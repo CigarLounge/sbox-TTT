@@ -12,7 +12,7 @@ namespace TTT;
 public class Discombobulator : Grenade
 {
 	private const string ExplodeSound = "discombobulator_explode-1";
-	private const string Particle = "particles/discombobulator_explode.vpcf";
+	private const string Particle = "particles/discombobulator/explode.vpcf";
 
 	protected override void OnExplode()
 	{

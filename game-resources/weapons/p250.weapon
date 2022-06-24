@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "p250_fire-1"
-		DryFireSound = "dryfire_pistol-1"
-		AmmoType = 1
-		FireMode = 1
+		FireSound = resource:"sounds/weapons/p250/p250_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_pistol-1.sound"
+		AmmoType = "PistolSMG"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 13
 		Damage = 18
@@ -21,24 +21,24 @@
 		HorizontalRecoilRange = 1.5
 		RecoilRecoveryScale = 50
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_small.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_small.vpcf"
 		TracerParticle = ""
-		Slot = 1
+		Slot = "Secondary"
 		Spawnable = true
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_p250.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 1
-		worldmodel = resource:"models/weapons/w_p250.vmdl"
+		ViewModelPath = resource:"models/weapons/v_p250.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Pistol"
+		WorldModelPath = resource:"models/weapons/w_p250.vmdl"
 		DeployTime = 0.8
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_p250.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_p250.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = false
 		Price = 0
-		icon = resource:"ui/weapons/p250.png"
+		IconPath = resource:"ui/weapons/p250.jpg"
 		Description = ""
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_p250"
 		Title = null
 	}

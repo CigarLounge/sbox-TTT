@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "vertec_fire_silenced-1"
-		DryFireSound = "dryfire_pistol-1"
-		AmmoType = 0
-		FireMode = 1
+		FireSound = resource:"sounds/weapons/vertec/vertec_fire_silenced-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_pistol-1.sound"
+		AmmoType = "None"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 10
 		Damage = 27
@@ -21,24 +21,24 @@
 		HorizontalRecoilRange = 1.5
 		RecoilRecoveryScale = 50
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
-		MuzzleFlashParticle = resource:"particles/swb/muzzle/flash_small.vpcf"
+		MuzzleFlashParticle = resource:"particles/muzzle/flash_small.vpcf"
 		TracerParticle = ""
-		Slot = 3
+		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = resource:"models/weapons/v_vertec-silenced.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 1
-		worldmodel = resource:"models/weapons/w_vertec-silenced.vmdl"
+		ViewModelPath = resource:"models/weapons/v_vertec-silenced.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Pistol"
+		WorldModelPath = resource:"models/weapons/w_vertec-silenced.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/weapons/v_vertec-silenced.vmdl"
-		"cached-worldmodel" = resource:"models/weapons/w_vertec-silenced.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = resource:"ui/weapons/silenced-pistol.png"
+		IconPath = resource:"ui/weapons/silenced-pistol.jpg"
 		Description = "Low-noise handgun which prevents victims from screaming when killed."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_weapon_silencedpistol"
 		Title = null
 	}

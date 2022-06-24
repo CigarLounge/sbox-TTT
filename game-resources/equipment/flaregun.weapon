@@ -2,10 +2,10 @@
 {
 	data = 
 	{
-		FireSound = "flaregun_fire-1"
+		FireSound = resource:"sounds/equipment/flaregun/flaregun_fire-1.sound"
 		DryFireSound = ""
-		AmmoType = 0
-		FireMode = 1
+		AmmoType = "None"
+		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 6
 		Damage = 0
@@ -23,22 +23,22 @@
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
 		TracerParticle = resource:"particles/tracer.standard.vpcf"
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
-		viewmodel = resource:"models/flaregun/v_flaregun.vmdl"
-		handsmodel = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = 1
-		worldmodel = resource:"models/flaregun/w_flaregun.vmdl"
+		ViewModelPath = resource:"models/flaregun/v_flaregun.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Pistol"
+		WorldModelPath = resource:"models/flaregun/w_flaregun.vmdl"
 		DeployTime = 0.6
-		"cached-handsmodel" = resource:"models/weapons/v_arms_ter.vmdl"
-		"cached-viewmodel" = resource:"models/flaregun/v_flaregun.vmdl"
-		"cached-worldmodel" = resource:"models/flaregun/w_flaregun.vmdl"
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
 		IsLimited = true
 		Price = 100
-		icon = ""
+		IconPath = null
 		Description = "Can be used to burn corpses so that they are never found. Limited ammo."
-		"cached-icon" = null
+		Icon = null
 		ClassName = "ttt_equipment_flaregun"
 		Title = null
 	}
