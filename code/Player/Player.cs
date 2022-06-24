@@ -139,10 +139,6 @@ public partial class Player : AnimatedEntity
 		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
-	/// <summary>
-	/// Called every tick to simulate the player. This is called on the
-	/// client as well as the server (for prediction). So be careful!
-	/// </summary>
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
@@ -151,6 +147,7 @@ public partial class Player : AnimatedEntity
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
+		// SimulateCarriableSwitch();
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )

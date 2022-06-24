@@ -15,8 +15,6 @@ public class RandomAmmo : Entity
 
 		Transmit = TransmitType.Never;
 
-		var entity = Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) );
-		entity.Position = Position;
-		entity.Rotation = Rotation;
+		Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) ).Transform = Transform;
 	}
 }

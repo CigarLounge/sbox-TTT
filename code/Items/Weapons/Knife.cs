@@ -97,7 +97,7 @@ public partial class Knife : Carriable
 		_isThrown = true;
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
-		Owner.Inventory.SetActive( Owner.LastActiveChild );
+		Owner.Inventory.SetActive( Owner.LastActiveChild as Carriable );
 
 		if ( !IsServer )
 			return;

@@ -40,7 +40,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 		if ( !CanAdd( carriable ) )
 			return false;
 
-		carriable.Parent = Owner;
+		carriable.SetParent( Owner, true );
 
 		if ( makeActive )
 			SetActive( carriable );

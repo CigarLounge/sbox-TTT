@@ -1,0 +1,45 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		FireSound = resource:"sounds/equipment/newton_launcher/newton_fire-1.sound"
+		DryFireSound = null
+		AmmoType = "None"
+		FireMode = "Semi"
+		BulletsPerFire = 1
+		ClipSize = 1
+		Damage = 6
+		DamageFallOffStart = 0
+		DamageFallOffEnd = 0
+		HeadshotMultiplier = 2
+		Spread = 0
+		PrimaryRate = 1
+		SecondaryRate = 0
+		ReserveAmmo = 0
+		ReloadTime = 2.2
+		VerticalRecoil = 0
+		HorizontalRecoilRange = 0
+		RecoilRecoveryScale = 0
+		EjectParticle = ""
+		MuzzleFlashParticle = ""
+		TracerParticle = resource:"particles/tracer.standard.vpcf"
+		Slot = "OffensiveEquipment"
+		Spawnable = false
+		CanDrop = true
+		ViewModelPath = resource:"models/newton_launcher/v_newton_launcher.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/newton_launcher/newton_launcher.vmdl"
+		DeployTime = 0.6
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
+		IsLimited = true
+		Price = 100
+		IconPath = resource:"ui/equipment/newton_launcher.jpg"
+		Description = "Push people from a safe distance. Infinite ammo, but slow to fire."
+		Icon = null
+		ClassName = "ttt_equipment_newtonlauncher"
+		Title = null
+	}
+}

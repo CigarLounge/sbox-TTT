@@ -1,0 +1,45 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		FireSound = resource:"sounds/equipment/flaregun/flaregun_fire-1.sound"
+		DryFireSound = ""
+		AmmoType = "None"
+		FireMode = "Semi"
+		BulletsPerFire = 1
+		ClipSize = 6
+		Damage = 0
+		DamageFallOffStart = 0
+		DamageFallOffEnd = 0
+		HeadshotMultiplier = 1
+		Spread = 0
+		PrimaryRate = 1
+		SecondaryRate = 0
+		ReserveAmmo = 0
+		ReloadTime = 2.2
+		VerticalRecoil = 0
+		HorizontalRecoilRange = 0
+		RecoilRecoveryScale = 0
+		EjectParticle = ""
+		MuzzleFlashParticle = ""
+		TracerParticle = resource:"particles/tracer.standard.vpcf"
+		Slot = "UtilityEquipment"
+		Spawnable = false
+		CanDrop = true
+		ViewModelPath = resource:"models/poltergeist/poltergeist.vmdl"
+		HandsModelPath = ""
+		HoldType = "Rifle"
+		WorldModelPath = resource:"models/poltergeist/poltergeist.vmdl"
+		DeployTime = 0.6
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
+		IsLimited = true
+		Price = 100
+		IconPath = ""
+		Description = "WIP"
+		Icon = null
+		ClassName = "ttt_equipment_poltergeist"
+		Title = null
+	}
+}

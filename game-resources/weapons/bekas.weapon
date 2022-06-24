@@ -1,0 +1,45 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		FireSound = resource:"sounds/weapons/bekas/bekas_fire-1.sound"
+		DryFireSound = resource:"sounds/weapons/dryfire_rifle-1.sound"
+		AmmoType = "Shotgun"
+		FireMode = "Semi"
+		BulletsPerFire = 4
+		ClipSize = 8
+		Damage = 25
+		DamageFallOffStart = 0
+		DamageFallOffEnd = 0
+		HeadshotMultiplier = 1.2
+		Spread = 0.2
+		PrimaryRate = 1.2
+		SecondaryRate = 0
+		ReserveAmmo = 0
+		ReloadTime = 0.45
+		VerticalRecoil = 32
+		HorizontalRecoilRange = 0
+		RecoilRecoveryScale = 20
+		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
+		MuzzleFlashParticle = resource:"particles/pistol_muzzleflash.vpcf"
+		TracerParticle = ""
+		Slot = "Primary"
+		Spawnable = true
+		CanDrop = true
+		ViewModelPath = resource:"models/weapons/v_bekas.vmdl"
+		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
+		HoldType = "Shotgun"
+		WorldModelPath = resource:"models/weapons/w_bekas.vmdl"
+		DeployTime = 0.6
+		HandsModel = null
+		ViewModel = null
+		WorldModel = null
+		IsLimited = false
+		Price = 0
+		IconPath = resource:"ui/weapons/bekas.jpg"
+		Description = ""
+		Icon = null
+		ClassName = "ttt_weapon_bekas"
+		Title = null
+	}
+}

@@ -10,8 +10,8 @@ namespace TTT;
 [Title( "Role Button" )]
 public partial class RoleButton : Entity
 {
-	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
 	[Title( "Role" )]
+	[Description( "The name of the `Role` to check for. Ex. Innocent, Detective, Traitor" )]
 	[Net, Property]
 	public string RoleName { get; private set; } = "Traitor";
 
@@ -67,7 +67,7 @@ public partial class RoleButton : Entity
 
 		if ( CanUse( player ) )
 		{
-			OnPressed.Fire( player );
+			_ = OnPressed.Fire( player );
 
 			if ( RemoveOnPress )
 			{

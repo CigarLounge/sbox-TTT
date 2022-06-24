@@ -10,7 +10,7 @@ ChatBox
     border-radius: 4px;
     flex-direction: column;
     justify-content: flex-end;
-    z-index: 2;
+    z-index: 100;
     font-size: 16px;
 
     &.open 

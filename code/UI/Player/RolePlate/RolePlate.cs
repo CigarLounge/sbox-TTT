@@ -30,6 +30,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	private void FrameUpdate()
 	{
 		_rolePlate.SceneObject.RenderingEnabled = !Entity.IsFirstPersonMode;
+
 		if ( Entity.IsFirstPersonMode )
 			return;
 

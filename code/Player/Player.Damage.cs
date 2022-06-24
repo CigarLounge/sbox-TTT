@@ -58,6 +58,7 @@ public partial class Player
 	[Net]
 	public TimeSince TimeSinceDeath { get; private set; }
 
+	public const float MaxHealth = 100f;
 	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
 
@@ -102,8 +103,6 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	public const float MaxHealth = 100f;
-
 	private static readonly ColorGroup[] _healthGroupList = new ColorGroup[]
 	{
 		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
@@ -128,7 +127,7 @@ public partial class Player
 		LifeState = LifeState.Dead;
 		StopUsing();
 
-		Client?.AddInt( "deaths", 1 );
+		Client?.AddInt( "deaths" );
 
 		if ( !DiedBySuicide )
 			LastAttacker.Client.AddInt( "kills" );
@@ -200,14 +199,14 @@ public partial class Player
 	public void SendDamageInfo( To to )
 	{
 		SendDamageInfo
-		( 
-			to, 
-			LastAttacker, 
-			LastAttackerWeapon, 
-			LastDamageInfo.Damage, 
-			LastDamageInfo.Flags, 
-			LastDamageInfo.HitboxIndex, 
-			LastDamageInfo.Position 
+		(
+			to,
+			LastAttacker,
+			LastAttackerWeapon,
+			LastDamageInfo.Damage,
+			LastDamageInfo.Flags,
+			LastDamageInfo.HitboxIndex,
+			LastDamageInfo.Position
 		);
 	}
 

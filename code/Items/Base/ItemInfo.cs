@@ -1,5 +1,4 @@
 ﻿using Sandbox;
-using System.ComponentModel;
 using System.Text.Json.Serialization;
 
 namespace TTT;
@@ -13,7 +12,7 @@ public abstract class ItemInfo : GameResource
 	public int Price { get; set; } = 0;
 
 	[JsonPropertyName( "icon" )]
-	[Title( "Icon" ), Category( "UI" )]
+	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "";
 
 	[Category( "UI" )]
@@ -28,6 +27,6 @@ public abstract class ItemInfo : GameResource
 		base.PostLoad();
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, IconPath );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }

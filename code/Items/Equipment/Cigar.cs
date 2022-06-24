@@ -30,9 +30,9 @@ public class Cigar : Carriable
 	{
 		_timeUntilNextSmoke = 5;
 
-		Particles.Create( "particles/swb/smoke/swb_smokepuff_1", this, "muzzle" );
+		Particles.Create( "particles/cigar/smokepuff", this, "muzzle" );
 		_trailParticle = null;
-		_trailParticle ??= Particles.Create( "particles/swb/muzzle/barrel_smoke", this, "muzzle" );
+		_trailParticle ??= Particles.Create( "particles/muzzle/barrel_smoke", this, "muzzle" );
 
 		Owner.TakeDamage
 		(

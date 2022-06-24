@@ -30,23 +30,14 @@ public partial class MapSettings : Entity
 	/// <summary>
 	/// Does not run on entity awake/spawn, is called explicitly by the TTT gamemode to trigger.
 	/// </summary>
-	public void FireSettingsSpawn() => SettingsSpawned.Fire( this );
+	public void FireSettingsSpawn() => _ = SettingsSpawned.Fire( this );
 
 	[TTTEvent.Round.Started]
-	private void RoundStarted()
-	{
-		OnRoundStart.Fire( this );
-	}
+	private void RoundStarted() => _ = OnRoundStart.Fire( this );
 
 	[TTTEvent.Round.RolesAssigned]
-	private void RolesAssigned()
-	{
-		OnRolesAssigned.Fire( this );
-	}
+	private void RolesAssigned() => _ = OnRolesAssigned.Fire( this );
 
 	[TTTEvent.Round.Ended]
-	private void RoundEnded( Team winningTeam, WinType winType )
-	{
-		OnRoundEnd.Fire( this, winningTeam );
-	}
+	private void RoundEnded( Team winningTeam, WinType winType ) => _ = OnRoundEnd.Fire( this, winningTeam );
 }

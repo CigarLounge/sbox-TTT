@@ -1,7 +1,6 @@
-using System.Linq;
-
 using Sandbox;
 using Sandbox.UI;
+using System.Linq;
 
 namespace TTT.UI;
 
@@ -18,7 +17,7 @@ public class VoiceChatDisplay : Panel
 
 	public void OnVoicePlayed( Client client, float level )
 	{
-		VoiceChatEntry entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
+		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
 
 		entry.Update( level );
 	}
