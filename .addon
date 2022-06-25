@@ -18,11 +18,7 @@
   "RootNamespace": "TTT",
   "Metadata": {
     "MapList": [
-      "mke.casino",
-      "thieves.ttt_cluedo",
-      "dnd.lego",
-      "ice.terminal",
-      "mke.ttt_clue"
+      "mke.casino"
     ],
     "MinPlayers": 1,
     "MaxPlayers": 64,

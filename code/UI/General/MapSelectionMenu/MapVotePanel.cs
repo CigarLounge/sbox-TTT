@@ -29,23 +29,11 @@ public partial class MapVotePanel : Panel
 		_ = PopulateMaps();
 	}
 
-	public async Task PopulateMaps()
+	private async Task PopulateMaps()
 	{
-		var query = new Package.Query
-		{
-			Type = Package.Type.Map,
-			Order = Package.Order.User,
-			Take = 99,
-		};
-
-		query.Tags.Add( "game:" + Global.GameIdent );
-
-		var packages = await query.RunAsync( default );
-
-		foreach ( var package in packages )
-		{
-			AddMap( package.FullIdent );
-		}
+		var mapIdents = await MapSelectionState.GetMapIdents();
+		foreach ( var ident in mapIdents )
+			AddMap( ident );
 	}
 
 	private MapIcon AddMap( string fullIdent )
