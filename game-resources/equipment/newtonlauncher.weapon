@@ -22,7 +22,7 @@
 		RecoilRecoveryScale = 0
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
-		TracerParticle = resource:"particles/tracer.standard.vpcf"
+		TracerParticle = resource:"particles/tracer/tracer.standard.vpcf"
 		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = true
@@ -31,9 +31,9 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/newton_launcher/newton_launcher.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
+		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
+		ViewModel = resource:"models/newton_launcher/v_newton_launcher.vmdl"
+		WorldModel = resource:"models/newton_launcher/newton_launcher.vmdl"
 		IsLimited = true
 		Price = 100
 		IconPath = resource:"ui/equipment/newton_launcher.jpg"
