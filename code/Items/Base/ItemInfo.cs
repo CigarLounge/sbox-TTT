@@ -20,6 +20,7 @@ public abstract class ItemInfo : GameResource
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-icon" )]
+	[JsonIgnore]
 	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()

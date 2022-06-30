@@ -41,6 +41,7 @@ public class RoleInfo : GameResource
 	public HashSet<ItemInfo> ShopItems { get; private set; } = new();
 
 	[HideInEditor]
+	[JsonIgnore]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
