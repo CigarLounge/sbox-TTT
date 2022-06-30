@@ -56,14 +56,17 @@ public class CarriableInfo : ItemInfo
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-handsmodel" )]
+	[JsonIgnore]
 	public Model HandsModel { get; private set; }
 
 	[HideInEditor]
+	[JsonIgnore]
 	[JsonPropertyName( "cached-viewmodel" )]
 	public Model ViewModel { get; private set; }
 
 	[HideInEditor]
 	[JsonPropertyName( "cached-worldmodel" )]
+	[JsonIgnore]
 	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()

@@ -14,7 +14,14 @@ public class RoleInfo : GameResource
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; } = 0;
 
-	public List<string> ShopItems { get; set; } = new();
+	[Category( "Shop" ), ResourceType( "weapon" )]
+	public List<string> Weapons { get; set; } = new();
+
+	[Category( "Shop" ), ResourceType( "carri" )]
+	public List<string> Carriables { get; set; } = new();
+
+	[Category( "Shop" ), ResourceType( "perk" )]
+	public List<string> Perks { get; set; } = new();
 
 	public bool CanRetrieveCredits { get; set; } = false;
 
@@ -30,9 +37,11 @@ public class RoleInfo : GameResource
 	public string IconPath { get; set; } = "ui/none.png";
 
 	[HideInEditor]
-	public HashSet<string> ShopItemClassNames { get; private set; } = new();
+	[JsonIgnore]
+	public HashSet<ItemInfo> ShopItems { get; private set; } = new();
 
 	[HideInEditor]
+	[JsonIgnore]
 	[JsonPropertyName( "cached-icon" )]
 	public Texture Icon { get; private set; }
 
@@ -40,7 +49,18 @@ public class RoleInfo : GameResource
 	{
 		base.PostLoad();
 
-		ShopItemClassNames = new HashSet<string>( ShopItems );
+		if ( ResourceLibrary == null )
+			return;
+
+		var itemPaths = Weapons.Concat( Carriables ).Concat( Perks );
+		foreach ( var itemPath in itemPaths )
+		{
+			var itemInfo = ResourceLibrary.Get<ItemInfo>( itemPath );
+			if ( itemInfo is null )
+				continue;
+
+			ShopItems.Add( itemInfo );
+		}
 
 		if ( Host.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
@@ -53,7 +73,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public HashSet<string> ShopItems => Info.ShopItemClassNames;
+	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanRoleChat => Info.CanRoleChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
