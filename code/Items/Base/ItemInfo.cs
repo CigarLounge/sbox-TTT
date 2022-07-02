@@ -11,7 +11,6 @@ public abstract class ItemInfo : GameResource
 	[Category( "Stats" )]
 	public int Price { get; set; } = 0;
 
-	[JsonPropertyName( "icon" )]
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "";
 
@@ -19,15 +18,14 @@ public abstract class ItemInfo : GameResource
 	public string Description { get; set; } = "";
 
 	[HideInEditor]
-	[JsonPropertyName( "cached-icon" )]
 	[JsonIgnore]
-	public Texture Icon { get; private set; }
+	public Texture CachedIcon { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
+			CachedIcon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }

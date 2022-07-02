@@ -25,8 +25,6 @@
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
 		IconPath = resource:"ui/detective-icon.jpg"
-		Icon = null
 		ClassName = "ttt_role_detective"
-		Title = null
 	}
 }

@@ -30,7 +30,7 @@ public class ShopItem : Panel
 
 		_itemNameLabel.Text = itemInfo.Title;
 		_itemPriceLabel.Text = itemInfo.Price.ToString();
-		_itemIcon.SetTexture( itemInfo.Icon );
+		_itemIcon.SetTexture( itemInfo.CachedIcon );
 
 		ItemInfo = itemInfo;
 	}

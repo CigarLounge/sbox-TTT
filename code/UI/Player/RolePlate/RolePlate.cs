@@ -12,7 +12,7 @@ public class RolePlateComponent : EntityComponent<Player>
 	{
 		base.OnActivate();
 
-		_rolePlate = new RolePlate( Entity.Role.Info.Icon );
+		_rolePlate = new RolePlate( Entity.Role.Info.CachedIcon );
 	}
 
 	protected override void OnDeactivate()

@@ -32,7 +32,6 @@ public class RoleInfo : GameResource
 	[Category( "UI" )]
 	public Color Color { get; set; }
 
-	[JsonPropertyName( "icon" )]
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
@@ -42,8 +41,7 @@ public class RoleInfo : GameResource
 
 	[HideInEditor]
 	[JsonIgnore]
-	[JsonPropertyName( "cached-icon" )]
-	public Texture Icon { get; private set; }
+	public Texture CachedIcon { get; private set; }
 
 	protected override void PostLoad()
 	{
@@ -63,7 +61,7 @@ public class RoleInfo : GameResource
 		}
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
+			CachedIcon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }
 

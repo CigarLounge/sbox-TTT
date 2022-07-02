@@ -6,8 +6,6 @@
 		Price = 100
 		IconPath = ""
 		Description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
-		Icon = null
 		ClassName = "ttt_perk_disguiser"
-		Title = null
 	}
 }

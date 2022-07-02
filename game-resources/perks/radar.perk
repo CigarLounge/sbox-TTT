@@ -6,8 +6,6 @@
 		Price = 100
 		IconPath = resource:"ui/perks/radar.jpg"
 		Description = "Allows you to scan for life signs."
-		Icon = null
 		ClassName = "ttt_perk_radar"
-		Title = null
 	}
 }

@@ -36,18 +36,15 @@ public class CarriableInfo : ItemInfo
 	[Category( "Important" )]
 	public bool CanDrop { get; set; } = true;
 
-	[JsonPropertyName( "viewmodel" )]
 	[Title( "View Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string ViewModelPath { get; set; } = "";
 
-	[JsonPropertyName( "handsmodel" )]
 	[Title( "Hands Model" ), Category( "ViewModels" ), ResourceType( "vmdl" )]
 	public string HandsModelPath { get; set; } = "";
 
 	[Category( "WorldModels" )]
 	public HoldType HoldType { get; set; } = HoldType.None;
 
-	[JsonPropertyName( "worldmodel" )]
 	[Title( "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModelPath { get; set; } = "";
 
@@ -55,27 +52,24 @@ public class CarriableInfo : ItemInfo
 	public float DeployTime { get; set; } = 0.6f;
 
 	[HideInEditor]
-	[JsonPropertyName( "cached-handsmodel" )]
 	[JsonIgnore]
-	public Model HandsModel { get; private set; }
+	public Model CachedHandsModel { get; private set; }
 
 	[HideInEditor]
 	[JsonIgnore]
-	[JsonPropertyName( "cached-viewmodel" )]
-	public Model ViewModel { get; private set; }
+	public Model CachedViewModel { get; private set; }
 
 	[HideInEditor]
-	[JsonPropertyName( "cached-worldmodel" )]
 	[JsonIgnore]
-	public Model WorldModel { get; private set; }
+	public Model CachedWorldModel { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
-		HandsModel = Model.Load( HandsModelPath );
-		ViewModel = Model.Load( ViewModelPath );
-		WorldModel = Model.Load( WorldModelPath );
+		CachedHandsModel = Model.Load( HandsModelPath );
+		CachedViewModel = Model.Load( ViewModelPath );
+		CachedWorldModel = Model.Load( WorldModelPath );
 	}
 }
 
@@ -128,7 +122,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		}
 
 		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
-		Model = Info.WorldModel;
+		Model = Info.CachedWorldModel;
 	}
 
 	public override void ClientSpawn()
@@ -195,23 +189,23 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		Host.AssertClient();
 
-		if ( Info.ViewModel is not null )
+		if ( Info.CachedViewModel is not null )
 		{
 			ViewModelEntity = new ViewModel
 			{
 				EnableViewmodelRendering = true,
-				Model = Info.ViewModel,
+				Model = Info.CachedViewModel,
 				Owner = Owner,
 				Position = Position
 			};
 		}
 
-		if ( Info.HandsModel is not null )
+		if ( Info.CachedHandsModel is not null )
 		{
 			HandsModelEntity = new BaseViewModel
 			{
 				EnableViewmodelRendering = true,
-				Model = Info.HandsModel,
+				Model = Info.CachedHandsModel,
 				Owner = Owner,
 				Position = Position
 			};

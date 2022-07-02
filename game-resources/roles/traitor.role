@@ -30,8 +30,6 @@
 		CanAttachCorpses = true
 		Color = "0.87451,0.15294,0.2,1"
 		IconPath = resource:"ui/traitor-icon.jpg"
-		Icon = null
 		ClassName = "ttt_role_traitor"
-		Title = null
 	}
 }

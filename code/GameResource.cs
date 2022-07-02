@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -11,6 +12,7 @@ public abstract class GameResource : Sandbox.GameResource
 	public string ClassName { get; set; }
 
 	[HideInEditor]
+	[JsonIgnore]
 	public string Title { get; set; }
 
 	public static T GetInfo<T>( Type type ) where T : GameResource
