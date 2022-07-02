@@ -18,7 +18,6 @@ public partial class Game : Sandbox.Game
 
 	public Game()
 	{
-		// jk
 		Current = this;
 
 		if ( IsServer )
