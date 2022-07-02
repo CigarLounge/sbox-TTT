@@ -155,6 +155,7 @@ public partial class Player : Sandbox.Player
 		{
 			SimulateFlashlight();
 			SimulatePerks();
+			CheckLastSeenPlayer();
 		}
 
 		if ( IsClient )
@@ -173,7 +174,6 @@ public partial class Player : Sandbox.Player
 
 			PlayerUse();
 			CheckPlayerDropCarriable();
-			CheckLastSeenPlayer();
 		}
 	}
 
