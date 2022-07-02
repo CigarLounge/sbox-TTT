@@ -41,7 +41,7 @@ public class RoleInfo : GameResource
 
 	[HideInEditor]
 	[JsonIgnore]
-	public Texture CachedIcon { get; private set; }
+	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()
 	{
@@ -61,7 +61,7 @@ public class RoleInfo : GameResource
 		}
 
 		if ( Host.IsClient )
-			CachedIcon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }
 

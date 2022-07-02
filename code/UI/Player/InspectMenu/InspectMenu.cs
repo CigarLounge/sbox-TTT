@@ -105,7 +105,7 @@ public partial class InspectMenu : Panel
 		_weapon.Enabled( carriableInfo is not null );
 		if ( _weapon.IsEnabled() )
 		{
-			_weapon.SetTexture( carriableInfo.CachedIcon );
+			_weapon.SetTexture( carriableInfo.Icon );
 			_weapon.SetImageText( $"{carriableInfo.Title}" );
 			_weapon.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
 		}
@@ -123,7 +123,7 @@ public partial class InspectMenu : Panel
 			foreach ( var perk in perks )
 			{
 				var perkEntry = new InspectEntry( IconsContainer );
-				perkEntry.SetTexture( perk.CachedIcon );
+				perkEntry.SetTexture( perk.Icon );
 				perkEntry.SetImageText( perk.Title );
 				perkEntry.SetActiveText( $"They were carrying {perk.Title}." );
 

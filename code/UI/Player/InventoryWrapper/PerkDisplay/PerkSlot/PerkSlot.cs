@@ -13,7 +13,7 @@ public class PerkSlot : Panel
 	public PerkSlot( Perk perk )
 	{
 		_perk = perk;
-		Icon.SetTexture( perk.Info.CachedIcon );
+		Icon.SetTexture( perk.Info.Icon );
 		IconName.Text = perk.Info.Title;
 	}
 

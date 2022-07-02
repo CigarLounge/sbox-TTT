@@ -53,23 +53,23 @@ public class CarriableInfo : ItemInfo
 
 	[HideInEditor]
 	[JsonIgnore]
-	public Model CachedHandsModel { get; private set; }
+	public Model HandsModel { get; private set; }
 
 	[HideInEditor]
 	[JsonIgnore]
-	public Model CachedViewModel { get; private set; }
+	public Model ViewModel { get; private set; }
 
 	[HideInEditor]
 	[JsonIgnore]
-	public Model CachedWorldModel { get; private set; }
+	public Model WorldModel { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
-		CachedHandsModel = Model.Load( HandsModelPath );
-		CachedViewModel = Model.Load( ViewModelPath );
-		CachedWorldModel = Model.Load( WorldModelPath );
+		HandsModel = Model.Load( HandsModelPath );
+		ViewModel = Model.Load( ViewModelPath );
+		WorldModel = Model.Load( WorldModelPath );
 	}
 }
 
@@ -122,7 +122,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		}
 
 		Info = GameResource.GetInfo<CarriableInfo>( ClassName );
-		Model = Info.CachedWorldModel;
+		Model = Info.WorldModel;
 	}
 
 	public override void ClientSpawn()
@@ -189,23 +189,23 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		Host.AssertClient();
 
-		if ( Info.CachedViewModel is not null )
+		if ( Info.ViewModel is not null )
 		{
 			ViewModelEntity = new ViewModel
 			{
 				EnableViewmodelRendering = true,
-				Model = Info.CachedViewModel,
+				Model = Info.ViewModel,
 				Owner = Owner,
 				Position = Position
 			};
 		}
 
-		if ( Info.CachedHandsModel is not null )
+		if ( Info.HandsModel is not null )
 		{
 			HandsModelEntity = new BaseViewModel
 			{
 				EnableViewmodelRendering = true,
-				Model = Info.CachedHandsModel,
+				Model = Info.HandsModel,
 				Owner = Owner,
 				Position = Position
 			};

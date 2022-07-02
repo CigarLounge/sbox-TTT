@@ -19,13 +19,13 @@ public abstract class ItemInfo : GameResource
 
 	[HideInEditor]
 	[JsonIgnore]
-	public Texture CachedIcon { get; private set; }
+	public Texture Icon { get; private set; }
 
 	protected override void PostLoad()
 	{
 		base.PostLoad();
 
 		if ( Host.IsClient )
-			CachedIcon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
+			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
 	}
 }
