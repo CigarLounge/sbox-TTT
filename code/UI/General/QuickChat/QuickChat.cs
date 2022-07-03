@@ -9,24 +9,31 @@ namespace TTT.UI;
 [UseTemplate]
 public class QuickChat : Panel
 {
-	public bool IsShowing { get; set; }
+	public static QuickChat Instance;
 
-	private readonly List<string> _messages = new(){
-		"1: Yes.",
-		"2: No.",
-		"3: Help!",
-		"4: I'm with {0}.",
-		"5: I see {0}.",
-		"6: {0} acts suspicious.",
-		"7: {0} is a Traitor!",
-		"8: {0} is innocent.",
-		"9: Anyone still alive?",
-	};
+	private string _currentPlayerName { get => !string.IsNullOrEmpty( _cachedLastPlayerSeen ) ? _cachedLastPlayerSeen : "Nobody"; }
+	private string _cachedLastPlayerSeen;
+
+	private bool _isShowing = false;
+	private TimeSince _timeSinceLastMessage;
 
 	private readonly List<Label> _labels = new();
+	private readonly List<string> _messages = new(){
+		"{0} acts suspicious.",
+		"{0} is a Traitor!",
+		"{0} is innocent.",
+		"I'm with {0}.",
+		"I see {0}.",
+		"Yes.",
+		"No.",
+		"Help!",
+		"Anyone still alive?"
+	};
 
 	public QuickChat()
 	{
+		Instance = this;
+
 		foreach ( var message in _messages )
 			_labels.Add( Add.Label( message ) );
 	}
@@ -37,13 +44,36 @@ public class QuickChat : Panel
 			return;
 
 		if ( Input.Pressed( InputButton.Zoom ) )
-			IsShowing = !IsShowing;
+			_isShowing = !_isShowing;
 
-		this.Enabled( player.IsAlive() && IsShowing );
+		this.Enabled( player.IsAlive() && _isShowing );
 		if ( !this.IsEnabled() )
 			return;
 
+		if ( player.LastSeenPlayerName == _cachedLastPlayerSeen )
+			return;
+
+		_cachedLastPlayerSeen = player.LastSeenPlayerName;
 		for ( var i = 0; i < _labels.Count; ++i )
-			_labels[i].Text = string.Format( _messages[i], player.LastSeenPlayerName );
+			_labels[i].Text = $"{i}: {string.Format( _messages[i], _currentPlayerName )}";
+	}
+
+	[Event.BuildInput]
+	private void BuildInput( InputBuilder input )
+	{
+		if ( !this.IsEnabled() )
+			return;
+
+		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed( input );
+		if ( keyboardIndexPressed <= 0 ) // Only accept keyboard numbers 1-9
+			return;
+
+		if ( _timeSinceLastMessage > 1 )
+		{
+			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed], _currentPlayerName ), ChatBox.Channel.All );
+			_timeSinceLastMessage = 0;
+		}
+
+		_isShowing = false;
 	}
 }
