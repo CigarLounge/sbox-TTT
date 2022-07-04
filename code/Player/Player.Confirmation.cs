@@ -11,10 +11,13 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; private set; }
 
-	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
+
+	public string LastSeenPlayerName { get => _timeSinceLastPlayerSeen > 3 ? string.Empty : _lastSeenPlayerName; set => _lastSeenPlayerName = value; }
+	private TimeSince _timeSinceLastPlayerSeen;
+	private string _lastSeenPlayerName;
 
 	public void RemoveCorpse()
 	{
@@ -87,7 +90,10 @@ public partial class Player
 			.Run();
 
 		if ( trace.Entity is Player player && player.CanHint( this ) )
+		{
 			LastSeenPlayerName = player.Client.Name;
+			_timeSinceLastPlayerSeen = 0;
+		}
 	}
 
 	private void ResetConfirmationData()

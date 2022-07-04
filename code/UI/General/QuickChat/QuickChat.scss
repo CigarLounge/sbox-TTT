@@ -1,8 +1,9 @@
 QuickChat
 {
     position: absolute;
-    top: 270px;
     left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
     flex-direction: column;
     padding: 5px;
     z-index: 101;

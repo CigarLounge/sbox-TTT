@@ -116,7 +116,7 @@ public partial class ChatBox : Panel
 	}
 
 	[ConCmd.Server]
-	public static void SendChat( string message, Channel channel )
+	public static void SendChat( string message, Channel channel = Channel.All )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;

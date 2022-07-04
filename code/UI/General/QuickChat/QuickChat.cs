@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
@@ -55,7 +54,7 @@ public class QuickChat : Panel
 
 		_cachedLastPlayerSeen = player.LastSeenPlayerName;
 		for ( var i = 0; i < _labels.Count; ++i )
-			_labels[i].Text = $"{i}: {string.Format( _messages[i], _currentPlayerName )}";
+			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _currentPlayerName )}";
 	}
 
 	[Event.BuildInput]
@@ -70,7 +69,7 @@ public class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed], _currentPlayerName ), ChatBox.Channel.All );
+			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed - 1], _currentPlayerName ) );
 			_timeSinceLastMessage = 0;
 		}
 
