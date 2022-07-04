@@ -36,7 +36,7 @@ Shop
         .credit-label, .credits 
         {
             font-size: 23px;
-            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+            text-shadow: 1px 1px 1px black;
         }
 
         .credits 
@@ -59,7 +59,7 @@ Shop
             transition: opacity 0.25s ease-out;
             opacity: 0;
             height: 18px;
-            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+            text-shadow: 1px 1px 1px black;
 
             &.fade-in 
             {
@@ -70,7 +70,7 @@ Shop
         .scroll-icon
         {
             transition: all 0.15s ease-out;
-            text-shadow: 0px 0px 2px black, 0px 0px 2px black;
+            text-shadow: 1px 1px 1px black;
         }
     }
 }
