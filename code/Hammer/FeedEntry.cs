@@ -3,11 +3,11 @@ using SandboxEditor;
 
 namespace TTT;
 
-[ClassName( "ttt_game_text" )]
+[ClassName( "ttt_feed_entry" )]
 [Description( "Add text entry to the game feed when input fired." )]
 [HammerEntity]
 [Title( "Game Text" )]
-public partial class GameText : Entity
+public partial class FeedEntry : Entity
 {
 	[Net, Property]
 	public string Message { get; private set; }
