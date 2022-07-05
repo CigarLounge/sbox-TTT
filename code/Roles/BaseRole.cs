@@ -25,7 +25,7 @@ public class RoleInfo : GameResource
 
 	public bool CanRetrieveCredits { get; set; } = false;
 
-	public bool CanRoleChat { get; set; } = false;
+	public bool CanTeamChat { get; set; } = false;
 
 	public bool CanAttachCorpses { get; set; } = false;
 
@@ -47,7 +47,7 @@ public class RoleInfo : GameResource
 	{
 		base.PostLoad();
 
-		if ( ResourceLibrary == null )
+		if ( ResourceLibrary is null )
 			return;
 
 		var itemPaths = Weapons.Concat( Carriables ).Concat( Perks );
@@ -73,7 +73,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public Color Color => Info.Color;
 	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
-	public bool CanRoleChat => Info.CanRoleChat;
+	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
 
