@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Hammer Logic" )]
 [ClassName( "ttt_role_check" )]
 [Description( "Checks for the specified role." )]
 [HammerEntity]
