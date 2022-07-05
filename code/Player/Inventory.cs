@@ -4,6 +4,10 @@ using System.Collections.Generic;
 
 namespace TTT;
 
+/// <summary>
+/// A sublist of <see cref="Entity.Children"/> that contains entities 
+/// of type <see cref="TTT.Carriable"/>.
+/// </summary>
 public sealed class Inventory : IEnumerable<Carriable>
 {
 	public Player Owner { get; private init; }
