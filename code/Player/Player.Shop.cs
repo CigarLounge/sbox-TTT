@@ -9,7 +9,7 @@ public partial class Player
 	public int Credits { get; set; }
 
 	[Net, Local]
-	public IList<string> PurchasedLimitedShopItems { get; private set; }
+	public IList<ItemInfo> PurchasedLimitedShopItems { get; private set; }
 
 	public bool CanPurchase( ItemInfo item )
 	{
@@ -22,7 +22,7 @@ public partial class Player
 		if ( !Role.ShopItems.Contains( item ) )
 			return false;
 
-		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.ClassName ) )
+		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item ) )
 			return false;
 
 		return true;
@@ -43,7 +43,7 @@ public partial class Player
 			return;
 
 		if ( itemInfo.IsLimited )
-			player.PurchasedLimitedShopItems.Add( itemInfo.ClassName );
+			player.PurchasedLimitedShopItems.Add( itemInfo );
 
 		player.Credits -= itemInfo.Price;
 
