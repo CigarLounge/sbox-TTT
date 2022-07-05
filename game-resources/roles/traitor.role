@@ -26,7 +26,7 @@
 			resource:"game-resources/perks/radar.perk",
 		]
 		CanRetrieveCredits = true
-		CanRoleChat = true
+		CanTeamChat = true
 		CanAttachCorpses = true
 		Color = "0.87451,0.15294,0.2,1"
 		IconPath = resource:"ui/traitor-icon.jpg"

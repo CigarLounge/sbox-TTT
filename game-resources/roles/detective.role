@@ -21,7 +21,7 @@
 			resource:"game-resources/perks/radar.perk",
 		]
 		CanRetrieveCredits = true
-		CanRoleChat = true
+		CanTeamChat = true
 		CanAttachCorpses = false
 		Color = "0.09804,0.4,1,1"
 		IconPath = resource:"ui/detective-icon.jpg"
