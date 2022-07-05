@@ -16,10 +16,10 @@ public partial class Player
 		if ( Credits < item.Price )
 			return false;
 
-		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
+		if ( !Role.ShopItems.Contains( item ) )
 			return false;
 
-		if ( !Role.ShopItems.Contains( item ) )
+		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
 			return false;
 
 		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item ) )
