@@ -11,6 +11,7 @@ public class RoleInfo : GameResource
 {
 	public Team Team { get; set; } = Team.None;
 
+	[Category( "Shop" )]
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; } = 0;
 
