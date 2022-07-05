@@ -31,8 +31,7 @@ public partial class Player
 
 		var corpse = new Corpse()
 		{
-			Position = Position,
-			Rotation = Rotation
+			Transform = Transform
 		};
 
 		corpse.CopyFrom( this );
