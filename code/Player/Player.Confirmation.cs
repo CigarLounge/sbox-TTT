@@ -4,7 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public new Corpse Corpse { get; set; }
+	public Corpse Corpse { get; set; }
 
 	/// <summary>
 	/// The player who confirmed this player's corpse.
@@ -82,7 +82,6 @@ public partial class Player
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
 			.HitLayer( CollisionLayer.Debris )
 			.Ignore( this )
-			.EntitiesOnly()
 			.WithTag( "player" )
 			.Run();
 

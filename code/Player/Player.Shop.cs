@@ -6,7 +6,10 @@ namespace TTT;
 public partial class Player
 {
 	[Net, Local]
-	public IList<string> PurchasedLimitedShopItems { get; set; }
+	public int Credits { get; set; }
+
+	[Net, Local]
+	public IList<string> PurchasedLimitedShopItems { get; private set; }
 
 	public bool CanPurchase( ItemInfo item )
 	{

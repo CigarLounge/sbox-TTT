@@ -2,26 +2,25 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class Player : Sandbox.Player
+[Title( "Player" ), Icon( "emoji_people" )]
+public partial class Player : AnimatedEntity
 {
-	[Net, Local, Predicted]
-	public Entity LastActiveChild { get; set; }
+	public Inventory Inventory { get; private init; }
+	public Perks Perks { get; private init; }
 
-	[Net, Local]
-	public int Credits { get; set; } = 0;
-
-	private Inventory _inventory;
-	public new Inventory Inventory
+	public CameraMode Camera
 	{
-		get => _inventory;
-		private init
+		get => Components.Get<CameraMode>();
+		set
 		{
-			_inventory = value;
-			base.Inventory = value;
+			var current = Camera;
+			if ( current == value )
+				return;
+
+			Components.RemoveAny<CameraMode>();
+			Components.Add( value );
 		}
 	}
-
-	public Perks Perks { get; private init; }
 
 	/// <summary>
 	/// The player earns score by killing players on opposite teams, confirming bodies
@@ -51,6 +50,7 @@ public partial class Player : Sandbox.Player
 	{
 		base.Spawn();
 
+		Tags.Add( "player" );
 		SetModel( "models/citizen/citizen.vmdl" );
 		Role = new NoneRole();
 
@@ -58,13 +58,15 @@ public partial class Player : Sandbox.Player
 		LifeState = LifeState.Respawnable;
 		Transmit = TransmitType.Always;
 
+		Predictable = true;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
+		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
 
 		Animator = new PlayerAnimator();
-		CameraMode = new FreeSpectateCamera();
+		Camera = new FreeSpectateCamera();
 	}
 
 	public override void ClientSpawn()
@@ -74,7 +76,7 @@ public partial class Player : Sandbox.Player
 		Role = new NoneRole();
 	}
 
-	public override void Respawn()
+	public void Respawn()
 	{
 		Host.AssertServer();
 
@@ -100,7 +102,7 @@ public partial class Player : Sandbox.Player
 			EnableDrawing = true;
 
 			Controller = new WalkController();
-			CameraMode = new FirstPersonCamera();
+			Camera = new FirstPersonCamera();
 
 			CreateHull();
 			CreateFlashlight();
@@ -140,15 +142,12 @@ public partial class Player : Sandbox.Player
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.Simulate( client, this, GetActiveAnimator() );
+		controller?.Simulate( client, this, Animator );
 
-		if ( Input.Pressed( InputButton.Menu ) )
-		{
-			if ( ActiveChild.IsValid() && LastActiveChild.IsValid() )
-				(ActiveChild, LastActiveChild) = (LastActiveChild, ActiveChild);
-		}
+		if ( Input.ActiveChild is Carriable carriable )
+			Inventory.SetActive( carriable );
 
-		SimulateCarriableSwitch();
+		// SimulateCarriableSwitch();
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )
@@ -180,7 +179,7 @@ public partial class Player : Sandbox.Player
 	public override void FrameSimulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.FrameSimulate( client, this, GetActiveAnimator() );
+		controller?.FrameSimulate( client, this, Animator );
 
 		if ( WaterLevel > 0.9f )
 		{
@@ -215,21 +214,15 @@ public partial class Player : Sandbox.Player
 
 		ActiveChild?.BuildInput( input );
 
+		if ( input.StopProcessing )
+			return;
+
 		GetActiveController()?.BuildInput( input );
 
 		if ( input.StopProcessing )
 			return;
 
-		GetActiveAnimator()?.BuildInput( input );
-	}
-
-	public override void OnActiveChildChanged( Entity previous, Entity next )
-	{
-		if ( previous is Carriable previousBc )
-			previousBc?.ActiveEnd( this, previousBc.Owner != this );
-
-		if ( next is Carriable nextBc )
-			nextBc?.ActiveStart( this );
+		Animator?.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -237,10 +230,72 @@ public partial class Player : Sandbox.Player
 		if ( !this.IsAlive() )
 			return;
 
-		if ( ActiveChild is Carriable carriable )
-			carriable.RenderHud( screenSize );
-
+		ActiveChild?.RenderHud( screenSize );
 		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild );
+	}
+
+	#region Animator
+	[Net, Predicted]
+	public PawnAnimator Animator { get; private set; }
+
+	TimeSince _timeSinceLastFootstep;
+
+	/// <summary>
+	/// A foostep has arrived!
+	/// </summary>
+	public override void OnAnimEventFootstep( Vector3 pos, int foot, float volume )
+	{
+		if ( !this.IsAlive() )
+			return;
+
+		if ( !IsClient )
+			return;
+
+		if ( _timeSinceLastFootstep < 0.2f )
+			return;
+
+		volume *= FootstepVolume();
+
+		_timeSinceLastFootstep = 0;
+
+		var trace = Trace.Ray( pos, pos + Vector3.Down * 20 )
+			.Radius( 1 )
+			.Ignore( this )
+			.Run();
+
+		if ( !trace.Hit )
+			return;
+
+		trace.Surface.DoFootstep( this, trace, foot, volume );
+	}
+
+	public float FootstepVolume()
+	{
+		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 0.2f;
+	}
+	#endregion
+
+	#region Controller
+	[Net, Predicted]
+	public PawnController Controller { get; set; }
+
+	[Net, Predicted]
+	public PawnController DevController { get; set; }
+
+	public PawnController GetActiveController()
+	{
+		return DevController ?? Controller;
+	}
+	#endregion
+
+	public void CreateHull()
+	{
+		CollisionGroup = CollisionGroup.Player;
+		AddCollisionLayer( CollisionLayer.Player );
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
+
+		MoveType = MoveType.MOVETYPE_WALK;
+		EnableHitboxes = true;
 	}
 
 	public override void StartTouch( Entity other )
@@ -274,8 +329,37 @@ public partial class Player : Sandbox.Player
 	{
 		Components.RemoveAll();
 		ClearAmmo();
-		Inventory?.DeleteContents();
+		Inventory.DeleteContents();
 		RemoveAllClothing();
+	}
+
+	[Net, Predicted]
+	public Carriable ActiveChild { get; set; }
+
+	public Carriable LastActiveChild { get; set; }
+
+	public void SimulateActiveChild( Client client, Carriable child )
+	{
+		if ( LastActiveChild != child )
+		{
+			OnActiveChildChanged( LastActiveChild, child );
+			LastActiveChild = child;
+		}
+
+		if ( !LastActiveChild.IsValid() )
+			return;
+
+		if ( !LastActiveChild.IsAuthority )
+			return;
+
+		if ( LastActiveChild.TimeSinceDeployed > LastActiveChild.Info.DeployTime )
+			LastActiveChild.Simulate( client );
+	}
+
+	public void OnActiveChildChanged( Carriable previous, Carriable next )
+	{
+		previous?.ActiveEnd( this, previous.Owner != this );
+		next?.ActiveStart( this );
 	}
 
 	private void CheckPlayerDropCarriable()
@@ -294,15 +378,6 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
-	private void SimulateCarriableSwitch()
-	{
-		if ( Input.ActiveChild is null )
-			return;
-
-		LastActiveChild = ActiveChild;
-		ActiveChild = Input.ActiveChild;
-	}
-
 	private void SimulatePerks()
 	{
 		foreach ( var perk in Perks )
@@ -311,17 +386,23 @@ public partial class Player : Sandbox.Player
 		}
 	}
 
+	public override void OnChildAdded( Entity child )
+	{
+		Inventory?.OnChildAdded( child );
+	}
+
+	public override void OnChildRemoved( Entity child )
+	{
+		Inventory?.OnChildRemoved( child );
+	}
+
 	protected override void OnComponentAdded( EntityComponent component )
 	{
-		base.OnComponentAdded( component );
-
 		Perks?.OnComponentAdded( component );
 	}
 
 	protected override void OnComponentRemoved( EntityComponent component )
 	{
-		base.OnComponentAdded( component );
-
 		Perks?.OnComponentRemoved( component );
 	}
 

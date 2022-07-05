@@ -127,7 +127,7 @@ public partial class Player
 		LifeState = LifeState.Dead;
 		StopUsing();
 
-		Client?.AddInt( "deaths" );
+		Client.AddInt( "deaths" );
 
 		if ( !DiedBySuicide )
 			LastAttacker.Client.AddInt( "kills" );
@@ -169,7 +169,7 @@ public partial class Player
 			if ( Game.Current.State is not InProgress and not PostRound )
 				return;
 
-			if ( info.Flags != DamageFlags.Slash )
+			if ( !info.Flags.HasFlag( DamageFlags.Slash ) )
 				info.Damage *= attacker.DamageFactor;
 		}
 
@@ -226,6 +226,12 @@ public partial class Player
 			damageMultiplier *= BodyArmor.ReductionPercentage;
 
 		return damageMultiplier;
+	}
+
+	[ClientRpc]
+	public void Deafen( float strength )
+	{
+		Audio.SetEffect( "flashbang", strength, velocity: 20.0f, fadeOut: 4.0f * strength );
 	}
 
 	[ClientRpc]

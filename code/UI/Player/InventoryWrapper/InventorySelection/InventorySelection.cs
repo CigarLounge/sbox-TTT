@@ -37,8 +37,8 @@ public class InventorySelection : Panel
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeItem = player.ActiveChild as Carriable;
-		var activeItemTitle = activeItem is not null ? activeItem.Info.Title : string.Empty;
+		var activeChild = player.ActiveChild;
+		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
 		{
@@ -48,11 +48,11 @@ public class InventorySelection : Panel
 				slot?.Delete();
 			}
 
-			bool isFirst = slot == Children.First() as InventorySlot;
+			var isFirst = slot == Children.First() as InventorySlot;
 			slot.SetClass( "rounded-top", isFirst );
 			slot.SlotLabel.SetClass( "rounded-top-left", isFirst );
 
-			bool isLast = slot == Children.Last() as InventorySlot;
+			var isLast = slot == Children.Last() as InventorySlot;
 			slot.SetClass( "rounded-bottom", isLast );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
 
@@ -67,7 +67,7 @@ public class InventorySelection : Panel
 			var s1 = p1 as InventorySlot;
 			var s2 = p2 as InventorySlot;
 
-			int result = s1.Carriable.Info.Slot.CompareTo( s2.Carriable.Info.Slot );
+			var result = s1.Carriable.Info.Slot.CompareTo( s2.Carriable.Info.Slot );
 			return result != 0
 				? result
 				: string.Compare( s1.Carriable.Info.Title, s2.Carriable.Info.Title, StringComparison.Ordinal );
@@ -99,15 +99,15 @@ public class InventorySelection : Panel
 			return;
 
 		var childrenList = Children.ToList();
-		var activeCarriable = player.ActiveChild as Carriable;
-		int keyboardIndexPressed = GetKeyboardNumberPressed( input );
+		var activeCarriable = player.ActiveChild;
+		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
 
 		if ( keyboardIndexPressed != -1 )
 		{
 			List<Carriable> weaponsOfSlotTypeSelected = new();
-			int activeCarriableOfSlotTypeIndex = -1;
+			var activeCarriableOfSlotTypeIndex = -1;
 
-			for ( int i = 0; i < childrenList.Count; ++i )
+			for ( var i = 0; i < childrenList.Count; ++i )
 			{
 				if ( childrenList[i] is InventorySlot slot )
 				{
@@ -144,13 +144,13 @@ public class InventorySelection : Panel
 			}
 		}
 
-		int mouseWheelIndex = input.MouseWheel;
+		var mouseWheelIndex = input.MouseWheel;
 		if ( mouseWheelIndex != 0 )
 		{
-			int activeCarriableIndex = childrenList.FindIndex( ( p ) =>
+			var activeCarriableIndex = childrenList.FindIndex( ( p ) =>
 				 p is InventorySlot slot && slot.Carriable == activeCarriable );
 
-			int newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
+			var newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
 			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
 		}
 	}
@@ -168,7 +168,7 @@ public class InventorySelection : Panel
 
 	private int GetKeyboardNumberPressed( InputBuilder input )
 	{
-		for ( int i = 0; i < _slotInputButtons.Length; i++ )
+		for ( var i = 0; i < _slotInputButtons.Length; i++ )
 		{
 			if ( input.Pressed( _slotInputButtons[i] ) )
 				return i;
