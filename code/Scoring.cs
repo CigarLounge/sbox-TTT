@@ -19,8 +19,10 @@ public static class Scoring
 		{
 			player.RoundScore--;
 		}
-		else if ( player.LastAttacker is Player attacker )
+		else
 		{
+			var attacker = (Player)player.LastAttacker;
+
 			if ( attacker.Team != player.Team )
 				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
 			else

@@ -9,7 +9,7 @@ public partial class ChatBox : Panel
 	public enum Channel
 	{
 		All,
-		Role,
+		Team,
 		Spectator
 	}
 
@@ -65,7 +65,7 @@ public partial class ChatBox : Panel
 
 		if ( !player.IsAlive() )
 			CurrentChannel = Channel.Spectator;
-		else if ( !player.Role.CanRoleChat )
+		else if ( !player.Role.CanTeamChat )
 			CurrentChannel = Channel.All;
 
 		switch ( CurrentChannel )
@@ -76,7 +76,7 @@ public partial class ChatBox : Panel
 			case Channel.Spectator:
 				Input.Style.BorderColor = _spectatorChatColor;
 				return;
-			case Channel.Role:
+			case Channel.Team:
 				Input.Style.BorderColor = player.Role.Color;
 				return;
 		}
@@ -139,8 +139,8 @@ public partial class ChatBox : Panel
 
 		if ( channel == Channel.All )
 			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
-		else if ( channel == Channel.Role && player.Role.CanRoleChat )
-			AddChat( To.Multiple( Utils.GetClientsWithRole( player.Role ) ), player.Client.Name, message, channel, player.Role.Info.ResourceId );
+		else if ( channel == Channel.Team && player.Role.CanTeamChat )
+			AddChat( player.Team.ToClients(), player.Client.Name, message, channel, player.Role.Info.ResourceId );
 	}
 
 	[ConCmd.Client( "chat_add", CanBeCalledFromServer = true )]
@@ -151,7 +151,7 @@ public partial class ChatBox : Panel
 			case Channel.All:
 				Instance?.AddEntry( name, message, roleId != -1 ? ResourceLibrary.Get<RoleInfo>( roleId ).Color : _allChatColor );
 				return;
-			case Channel.Role:
+			case Channel.Team:
 				Instance?.AddEntry( $"(TEAM) {name}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color );
 				return;
 			case Channel.Spectator:
@@ -171,8 +171,8 @@ public partial class ChatBox : Panel
 		if ( Local.Pawn is not Player player || !player.IsAlive() )
 			return;
 
-		if ( player.Role.CanRoleChat )
-			CurrentChannel = CurrentChannel == Channel.All ? Channel.Role : Channel.All;
+		if ( player.Role.CanTeamChat )
+			CurrentChannel = CurrentChannel == Channel.All ? Channel.Team : Channel.All;
 	}
 }
 

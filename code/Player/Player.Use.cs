@@ -4,6 +4,8 @@ namespace TTT;
 
 public partial class Player
 {
+	public Entity Using { get; protected set; }
+
 	public const float UseDistance = 80f;
 
 	public bool IsUseDisabled()
@@ -13,33 +15,42 @@ public partial class Player
 
 	protected void PlayerUse()
 	{
-		if ( Input.Pressed( InputButton.Use ) )
+		// Turn prediction off
+		using ( Prediction.Off() )
 		{
-			Using = FindUsable();
-
-			if ( Using is null )
+			if ( Input.Pressed( InputButton.Use ) )
 			{
-				UseFail();
+				Using = FindUsable();
+
+				if ( Using is null )
+				{
+					UseFail();
+					return;
+				}
+			}
+
+			if ( !Input.Down( InputButton.Use ) )
+			{
+				StopUsing();
 				return;
 			}
-		}
 
-		if ( !Input.Down( InputButton.Use ) )
-		{
+			if ( !Using.IsValid() )
+				return;
+
+			// If we move too far away or something we should probably ClearUse()?
+
+			//
+			// If use returns true then we can keep using it
+			//
+			if ( Using is IUse use && use.OnUse( this ) )
+				return;
+
 			StopUsing();
-			return;
 		}
-
-		if ( !Using.IsValid() )
-			return;
-
-		if ( Using is IUse use && use.OnUse( this ) )
-			return;
-
-		StopUsing();
 	}
 
-	protected override Entity FindUsable()
+	protected Entity FindUsable()
 	{
 		if ( IsUseDisabled() )
 			return null;
@@ -51,14 +62,14 @@ public partial class Player
 			.Run();
 
 		// See if any of the parent entities are usable if we ain't.
-		var ent = trace.Entity;
-		while ( ent.IsValid() && !IsValidUseEntity( ent ) )
+		var entity = trace.Entity;
+		while ( entity.IsValid() && !IsValidUseEntity( entity ) )
 		{
-			ent = ent.Parent;
+			entity = entity.Parent;
 		}
 
 		// Nothing found, try a wider search.
-		if ( !IsValidUseEntity( ent ) )
+		if ( !IsValidUseEntity( entity ) )
 		{
 			trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
 			.Radius( 2 )
@@ -67,25 +78,47 @@ public partial class Player
 			.Run();
 
 			// See if any of the parent entities are usable if we ain't.
-			ent = trace.Entity;
-			while ( ent.IsValid() && !IsValidUseEntity( ent ) )
+			entity = trace.Entity;
+			while ( entity.IsValid() && !IsValidUseEntity( entity ) )
 			{
-				ent = ent.Parent;
+				entity = entity.Parent;
 			}
 		}
 
 		// Still no good? Bail.
-		if ( !IsValidUseEntity( ent ) )
+		if ( !IsValidUseEntity( entity ) )
 			return null;
 
-		return ent;
+		return entity;
 	}
 
-	protected override void UseFail()
+	/// <summary>
+	/// Returns if the entity is a valid usaable entity
+	/// </summary>
+	protected bool IsValidUseEntity( Entity entity )
+	{
+		if ( entity is not IUse use )
+			return false;
+
+		if ( !use.IsUsable( this ) )
+			return false;
+
+		return true;
+	}
+
+	/// <summary>
+	/// If we're using an entity, stop using it
+	/// </summary>
+	protected void StopUsing()
+	{
+		Using = null;
+	}
+
+	protected void UseFail()
 	{
 		if ( IsUseDisabled() )
 			return;
 
-		// do nothing
+		// Do nothing.
 	}
 }

@@ -3,6 +3,7 @@ using SandboxEditor;
 
 namespace TTT;
 
+[Category( "Hammer Logic" )]
 [ClassName( "ttt_credit_adjust" )]
 [Description( "Changes the amount of credits upon the activator." )]
 [HammerEntity]

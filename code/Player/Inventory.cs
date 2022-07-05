@@ -1,22 +1,26 @@
 using Sandbox;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TTT;
 
-public class Inventory : IBaseInventory, IEnumerable<Carriable>
+/// <summary>
+/// A sublist of <see cref="Entity.Children"/> that contains entities 
+/// of type <see cref="TTT.Carriable"/>.
+/// </summary>
+public sealed class Inventory : IEnumerable<Carriable>
 {
 	public Player Owner { get; private init; }
 
-	public Entity Active
+	public Carriable Active
 	{
 		get => Owner.ActiveChild;
-		set => Owner.ActiveChild = value;
+		private set => Owner.ActiveChild = value;
 	}
 
 	public Carriable this[int i] => _list[i];
 
+	public int Count => _list.Count;
 	private readonly List<Carriable> _list = new();
 
 	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
@@ -27,17 +31,19 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 
 	public Inventory( Player player ) => Owner = player;
 
-	public bool Add( Entity entity, bool makeActive = false )
+	public bool Add( Carriable carriable, bool makeActive = false )
 	{
 		Host.AssertServer();
 
-		if ( entity.Owner is not null )
+		if ( !carriable.IsValid() )
 			return false;
 
-		if ( !CanAdd( entity ) )
+		if ( carriable.Owner is not null )
 			return false;
 
-		var carriable = (Carriable)entity;
+		if ( !CanAdd( carriable ) )
+			return false;
+
 		carriable.SetParent( Owner, true );
 
 		if ( makeActive )
@@ -46,12 +52,9 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return true;
 	}
 
-	public bool CanAdd( Entity entity )
+	public bool CanAdd( Carriable carriable )
 	{
-		if ( entity is not Carriable carriable )
-			return false;
-
-		if ( Host.IsClient )
+		if ( Host.IsClient && carriable.Parent == Owner )
 			return true;
 
 		if ( !HasFreeSlot( carriable.Info.Slot ) )
@@ -63,27 +66,11 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return true;
 	}
 
-	public bool Contains( Entity entity ) => _list.Contains( entity );
+	public bool Contains( Carriable entity ) => _list.Contains( entity );
 
-	public int Count() => _list.Count;
-
-	/// <summary>
-	/// Get the item in this slot
-	/// </summary>
-	public Entity GetSlot( int i )
+	public void Pickup( Carriable carriable )
 	{
-		if ( _list.Count <= i )
-			return null;
-
-		if ( i < 0 )
-			return null;
-
-		return _list[i];
-	}
-
-	public void Pickup( Entity entity )
-	{
-		if ( Add( entity ) )
+		if ( Add( carriable ) )
 			Sound.FromEntity( Strings.WeaponPickupSound, Owner );
 	}
 
@@ -111,9 +98,8 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		}
 
 		var entities = _list.FindAll( x => x.Info.Slot == carriable.Info.Slot );
-		var active = Active as Carriable;
 
-		if ( active is not null && active.Info.Slot == carriable.Info.Slot )
+		if ( Active is not null && Active.Info.Slot == carriable.Info.Slot )
 		{
 			if ( DropActive() is not null )
 				Add( carriable, true );
@@ -125,15 +111,15 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		}
 	}
 
-	public bool SetActive( Entity entity )
+	public bool SetActive( Carriable carriable )
 	{
-		if ( Active == entity )
+		if ( Active == carriable )
 			return false;
 
-		if ( !Contains( entity ) )
+		if ( !Contains( carriable ) )
 			return false;
 
-		Active = entity;
+		Active = carriable;
 		return true;
 	}
 
@@ -150,15 +136,13 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return default;
 	}
 
-	public bool Drop( Entity entity )
+	public bool Drop( Carriable carriable )
 	{
 		if ( !Host.IsServer )
 			return false;
 
-		if ( !Contains( entity ) )
+		if ( !Contains( carriable ) )
 			return false;
-
-		var carriable = (Carriable)entity;
 
 		if ( !carriable.Info.CanDrop )
 			return false;
@@ -168,88 +152,29 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		return true;
 	}
 
-	public int GetActiveSlot()
-	{
-		var active = Active;
-		int count = Count();
-
-		for ( int i = 0; i < count; i++ )
-		{
-			if ( _list[i] == active )
-				return i;
-		}
-
-		return -1;
-	}
-
-	public Entity DropActive()
+	public Carriable DropActive()
 	{
 		if ( !Host.IsServer )
 			return null;
 
 		var active = Active;
-		if ( active is not Carriable carriable )
-			return null;
-
-		if ( Drop( carriable ) )
+		if ( Drop( Active ) )
 		{
 			Active = null;
-			return carriable;
+			return active;
 		}
 
 		return null;
-	}
-
-	public bool SetActiveSlot( int i, bool evenIfEmpty = false )
-	{
-		var entity = GetSlot( i );
-
-		if ( Active == entity )
-			return false;
-
-		if ( !evenIfEmpty && entity is null )
-			return false;
-
-		Active = entity;
-
-		return entity.IsValid();
-	}
-
-	public bool SwitchActiveSlot( int idelta, bool loop )
-	{
-		int count = Count();
-		if ( count == 0 )
-			return false;
-
-		int slot = GetActiveSlot();
-		int nextSlot = slot + idelta;
-
-		if ( loop )
-		{
-			while ( nextSlot < 0 )
-				nextSlot += count;
-			while ( nextSlot >= count )
-				nextSlot -= count;
-		}
-		else
-		{
-			if ( nextSlot < 0 )
-				return false;
-			if ( nextSlot >= count )
-				return false;
-		}
-
-		return SetActiveSlot( nextSlot, false );
 	}
 
 	public void DropAll()
 	{
 		Host.AssertServer();
 
-		Active = null;
-
 		foreach ( var carriable in _list.ToArray() )
 			Drop( carriable );
+
+		Active = null;
 
 		DeleteContents();
 	}
@@ -261,18 +186,22 @@ public class Inventory : IBaseInventory, IEnumerable<Carriable>
 		foreach ( var carriable in _list.ToArray() )
 			carriable.Delete();
 
+		Active = null;
+
 		_list.Clear();
 	}
 
 	public void OnChildAdded( Entity child )
 	{
-		if ( !CanAdd( child ) )
+		if ( child is not Carriable carriable )
 			return;
 
-		if ( _list.Contains( child ) )
+		if ( !CanAdd( carriable ) )
+			return;
+
+		if ( _list.Contains( carriable ) )
 			throw new System.Exception( "Trying to add to inventory multiple times. This is gated by Entity:OnChildAdded and should never happen!" );
 
-		var carriable = (Carriable)child;
 		_list.Add( carriable );
 
 		carriable.OnCarryStart( Owner );

@@ -30,8 +30,8 @@ public partial class Player
 			transform.Rotation *= Rotation.From( new Angles( 0, 90, 0 ) );
 			_worldLight.Transform = transform;
 
-			if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
-				_worldLight.Transform = carriable.GetAttachment( "muzzle" ) ?? transform;
+			if ( ActiveChild.IsValid() )
+				_worldLight.Transform = ActiveChild.GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( TimeSinceLightToggled > 0.25f && toggle )
@@ -85,8 +85,8 @@ public partial class Player
 		var transform = new Transform( EyePosition, EyeRotation );
 		_viewLight.Transform = transform;
 
-		if ( ActiveChild.IsValid() && ActiveChild is Carriable carriable )
-			_viewLight.Transform = carriable.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		if ( ActiveChild.IsValid() )
+			_viewLight.Transform = ActiveChild.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
 	}
 
 	private SpotLightEntity CreateLight()

@@ -137,7 +137,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		EnableDrawing = true;
 
-		var animator = player.GetActiveAnimator();
+		var animator = player.Animator;
 
 		if ( animator is not null )
 			SimulateAnimator( animator );
@@ -244,7 +244,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
 		if ( IsClient )
-			Info = GameResource.GetInfo<CarriableInfo>( GetType() );
+			Info ??= GameResource.GetInfo<CarriableInfo>( GetType() );
 
 		if ( !IsServer )
 			return;

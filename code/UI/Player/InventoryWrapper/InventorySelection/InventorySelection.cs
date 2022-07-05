@@ -46,8 +46,8 @@ public class InventorySelection : Panel
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeItem = player.ActiveChild as Carriable;
-		var activeItemTitle = activeItem is not null ? activeItem.Info.Title : string.Empty;
+		var activeChild = player.ActiveChild;
+		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
 		{
@@ -107,7 +107,9 @@ public class InventorySelection : Panel
 			return;
 
 		var childrenList = Children.ToList();
-		var activeCarriable = player.ActiveChild as Carriable;
+
+		var activeCarriable = player.ActiveChild;
+
 		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
 
 		if ( keyboardIndexPressed != -1 )

@@ -7,7 +7,7 @@ public class ViewModel : BaseViewModel
 	protected float SwingInfluence = 0.05f;
 	protected float ReturnSpeed = 5.0f;
 	protected float MaxOffsetLength = 10.0f;
-	protected float BobCycleTime = 7;
+	protected float BobCycleTime = 5;
 	protected Vector3 BobDirection = new( 0.0f, 1.0f, 0.3f );
 
 	private bool _activated = false;

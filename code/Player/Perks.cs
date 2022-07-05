@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace TTT;
 
+/// <summary>
+/// A sublist of <see cref="Entity.Components"/> that contains components
+/// of type <see cref="TTT.Perk"/>.
+/// </summary>
 public class Perks : IEnumerable<Perk>
 {
 	public Player Owner { get; private init; }

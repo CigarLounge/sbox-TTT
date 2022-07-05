@@ -2,6 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
+/// <summary>
+/// You should be inheriting all your custom traitor roles from this.
+/// </summary>
 [Category( "Roles" )]
 [ClassName( "ttt_role_traitor" )]
 [Title( "Traitor" )]

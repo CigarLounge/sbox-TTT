@@ -5,9 +5,8 @@ namespace TTT;
 
 public class PlayerAnimator : PawnAnimator
 {
-	TimeSince TimeSinceFootShuffle = 60;
-
-	float duck;
+	TimeSince _timeSinceFootShuffle = 60;
+	float _duck;
 
 	public override void Simulate()
 	{
@@ -43,14 +42,14 @@ public class PlayerAnimator : PawnAnimator
 		SetLookAt( "aim_head", lookPos );
 		SetLookAt( "aim_body", aimPos );
 
-		if ( HasTag( "ducked" ) ) duck = duck.LerpTo( 1.0f, Time.Delta * 10.0f );
-		else duck = duck.LerpTo( 0.0f, Time.Delta * 5.0f );
+		if ( HasTag( "ducked" ) ) _duck = _duck.LerpTo( 1.0f, Time.Delta * 10.0f );
+		else _duck = _duck.LerpTo( 0.0f, Time.Delta * 5.0f );
 
-		SetAnimParameter( "duck", duck );
+		SetAnimParameter( "duck", _duck );
 
-		if ( player is not null && player.ActiveChild is Carriable carriable )
+		if ( player is not null && player.ActiveChild.IsValid() )
 		{
-			carriable.SimulateAnimator( this );
+			player.ActiveChild.SimulateAnimator( this );
 		}
 		else
 		{
@@ -66,7 +65,7 @@ public class PlayerAnimator : PawnAnimator
 		//
 		// Our ideal player model rotation is the way we're facing
 		//
-		var allowYawDiff = player?.ActiveChild == null ? 90 : 50;
+		var allowYawDiff = player?.ActiveChild is null ? 90 : 50;
 
 		var turnSpeed = 0.01f;
 		if ( HasTag( "ducked" ) ) turnSpeed = 0.1f;
@@ -84,9 +83,9 @@ public class PlayerAnimator : PawnAnimator
 		//
 		// If we did restrict, and are standing still, add a foot shuffle
 		//
-		if ( change > 1 && WishVelocity.Length <= 1 ) TimeSinceFootShuffle = 0;
+		if ( change > 1 && WishVelocity.Length <= 1 ) _timeSinceFootShuffle = 0;
 
-		SetAnimParameter( "b_shuffle", TimeSinceFootShuffle < 0.1 );
+		SetAnimParameter( "b_shuffle", _timeSinceFootShuffle < 0.1 );
 	}
 
 	void DoWalk()

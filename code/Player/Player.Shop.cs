@@ -6,20 +6,23 @@ namespace TTT;
 public partial class Player
 {
 	[Net, Local]
-	public IList<string> PurchasedLimitedShopItems { get; set; }
+	public int Credits { get; set; }
+
+	[Net, Local]
+	public IList<ItemInfo> PurchasedLimitedShopItems { get; private set; }
 
 	public bool CanPurchase( ItemInfo item )
 	{
 		if ( Credits < item.Price )
 			return false;
 
-		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
-			return false;
-
 		if ( !Role.ShopItems.Contains( item ) )
 			return false;
 
-		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item.ClassName ) )
+		if ( item is CarriableInfo carriable && !Inventory.HasFreeSlot( carriable.Slot ) )
+			return false;
+
+		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item ) )
 			return false;
 
 		return true;
@@ -40,7 +43,7 @@ public partial class Player
 			return;
 
 		if ( itemInfo.IsLimited )
-			player.PurchasedLimitedShopItems.Add( itemInfo.ClassName );
+			player.PurchasedLimitedShopItems.Add( itemInfo );
 
 		player.Credits -= itemInfo.Price;
 
