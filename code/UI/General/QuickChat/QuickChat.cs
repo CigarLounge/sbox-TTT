@@ -10,14 +10,15 @@ public class QuickChat : Panel
 {
 	public static QuickChat Instance;
 
-	private string _currentPlayerName { get => !string.IsNullOrEmpty( _cachedLastPlayerSeen ) ? _cachedLastPlayerSeen : "Nobody"; }
-	private string _cachedLastPlayerSeen;
+	private string _target;
 
 	private bool _isShowing = false;
 	private TimeSince _timeSinceLastMessage;
+	private TimeSince _timeSinceNoTarget;
 
 	private readonly List<Label> _labels = new();
-	private readonly List<string> _messages = new(){
+	private static readonly List<string> _messages = new()
+	{
 		"{0} is a Traitor!",
 		"{0} acts suspicious.",
 		"I'm with {0}.",
@@ -49,12 +50,39 @@ public class QuickChat : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		if ( player.LastSeenPlayerName == _cachedLastPlayerSeen )
-			return;
+		var target = GetTarget();
 
-		_cachedLastPlayerSeen = player.LastSeenPlayerName;
+		// TODO: Implement check for perfomance.
+
+		_target = target;
 		for ( var i = 0; i < _labels.Count; ++i )
-			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _currentPlayerName )}";
+			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
+	}
+
+	public static string GetTarget()
+	{
+		if ( Local.Pawn is not Player localPlayer )
+			return "Nobody";
+
+		switch ( localPlayer.HoveredEntity )
+		{
+			case Corpse corpse:
+			{
+				if ( corpse.Player is null )
+					return "an unidentified body";
+				else
+					return $"{corpse.Player.Client.Name}'s corpse";
+			}
+			case Player player:
+			{
+				if ( player.CanHint( localPlayer ) )
+					return player.Client.Name;
+				else
+					return "someone in disguise";
+			}
+		}
+
+		return "Nobody";
 	}
 
 	[Event.BuildInput]
@@ -69,7 +97,7 @@ public class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed - 1], _currentPlayerName ) );
+			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed - 1], _target ) );
 			_timeSinceLastMessage = 0;
 		}
 
