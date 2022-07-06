@@ -147,7 +147,6 @@ public partial class Player : AnimatedEntity
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		// SimulateCarriableSwitch();
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )
