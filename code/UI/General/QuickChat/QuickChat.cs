@@ -61,8 +61,12 @@ public class QuickChat : Panel
 			return;
 
 		_target = newTarget;
-		for ( var i = 0; i < _labels.Count; ++i )
+		for ( var i = 0; i < _labels.Count; i++ )
+		{
 			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
+
+			// TODO: Utilize string.FirstCharToUpper()
+		}
 	}
 
 	public static string GetTarget()

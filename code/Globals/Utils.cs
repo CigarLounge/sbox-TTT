@@ -64,32 +64,6 @@ public static class Utils
 	/// <returns>Seconds as a string in the format "mm:ss"</returns>
 	public static string TimerString( this float seconds ) => (int)seconds < 0 ? $"+{TimeSpan.FromSeconds( seconds.CeilToInt() ):mm\\:ss}" : TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
 
-	public static void Enabled( this Panel panel, bool enabled )
-	{
-		panel.SetClass( "disabled", !enabled );
-	}
-
-	public static void EnableFade( this Panel panel, bool enabled )
-	{
-		panel.SetClass( "fade-in", enabled );
-		panel.SetClass( "fade-out", !enabled );
-	}
-
-	public static bool IsEnabled( this Panel panel )
-	{
-		return panel.IsVisible;
-	}
-
-	public static void SetTexture( this Image image, Texture texture )
-	{
-		image.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-	}
-
-	public static void SetImage( this Image image, string imagePath )
-	{
-		image.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-	}
-
 	public static bool HasGreatorOrEqualAxis( this Vector3 local, Vector3 other )
 	{
 		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
@@ -98,11 +72,11 @@ public static class Utils
 	public static void Shuffle<T>( this IList<T> list )
 	{
 		Rand.SetSeed( Time.Tick );
-		int n = list.Count;
+		var n = list.Count;
 		while ( n > 1 )
 		{
 			n--;
-			int k = Rand.Int( 0, n );
+			var k = Rand.Int( 0, n );
 			(list[n], list[k]) = (list[k], list[n]);
 		}
 	}
@@ -119,8 +93,4 @@ public static class Utils
 	{
 		return arr is null || arr.Length == 0;
 	}
-
-	public static bool IsAlive( this Entity entity ) => entity.LifeState == LifeState.Alive;
-
-	public static void Kill( this Entity entity ) => entity.TakeDamage( DamageInfo.Generic( float.MaxValue ) );
 }
