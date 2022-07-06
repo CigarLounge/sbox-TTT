@@ -94,8 +94,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			if ( child is BaseClothing e )
 			{
 				var model = e.GetModelName();
-				var clothing = new ModelEntity();
-				clothing.RenderColor = e.RenderColor;
+				var clothing = new ModelEntity
+				{
+					RenderColor = e.RenderColor
+				};
 				clothing.SetModel( model );
 				clothing.SetParent( this, true );
 			}
@@ -104,7 +106,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Player.SetClothingBodyGroups( this, 1 );
 
 		Perks = new PerkInfo[Player.Perks.Count];
-		for ( int i = 0; i < Player.Perks.Count; i++ )
+		for ( var i = 0; i < Player.Perks.Count; i++ )
 		{
 			Perks[i] = Player.Perks[i].Info;
 		}
@@ -145,6 +147,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	protected override void OnDestroy()
 	{
 		RemoveRopeAttachments();
+
+		base.OnDestroy();
 	}
 
 	/// <summary>
