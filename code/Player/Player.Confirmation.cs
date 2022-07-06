@@ -19,7 +19,9 @@ public partial class Player
 
 	public void RemoveCorpse()
 	{
-		if ( !IsServer || !Corpse.IsValid() )
+		Host.AssertServer();
+
+		if ( !Corpse.IsValid() )
 			return;
 
 		Corpse.Delete();

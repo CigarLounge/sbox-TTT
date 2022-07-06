@@ -37,13 +37,17 @@ public class WalkController : Sandbox.WalkController
 		if ( fallVelocity > _fallDamageThreshold )
 		{
 			var damage = (MathF.Abs( fallVelocity ) - _fallDamageThreshold) * _fallDamageScale;
-			Pawn.TakeDamage( new DamageInfo
+
+			if ( Host.IsServer )
 			{
-				Attacker = Pawn,
-				Flags = DamageFlags.Fall,
-				Force = Vector3.Down * Velocity.Length,
-				Damage = damage,
-			} );
+				Pawn.TakeDamage( new DamageInfo
+				{
+					Attacker = Pawn,
+					Flags = DamageFlags.Fall,
+					Force = Vector3.Down * Velocity.Length,
+					Damage = damage,
+				} );
+			}
 
 			Pawn.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
 		}

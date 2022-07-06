@@ -407,7 +407,9 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnDestroy()
 	{
-		RemoveCorpse();
+		if ( IsServer )
+			RemoveCorpse();
+
 		DeleteFlashlight();
 
 		base.OnDestroy();
