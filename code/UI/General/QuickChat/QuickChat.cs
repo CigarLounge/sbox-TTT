@@ -13,7 +13,8 @@ public class QuickChat : Panel
 	private string _target;
 
 	private bool _isShowing = false;
-	private TimeSince _timeSinceLastMessage;
+	private RealTimeSince _timeSinceNoTarget;
+	private RealTimeSince _timeSinceLastMessage;
 
 	private readonly List<Label> _labels = new();
 	private static readonly List<string> _messages = new()
@@ -50,6 +51,12 @@ public class QuickChat : Panel
 			return;
 
 		var newTarget = GetTarget();
+
+		if ( newTarget != "nobody" )
+			_timeSinceNoTarget = 0;
+		else if ( _timeSinceNoTarget < 3 )
+			return;
+
 		if ( newTarget == _target )
 			return;
 
@@ -61,7 +68,7 @@ public class QuickChat : Panel
 	public static string GetTarget()
 	{
 		if ( Local.Pawn is not Player localPlayer )
-			return "nobody";
+			return null;
 
 		switch ( localPlayer.HoveredEntity )
 		{
