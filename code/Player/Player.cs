@@ -147,7 +147,6 @@ public partial class Player : AnimatedEntity
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		// SimulateCarriableSwitch();
 		SimulateActiveChild( client, ActiveChild );
 
 		if ( this.IsAlive() )
@@ -171,8 +170,8 @@ public partial class Player : AnimatedEntity
 			}
 
 			PlayerUse();
-			CheckPlayerDropCarriable();
 			CheckLastSeenPlayer();
+			CheckPlayerDropCarriable();
 		}
 	}
 
@@ -408,7 +407,9 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnDestroy()
 	{
-		RemoveCorpse();
+		if ( IsServer )
+			RemoveCorpse();
+
 		DeleteFlashlight();
 
 		base.OnDestroy();

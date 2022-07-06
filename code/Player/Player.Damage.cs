@@ -161,6 +161,8 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
+		Host.AssertServer();
+
 		if ( !this.IsAlive() )
 			return;
 
@@ -192,12 +194,14 @@ public partial class Player
 
 		this.ProceduralHitReaction( info );
 
-		if ( IsServer && Health <= 0f )
+		if ( Health <= 0f )
 			OnKilled();
 	}
 
 	public void SendDamageInfo( To to )
 	{
+		Host.AssertServer();
+
 		SendDamageInfo
 		(
 			to,

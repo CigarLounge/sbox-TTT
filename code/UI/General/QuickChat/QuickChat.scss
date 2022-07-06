@@ -1,0 +1,11 @@
+QuickChat
+{
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column;
+    padding: 5px;
+    z-index: 101;
+    font-size: 17px;
+}

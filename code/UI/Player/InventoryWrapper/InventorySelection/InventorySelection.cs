@@ -11,7 +11,7 @@ public class InventorySelection : Panel
 {
 	private readonly Dictionary<Carriable, InventorySlot> _entries = new();
 
-	private readonly InputButton[] _slotInputButtons = new[]
+	private static readonly InputButton[] _slotInputButtons = new[]
 	{
 			InputButton.Slot0,
 			InputButton.Slot1,
@@ -24,6 +24,15 @@ public class InventorySelection : Panel
 			InputButton.Slot8,
 			InputButton.Slot9
 	};
+
+	public static int GetKeyboardNumberPressed( InputBuilder input )
+	{
+		for ( var i = 0; i < _slotInputButtons.Length; i++ )
+			if ( input.Pressed( _slotInputButtons[i] ) )
+				return i;
+
+		return -1;
+	}
 
 	public override void Tick()
 	{
@@ -83,10 +92,6 @@ public class InventorySelection : Panel
 		return inventorySlot;
 	}
 
-	/// <summary>
-	/// IClientInput implementation, calls during the client input build.
-	/// You can both read and write to input, to affect what happens down the line.
-	/// </summary>
 	[Event.BuildInput]
 	private void BuildInput( InputBuilder input )
 	{
@@ -98,8 +103,13 @@ public class InventorySelection : Panel
 		if ( !Children.Any() )
 			return;
 
+		if ( QuickChat.Instance.IsEnabled() )
+			return;
+
 		var childrenList = Children.ToList();
+
 		var activeCarriable = player.ActiveChild;
+
 		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
 
 		if ( keyboardIndexPressed != -1 )
@@ -164,16 +174,5 @@ public class InventorySelection : Panel
 	private int NormalizeSlotIndex( int index, int maxIndex )
 	{
 		return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
-	}
-
-	private int GetKeyboardNumberPressed( InputBuilder input )
-	{
-		for ( var i = 0; i < _slotInputButtons.Length; i++ )
-		{
-			if ( input.Pressed( _slotInputButtons[i] ) )
-				return i;
-		}
-
-		return -1;
 	}
 }

@@ -23,6 +23,7 @@ public class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<PlayerInfo>();
 		RootPanel.AddChild<InventoryWrapper>();
 		RootPanel.AddChild<ChatBox>();
+		RootPanel.AddChild<QuickChat>();
 		RootPanel.AddChild<VoiceChatDisplay>();
 		RootPanel.AddChild<RoundTimer>();
 		RootPanel.AddChild<VoiceList>();

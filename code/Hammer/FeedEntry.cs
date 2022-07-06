@@ -6,44 +6,44 @@ namespace TTT;
 [ClassName( "ttt_feed_entry" )]
 [Description( "Add text entry to the game feed when input fired." )]
 [HammerEntity]
-[Title( "Game Text" )]
+[Title( "Feed Entry" )]
 public partial class FeedEntry : Entity
 {
 	[Net, Property]
-	public string Message { get; private set; }
+	public string Text { get; private set; }
 
-	[Description( "The team that will be forced to win. If set to `None`, the message will be sent to everyone." )]
+	[Description( "The team the message will be sent to. If set to `None`, the message will be sent to everyone." )]
 	[Title( "Target Team" )]
 	[Property]
 	public Team Team { get; private set; } = Team.None;
 
-	[Description( "OVERRIDES `Target Team` PROPERTY. When DisplayMessage() is fired, the message will only be sent to the activator's team." )]
+	[Description( "OVERRIDES `Target Team` PROPERTY. When DisplayMessage() is fired, the message will only be sent to the activator." )]
 	[Property]
-	public bool UseActivatorsTeam { get; private set; }
+	public bool ActivatorOnly { get; private set; }
 
 	[Net, Property]
 	public Color Color { get; private set; } = Color.White;
 
 	[Input]
-	public void DisplayMessage( Entity activator )
+	public void DisplayEntry( Entity activator )
 	{
-		if ( UseActivatorsTeam )
+		if ( ActivatorOnly )
 		{
 			if ( activator is Player player )
-				DisplayMessage( player.Team.ToClients() );
+				DisplayEntry( To.Single( player ) );
 
 			return;
 		}
 
 		if ( Team == Team.None )
-			DisplayMessage( To.Everyone );
+			DisplayEntry( To.Everyone );
 		else
-			DisplayMessage( Team.ToClients() );
+			DisplayEntry( Team.ToClients() );
 	}
 
 	[ClientRpc]
-	private void DisplayMessage()
+	private void DisplayEntry()
 	{
-		UI.InfoFeed.DisplayEntry( Message, Color );
+		UI.InfoFeed.DisplayEntry( Text, Color );
 	}
 }

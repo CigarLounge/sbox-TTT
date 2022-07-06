@@ -11,14 +11,17 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; private set; }
 
-	public string LastSeenPlayerName { get; private set; }
 	public bool IsRoleKnown { get; set; } = false;
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
+	public string LastSeenPlayerName { get; set; }
+
 	public void RemoveCorpse()
 	{
-		if ( !IsServer || !Corpse.IsValid() )
+		Host.AssertServer();
+
+		if ( !Corpse.IsValid() )
 			return;
 
 		Corpse.Delete();
@@ -78,13 +81,7 @@ public partial class Player
 
 	private void CheckLastSeenPlayer()
 	{
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( this )
-			.WithTag( "player" )
-			.Run();
-
-		if ( trace.Entity is Player player && player.CanHint( this ) )
+		if ( HoveredEntity is Player player && player.CanHint( this ) )
 			LastSeenPlayerName = player.Client.Name;
 	}
 

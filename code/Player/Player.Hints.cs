@@ -4,7 +4,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public const float MaxHintDistance = 20480f;
+	public const float MaxHintDistance = 5000f;
 
 	private UI.EntityHintPanel _currentHintPanel;
 	private IEntityHint _currentHint;
@@ -51,12 +51,18 @@ public partial class Player
 	private IEntityHint FindHintableEntity()
 	{
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
-				.HitLayer( CollisionLayer.Debris )
-				.Ignore( CurrentPlayer )
-				.UseHitboxes()
-				.Run();
+			.Ignore( CurrentPlayer )
+			.HitLayer( CollisionLayer.Debris )
+			.HitLayer( CollisionLayer.Solid )
+			.UseHitboxes()
+			.Run();
 
-		if ( trace.Entity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
+		if ( !trace.Entity.IsValid() )
+			return null;
+
+		HoveredEntity = trace.Entity;
+
+		if ( HoveredEntity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
 			return hint;
 
 		return null;
