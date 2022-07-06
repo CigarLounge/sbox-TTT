@@ -153,7 +153,6 @@ public partial class Player : AnimatedEntity
 		{
 			SimulateFlashlight();
 			SimulatePerks();
-			CheckLastSeenPlayer();
 		}
 
 		if ( IsClient )
@@ -171,6 +170,7 @@ public partial class Player : AnimatedEntity
 			}
 
 			PlayerUse();
+			CheckLastSeenPlayer();
 			CheckPlayerDropCarriable();
 		}
 	}

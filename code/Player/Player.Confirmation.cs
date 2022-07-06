@@ -15,9 +15,7 @@ public partial class Player
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
-	public string LastSeenPlayerName { get => _timeSinceLastPlayerSeen > 3 ? string.Empty : _lastSeenPlayerName; set => _lastSeenPlayerName = value; }
-	private TimeSince _timeSinceLastPlayerSeen;
-	private string _lastSeenPlayerName;
+	public string LastSeenPlayerName { get; set; }
 
 	public void RemoveCorpse()
 	{
@@ -81,17 +79,8 @@ public partial class Player
 
 	private void CheckLastSeenPlayer()
 	{
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * HintDistance )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( this )
-			.WithTag( "player" )
-			.Run();
-
-		if ( trace.Entity is Player player && player.CanHint( this ) )
-		{
+		if ( HoveredEntity is Player player && player.CanHint( this ) )
 			LastSeenPlayerName = player.Client.Name;
-			_timeSinceLastPlayerSeen = 0;
-		}
 	}
 
 	private void ResetConfirmationData()
