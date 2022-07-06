@@ -11,7 +11,6 @@ public class QuickChat : Panel
 	public static QuickChat Instance;
 
 	private string _target;
-	private string _cachedTarget;
 
 	private bool _isShowing = false;
 	private TimeSince _timeSinceLastMessage;
@@ -50,11 +49,11 @@ public class QuickChat : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		_target = GetTarget();
-		if ( _target == _cachedTarget )
+		var newTarget = GetTarget();
+		if ( newTarget == _target )
 			return;
 
-		_cachedTarget = _target;
+		_target = newTarget;
 		for ( var i = 0; i < _labels.Count; ++i )
 			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
 	}
