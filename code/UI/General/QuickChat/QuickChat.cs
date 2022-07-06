@@ -19,12 +19,12 @@ public class QuickChat : Panel
 	private readonly List<Label> _labels = new();
 	private static readonly List<string> _messages = new()
 	{
-		"{0} is a Traitor!",
-		"{0} acts suspicious.",
 		"I'm with {0}.",
 		"I see {0}.",
 		"Yes.",
 		"No.",
+		"{0} is a Traitor!",
+		"{0} acts suspicious.",
 		"{0} is Innocent.",
 		"Help!",
 		"Anyone still alive?"
