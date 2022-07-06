@@ -11,10 +11,10 @@ public class QuickChat : Panel
 	public static QuickChat Instance;
 
 	private string _target;
+	private string _cachedTarget;
 
 	private bool _isShowing = false;
 	private TimeSince _timeSinceLastMessage;
-	private TimeSince _timeSinceNoTarget;
 
 	private readonly List<Label> _labels = new();
 	private static readonly List<string> _messages = new()
@@ -50,11 +50,11 @@ public class QuickChat : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		var target = GetTarget();
+		_target = GetTarget();
+		if ( _target == _cachedTarget )
+			return;
 
-		// TODO: Implement check for perfomance.
-
-		_target = target;
+		_cachedTarget = _target;
 		for ( var i = 0; i < _labels.Count; ++i )
 			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
 	}
@@ -62,7 +62,7 @@ public class QuickChat : Panel
 	public static string GetTarget()
 	{
 		if ( Local.Pawn is not Player localPlayer )
-			return "Nobody";
+			return "nobody";
 
 		switch ( localPlayer.HoveredEntity )
 		{
@@ -82,7 +82,7 @@ public class QuickChat : Panel
 			}
 		}
 
-		return "Nobody";
+		return "nobody";
 	}
 
 	[Event.BuildInput]
