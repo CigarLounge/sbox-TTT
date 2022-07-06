@@ -10,10 +10,10 @@ public class QuickChat : Panel
 {
 	public static QuickChat Instance;
 
+	private const string NoTarget = "nobody";
 	private string _target;
-
 	private bool _isShowing = false;
-	private RealTimeSince _timeSinceNoTarget;
+	private RealTimeSince _timeWithNoTarget;
 	private RealTimeSince _timeSinceLastMessage;
 
 	private readonly List<Label> _labels = new();
@@ -52,9 +52,9 @@ public class QuickChat : Panel
 
 		var newTarget = GetTarget();
 
-		if ( newTarget != "nobody" )
-			_timeSinceNoTarget = 0;
-		else if ( _timeSinceNoTarget < 3 )
+		if ( newTarget != NoTarget )
+			_timeWithNoTarget = 0;
+		else if ( _timeWithNoTarget < 3 )
 			return;
 
 		if ( newTarget == _target )
@@ -62,11 +62,7 @@ public class QuickChat : Panel
 
 		_target = newTarget;
 		for ( var i = 0; i < _labels.Count; i++ )
-		{
 			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
-
-			// TODO: Utilize string.FirstCharToUpper()
-		}
 	}
 
 	public static string GetTarget()
@@ -85,14 +81,16 @@ public class QuickChat : Panel
 			}
 			case Player player:
 			{
+				// We must force capitalization on the player name
+				// in order to differentiate a player whose name is "nobody".
 				if ( player.CanHint( localPlayer ) )
-					return player.Client.Name;
+					return player.Client.Name.FirstCharToUpper();
 				else
 					return "someone in disguise";
 			}
 		}
 
-		return "nobody";
+		return NoTarget;
 	}
 
 	[Event.BuildInput]

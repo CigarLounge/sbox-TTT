@@ -37,24 +37,17 @@ public partial class Player
 
 		using ( Prediction.Off() )
 		{
-			// If we pressed use button.
 			if ( Input.Pressed( InputButton.Use ) )
-			{
 				if ( CanUse( HoveredEntity ) )
-				{
-					// Start using the hovered entity.
 					StartUsing( HoveredEntity );
-				}
-			}
 
-			// If we stopped pressing use key, stop using.
 			if ( !Input.Down( InputButton.Use ) )
 			{
 				StopUsing();
 				return;
 			}
 
-			// We dont have an entity to use.
+			// There is no entity to use.
 			if ( !Using.IsValid() )
 				return;
 

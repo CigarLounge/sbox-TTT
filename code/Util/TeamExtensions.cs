@@ -35,7 +35,6 @@ public static class TeamExtensions
 		};
 	}
 
-	// TODO: Kole cache this. Maybe in a dictionary at run time?
 	public static IEnumerable<Player> GetOthers( this Team team, Player player )
 	{
 		return Entity.All.OfType<Player>().Where( e => e.Team == team && player != e );
