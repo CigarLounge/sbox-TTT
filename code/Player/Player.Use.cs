@@ -4,98 +4,76 @@ namespace TTT;
 
 public partial class Player
 {
+	[Net]
 	public Entity Using { get; protected set; }
+
+	/// <summary>
+	/// The entity we're currently looking at.
+	/// </summary>
+	public Entity HoveredEntity { get; private set; }
 
 	public const float UseDistance = 80f;
 
-	public bool IsUseDisabled()
+	protected Entity FindHovered()
 	{
-		return ActiveChild is IUse use && use.IsUsable( this );
+		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
+			.Ignore( this )
+			.HitLayer( CollisionLayer.Debris )
+			.HitLayer( CollisionLayer.Solid )
+			.Run();
+
+		if ( !trace.Entity.IsValid() )
+			return null;
+
+		if ( trace.Entity.IsWorld )
+			return null;
+
+		return trace.Entity;
 	}
 
 	protected void PlayerUse()
 	{
-		// Turn prediction off
+		HoveredEntity = FindHovered();
+
 		using ( Prediction.Off() )
 		{
+			// If we pressed use button.
 			if ( Input.Pressed( InputButton.Use ) )
 			{
-				Using = FindUsable();
-
-				if ( Using is null )
+				if ( CanUse( HoveredEntity ) )
 				{
-					UseFail();
-					return;
+					// Start using the hovered entity.
+					StartUsing( HoveredEntity );
 				}
 			}
 
+			// If we stopped pressing use key, stop using.
 			if ( !Input.Down( InputButton.Use ) )
 			{
 				StopUsing();
 				return;
 			}
 
+			// We dont have an entity to use.
 			if ( !Using.IsValid() )
 				return;
 
-			// If we move too far away or something we should probably ClearUse()?
-
-			//
-			// If use returns true then we can keep using it
-			//
-			if ( Using is IUse use && use.OnUse( this ) )
-				return;
-
-			StopUsing();
+			if ( !CanContinueUsing( Using ) )
+				StopUsing();
 		}
 	}
 
-	protected Entity FindUsable()
+	protected void StopUsing()
 	{
-		if ( IsUseDisabled() )
-			return null;
-
-		// First try a direct 0 width line.
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( this )
-			.Run();
-
-		// See if any of the parent entities are usable if we ain't.
-		var entity = trace.Entity;
-		while ( entity.IsValid() && !IsValidUseEntity( entity ) )
-		{
-			entity = entity.Parent;
-		}
-
-		// Nothing found, try a wider search.
-		if ( !IsValidUseEntity( entity ) )
-		{
-			trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * (UseDistance * Scale) )
-			.Radius( 2 )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( this )
-			.Run();
-
-			// See if any of the parent entities are usable if we ain't.
-			entity = trace.Entity;
-			while ( entity.IsValid() && !IsValidUseEntity( entity ) )
-			{
-				entity = entity.Parent;
-			}
-		}
-
-		// Still no good? Bail.
-		if ( !IsValidUseEntity( entity ) )
-			return null;
-
-		return entity;
+		Using = null;
 	}
 
-	/// <summary>
-	/// Returns if the entity is a valid usaable entity
-	/// </summary>
-	protected bool IsValidUseEntity( Entity entity )
+	public void StartUsing( Entity entity )
+	{
+		Using = entity;
+	}
+
+	public bool CanUse( Entity entity )
 	{
 		if ( entity is not IUse use )
 			return false;
@@ -103,22 +81,20 @@ public partial class Player
 		if ( !use.IsUsable( this ) )
 			return false;
 
+		if ( entity.Position.Distance( Position ) > UseDistance )
+			return false;
+
 		return true;
 	}
 
-	/// <summary>
-	/// If we're using an entity, stop using it
-	/// </summary>
-	protected void StopUsing()
+	public bool CanContinueUsing( Entity entity )
 	{
-		Using = null;
-	}
+		if ( HoveredEntity != entity )
+			return false;
 
-	protected void UseFail()
-	{
-		if ( IsUseDisabled() )
-			return;
+		if ( entity is IUse use && use.OnUse( this ) )
+			return true;
 
-		// Do nothing.
+		return false;
 	}
 }
