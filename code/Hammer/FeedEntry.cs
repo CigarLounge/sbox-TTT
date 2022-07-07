@@ -44,6 +44,6 @@ public partial class FeedEntry : Entity
 	[ClientRpc]
 	private void DisplayEntry()
 	{
-		UI.InfoFeed.DisplayEntry( Text, Color );
+		UI.InfoFeed.AddEntry( Text, Color );
 	}
 }

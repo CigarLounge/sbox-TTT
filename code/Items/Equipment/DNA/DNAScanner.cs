@@ -73,7 +73,7 @@ public partial class DNAScanner : Carriable
 		if ( !target.IsValid() )
 		{
 			RemoveDNA( selectedDNA );
-			UI.InfoFeed.DisplayEntry( To.Single( Owner ), "DNA not detected in area." );
+			UI.InfoFeed.AddEntry( To.Single( Owner ), "DNA not detected in area." );
 			return;
 		}
 
@@ -111,7 +111,7 @@ public partial class DNAScanner : Carriable
 
 		if ( trace.Entity is Corpse corpse && !corpse.Player.IsConfirmedDead )
 		{
-			UI.InfoFeed.DisplayEntry( To.Single( Owner ), "Corpse must be identified to retrieve DNA sample." );
+			UI.InfoFeed.AddEntry( To.Single( Owner ), "Corpse must be identified to retrieve DNA sample." );
 			return;
 		}
 
@@ -119,7 +119,7 @@ public partial class DNAScanner : Carriable
 		if ( !samples.Any() )
 			return;
 
-		int totalCollected = 0;
+		var totalCollected = 0;
 		foreach ( var dna in samples )
 		{
 			if ( dna.TimeUntilDecayed )
@@ -136,7 +136,7 @@ public partial class DNAScanner : Carriable
 		}
 
 		if ( totalCollected > 0 )
-			UI.InfoFeed.DisplayEntry( To.Single( Owner ), $"Collected {totalCollected} new DNA sample(s)." );
+			UI.InfoFeed.AddEntry( To.Single( Owner ), $"Collected {totalCollected} new DNA sample(s)." );
 	}
 
 	private DNA FindSelectedDNA( int? id )

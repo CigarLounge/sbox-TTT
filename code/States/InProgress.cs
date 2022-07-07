@@ -179,7 +179,7 @@ public partial class InProgress : BaseState
 				p.Credits += credits;
 		} );
 
-		UI.InfoFeed.DisplayRoleEntry
+		UI.InfoFeed.AddRoleEntry
 		(
 			To.Multiple( clients ),
 			GameResource.GetInfo<RoleInfo>( role.Title ),
@@ -190,7 +190,7 @@ public partial class InProgress : BaseState
 	private void GiveTraitorCredits( Player traitor )
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
-		UI.InfoFeed.DisplayClientEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
+		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[TTTEvent.Player.RoleChanged]

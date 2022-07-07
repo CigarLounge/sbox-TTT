@@ -11,13 +11,19 @@ public partial class InfoFeed : Panel
 
 	public InfoFeed() => Instance = this;
 
-	public static void AddEntry( string method, Color? color = null )
- 	{
-		var entry = Instance.AddChild<InfoFeedEntry>();
-		var label = entry.AddLabel( method, "method" );
-		label.Style.FontColor = color ?? Color.White;
+	[ClientRpc]
+	public static void AddEntry( string method )
+	{
+		Instance.AddChild<InfoFeedEntry>().AddLabel( method, "method" );
 	}
 
+	[ClientRpc]
+	public static void AddEntry( string method, Color color )
+	{
+		Instance.AddChild<InfoFeedEntry>().AddLabel( method, "method" ).Style.FontColor = color;
+	}
+
+	[ClientRpc]
 	public static void AddEntry( Client client, string message )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
@@ -29,6 +35,7 @@ public partial class InfoFeed : Panel
 		entry.AddLabel( message, "method" );
 	}
 
+	[ClientRpc]
 	public static void AddRoleEntry( RoleInfo roleInfo, string interaction )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
@@ -39,6 +46,7 @@ public partial class InfoFeed : Panel
 		entry.AddLabel( interaction, "method" );
 	}
 
+	[ClientRpc]
 	public static void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
@@ -54,30 +62,6 @@ public partial class InfoFeed : Panel
 
 		if ( !string.IsNullOrEmpty( suffix ) )
 			entry.AddLabel( suffix, "append" );
-	}
-
-	[ClientRpc]
-	public static void DisplayEntry( string message )
-	{
-		AddEntry( message );
-	}
-
-	[ClientRpc]
-	public static void DisplayEntry( string message, Color color )
-	{
-		AddEntry( message, color );
-	}
-
-	[ClientRpc]
-	public static void DisplayClientEntry( string message )
-	{
-		AddEntry( Local.Client, message );
-	}
-
-	[ClientRpc]
-	public static void DisplayRoleEntry( RoleInfo roleInfo, string message )
-	{
-		AddRoleEntry( roleInfo, message );
 	}
 
 	[TTTEvent.Player.CorpseFound]
