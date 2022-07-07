@@ -35,7 +35,7 @@ public class RolePlateComponent : EntityComponent<Player>
 			return;
 
 		var tx = Entity.GetAttachment( "hat" ) ?? Entity.Transform;
-		tx.Position += Vector3.Up * 5.0f;
+		tx.Position += Vector3.Up * 15.0f;
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		_rolePlate.Transform = tx;
