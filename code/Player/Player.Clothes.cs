@@ -16,7 +16,7 @@ public partial class Player
 	{
 		AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
-		AttachClothing( "models/citizen_clothes/gloves/leather_gloves/models/leather_gloves.vmdl" );
+		AttachClothing( "models/citizen_clothes/gloves/tactical_gloves/models/tactical_gloves.vmdl" );
 		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
 		AttachClothing( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.vmdl" );
 		AttachClothing( "models/citizen_clothes/shoes/trainers/trainers.vmdl" );
@@ -26,15 +26,17 @@ public partial class Player
 
 	public void AttachClothing( string path )
 	{
-		var entity = new BaseClothing();
-		entity.ModelPath = path;
+		var entity = new BaseClothing
+		{
+			ModelPath = path
+		};
 		entity.SetModel( path );
 		AttachClothing( entity );
 	}
 
 	public void RemoveClothing( string path )
 	{
-		for ( int i = Clothing.Count - 1; i >= 0; --i )
+		for ( var i = Clothing.Count - 1; i >= 0; i-- )
 		{
 			var clothingPiece = Clothing[i];
 			if ( clothingPiece.ModelPath == path )
