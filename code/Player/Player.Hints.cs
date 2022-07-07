@@ -57,9 +57,6 @@ public partial class Player
 			.UseHitboxes()
 			.Run();
 
-		if ( !trace.Entity.IsValid() )
-			return null;
-
 		HoveredEntity = trace.Entity;
 
 		if ( HoveredEntity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
