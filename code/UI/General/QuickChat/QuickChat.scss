@@ -7,4 +7,15 @@ QuickChat
     flex-direction: column;
     z-index: 101;
     font-size: 17px;
+
+    .message
+    {
+        margin-left: 10px;
+        font-weight: normal;
+    }
+
+    .index
+    {
+        font-weight: bold;
+    }
 }

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System.Collections.Generic;
 
 namespace TTT.UI;
 
@@ -34,8 +34,11 @@ public class QuickChat : Panel
 	{
 		Instance = this;
 
-		foreach ( var message in _messages )
-			_labels.Add( Add.Label( message ) );
+		var i = 0;
+		foreach ( Label label in Children )
+		{
+			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
+		}
 	}
 
 	public override void Tick()
@@ -54,15 +57,28 @@ public class QuickChat : Panel
 
 		if ( newTarget != NoTarget )
 			_timeWithNoTarget = 0;
-		else if ( _timeWithNoTarget < 3 )
+		else if ( _timeWithNoTarget <= 3 )
 			return;
 
 		if ( newTarget == _target )
 			return;
 
 		_target = newTarget;
-		for ( var i = 0; i < _labels.Count; i++ )
-			_labels[i].Text = $"{i + 1}: {string.Format( _messages[i], _target )}";
+		for ( var i = 0; i <= 6; i++ )
+		{
+			if ( i == 2 || i == 3 )
+				continue;
+
+			_labels[i].Text = string.Format( _messages[i], _target );
+
+			if ( i < 4 )
+				continue;
+
+			if ( !ShouldCapitalize( _target ) )
+				continue;
+
+			_labels[i].Text = _labels[i].Text.FirstCharToUpper();
+		}
 	}
 
 	public static string GetTarget()
@@ -81,16 +97,19 @@ public class QuickChat : Panel
 			}
 			case Player player:
 			{
-				// We must force capitalization on the player name
-				// in order to differentiate a player whose name is "nobody".
 				if ( player.CanHint( localPlayer ) )
-					return player.Client.Name.FirstCharToUpper();
+					return player.Client.Name;
 				else
 					return "someone in disguise";
 			}
 		}
 
 		return NoTarget;
+	}
+
+	private static bool ShouldCapitalize( string target )
+	{
+		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
 	}
 
 	[Event.BuildInput]
@@ -105,7 +124,7 @@ public class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			ChatBox.SendChat( string.Format( _messages[keyboardIndexPressed - 1], _target ) );
+			ChatBox.SendChat( _labels[keyboardIndexPressed - 1].Text );
 			_timeSinceLastMessage = 0;
 		}
 
