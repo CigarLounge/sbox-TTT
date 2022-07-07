@@ -5,6 +5,19 @@ namespace TTT;
 
 public static class Karma
 {
+	public struct Config
+	{
+		public Config() { }
+
+		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward." )]
+		[Property]
+		public float HurtRewardMultiplier { get; set; } = 0.0003f;
+
+		[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
+		[Property]
+		public float TeamHurtPenaltyMultiplier { get; set; } = 0.001f;
+	}
+
 	// Maybe turn these values into ServerVars down the line.
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;

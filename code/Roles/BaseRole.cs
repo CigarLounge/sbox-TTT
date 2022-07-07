@@ -30,32 +30,11 @@ public class RoleInfo : GameResource
 
 	public bool CanAttachCorpses { get; set; } = false;
 
-	#region Karma
-	#endregion
+	[Title( "Karma" )]
+	public Karma.Config Karma { get; set; }
 
-	#region Scoring
-	[Category( "Scoring" )]
-	[Description( "The amount of score points rewarded for confirming a corpse." )]
-	public int CorpseFoundReward { get; set; } = 1;
-
-	[Category( "Scoring" )]
-	[Title( "Kill Reward" )]
-	[Description( "The amount of score points rewarded for killing a player on an opposing team." )]
-	public int KillReward { get; set; } = 1;
-
-	[Category( "Scoring" )]
-	[Title( "Team Kill Penalty" )]
-	[Description( "The amount of score points penalized for killing a player on the same team." )]
-	public int TeamKillPenalty { get; set; } = 8;
-
-	[Category( "Scoring" )]
-	[Description( "The amount of score points rewarded for surviving the round." )]
-	public int SurviveBonus { get; set; } = 1;
-
-	[Category( "Scoring" )]
-	[Description( "The amount of score points penalized for commiting suicide." )]
-	public int SuicidePenalty { get; set; } = 1;
-	#endregion
+	[Title( "Scoring" )]
+	public Scoring.Config Scoring { get; set; }
 
 	[Category( "UI" )]
 	public Color Color { get; set; }
@@ -104,11 +83,8 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
-	public int CorpseFoundReward => Info.CorpseFoundReward;
-	public int KillReward => Info.KillReward;
-	public int TeamKillPenalty => Info.TeamKillPenalty;
-	public int SurviveBonus => Info.SurviveBonus;
-	public int SuicidePenalty => Info.SuicidePenalty;
+	public Karma.Config Karma => Info.Karma;
+	public Scoring.Config Scoring => Info.Scoring;
 
 	public BaseRole()
 	{
@@ -158,8 +134,6 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	protected virtual bool ShouldCreateRolePlate( Player player )
 	{
-		Host.AssertClient();
-
 		return false;
 	}
 
@@ -204,7 +178,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 		if ( ReferenceEquals( this, other ) )
 			return true;
 
-		return Info.ResourceId == other.Info.ResourceId;
+		return Info == other.Info;
 	}
 
 	public bool Equals( string other )

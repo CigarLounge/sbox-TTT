@@ -6,6 +6,31 @@ namespace TTT;
 
 public static class Scoring
 {
+	public struct Config
+	{
+		public Config() { }
+
+		[Description( "The amount of score points rewarded for confirming a corpse." )]
+		[Property]
+		public int CorpseFoundReward { get; set; } = 1;
+
+		[Description( "The amount of score points rewarded for killing a player with this role." )]
+		[Property]
+		public int KillReward { get; set; } = 1;
+
+		[Description( "The amount of score points penalized for killing a player on the same team." )]
+		[Property]
+		public int TeamKillPenalty { get; set; } = 8;
+
+		[Description( "The amount of score points rewarded for surviving the round." )]
+		[Property]
+		public int SurviveBonus { get; set; } = 1;
+
+		[Description( "The amount of score points penalized for commiting suicide." )]
+		[Property]
+		public int SuicidePenalty { get; set; } = 1;
+	}
+
 	[TTTEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
@@ -17,16 +42,16 @@ public static class Scoring
 
 		if ( player.DiedBySuicide )
 		{
-			player.RoundScore -= player.Role.SuicidePenalty;
+			player.RoundScore -= player.Role.Scoring.SuicidePenalty;
 		}
 		else
 		{
 			var attacker = (Player)player.LastAttacker;
 
 			if ( attacker.Team != player.Team )
-				attacker.RoundScore += attacker.Role.KillReward;
+				attacker.RoundScore += player.Role.Scoring.KillReward;
 			else
-				attacker.RoundScore -= attacker.Role.TeamKillPenalty;
+				attacker.RoundScore -= attacker.Role.Scoring.TeamKillPenalty;
 		}
 	}
 
@@ -37,7 +62,7 @@ public static class Scoring
 			return;
 
 		var confirmer = player.Confirmer;
-		confirmer.RoundScore += confirmer.Role.CorpseFoundReward;
+		confirmer.RoundScore += confirmer.Role.Scoring.CorpseFoundReward;
 	}
 
 	[TTTEvent.Round.Ended]
@@ -59,7 +84,7 @@ public static class Scoring
 				continue;
 			}
 
-			player.RoundScore += player.Role.SurviveBonus;
+			player.RoundScore += player.Role.Scoring.SurviveBonus;
 			alivePlayersCount[(int)player.Team]++;
 		}
 

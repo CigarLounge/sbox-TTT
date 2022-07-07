@@ -23,11 +23,18 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = false
-		CorpseFoundReward = 3
-		KillReward = 5
-		TeamKillPenalty = 8
-		SurviveBonus = 1
-		SuicidePenalty = 1
+		Karma = 
+		{
+			TeamHurtPenaltyMultiplier = 0.001
+		}
+		Scoring = 
+		{
+			CorpseFoundReward = 1
+			KillReward = 1
+			TeamKillPenalty = 8
+			SurviveBonus = 1
+			SuicidePenalty = 1
+		}
 		Color = "0.09804,0.4,1,1"
 		IconPath = resource:"ui/detective-icon.jpg"
 		ClassName = "ttt_role_detective"

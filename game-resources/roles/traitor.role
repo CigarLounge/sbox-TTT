@@ -28,11 +28,18 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = true
-		CorpseFoundReward = 0
-		KillReward = 1
-		TeamKillPenalty = 16
-		SurviveBonus = 1
-		SuicidePenalty = 1
+		Karma = 
+		{
+			HurtRewardMultiplier = 0.0003
+			TeamHurtPenaltyMultiplier = 0.001
+		}
+		Scoring = 
+		{
+			KillReward = 5
+			TeamKillPenalty = 16
+			SurviveBonus = 1
+			SuicidePenalty = 1
+		}
 		Color = "0.87451,0.15294,0.2,1"
 		IconPath = resource:"ui/traitor-icon.jpg"
 		ClassName = "ttt_role_traitor"
