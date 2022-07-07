@@ -64,7 +64,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	protected virtual void OnTimeUp() { }
 
-	protected void RevealEveryone()
+	protected static void RevealEveryone()
 	{
 		Host.AssertServer();
 
@@ -81,7 +81,7 @@ public abstract partial class BaseState : BaseNetworkable
 		}
 	}
 
-	protected void SyncPlayer( Player player )
+	protected static void SyncPlayer( Player player )
 	{
 		Host.AssertServer();
 
