@@ -111,7 +111,7 @@ public partial class Teleporter : Carriable
 		_teleportLocation = trace.EndPosition;
 
 		if ( Prediction.FirstTime )
-			UI.InfoFeed.Instance?.AddEntry( "Teleport location set." );
+			UI.InfoFeed.AddEntry( "Teleport location set." );
 	}
 
 	private void StartTeleport()

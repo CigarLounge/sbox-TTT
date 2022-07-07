@@ -204,7 +204,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( creditsRetrieved <= 0 )
 			return;
 
-		UI.InfoFeed.Instance?.AddEntry
+		UI.InfoFeed.AddEntry
 		(
 			Local.Client,
 			$"found {creditsRetrieved} credits!"

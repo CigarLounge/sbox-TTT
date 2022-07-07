@@ -11,14 +11,14 @@ public partial class InfoFeed : Panel
 
 	public InfoFeed() => Instance = this;
 
-	public void AddEntry( string method, Color? color = null )
-	{
+	public static void AddEntry( string method, Color? color = null )
+ 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 		var label = e.AddLabel( method, "method" );
 		label.Style.FontColor = color ?? Color.White;
 	}
 
-	public void AddEntry( Client client, string message )
+	public static void AddEntry( Client client, string message )
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
@@ -29,7 +29,7 @@ public partial class InfoFeed : Panel
 		e.AddLabel( message, "method" );
 	}
 
-	public void AddRoleEntry( RoleInfo roleInfo, string interaction )
+	public static void AddRoleEntry( RoleInfo roleInfo, string interaction )
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
@@ -39,7 +39,7 @@ public partial class InfoFeed : Panel
 		e.AddLabel( interaction, "method" );
 	}
 
-	public void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
+	public static void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
 	{
 		var e = Instance.AddChild<InfoFeedEntry>();
 
@@ -59,25 +59,25 @@ public partial class InfoFeed : Panel
 	[ClientRpc]
 	public static void DisplayEntry( string message )
 	{
-		Instance?.AddEntry( message );
+		AddEntry( message );
 	}
 
 	[ClientRpc]
 	public static void DisplayEntry( string message, Color color )
 	{
-		Instance?.AddEntry( message, color );
+		AddEntry( message, color );
 	}
 
 	[ClientRpc]
 	public static void DisplayClientEntry( string message )
 	{
-		Instance?.AddEntry( Local.Client, message );
+		AddEntry( Local.Client, message );
 	}
 
 	[ClientRpc]
 	public static void DisplayRoleEntry( RoleInfo roleInfo, string message )
 	{
-		Instance?.AddRoleEntry( roleInfo, message );
+		AddRoleEntry( roleInfo, message );
 	}
 
 	[TTTEvent.Player.CorpseFound]
@@ -99,13 +99,13 @@ public partial class InfoFeed : Panel
 		if ( !TabMenus.Instance.IsVisible )
 			TabMenus.Instance.SwapToScoreboard();
 
-		Instance.AddEntry( "Roles have been assigned and the round has begun..." );
-		Instance.AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
+		AddEntry( "Roles have been assigned and the round has begun..." );
+		AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
 		if ( Local.Pawn is not Player player )
 			return;
 
-		float karma = MathF.Round( player.BaseKarma );
+		var karma = MathF.Round( player.BaseKarma );
 
 		string text;
 		if ( karma >= 1000 )
@@ -113,6 +113,6 @@ public partial class InfoFeed : Panel
 		else
 			text = $"Your karma is {karma}, you'll deal reduced damage this round.";
 
-		Instance.AddEntry( text );
+		AddEntry( text );
 	}
 }
