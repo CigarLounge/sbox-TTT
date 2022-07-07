@@ -30,6 +30,33 @@ public class RoleInfo : GameResource
 
 	public bool CanAttachCorpses { get; set; } = false;
 
+	#region Karma
+	#endregion
+
+	#region Scoring
+	[Category( "Scoring" )]
+	[Description( "The amount of score points rewarded for confirming a corpse." )]
+	public int CorpseFoundReward { get; set; } = 1;
+
+	[Category( "Scoring" )]
+	[Title( "Kill Reward" )]
+	[Description( "The amount of score points rewarded for killing a player on an opposing team." )]
+	public int KillReward { get; set; } = 1;
+
+	[Category( "Scoring" )]
+	[Title( "Team Kill Penalty" )]
+	[Description( "The amount of score points penalized for killing a player on the same team." )]
+	public int TeamKillPenalty { get; set; } = 8;
+
+	[Category( "Scoring" )]
+	[Description( "The amount of score points rewarded for surviving the round." )]
+	public int SurviveBonus { get; set; } = 1;
+
+	[Category( "Scoring" )]
+	[Description( "The amount of score points penalized for commiting suicide." )]
+	public int SuicidePenalty { get; set; } = 1;
+	#endregion
+
 	[Category( "UI" )]
 	public Color Color { get; set; }
 
@@ -77,6 +104,11 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
+	public int CorpseFoundReward => Info.CorpseFoundReward;
+	public int KillReward => Info.KillReward;
+	public int TeamKillPenalty => Info.TeamKillPenalty;
+	public int SurviveBonus => Info.SurviveBonus;
+	public int SuicidePenalty => Info.SuicidePenalty;
 
 	public BaseRole()
 	{

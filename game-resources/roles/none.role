@@ -2,13 +2,21 @@
 {
 	data = 
 	{
-		team = "0"
-		defaultcredits = 0
-		classname = "ttt_role_none"
-		exclusiveitems = [  ]
-		color = [ 0.784314, 0.784314, 0.784314, 1.0 ]
-		canrolechat = false
-		icon = "ui/none.png"
-		canretrievecredits = false
+		Team = "None"
+		DefaultCredits = 0
+		Weapons = [  ]
+		Carriables = [  ]
+		Perks = [  ]
+		CanRetrieveCredits = false
+		CanTeamChat = false
+		CanAttachCorpses = false
+		CorpseFoundReward = 0
+		KillReward = 0
+		TeamKillPenalty = 0
+		SurviveBonus = 0
+		SuicidePenalty = 0
+		Color = "0.78431,0.78431,0.78431,1"
+		IconPath = resource:"ui/none.jpg"
+		ClassName = "ttt_role_none"
 	}
 }
