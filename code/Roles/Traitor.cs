@@ -24,7 +24,7 @@ public class Traitor : BaseRole
 
 			var otherPlayer = client.Pawn as Player;
 
-			if ( otherPlayer.Team == Team.Traitors )
+			if ( otherPlayer.Team == Team )
 			{
 				player.SendRole( To.Single( otherPlayer ) );
 				otherPlayer.SendRole( To.Single( player ) );
@@ -33,5 +33,12 @@ public class Traitor : BaseRole
 			if ( otherPlayer.IsMissingInAction )
 				otherPlayer.UpdateMissingInAction( player );
 		}
+	}
+
+	protected override bool ShouldCreateRolePlate( Player player )
+	{
+		var local = Local.Pawn as Player;
+
+		return local.Team == Team;
 	}
 }

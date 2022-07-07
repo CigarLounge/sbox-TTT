@@ -129,24 +129,38 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 			return;
 		}
+		else if ( !Host.IsServer )
+		{
+			if ( ShouldCreateRolePlate( player ) )
+				player.Components.Create<UI.RolePlate>();
 
-		if ( !Host.IsServer )
 			return;
+		}
 
-		player.Client?.SetInt( "team", (int)Team );
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
 	}
 
 	public virtual void OnDeselect( Player player )
 	{
-		if ( !player.IsLocalPawn )
-			return;
+		if ( player.IsLocalPawn )
+		{
+			player.ClearButtons();
 
-		player.ClearButtons();
+			if ( Info.ShopItems.Any() )
+				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
+		}
+		else if ( !Host.IsServer )
+		{
+			player.Components.RemoveAny<UI.RolePlate>();
+		}
+	}
 
-		if ( Info.ShopItems.Count > 0 )
-			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
+	protected virtual bool ShouldCreateRolePlate( Player player )
+	{
+		Host.AssertClient();
+
+		return false;
 	}
 
 	protected List<RoleButton> GetRoleButtons()

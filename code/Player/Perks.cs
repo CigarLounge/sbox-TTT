@@ -53,6 +53,12 @@ public class Perks : IEnumerable<Perk>
 		return default;
 	}
 
+	public void DeleteContents()
+	{
+		foreach ( var perk in _list.ToArray() )
+			Owner.Components.Remove( perk );
+	}
+
 	public void OnComponentAdded( EntityComponent component )
 	{
 		if ( component is not Perk perk )

@@ -326,9 +326,9 @@ public partial class Player : AnimatedEntity
 
 	public void DeleteItems()
 	{
-		Components.RemoveAll();
 		ClearAmmo();
 		Inventory.DeleteContents();
+		Perks.DeleteContents();
 		RemoveAllClothing();
 	}
 
