@@ -12,23 +12,23 @@ public static class Scoring
 
 		[Description( "The amount of score points rewarded for confirming a corpse." )]
 		[Property]
-		public int CorpseFoundReward { get; set; } = 1;
+		public int CorpseFoundReward { get; set; } = 0;
 
 		[Description( "The amount of score points rewarded for killing a player with this role." )]
 		[Property]
-		public int KillReward { get; set; } = 1;
+		public int KillReward { get; set; } = 0;
 
 		[Description( "The amount of score points penalized for killing a player on the same team." )]
 		[Property]
-		public int TeamKillPenalty { get; set; } = 8;
+		public int TeamKillPenalty { get; set; } = 0;
 
 		[Description( "The amount of score points rewarded for surviving the round." )]
 		[Property]
-		public int SurviveBonus { get; set; } = 1;
+		public int SurviveBonus { get; set; } = 0;
 
 		[Description( "The amount of score points penalized for commiting suicide." )]
 		[Property]
-		public int SuicidePenalty { get; set; } = 1;
+		public int SuicidePenalty { get; set; } = 0;
 	}
 
 	[TTTEvent.Player.Killed]

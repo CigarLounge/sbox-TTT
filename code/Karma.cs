@@ -11,11 +11,18 @@ public static class Karma
 
 		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward." )]
 		[Property]
-		public float HurtRewardMultiplier { get; set; } = 0.0003f;
+		public int KillReward { get; set; } = 0;
+
+		[Property]
+		public int TeamKillPenalty { get; set; } = 0;
+
+		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward." )]
+		[Property]
+		public float HurtRewardMultiplier { get; set; } = 0;
 
 		[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
 		[Property]
-		public float TeamHurtPenaltyMultiplier { get; set; } = 0.001f;
+		public float TeamHurtPenaltyMultiplier { get; set; } = 0;
 	}
 
 	// Maybe turn these values into ServerVars down the line.
@@ -148,7 +155,7 @@ public static class Karma
 			var penalty = GetHurtPenalty( player.ActiveKarma, damage );
 			GivePenalty( attacker, penalty );
 		}
-		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
+		else
 		{
 			var reward = GetHurtReward( damage );
 			GiveReward( attacker, reward );
@@ -182,7 +189,7 @@ public static class Karma
 			var penalty = GetKillPenalty( player.ActiveKarma );
 			GivePenalty( attacker, penalty );
 		}
-		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
+		else
 		{
 			var reward = GetKillReward();
 			GiveReward( attacker, reward );

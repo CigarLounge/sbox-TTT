@@ -25,6 +25,7 @@
 		CanAttachCorpses = false
 		Karma = 
 		{
+			TeamKillPenalty = 15
 			TeamHurtPenaltyMultiplier = 0.001
 		}
 		Scoring = 

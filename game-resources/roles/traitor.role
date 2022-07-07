@@ -30,6 +30,8 @@
 		CanAttachCorpses = true
 		Karma = 
 		{
+			KillReward = 40
+			TeamKillPenalty = 15
 			HurtRewardMultiplier = 0.0003
 			TeamHurtPenaltyMultiplier = 0.001
 		}
