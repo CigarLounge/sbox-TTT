@@ -35,7 +35,7 @@ public partial class GeneralMenu : Panel
 	/// </summary>
 	public void AddPage( Panel page )
 	{
-		for ( int i = 0; i < Pages.ChildrenCount; ++i )
+		for ( var i = 0; i < Pages.ChildrenCount; i++ )
 		{
 			Pages.GetChild( i ).AddClass( "disabled" );
 		}

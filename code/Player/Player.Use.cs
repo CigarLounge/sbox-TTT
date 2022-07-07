@@ -38,8 +38,10 @@ public partial class Player
 		using ( Prediction.Off() )
 		{
 			if ( Input.Pressed( InputButton.Use ) )
+			{
 				if ( CanUse( HoveredEntity ) )
 					StartUsing( HoveredEntity );
+			}
 
 			if ( !Input.Down( InputButton.Use ) )
 			{
