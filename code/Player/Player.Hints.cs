@@ -6,8 +6,8 @@ public partial class Player
 {
 	public const float MaxHintDistance = 5000f;
 
-	private UI.EntityHintPanel _currentHintPanel;
-	private IEntityHint _currentHint;
+	private static UI.EntityHintPanel _currentHintPanel;
+	private static IEntityHint _currentHint;
 
 	private void DisplayEntityHints()
 	{
