@@ -7,11 +7,11 @@ internal class ChatEntry : Panel
 	public Label Name { get; set; }
 	public Label Message { get; set; }
 
-	private TimeSince timeSinceCreation;
+	private TimeSince _timeSinceCreation;
 
 	public ChatEntry( string name, string message, Color? color = null )
 	{
-		timeSinceCreation = 0;
+		_timeSinceCreation = 0;
 		Name.Text = name;
 		Message.Text = message;
 
@@ -23,7 +23,7 @@ internal class ChatEntry : Panel
 	{
 		base.Tick();
 
-		if ( timeSinceCreation < 8 ) return;
+		if ( _timeSinceCreation < 8 ) return;
 
 		AddClass( "faded" );
 	}
