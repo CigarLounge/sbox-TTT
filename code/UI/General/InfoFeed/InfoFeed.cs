@@ -13,47 +13,47 @@ public partial class InfoFeed : Panel
 
 	public static void AddEntry( string method, Color? color = null )
  	{
-		var e = Instance.AddChild<InfoFeedEntry>();
-		var label = e.AddLabel( method, "method" );
+		var entry = Instance.AddChild<InfoFeedEntry>();
+		var label = entry.AddLabel( method, "method" );
 		label.Style.FontColor = color ?? Color.White;
 	}
 
 	public static void AddEntry( Client client, string message )
 	{
-		var e = Instance.AddChild<InfoFeedEntry>();
+		var entry = Instance.AddChild<InfoFeedEntry>();
 
 		var player = client.Pawn as Player;
-		var leftLabel = e.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
+		var leftLabel = entry.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
 		leftLabel.Style.FontColor = player.Role is NoneRole ? Color.White : player.Role.Color;
 
-		e.AddLabel( message, "method" );
+		entry.AddLabel( message, "method" );
 	}
 
 	public static void AddRoleEntry( RoleInfo roleInfo, string interaction )
 	{
-		var e = Instance.AddChild<InfoFeedEntry>();
+		var entry = Instance.AddChild<InfoFeedEntry>();
 
-		var leftLabel = e.AddLabel( $"{roleInfo.Title}s", "left" );
+		var leftLabel = entry.AddLabel( $"{roleInfo.Title}s", "left" );
 		leftLabel.Style.FontColor = roleInfo.Color;
 
-		e.AddLabel( interaction, "method" );
+		entry.AddLabel( interaction, "method" );
 	}
 
 	public static void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
 	{
-		var e = Instance.AddChild<InfoFeedEntry>();
+		var entry = Instance.AddChild<InfoFeedEntry>();
 
 		var leftPlayer = leftClient.Pawn as Player;
-		var leftLabel = e.AddLabel( leftClient == Local.Client ? "You" : leftClient.Name, "left" );
+		var leftLabel = entry.AddLabel( leftClient == Local.Client ? "You" : leftClient.Name, "left" );
 		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
 
-		e.AddLabel( method, "method" );
+		entry.AddLabel( method, "method" );
 
-		var rightLabel = e.AddLabel( rightClientName == Local.Client.Name ? "You" : rightClientName, "right" );
+		var rightLabel = entry.AddLabel( rightClientName == Local.Client.Name ? "You" : rightClientName, "right" );
 		rightLabel.Style.FontColor = rightClientRoleColor;
 
 		if ( !string.IsNullOrEmpty( suffix ) )
-			e.AddLabel( suffix, "append" );
+			entry.AddLabel( suffix, "append" );
 	}
 
 	[ClientRpc]
