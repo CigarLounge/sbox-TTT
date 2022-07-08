@@ -55,12 +55,20 @@ public enum HitboxGroup
 
 public partial class Player
 {
+	public const float MaxHealth = 100f;
+
 	[Net]
 	public TimeSince TimeSinceDeath { get; private set; }
 
-	public const float MaxHealth = 100f;
-	public DamageInfo LastDamageInfo { get; private set; }
 	public float DistanceToAttacker { get; set; }
+
+	/// <summary>
+	/// It's always better to use this than <see cref="Entity.LastAttackerWeapon"/>
+	/// because the weapon may be invalid.
+	/// </summary>
+	public CarriableInfo LastAttackerWeaponInfo { get; private set; }
+
+	public DamageInfo LastDamageInfo { get; private set; }
 
 	public new float Health
 	{
@@ -176,15 +184,16 @@ public partial class Player
 		}
 
 		if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
-			info.Damage *= GetBulletDamageMultipliers( info );
+			info.Damage *= GetBulletDamageMultipliers( ref info );
 
 		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
-			Deafen( To.Single( Client ), info.Damage.LerpInverse( 0, 60 ) );
+			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
 
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
+		LastAttackerWeaponInfo = info.Weapon is Carriable carriable ? carriable.Info : null;
 		LastDamageInfo = info;
 
 		Health -= info.Damage;
@@ -207,14 +216,16 @@ public partial class Player
 			to,
 			LastAttacker,
 			LastAttackerWeapon,
+			LastAttackerWeaponInfo,
 			LastDamageInfo.Damage,
 			LastDamageInfo.Flags,
 			LastDamageInfo.HitboxIndex,
-			LastDamageInfo.Position
+			LastDamageInfo.Position,
+			DistanceToAttacker
 		);
 	}
 
-	private float GetBulletDamageMultipliers( DamageInfo info )
+	private float GetBulletDamageMultipliers( ref DamageInfo info )
 	{
 		var damageMultiplier = 1f;
 		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
@@ -233,13 +244,13 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void Deafen( float strength )
+	public static void Deafen( float strength )
 	{
 		Audio.SetEffect( "flashbang", strength, velocity: 20.0f, fadeOut: 4.0f * strength );
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity attacker, Entity weapon, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position )
+	private void SendDamageInfo( Entity attacker, Entity weapon, CarriableInfo weaponInfo, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position, float distanceToAttacker )
 	{
 		var info = DamageInfo.Generic( damage )
 			.WithAttacker( attacker )
@@ -248,8 +259,10 @@ public partial class Player
 			.WithHitbox( hitboxIndex )
 			.WithPosition( position );
 
+		DistanceToAttacker = distanceToAttacker;
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
+		LastAttackerWeaponInfo = weaponInfo;
 		LastDamageInfo = info;
 
 		if ( IsLocalPawn )
