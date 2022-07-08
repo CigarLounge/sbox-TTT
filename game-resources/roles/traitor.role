@@ -28,11 +28,13 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = true
+		Color = "0.87451,0.15294,0.2,1"
+		IconPath = resource:"ui/traitor-icon.jpg"
 		Karma = 
 		{
-			KillReward = 40
+			AttackerKillReward = 40
 			TeamKillPenalty = 15
-			HurtRewardMultiplier = 0.0003
+			AttackerHurtRewardMultiplier = 0.0003
 			TeamHurtPenaltyMultiplier = 0.001
 		}
 		Scoring = 
@@ -42,8 +44,6 @@
 			SurviveBonus = 1
 			SuicidePenalty = 1
 		}
-		Color = "0.87451,0.15294,0.2,1"
-		IconPath = resource:"ui/traitor-icon.jpg"
 		ClassName = "ttt_role_traitor"
 	}
 }

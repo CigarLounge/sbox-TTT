@@ -88,7 +88,6 @@ public partial class Player : AnimatedEntity
 		ResetConfirmationData();
 		Role = new NoneRole();
 
-		TimeUntilClean = 0;
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
 		Credits = 0;

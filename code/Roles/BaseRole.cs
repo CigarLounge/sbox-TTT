@@ -30,17 +30,17 @@ public class RoleInfo : GameResource
 
 	public bool CanAttachCorpses { get; set; } = false;
 
-	[Title( "Karma" )]
-	public Karma.Config Karma { get; set; }
-
-	[Title( "Scoring" )]
-	public Scoring.Config Scoring { get; set; }
-
 	[Category( "UI" )]
 	public Color Color { get; set; }
 
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
+
+	[Title( "Karma" )]
+	public Karma Karma { get; set; }
+
+	[Title( "Scoring" )]
+	public Scoring Scoring { get; set; }
 
 	[HideInEditor]
 	[JsonIgnore]
@@ -83,8 +83,8 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
-	public Karma.Config Karma => Info.Karma;
-	public Scoring.Config Scoring => Info.Scoring;
+	public Karma Karma => Info.Karma;
+	public Scoring Scoring => Info.Scoring;
 
 	public BaseRole()
 	{

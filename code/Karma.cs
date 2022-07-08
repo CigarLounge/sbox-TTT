@@ -3,37 +3,29 @@ using System;
 
 namespace TTT;
 
-public static class Karma
+public struct Karma
 {
-	public struct Config
-	{
-		public Config() { }
+	[Property]
+	public int AttackerKillReward { get; set; } = 0;
 
-		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward." )]
-		[Property]
-		public int KillReward { get; set; } = 0;
+	[Property]
+	public int TeamKillPenalty { get; set; } = 0;
 
-		[Property]
-		public int TeamKillPenalty { get; set; } = 0;
+	[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward for the enemy attacker." )]
+	[Property]
+	public float AttackerHurtRewardMultiplier { get; set; } = 0;
 
-		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward." )]
-		[Property]
-		public float HurtRewardMultiplier { get; set; } = 0;
+	[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
+	[Property]
+	public float TeamHurtPenaltyMultiplier { get; set; } = 0;
 
-		[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
-		[Property]
-		public float TeamHurtPenaltyMultiplier { get; set; } = 0;
-	}
+	public Karma() { }
 
 	// Maybe turn these values into ServerVars down the line.
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
-	public const float KillPenalty = 15;
-	public const float Ratio = 0.001f;
 	public const float RoundHeal = 5;
-	public const float TRatio = 0.0003f;
-	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
@@ -45,6 +37,59 @@ public static class Karma
 		new ColorGroup("Crude", Color.FromBytes(255, 240, 135)),
 		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
+
+	/// <summary>
+	/// Compute the reward for killing a traitor.
+	/// </summary>
+	public float GetKillReward()
+	{
+		return GetHurtReward( AttackerKillReward );
+	}
+
+	public float GetKillPenalty( float victimKarma )
+	{
+		return GetHurtPenalty( victimKarma, TeamKillPenalty );
+	}
+
+	/// <summary>
+	/// Compute the reward for hurting a traitor.
+	/// </summary>
+	public float GetHurtReward( float damage )
+	{
+		return MaxValue * Math.Clamp( damage * AttackerHurtRewardMultiplier, 0, 1 );
+	}
+
+	public float GetHurtPenalty( float victimKarma, float damage )
+	{
+		return victimKarma * Math.Clamp( damage * TeamHurtPenaltyMultiplier, 0, 1 );
+	}
+
+	private static void GivePenalty( Player player, float penalty )
+	{
+		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
+		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), float.MaxValue );
+	}
+
+	private static void GiveReward( Player player, float reward )
+	{
+		reward = DecayMultiplier( player ) * reward;
+		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
+	}
+
+	private static float DecayMultiplier( Player player )
+	{
+		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
+			return 1;
+
+		if ( player.ActiveKarma >= MaxValue )
+			return 1;
+
+		var baseDiff = MaxValue - DefaultValue;
+		var plyDiff = player.ActiveKarma - DefaultValue;
+		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
+
+		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
+	}
 
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
@@ -64,6 +109,8 @@ public static class Karma
 		if ( Game.Current.State is not PreRound )
 			return;
 
+		player.TimeUntilClean = 0;
+
 		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
 		{
 			player.DamageFactor = 1f;
@@ -76,58 +123,6 @@ public static class Karma
 		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 	}
 
-	private static float DecayMultiplier( Player player )
-	{
-		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
-			return 1;
-
-		if ( player.ActiveKarma >= MaxValue )
-			return 1;
-
-		var baseDiff = MaxValue - DefaultValue;
-		var plyDiff = player.ActiveKarma - DefaultValue;
-		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
-
-		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
-	}
-
-	private static float GetHurtPenalty( float victimKarma, float damage )
-	{
-		return victimKarma * Math.Clamp( damage * Ratio, 0, 1 );
-	}
-
-	private static float GetKillPenalty( float victimKarma )
-	{
-		return GetHurtPenalty( victimKarma, KillPenalty );
-	}
-
-	/// <summary>
-	/// Compute the reward for hurting a traitor.
-	/// </summary>
-	private static float GetHurtReward( float damage )
-	{
-		return MaxValue * Math.Clamp( damage * TRatio, 0, 1 );
-	}
-
-	/// <summary>
-	/// Compute the reward for killing a traitor.
-	/// </summary>
-	private static float GetKillReward()
-	{
-		return GetHurtReward( TBonus );
-	}
-
-	private static void GivePenalty( Player player, float penalty )
-	{
-		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
-		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), float.MaxValue );
-	}
-
-	private static void GiveReward( Player player, float reward )
-	{
-		reward = DecayMultiplier( player ) * reward;
-		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
-	}
 
 	[TTTEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
@@ -143,21 +138,25 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
+		var karma = player.Role.Karma;
 		var damage = player.LastDamageInfo.Damage;
 
-		if ( attacker.Team == player.Team && player.TimeUntilClean )
+		if ( attacker.Team == player.Team )
 		{
+			if ( !player.TimeUntilClean )
+				return;
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			var penalty = GetHurtPenalty( player.ActiveKarma, damage );
+
+			var penalty = karma.GetHurtPenalty( player.ActiveKarma, damage );
 			GivePenalty( attacker, penalty );
 		}
 		else
 		{
-			var reward = GetHurtReward( damage );
+			var reward = karma.GetHurtReward( damage );
 			GiveReward( attacker, reward );
 		}
 	}
@@ -179,19 +178,23 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		if ( attacker.Team == player.Team && player.TimeUntilClean )
+		var karma = player.Role.Karma;
+
+		if ( attacker.Team == player.Team )
 		{
+			if ( !player.TimeUntilClean )
+				return;
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			var penalty = GetKillPenalty( player.ActiveKarma );
+			var penalty = karma.GetKillPenalty( player.ActiveKarma );
 			GivePenalty( attacker, penalty );
 		}
 		else
 		{
-			var reward = GetKillReward();
+			var reward = karma.GetKillReward();
 			GiveReward( attacker, reward );
 		}
 	}

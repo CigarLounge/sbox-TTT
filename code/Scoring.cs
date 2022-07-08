@@ -4,32 +4,29 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public static class Scoring
+public struct Scoring
 {
-	public struct Config
-	{
-		public Config() { }
+	[Description( "The amount of score points rewarded for confirming a corpse." )]
+	[Property]
+	public int CorpseFoundReward { get; set; } = 0;
 
-		[Description( "The amount of score points rewarded for confirming a corpse." )]
-		[Property]
-		public int CorpseFoundReward { get; set; } = 0;
+	[Description( "The amount of score points rewarded for killing a player on an opposing team." )]
+	[Property]
+	public int KillReward { get; set; } = 0;
 
-		[Description( "The amount of score points rewarded for killing a player with this role." )]
-		[Property]
-		public int KillReward { get; set; } = 0;
+	[Description( "The amount of score points penalized for killing a player on the same team." )]
+	[Property]
+	public int TeamKillPenalty { get; set; } = 0;
 
-		[Description( "The amount of score points penalized for killing a player on the same team." )]
-		[Property]
-		public int TeamKillPenalty { get; set; } = 0;
+	[Description( "The amount of score points rewarded for surviving the round." )]
+	[Property]
+	public int SurviveBonus { get; set; } = 0;
 
-		[Description( "The amount of score points rewarded for surviving the round." )]
-		[Property]
-		public int SurviveBonus { get; set; } = 0;
+	[Description( "The amount of score points penalized for commiting suicide." )]
+	[Property]
+	public int SuicidePenalty { get; set; } = 0;
 
-		[Description( "The amount of score points penalized for commiting suicide." )]
-		[Property]
-		public int SuicidePenalty { get; set; } = 0;
-	}
+	public Scoring() { }
 
 	[TTTEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
