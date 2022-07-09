@@ -10,7 +10,7 @@ public class BaseClothing : ModelEntity
 
 public partial class Player
 {
-	protected List<BaseClothing> Clothing { get; set; } = new();
+	public List<BaseClothing> Clothes { get; protected set; } = new();
 
 	private void DressPlayer()
 	{
@@ -30,28 +30,27 @@ public partial class Player
 		{
 			ModelPath = path
 		};
+
 		entity.SetModel( path );
 		AttachClothing( entity );
 	}
 
 	public void RemoveClothing( string path )
 	{
-		for ( var i = Clothing.Count - 1; i >= 0; i-- )
+		for ( var i = Clothes.Count - 1; i >= 0; i-- )
 		{
-			var clothingPiece = Clothing[i];
+			var clothingPiece = Clothes[i];
 			if ( clothingPiece.ModelPath == path )
 			{
 				clothingPiece.Delete();
-				Clothing.RemoveAt( i );
 			}
 		}
 	}
 
 	public void RemoveAllClothing()
 	{
-		foreach ( var clothing in Clothing )
+		foreach ( var clothing in Clothes.ToArray() )
 			clothing.Delete();
-		Clothing.Clear();
 
 		SetClothingBodyGroups( this, 1 );
 	}
@@ -61,7 +60,6 @@ public partial class Player
 		clothing.SetParent( this, true );
 		clothing.EnableShadowInFirstPerson = true;
 		clothing.EnableHideInFirstPerson = true;
-		Clothing.Add( clothing );
 	}
 
 	// So that the clothes we use don't clip with the player model.
