@@ -21,9 +21,9 @@
 		]
 		Perks = 
 		[
-			resource:"game-resources/perks/bodyarmor.perk",
 			resource:"game-resources/perks/disguiser.perk",
 			resource:"game-resources/perks/radar.perk",
+			resource:"game-resources/perks/armor.perk",
 		]
 		CanRetrieveCredits = true
 		CanTeamChat = true
