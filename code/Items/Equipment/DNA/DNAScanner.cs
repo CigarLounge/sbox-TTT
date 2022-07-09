@@ -210,7 +210,7 @@ public partial class DNA : EntityComponent
 			case Corpse corpse:
 			{
 				SourceName = $"{corpse.PlayerName}'s corpse";
-				TimeUntilDecayed = MathF.Pow( 0.74803f * corpse.DistanceKilledFrom, 2 ) + 100;
+				TimeUntilDecayed = MathF.Pow( 0.74803f * corpse.Player.DistanceToAttacker, 2 ) + 100;
 
 				break;
 			}

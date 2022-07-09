@@ -14,17 +14,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public long PlayerId { get; private set; }
 	public string PlayerName { get; private set; }
 	public Player Player { get; private set; }
-	public DamageInfo KillInfo { get; private set; }
-	public CarriableInfo KillerWeapon { get; private set; }
-	public bool WasHeadshot => GetHitboxGroup( KillInfo.HitboxIndex ) == (int)HitboxGroup.Head;
-	public float KilledTime { get; private set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
-	public float DistanceKilledFrom { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
-
-	// Detective information
-	public string LastSeenPlayerName { get; private set; }
 
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
@@ -37,8 +29,52 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	private readonly HashSet<int> _playersWhoGotKillInfo = new();
 	private readonly HashSet<int> _playersWhoGotPlayerData = new();
 
-	// Only display the inspect menu if this is true.
-	private bool _receivedKillInfo;
+	public Corpse() { }
+
+	public Corpse( Player player )
+	{
+		Host.AssertServer();
+
+		Player = player;
+		PlayerName = player.Client.Name;
+		PlayerId = player.Client.PlayerId;
+		HasCredits = player.Credits > 0;
+		Transform = player.Transform;
+
+		if ( Player.LastDamageInfo.Flags == DamageFlags.Bullet && Player.LastAttacker is Player killer )
+		{
+			var dna = new DNA( killer );
+			Components.Add( dna );
+			TimeUntilDNADecay = dna.TimeUntilDecayed;
+		}
+
+		var c4Note = player.Components.Get<C4Note>();
+
+		if ( c4Note is not null )
+			C4Note = c4Note.SafeWireNumber.ToString();
+
+		player.Corpse = this;
+
+		SetModel( player.GetModelName() );
+		TakeDecalsFrom( player );
+
+		this.CopyBonesFrom( player );
+		this.SetRagdollVelocityFrom( player );
+		ApplyForceToBone( Player.LastDamageInfo.Force, Player.GetHitboxBone( Player.LastDamageInfo.HitboxIndex ) );
+
+		foreach ( var clothing in Player.Clothes.ToArray() )
+		{
+			clothing.SetParent( this, true );
+		}
+
+		Player.SetClothingBodyGroups( this, 1 );
+
+		Perks = new PerkInfo[Player.Perks.Count];
+		for ( var i = 0; i < Player.Perks.Count; i++ )
+		{
+			Perks[i] = Player.Perks[i].Info;
+		}
+	}
 
 	public override void Spawn()
 	{
@@ -50,71 +86,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SetInteractsAs( CollisionLayer.Debris );
 		SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
 		SetInteractsExclude( CollisionLayer.Player );
-
-		KilledTime = Time.Now;
-	}
-
-	public void CopyFrom( Player player )
-	{
-		Host.AssertServer();
-
-		Player = player;
-		PlayerName = player.Client.Name;
-		PlayerId = player.Client.PlayerId;
-		KillInfo = player.LastDamageInfo;
-		KillerWeapon = GameResource.GetInfo<CarriableInfo>( KillInfo.Weapon?.ClassName );
-		DistanceKilledFrom = player.DistanceToAttacker;
-		HasCredits = player.Credits > 0;
-
-		if ( KillInfo.Flags == DamageFlags.Bullet && KillInfo.Attacker is Player killer )
-		{
-			var dna = new DNA( killer );
-			Components.Add( dna );
-			TimeUntilDNADecay = dna.TimeUntilDecayed;
-		}
-
-		var c4Note = player.Components.Get<C4Note>();
-		if ( c4Note is not null )
-			C4Note = c4Note.SafeWireNumber.ToString();
-
-		LastSeenPlayerName = player.LastSeenPlayerName;
-
-		player.Corpse = this;
-
-		SetModel( player.GetModelName() );
-		TakeDecalsFrom( player );
-
-		this.CopyBonesFrom( player );
-		this.SetRagdollVelocityFrom( player );
-
-		List<Entity> attachedEnts = new();
-
-		foreach ( var child in player.Children )
-		{
-			if ( child is BaseClothing e )
-			{
-				var model = e.GetModelName();
-				var clothing = new ModelEntity
-				{
-					RenderColor = e.RenderColor
-				};
-				clothing.SetModel( model );
-				clothing.SetParent( this, true );
-			}
-		}
-
-		Player.SetClothingBodyGroups( this, 1 );
-
-		Perks = new PerkInfo[Player.Perks.Count];
-		for ( var i = 0; i < Player.Perks.Count; i++ )
-		{
-			Perks[i] = Player.Perks[i].Info;
-		}
-
-		foreach ( var entity in attachedEnts )
-		{
-			entity.SetParent( this, false );
-		}
 	}
 
 	public void ApplyForceToBone( Vector3 force, int forceBone )
@@ -222,43 +193,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			_playersWhoGotKillInfo.Add( client.Pawn.NetworkIdent );
 
-			SendKillInfo
-			(
-				To.Single( client ),
-				KillInfo.Attacker,
-				KillerWeapon,
-				KillInfo.HitboxIndex,
-				KillInfo.Damage,
-				KillInfo.Flags,
-				KilledTime
-			);
+			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo
-			(
-				C4Note,
-				TimeUntilDNADecay
-			);
+			SendMiscInfo( C4Note, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
-				DetectiveSendKillInfo( To.Single( client ), LastSeenPlayerName );
+				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayerName );
 		}
-	}
-
-	[ClientRpc]
-	private void SendKillInfo( Entity attacker, CarriableInfo killerWeapon, int hitboxIndex, float damage, DamageFlags damageFlag, float killedTime )
-	{
-		var info = new DamageInfo()
-			.WithAttacker( attacker )
-			.WithHitbox( hitboxIndex )
-			.WithFlag( damageFlag );
-
-		info.Damage = damage;
-		KillInfo = info;
-		LastAttacker = info.Attacker;
-		KillerWeapon = killerWeapon;
-		KilledTime = killedTime;
-
-		_receivedKillInfo = true;
 	}
 
 	[ClientRpc]
@@ -272,9 +213,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// Detectives get additional information about a corpse.
 	/// </summary>
 	[ClientRpc]
-	private void DetectiveSendKillInfo( string lastSeenPlayerName )
+	private void SendDetectiveInfo( string lastSeenPlayerName )
 	{
-		LastSeenPlayerName = lastSeenPlayerName;
+		Player.LastSeenPlayerName = lastSeenPlayerName;
 	}
 
 	public void SendPlayer( To to )
@@ -310,7 +251,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( _receivedKillInfo && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( !Player.LastDamageInfo.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
