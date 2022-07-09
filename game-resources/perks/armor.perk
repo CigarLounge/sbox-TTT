@@ -6,6 +6,6 @@
 		Price = 100
 		IconPath = resource:"ui/perks/bodyarmor.jpg"
 		Description = "Reduces bullet damage by 30% when you get hit in the body."
-		ClassName = "ttt_perk_bodyarmor"
+		ClassName = "ttt_perk_armor"
 	}
 }

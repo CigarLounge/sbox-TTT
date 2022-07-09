@@ -229,8 +229,8 @@ public partial class Player
 	{
 		var damageMultiplier = 1f;
 
-		if ( Perks.Has<BodyArmor>() )
-			damageMultiplier *= BodyArmor.ReductionPercentage;
+		if ( Perks.Has<Armor>() )
+			damageMultiplier *= Armor.ReductionPercentage;
 
 		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
 

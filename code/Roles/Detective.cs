@@ -25,7 +25,7 @@ public class Detective : BaseRole
 		}
 
 		player.Inventory.Add( new DNAScanner() );
-		player.Perks.Add( new BodyArmor() );
+		player.Perks.Add( new Armor() );
 		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
 	}
 
