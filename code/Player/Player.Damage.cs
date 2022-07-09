@@ -193,7 +193,7 @@ public partial class Player
 
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
-		LastAttackerWeaponInfo = info.Weapon is Carriable carriable ? carriable.Info : null;
+		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
 		LastDamageInfo = info;
 
 		Health -= info.Damage;
@@ -228,19 +228,31 @@ public partial class Player
 	private float GetBulletDamageMultipliers( ref DamageInfo info )
 	{
 		var damageMultiplier = 1f;
-		var isHeadShot = (HitboxGroup)GetHitboxGroup( info.HitboxIndex ) == HitboxGroup.Head;
 
-		if ( isHeadShot )
+		if ( Perks.Has<BodyArmor>() )
+			damageMultiplier *= BodyArmor.ReductionPercentage;
+
+		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
+
+		if ( hitboxGroup == HitboxGroup.Head )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
 
-			if ( weaponInfo is not null )
-				damageMultiplier *= weaponInfo.HeadshotMultiplier;
+			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;
 		}
-		else if ( Perks.Has<BodyArmor>() )
-			damageMultiplier *= BodyArmor.ReductionPercentage;
+		else if ( hitboxGroup >= HitboxGroup.LeftArm && hitboxGroup <= HitboxGroup.Gear )
+			damageMultiplier *= 0.55f;
 
 		return damageMultiplier;
+	}
+
+	private void ResetDamageData()
+	{
+		DistanceToAttacker = 0;
+		LastAttacker = null;
+		LastAttackerWeapon = null;
+		LastAttackerWeaponInfo = null;
+		LastDamageInfo = default;
 	}
 
 	[ClientRpc]
@@ -250,19 +262,19 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity attacker, Entity weapon, CarriableInfo weaponInfo, float damage, DamageFlags damageFlag, int hitboxIndex, Vector3 position, float distanceToAttacker )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, int hI, Vector3 p, float dTA )
 	{
-		var info = DamageInfo.Generic( damage )
-			.WithAttacker( attacker )
-			.WithWeapon( weapon )
-			.WithFlag( damageFlag )
-			.WithHitbox( hitboxIndex )
-			.WithPosition( position );
+		var info = DamageInfo.Generic( d )
+			.WithAttacker( a )
+			.WithWeapon( w )
+			.WithFlag( dF )
+			.WithHitbox( hI )
+			.WithPosition( p );
 
-		DistanceToAttacker = distanceToAttacker;
-		LastAttacker = info.Attacker;
-		LastAttackerWeapon = info.Weapon;
-		LastAttackerWeaponInfo = weaponInfo;
+		DistanceToAttacker = dTA;
+		LastAttacker = a;
+		LastAttackerWeapon = w;
+		LastAttackerWeaponInfo = wI;
 		LastDamageInfo = info;
 
 		if ( IsLocalPawn )
