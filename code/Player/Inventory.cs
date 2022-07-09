@@ -191,11 +191,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 		_list.Clear();
 	}
 
-	public void OnChildAdded( Entity child )
+	public void OnChildAdded( Carriable carriable )
 	{
-		if ( child is not Carriable carriable )
-			return;
-
 		if ( !CanAdd( carriable ) )
 			return;
 
@@ -212,11 +209,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 			_weaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
 	}
 
-	public void OnChildRemoved( Entity child )
+	public void OnChildRemoved( Carriable carriable )
 	{
-		if ( child is not Carriable carriable )
-			return;
-
 		if ( !_list.Remove( carriable ) )
 			return;
 

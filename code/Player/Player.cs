@@ -388,12 +388,36 @@ public partial class Player : AnimatedEntity
 
 	public override void OnChildAdded( Entity child )
 	{
-		Inventory?.OnChildAdded( child );
+		switch ( child )
+		{
+			case Carriable carriable:
+			{
+				Inventory.OnChildAdded( carriable );
+				break;
+			}
+			case BaseClothing clothing:
+			{
+				Clothes.Add( clothing );
+				break;
+			}
+		}
 	}
 
 	public override void OnChildRemoved( Entity child )
 	{
-		Inventory?.OnChildRemoved( child );
+		switch ( child )
+		{
+			case Carriable carriable:
+			{
+				Inventory.OnChildRemoved( carriable );
+				break;
+			}
+			case BaseClothing clothing:
+			{
+				Clothes.Remove( clothing );
+				break;
+			}
+		}
 	}
 
 	protected override void OnComponentAdded( EntityComponent component )
