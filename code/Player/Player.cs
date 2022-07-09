@@ -86,9 +86,9 @@ public partial class Player : AnimatedEntity
 		DeleteFlashlight();
 		DeleteItems();
 		ResetConfirmationData();
+		ResetDamageData();
 		Role = new NoneRole();
 
-		TimeUntilClean = 0;
 		Velocity = Vector3.Zero;
 		WaterLevel = 0;
 		Credits = 0;
@@ -124,8 +124,9 @@ public partial class Player : AnimatedEntity
 	{
 		Host.AssertClient();
 
-		ResetConfirmationData();
 		DeleteFlashlight();
+		ResetConfirmationData();
+		ResetDamageData();
 
 		if ( !IsLocalPawn )
 			Role = new NoneRole();

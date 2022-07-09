@@ -44,6 +44,8 @@ public static class Karma
 		if ( Game.Current.State is not PreRound )
 			return;
 
+		player.TimeUntilClean = 0;
+
 		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
 		{
 			player.DamageFactor = 1f;
