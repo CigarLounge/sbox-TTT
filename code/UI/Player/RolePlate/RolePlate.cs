@@ -14,7 +14,7 @@ public class RolePlate : EntityComponent<Player>
 
 		_worldPanel = new WorldPanel();
 
-		_worldPanel.StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );	
+		_worldPanel.StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
 		_worldPanel.Add.Image( classname: "icon" ).Texture = Entity.Role.Info.Icon;
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
 	}
@@ -38,8 +38,8 @@ public class RolePlate : EntityComponent<Player>
 		if ( !_worldPanel.SceneObject.RenderingEnabled )
 			return;
 
-		var tx = Entity.GetAttachment( "hat" ) ?? Entity.Transform;
-		tx.Position += Vector3.Up * 15.0f;
+		var tx = Entity.GetBoneTransform( "head" );
+		tx.Position += Vector3.Up * 20.0f;
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		_worldPanel.Transform = tx;
