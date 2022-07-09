@@ -3,24 +3,8 @@ using System;
 
 namespace TTT;
 
-public struct Karma
+public static class Karma
 {
-	[Property]
-	public int AttackerKillReward { get; set; } = 0;
-
-	[Property]
-	public int TeamKillPenalty { get; set; } = 0;
-
-	[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward for the enemy attacker." )]
-	[Property]
-	public float AttackerHurtRewardMultiplier { get; set; } = 0;
-
-	[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
-	[Property]
-	public float TeamHurtPenaltyMultiplier { get; set; } = 0;
-
-	public Karma() { }
-
 	// Maybe turn these values into ServerVars down the line.
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;
@@ -39,29 +23,16 @@ public struct Karma
 	};
 
 	/// <summary>
-	/// Compute the reward for killing a traitor.
-	/// </summary>
-	public float GetKillReward()
-	{
-		return GetHurtReward( AttackerKillReward );
-	}
-
-	public float GetKillPenalty( float victimKarma )
-	{
-		return GetHurtPenalty( victimKarma, TeamKillPenalty );
-	}
-
-	/// <summary>
 	/// Compute the reward for hurting a traitor.
 	/// </summary>
-	public float GetHurtReward( float damage )
+	public static float GetHurtReward( float damage, float multiplier )
 	{
-		return MaxValue * Math.Clamp( damage * AttackerHurtRewardMultiplier, 0, 1 );
+		return MaxValue * Math.Clamp( damage * multiplier, 0, 1 );
 	}
 
-	public float GetHurtPenalty( float victimKarma, float damage )
+	public static float GetHurtPenalty( float victimKarma, float damage, float multiplier )
 	{
-		return victimKarma * Math.Clamp( damage * TeamHurtPenaltyMultiplier, 0, 1 );
+		return victimKarma * Math.Clamp( damage * multiplier, 0, 1 );
 	}
 
 	private static void GivePenalty( Player player, float penalty )
@@ -135,7 +106,6 @@ public struct Karma
 		if ( attacker == player )
 			return;
 
-		var karma = player.Role.Karma;
 		var damage = player.LastDamageInfo.Damage;
 
 		if ( attacker.Team == player.Team )
@@ -148,12 +118,12 @@ public struct Karma
 			 */
 
 
-			var penalty = karma.GetHurtPenalty( player.ActiveKarma, damage );
+			var penalty = GetHurtPenalty( player.ActiveKarma, damage, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
 		}
 		else
 		{
-			var reward = karma.GetHurtReward( damage );
+			var reward = GetHurtReward( damage, player.Role.Karma.AttackerHurtRewardMultiplier );
 			GiveReward( attacker, reward );
 		}
 	}
@@ -175,8 +145,6 @@ public struct Karma
 		if ( attacker == player )
 			return;
 
-		var karma = player.Role.Karma;
-
 		if ( attacker.Team == player.Team )
 		{
 			if ( !player.TimeUntilClean )
@@ -186,12 +154,12 @@ public struct Karma
 			 *		return;
 			 */
 
-			var penalty = karma.GetKillPenalty( player.ActiveKarma );
+			var penalty = GetHurtPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenalty, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
 		}
 		else
 		{
-			var reward = karma.GetKillReward();
+			var reward = GetHurtReward( player.Role.Karma.AttackerKillReward, player.Role.Karma.AttackerHurtRewardMultiplier );
 			GiveReward( attacker, reward );
 		}
 	}

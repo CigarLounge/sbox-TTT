@@ -3,6 +3,8 @@
 	data = 
 	{
 		Team = "Innocents"
+		Color = "0.09804,0.4,1,1"
+		IconPath = resource:"ui/detective-icon.jpg"
 		DefaultCredits = 100
 		Weapons = 
 		[
@@ -23,8 +25,6 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = false
-		Color = "0.09804,0.4,1,1"
-		IconPath = resource:"ui/detective-icon.jpg"
 		Karma = 
 		{
 			TeamKillPenalty = 15
@@ -32,8 +32,8 @@
 		}
 		Scoring = 
 		{
-			CorpseFoundReward = 1
-			KillReward = 1
+			CorpseFoundReward = 3
+			AttackerKillReward = 1
 			TeamKillPenalty = 8
 			SurviveBonus = 1
 			SuicidePenalty = 1

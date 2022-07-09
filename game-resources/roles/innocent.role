@@ -3,6 +3,8 @@
 	data = 
 	{
 		Team = "Innocents"
+		Color = "0.10196,0.77255,0.30196,1"
+		IconPath = resource:"ui/innocent-icon.jpg"
 		DefaultCredits = 0
 		Weapons = [  ]
 		Carriables = [  ]
@@ -10,16 +12,12 @@
 		CanRetrieveCredits = false
 		CanTeamChat = false
 		CanAttachCorpses = false
-		Color = "0.10196,0.77255,0.30196,1"
-		IconPath = resource:"ui/innocent-icon.jpg"
 		Karma = 
 		{
-			TeamHurtPenaltyMultiplier = 0.001
 		}
 		Scoring = 
 		{
 			CorpseFoundReward = 3
-			KillReward = 1
 			TeamKillPenalty = 8
 			SurviveBonus = 1
 			SuicidePenalty = 1

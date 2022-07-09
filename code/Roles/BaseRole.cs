@@ -16,8 +16,8 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
-	public Karma Karma => Info.Karma;
-	public Scoring Scoring => Info.Scoring;
+	public RoleInfo.KarmaConfig Karma => Info.Karma;
+	public RoleInfo.ScoringConfig Scoring => Info.Scoring;
 
 	public BaseRole()
 	{
@@ -67,7 +67,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 	protected virtual bool ShouldCreateRolePlate( Player player )
 	{
-		return true;
+		return false;
 	}
 
 	protected List<RoleButton> GetRoleButtons()

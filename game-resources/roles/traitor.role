@@ -3,6 +3,8 @@
 	data = 
 	{
 		Team = "Traitors"
+		Color = "0.87451,0.15294,0.2,1"
+		IconPath = resource:"ui/traitor-icon.jpg"
 		DefaultCredits = 200
 		Weapons = 
 		[
@@ -17,19 +19,16 @@
 			resource:"game-resources/equipment/teleporter.carri",
 			resource:"game-resources/equipment/decoy.carri",
 			resource:"game-resources/equipment/radio.carri",
-			null,
 		]
 		Perks = 
 		[
-			resource:"game-resources/perks/bodyarmor.perk",
+			resource:"game-resources/perks/armor.perk",
 			resource:"game-resources/perks/disguiser.perk",
 			resource:"game-resources/perks/radar.perk",
 		]
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = true
-		Color = "0.87451,0.15294,0.2,1"
-		IconPath = resource:"ui/traitor-icon.jpg"
 		Karma = 
 		{
 			AttackerKillReward = 40
@@ -39,7 +38,7 @@
 		}
 		Scoring = 
 		{
-			KillReward = 5
+			AttackerKillReward = 5
 			TeamKillPenalty = 16
 			SurviveBonus = 1
 			SuicidePenalty = 1
