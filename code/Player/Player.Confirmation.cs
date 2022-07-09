@@ -32,15 +32,7 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		var corpse = new Corpse()
-		{
-			Transform = Transform
-		};
-
-		corpse.CopyFrom( this );
-		corpse.ApplyForceToBone( LastDamageInfo.Force, GetHitboxBone( LastDamageInfo.HitboxIndex ) );
-
-		Corpse = corpse;
+		Corpse = new Corpse( this );
 	}
 
 	public void UpdateMissingInAction( Player player = null )
