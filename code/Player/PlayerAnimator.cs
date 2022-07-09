@@ -28,9 +28,7 @@ public class PlayerAnimator : PawnAnimator
 		SetAnimParameter( "b_swim", Pawn.WaterLevel > 0.5f && !sitting );
 
 		if ( Host.IsClient && Client.IsValid() )
-		{
 			SetAnimParameter( "voice", Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f );
-		}
 
 		var aimPos = Pawn.EyePosition + Input.Rotation.Forward * 200;
 		var lookPos = aimPos;
@@ -42,8 +40,10 @@ public class PlayerAnimator : PawnAnimator
 		SetLookAt( "aim_head", lookPos );
 		SetLookAt( "aim_body", aimPos );
 
-		if ( HasTag( "ducked" ) ) _duck = _duck.LerpTo( 1.0f, Time.Delta * 10.0f );
-		else _duck = _duck.LerpTo( 0.0f, Time.Delta * 5.0f );
+		if ( HasTag( "ducked" ) )
+			_duck = _duck.LerpTo( 1.0f, Time.Delta * 10.0f );
+		else
+			_duck = _duck.LerpTo( 0.0f, Time.Delta * 5.0f );
 
 		SetAnimParameter( "duck", _duck );
 
@@ -68,7 +68,8 @@ public class PlayerAnimator : PawnAnimator
 		var allowYawDiff = player?.ActiveChild is null ? 90 : 50;
 
 		var turnSpeed = 0.01f;
-		if ( HasTag( "ducked" ) ) turnSpeed = 0.1f;
+		if ( HasTag( "ducked" ) )
+			turnSpeed = 0.1f;
 
 		//
 		// If we're moving, rotate to our ideal rotation
@@ -83,7 +84,8 @@ public class PlayerAnimator : PawnAnimator
 		//
 		// If we did restrict, and are standing still, add a foot shuffle
 		//
-		if ( change > 1 && WishVelocity.Length <= 1 ) _timeSinceFootShuffle = 0;
+		if ( change > 1 && WishVelocity.Length <= 1 )
+			_timeSinceFootShuffle = 0;
 
 		SetAnimParameter( "b_shuffle", _timeSinceFootShuffle < 0.1 );
 	}
@@ -125,12 +127,8 @@ public class PlayerAnimator : PawnAnimator
 
 	public override void OnEvent( string name )
 	{
-		// DebugOverlay.Text( Pos + Vector3.Up * 100, name, 5.0f );
-
 		if ( name == "jump" )
-		{
 			Trigger( "b_jump" );
-		}
 
 		base.OnEvent( name );
 	}

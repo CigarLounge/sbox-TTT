@@ -103,9 +103,6 @@ public struct Karma
 	[TTTEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
-		if ( !Host.IsServer )
-			return;
-
 		if ( Game.Current.State is not PreRound )
 			return;
 

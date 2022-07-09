@@ -80,7 +80,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !this.IsValid() || !player.Inventory.HasWeaponOfAmmoType( Type ) )
 			return;
 
-		int ammoPickedUp = player.GiveAmmo( Type, CurrentCount );
+		var ammoPickedUp = player.GiveAmmo( Type, CurrentCount );
 		CurrentCount -= ammoPickedUp;
 
 		if ( CurrentCount <= 0 )

@@ -90,12 +90,13 @@ public partial class InfoFeed : Panel
 			return;
 
 		var karma = MathF.Round( player.BaseKarma );
+		var dF = MathF.Round( 100f - player.DamageFactor * 100f );
 
 		string text;
-		if ( karma >= 1000 )
+		if ( dF == 0 )
 			text = $"Your karma is {karma}, you'll deal full damage this round.";
 		else
-			text = $"Your karma is {karma}, you'll deal reduced damage this round.";
+			text = $"Your karma is {karma}, you'll deal {dF}% reduced damage this round.";
 
 		AddEntry( text );
 	}
