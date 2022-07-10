@@ -13,7 +13,7 @@ public enum EventType
 	PlayerCorpseFound
 }
 
-public class EventInfo
+public struct EventInfo
 {
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
