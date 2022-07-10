@@ -96,12 +96,12 @@ public static class Utils
 		return arr is null || arr.Length == 0;
 	}
 
-	public static byte[] ToByteArray<T>( this T data )
+	public static byte[] Serialize<T>( this T data )
 	{
 		return Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
 	}
 
-	public static T ByteArrayToObject<T>( this byte[] bytes )
+	public static T Deserialize<T>( this byte[] bytes )
 	{
 		return JsonSerializer.Deserialize<T>( bytes );
 	}

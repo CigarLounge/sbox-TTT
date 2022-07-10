@@ -26,7 +26,7 @@ public partial class GeneralMenu : Panel
 		if ( Instance is null )
 			return;
 
-		Instance.LastEventSummaryData.Events = eventBytes.ByteArrayToObject<EventInfo[]>();
+		Instance.LastEventSummaryData.Events = eventBytes.Deserialize<EventInfo[]>();
 		EventSummary.Instance?.Init();
 
 		Instance.LastRoleSummaryData.Innocents = innocents;
