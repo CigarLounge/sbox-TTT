@@ -1,11 +1,13 @@
 ﻿using Sandbox;
 using Sandbox.UI;
 
+namespace TTT.UI;
+
 [UseTemplate]
-internal class ChatEntry : Panel
+public class ChatEntry : Panel
 {
-	public Label Name { get; set; }
-	public Label Message { get; set; }
+	public Label Name { get; init; }
+	public Label Message { get; init; }
 
 	private RealTimeSince _timeSinceCreation;
 
