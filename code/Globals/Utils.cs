@@ -1,9 +1,6 @@
 using Sandbox;
-using Sandbox.UI;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json;
 
 namespace TTT;
 
@@ -12,14 +9,9 @@ public static class Utils
 	private static List<Client> GetClients( Func<Player, bool> predicate )
 	{
 		List<Client> clients = new();
-
-		foreach ( Client client in Client.All )
-		{
+		foreach ( var client in Client.All )
 			if ( client.Pawn is Player player && predicate.Invoke( player ) )
-			{
 				clients.Add( client );
-			}
-		}
 
 		return clients;
 	}
@@ -27,28 +19,18 @@ public static class Utils
 	private static List<Player> GetPlayers( Func<Player, bool> predicate )
 	{
 		List<Player> players = new();
-
-		foreach ( Client client in Client.All )
-		{
+		foreach ( var client in Client.All )
 			if ( client.Pawn is Player player && predicate.Invoke( player ) )
-			{
 				players.Add( player );
-			}
-		}
 
 		return players;
 	}
 
 	public static List<Client> GetAliveClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.IsAlive() && pl.Role == role );
-	public static List<Client> GetAliveClientsWithTeam( Team team ) => GetClients( ( pl ) => pl.IsAlive() && pl.Team == team );
-	public static List<Client> GetClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.Role == role );
 	public static List<Client> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );
-
 	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
-	public static List<Player> GetAlivePlayersWithRole( BaseRole role ) => GetPlayers( ( pl ) => pl.IsAlive() && pl.Role == role );
 
 	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= Game.MinPlayers;
-
 	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
 
 	/// <summary>
@@ -66,10 +48,7 @@ public static class Utils
 	/// <returns>Seconds as a string in the format "mm:ss"</returns>
 	public static string TimerString( this float seconds ) => (int)seconds < 0 ? $"+{TimeSpan.FromSeconds( seconds.CeilToInt() ):mm\\:ss}" : TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
 
-	public static bool HasGreatorOrEqualAxis( this Vector3 local, Vector3 other )
-	{
-		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
-	}
+	public static bool HasGreatorOrEqualAxis( this Vector3 local, Vector3 other ) => local.x >= other.x || local.y >= other.y || local.z >= other.z;
 
 	public static void Shuffle<T>( this IList<T> list )
 	{
@@ -83,26 +62,6 @@ public static class Utils
 		}
 	}
 
-	public static bool IsNullOrEmpty<T>( this IList<T> list )
-	{
-		return list is null || list.Count == 0;
-	}
-
-	/// <summary>
-	/// Checks if a C# array is null or empty
-	/// </summary>
-	public static bool IsNullOrEmpty<T>( this T[] arr )
-	{
-		return arr is null || arr.Length == 0;
-	}
-
-	public static byte[] Serialize<T>( this T data )
-	{
-		return Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
-	}
-
-	public static T Deserialize<T>( this byte[] bytes )
-	{
-		return JsonSerializer.Deserialize<T>( bytes );
-	}
+	public static bool IsNullOrEmpty<T>( this IList<T> list ) => list is null || list.Count == 0;
+	public static bool IsNullOrEmpty<T>( this T[] arr ) => arr is null || arr.Length == 0;
 }

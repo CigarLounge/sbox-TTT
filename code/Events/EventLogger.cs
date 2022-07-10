@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 using Sandbox;
 
 namespace TTT;
@@ -13,11 +15,14 @@ public enum EventType
 	PlayerCorpseFound
 }
 
-public struct EventInfo
+public class EventInfo
 {
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
 	public string Description { get; set; }
+
+	public static byte[] Serialize( EventInfo[] data ) => Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
+	public static EventInfo[] Deserialize( byte[] bytes ) => JsonSerializer.Deserialize<EventInfo[]>( bytes );
 }
 
 public static class EventLogger
