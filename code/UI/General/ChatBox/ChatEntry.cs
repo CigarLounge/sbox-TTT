@@ -7,7 +7,7 @@ internal class ChatEntry : Panel
 	public Label Name { get; set; }
 	public Label Message { get; set; }
 
-	private TimeSince _timeSinceCreation;
+	private RealTimeSince _timeSinceCreation;
 
 	public ChatEntry( string name, string message, Color? color = null )
 	{
