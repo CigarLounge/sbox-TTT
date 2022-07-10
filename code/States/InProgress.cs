@@ -137,8 +137,7 @@ public partial class InProgress : BaseState
 	public void LoadPostRound( Team winningTeam, WinType winType )
 	{
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
-		UI.GeneralMenu.SendRoleSummaryData( Innocents, Detectives, Traitors );
-		UI.GeneralMenu.SendEventSummaryData( EventLogger.Events.ToArray(), EventLogger.EventDescriptions.ToArray() );
+		UI.GeneralMenu.SendSummaryData( EventLogger.Events.ToByteArray(), Innocents, Detectives, Traitors );
 	}
 
 	public override void OnSecond()

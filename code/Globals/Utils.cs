@@ -2,6 +2,8 @@ using Sandbox;
 using Sandbox.UI;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 
 namespace TTT;
 
@@ -92,5 +94,15 @@ public static class Utils
 	public static bool IsNullOrEmpty<T>( this T[] arr )
 	{
 		return arr is null || arr.Length == 0;
+	}
+
+	public static byte[] ToByteArray<T>( this T data )
+	{
+		return Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
+	}
+
+	public static T ByteArrayToObject<T>( this byte[] bytes )
+	{
+		return JsonSerializer.Deserialize<T>( bytes );
 	}
 }
