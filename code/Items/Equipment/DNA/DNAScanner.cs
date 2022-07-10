@@ -77,7 +77,7 @@ public partial class DNAScanner : Carriable
 			return;
 		}
 
-		float dist = Owner.Position.Distance( target.Position );
+		var dist = Owner.Position.Distance( target.Position );
 		Charge = Math.Max( 0, Charge - Math.Max( 4, dist / 25f ) );
 		UpdateMarker( To.Single( Owner ), target.Position );
 	}

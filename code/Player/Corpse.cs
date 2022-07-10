@@ -74,6 +74,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		{
 			Perks[i] = Player.Perks[i].Info;
 		}
+
+		_playersWhoGotKillInfo.Add( player.NetworkIdent );
+		_playersWhoGotPlayerData.Add( player.NetworkIdent );
 	}
 
 	public override void Spawn()
@@ -167,21 +170,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
-	[ClientRpc]
-	private void ClientSearch( int creditsRetrieved = 0 )
-	{
-		Player.IsMissingInAction = !Player.IsConfirmedDead;
-
-		if ( creditsRetrieved <= 0 )
-			return;
-
-		UI.InfoFeed.AddEntry
-		(
-			Local.Client,
-			$"found {creditsRetrieved} credits!"
-		);
-	}
-
 	public void SendKillInfo( To to )
 	{
 		Host.AssertServer();
@@ -202,6 +190,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 	}
 
+	public void SendPlayer( To to )
+	{
+		foreach ( var client in to )
+		{
+			if ( _playersWhoGotPlayerData.Contains( client.Pawn.NetworkIdent ) )
+				continue;
+
+			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
+
+			SendPlayer( To.Single( client ), Player, PlayerId, PlayerName, Perks );
+		}
+	}
+
 	[ClientRpc]
 	private void SendMiscInfo( string c4Note, TimeUntil dnaDecay )
 	{
@@ -218,17 +219,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Player.LastSeenPlayerName = lastSeenPlayerName;
 	}
 
-	public void SendPlayer( To to )
+	[ClientRpc]
+	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		foreach ( var client in to )
-		{
-			if ( _playersWhoGotPlayerData.Contains( client.Pawn.NetworkIdent ) )
-				continue;
+		Player.IsMissingInAction = !Player.IsConfirmedDead;
 
-			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
+		if ( creditsRetrieved <= 0 )
+			return;
 
-			SendPlayer( To.Single( client ), Player, PlayerId, PlayerName, Perks );
-		}
+		UI.InfoFeed.AddEntry
+		(
+			Local.Client,
+			$"found {creditsRetrieved} credits!"
+		);
 	}
 
 	[ClientRpc]
