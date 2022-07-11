@@ -33,7 +33,7 @@ public static partial class TTTEvent
 		public const string RoleChanged = "ttt.player.role-changed";
 
 		/// <summary>
-		/// Occurs when a player changes their role.
+		/// Occurs when a player's role has changed.
 		/// <para><strong>Parameters:</strong></para>
 		/// <para>The <see cref="TTT.Player"/> whose role has changed. </para>
 		/// <para><see cref="BaseRole"/> their old role. </para>
