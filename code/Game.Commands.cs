@@ -9,7 +9,7 @@ public partial class Game
 	public static void RespawnPlayer( int id = 0 )
 	{
 		var player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
-		if ( !player.IsValid() || player.SomeState == SomeState.Spectator )
+		if ( !player.IsValid() || player.IsSpectator )
 			return;
 
 		player.Respawn();

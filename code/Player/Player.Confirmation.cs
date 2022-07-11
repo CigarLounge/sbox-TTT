@@ -34,6 +34,8 @@ public partial class Player
 			}
 		}
 	}
+	public bool IsMissingInAction => SomeState == SomeState.MissingInAction;
+	public bool IsConfirmedDead => SomeState == SomeState.ConfirmedDead;
 	public bool IsRoleKnown { get; set; }
 	public string LastSeenPlayerName { get; set; }
 
@@ -75,7 +77,7 @@ public partial class Player
 
 		var wasPreviouslyConfirmed = true;
 
-		if ( SomeState != SomeState.ConfirmedDead )
+		if ( !IsConfirmedDead )
 		{
 			Confirmer = confirmer;
 			SomeState = SomeState.ConfirmedDead;

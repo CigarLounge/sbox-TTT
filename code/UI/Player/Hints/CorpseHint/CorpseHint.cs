@@ -31,7 +31,7 @@ public class CorpseHint : EntityHintPanel
 
 		if ( _corpse.Player is not null )
 		{
-			if ( _corpse.Player.SomeState == SomeState.ConfirmedDead )
+			if ( _corpse.Player.IsConfirmedDead )
 			{
 				SubText.Text = "to search.";
 				CovertSearchPanel?.Delete();

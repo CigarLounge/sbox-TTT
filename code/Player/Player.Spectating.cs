@@ -16,7 +16,7 @@ public partial class Player
 			_spectatedPlayer = value == this ? null : value;
 		}
 	}
-
+	public bool IsSpectator => SomeState == SomeState.Spectator;
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 	private int _targetSpectatorIndex = 0;
 

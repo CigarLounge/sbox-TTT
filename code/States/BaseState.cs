@@ -101,7 +101,7 @@ public abstract partial class BaseState : BaseNetworkable
 		{
 			var otherPlayer = client.Pawn as Player;
 
-			if ( otherPlayer.SomeState == SomeState.ConfirmedDead )
+			if ( otherPlayer.IsConfirmedDead )
 				otherPlayer.Confirm( To.Single( player ) );
 			else if ( otherPlayer.IsRoleKnown )
 				otherPlayer.SendRole( To.Single( player ) );

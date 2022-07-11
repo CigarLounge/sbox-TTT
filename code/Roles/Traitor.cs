@@ -30,7 +30,7 @@ public class Traitor : BaseRole
 				otherPlayer.SendRole( To.Single( player ) );
 			}
 
-			if ( otherPlayer.SomeState == SomeState.MissingInAction )
+			if ( otherPlayer.IsMissingInAction )
 				otherPlayer.UpdateMissingInAction( player );
 		}
 	}
