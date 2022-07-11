@@ -10,8 +10,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a corpse has been found and confirmed.
-		/// <para>Parameters:</para>
-		/// <para>The <strong><see cref="TTT.Player"/></strong> whose corpse was found.</para>
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> whose corpse was found.</para>
 		/// </summary>
 		public class CorpseFoundAttribute : EventAttribute
 		{
@@ -22,8 +22,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player dies.
-		/// <para>Parameters:</para>
-		/// <para>The <strong><see cref="TTT.Player"/></strong> who died.</para>
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> who died.</para>
 		/// </summary>
 		public class KilledAttribute : EventAttribute
 		{
@@ -33,10 +33,10 @@ public static partial class TTTEvent
 		public const string RoleChanged = "ttt.player.role-changed";
 
 		/// <summary>
-		/// Occurs when a player selects their role.
-		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> the player whose role has changed. </para>
-		/// <para><strong><see cref="BaseRole"/></strong> their old role. </para>
+		/// Occurs when a player changes their role.
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> whose role has changed. </para>
+		/// <para><see cref="BaseRole"/> their old role. </para>
 		/// </summary>
 		public class RoleChangedAttribute : EventAttribute
 		{
@@ -47,8 +47,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player spawns.
-		/// <para>Parameters:</para>
-		/// <para><strong><see cref="TTT.Player"/></strong> who spawned.</para>
+		/// <para><strong>Parameters:</strong></para>
+		/// <para><see cref="TTT.Player"/> who spawned.</para>
 		/// </summary>
 		public class SpawnedAttribute : EventAttribute
 		{
@@ -59,8 +59,8 @@ public static partial class TTTEvent
 
 		/// <summary>
 		/// Occurs when a player takes damage.
-		/// <para>Parameters:</para>
-		/// <para>The <strong><see cref="TTT.Player"/></strong> who was damaged.</para>
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> who was damaged.</para>
 		/// </summary>
 		public class TookDamageAttribute : EventAttribute
 		{
