@@ -25,6 +25,9 @@ public partial class Player
 		get => _someState;
 		set
 		{
+			if ( _someState == value )
+				return;
+
 			_someState = value;
 
 			if ( IsServer && value == SomeState.Spectator )
