@@ -18,11 +18,26 @@ public partial class Player
 	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-	public PlayerStatus Status { get; set; } = PlayerStatus.Spectator;
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
 	public bool IsRoleKnown { get; set; }
 	public string LastSeenPlayerName { get; set; }
+
+	private PlayerStatus _status = PlayerStatus.Spectator;
+	public PlayerStatus Status
+	{
+		get => _status;
+		set
+		{
+			if ( _status == value )
+				return;
+
+			var oldStatus = _status;
+			_status = value;
+
+			Event.Run( TTTEvent.Player.StatusChanged, this, oldStatus );
+		}
+	}
 
 	public void RemoveCorpse()
 	{
@@ -48,15 +63,15 @@ public partial class Player
 
 		if ( player is not null )
 		{
-			SetStatusRPC( To.Single( player ), PlayerStatus.MissingInAction );
+			ClientSetStatus( To.Single( player ), PlayerStatus.MissingInAction );
 			return;
 		}
 
 		Status = PlayerStatus.MissingInAction;
-		SetStatusRPC( Team.Traitors.ToClients(), PlayerStatus.MissingInAction );
+		ClientSetStatus( Team.Traitors.ToClients(), PlayerStatus.MissingInAction );
 
 		if ( Team != Team.Traitors )
-			SetStatusRPC( To.Single( this ), PlayerStatus.MissingInAction );
+			ClientSetStatus( To.Single( this ), PlayerStatus.MissingInAction );
 	}
 
 	public void Confirm( To to, Player confirmer = null )
@@ -68,8 +83,8 @@ public partial class Player
 		if ( !IsConfirmedDead )
 		{
 			Confirmer = confirmer;
-			Status = PlayerStatus.ConfirmedDead;
 			IsRoleKnown = true;
+			Status = PlayerStatus.ConfirmedDead;
 			wasPreviouslyConfirmed = false;
 		}
 
@@ -107,7 +122,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SetStatusRPC( PlayerStatus someState )
+	private void ClientSetStatus( PlayerStatus someState )
 	{
 		Status = someState;
 	}
@@ -116,7 +131,7 @@ public partial class Player
 	private void SyncClient( Client client )
 	{
 		if ( this.IsAlive() )
-			SetStatusRPC( To.Single( client ), PlayerStatus.Alive );
+			ClientSetStatus( To.Single( client ), PlayerStatus.Alive );
 
 		if ( IsConfirmedDead )
 			Confirm( To.Single( client ) );

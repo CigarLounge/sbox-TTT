@@ -48,11 +48,24 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a player spawns.
 		/// <para><strong>Parameters:</strong></para>
-		/// <para><see cref="TTT.Player"/> who spawned.</para>
+		/// <para>The <see cref="TTT.Player"/> who spawned.</para>
 		/// </summary>
 		public class SpawnedAttribute : EventAttribute
 		{
 			public SpawnedAttribute() : base( Spawned ) { }
+		}
+
+		public const string StatusChanged = "ttt.player.status-changed";
+
+		/// <summary>
+		/// Occurs when a player's status has changed.
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> whose status has changed.</para>
+		/// <para>The old <see cref="PlayerStatus"/>.</para>
+		/// </summary>
+		public class StatusChangedAttribute : EventAttribute
+		{
+			public StatusChangedAttribute() : base( StatusChanged ) { }
 		}
 
 		public const string TookDamage = "ttt.player.took-damage";
