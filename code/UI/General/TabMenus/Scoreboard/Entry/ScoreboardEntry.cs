@@ -7,7 +7,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class ScoreboardEntry : Panel
 {
-	public string ScoreboardGroupName;
+	public PlayerStatus PlayerStatus;
 	private readonly Client _client;
 
 	private Image PlayerAvatar { get; init; }

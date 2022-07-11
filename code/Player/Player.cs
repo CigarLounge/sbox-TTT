@@ -81,7 +81,6 @@ public partial class Player : AnimatedEntity
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
-		IsSpectator = IsForcedSpectator;
 
 		DeleteFlashlight();
 		DeleteItems();
@@ -96,6 +95,8 @@ public partial class Player : AnimatedEntity
 		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
+			Status = PlayerStatus.Alive;
+			ClientSetStatus( PlayerStatus.Alive );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -114,6 +115,9 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
+			Status = PlayerStatus.Spectator;
+			ClientSetStatus( PlayerStatus.Spectator );
+			Client.SetValue( Strings.Spectator, true );
 			MakeSpectator( false );
 		}
 
@@ -133,7 +137,7 @@ public partial class Player : AnimatedEntity
 		else
 			ClearButtons();
 
-		if ( !this.IsAlive() )
+		if ( IsSpectator )
 			return;
 
 		CreateFlashlight();

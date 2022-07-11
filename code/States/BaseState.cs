@@ -72,27 +72,24 @@ public abstract partial class BaseState : BaseNetworkable
 		{
 			var player = client.Pawn as Player;
 
-			if ( !player.IsAlive() && !player.IsConfirmedDead && !player.IsSpectator )
-				player.Confirm( To.Everyone );
-			else if ( !player.IsRoleKnown )
-				player.SendRole( To.Everyone );
+			switch ( player.Status )
+			{
+				case PlayerStatus.Spectator:
+					continue;
+				case PlayerStatus.MissingInAction:
+				{
+					player.Confirm( To.Everyone );
+					break;
+				}
+				default:
+				{
+					if ( !player.IsRoleKnown )
+						player.SendRole( To.Everyone );
 
-			player.IsRoleKnown = true;
-		}
-	}
-
-	protected static void SyncPlayer( Player player )
-	{
-		Host.AssertServer();
-
-		foreach ( var client in Client.All )
-		{
-			var otherPlayer = client.Pawn as Player;
-
-			if ( otherPlayer.IsConfirmedDead )
-				otherPlayer.Confirm( To.Single( player ) );
-			else if ( otherPlayer.IsRoleKnown )
-				otherPlayer.SendRole( To.Single( player ) );
+					player.IsRoleKnown = true;
+					break;
+				}
+			}
 		}
 	}
 

@@ -56,10 +56,10 @@ public class PreRound : BaseState
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-			player.IsSpectator = player.IsForcedSpectator;
 
 			if ( player.IsForcedSpectator )
 			{
+				player.Status = PlayerStatus.Spectator;
 				player.MakeSpectator( false );
 				spectators.Add( player );
 

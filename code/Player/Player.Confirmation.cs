@@ -2,6 +2,14 @@ using Sandbox;
 
 namespace TTT;
 
+public enum PlayerStatus
+{
+	Alive,
+	MissingInAction,
+	ConfirmedDead,
+	Spectator
+}
+
 public partial class Player
 {
 	public Corpse Corpse { get; set; }
@@ -10,12 +18,26 @@ public partial class Player
 	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-
-	public bool IsRoleKnown { get; set; } = false;
-	public bool IsConfirmedDead { get; set; } = false;
-	public bool IsMissingInAction { get; set; } = false;
-
+	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
+	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
+	public bool IsRoleKnown { get; set; }
 	public string LastSeenPlayerName { get; set; }
+
+	private PlayerStatus _status = PlayerStatus.Spectator;
+	public PlayerStatus Status
+	{
+		get => _status;
+		set
+		{
+			if ( _status == value )
+				return;
+
+			var oldStatus = _status;
+			_status = value;
+
+			Event.Run( TTTEvent.Player.StatusChanged, this, oldStatus );
+		}
+	}
 
 	public void RemoveCorpse()
 	{
@@ -41,12 +63,15 @@ public partial class Player
 
 		if ( player is not null )
 		{
-			ClientMissingInAction( To.Single( player ) );
+			ClientSetStatus( To.Single( player ), PlayerStatus.MissingInAction );
 			return;
 		}
 
-		IsMissingInAction = true;
-		ClientMissingInAction( Team.Traitors.ToClients() );
+		Status = PlayerStatus.MissingInAction;
+		ClientSetStatus( Team.Traitors.ToClients(), PlayerStatus.MissingInAction );
+
+		if ( Team != Team.Traitors )
+			ClientSetStatus( To.Single( this ), PlayerStatus.MissingInAction );
 	}
 
 	public void Confirm( To to, Player confirmer = null )
@@ -58,9 +83,8 @@ public partial class Player
 		if ( !IsConfirmedDead )
 		{
 			Confirmer = confirmer;
-			IsConfirmedDead = true;
 			IsRoleKnown = true;
-			IsMissingInAction = false;
+			Status = PlayerStatus.ConfirmedDead;
 			wasPreviouslyConfirmed = false;
 		}
 
@@ -82,8 +106,6 @@ public partial class Player
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayerName = string.Empty;
-		IsConfirmedDead = false;
-		IsMissingInAction = false;
 		IsRoleKnown = false;
 	}
 
@@ -91,8 +113,7 @@ public partial class Player
 	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{
 		Confirmer = confirmer;
-		IsConfirmedDead = true;
-		IsMissingInAction = false;
+		Status = PlayerStatus.ConfirmedDead;
 
 		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
@@ -101,8 +122,20 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void ClientMissingInAction()
+	private void ClientSetStatus( PlayerStatus someState )
 	{
-		IsMissingInAction = true;
+		Status = someState;
+	}
+
+	[TTTEvent.Game.ClientJoined]
+	private void SyncClient( Client client )
+	{
+		if ( this.IsAlive() )
+			ClientSetStatus( To.Single( client ), PlayerStatus.Alive );
+
+		if ( IsConfirmedDead )
+			Confirm( To.Single( client ) );
+		else if ( IsRoleKnown )
+			SendRole( To.Single( client ) );
 	}
 }
