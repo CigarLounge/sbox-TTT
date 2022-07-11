@@ -30,11 +30,16 @@ public partial class Player
 
 			_someState = value;
 
-			if ( IsServer && value == SomeState.Spectator )
+			if ( !IsServer )
+				return;
+
+			if ( value == SomeState.Spectator )
 			{
 				Client.SetValue( Strings.Spectator, true );
 				SetSomeState( SomeState.Spectator );
 			}
+			else
+				SetSomeState( To.Single( this ), value );
 		}
 	}
 	public bool IsMissingInAction => SomeState == SomeState.MissingInAction;
