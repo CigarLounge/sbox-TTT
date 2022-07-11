@@ -149,6 +149,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SendPlayer( To.Single( searcher ) );
 		Player.SendRole( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
+		ClientSearch( To.Single( searcher ), creditsRetrieved );
 
 		// Dead players will always covert search.
 		covert |= !searcher.IsAlive();
@@ -166,8 +167,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			if ( searcher.Role is Detective )
 				SendKillInfo( To.Everyone );
 		}
-
-		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
 	public void SendKillInfo( To to )
