@@ -95,8 +95,8 @@ public partial class Player : AnimatedEntity
 		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
-			SomeState = SomeState.Alive;
-			SetSomeState( SomeState.Alive );
+			Status = PlayerStatus.Alive;
+			SetStatusRPC( PlayerStatus.Alive );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -115,8 +115,8 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			SomeState = SomeState.Spectator;
-			SetSomeState( SomeState.Spectator );
+			Status = PlayerStatus.Spectator;
+			SetStatusRPC( PlayerStatus.Spectator );
 			Client.SetValue( Strings.Spectator, true );
 			MakeSpectator( false );
 		}

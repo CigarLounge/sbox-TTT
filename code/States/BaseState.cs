@@ -72,11 +72,11 @@ public abstract partial class BaseState : BaseNetworkable
 		{
 			var player = client.Pawn as Player;
 
-			switch ( player.SomeState )
+			switch ( player.Status )
 			{
-				case SomeState.Spectator:
+				case PlayerStatus.Spectator:
 					continue;
-				case SomeState.MissingInAction:
+				case PlayerStatus.MissingInAction:
 				{
 					player.Confirm( To.Everyone );
 					break;

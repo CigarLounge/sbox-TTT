@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public enum SomeState
+public enum PlayerStatus
 {
 	Alive,
 	MissingInAction,
@@ -18,9 +18,9 @@ public partial class Player
 	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-	public SomeState SomeState { get; set; } = SomeState.Spectator;
-	public bool IsMissingInAction => SomeState == SomeState.MissingInAction;
-	public bool IsConfirmedDead => SomeState == SomeState.ConfirmedDead;
+	public PlayerStatus Status { get; set; } = PlayerStatus.Spectator;
+	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
+	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
 	public bool IsRoleKnown { get; set; }
 	public string LastSeenPlayerName { get; set; }
 
@@ -48,15 +48,15 @@ public partial class Player
 
 		if ( player is not null )
 		{
-			SetSomeState( To.Single( player ), SomeState.MissingInAction );
+			SetStatusRPC( To.Single( player ), PlayerStatus.MissingInAction );
 			return;
 		}
 
-		SomeState = SomeState.MissingInAction;
-		SetSomeState( Team.Traitors.ToClients(), SomeState.MissingInAction );
+		Status = PlayerStatus.MissingInAction;
+		SetStatusRPC( Team.Traitors.ToClients(), PlayerStatus.MissingInAction );
 
 		if ( Team != Team.Traitors )
-			SetSomeState( To.Single( this ), SomeState.MissingInAction );
+			SetStatusRPC( To.Single( this ), PlayerStatus.MissingInAction );
 	}
 
 	public void Confirm( To to, Player confirmer = null )
@@ -68,7 +68,7 @@ public partial class Player
 		if ( !IsConfirmedDead )
 		{
 			Confirmer = confirmer;
-			SomeState = SomeState.ConfirmedDead;
+			Status = PlayerStatus.ConfirmedDead;
 			IsRoleKnown = true;
 			wasPreviouslyConfirmed = false;
 		}
@@ -98,7 +98,7 @@ public partial class Player
 	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{
 		Confirmer = confirmer;
-		SomeState = SomeState.ConfirmedDead;
+		Status = PlayerStatus.ConfirmedDead;
 
 		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
@@ -107,16 +107,16 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	public void SetSomeState( SomeState someState )
+	private void SetStatusRPC( PlayerStatus someState )
 	{
-		SomeState = someState;
+		Status = someState;
 	}
 
 	[TTTEvent.Game.ClientJoined]
 	private void SyncClient( Client client )
 	{
 		if ( this.IsAlive() )
-			SetSomeState( To.Single( client ), SomeState.Alive );
+			SetStatusRPC( To.Single( client ), PlayerStatus.Alive );
 
 		if ( IsConfirmedDead )
 			Confirm( To.Single( client ) );

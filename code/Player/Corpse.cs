@@ -221,7 +221,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		Player.SomeState = Player.IsConfirmedDead ? SomeState.ConfirmedDead : SomeState.MissingInAction;
+		Player.Status = Player.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
 
 		if ( creditsRetrieved <= 0 )
 			return;

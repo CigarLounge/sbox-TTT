@@ -9,7 +9,7 @@ namespace TTT.UI;
 public class Scoreboard : Panel
 {
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
-	private readonly Dictionary<SomeState, ScoreboardGroup> _scoreboardGroups = new();
+	private readonly Dictionary<PlayerStatus, ScoreboardGroup> _scoreboardGroups = new();
 
 	private const string Alive = "Alive";
 	private const string MissingInAction = "Missing In Action";
@@ -25,10 +25,10 @@ public class Scoreboard : Panel
 
 		Container.AddChild( swapButton );
 
-		AddScoreboardGroup( SomeState.Alive );
-		AddScoreboardGroup( SomeState.MissingInAction );
-		AddScoreboardGroup( SomeState.ConfirmedDead );
-		AddScoreboardGroup( SomeState.Spectator );
+		AddScoreboardGroup( PlayerStatus.Alive );
+		AddScoreboardGroup( PlayerStatus.MissingInAction );
+		AddScoreboardGroup( PlayerStatus.ConfirmedDead );
+		AddScoreboardGroup( PlayerStatus.Spectator );
 	}
 
 	public void AddClient( Client client )
@@ -49,7 +49,7 @@ public class Scoreboard : Panel
 			return;
 
 		var scoreboardGroup = GetScoreboardGroup( client );
-		if ( scoreboardGroup.SomeState != panel.SomeState )
+		if ( scoreboardGroup.GroupStatus != panel.PlayerStatus )
 		{
 			RemoveClient( client );
 			AddClient( client );
@@ -68,7 +68,7 @@ public class Scoreboard : Panel
 		if ( !_entries.TryGetValue( client, out var panel ) )
 			return;
 
-		_scoreboardGroups.TryGetValue( panel.SomeState, out var scoreboardGroup );
+		_scoreboardGroups.TryGetValue( panel.PlayerStatus, out var scoreboardGroup );
 
 		if ( scoreboardGroup is not null )
 			scoreboardGroup.GroupMembers--;
@@ -103,7 +103,7 @@ public class Scoreboard : Panel
 			UpdateClient( client );
 	}
 
-	private ScoreboardGroup AddScoreboardGroup( SomeState someState )
+	private ScoreboardGroup AddScoreboardGroup( PlayerStatus someState )
 	{
 		var scoreboardGroup = new ScoreboardGroup( Content, someState );
 		_scoreboardGroups.Add( someState, scoreboardGroup );
@@ -114,6 +114,6 @@ public class Scoreboard : Panel
 	{
 		var player = client.Pawn as Player;
 
-		return _scoreboardGroups[player.SomeState];
+		return _scoreboardGroups[player.Status];
 	}
 }
