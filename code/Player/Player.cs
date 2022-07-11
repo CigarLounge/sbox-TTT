@@ -86,6 +86,7 @@ public partial class Player : AnimatedEntity
 		DeleteItems();
 		ResetConfirmationData();
 		ResetDamageData();
+		Client.SetValue( Strings.Spectator, IsForcedSpectator );
 		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
@@ -117,7 +118,6 @@ public partial class Player : AnimatedEntity
 		{
 			Status = PlayerStatus.Spectator;
 			ClientSetStatus( PlayerStatus.Spectator );
-			Client.SetValue( Strings.Spectator, true );
 			MakeSpectator( false );
 		}
 
