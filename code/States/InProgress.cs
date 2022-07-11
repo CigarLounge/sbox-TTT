@@ -96,7 +96,7 @@ public partial class InProgress : BaseState
 		}
 	}
 
-	private void GiveFixedLoadout( Player player )
+	private static void GiveFixedLoadout( Player player )
 	{
 		if ( player.Inventory.Add( new MP5() ) )
 			player.GiveAmmo( AmmoType.PistolSMG, 120 );
@@ -162,7 +162,7 @@ public partial class InProgress : BaseState
 		return false;
 	}
 
-	private void GivePlayersCredits( BaseRole role, int credits )
+	private static void GivePlayersCredits( BaseRole role, int credits )
 	{
 		var clients = Utils.GetAliveClientsWithRole( role );
 
@@ -180,7 +180,7 @@ public partial class InProgress : BaseState
 		);
 	}
 
-	private void GiveTraitorCredits( Player traitor )
+	private static void GiveTraitorCredits( Player traitor )
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
 		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );

@@ -40,13 +40,13 @@ public partial class PostRound : BaseState
 	{
 		base.OnStart();
 
+		if ( Host.IsServer )
+		{
+			Game.Current.TotalRoundsPlayed++;
+			RevealEveryone();
+		}
+
 		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
-
-		if ( !Host.IsServer )
-			return;
-
-		Game.Current.TotalRoundsPlayed++;
-		RevealEveryone();
 	}
 
 	protected override void OnTimeUp()
