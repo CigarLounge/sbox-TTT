@@ -64,8 +64,7 @@ public partial class Game : Sandbox.Game
 
 		player.BaseKarma = Karma.DefaultValue;
 		player.ActiveKarma = player.BaseKarma;
-
-		player.IsSpectator = true;
+		player.SomeState = SomeState.Spectator;
 
 		State.OnPlayerJoin( player );
 

@@ -2,6 +2,14 @@ using Sandbox;
 
 namespace TTT;
 
+public enum SomeState
+{
+	Alive,
+	MissingInAction,
+	ConfirmedDead,
+	Spectator
+}
+
 public partial class Player
 {
 	public Corpse Corpse { get; set; }
@@ -11,10 +19,22 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; private set; }
 
-	public bool IsRoleKnown { get; set; } = false;
-	public bool IsConfirmedDead { get; set; } = false;
-	public bool IsMissingInAction { get; set; } = false;
+	private SomeState _someState;
+	public SomeState SomeState
+	{
+		get => _someState;
+		set
+		{
+			_someState = value;
 
+			if ( IsServer && value == SomeState.Spectator )
+			{
+				Client.SetValue( Strings.Spectator, true );
+				SetSomeState( SomeState.Spectator );
+			}
+		}
+	}
+	public bool IsRoleKnown { get; set; }
 	public string LastSeenPlayerName { get; set; }
 
 	public void RemoveCorpse()
@@ -41,12 +61,12 @@ public partial class Player
 
 		if ( player is not null )
 		{
-			ClientMissingInAction( To.Single( player ) );
+			SetSomeState( To.Single( player ), SomeState.MissingInAction );
 			return;
 		}
 
-		IsMissingInAction = true;
-		ClientMissingInAction( Team.Traitors.ToClients() );
+		SomeState = SomeState.MissingInAction;
+		SetSomeState( Team.Traitors.ToClients(), SomeState.MissingInAction );
 	}
 
 	public void Confirm( To to, Player confirmer = null )
@@ -55,12 +75,11 @@ public partial class Player
 
 		var wasPreviouslyConfirmed = true;
 
-		if ( !IsConfirmedDead )
+		if ( SomeState != SomeState.ConfirmedDead )
 		{
 			Confirmer = confirmer;
-			IsConfirmedDead = true;
+			SomeState = SomeState.ConfirmedDead;
 			IsRoleKnown = true;
-			IsMissingInAction = false;
 			wasPreviouslyConfirmed = false;
 		}
 
@@ -82,8 +101,7 @@ public partial class Player
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayerName = string.Empty;
-		IsConfirmedDead = false;
-		IsMissingInAction = false;
+		SomeState = SomeState.Alive;
 		IsRoleKnown = false;
 	}
 
@@ -91,8 +109,7 @@ public partial class Player
 	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{
 		Confirmer = confirmer;
-		IsConfirmedDead = true;
-		IsMissingInAction = false;
+		SomeState = SomeState.ConfirmedDead;
 
 		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
@@ -101,8 +118,8 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void ClientMissingInAction()
+	private void SetSomeState( SomeState someState )
 	{
-		IsMissingInAction = true;
+		SomeState = someState;
 	}
 }

@@ -155,7 +155,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( !covert )
 		{
-			if ( !Player.IsConfirmedDead )
+			if ( Player.SomeState != SomeState.ConfirmedDead )
 			{
 				Player.Confirm( To.Everyone, searcher );
 
@@ -222,7 +222,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		Player.IsMissingInAction = !Player.IsConfirmedDead;
+		Player.SomeState = Player.SomeState == SomeState.ConfirmedDead ? SomeState.ConfirmedDead : SomeState.MissingInAction;
 
 		if ( creditsRetrieved <= 0 )
 			return;

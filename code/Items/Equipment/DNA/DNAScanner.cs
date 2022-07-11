@@ -109,7 +109,7 @@ public partial class DNAScanner : Carriable
 		if ( !trace.Entity.IsValid() )
 			return;
 
-		if ( trace.Entity is Corpse corpse && !corpse.Player.IsConfirmedDead )
+		if ( trace.Entity is Corpse corpse && corpse.Player.SomeState != SomeState.ConfirmedDead )
 		{
 			UI.InfoFeed.AddEntry( To.Single( Owner ), "Corpse must be identified to retrieve DNA sample." );
 			return;

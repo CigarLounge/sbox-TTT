@@ -9,12 +9,12 @@ namespace TTT.UI;
 public class Scoreboard : Panel
 {
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
-	private readonly Dictionary<string, ScoreboardGroup> _scoreboardGroups = new();
+	private readonly Dictionary<SomeState, ScoreboardGroup> _scoreboardGroups = new();
 
-	private const string _alive = "Alive";
-	private const string _missingInAction = "Missing In Action";
-	private const string _confirmedDead = "Confirmed Dead";
-	private const string _spectator = "Spectator";
+	private const string Alive = "Alive";
+	private const string MissingInAction = "Missing In Action";
+	private const string ConfirmedDead = "Confirmed Dead";
+	private const string Spectator = "Spectator";
 
 	private Panel Container { get; init; }
 	private Panel Content { get; init; }
@@ -25,10 +25,10 @@ public class Scoreboard : Panel
 
 		Container.AddChild( swapButton );
 
-		AddScoreboardGroup( _alive );
-		AddScoreboardGroup( _missingInAction );
-		AddScoreboardGroup( _confirmedDead );
-		AddScoreboardGroup( _spectator );
+		AddScoreboardGroup( SomeState.Alive );
+		AddScoreboardGroup( SomeState.MissingInAction );
+		AddScoreboardGroup( SomeState.ConfirmedDead );
+		AddScoreboardGroup( SomeState.Spectator );
 	}
 
 	public void AddClient( Client client )
@@ -49,7 +49,7 @@ public class Scoreboard : Panel
 			return;
 
 		var scoreboardGroup = GetScoreboardGroup( client );
-		if ( scoreboardGroup.GroupTitle != panel.ScoreboardGroupName )
+		if ( scoreboardGroup.SomeState != panel.SomeState )
 		{
 			RemoveClient( client );
 			AddClient( client );
@@ -68,7 +68,7 @@ public class Scoreboard : Panel
 		if ( !_entries.TryGetValue( client, out var panel ) )
 			return;
 
-		_scoreboardGroups.TryGetValue( panel.ScoreboardGroupName, out var scoreboardGroup );
+		_scoreboardGroups.TryGetValue( panel.SomeState, out var scoreboardGroup );
 
 		if ( scoreboardGroup is not null )
 			scoreboardGroup.GroupMembers--;
@@ -103,10 +103,10 @@ public class Scoreboard : Panel
 			UpdateClient( client );
 	}
 
-	private ScoreboardGroup AddScoreboardGroup( string groupName )
+	private ScoreboardGroup AddScoreboardGroup( SomeState someState )
 	{
-		var scoreboardGroup = new ScoreboardGroup( Content, groupName );
-		_scoreboardGroups.Add( groupName, scoreboardGroup );
+		var scoreboardGroup = new ScoreboardGroup( Content, someState );
+		_scoreboardGroups.Add( someState, scoreboardGroup );
 		return scoreboardGroup;
 	}
 
@@ -114,12 +114,6 @@ public class Scoreboard : Panel
 	{
 		var player = client.Pawn as Player;
 
-		if ( player.IsMissingInAction )
-			return _scoreboardGroups[_missingInAction];
-
-		if ( player.IsConfirmedDead )
-			return _scoreboardGroups[_confirmedDead];
-
-		return _scoreboardGroups[player.IsSpectator ? _spectator : _alive];
+		return _scoreboardGroups[player.SomeState];
 	}
 }
