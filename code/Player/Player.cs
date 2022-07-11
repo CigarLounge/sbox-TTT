@@ -125,6 +125,7 @@ public partial class Player : AnimatedEntity
 	{
 		Host.AssertClient();
 
+		SomeState = SomeState.Alive;
 		DeleteFlashlight();
 		ResetConfirmationData();
 		ResetDamageData();
