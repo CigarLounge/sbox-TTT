@@ -115,7 +115,10 @@ public partial class Player
 		Client.AddInt( "deaths" );
 
 		if ( !DiedBySuicide )
+		{
 			LastAttacker.Client.AddInt( "kills" );
+			(LastAttacker as Player).PlayersKilled.Add( this );
+		}
 
 		BecomeCorpse();
 		RemoveAllDecals();

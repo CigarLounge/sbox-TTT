@@ -256,7 +256,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
+		if ( !Player.IsValid() && !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( !Player.LastDamageInfo.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
