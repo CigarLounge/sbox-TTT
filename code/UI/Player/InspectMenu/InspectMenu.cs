@@ -73,10 +73,10 @@ public partial class InspectMenu : Panel
 
 		_corpse = corpse;
 		_player = corpse.Player;
-		SetConfirmationData( _player.LastAttackerWeaponInfo, _corpse.Perks );
+		SetConfirmationData();
 	}
 
-	private void SetConfirmationData( CarriableInfo carriableInfo, PerkInfo[] perks )
+	private void SetConfirmationData()
 	{
 		PlayerAvatar.SetTexture( $"avatar:{_corpse.PlayerId}" );
 		PlayerName.Text = _corpse.PlayerName;
@@ -111,12 +111,12 @@ public partial class InspectMenu : Panel
 			_lastSeen.SetActiveText( $"The last person they saw was {_player.LastSeenPlayerName}... killer or coincidence?" );
 		}
 
-		_weapon.Enabled( carriableInfo is not null );
+		_weapon.Enabled( _player.LastAttackerWeaponInfo is not null );
 		if ( _weapon.IsEnabled() )
 		{
-			_weapon.SetTexture( carriableInfo.Icon );
-			_weapon.SetImageText( $"{carriableInfo.Title}" );
-			_weapon.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+			_weapon.SetTexture( _player.LastAttackerWeaponInfo.Icon );
+			_weapon.SetImageText( $"{_player.LastAttackerWeaponInfo.Title}" );
+			_weapon.SetActiveText( $"It appears a {_player.LastAttackerWeaponInfo.Title} was used to kill them." );
 		}
 
 		_killList.Enabled( !_corpse.KillList.IsNullOrEmpty() );
@@ -124,7 +124,10 @@ public partial class InspectMenu : Panel
 		{
 			_killList.SetImage( "/ui/inspectmenu/killlist.png" );
 			_killList.SetImageText( "Kill List" );
-			_killList.SetActiveText( "TODO: Copy over the player names..." );
+			var text = "You found a list of kills that confirms the death(s) of...";
+			foreach ( var deadPlayerName in _corpse.KillList )
+				text += $"{deadPlayerName}\n";
+			_killList.SetActiveText( text );
 		}
 
 		_c4Note.Enabled( !string.IsNullOrEmpty( _corpse.C4Note ) );
@@ -135,9 +138,9 @@ public partial class InspectMenu : Panel
 			_c4Note.SetActiveText( $"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4." );
 		}
 
-		if ( !perks.IsNullOrEmpty() )
+		if ( !_corpse.Perks.IsNullOrEmpty() )
 		{
-			foreach ( var perk in perks )
+			foreach ( var perk in _corpse.Perks )
 			{
 				var perkEntry = new InspectEntry( IconsContainer );
 				perkEntry.SetTexture( perk.Icon );

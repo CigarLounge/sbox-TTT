@@ -1,5 +1,4 @@
 using Sandbox;
-using System;
 using System.Collections.Generic;
 
 namespace TTT;
@@ -208,9 +207,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( string[] killedPlayerNames, string c4Note, TimeUntil dnaDecay )
+	private void SendMiscInfo( string[] killList, string c4Note, TimeUntil dnaDecay )
 	{
-		KillList = killedPlayerNames;
+		KillList = killList;
 		C4Note = c4Note;
 		TimeUntilDNADecay = dnaDecay;
 	}
