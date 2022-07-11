@@ -93,24 +93,6 @@ public abstract partial class BaseState : BaseNetworkable
 		}
 	}
 
-	protected static void SyncPlayer( Player player )
-	{
-		Host.AssertServer();
-
-		foreach ( var client in Client.All )
-		{
-			var otherPlayer = client.Pawn as Player;
-
-			if ( otherPlayer.IsAlive() )
-				otherPlayer.SetSomeState( SomeState.Alive );
-
-			if ( otherPlayer.IsConfirmedDead )
-				otherPlayer.Confirm( To.Single( player ) );
-			else if ( otherPlayer.IsRoleKnown )
-				otherPlayer.SendRole( To.Single( player ) );
-		}
-	}
-
 	protected async void StartRespawnTimer( Player player )
 	{
 		await GameTask.DelaySeconds( 1 );

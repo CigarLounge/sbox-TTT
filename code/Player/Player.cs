@@ -137,7 +137,7 @@ public partial class Player : AnimatedEntity
 		else
 			ClearButtons();
 
-		if ( !this.IsAlive() )
+		if ( IsSpectator )
 			return;
 
 		CreateFlashlight();

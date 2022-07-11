@@ -59,7 +59,6 @@ public partial class InProgress : BaseState
 		base.OnPlayerJoin( player );
 
 		Spectators.Add( player );
-		SyncPlayer( player );
 	}
 
 	public override void OnPlayerLeave( Player player )

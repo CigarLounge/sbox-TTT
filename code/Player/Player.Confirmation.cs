@@ -53,8 +53,10 @@ public partial class Player
 		}
 
 		SomeState = SomeState.MissingInAction;
-		SetSomeState( To.Single( this ), SomeState.MissingInAction );
 		SetSomeState( Team.Traitors.ToClients(), SomeState.MissingInAction );
+
+		if ( Team != Team.Traitors )
+			SetSomeState( To.Single( this ), SomeState.MissingInAction );
 	}
 
 	public void Confirm( To to, Player confirmer = null )
@@ -108,5 +110,17 @@ public partial class Player
 	public void SetSomeState( SomeState someState )
 	{
 		SomeState = someState;
+	}
+
+	[TTTEvent.Game.ClientJoined]
+	private void SyncClient( Client client )
+	{
+		if ( this.IsAlive() )
+			SetSomeState( To.Single( client ), SomeState.Alive );
+
+		if ( IsConfirmedDead )
+			Confirm( To.Single( client ) );
+		else if ( IsRoleKnown )
+			SendRole( To.Single( client ) );
 	}
 }
