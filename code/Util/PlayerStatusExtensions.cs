@@ -1,10 +1,10 @@
 ﻿namespace TTT;
 
-public static class SomeStateExtensions
+public static class PlayerStatusExtensions
 {
-	public static Color GetColor( this PlayerStatus someState )
+	public static Color GetColor( this PlayerStatus status )
 	{
-		return someState switch
+		return status switch
 		{
 			PlayerStatus.Alive => Color.FromBytes( 23, 173, 68 ),
 			PlayerStatus.MissingInAction => Color.FromBytes( 80, 117, 79 ),
@@ -14,9 +14,9 @@ public static class SomeStateExtensions
 		};
 	}
 
-	public static string ToStringFast( this PlayerStatus someState )
+	public static string ToStringFast( this PlayerStatus status )
 	{
-		return someState switch
+		return status switch
 		{
 			PlayerStatus.Alive => "Alive",
 			PlayerStatus.MissingInAction => "Missing In Action",
