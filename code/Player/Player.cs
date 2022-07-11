@@ -96,6 +96,7 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			SomeState = SomeState.Alive;
+			SetSomeState( SomeState.Alive );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -115,6 +116,8 @@ public partial class Player : AnimatedEntity
 		else
 		{
 			SomeState = SomeState.Spectator;
+			SetSomeState( SomeState.Spectator );
+			Client.SetValue( Strings.Spectator, true );
 			MakeSpectator( false );
 		}
 
@@ -125,7 +128,6 @@ public partial class Player : AnimatedEntity
 	{
 		Host.AssertClient();
 
-		SomeState = SomeState.Alive;
 		DeleteFlashlight();
 		ResetConfirmationData();
 		ResetDamageData();

@@ -18,30 +18,7 @@ public partial class Player
 	/// The player who confirmed this player's corpse.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-
-	private SomeState _someState;
-	public SomeState SomeState
-	{
-		get => _someState;
-		set
-		{
-			if ( _someState == value )
-				return;
-
-			_someState = value;
-
-			if ( !IsServer )
-				return;
-
-			if ( value == SomeState.Spectator )
-			{
-				Client.SetValue( Strings.Spectator, true );
-				SetSomeState( SomeState.Spectator );
-			}
-			else
-				SetSomeState( To.Single( this ), value );
-		}
-	}
+	public SomeState SomeState { get; set; } = SomeState.Spectator;
 	public bool IsMissingInAction => SomeState == SomeState.MissingInAction;
 	public bool IsConfirmedDead => SomeState == SomeState.ConfirmedDead;
 	public bool IsRoleKnown { get; set; }
@@ -76,6 +53,7 @@ public partial class Player
 		}
 
 		SomeState = SomeState.MissingInAction;
+		SetSomeState( To.Single( this ), SomeState.MissingInAction );
 		SetSomeState( Team.Traitors.ToClients(), SomeState.MissingInAction );
 	}
 
@@ -111,7 +89,6 @@ public partial class Player
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayerName = string.Empty;
-		SomeState = SomeState.Alive;
 		IsRoleKnown = false;
 	}
 
@@ -128,7 +105,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SetSomeState( SomeState someState )
+	public void SetSomeState( SomeState someState )
 	{
 		SomeState = someState;
 	}
