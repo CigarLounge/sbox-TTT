@@ -15,8 +15,8 @@ public class ScoreboardGroup : Panel
 	public ScoreboardGroup( Panel parent, SomeState someState ) : base( parent )
 	{
 		SomeState = someState;
-		Title.Text = someState.ToString();
-		AddClass( someState.ToString() );
+		Title.Text = someState.ToStringFast();
+		AddClass( someState.ToStringFast() );
 	}
 
 	public ScoreboardEntry AddEntry( Client client )
