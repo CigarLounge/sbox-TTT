@@ -82,15 +82,10 @@ public partial class InProgress : BaseState
 
 		FakeTime = TimeLeft;
 
-		// For now, if the RandomWeaponCount of the map is zero, let's just give the players
-		// a fixed weapon loadout.
-		if ( MapHandler.RandomWeaponCount == 0 )
-		{
+		// If the map isn't armed for TTT, just give the player(s) a fixed loadout.
+		if ( MapHandler.WeaponCount == 0 )
 			foreach ( var player in AlivePlayers )
-			{
 				GiveFixedLoadout( player );
-			}
-		}
 
 		foreach ( var ent in Entity.All )
 		{
@@ -136,8 +131,7 @@ public partial class InProgress : BaseState
 	public void LoadPostRound( Team winningTeam, WinType winType )
 	{
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
-		UI.GeneralMenu.SendRoleSummaryData( Innocents, Detectives, Traitors );
-		UI.GeneralMenu.SendEventSummaryData( EventLogger.Events.ToArray(), EventLogger.EventDescriptions.ToArray() );
+		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( EventLogger.Events.ToArray() ), Innocents, Detectives, Traitors );
 	}
 
 	public override void OnSecond()
