@@ -19,6 +19,7 @@ public partial class InspectMenu : Panel
 	private readonly InspectEntry _headshot;
 	private readonly InspectEntry _dna;
 	private readonly InspectEntry _lastSeen;
+	private readonly InspectEntry _killList;
 	private readonly InspectEntry _c4Note;
 
 	private Panel InspectContainer { get; set; }
@@ -58,6 +59,10 @@ public partial class InspectMenu : Panel
 		_lastSeen = new InspectEntry( IconsContainer );
 		_lastSeen.Enabled( false );
 		_inspectionEntries.Add( _lastSeen );
+
+		_killList = new InspectEntry( IconsContainer );
+		_killList.Enabled( false );
+		_inspectionEntries.Add( _killList );
 
 		_c4Note = new InspectEntry( IconsContainer );
 		_c4Note.Enabled( false );
@@ -112,6 +117,14 @@ public partial class InspectMenu : Panel
 			_weapon.SetTexture( carriableInfo.Icon );
 			_weapon.SetImageText( $"{carriableInfo.Title}" );
 			_weapon.SetActiveText( $"It appears a {carriableInfo.Title} was used to kill them." );
+		}
+
+		_killList.Enabled( !_corpse.KillList.IsNullOrEmpty() );
+		if ( _killList.IsEnabled() )
+		{
+			_killList.SetImage( "/ui/inspectmenu/killlist.png" );
+			_killList.SetImageText( "Kill List" );
+			_killList.SetActiveText( "TODO: Copy over the player names..." );
 		}
 
 		_c4Note.Enabled( !string.IsNullOrEmpty( _corpse.C4Note ) );

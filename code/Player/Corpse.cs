@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 
 namespace TTT;
@@ -17,6 +18,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
+	public string[] KillList { get; private set; }
 
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
@@ -49,9 +51,16 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 
 		var c4Note = player.Components.Get<C4Note>();
-
 		if ( c4Note is not null )
 			C4Note = c4Note.SafeWireNumber.ToString();
+
+		Perks = new PerkInfo[Player.Perks.Count];
+		for ( var i = 0; i < Player.Perks.Count; i++ )
+			Perks[i] = Player.Perks[i].Info;
+
+		KillList = new string[Player.PlayersKilled.Count];
+		for ( var i = 0; i < Player.PlayersKilled.Count; i++ )
+			KillList[i] = Player.PlayersKilled[i]?.Corpse?.PlayerName;
 
 		player.Corpse = this;
 
@@ -63,17 +72,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ApplyForceToBone( Player.LastDamageInfo.Force, Player.GetHitboxBone( Player.LastDamageInfo.HitboxIndex ) );
 
 		foreach ( var clothing in Player.Clothes.ToArray() )
-		{
 			clothing.SetParent( this, true );
-		}
 
 		Player.SetClothingBodyGroups( this, 1 );
-
-		Perks = new PerkInfo[Player.Perks.Count];
-		for ( var i = 0; i < Player.Perks.Count; i++ )
-		{
-			Perks[i] = Player.Perks[i].Info;
-		}
 
 		_playersWhoGotKillInfo.Add( player.NetworkIdent );
 		_playersWhoGotPlayerData.Add( player.NetworkIdent );
@@ -159,6 +160,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			{
 				Player.Confirm( To.Everyone, searcher );
 
+				foreach ( var deadPlayer in Player.PlayersKilled )
+					deadPlayer?.Confirm( To.Everyone, searcher );
+
 				Event.Run( TTTEvent.Player.CorpseFound, Player );
 			}
 
@@ -183,7 +187,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( C4Note, TimeUntilDNADecay );
+			SendMiscInfo( KillList, C4Note, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
 				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayerName );
@@ -204,8 +208,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( string c4Note, TimeUntil dnaDecay )
+	private void SendMiscInfo( string[] killedPlayerNames, string c4Note, TimeUntil dnaDecay )
 	{
+		KillList = killedPlayerNames;
 		C4Note = c4Note;
 		TimeUntilDNADecay = dnaDecay;
 	}

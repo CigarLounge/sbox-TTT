@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -15,6 +16,7 @@ public partial class Player
 	public bool IsConfirmedDead { get; set; } = false;
 	public bool IsMissingInAction { get; set; } = false;
 
+	public List<Player> PlayersKilled { get; set; } = new();
 	public string LastSeenPlayerName { get; set; }
 
 	public void RemoveCorpse()
@@ -85,6 +87,20 @@ public partial class Player
 		IsConfirmedDead = false;
 		IsMissingInAction = false;
 		IsRoleKnown = false;
+		PlayersKilled.Clear();
+	}
+
+	[TTTEvent.Player.Killed]
+	private static void OnKilled( Player player )
+	{
+		if ( !Host.IsServer )
+			return;
+
+		var attacker = player.LastAttacker as Player;
+		if ( !attacker.IsValid() || !player.IsValid() )
+			return;
+
+		attacker.PlayersKilled.Add( player );
 	}
 
 	[ClientRpc]
