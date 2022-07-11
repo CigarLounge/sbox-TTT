@@ -149,6 +149,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SendPlayer( To.Single( searcher ) );
 		Player.SendRole( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
+		ClientSearch( To.Single( searcher ), creditsRetrieved );
 
 		// Dead players will always covert search.
 		covert |= !searcher.IsAlive();
@@ -169,8 +170,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			if ( searcher.Role is Detective )
 				SendKillInfo( To.Everyone );
 		}
-
-		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
 	public void SendKillInfo( To to )
@@ -226,7 +225,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		Player.IsMissingInAction = !Player.IsConfirmedDead;
+		Player.Status = Player.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
 
 		if ( creditsRetrieved <= 0 )
 			return;
@@ -256,7 +255,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Player.IsValid() && !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
+		if ( !Player.IsValid() || !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( !Player.LastDamageInfo.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );

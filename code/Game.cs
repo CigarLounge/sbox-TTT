@@ -65,8 +65,7 @@ public partial class Game : Sandbox.Game
 		player.BaseKarma = Karma.DefaultValue;
 		player.ActiveKarma = player.BaseKarma;
 
-		player.IsSpectator = true;
-
+		Event.Run( TTTEvent.Game.ClientJoined, client );
 		State.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
@@ -74,6 +73,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
+		Event.Run( TTTEvent.Game.ClientDisconnected, client, reason );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );

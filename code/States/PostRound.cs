@@ -36,13 +36,6 @@ public partial class PostRound : BaseState
 		player.Confirm( To.Everyone );
 	}
 
-	public override void OnPlayerJoin( Player player )
-	{
-		base.OnPlayerJoin( player );
-
-		SyncPlayer( player );
-	}
-
 	protected override void OnStart()
 	{
 		base.OnStart();

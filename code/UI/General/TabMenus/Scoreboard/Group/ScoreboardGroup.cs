@@ -6,24 +6,24 @@ namespace TTT.UI;
 [UseTemplate]
 public class ScoreboardGroup : Panel
 {
-	public readonly string GroupTitle;
+	public readonly PlayerStatus GroupStatus;
 	public int GroupMembers = 0;
 
 	private Label Title { get; init; }
 	private Panel Content { get; init; }
 
-	public ScoreboardGroup( Panel parent, string groupName ) : base( parent )
+	public ScoreboardGroup( Panel parent, PlayerStatus GroupStatus ) : base( parent )
 	{
-		GroupTitle = groupName;
-		Title.Text = groupName;
-		AddClass( groupName );
+		this.GroupStatus = GroupStatus;
+		Title.Text = GroupStatus.ToStringFast();
+		AddClass( GroupStatus.ToStringFast() );
 	}
 
 	public ScoreboardEntry AddEntry( Client client )
 	{
 		var scoreboardEntry = new ScoreboardEntry( Content, client )
 		{
-			ScoreboardGroupName = GroupTitle
+			PlayerStatus = GroupStatus
 		};
 
 		scoreboardEntry.Update();

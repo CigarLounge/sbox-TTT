@@ -8,17 +8,18 @@ public partial class Player : AnimatedEntity
 	public Inventory Inventory { get; private init; }
 	public Perks Perks { get; private init; }
 
+	private CameraMode _camera;
 	public CameraMode Camera
 	{
-		get => Components.Get<CameraMode>();
+		get => _camera;
 		set
 		{
-			var current = Camera;
-			if ( current == value )
+			if ( _camera == value )
 				return;
 
 			Components.RemoveAny<CameraMode>();
 			Components.Add( value );
+			_camera = value;
 		}
 	}
 
@@ -81,12 +82,12 @@ public partial class Player : AnimatedEntity
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
-		IsSpectator = IsForcedSpectator;
 
 		DeleteFlashlight();
 		DeleteItems();
 		ResetConfirmationData();
 		ResetDamageData();
+		Client.SetValue( Strings.Spectator, IsForcedSpectator );
 		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
@@ -96,6 +97,8 @@ public partial class Player : AnimatedEntity
 		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
+			Status = PlayerStatus.Alive;
+			ClientSetStatus( PlayerStatus.Alive );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -114,6 +117,8 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
+			Status = PlayerStatus.Spectator;
+			ClientSetStatus( PlayerStatus.Spectator );
 			MakeSpectator( false );
 		}
 
@@ -133,7 +138,7 @@ public partial class Player : AnimatedEntity
 		else
 			ClearButtons();
 
-		if ( !this.IsAlive() )
+		if ( IsSpectator )
 			return;
 
 		CreateFlashlight();

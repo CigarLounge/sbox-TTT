@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 using Sandbox;
 
 namespace TTT;
@@ -13,17 +15,19 @@ public enum EventType
 	PlayerCorpseFound
 }
 
-public struct EventInfo
+public class EventInfo
 {
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
+	public string Description { get; set; }
+
+	public static byte[] Serialize( EventInfo[] data ) => Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
+	public static EventInfo[] Deserialize( byte[] bytes ) => JsonSerializer.Deserialize<EventInfo[]>( bytes );
 }
 
 public static class EventLogger
 {
-	// s&box doesn't allow for string types in structs, so we need a seperate array for them meanwhile...
 	public static readonly List<EventInfo> Events = new();
-	public static readonly List<string> EventDescriptions = new();
 
 	private const string LogFolder = "round-logs";
 
@@ -33,10 +37,10 @@ public static class EventLogger
 		{
 			EventType = eventType,
 			Time = time,
+			Description = description
 		};
 
 		Events.Add( eventInfo );
-		EventDescriptions.Add( description );
 	}
 
 	[TTTEvent.Round.Started]
@@ -46,7 +50,6 @@ public static class EventLogger
 			return;
 
 		Events.Clear();
-		EventDescriptions.Clear();
 
 		LogEvent( EventType.Round, Game.InProgressTime, "The round started." );
 	}
@@ -117,11 +120,9 @@ public static class EventLogger
 	private static string GetEventSummary()
 	{
 		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
-		if ( Events.Count != EventDescriptions.Count )
-			return summary;
 
 		for ( var i = 0; i < Events.Count; ++i )
-			summary += $"{Events[i].Time.TimerString()} - {EventDescriptions[i]}\n";
+			summary += $"{Events[i].Time.TimerString()} - {Events[i].Description}\n";
 
 		return summary;
 	}
