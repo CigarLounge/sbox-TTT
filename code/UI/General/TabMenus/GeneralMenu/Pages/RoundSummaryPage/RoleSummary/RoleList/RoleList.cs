@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
@@ -12,10 +13,10 @@ public class RoleList : Panel
 	private Label Role { get; init; }
 	private Panel PlayersContainer { get; init; }
 
-	public RoleList( BaseRole role, Player[] players )
+	public RoleList( Role role, List<Player> players )
 	{
 		Header.Style.BackgroundColor = role.Color;
-		Role.Text = $"{role.Title} - {players.Length}";
+		Role.Text = $"{role.Title} - {players.Count}";
 
 		foreach ( var player in players )
 			AddPlayer( player );

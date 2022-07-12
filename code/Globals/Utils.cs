@@ -26,7 +26,7 @@ public static class Utils
 		return players;
 	}
 
-	public static List<Client> GetAliveClientsWithRole( BaseRole role ) => GetClients( ( pl ) => pl.IsAlive() && pl.Role == role );
+	public static List<Client> GetAliveClientsWithRole( Role role ) => GetClients( ( pl ) => pl.IsAlive() && pl.Role == role );
 	public static List<Client> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );
 	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
 
