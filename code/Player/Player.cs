@@ -57,6 +57,7 @@ public partial class Player : AnimatedEntity
 
 		Health = 0;
 		LifeState = LifeState.Respawnable;
+		Status = PlayerStatus.Spectator;
 		Transmit = TransmitType.Always;
 
 		Predictable = true;
