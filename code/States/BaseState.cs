@@ -78,7 +78,7 @@ public abstract partial class BaseState : BaseNetworkable
 					continue;
 				case PlayerStatus.MissingInAction:
 				{
-					player.Confirm( To.Everyone );
+					player.Confirm( To.Everyone, true );
 					break;
 				}
 				default:

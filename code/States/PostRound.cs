@@ -40,14 +40,14 @@ public partial class PostRound : BaseState
 	{
 		base.OnPlayerKilled( player );
 
-		player.Confirm( To.Everyone );
+		player.Confirm( To.Everyone, true );
 	}
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		Game.Current.TotalRoundsPlayed++;		
+		Game.Current.TotalRoundsPlayed++;
 		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
 	}
 

@@ -13,7 +13,13 @@ public enum PlayerStatus
 
 public partial class Player
 {
-	public Corpse Corpse { get; set; }
+	[Net]
+	public long SteamId { get; set; }
+
+	[Net]
+	public string SteamName { get; set; }
+
+	public Corpse Corpse { get; private set; }
 
 	/// <summary>
 	/// The player who confirmed this player's corpse.
@@ -25,7 +31,7 @@ public partial class Player
 	public string LastSeenPlayerName { get; set; }
 	public List<Player> PlayersKilled { get; set; } = new();
 
-	private PlayerStatus _status = PlayerStatus.Spectator;
+	private PlayerStatus _status;
 	public PlayerStatus Status
 	{
 		get => _status;
@@ -76,24 +82,37 @@ public partial class Player
 			ClientSetStatus( To.Single( this ), PlayerStatus.MissingInAction );
 	}
 
-	public void Confirm( To to, Player confirmer = null )
+	/// <summary>
+	/// Confirm the player. The player will only be labeled 
+	/// as <see cref="PlayerStatus.ConfirmedDead"/> if the target is <see cref="To.Everyone"/>.
+	/// </summary>
+	/// <param name="to">The target.</param>
+	/// <param name="confirmer">
+	/// The player who confirmed the corpse for the rest of the lobby.
+	/// </param>
+	public void Confirm( To to, bool global = false, Player confirmer = null )
 	{
 		Host.AssertServer();
 
+		if ( this.IsAlive() || IsSpectator )
+		{
+			Log.Warning( "Trying to confirm an alive player or spectator!" );
+			return;
+		}
+
 		var wasPreviouslyConfirmed = true;
 
-		if ( !IsConfirmedDead )
+		if ( !IsConfirmedDead && global )
 		{
 			Confirmer = confirmer;
 			IsRoleKnown = true;
 			Status = PlayerStatus.ConfirmedDead;
+			ClientSetStatus( PlayerStatus.ConfirmedDead );
 			wasPreviouslyConfirmed = false;
 		}
 
-		if ( Corpse.IsValid() )
-			Corpse.SendPlayer( to );
-
 		SendRole( to );
+		ClientSetCorpse( to, Corpse );
 		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
 	}
 
@@ -107,8 +126,8 @@ public partial class Player
 	{
 		Confirmer = null;
 		Corpse = null;
-		LastSeenPlayerName = string.Empty;
 		IsRoleKnown = false;
+		LastSeenPlayerName = string.Empty;
 		PlayersKilled.Clear();
 	}
 
@@ -116,7 +135,7 @@ public partial class Player
 	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
 	{
 		Confirmer = confirmer;
-		Status = PlayerStatus.ConfirmedDead;
+		Status = IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
 
 		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
 			return;
@@ -125,16 +144,23 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void ClientSetStatus( PlayerStatus someState )
+	private void ClientSetCorpse( Corpse corpse )
 	{
-		Status = someState;
+		Corpse = corpse;
+		Corpse.Player = this;
+	}
+
+	[ClientRpc]
+	private void ClientSetStatus( PlayerStatus status )
+	{
+		Status = status;
 	}
 
 	[TTTEvent.Game.ClientJoined]
 	private void SyncClient( Client client )
 	{
-		if ( this.IsAlive() )
-			ClientSetStatus( To.Single( client ), PlayerStatus.Alive );
+		if ( IsSpectator )
+			ClientSetStatus( To.Single( client ), PlayerStatus.Spectator );
 
 		if ( IsConfirmedDead )
 			Confirm( To.Single( client ) );
