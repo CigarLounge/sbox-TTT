@@ -8,10 +8,6 @@ public partial class InProgress : BaseState
 	public List<Player> AlivePlayers { get; set; }
 	public List<Player> Spectators { get; set; }
 
-	public Player[] Innocents { get; set; }
-	public Player[] Detectives { get; set; }
-	public Player[] Traitors { get; set; }
-
 	/// <summary>
 	/// Unique case where InProgress has a seperate fake timer for Innocents.
 	/// The real timer is only displayed to Traitors as it increments every player death during the round.
@@ -35,7 +31,7 @@ public partial class InProgress : BaseState
 		if ( player.Team == Team.Innocents )
 			_innocentTeamDeathCount += 1;
 
-		var percentDead = (float)_innocentTeamDeathCount / (Innocents.Length + Detectives.Length);
+		var percentDead = (float)_innocentTeamDeathCount / Team.Innocents.GetCount();
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
 			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
@@ -96,7 +92,7 @@ public partial class InProgress : BaseState
 		}
 	}
 
-	private void GiveFixedLoadout( Player player )
+	private static void GiveFixedLoadout( Player player )
 	{
 		if ( player.Inventory.Add( new MP5() ) )
 			player.GiveAmmo( AmmoType.PistolSMG, 120 );
@@ -109,7 +105,7 @@ public partial class InProgress : BaseState
 	{
 		base.OnTimeUp();
 
-		LoadPostRound( Team.Innocents, WinType.TimeUp );
+		PostRound.Load( Team.Innocents, WinType.TimeUp );
 	}
 
 	private Team IsRoundOver()
@@ -126,12 +122,6 @@ public partial class InProgress : BaseState
 			return Team.None;
 
 		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
-	}
-
-	public void LoadPostRound( Team winningTeam, WinType winType )
-	{
-		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
-		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( EventLogger.Events.ToArray() ), Innocents, Detectives, Traitors );
 	}
 
 	public override void OnSecond()
@@ -155,14 +145,14 @@ public partial class InProgress : BaseState
 
 		if ( result != Team.None && !Game.PreventWin )
 		{
-			LoadPostRound( result, WinType.Elimination );
+			PostRound.Load( result, WinType.Elimination );
 			return true;
 		}
 
 		return false;
 	}
 
-	private void GivePlayersCredits( BaseRole role, int credits )
+	private static void GivePlayersCredits( Role role, int credits )
 	{
 		var clients = Utils.GetAliveClientsWithRole( role );
 
@@ -180,14 +170,14 @@ public partial class InProgress : BaseState
 		);
 	}
 
-	private void GiveTraitorCredits( Player traitor )
+	private static void GiveTraitorCredits( Player traitor )
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
 		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[TTTEvent.Player.RoleChanged]
-	private static void OnPlayerRoleChange( Player player, BaseRole oldRole )
+	private static void OnPlayerRoleChange( Player player, Role oldRole )
 	{
 		if ( Host.IsClient )
 			return;

@@ -5,7 +5,7 @@ namespace TTT;
 [Category( "Roles" )]
 [ClassName( "ttt_role_detective" )]
 [Title( "Detective" )]
-public class Detective : BaseRole
+public class Detective : Role
 {
 	public override void OnSelect( Player player )
 	{

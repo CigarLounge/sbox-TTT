@@ -25,8 +25,15 @@ public partial class PostRound : BaseState
 
 	public PostRound( Team winningTeam, WinType winType )
 	{
+		RevealEveryone();
+
 		WinningTeam = winningTeam;
 		WinType = winType;
+	}
+
+	public static void Load( Team winningTeam, WinType winType )
+	{
+		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 	}
 
 	public override void OnPlayerKilled( Player player )
@@ -40,13 +47,8 @@ public partial class PostRound : BaseState
 	{
 		base.OnStart();
 
+		Game.Current.TotalRoundsPlayed++;		
 		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
-
-		if ( !Host.IsServer )
-			return;
-
-		Game.Current.TotalRoundsPlayed++;
-		RevealEveryone();
 	}
 
 	protected override void OnTimeUp()

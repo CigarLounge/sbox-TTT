@@ -4,8 +4,8 @@ namespace TTT;
 
 public partial class Player
 {
-	private BaseRole _role;
-	public BaseRole Role
+	private Role _role;
+	public Role Role
 	{
 		get => _role;
 		set
@@ -42,7 +42,7 @@ public partial class Player
 
 	public void SetRole( string libraryName )
 	{
-		Role = TypeLibrary.Create<BaseRole>( libraryName );
+		Role = TypeLibrary.Create<Role>( libraryName );
 	}
 
 	[ClientRpc]

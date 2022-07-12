@@ -61,8 +61,8 @@ public static class EventLogger
 			return;
 
 		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
-
 		WriteEvents();
+		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
 	}
 
 	[TTTEvent.Player.TookDamage]
