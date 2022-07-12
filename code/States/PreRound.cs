@@ -74,50 +74,24 @@ public class PreRound : BaseState
 			players.Add( player );
 		}
 
-		(var innocents, var detectives, var traitors) = AssignRoles( players );
+		AssignRoles( players );
 
 		Game.Current.ChangeState( new InProgress
 		{
 			AlivePlayers = players,
 			Spectators = spectators,
-			Innocents = innocents.ToArray(),
-			Detectives = detectives.ToArray(),
-			Traitors = traitors.ToArray()
 		} );
 	}
 
-	private (List<Player>, List<Player>, List<Player>) AssignRoles( List<Player> players )
+	private void AssignRoles( List<Player> players )
 	{
-		List<Player> innocents = new();
-		List<Player> detectives = new();
-		List<Player> traitors = new();
-
-		int traitorCount = Math.Max( players.Count >> 2, 1 );
-		int detectiveCount = players.Count >> 3;
+		var traitorCount = Math.Max( players.Count >> 2, 1 );
+		var detectiveCount = players.Count >> 3;
 		players.Shuffle();
 
-		int index = 0;
-		while ( traitorCount-- > 0 )
-		{
-			var player = players[index++];
-			player.Role = new Traitor();
-			traitors.Add( player );
-		}
-
-		while ( detectiveCount-- > 0 )
-		{
-			var player = players[index++];
-			player.Role = new Detective();
-			detectives.Add( player );
-		}
-
-		while ( index < players.Count )
-		{
-			var player = players[index++];
-			player.Role = new Innocent();
-			innocents.Add( player );
-		}
-
-		return (innocents, detectives, traitors);
+		var index = 0;
+		while ( traitorCount-- > 0 ) players[index++].Role = new Traitor();
+		while ( detectiveCount-- > 0 ) players[index++].Role = new Detective();
+		while ( index < players.Count ) players[index++].Role = new Innocent();
 	}
 }
