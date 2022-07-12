@@ -78,8 +78,8 @@ public partial class InspectMenu : Panel
 
 	private void SetConfirmationData()
 	{
-		PlayerAvatar.SetTexture( $"avatar:{_corpse.PlayerId}" );
-		PlayerName.Text = _corpse.PlayerName;
+		PlayerAvatar.SetTexture( $"avatar:{_player.SteamId}" );
+		PlayerName.Text = _player.SteamName;
 		RoleName.Text = _player.Role.Title;
 		RoleName.Style.FontColor = _player.Role.Color;
 
@@ -213,11 +213,11 @@ public partial class InspectMenu : Panel
 	[ConCmd.Server]
 	private static void CallDetectives( int ident )
 	{
-		var ent = Entity.FindByIndex( ident );
-		if ( !ent.IsValid() || ent is not Corpse corpse )
+		var enemy = Entity.FindByIndex( ident );
+		if ( !enemy.IsValid() || enemy is not Corpse corpse )
 			return;
 
-		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.PlayerName}" );
+		ChatBox.AddInfo( $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
 		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole( new Detective() ) ), corpse.Position );
 	}
 

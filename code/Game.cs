@@ -61,6 +61,8 @@ public partial class Game : Sandbox.Game
 	{
 		var player = new Player();
 		client.Pawn = player;
+		player.SteamId = client.PlayerId;
+		player.SteamName = client.Name;
 
 		player.BaseKarma = Karma.DefaultValue;
 		player.ActiveKarma = player.BaseKarma;

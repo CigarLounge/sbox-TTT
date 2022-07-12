@@ -25,7 +25,7 @@ public class CorpseHint : EntityHintPanel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Title.Text = _corpse.PlayerName ?? "Unidentified body";
+		Title.Text = _corpse.Player?.SteamName ?? "Unidentified body";
 		Title.Style.FontColor = _corpse.Player?.Role.Color;
 		Title.SetClass( "unidentified", _corpse.Player is null );
 

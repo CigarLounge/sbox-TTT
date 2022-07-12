@@ -70,7 +70,7 @@ public partial class InfoFeed : Panel
 		AddClientToClientEntry
 		(
 			player.Confirmer.Client,
-			player.Corpse.PlayerName,
+			player.SteamName,
 			player.Role.Color,
 			"found the body of",
 			$"({player.Role.Title})"
