@@ -11,9 +11,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[Net]
 	public bool HasCredits { get; private set; }
 
-	public long PlayerId { get; private set; }
-	public string PlayerName { get; private set; }
-	public Player Player { get; private set; }
+	public Player Player { get; set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
@@ -28,7 +26,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	// We need this so we don't send information to players multiple times
 	// The HashSet consists of NetworkIds
 	private readonly HashSet<int> _playersWhoGotKillInfo = new();
-	private readonly HashSet<int> _playersWhoGotPlayerData = new();
 
 	public Corpse() { }
 
@@ -37,8 +34,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Host.AssertServer();
 
 		Player = player;
-		PlayerName = player.Client.Name;
-		PlayerId = player.Client.PlayerId;
 		HasCredits = player.Credits > 0;
 		Transform = player.Transform;
 
@@ -59,9 +54,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		KillList = new string[Player.PlayersKilled.Count];
 		for ( var i = 0; i < Player.PlayersKilled.Count; i++ )
-			KillList[i] = Player.PlayersKilled[i]?.Corpse?.PlayerName;
-
-		player.Corpse = this;
+			KillList[i] = Player.PlayersKilled[i].SteamName;
 
 		SetModel( player.GetModelName() );
 		TakeDecalsFrom( player );
@@ -76,7 +69,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Player.SetClothingBodyGroups( this, 1 );
 
 		_playersWhoGotKillInfo.Add( player.NetworkIdent );
-		_playersWhoGotPlayerData.Add( player.NetworkIdent );
 	}
 
 	public override void Spawn()
@@ -89,40 +81,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SetInteractsAs( CollisionLayer.Debris );
 		SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
 		SetInteractsExclude( CollisionLayer.Player );
-	}
-
-	public void ApplyForceToBone( Vector3 force, int forceBone )
-	{
-		PhysicsGroup.AddVelocity( force );
-
-		if ( forceBone < 0 )
-			return;
-
-		var corpse = GetBonePhysicsBody( forceBone );
-
-		if ( corpse is not null )
-			corpse.ApplyForce( force * 1000 );
-		else
-			PhysicsGroup.AddVelocity( force );
-	}
-
-	public void RemoveRopeAttachments()
-	{
-		foreach ( var rope in Ropes )
-			rope.Destroy( true );
-
-		foreach ( var spring in RopeSprings )
-			spring.Remove();
-
-		Ropes.Clear();
-		RopeSprings.Clear();
-	}
-
-	protected override void OnDestroy()
-	{
-		RemoveRopeAttachments();
-
-		base.OnDestroy();
 	}
 
 	/// <summary>
@@ -146,8 +104,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			HasCredits = false;
 		}
 
-		SendPlayer( To.Single( searcher ) );
-		Player.SendRole( To.Single( searcher ) );
+		Player.Confirm( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
 		ClientSearch( To.Single( searcher ), creditsRetrieved );
 
@@ -158,10 +115,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		{
 			if ( !Player.IsConfirmedDead )
 			{
-				Player.Confirm( To.Everyone, searcher );
+				Player.Confirm( To.Everyone, true, searcher );
 
 				foreach ( var deadPlayer in Player.PlayersKilled )
-					deadPlayer?.Confirm( To.Everyone, searcher );
+					deadPlayer?.Confirm( To.Everyone, true, searcher );
 
 				Event.Run( TTTEvent.Player.CorpseFound, Player );
 			}
@@ -192,19 +149,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 	}
 
-	public void SendPlayer( To to )
-	{
-		foreach ( var client in to )
-		{
-			if ( _playersWhoGotPlayerData.Contains( client.Pawn.NetworkIdent ) )
-				continue;
-
-			_playersWhoGotPlayerData.Add( client.Pawn.NetworkIdent );
-
-			SendPlayer( To.Single( client ), Player, PlayerId, PlayerName, Perks );
-		}
-	}
-
 	[ClientRpc]
 	private void SendMiscInfo( string[] killList, string c4Note, TimeUntil dnaDecay )
 	{
@@ -225,8 +169,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
-		Player.Status = Player.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
-
 		if ( creditsRetrieved <= 0 )
 			return;
 
@@ -237,15 +179,40 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		);
 	}
 
-	[ClientRpc]
-	private void SendPlayer( Player deadPlayer, long playerId, string name, PerkInfo[] perks )
+	public void RemoveRopeAttachments()
 	{
-		Player = deadPlayer;
-		PlayerId = playerId;
-		PlayerName = name;
-		Perks = perks;
-		Player.Corpse = this;
+		foreach ( var rope in Ropes )
+			rope.Destroy( true );
+
+		foreach ( var spring in RopeSprings )
+			spring.Remove();
+
+		Ropes.Clear();
+		RopeSprings.Clear();
 	}
+
+	protected override void OnDestroy()
+	{
+		RemoveRopeAttachments();
+
+		base.OnDestroy();
+	}
+
+	private void ApplyForceToBone( Vector3 force, int forceBone )
+	{
+		PhysicsGroup.AddVelocity( force );
+
+		if ( forceBone < 0 )
+			return;
+
+		var corpse = GetBonePhysicsBody( forceBone );
+
+		if ( corpse is not null )
+			corpse.ApplyForce( force * 1000 );
+		else
+			PhysicsGroup.AddVelocity( force );
+	}
+
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
