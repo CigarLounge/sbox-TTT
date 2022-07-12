@@ -339,6 +339,7 @@ public partial class Player : AnimatedEntity
 		RemoveAllClothing();
 	}
 
+	#region ActiveChild
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
@@ -383,6 +384,7 @@ public partial class Player : AnimatedEntity
 			}
 		}
 	}
+	#endregion
 
 	private void SimulatePerks()
 	{

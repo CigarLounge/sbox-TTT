@@ -87,6 +87,7 @@ public partial class Player
 	/// as <see cref="PlayerStatus.ConfirmedDead"/> if the target is <see cref="To.Everyone"/>.
 	/// </summary>
 	/// <param name="to">The target.</param>
+	/// <param name="global"></param>
 	/// <param name="confirmer">
 	/// The player who confirmed the corpse for the rest of the lobby.
 	/// </param>

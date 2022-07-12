@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Collections.Generic;
 
 namespace TTT;
 
@@ -21,6 +22,7 @@ public partial class Player
 			if ( IsServer )
 				SendRole( To.Single( this ) );
 
+			_playersWhoKnowTheRole.Clear();
 			_role.OnSelect( this );
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
@@ -28,6 +30,7 @@ public partial class Player
 	}
 
 	public Team Team => Role.Team;
+	private readonly HashSet<int> _playersWhoKnowTheRole = new();
 
 	/// <summary>
 	/// Sends the role to the given target.
@@ -37,12 +40,20 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		ClientSetRole( to, Role.Info );
+		foreach ( var client in to )
+		{
+			var id = client.Pawn.NetworkIdent;
+			if ( _playersWhoKnowTheRole.Contains( id ) )
+				continue;
+
+			_playersWhoKnowTheRole.Add( id );
+			ClientSetRole( To.Single( client ), Role.Info );
+		}
 	}
 
-	public void SetRole( string libraryName )
+	public void SetRole( string className )
 	{
-		Role = TypeLibrary.Create<Role>( libraryName );
+		Role = TypeLibrary.Create<Role>( className );
 	}
 
 	[ClientRpc]
