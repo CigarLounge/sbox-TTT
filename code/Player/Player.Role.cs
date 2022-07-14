@@ -17,12 +17,12 @@ public partial class Player
 			_role?.OnDeselect( this );
 			var oldRole = _role;
 			_role = value;
+			_playersWhoKnowTheRole.Clear();
 
 			// Always send the role to this player's client
 			if ( IsServer )
 				SendRole( To.Single( this ) );
-
-			_playersWhoKnowTheRole.Clear();
+	
 			_role.OnSelect( this );
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
