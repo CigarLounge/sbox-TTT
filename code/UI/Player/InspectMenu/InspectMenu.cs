@@ -89,7 +89,7 @@ public partial class InspectMenu : Panel
 		_deathCause.SetImageText( imageText );
 		_deathCause.SetActiveText( activeText );
 
-		var hitboxGroup = (HitboxGroup)_player.GetHitboxGroup( _player.LastDamageInfo.HitboxIndex );
+		var hitboxGroup = (HitboxGroup)_player.GetHitboxGroup( _player.LastDamage.HitboxIndex );
 		_headshot.Enabled( hitboxGroup == HitboxGroup.Head );
 
 		if ( _headshot.IsEnabled() )
@@ -160,7 +160,7 @@ public partial class InspectMenu : Panel
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _player.LastDamageInfo.Flags switch
+		return _player.LastDamage.Flags switch
 		{
 			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
 			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),

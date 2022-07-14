@@ -37,7 +37,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		HasCredits = player.Credits > 0;
 		Transform = player.Transform;
 
-		if ( Player.LastDamageInfo.Flags == DamageFlags.Bullet && Player.LastAttacker is Player killer )
+		if ( Player.LastDamage.Flags == DamageFlags.Bullet && Player.LastAttacker is Player killer )
 		{
 			var dna = new DNA( killer );
 			Components.Add( dna );
@@ -61,7 +61,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		this.CopyBonesFrom( player );
 		this.SetRagdollVelocityFrom( player );
-		ApplyForceToBone( Player.LastDamageInfo.Force, Player.GetHitboxBone( Player.LastDamageInfo.HitboxIndex ) );
+		ApplyForceToBone( Player.LastDamage.Force, Player.GetHitboxBone( Player.LastDamage.HitboxIndex ) );
 
 		foreach ( var clothing in Player.Clothes.ToArray() )
 			clothing.SetParent( this, true );
@@ -224,7 +224,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( !Player.IsValid() || !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( !Player.LastDamageInfo.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( !Player.LastDamage.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 

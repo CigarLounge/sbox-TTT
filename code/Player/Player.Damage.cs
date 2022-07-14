@@ -45,7 +45,7 @@ public partial class Player
 	/// </summary>
 	public CarriableInfo LastAttackerWeaponInfo { get; private set; }
 
-	public DamageInfo LastDamageInfo { get; private set; }
+	public DamageInfo LastDamage { get; private set; }
 
 	public new float Health
 	{
@@ -174,7 +174,7 @@ public partial class Player
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
 		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
-		LastDamageInfo = info;
+		LastDamage = info;
 
 		Health -= info.Damage;
 		Event.Run( TTTEvent.Player.TookDamage, this );
@@ -197,10 +197,10 @@ public partial class Player
 			LastAttacker,
 			LastAttackerWeapon,
 			LastAttackerWeaponInfo,
-			LastDamageInfo.Damage,
-			LastDamageInfo.Flags,
-			LastDamageInfo.HitboxIndex,
-			LastDamageInfo.Position,
+			LastDamage.Damage,
+			LastDamage.Flags,
+			LastDamage.HitboxIndex,
+			LastDamage.Position,
 			DistanceToAttacker
 		);
 	}
@@ -232,7 +232,7 @@ public partial class Player
 		LastAttacker = null;
 		LastAttackerWeapon = null;
 		LastAttackerWeaponInfo = null;
-		LastDamageInfo = default;
+		LastDamage = default;
 	}
 
 	[ClientRpc]
@@ -255,7 +255,7 @@ public partial class Player
 		LastAttacker = a;
 		LastAttackerWeapon = w;
 		LastAttackerWeaponInfo = wI;
-		LastDamageInfo = info;
+		LastDamage = info;
 
 		if ( IsLocalPawn )
 			Event.Run( TTTEvent.Player.TookDamage, this );
