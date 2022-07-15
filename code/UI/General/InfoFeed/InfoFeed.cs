@@ -30,7 +30,7 @@ public partial class InfoFeed : Panel
 
 		var player = client.Pawn as Player;
 		var leftLabel = entry.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
-		leftLabel.Style.FontColor = player.Role is NoneRole ? Color.White : player.Role.Color;
+		leftLabel.Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
 
 		entry.AddLabel( message, "method" );
 	}
@@ -53,7 +53,7 @@ public partial class InfoFeed : Panel
 
 		var leftPlayer = leftClient.Pawn as Player;
 		var leftLabel = entry.AddLabel( leftClient == Local.Client ? "You" : leftClient.Name, "left" );
-		leftLabel.Style.FontColor = leftPlayer.Role is NoneRole ? Color.White : leftPlayer.Role.Color;
+		leftLabel.Style.FontColor = !leftPlayer.IsRoleKnown ? Color.White : leftPlayer.Role.Color;
 
 		entry.AddLabel( method, "method" );
 
@@ -69,12 +69,26 @@ public partial class InfoFeed : Panel
 	{
 		AddClientToClientEntry
 		(
-			player.Confirmer.Client,
+			player.Corpse.Finder.Client,
 			player.SteamName,
 			player.Role.Color,
 			"found the body of",
 			$"({player.Role.Title})"
 		);
+
+		foreach ( var deadPlayer in player.PlayersKilled )
+		{
+			if ( deadPlayer.Corpse?.Finder.IsValid() ?? false )
+				continue;
+
+			AddClientToClientEntry
+			(
+				player.Corpse.Finder.Client,
+				deadPlayer.SteamName,
+				!deadPlayer.IsRoleKnown ? Color.White : deadPlayer.Role.Color,
+				"confirmed the death of"
+			);
+		}
 	}
 
 	[TTTEvent.Round.RolesAssigned]

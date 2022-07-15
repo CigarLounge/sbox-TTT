@@ -32,8 +32,7 @@ public partial class InspectMenu : Panel
 
 	public InspectMenu( Corpse corpse )
 	{
-		if ( corpse.Player is null )
-			return;
+		Assert.NotNull( corpse );
 
 		_timeSinceDeath = new InspectEntry( IconsContainer );
 		_timeSinceDeath.Enabled( true );
@@ -103,12 +102,12 @@ public partial class InspectMenu : Panel
 		if ( _dna.IsEnabled() )
 			_dna.SetImage( "/ui/inspectmenu/dna.png" );
 
-		_lastSeen.Enabled( !string.IsNullOrEmpty( _player.LastSeenPlayerName ) );
-		if ( _lastSeen.IsEnabled() )
+		_lastSeen.Enabled( _player.LastSeenPlayer.IsValid() );
+		if ( _player.LastSeenPlayer.IsValid() )
 		{
 			_lastSeen.SetImage( "/ui/inspectmenu/lastseen.png" );
-			_lastSeen.SetImageText( _player.LastSeenPlayerName );
-			_lastSeen.SetActiveText( $"The last person they saw was {_player.LastSeenPlayerName}... killer or coincidence?" );
+			_lastSeen.SetImageText( _player.LastSeenPlayer.SteamName );
+			_lastSeen.SetActiveText( $"The last person they saw was {_player.LastSeenPlayer.SteamName}... killer or coincidence?" );
 		}
 
 		_weapon.Enabled( _player.LastAttackerWeaponInfo is not null );
@@ -119,14 +118,14 @@ public partial class InspectMenu : Panel
 			_weapon.SetActiveText( $"It appears a {_player.LastAttackerWeaponInfo.Title} was used to kill them." );
 		}
 
-		_killList.Enabled( !_corpse.KillList.IsNullOrEmpty() );
+		_killList.Enabled( _player.PlayersKilled.Count > 0 );
 		if ( _killList.IsEnabled() )
 		{
 			_killList.SetImage( "/ui/inspectmenu/killlist.png" );
 			_killList.SetImageText( "Kill List" );
 			var text = "You found a list of kills that confirms the death(s) of...";
-			foreach ( var deadPlayerName in _corpse.KillList )
-				text += $"{deadPlayerName}\n";
+			foreach ( var deadPlayer in _player.PlayersKilled )
+				text += $"{deadPlayer.SteamName}\n";
 			_killList.SetActiveText( text );
 		}
 
@@ -218,7 +217,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		ChatBox.AddInfo( $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
-		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole( new Detective() ) ), corpse.Position );
+		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 
 	[ClientRpc]
