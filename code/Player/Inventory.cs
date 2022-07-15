@@ -6,7 +6,7 @@ namespace TTT;
 
 /// <summary>
 /// A sublist of <see cref="Entity.Children"/> that contains entities 
-/// of type <see cref="TTT.Carriable"/>.
+/// of type <see cref="Carriable"/>.
 /// </summary>
 public sealed class Inventory : IEnumerable<Carriable>
 {
@@ -157,9 +157,9 @@ public sealed class Inventory : IEnumerable<Carriable>
 		if ( !Host.IsServer )
 			return null;
 
-		var active = Active;
 		if ( Drop( Active ) )
 		{
+			var active = Active;
 			Active = null;
 			return active;
 		}

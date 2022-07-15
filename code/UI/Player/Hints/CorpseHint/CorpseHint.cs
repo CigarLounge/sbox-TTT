@@ -46,7 +46,7 @@ public class CorpseHint : EntityHintPanel
 			SubText.Text = "to identify.";
 		}
 
-		bool canFetchCredits = _corpse.HasCredits && player.Role.CanRetrieveCredits && player.IsAlive();
+		var canFetchCredits = _corpse.HasCredits && player.Role.CanRetrieveCredits && player.IsAlive();
 		if ( !canFetchCredits )
 			CreditHint?.Delete();
 

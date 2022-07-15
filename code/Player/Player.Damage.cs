@@ -108,9 +108,8 @@ public partial class Player
 
 	public override void OnKilled()
 	{
-		TimeSinceDeath = 0;
 		LifeState = LifeState.Dead;
-		StopUsing();
+		TimeSinceDeath = 0;
 
 		Client.AddInt( "deaths" );
 
@@ -122,6 +121,7 @@ public partial class Player
 
 		BecomeCorpse();
 		RemoveAllDecals();
+		StopUsing();
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;

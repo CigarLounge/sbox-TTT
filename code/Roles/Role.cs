@@ -7,7 +7,7 @@ namespace TTT;
 
 public abstract class Role : IEquatable<Role>, IEquatable<string>
 {
-	private static Dictionary<Type, HashSet<Player>> _players = new();
+	private static readonly Dictionary<Type, HashSet<Player>> _players = new();
 	public RoleInfo Info { get; private set; }
 
 	public Team Team => Info.Team;
