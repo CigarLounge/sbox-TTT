@@ -29,6 +29,7 @@ public partial class Player
 		}
 	}
 
+	public bool IsRoleKnown { get; set; }
 	public Team Team => Role.Team;
 	private readonly HashSet<int> _playersWhoKnowTheRole = new();
 
