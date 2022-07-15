@@ -31,7 +31,7 @@ public class Traitor : Role
 			}
 
 			if ( otherPlayer.IsMissingInAction )
-				otherPlayer.UpdateMissingInAction( player );
+				otherPlayer.UpdateStatus( To.Single( player ) );
 		}
 	}
 }
