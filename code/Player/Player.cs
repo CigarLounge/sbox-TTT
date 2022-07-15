@@ -57,7 +57,6 @@ public partial class Player : AnimatedEntity
 
 		Health = 0;
 		LifeState = LifeState.Respawnable;
-		Status = PlayerStatus.Spectator;
 		Transmit = TransmitType.Always;
 
 		Predictable = true;
@@ -99,7 +98,7 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
-			ClientSetStatus( PlayerStatus.Alive );
+			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -119,7 +118,7 @@ public partial class Player : AnimatedEntity
 		else
 		{
 			Status = PlayerStatus.Spectator;
-			ClientSetStatus( PlayerStatus.Spectator );
+			UpdateStatus( To.Everyone );
 			MakeSpectator( false );
 		}
 

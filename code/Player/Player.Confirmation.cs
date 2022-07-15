@@ -134,7 +134,7 @@ public partial class Player
 	private void SyncClient( Client client )
 	{
 		if ( IsSpectator )
-			ClientSetStatus( To.Single( client ), PlayerStatus.Spectator );
+			UpdateStatus( To.Single( client ) );
 
 		if ( IsConfirmedDead )
 			ClientConfirmDeath( To.Single( client ), Confirmer );

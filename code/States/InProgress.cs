@@ -54,6 +54,8 @@ public partial class InProgress : BaseState
 	{
 		base.OnPlayerJoin( player );
 
+		player.Status = PlayerStatus.Spectator;
+		player.UpdateStatus( To.Everyone );
 		Spectators.Add( player );
 	}
 

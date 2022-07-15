@@ -43,6 +43,14 @@ public partial class PostRound : BaseState
 		player.ConfirmDeath();
 	}
 
+	public override void OnPlayerJoin( Player player )
+	{
+		base.OnPlayerJoin( player );
+
+		player.Status = PlayerStatus.Spectator;
+		player.UpdateStatus( To.Everyone );
+	}
+
 	protected override void OnStart()
 	{
 		base.OnStart();
