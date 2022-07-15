@@ -137,7 +137,7 @@ public partial class Player
 			ClientSetStatus( To.Single( client ), PlayerStatus.Spectator );
 
 		if ( IsConfirmedDead )
-			ClientSetStatus( To.Single( client ), PlayerStatus.ConfirmedDead );
+			ClientConfirmDeath( To.Single( client ), Confirmer );
 		else if ( IsRoleKnown )
 			SendRole( To.Single( client ) );
 	}
