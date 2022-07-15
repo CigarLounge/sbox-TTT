@@ -34,12 +34,12 @@ public partial class InProgress : BaseState
 		var percentDead = (float)_innocentTeamDeathCount / Team.Innocents.GetCount();
 		if ( percentDead >= Game.CreditsAwardPercentage )
 		{
-			GivePlayersCredits( new Traitor(), Game.CreditsAwarded );
+			GivePlayersCredits<Traitor>( Game.CreditsAwarded );
 			_innocentTeamDeathCount = 0;
 		}
 
 		if ( player.Role is Traitor )
-			GivePlayersCredits( new Detective(), Game.DetectiveTraitorDeathReward );
+			GivePlayersCredits<Detective>( Game.DetectiveTraitorDeathReward );
 		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
 			GiveTraitorCredits( p );
 
@@ -152,9 +152,9 @@ public partial class InProgress : BaseState
 		return false;
 	}
 
-	private static void GivePlayersCredits( Role role, int credits )
+	private static void GivePlayersCredits<T>( int credits ) where T : Role
 	{
-		var clients = Utils.GetAliveClientsWithRole( role );
+		var clients = Utils.GetAliveClientsWithRole<T>();
 
 		clients.ForEach( ( cl ) =>
 		{
@@ -165,7 +165,7 @@ public partial class InProgress : BaseState
 		UI.InfoFeed.AddRoleEntry
 		(
 			To.Multiple( clients ),
-			GameResource.GetInfo<RoleInfo>( role.Title ),
+			GameResource.GetInfo<RoleInfo>( typeof( T ) ),
 			$"You have been awarded {credits} credits for your performance."
 		);
 	}
