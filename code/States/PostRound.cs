@@ -40,7 +40,7 @@ public partial class PostRound : BaseState
 	{
 		base.OnPlayerKilled( player );
 
-		player.Confirm( To.Everyone, true );
+		player.ConfirmDeath();
 	}
 
 	protected override void OnStart()

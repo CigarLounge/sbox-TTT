@@ -98,7 +98,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Confirmer.SteamName} found the corpse of {player.SteamName}" );
+		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
 	}
 
 	private static void WriteEvents()

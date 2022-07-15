@@ -19,16 +19,14 @@ public partial class Player
 	[Net]
 	public string SteamName { get; set; }
 
-	public Corpse Corpse { get; private set; }
-
+	public Corpse Corpse { get; set; }
 	/// <summary>
-	/// The player who confirmed this player's corpse.
+	/// The player who confirmed this player's death.
 	/// </summary>
 	public Player Confirmer { get; private set; }
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
-	public bool IsRoleKnown { get; set; }
-	public string LastSeenPlayerName { get; set; }
+	public Player LastSeenPlayer { get; set; }
 	public List<Player> PlayersKilled { get; set; } = new();
 
 	private PlayerStatus _status;
@@ -65,33 +63,7 @@ public partial class Player
 		Corpse = new Corpse( this );
 	}
 
-	public void UpdateMissingInAction( Player player = null )
-	{
-		Host.AssertServer();
-
-		if ( player is not null )
-		{
-			ClientSetStatus( To.Single( player ), PlayerStatus.MissingInAction );
-			return;
-		}
-
-		Status = PlayerStatus.MissingInAction;
-		ClientSetStatus( Team.Traitors.ToClients(), PlayerStatus.MissingInAction );
-
-		if ( Team != Team.Traitors )
-			ClientSetStatus( To.Single( this ), PlayerStatus.MissingInAction );
-	}
-
-	/// <summary>
-	/// Confirm the player. The player will only be labeled 
-	/// as <see cref="PlayerStatus.ConfirmedDead"/> if the target is <see cref="To.Everyone"/>.
-	/// </summary>
-	/// <param name="to">The target.</param>
-	/// <param name="global"></param>
-	/// <param name="confirmer">
-	/// The player who confirmed the corpse for the rest of the lobby.
-	/// </param>
-	public void Confirm( To to, bool global = false, Player confirmer = null )
+	public void ConfirmDeath( Player confirmer = null )
 	{
 		Host.AssertServer();
 
@@ -101,26 +73,39 @@ public partial class Player
 			return;
 		}
 
-		var wasPreviouslyConfirmed = true;
-
-		if ( !IsConfirmedDead && global )
+		if ( IsConfirmedDead )
 		{
-			Confirmer = confirmer;
-			IsRoleKnown = true;
-			Status = PlayerStatus.ConfirmedDead;
-			ClientSetStatus( PlayerStatus.ConfirmedDead );
-			wasPreviouslyConfirmed = false;
+			Log.Warning( "This player is already confirmed dead!" );
+			return;
 		}
 
-		SendRole( to );
-		ClientSetCorpse( to, Corpse );
-		ClientConfirm( to, Confirmer, wasPreviouslyConfirmed );
+		Confirmer = confirmer;
+		Status = PlayerStatus.ConfirmedDead;
+		ClientConfirmDeath( confirmer );
+	}
+
+	public void UpdateMissingInAction()
+	{
+		Host.AssertServer();
+
+		Status = PlayerStatus.MissingInAction;
+		UpdateStatus( Team.Traitors.ToClients() );
+
+		if ( Team != Team.Traitors )
+			UpdateStatus( To.Single( this ) );
+	}
+
+	public void UpdateStatus( To to )
+	{
+		Host.AssertServer();
+
+		ClientSetStatus( to, Status );
 	}
 
 	private void CheckLastSeenPlayer()
 	{
 		if ( HoveredEntity is Player player && player.CanHint( this ) )
-			LastSeenPlayerName = player.Client.Name;
+			LastSeenPlayer = player;
 	}
 
 	private void ResetConfirmationData()
@@ -128,27 +113,15 @@ public partial class Player
 		Confirmer = null;
 		Corpse = null;
 		IsRoleKnown = false;
-		LastSeenPlayerName = string.Empty;
+		LastSeenPlayer = null;
 		PlayersKilled.Clear();
 	}
 
 	[ClientRpc]
-	private void ClientConfirm( Player confirmer, bool wasPreviouslyConfirmed = false )
+	private void ClientConfirmDeath( Player confirmer )
 	{
 		Confirmer = confirmer;
-		Status = IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
-
-		if ( wasPreviouslyConfirmed || !Confirmer.IsValid() || !Corpse.IsValid() )
-			return;
-
-		Event.Run( TTTEvent.Player.CorpseFound, this );
-	}
-
-	[ClientRpc]
-	private void ClientSetCorpse( Corpse corpse )
-	{
-		Corpse = corpse;
-		Corpse.Player = this;
+		Status = PlayerStatus.ConfirmedDead;
 	}
 
 	[ClientRpc]
@@ -164,7 +137,7 @@ public partial class Player
 			ClientSetStatus( To.Single( client ), PlayerStatus.Spectator );
 
 		if ( IsConfirmedDead )
-			Confirm( To.Single( client ) );
+			ClientSetStatus( To.Single( client ), PlayerStatus.ConfirmedDead );
 		else if ( IsRoleKnown )
 			SendRole( To.Single( client ) );
 	}

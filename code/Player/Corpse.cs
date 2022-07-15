@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -12,10 +13,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool HasCredits { get; private set; }
 
 	public Player Player { get; set; }
+	/// <summary>
+	/// The player who identified this body (this does not include covert searches).
+	/// </summary>
+	public Player Finder { get; set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
-	public string[] KillList { get; private set; }
+	public Player[] KillList { get; private set; }
 
 	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
@@ -35,6 +40,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		Player = player;
 		HasCredits = player.Credits > 0;
+		Owner = player;
 		Transform = player.Transform;
 
 		if ( Player.LastDamage.Flags == DamageFlags.Bullet && Player.LastAttacker is Player killer )
@@ -52,9 +58,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		for ( var i = 0; i < Player.Perks.Count; i++ )
 			Perks[i] = Player.Perks[i].Info;
 
-		KillList = new string[Player.PlayersKilled.Count];
-		for ( var i = 0; i < Player.PlayersKilled.Count; i++ )
-			KillList[i] = Player.PlayersKilled[i].SteamName;
+		KillList = Player.PlayersKilled.ToArray();
 
 		SetModel( player.GetModelName() );
 		TakeDecalsFrom( player );
@@ -88,15 +92,16 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// </summary>
 	/// <param name="searcher">The player who is searching this corpse.</param>
 	/// <param name="covert">Whether or not this is a covert search.</param>
-	/// <param name="canRetrieveCredits">Should the searcher retrieve credits.</param>
-	public void Search( Player searcher, bool covert, bool canRetrieveCredits = true )
+	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
+	public void Search( Player searcher, bool covert, bool retrieveCredits = true )
 	{
 		Host.AssertServer();
+		Assert.NotNull( searcher );
 
 		var creditsRetrieved = 0;
-		canRetrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
+		retrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
 
-		if ( canRetrieveCredits && HasCredits )
+		if ( retrieveCredits && HasCredits )
 		{
 			searcher.Credits += Player.Credits;
 			creditsRetrieved = Player.Credits;
@@ -104,29 +109,43 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			HasCredits = false;
 		}
 
-		Player.Confirm( To.Single( searcher ) );
 		SendKillInfo( To.Single( searcher ) );
-		ClientSearch( To.Single( searcher ), creditsRetrieved );
+		SendPlayer( To.Single( searcher ), Player );
+		Player.SendRole( To.Single( searcher ) );
+
 
 		// Dead players will always covert search.
 		covert |= !searcher.IsAlive();
 
 		if ( !covert )
 		{
-			if ( !Player.IsConfirmedDead )
+			if ( !Finder.IsValid() )
 			{
-				Player.Confirm( To.Everyone, true, searcher );
-
-				foreach ( var deadPlayer in Player.PlayersKilled )
-					deadPlayer?.Confirm( To.Everyone, true, searcher );
-
-				Event.Run( TTTEvent.Player.CorpseFound, Player );
+				SendPlayer( Player );
+				Player.SendRole( To.Everyone );
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
 			if ( searcher.Role is Detective )
 				SendKillInfo( To.Everyone );
+
+			if ( !Player.IsConfirmedDead )
+			{
+				Player.ConfirmDeath( searcher );
+
+				foreach ( var deadPlayer in Player.PlayersKilled )
+					deadPlayer.ConfirmDeath( searcher );
+			}
+
+			if ( !Finder.IsValid() )
+			{
+				Finder = searcher;
+				Event.Run( TTTEvent.Player.CorpseFound, Player );
+				ClientCorpseFound( searcher );
+			}
 		}
+
+		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
 	public void SendKillInfo( To to )
@@ -142,33 +161,25 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( KillList, C4Note, TimeUntilDNADecay );
+			SendMiscInfo( Player, KillList, C4Note, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
-				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayerName );
+				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayer );
 		}
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( string[] killList, string c4Note, TimeUntil dnaDecay )
+	private void ClientCorpseFound( Player finder )
 	{
-		KillList = killList;
-		C4Note = c4Note;
-		TimeUntilDNADecay = dnaDecay;
-	}
-
-	/// <summary>
-	/// Detectives get additional information about a corpse.
-	/// </summary>
-	[ClientRpc]
-	private void SendDetectiveInfo( string lastSeenPlayerName )
-	{
-		Player.LastSeenPlayerName = lastSeenPlayerName;
+		Finder = finder;
+		Event.Run( TTTEvent.Player.CorpseFound, Player );
 	}
 
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
+		Player.Status = Player.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
+
 		if ( creditsRetrieved <= 0 )
 			return;
 
@@ -177,6 +188,36 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			Local.Client,
 			$"found {creditsRetrieved} credits!"
 		);
+	}
+
+	[ClientRpc]
+	private void SendMiscInfo( Player player, Player[] killList, string c4Note, TimeUntil dnaDecay )
+	{
+		// SendPlayer gets called after this, LOL!
+		Player = player;
+		Player.Corpse = this;
+
+		if ( killList is not null )
+			Player.PlayersKilled = killList.ToList();
+
+		C4Note = c4Note;
+		TimeUntilDNADecay = dnaDecay;
+	}
+
+	[ClientRpc]
+	private void SendPlayer( Player player )
+	{
+		Player = player;
+		Player.Corpse = this;
+	}
+
+	/// <summary>
+	/// Detectives get additional information about a corpse.
+	/// </summary>
+	[ClientRpc]
+	private void SendDetectiveInfo( Player player )
+	{
+		Player.LastSeenPlayer = player;
 	}
 
 	public void RemoveRopeAttachments()
@@ -212,7 +253,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		else
 			PhysicsGroup.AddVelocity( force );
 	}
-
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
