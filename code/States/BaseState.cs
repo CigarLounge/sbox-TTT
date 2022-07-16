@@ -79,6 +79,7 @@ public abstract partial class BaseState : BaseNetworkable
 				case PlayerStatus.MissingInAction:
 				{
 					player.ConfirmDeath();
+					player.Corpse.SendPlayer( To.Everyone );
 					break;
 				}
 				default:

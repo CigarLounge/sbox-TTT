@@ -133,7 +133,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				Player.ConfirmDeath( searcher );
 
 				foreach ( var deadPlayer in Player.PlayersKilled )
+				{
+					if ( deadPlayer.IsConfirmedDead )
+						continue;
+
 					deadPlayer.ConfirmDeath( searcher );
+
+					UI.InfoFeed.AddPlayerToPlayerEntry
+					(
+						searcher,
+						deadPlayer,
+						"confirmed the death of"
+					);
+				}
 			}
 
 			if ( !Finder.IsValid() )
@@ -165,7 +177,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( KillList, Perks, C4Note, TimeUntilDNADecay );
+			SendMiscInfo( To.Single( client ), KillList, Perks, C4Note, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
 				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayer );
@@ -197,7 +209,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void SendMiscInfo( Player[] killList, PerkInfo[] perks, string c4Note, TimeUntil dnaDecay )
 	{
-		Player.PlayersKilled.Concat( killList );
+		if ( killList is not null )
+			Player.PlayersKilled = killList.ToList();
+
 		Perks = perks;
 		C4Note = c4Note;
 		TimeUntilDNADecay = dnaDecay;

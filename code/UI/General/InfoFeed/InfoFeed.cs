@@ -47,18 +47,17 @@ public partial class InfoFeed : Panel
 	}
 
 	[ClientRpc]
-	public static void AddClientToClientEntry( Client leftClient, string rightClientName, Color rightClientRoleColor, string method, string suffix = "" )
+	public static void AddPlayerToPlayerEntry( Player left, Player right, string method, string suffix = "" )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
 
-		var leftPlayer = leftClient.Pawn as Player;
-		var leftLabel = entry.AddLabel( leftClient == Local.Client ? "You" : leftClient.Name, "left" );
-		leftLabel.Style.FontColor = !leftPlayer.IsRoleKnown ? Color.White : leftPlayer.Role.Color;
+		var leftLabel = entry.AddLabel( left.IsLocalPawn ? "You" : left.SteamName, "left" );
+		leftLabel.Style.FontColor = !left.IsRoleKnown ? Color.White : left.Role.Color;
 
 		entry.AddLabel( method, "method" );
 
-		var rightLabel = entry.AddLabel( rightClientName == Local.Client.Name ? "You" : rightClientName, "right" );
-		rightLabel.Style.FontColor = rightClientRoleColor;
+		var rightLabel = entry.AddLabel( right.IsLocalPawn ? "You" : right.SteamName, "right" );
+		rightLabel.Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
 
 		if ( !string.IsNullOrEmpty( suffix ) )
 			entry.AddLabel( suffix, "append" );
@@ -67,28 +66,13 @@ public partial class InfoFeed : Panel
 	[TTTEvent.Player.CorpseFound]
 	private void OnCorpseFound( Player player )
 	{
-		AddClientToClientEntry
+		AddPlayerToPlayerEntry
 		(
-			player.Corpse.Finder.Client,
-			player.SteamName,
-			player.Role.Color,
+			player.Corpse.Finder,
+			player,
 			"found the body of",
 			$"({player.Role.Title})"
 		);
-
-		foreach ( var deadPlayer in player.PlayersKilled )
-		{
-			if ( deadPlayer.Corpse?.Finder.IsValid() ?? false )
-				continue;
-
-			AddClientToClientEntry
-			(
-				player.Corpse.Finder.Client,
-				deadPlayer.SteamName,
-				!deadPlayer.IsRoleKnown ? Color.White : deadPlayer.Role.Color,
-				"confirmed the death of"
-			);
-		}
 	}
 
 	[TTTEvent.Round.RolesAssigned]
