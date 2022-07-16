@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = resource:"models/binoculars/binoculars.vmdl"
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = false
 		Price = 100
-		IconPath = resource:"ui/equipment/binoculars.jpg"
+		IconPath = resource:"ui/equipment/binoculars.png"
 		Description = "Zoom in on corpses and identify them from a long distance away."
-		Icon = null
 		ClassName = "ttt_equipment_binoculars"
-		Title = null
 	}
 }

@@ -31,15 +31,10 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_spr.vmdl"
 		DeployTime = 1.2
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = false
 		Price = 0
-		IconPath = resource:"ui/weapons/scout.jpg"
+		IconPath = resource:"ui/weapons/scout.png"
 		Description = ""
-		Icon = null
 		ClassName = "ttt_weapon_scout"
-		Title = null
 	}
 }

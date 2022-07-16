@@ -31,15 +31,10 @@
 		HoldType = "Shotgun"
 		WorldModelPath = resource:"models/weapons/w_bekas.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = false
 		Price = 0
-		IconPath = resource:"ui/weapons/bekas.jpg"
+		IconPath = resource:"ui/weapons/bekas.png"
 		Description = ""
-		Icon = null
 		ClassName = "ttt_weapon_bekas"
-		Title = null
 	}
 }

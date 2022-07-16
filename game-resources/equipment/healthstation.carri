@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = ""
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/microwave.jpg"
+		IconPath = resource:"ui/equipment/microwave.png"
 		Description = "A modified microwave which dispenses health to any injured players."
-		Icon = null
 		ClassName = "ttt_equipment_healthstation"
-		Title = null
 	}
 }

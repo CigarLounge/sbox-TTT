@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = resource:"models/teleporter/teleporter.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/teleporter.jpg"
+		IconPath = resource:"ui/equipment/teleporter.png"
 		Description = "Teleport to a previously marked spot."
-		Icon = null
 		ClassName = "ttt_equipment_teleporter"
-		Title = null
 	}
 }

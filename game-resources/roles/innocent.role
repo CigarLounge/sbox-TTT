@@ -8,13 +8,10 @@
 		Carriables = [  ]
 		Perks = [  ]
 		CanRetrieveCredits = false
-		CanRoleChat = false
+		CanTeamChat = false
 		CanAttachCorpses = false
 		Color = "0.10196,0.77255,0.30196,1"
 		IconPath = resource:"ui/innocent-icon.png"
-		ShopItems = [  ]
-		Icon = null
 		ClassName = "ttt_role_innocent"
-		Title = null
 	}
 }

@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = resource:"models/cigar/cigar.vmdl"
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 0
-		IconPath = resource:"ui/equipment/cigar.jpg"
+		IconPath = resource:"ui/equipment/cigar.png"
 		Description = "Didn\'t you know that cigars contain benzopyrene, a chemical that leads to lung cancer\?"
-		Icon = null
 		ClassName = "ttt_equipment_cigar"
-		Title = null
 	}
 }

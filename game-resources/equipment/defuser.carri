@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = resource:"models/defuser/defuser.vmdl"
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/defuser.jpg"
+		IconPath = resource:"ui/equipment/defuser.png"
 		Description = "Instantly defuse a C4 explosive, unlimited uses."
-		Icon = null
 		ClassName = "ttt_equipment_defuser"
-		Title = null
 	}
 }
