@@ -18,7 +18,7 @@ public class DamageIndicator : Panel
 	[TTTEvent.Player.TookDamage]
 	private void OnHit( Player player )
 	{
-		var info = player.LastDamageInfo;
+		var info = player.LastDamage;
 		var damageLocation = info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.IsValid() ? info.Attacker.Position : player.Position;
 
 		_ = new HitPoint( damageLocation )

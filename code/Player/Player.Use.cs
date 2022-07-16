@@ -76,7 +76,7 @@ public partial class Player
 		if ( !use.IsUsable( this ) )
 			return false;
 
-		if ( entity.Position.Distance( Position ) > UseDistance )
+		if ( entity.Position.Distance( EyePosition ) > UseDistance )
 			return false;
 
 		return true;

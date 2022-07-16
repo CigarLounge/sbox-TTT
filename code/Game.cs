@@ -59,13 +59,15 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
+		Event.Run( TTTEvent.Game.ClientJoined, client );
+
 		var player = new Player();
 		client.Pawn = player;
-
+		player.SteamId = client.PlayerId;
+		player.SteamName = client.Name;
 		player.BaseKarma = Karma.DefaultValue;
 		player.ActiveKarma = player.BaseKarma;
 
-		Event.Run( TTTEvent.Game.ClientJoined, client );
 		State.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );

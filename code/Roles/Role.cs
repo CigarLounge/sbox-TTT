@@ -7,7 +7,7 @@ namespace TTT;
 
 public abstract class Role : IEquatable<Role>, IEquatable<string>
 {
-	private static Dictionary<Type, HashSet<Player>> _players = new();
+	private static readonly Dictionary<Type, HashSet<Player>> _players = new();
 	public RoleInfo Info { get; private set; }
 
 	public Team Team => Info.Team;
@@ -69,10 +69,12 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 	public static IEnumerable<Player> GetPlayers<T>() where T : Role
 	{
-		if ( !_players.ContainsKey( typeof( T ) ) )
-			return null;
+		var type = typeof( T );
 
-		return _players[typeof( T )];
+		if ( !_players.ContainsKey( type ) )
+			_players.Add( type, new HashSet<Player>() );
+
+		return _players[type];
 	}
 
 	[TTTEvent.Player.RoleChanged]

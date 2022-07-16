@@ -32,8 +32,8 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Position = Vector3.Lerp( Position, player.CurrentPlayer.EyePosition, SmoothSpeed * Time.Delta );
-		Rotation = Rotation.Slerp( Rotation, player.CurrentPlayer.EyeRotation, SmoothSpeed * Time.Delta );
+		Position = Vector3.Lerp( Position, Viewer.EyePosition, SmoothSpeed * Time.Delta );
+		Rotation = Rotation.Slerp( Rotation, Viewer.EyeRotation, SmoothSpeed * Time.Delta );
 	}
 
 	public override void BuildInput( InputBuilder input )

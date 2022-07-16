@@ -110,7 +110,7 @@ public partial class Teleporter : Carriable
 		TimeSinceAction = 0;
 		_teleportLocation = trace.EndPosition;
 
-		if ( Prediction.FirstTime )
+		if ( IsClient && Prediction.FirstTime )
 			UI.InfoFeed.AddEntry( "Teleport location set." );
 	}
 

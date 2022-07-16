@@ -8,18 +8,17 @@ public partial class Player : AnimatedEntity
 	public Inventory Inventory { get; private init; }
 	public Perks Perks { get; private init; }
 
-	private CameraMode _camera;
 	public CameraMode Camera
 	{
-		get => _camera;
+		get => Components.Get<CameraMode>();
 		set
 		{
-			if ( _camera == value )
+			var current = Camera;
+			if ( current == value )
 				return;
 
 			Components.RemoveAny<CameraMode>();
 			Components.Add( value );
-			_camera = value;
 		}
 	}
 
@@ -98,7 +97,7 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
-			ClientSetStatus( PlayerStatus.Alive );
+			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -118,7 +117,7 @@ public partial class Player : AnimatedEntity
 		else
 		{
 			Status = PlayerStatus.Spectator;
-			ClientSetStatus( PlayerStatus.Spectator );
+			UpdateStatus( To.Everyone );
 			MakeSpectator( false );
 		}
 
@@ -227,7 +226,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		Animator?.BuildInput( input );
+		Animator.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -338,6 +337,7 @@ public partial class Player : AnimatedEntity
 		RemoveAllClothing();
 	}
 
+	#region ActiveChild
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
@@ -382,6 +382,7 @@ public partial class Player : AnimatedEntity
 			}
 		}
 	}
+	#endregion
 
 	private void SimulatePerks()
 	{
