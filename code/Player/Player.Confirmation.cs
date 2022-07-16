@@ -84,11 +84,36 @@ public partial class Player
 		ClientConfirmDeath( confirmer );
 	}
 
+	/// <summary>
+	/// Reveal the player's role, if the player's MIA confirm his death and
+	/// reveal the player's corpse if not already.
+	/// </summary>
+	public void Reveal()
+	{
+		Host.AssertServer();
+
+		if ( IsSpectator )
+			return;
+
+		IsRoleKnown = true;
+
+		if ( IsMissingInAction )
+			ConfirmDeath();
+
+		if ( Corpse.IsValid() && !Corpse.IsFound )
+		{
+			Corpse.IsFound = true;
+			Corpse.SendPlayer( To.Everyone );
+		}
+	}
+
 	public void UpdateMissingInAction()
 	{
 		Host.AssertServer();
 
-		Status = PlayerStatus.MissingInAction;
+		if ( !IsMissingInAction )
+			return;
+
 		UpdateStatus( Team.Traitors.ToClients() );
 
 		if ( Team != Team.Traitors )
@@ -112,7 +137,6 @@ public partial class Player
 	{
 		Confirmer = null;
 		Corpse = null;
-		IsRoleKnown = false;
 		LastSeenPlayer = null;
 		PlayersKilled.Clear();
 	}

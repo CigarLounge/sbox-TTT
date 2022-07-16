@@ -40,8 +40,7 @@ public partial class PostRound : BaseState
 	{
 		base.OnPlayerKilled( player );
 
-		player.ConfirmDeath();
-		player.Corpse.SendPlayer( To.Everyone );
+		player.Reveal();
 	}
 
 	public override void OnPlayerJoin( Player player )
