@@ -13,10 +13,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool HasCredits { get; private set; }
 
 	public Player Player { get; set; }
+	public bool IsFound { get; set; }
 	/// <summary>
 	/// The player who identified this body (this does not include covert searches).
 	/// </summary>
-	public Player Finder { get; set; }
+	public Player Finder { get; private set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
@@ -118,10 +119,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		if ( !covert )
 		{
-			if ( !Finder.IsValid() )
+			if ( !IsFound )
 			{
 				SendPlayer( To.Everyone );
-				Player.SendRole( To.Everyone );
+				Player.IsRoleKnown = true;
 			}
 
 			// If the searcher is a detective, send kill info to everyone.
@@ -129,27 +130,26 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 				SendKillInfo( To.Everyone );
 
 			if ( !Player.IsConfirmedDead )
-			{
 				Player.ConfirmDeath( searcher );
 
-				foreach ( var deadPlayer in Player.PlayersKilled )
-				{
-					if ( deadPlayer.IsConfirmedDead )
-						continue;
+			foreach ( var deadPlayer in Player.PlayersKilled )
+			{
+				if ( deadPlayer.IsConfirmedDead )
+					continue;
 
-					deadPlayer.ConfirmDeath( searcher );
+				deadPlayer.ConfirmDeath( searcher );
 
-					UI.InfoFeed.AddPlayerToPlayerEntry
-					(
-						searcher,
-						deadPlayer,
-						"confirmed the death of"
-					);
-				}
+				UI.InfoFeed.AddPlayerToPlayerEntry
+				(
+					searcher,
+					deadPlayer,
+					"confirmed the death of"
+				);
 			}
 
-			if ( !Finder.IsValid() )
+			if ( !IsFound )
 			{
+				IsFound = true;
 				Finder = searcher;
 				Event.Run( TTTEvent.Player.CorpseFound, Player );
 				ClientCorpseFound( searcher );
@@ -187,6 +187,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	[ClientRpc]
 	private void ClientCorpseFound( Player finder )
 	{
+		IsFound = true;
 		Finder = finder;
 		Event.Run( TTTEvent.Player.CorpseFound, Player );
 	}

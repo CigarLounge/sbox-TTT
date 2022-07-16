@@ -109,6 +109,7 @@ public partial class Player
 	public override void OnKilled()
 	{
 		LifeState = LifeState.Dead;
+		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;
 
 		Client.AddInt( "deaths" );
