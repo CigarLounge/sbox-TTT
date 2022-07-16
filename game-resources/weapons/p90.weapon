@@ -31,15 +31,10 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_p90.vmdl"
 		DeployTime = 0.8
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/weapons/p90.jpg"
+		IconPath = resource:"ui/weapons/p90.png"
 		Description = "Large capacity SMG which fills Traitors with bullet holes."
-		Icon = null
 		ClassName = "ttt_weapon_p90"
-		Title = null
 	}
 }

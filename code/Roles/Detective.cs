@@ -15,15 +15,6 @@ public class Detective : Role
 			return;
 
 		player.IsRoleKnown = true;
-
-		foreach ( var client in Client.All )
-		{
-			if ( client == player.Client )
-				continue;
-
-			player.SendRole( To.Single( client ) );
-		}
-
 		player.Inventory.Add( new DNAScanner() );
 		player.Perks.Add( new Armor() );
 		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );

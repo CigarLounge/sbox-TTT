@@ -36,10 +36,10 @@ public static class Scoring
 		if ( !Host.IsServer )
 			return;
 
-		var confirmer = player.Confirmer;
+		var finder = player.Corpse.Finder;
 
-		if ( confirmer.Team != Team.Traitors )
-			confirmer.RoundScore += confirmer.Role is Detective ? 3 : 1;
+		if ( finder.Team != Team.Traitors )
+			finder.RoundScore += finder.Role is Detective ? 3 : 1;
 	}
 
 	[TTTEvent.Round.Ended]

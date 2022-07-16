@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = ""
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/radio.jpg"
+		IconPath = resource:"ui/equipment/radio.png"
 		Description = "Place the radio somewhere, and then play sounds on it using the Radio tab in this menu."
-		Icon = null
 		ClassName = "ttt_equipment_radio"
-		Title = null
 	}
 }

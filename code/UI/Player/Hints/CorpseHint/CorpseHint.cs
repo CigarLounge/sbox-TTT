@@ -25,7 +25,7 @@ public class CorpseHint : EntityHintPanel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Title.Text = _corpse.PlayerName ?? "Unidentified body";
+		Title.Text = _corpse.Player?.SteamName ?? "Unidentified body";
 		Title.Style.FontColor = _corpse.Player?.Role.Color;
 		Title.SetClass( "unidentified", _corpse.Player is null );
 
@@ -46,7 +46,7 @@ public class CorpseHint : EntityHintPanel
 			SubText.Text = "to identify.";
 		}
 
-		bool canFetchCredits = _corpse.HasCredits && player.Role.CanRetrieveCredits && player.IsAlive();
+		var canFetchCredits = _corpse.HasCredits && player.Role.CanRetrieveCredits && player.IsAlive();
 		if ( !canFetchCredits )
 			CreditHint?.Delete();
 

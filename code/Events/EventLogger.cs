@@ -71,13 +71,13 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		var info = player.LastDamageInfo;
+		var info = player.LastDamage;
 		var attacker = info.Attacker;
 
 		if ( attacker is Player && attacker != player )
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{attacker.Client.Name} did {info.Damage} damage to {player.Client.Name}" );
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
 		else
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.Client.Name} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.SteamName} took {info.Damage} damage." );
 	}
 
 	[TTTEvent.Player.Killed]
@@ -87,9 +87,9 @@ public static class EventLogger
 			return;
 
 		if ( !player.DiedBySuicide )
-			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.Client.Name}" );
-		else if ( player.LastDamageInfo.Flags == DamageFlags.Fall )
-			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.Client.Name} fell to their death." );
+			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
+		else if ( player.LastDamage.Flags == DamageFlags.Fall )
+			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.SteamName} fell to their death." );
 	}
 
 	[TTTEvent.Player.CorpseFound]
@@ -98,7 +98,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Confirmer.Client.Name} found the corpse of {player.Corpse.PlayerName}" );
+		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
 	}
 
 	private static void WriteEvents()

@@ -71,25 +71,7 @@ public abstract partial class BaseState : BaseNetworkable
 		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
-
-			switch ( player.Status )
-			{
-				case PlayerStatus.Spectator:
-					continue;
-				case PlayerStatus.MissingInAction:
-				{
-					player.Confirm( To.Everyone );
-					break;
-				}
-				default:
-				{
-					if ( !player.IsRoleKnown )
-						player.SendRole( To.Everyone );
-
-					player.IsRoleKnown = true;
-					break;
-				}
-			}
+			player.Reveal();
 		}
 	}
 
