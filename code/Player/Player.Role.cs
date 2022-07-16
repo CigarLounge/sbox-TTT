@@ -22,7 +22,7 @@ public partial class Player
 			// Always send the role to this player's client
 			if ( IsServer )
 				SendRole( To.Single( this ) );
-	
+
 			_role.OnSelect( this );
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
@@ -68,6 +68,9 @@ public partial class Player
 	private void OnRolesAssigned()
 	{
 		if ( !IsClient || IsLocalPawn )
+			return;
+
+		if ( IsSpectator )
 			return;
 
 		// After the roles have been assigned, set everyone

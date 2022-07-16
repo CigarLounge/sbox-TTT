@@ -109,10 +109,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			HasCredits = false;
 		}
 
-		SendKillInfo( To.Single( searcher ) );
-		SendPlayer( To.Single( searcher ), Player );
+		SendPlayer( To.Single( searcher ) );
 		Player.SendRole( To.Single( searcher ) );
-
+		SendKillInfo( To.Single( searcher ) );
 
 		// Dead players will always covert search.
 		covert |= !searcher.IsAlive();
@@ -121,7 +120,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		{
 			if ( !Finder.IsValid() )
 			{
-				SendPlayer( Player );
+				SendPlayer( To.Everyone );
 				Player.SendRole( To.Everyone );
 			}
 
@@ -148,6 +147,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ClientSearch( To.Single( searcher ), creditsRetrieved );
 	}
 
+	public void SendPlayer( To to )
+	{
+		SendPlayer( to, Player );
+	}
+
 	public void SendKillInfo( To to )
 	{
 		Host.AssertServer();
@@ -161,7 +165,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( Player, KillList, C4Note, TimeUntilDNADecay );
+			SendMiscInfo( KillList, Perks, C4Note, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
 				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayer );
@@ -191,15 +195,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( Player player, Player[] killList, string c4Note, TimeUntil dnaDecay )
+	private void SendMiscInfo( Player[] killList, PerkInfo[] perks, string c4Note, TimeUntil dnaDecay )
 	{
-		// SendPlayer gets called after this, LOL!
-		Player = player;
-		Player.Corpse = this;
-
-		if ( killList is not null )
-			Player.PlayersKilled = killList.ToList();
-
+		Player.PlayersKilled.Concat( killList );
+		Perks = perks;
 		C4Note = c4Note;
 		TimeUntilDNADecay = dnaDecay;
 	}
