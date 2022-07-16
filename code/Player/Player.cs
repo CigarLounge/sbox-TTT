@@ -8,18 +8,17 @@ public partial class Player : AnimatedEntity
 	public Inventory Inventory { get; private init; }
 	public Perks Perks { get; private init; }
 
-	private CameraMode _camera;
 	public CameraMode Camera
 	{
-		get => _camera;
+		get => Components.Get<CameraMode>();
 		set
 		{
-			if ( _camera == value )
+			var current = Camera;
+			if ( current == value )
 				return;
 
 			Components.RemoveAny<CameraMode>();
 			Components.Add( value );
-			_camera = value;
 		}
 	}
 
@@ -227,7 +226,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		Animator?.BuildInput( input );
+		Animator.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
