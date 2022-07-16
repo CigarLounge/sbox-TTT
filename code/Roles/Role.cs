@@ -5,11 +5,15 @@ using System.Linq;
 
 namespace TTT;
 
-public abstract class Role : IEquatable<Role>, IEquatable<string>
+public abstract class Role : IEquatable<string>
 {
-	private static Dictionary<Type, HashSet<Player>> _players = new();
-	public RoleInfo Info { get; private set; }
+	public static Innocent Innocent { get; private set; }
+	public static Traitor Traitor { get; private set; }
+	public static Detective Detective { get; private set; }
+	public static NoneRole None { get; private set; }
 
+	public RoleInfo Info { get; private set; }
+	public HashSet<Player> Players { get; private init; } = new();
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
 	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
@@ -18,7 +22,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
 
-	public Role()
+	protected Role()
 	{
 		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 	}
@@ -67,43 +71,20 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 				.ToList();
 	}
 
-	public static IEnumerable<Player> GetPlayers<T>() where T : Role
+	public static void Init()
 	{
-		if ( !_players.ContainsKey( typeof( T ) ) )
-			return null;
-
-		return _players[typeof( T )];
+		Innocent = new Innocent();
+		Traitor = new Traitor();
+		Detective = new Detective();
+		None = new NoneRole();
 	}
 
 	[TTTEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChanged( Player player, Role oldRole )
 	{
-		if ( oldRole is not null )
-			_players[oldRole.GetType()].Remove( player );
-
-		var newRole = player.Role;
-		if ( newRole is not null )
-		{
-			if ( !_players.ContainsKey( newRole.GetType() ) )
-				_players.Add( newRole.GetType(), new HashSet<Player>() );
-
-			_players[newRole.GetType()].Add( player );
-		}
+		oldRole?.Players.Remove( player );
+		player.Role?.Players.Add( player );
 	}
-
-	public static bool operator ==( Role left, Role right )
-	{
-		if ( left is null )
-		{
-			if ( right is null )
-				return true;
-
-			return false;
-		}
-
-		return left.Equals( right );
-	}
-	public static bool operator !=( Role left, Role right ) => !(left == right);
 
 	public static bool operator ==( Role left, string right )
 	{
@@ -113,17 +94,6 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 		return left.Equals( right );
 	}
 	public static bool operator !=( Role left, string right ) => !(left == right);
-
-	public bool Equals( Role other )
-	{
-		if ( other is null )
-			return false;
-
-		if ( ReferenceEquals( this, other ) )
-			return true;
-
-		return Info.ResourceId == other.Info.ResourceId;
-	}
 
 	public bool Equals( string other )
 	{
@@ -136,9 +106,21 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 		return false;
 	}
 
-	public override bool Equals( object obj ) => Equals( obj as Role );
+	public override bool Equals( object obj )
+	{
+		if ( ReferenceEquals( this, obj ) )
+			return true;
 
-	public override int GetHashCode() => Info.ResourceId.GetHashCode();
+		if ( obj is null )
+			return false;
+
+		throw new NotImplementedException();
+	}
+
+	public override int GetHashCode()
+	{
+		throw new NotImplementedException();
+	}
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

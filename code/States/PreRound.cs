@@ -90,8 +90,8 @@ public class PreRound : BaseState
 		players.Shuffle();
 
 		var index = 0;
-		while ( traitorCount-- > 0 ) players[index++].Role = new Traitor();
-		while ( detectiveCount-- > 0 ) players[index++].Role = new Detective();
-		while ( index < players.Count ) players[index++].Role = new Innocent();
+		while ( traitorCount-- > 0 ) players[index++].Role = Role.Traitor;
+		while ( detectiveCount-- > 0 ) players[index++].Role = Role.Detective;
+		while ( index < players.Count ) players[index++].Role = Role.Innocent;
 	}
 }

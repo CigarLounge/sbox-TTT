@@ -31,9 +31,9 @@ public partial class GeneralMenu : Panel
 		Instance.LastEventSummaryData.Events = EventInfo.Deserialize( eventBytes );
 		EventSummary.Instance?.Init();
 
-		Instance.LastRoleSummaryData.Innocents = Role.GetPlayers<Innocent>().ToList();
-		Instance.LastRoleSummaryData.Detectives = Role.GetPlayers<Detective>()?.ToList();
-		Instance.LastRoleSummaryData.Traitors = Role.GetPlayers<Traitor>().ToList();
+		Instance.LastRoleSummaryData.Innocents = Role.Innocent.Players.ToList();
+		Instance.LastRoleSummaryData.Traitors = Role.Traitor.Players.ToList();
+		Instance.LastRoleSummaryData.Detectives = Role.Detective.Players.ToList();	
 
 		RoleSummary.Instance?.Init();
 	}

@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Linq;
 
 namespace TTT;
 
@@ -40,9 +41,14 @@ public partial class Player
 		ClientSetRole( to, Role.Info );
 	}
 
-	public void SetRole( string libraryName )
+	public void SetRole( string className )
 	{
-		Role = TypeLibrary.Create<Role>( libraryName );
+		if ( className == Role.Innocent.Info.ClassName )
+			Role = Role.Innocent;
+		else if ( className == Role.Traitor.Info.ClassName )
+			Role = Role.Traitor;
+		else if ( className == Role.Detective.Info.ClassName )
+			Role = Role.Detective;
 	}
 
 	[ClientRpc]
@@ -58,9 +64,12 @@ public partial class Player
 		if ( !IsClient || IsLocalPawn )
 			return;
 
+		if ( IsSpectator )
+			return;
+
 		// After the roles have been assigned, set everyone
 		// to being innocent clientside.
 		if ( !IsRoleKnown )
-			Role = new Innocent();
+			Role = Role.Innocent;
 	}
 }

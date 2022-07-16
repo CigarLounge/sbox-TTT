@@ -19,13 +19,15 @@ public partial class Game : Sandbox.Game
 	public Game()
 	{
 		Current = this;
+		// Temporary.
+		Role.Init();
 
 		if ( IsServer )
 			_ = new UI.Hud();
 	}
 
 	/// <summary>
-	/// Changes the state if minimum players is met. Otherwise, force changes to "WaitingState"
+	/// Changes the state if minimum players is met. Otherwise, force changes to <see cref="WaitingState"/>.
 	/// </summary>
 	/// <param name="state"> The state to change to if minimum players is met.</param>
 	public void ChangeState( BaseState state )
