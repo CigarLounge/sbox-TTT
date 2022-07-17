@@ -56,8 +56,6 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
-		Event.Run( GameEvent.Client.Joined, client );
-
 		var player = new Player();
 		client.Pawn = player;
 		player.SteamId = client.PlayerId;
@@ -68,6 +66,8 @@ public partial class Game : Sandbox.Game
 		State.OnPlayerJoin( player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has joined" );
+
+		Event.Run( GameEvent.Client.Joined, client );
 	}
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
