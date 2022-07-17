@@ -20,17 +20,17 @@ public class ForceWin : Entity
 	[Input]
 	public void ActivateForceWin( Entity activator )
 	{
-		if ( Game.Current.State is not InProgress inProgress )
+		if ( Game.Current.State is not InProgress )
 			return;
 
 		if ( UseActivatorsTeam )
 		{
 			if ( activator is Player player )
-				inProgress.LoadPostRound( player.Team, WinType.Objective );
+				PostRound.Load( player.Team, WinType.Objective );
 
 			return;
 		}
 
-		inProgress.LoadPostRound( Team, WinType.Objective );
+		PostRound.Load( Team, WinType.Objective );
 	}
 }

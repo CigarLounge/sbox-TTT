@@ -4,24 +4,24 @@ namespace TTT;
 
 public class RagdollSpectateCamera : CameraMode, ISpectateCamera
 {
-	private Vector3 FocusPoint;
+	private Vector3 _focusPoint;
 
 	public override void Activated()
 	{
 		base.Activated();
 
-		FocusPoint = CurrentView.Position - GetViewOffset();
+		_focusPoint = CurrentView.Position - GetViewOffset();
 
 		Viewer = null;
 	}
 
 	public override void Update()
 	{
-		FocusPoint = Vector3.Lerp( FocusPoint, GetSpectatePoint(), Time.Delta * 5.0f );
+		_focusPoint = Vector3.Lerp( _focusPoint, GetSpectatePoint(), Time.Delta * 5.0f );
 
 		Rotation = Input.Rotation;
 
-		var trace = Trace.Ray( GetSpectatePoint(), FocusPoint + GetViewOffset() )
+		var trace = Trace.Ray( GetSpectatePoint(), _focusPoint + GetViewOffset() )
 			.WorldOnly()
 			.Run();
 

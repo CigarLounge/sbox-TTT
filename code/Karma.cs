@@ -98,7 +98,7 @@ public static class Karma
 		if ( Game.Current.State is not InProgress )
 			return;
 
-		var attacker = player.LastDamageInfo.Attacker as Player;
+		var attacker = player.LastDamage.Attacker as Player;
 
 		if ( !attacker.IsValid() || !player.IsValid() )
 			return;
@@ -106,7 +106,7 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		var damage = player.LastDamageInfo.Damage;
+		var damage = player.LastDamage.Damage;
 
 		if ( attacker.Team == player.Team )
 		{

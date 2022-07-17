@@ -31,15 +31,10 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_mp7.vmdl"
 		DeployTime = 1.2
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = false
 		Price = 0
-		IconPath = resource:"ui/weapons/mp7.jpg"
+		IconPath = resource:"ui/weapons/mp7.png"
 		Description = ""
-		Icon = null
 		ClassName = "ttt_weapon_mp7"
-		Title = null
 	}
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 using Sandbox;
 
 namespace TTT;
@@ -13,17 +15,19 @@ public enum EventType
 	PlayerCorpseFound
 }
 
-public struct EventInfo
+public class EventInfo
 {
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
+	public string Description { get; set; }
+
+	public static byte[] Serialize( EventInfo[] data ) => Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
+	public static EventInfo[] Deserialize( byte[] bytes ) => JsonSerializer.Deserialize<EventInfo[]>( bytes );
 }
 
 public static class EventLogger
 {
-	// s&box doesn't allow for string types in structs, so we need a seperate array for them meanwhile...
 	public static readonly List<EventInfo> Events = new();
-	public static readonly List<string> EventDescriptions = new();
 
 	private const string LogFolder = "round-logs";
 
@@ -33,10 +37,10 @@ public static class EventLogger
 		{
 			EventType = eventType,
 			Time = time,
+			Description = description
 		};
 
 		Events.Add( eventInfo );
-		EventDescriptions.Add( description );
 	}
 
 	[TTTEvent.Round.Started]
@@ -46,7 +50,6 @@ public static class EventLogger
 			return;
 
 		Events.Clear();
-		EventDescriptions.Clear();
 
 		LogEvent( EventType.Round, Game.InProgressTime, "The round started." );
 	}
@@ -58,8 +61,8 @@ public static class EventLogger
 			return;
 
 		LogEvent( EventType.Round, Events[^1].Time, $"The {winningTeam.GetTitle()} won the round!" );
-
 		WriteEvents();
+		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
 	}
 
 	[TTTEvent.Player.TookDamage]
@@ -68,13 +71,13 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		var info = player.LastDamageInfo;
+		var info = player.LastDamage;
 		var attacker = info.Attacker;
 
 		if ( attacker is Player && attacker != player )
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{attacker.Client.Name} did {info.Damage} damage to {player.Client.Name}" );
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
 		else
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.Client.Name} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.SteamName} took {info.Damage} damage." );
 	}
 
 	[TTTEvent.Player.Killed]
@@ -84,9 +87,9 @@ public static class EventLogger
 			return;
 
 		if ( !player.DiedBySuicide )
-			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.Client.Name}" );
-		else if ( player.LastDamageInfo.Flags == DamageFlags.Fall )
-			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.Client.Name} fell to their death." );
+			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
+		else if ( player.LastDamage.Flags == DamageFlags.Fall )
+			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.SteamName} fell to their death." );
 	}
 
 	[TTTEvent.Player.CorpseFound]
@@ -95,7 +98,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Confirmer.Client.Name} found the corpse of {player.Corpse.PlayerName}" );
+		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeLeft, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
 	}
 
 	private static void WriteEvents()
@@ -117,11 +120,9 @@ public static class EventLogger
 	private static string GetEventSummary()
 	{
 		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
-		if ( Events.Count != EventDescriptions.Count )
-			return summary;
 
 		for ( var i = 0; i < Events.Count; ++i )
-			summary += $"{Events[i].Time.TimerString()} - {EventDescriptions[i]}\n";
+			summary += $"{Events[i].Time.TimerString()} - {Events[i].Description}\n";
 
 		return summary;
 	}

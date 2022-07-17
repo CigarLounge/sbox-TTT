@@ -22,7 +22,7 @@ public partial class Player
 
 	public void SimulateFlashlight()
 	{
-		bool toggle = Input.Pressed( InputButton.Flashlight );
+		var toggle = Input.Pressed( InputButton.Flashlight );
 
 		if ( _worldLight.IsValid() )
 		{

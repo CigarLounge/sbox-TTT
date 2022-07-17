@@ -65,7 +65,7 @@ public class RoleInfo : GameResource
 		}
 
 		if ( Host.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, GetPNGPath( IconPath ) );
+			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 
 	public struct KarmaConfig

@@ -10,15 +10,10 @@
 		HoldType = "Fists"
 		WorldModelPath = resource:"models/weapons/w_knife.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/weapons/knife.jpg"
+		IconPath = resource:"ui/weapons/knife.png"
 		Description = "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire."
-		Icon = null
 		ClassName = "ttt_weapon_knife"
-		Title = null
 	}
 }

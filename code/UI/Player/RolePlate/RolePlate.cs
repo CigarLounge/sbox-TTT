@@ -41,7 +41,5 @@ public class RolePlate : EntityComponent<Player>
 		var tx = Entity.GetBoneTransform( "head" );
 		tx.Position += Vector3.Up * 20.0f;
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
-
-		_worldPanel.Transform = tx;
 	}
 }

@@ -31,15 +31,10 @@
 		HoldType = "Pistol"
 		WorldModelPath = resource:"models/weapons/w_vertec-silenced.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/weapons/silenced-pistol.jpg"
+		IconPath = resource:"ui/weapons/silenced-pistol.png"
 		Description = "Low-noise handgun which prevents victims from screaming when killed."
-		Icon = null
 		ClassName = "ttt_weapon_silencedpistol"
-		Title = null
 	}
 }

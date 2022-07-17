@@ -3,6 +3,4 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public partial class RoundSummaryPage : Panel
-{
-}
+public class RoundSummaryPage : Panel { }

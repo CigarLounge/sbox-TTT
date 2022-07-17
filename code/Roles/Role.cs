@@ -5,8 +5,9 @@ using System.Linq;
 
 namespace TTT;
 
-public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
+public abstract class Role : IEquatable<Role>, IEquatable<string>
 {
+	private static readonly Dictionary<Type, HashSet<Player>> _players = new();
 	public RoleInfo Info { get; private set; }
 
 	public Team Team => Info.Team;
@@ -19,7 +20,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 	public RoleInfo.KarmaConfig Karma => Info.Karma;
 	public RoleInfo.ScoringConfig Scoring => Info.Scoring;
 
-	public BaseRole()
+	public Role()
 	{
 		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 	}
@@ -80,7 +81,33 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 				.ToList();
 	}
 
-	public static bool operator ==( BaseRole left, BaseRole right )
+	public static IEnumerable<Player> GetPlayers<T>() where T : Role
+	{
+		var type = typeof( T );
+
+		if ( !_players.ContainsKey( type ) )
+			_players.Add( type, new HashSet<Player>() );
+
+		return _players[type];
+	}
+
+	[TTTEvent.Player.RoleChanged]
+	private static void OnPlayerRoleChanged( Player player, Role oldRole )
+	{
+		if ( oldRole is not null )
+			_players[oldRole.GetType()].Remove( player );
+
+		var newRole = player.Role;
+		if ( newRole is not null )
+		{
+			if ( !_players.ContainsKey( newRole.GetType() ) )
+				_players.Add( newRole.GetType(), new HashSet<Player>() );
+
+			_players[newRole.GetType()].Add( player );
+		}
+	}
+
+	public static bool operator ==( Role left, Role right )
 	{
 		if ( left is null )
 		{
@@ -92,18 +119,18 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 
 		return left.Equals( right );
 	}
-	public static bool operator !=( BaseRole left, BaseRole right ) => !(left == right);
+	public static bool operator !=( Role left, Role right ) => !(left == right);
 
-	public static bool operator ==( BaseRole left, string right )
+	public static bool operator ==( Role left, string right )
 	{
 		if ( left is null || right is null )
 			return false;
 
 		return left.Equals( right );
 	}
-	public static bool operator !=( BaseRole left, string right ) => !(left == right);
+	public static bool operator !=( Role left, string right ) => !(left == right);
 
-	public bool Equals( BaseRole other )
+	public bool Equals( Role other )
 	{
 		if ( other is null )
 			return false;
@@ -125,7 +152,7 @@ public abstract class BaseRole : IEquatable<BaseRole>, IEquatable<string>
 		return false;
 	}
 
-	public override bool Equals( object obj ) => Equals( obj as BaseRole );
+	public override bool Equals( object obj ) => Equals( obj as Role );
 
 	public override int GetHashCode() => Info.ResourceId.GetHashCode();
 

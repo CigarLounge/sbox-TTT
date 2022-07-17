@@ -36,8 +36,8 @@ public static class Scoring
 		if ( !Host.IsServer )
 			return;
 
-		var confirmer = player.Confirmer;
-		confirmer.RoundScore += confirmer.Role.Scoring.CorpseFoundReward;
+		var finder = player.Corpse.Finder;
+		finder.RoundScore += finder.Role.Scoring.CorpseFoundReward;
 	}
 
 	[TTTEvent.Round.Ended]

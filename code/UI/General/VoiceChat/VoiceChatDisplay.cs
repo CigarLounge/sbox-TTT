@@ -6,7 +6,7 @@ namespace TTT.UI;
 
 public class VoiceChatDisplay : Panel
 {
-	public static VoiceChatDisplay Instance { get; internal set; }
+	public static VoiceChatDisplay Instance { get; private set; }
 
 	public VoiceChatDisplay() : base()
 	{

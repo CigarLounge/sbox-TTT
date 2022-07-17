@@ -31,15 +31,10 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/weapons/w_mp5.vmdl"
 		DeployTime = 1
-		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
-		ViewModel = resource:"models/weapons/v_mp5.vmdl"
-		WorldModel = resource:"models/weapons/w_mp5.vmdl"
 		IsLimited = false
 		Price = 0
-		IconPath = resource:"ui/weapons/mp5.jpg"
+		IconPath = resource:"ui/weapons/mp5.png"
 		Description = ""
-		Icon = null
 		ClassName = "ttt_weapon_mp5"
-		Title = null
 	}
 }

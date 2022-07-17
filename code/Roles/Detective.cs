@@ -5,8 +5,10 @@ namespace TTT;
 [Category( "Roles" )]
 [ClassName( "ttt_role_detective" )]
 [Title( "Detective" )]
-public class Detective : BaseRole
+public class Detective : Role
 {
+	public const string Hat = "models/detective_hat/detective_hat.vmdl";
+
 	public override void OnSelect( Player player )
 	{
 		base.OnSelect( player );
@@ -15,18 +17,9 @@ public class Detective : BaseRole
 			return;
 
 		player.IsRoleKnown = true;
-
-		foreach ( var client in Client.All )
-		{
-			if ( client == player.Client )
-				continue;
-
-			player.SendRole( To.Single( client ) );
-		}
-
 		player.Inventory.Add( new DNAScanner() );
 		player.Perks.Add( new Armor() );
-		player.AttachClothing( "models/detective_hat/detective_hat.vmdl" );
+		player.AttachClothing( Hat );
 	}
 
 	public override void OnDeselect( Player player )
@@ -34,6 +27,6 @@ public class Detective : BaseRole
 		base.OnDeselect( player );
 
 		if ( Host.IsServer )
-			player.RemoveClothing( "models/detective_hat/detective_hat.vmdl" );
+			player.RemoveClothing( Hat );
 	}
 }

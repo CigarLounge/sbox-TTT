@@ -81,12 +81,12 @@ public partial class Player : AnimatedEntity
 		Host.AssertServer();
 
 		LifeState = LifeState.Respawnable;
-		IsSpectator = IsForcedSpectator;
 
 		DeleteFlashlight();
 		DeleteItems();
 		ResetConfirmationData();
 		ResetDamageData();
+		Client.SetValue( Strings.Spectator, IsForcedSpectator );
 		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
@@ -96,6 +96,8 @@ public partial class Player : AnimatedEntity
 		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
+			Status = PlayerStatus.Alive;
+			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
 			EnableAllCollisions = true;
@@ -114,6 +116,8 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
+			Status = PlayerStatus.Spectator;
+			UpdateStatus( To.Everyone );
 			MakeSpectator( false );
 		}
 
@@ -133,7 +137,7 @@ public partial class Player : AnimatedEntity
 		else
 			ClearButtons();
 
-		if ( !this.IsAlive() )
+		if ( IsSpectator )
 			return;
 
 		CreateFlashlight();
@@ -222,7 +226,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		Animator?.BuildInput( input );
+		Animator.BuildInput( input );
 	}
 
 	public void RenderHud( Vector2 screenSize )
@@ -333,6 +337,7 @@ public partial class Player : AnimatedEntity
 		RemoveAllClothing();
 	}
 
+	#region ActiveChild
 	[Net, Predicted]
 	public Carriable ActiveChild { get; set; }
 
@@ -377,6 +382,7 @@ public partial class Player : AnimatedEntity
 			}
 		}
 	}
+	#endregion
 
 	private void SimulatePerks()
 	{
@@ -388,12 +394,36 @@ public partial class Player : AnimatedEntity
 
 	public override void OnChildAdded( Entity child )
 	{
-		Inventory?.OnChildAdded( child );
+		switch ( child )
+		{
+			case Carriable carriable:
+			{
+				Inventory.OnChildAdded( carriable );
+				break;
+			}
+			case BaseClothing clothing:
+			{
+				Clothes.Add( clothing );
+				break;
+			}
+		}
 	}
 
 	public override void OnChildRemoved( Entity child )
 	{
-		Inventory?.OnChildRemoved( child );
+		switch ( child )
+		{
+			case Carriable carriable:
+			{
+				Inventory.OnChildRemoved( carriable );
+				break;
+			}
+			case BaseClothing clothing:
+			{
+				Clothes.Remove( clothing );
+				break;
+			}
+		}
 	}
 
 	protected override void OnComponentAdded( EntityComponent component )

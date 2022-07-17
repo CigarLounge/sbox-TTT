@@ -4,7 +4,7 @@
 	{
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/perks/radar.jpg"
+		IconPath = resource:"ui/perks/radar.png"
 		Description = "Allows you to scan for life signs."
 		ClassName = "ttt_perk_radar"
 	}

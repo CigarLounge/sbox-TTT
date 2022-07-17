@@ -4,7 +4,7 @@ namespace TTT;
 
 public static class MapHandler
 {
-	public static int RandomWeaponCount = 0;
+	public static int WeaponCount = 0;
 
 	[Event.Entity.PostSpawn]
 	public static void EntityPostSpawn()
@@ -15,7 +15,7 @@ public static class MapHandler
 		foreach ( var ent in Entity.All )
 		{
 			if ( ent is Weapon || ent is Ammo || ent is RandomWeapon )
-				RandomWeaponCount += 1;
+				WeaponCount += 1;
 		}
 	}
 

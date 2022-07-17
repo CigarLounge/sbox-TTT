@@ -25,35 +25,38 @@ public partial class PostRound : BaseState
 
 	public PostRound( Team winningTeam, WinType winType )
 	{
+		RevealEveryone();
+
 		WinningTeam = winningTeam;
 		WinType = winType;
+	}
+
+	public static void Load( Team winningTeam, WinType winType )
+	{
+		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 	}
 
 	public override void OnPlayerKilled( Player player )
 	{
 		base.OnPlayerKilled( player );
 
-		player.Confirm( To.Everyone );
+		player.Reveal();
 	}
 
 	public override void OnPlayerJoin( Player player )
 	{
 		base.OnPlayerJoin( player );
 
-		SyncPlayer( player );
+		player.Status = PlayerStatus.Spectator;
+		player.UpdateStatus( To.Everyone );
 	}
 
 	protected override void OnStart()
 	{
 		base.OnStart();
 
-		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
-
-		if ( !Host.IsServer )
-			return;
-
 		Game.Current.TotalRoundsPlayed++;
-		RevealEveryone();
+		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
 	}
 
 	protected override void OnTimeUp()

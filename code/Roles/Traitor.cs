@@ -8,7 +8,7 @@ namespace TTT;
 [Category( "Roles" )]
 [ClassName( "ttt_role_traitor" )]
 [Title( "Traitor" )]
-public class Traitor : BaseRole
+public class Traitor : Role
 {
 	public override void OnSelect( Player player )
 	{
@@ -31,7 +31,7 @@ public class Traitor : BaseRole
 			}
 
 			if ( otherPlayer.IsMissingInAction )
-				otherPlayer.UpdateMissingInAction( player );
+				otherPlayer.UpdateStatus( To.Single( player ) );
 		}
 	}
 

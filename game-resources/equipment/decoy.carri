@@ -10,15 +10,10 @@
 		HoldType = "None"
 		WorldModelPath = ""
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/decoy.jpg"
+		IconPath = resource:"ui/equipment/decoy.png"
 		Description = "Shows a fake radar sign to detectives, and makes their DNA scanner show the location of the Decoy if they scan for your DNA."
-		Icon = null
 		ClassName = "ttt_equipment_decoy"
-		Title = null
 	}
 }

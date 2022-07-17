@@ -209,7 +209,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		PreviousOwner = dropper;
 
-		if ( IsClient )
+		if ( !IsServer )
 			return;
 
 		Owner = null;
