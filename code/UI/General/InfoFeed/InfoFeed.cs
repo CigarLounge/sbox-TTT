@@ -7,7 +7,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class InfoFeed : Panel
 {
-	public static InfoFeed Instance;
+	public static InfoFeed Instance { get; private set; }
 
 	public InfoFeed() => Instance = this;
 
@@ -24,12 +24,11 @@ public partial class InfoFeed : Panel
 	}
 
 	[ClientRpc]
-	public static void AddEntry( Client client, string message )
+	public static void AddEntry( Player player, string message )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
 
-		var player = client.Pawn as Player;
-		var leftLabel = entry.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
+		var leftLabel = entry.AddLabel( player.IsLocalPawn ? "You" : player.SteamName, "left" );
 		leftLabel.Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
 
 		entry.AddLabel( message, "method" );
@@ -88,13 +87,13 @@ public partial class InfoFeed : Panel
 			return;
 
 		var karma = MathF.Round( player.BaseKarma );
-		var dF = MathF.Round( 100f - player.DamageFactor * 100f );
+		var df = MathF.Round( 100f - player.DamageFactor * 100f );
 
 		string text;
-		if ( dF == 0 )
+		if ( df == 0 )
 			text = $"Your karma is {karma}, you'll deal full damage this round.";
 		else
-			text = $"Your karma is {karma}, you'll deal {dF}% reduced damage this round.";
+			text = $"Your karma is {karma}, you'll deal {df}% reduced damage this round.";
 
 		AddEntry( text );
 	}
