@@ -34,4 +34,11 @@ public class Traitor : Role
 				otherPlayer.UpdateStatus( To.Single( player ) );
 		}
 	}
+
+	protected override bool ShouldCreateRolePlate( Player player )
+	{
+		var local = Local.Pawn as Player;
+
+		return local.Team == Team;
+	}
 }

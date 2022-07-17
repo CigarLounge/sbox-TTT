@@ -202,7 +202,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		UI.InfoFeed.AddEntry
 		(
-			Local.Client,
+			Local.Pawn as Player,
 			$"found {creditsRetrieved} credits!"
 		);
 	}

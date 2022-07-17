@@ -17,16 +17,16 @@ public static class Scoring
 
 		if ( player.DiedBySuicide )
 		{
-			player.RoundScore--;
+			player.RoundScore -= player.Role.Scoring.SuicidePenalty;
 		}
 		else
 		{
 			var attacker = (Player)player.LastAttacker;
 
 			if ( attacker.Team != player.Team )
-				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
+				attacker.RoundScore += player.Role.Scoring.AttackerKillReward;
 			else
-				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
+				attacker.RoundScore -= attacker.Role.Scoring.TeamKillPenalty;
 		}
 	}
 
@@ -37,9 +37,7 @@ public static class Scoring
 			return;
 
 		var finder = player.Corpse.Finder;
-
-		if ( finder.Team != Team.Traitors )
-			finder.RoundScore += finder.Role is Detective ? 3 : 1;
+		finder.RoundScore += finder.Role.Scoring.CorpseFoundReward;
 	}
 
 	[TTTEvent.Round.Ended]
@@ -61,7 +59,7 @@ public static class Scoring
 				continue;
 			}
 
-			player.RoundScore++;
+			player.RoundScore += player.Role.Scoring.SurviveBonus;
 			alivePlayersCount[(int)player.Team]++;
 		}
 

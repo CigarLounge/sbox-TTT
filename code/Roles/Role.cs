@@ -17,6 +17,8 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
+	public RoleInfo.KarmaConfig Karma => Info.Karma;
+	public RoleInfo.ScoringConfig Scoring => Info.Scoring;
 
 	public Role()
 	{
@@ -37,24 +39,36 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 			return;
 		}
+		else if ( !Host.IsServer )
+		{
+			if ( ShouldCreateRolePlate( player ) )
+				player.Components.Create<UI.RolePlate>();
 
-		if ( !Host.IsServer )
 			return;
+		}
 
-		player.Client?.SetInt( "team", (int)Team );
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
 	}
 
 	public virtual void OnDeselect( Player player )
 	{
-		if ( !player.IsLocalPawn )
-			return;
+		if ( player.IsLocalPawn )
+		{
+			player.ClearButtons();
 
-		player.ClearButtons();
+			if ( Info.ShopItems.Any() )
+				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
+		}
+		else if ( !Host.IsServer )
+		{
+			player.Components.RemoveAny<UI.RolePlate>();
+		}
+	}
 
-		if ( Info.ShopItems.Count > 0 )
-			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
+	protected virtual bool ShouldCreateRolePlate( Player player )
+	{
+		return false;
 	}
 
 	protected List<RoleButton> GetRoleButtons()
@@ -124,7 +138,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 		if ( ReferenceEquals( this, other ) )
 			return true;
 
-		return Info.ResourceId == other.Info.ResourceId;
+		return Info == other.Info;
 	}
 
 	public bool Equals( string other )
