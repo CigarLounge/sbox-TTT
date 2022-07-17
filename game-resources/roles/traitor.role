@@ -32,8 +32,8 @@
 		RequiredKarma = 0
 		Karma = 
 		{
-			AttackerKillReward = 40
-			TeamKillPenalty = 15
+			AttackerKillRewardMultiplier = 0.012
+			TeamKillPenaltyMultiplier = 0.015
 			AttackerHurtRewardMultiplier = 0.0003
 			TeamHurtPenaltyMultiplier = 0.001
 		}

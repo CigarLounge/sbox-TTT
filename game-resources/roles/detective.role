@@ -28,7 +28,7 @@
 		RequiredKarma = 600
 		Karma = 
 		{
-			TeamKillPenalty = 15
+			TeamKillPenaltyMultiplier = 0.015
 			TeamHurtPenaltyMultiplier = 0.001
 		}
 		Scoring = 

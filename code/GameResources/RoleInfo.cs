@@ -74,19 +74,19 @@ public class RoleInfo : GameResource
 
 	public struct KarmaConfig
 	{
-		[Description( "This gets calculated like the attacker dealing damage to a player with this role." )]
+		[Description( "This gets multiplied with the max value for karma to calculate the kill reward." )]
 		[Property]
-		public int AttackerKillReward { get; set; } = 0;
+		public float AttackerKillRewardMultiplier { get; set; } = 0;
 
-		[Description( "This gets calculated like the attacker dealing damage to a teammate." )]
+		[Description( "This gets multiplied with the victim's active karma to determine the kill penalty." )]
 		[Property]
-		public int TeamKillPenalty { get; set; } = 0;
+		public float TeamKillPenaltyMultiplier { get; set; } = 0;
 
-		[Description( "This gets multiplied with the damage dealt to a player with this role to calculate the hurt reward for the enemy attacker." )]
+		[Description( "This gets multiplied with the damage dealt to a player with this role to determine the hurt reward." )]
 		[Property]
 		public float AttackerHurtRewardMultiplier { get; set; } = 0;
 
-		[Description( "This gets multiplied with the damage dealt to a teammate to calculate the hurt penalty." )]
+		[Description( "This gets multiplied with the damage dealt to a teammate to determine the hurt penalty." )]
 		[Property]
 		public float TeamHurtPenaltyMultiplier { get; set; } = 0;
 

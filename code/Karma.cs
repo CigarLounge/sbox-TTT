@@ -35,6 +35,16 @@ public static class Karma
 		return victimKarma * Math.Clamp( damage * multiplier, 0, 1 );
 	}
 
+	public static float GetKillReward( float multiplier )
+	{
+		return MaxValue * Math.Clamp( multiplier, 0, 1 );
+	}
+
+	public static float GetKillPenalty( float victimKarma, float multiplier )
+	{
+		return victimKarma * Math.Clamp( multiplier, 0, 1 );
+	}
+
 	private static void GivePenalty( Player player, float penalty )
 	{
 		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
@@ -154,12 +164,12 @@ public static class Karma
 			 *		return;
 			 */
 
-			var penalty = GetHurtPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenalty, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
+			var penalty = GetKillPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenaltyMultiplier);
 			GivePenalty( attacker, penalty );
 		}
 		else
 		{
-			var reward = GetHurtReward( player.Role.Karma.AttackerKillReward, player.Role.Karma.AttackerHurtRewardMultiplier );
+			var reward = GetKillReward( player.Role.Karma.AttackerKillRewardMultiplier );
 			GiveReward( attacker, reward );
 		}
 	}
