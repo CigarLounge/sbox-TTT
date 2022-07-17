@@ -10,8 +10,13 @@
 		CanRetrieveCredits = false
 		CanTeamChat = false
 		CanAttachCorpses = false
+		CorpseFoundReward = 0
+		KillReward = 0
+		TeamKillPenalty = 0
+		SurviveBonus = 0
+		SuicidePenalty = 0
 		Color = "0.78431,0.78431,0.78431,1"
-		IconPath = resource:"ui/none.png"
+		IconPath = resource:"ui/none.jpg"
 		ClassName = "ttt_role_none"
 	}
 }

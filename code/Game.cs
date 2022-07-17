@@ -45,11 +45,8 @@ public partial class Game : Sandbox.Game
 		Host.AssertServer();
 
 		State?.Finish();
-		var oldState = State;
 		State = state;
 		State.Start();
-
-		Event.Run( TTTEvent.Game.StateChanged, oldState, State );
 	}
 
 	public override void OnKilled( Entity pawn )
@@ -59,7 +56,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientJoined( Client client )
 	{
-		Event.Run( TTTEvent.Game.ClientJoined, client );
+		Event.Run( GameEvent.Client.Joined, client );
 
 		var player = new Player();
 		client.Pawn = player;
@@ -75,7 +72,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Event.Run( TTTEvent.Game.ClientDisconnected, client, reason );
+		Event.Run( GameEvent.Client.Disconnected, client, reason );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
@@ -144,7 +141,5 @@ public partial class Game : Sandbox.Game
 		_lastState?.Finish();
 		_lastState = newState;
 		_lastState?.Start();
-
-		Event.Run( TTTEvent.Game.StateChanged, oldState, newState );
 	}
 }

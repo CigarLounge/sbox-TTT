@@ -84,7 +84,7 @@ public partial class Shop : Panel
 		_scrollIcon.EnableFade( _itemPanel.ScrollOffset.y < 10 && _shopItems.Count > 8 );
 	}
 
-	[TTTEvent.Player.RoleChanged]
+	[GameEvent.Player.RoleChanged]
 	private void OnRoleChange( Player player, Role oldRole )
 	{
 		_shopItems.ForEach( ( item ) => item.Delete( true ) );

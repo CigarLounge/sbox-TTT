@@ -146,7 +146,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			{
 				IsFound = true;
 				Finder = searcher;
-				Event.Run( TTTEvent.Player.CorpseFound, Player );
+				Event.Run( GameEvent.Player.CorpseFound, Player );
 				ClientCorpseFound( searcher );
 			}
 		}
@@ -184,7 +184,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		IsFound = true;
 		Finder = finder;
-		Event.Run( TTTEvent.Player.CorpseFound, Player );
+		Event.Run( GameEvent.Player.CorpseFound, Player );
 	}
 
 	[ClientRpc]
@@ -197,7 +197,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		UI.InfoFeed.AddEntry
 		(
-			Local.Client,
+			Local.Pawn as Player,
 			$"found {creditsRetrieved} credits!"
 		);
 	}

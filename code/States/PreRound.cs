@@ -6,7 +6,7 @@ namespace TTT;
 
 public class PreRound : BaseState
 {
-	public override string Name => "Preparing";
+	public override string Name { get; } = "Preparing";
 	public override int Duration => Game.Current.TotalRoundsPlayed == 0 ? Game.PreRoundTime * 2 : Game.PreRoundTime;
 
 	public override void OnPlayerSpawned( Player player )
@@ -34,7 +34,7 @@ public class PreRound : BaseState
 	{
 		base.OnStart();
 
-		Event.Run( TTTEvent.Round.Started );
+		Event.Run( GameEvent.Round.Started );
 
 		if ( !Host.IsServer )
 			return;
@@ -90,8 +90,24 @@ public class PreRound : BaseState
 		players.Shuffle();
 
 		var index = 0;
-		while ( traitorCount-- > 0 ) players[index++].Role = new Traitor();
-		while ( detectiveCount-- > 0 ) players[index++].Role = new Detective();
-		while ( index < players.Count ) players[index++].Role = new Innocent();
+		var detectiveInfo = GameResource.GetInfo<RoleInfo>( typeof( Detective ) );
+
+		while ( traitorCount-- > 0 )
+			players[index++].Role = new Traitor();
+
+		while ( index < players.Count )
+		{
+			if ( detectiveCount > 0 && players[index].BaseKarma >= detectiveInfo.RequiredKarma )
+			{
+				players[index].Role = new Detective();
+				detectiveCount--;
+			}
+			else
+			{
+				players[index].Role = new Innocent();
+			}
+
+			index++;
+		}
 	}
 }

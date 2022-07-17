@@ -32,12 +32,12 @@ public partial class MapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => _ = SettingsSpawned.Fire( this );
 
-	[TTTEvent.Round.Started]
+	[GameEvent.Round.Started]
 	private void RoundStarted() => _ = OnRoundStart.Fire( this );
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void RolesAssigned() => _ = OnRolesAssigned.Fire( this );
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private void RoundEnded( Team winningTeam, WinType winType ) => _ = OnRoundEnd.Fire( this, winningTeam );
 }

@@ -100,7 +100,7 @@ public partial class Player
 			Camera = new FirstPersonSpectatorCamera();
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsClient )

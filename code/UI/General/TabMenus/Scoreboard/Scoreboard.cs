@@ -11,11 +11,6 @@ public class Scoreboard : Panel
 	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
 	private readonly Dictionary<PlayerStatus, ScoreboardGroup> _scoreboardGroups = new();
 
-	private const string Alive = "Alive";
-	private const string MissingInAction = "Missing In Action";
-	private const string ConfirmedDead = "Confirmed Dead";
-	private const string Spectator = "Spectator";
-
 	private Panel Container { get; init; }
 	private Panel Content { get; init; }
 

@@ -6,7 +6,7 @@ namespace TTT;
 
 public static class Scoring
 {
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
@@ -17,32 +17,30 @@ public static class Scoring
 
 		if ( !player.KilledByPlayer )
 		{
-			player.RoundScore--;
+			player.RoundScore -= player.Role.Scoring.SuicidePenalty;
 		}
 		else
 		{
 			var attacker = (Player)player.LastAttacker;
 
 			if ( attacker.Team != player.Team )
-				attacker.RoundScore += attacker.Team == Team.Traitors ? 1 : 5;
+				attacker.RoundScore += player.Role.Scoring.AttackerKillReward;
 			else
-				attacker.RoundScore -= attacker.Team == Team.Traitors ? 16 : 8;
+				attacker.RoundScore -= attacker.Role.Scoring.TeamKillPenalty;
 		}
 	}
 
-	[TTTEvent.Player.CorpseFound]
+	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
 		if ( !Host.IsServer )
 			return;
 
 		var finder = player.Corpse.Finder;
-
-		if ( finder.Team != Team.Traitors )
-			finder.RoundScore += finder.Role is Detective ? 3 : 1;
+		finder.RoundScore += finder.Role.Scoring.CorpseFoundReward;
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )
@@ -61,7 +59,7 @@ public static class Scoring
 				continue;
 			}
 
-			player.RoundScore++;
+			player.RoundScore += player.Role.Scoring.SurviveBonus;
 			alivePlayersCount[(int)player.Team]++;
 		}
 

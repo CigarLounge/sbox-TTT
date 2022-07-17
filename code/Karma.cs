@@ -9,11 +9,7 @@ public static class Karma
 	public const float CleanBonus = 30;
 	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
-	public const float KillPenalty = 15;
-	public const float Ratio = 0.001f;
 	public const float RoundHeal = 5;
-	public const float TRatio = 0.0003f;
-	public const float TBonus = 40;
 	public const float MaxValue = 1250;
 	public const float MinValue = 450;
 
@@ -26,6 +22,56 @@ public static class Karma
 		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
 
+	/// <summary>
+	/// Compute the reward for hurting a traitor.
+	/// </summary>
+	public static float GetHurtReward( float damage, float multiplier )
+	{
+		return MaxValue * Math.Clamp( damage * multiplier, 0, 1 );
+	}
+
+	public static float GetHurtPenalty( float victimKarma, float damage, float multiplier )
+	{
+		return victimKarma * Math.Clamp( damage * multiplier, 0, 1 );
+	}
+
+	public static float GetKillReward( float multiplier )
+	{
+		return MaxValue * Math.Clamp( multiplier, 0, 1 );
+	}
+
+	public static float GetKillPenalty( float victimKarma, float multiplier )
+	{
+		return victimKarma * Math.Clamp( multiplier, 0, 1 );
+	}
+
+	private static void GivePenalty( Player player, float penalty )
+	{
+		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
+		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), float.MaxValue );
+	}
+
+	private static void GiveReward( Player player, float reward )
+	{
+		reward = DecayMultiplier( player ) * reward;
+		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
+	}
+
+	private static float DecayMultiplier( Player player )
+	{
+		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
+			return 1;
+
+		if ( player.ActiveKarma >= MaxValue )
+			return 1;
+
+		var baseDiff = MaxValue - DefaultValue;
+		var plyDiff = player.ActiveKarma - DefaultValue;
+		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
+
+		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
+	}
+
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
 		if ( player.BaseKarma >= DefaultValue )
@@ -35,7 +81,7 @@ public static class Karma
 		return _karmaGroupList[index];
 	}
 
-	[TTTEvent.Player.Spawned]
+	[GameEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
 		if ( Game.Current.State is not PreRound )
@@ -55,60 +101,8 @@ public static class Karma
 		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
 	}
 
-	private static float DecayMultiplier( Player player )
-	{
-		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
-			return 1;
 
-		if ( player.ActiveKarma >= MaxValue )
-			return 1;
-
-		var baseDiff = MaxValue - DefaultValue;
-		var plyDiff = player.ActiveKarma - DefaultValue;
-		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
-
-		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
-	}
-
-	private static float GetHurtPenalty( float victimKarma, float damage )
-	{
-		return victimKarma * Math.Clamp( damage * Ratio, 0, 1 );
-	}
-
-	private static float GetKillPenalty( float victimKarma )
-	{
-		return GetHurtPenalty( victimKarma, KillPenalty );
-	}
-
-	/// <summary>
-	/// Compute the reward for hurting a traitor.
-	/// </summary>
-	private static float GetHurtReward( float damage )
-	{
-		return MaxValue * Math.Clamp( damage * TRatio, 0, 1 );
-	}
-
-	/// <summary>
-	/// Compute the reward for killing a traitor.
-	/// </summary>
-	private static float GetKillReward()
-	{
-		return GetHurtReward( TBonus );
-	}
-
-	private static void GivePenalty( Player player, float penalty )
-	{
-		player.ActiveKarma = Math.Max( player.ActiveKarma - penalty, 0 );
-		player.TimeUntilClean = Math.Min( Math.Max( player.TimeUntilClean * penalty * 0.2f, penalty ), float.MaxValue );
-	}
-
-	private static void GiveReward( Player player, float reward )
-	{
-		reward = DecayMultiplier( player ) * reward;
-		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
-	}
-
-	[TTTEvent.Player.TookDamage]
+	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
 		if ( Game.Current.State is not InProgress )
@@ -124,24 +118,27 @@ public static class Karma
 
 		var damage = player.LastDamage.Damage;
 
-		if ( attacker.Team == player.Team && player.TimeUntilClean )
+		if ( attacker.Team == player.Team )
 		{
+			if ( !player.TimeUntilClean )
+				return;
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			var penalty = GetHurtPenalty( player.ActiveKarma, damage );
+
+			var penalty = GetHurtPenalty( player.ActiveKarma, damage, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
 		}
-		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
+		else
 		{
-			var reward = GetHurtReward( damage );
+			var reward = GetHurtReward( damage, player.Role.Karma.AttackerHurtRewardMultiplier );
 			GiveReward( attacker, reward );
 		}
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
@@ -158,19 +155,21 @@ public static class Karma
 		if ( attacker == player )
 			return;
 
-		if ( attacker.Team == player.Team && player.TimeUntilClean )
+		if ( attacker.Team == player.Team )
 		{
+			if ( !player.TimeUntilClean )
+				return;
 			/*
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
 
-			var penalty = GetKillPenalty( player.ActiveKarma );
+			var penalty = GetKillPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenaltyMultiplier);
 			GivePenalty( attacker, penalty );
 		}
-		else if ( attacker.Team != Team.Traitors && player.Team == Team.Traitors )
+		else
 		{
-			var reward = GetKillReward();
+			var reward = GetKillReward( player.Role.Karma.AttackerKillRewardMultiplier );
 			GiveReward( attacker, reward );
 		}
 	}
@@ -193,7 +192,7 @@ public static class Karma
 		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

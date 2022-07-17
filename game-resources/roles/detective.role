@@ -3,6 +3,8 @@
 	data = 
 	{
 		Team = "Innocents"
+		Color = "0.09804,0.4,1,1"
+		IconPath = resource:"ui/detective-icon.png"
 		DefaultCredits = 100
 		Weapons = 
 		[
@@ -23,8 +25,20 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = false
-		Color = "0.09804,0.4,1,1"
-		IconPath = resource:"ui/detective-icon.png"
+		RequiredKarma = 600
+		Karma = 
+		{
+			TeamKillPenaltyMultiplier = 0.015
+			TeamHurtPenaltyMultiplier = 0.001
+		}
+		Scoring = 
+		{
+			CorpseFoundReward = 3
+			AttackerKillReward = 1
+			TeamKillPenalty = 8
+			SurviveBonus = 1
+			SuicidePenalty = 1
+		}
 		ClassName = "ttt_role_detective"
 	}
 }

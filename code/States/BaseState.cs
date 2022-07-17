@@ -8,7 +8,7 @@ public abstract partial class BaseState : BaseNetworkable
 	public TimeUntil TimeLeft { get; protected set; }
 
 	public virtual int Duration => 0;
-	public virtual string Name => string.Empty;
+	public virtual string Name { get; }
 	public string TimeLeftFormatted => TimeLeft.Relative.TimerString();
 
 	private TimeUntil _nextSecondTime = 0f;

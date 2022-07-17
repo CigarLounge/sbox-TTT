@@ -18,14 +18,14 @@ public class PostRoundPopup : Panel
 		Header.Style.FontColor = team.GetColor();
 	}
 
-	[TTTEvent.Round.Started]
+	[GameEvent.Round.Started]
 	private void Close()
 	{
 		Delete();
 		Instance = null;
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void DisplayWinner( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsClient )

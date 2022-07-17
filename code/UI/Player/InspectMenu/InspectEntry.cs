@@ -10,7 +10,7 @@ public class InspectEntry : Panel
 	private readonly Image _inspectIcon;
 	private readonly Label _inspectLabel;
 
-	public InspectEntry( Panel parent ) : base( parent )
+	public InspectEntry( Panel parent )
 	{
 		Parent = parent;
 
@@ -22,7 +22,7 @@ public class InspectEntry : Panel
 		_inspectIcon.AddClass( "inspect-icon" );
 
 		_inspectLabel = Add.Label();
-		_inspectLabel.AddClass( "quick-label" );
+		_inspectLabel.AddClass( "inspect-label" );
 	}
 
 	public void SetTexture( Texture texture )

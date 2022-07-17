@@ -61,8 +61,10 @@ InspectMenu
             margin: 25px;
         }
 
-        .inspect-details-label 
+        .active-text
         {
+            height: 1px;
+            width: 25%;
             margin: 25px;
             font-size: 18px;
             transition: opacity 0.25s ease-out;
@@ -102,7 +104,7 @@ InspectEntry
         width: 100%;
     }
 
-    .quick-label 
+    .inspect-label 
     {
         position: absolute;
         bottom: -28px;
