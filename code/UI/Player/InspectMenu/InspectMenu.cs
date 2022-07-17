@@ -28,7 +28,7 @@ public partial class InspectMenu : Panel
 	private Label PlayerName { get; set; }
 	private Panel IconsContainer { get; set; }
 	private Button CallDetectiveButton { get; set; }
-	private readonly Label _inspectDetailsLabel;
+	private readonly Label _activeText;
 
 	public InspectMenu( Corpse corpse )
 	{
@@ -67,8 +67,8 @@ public partial class InspectMenu : Panel
 		_c4Note.Enabled( false );
 		_inspectionEntries.Add( _c4Note );
 
-		_inspectDetailsLabel = InspectContainer.Add.Label();
-		_inspectDetailsLabel.AddClass( "inspect-details-label" );
+		_activeText = InspectContainer.Add.Label();
+		_activeText.AddClass( "active-text" );
 
 		_corpse = corpse;
 		_player = corpse.Player;
@@ -123,9 +123,9 @@ public partial class InspectMenu : Panel
 		{
 			_killList.SetImage( "/ui/inspectmenu/killlist.png" );
 			_killList.SetImageText( "Kill List" );
-			var text = "You found a list of kills that confirms the death(s) of...";
-			foreach ( var deadPlayer in _player.PlayersKilled )
-				text += $"{deadPlayer.SteamName}\n";
+			var text = "You found a list of kills that confirms the death(s) of... ";
+			for ( var i = 0; i < _player.PlayersKilled.Count; ++i )
+				text += i == _player.PlayersKilled.Count - 1 ? $"{_player.PlayersKilled[i].SteamName}." : $"{_player.PlayersKilled[i].SteamName}, ";
 			_killList.SetActiveText( text );
 		}
 
@@ -193,10 +193,10 @@ public partial class InspectMenu : Panel
 		}
 
 		var isShowing = _selectedInspectEntry is not null;
-		_inspectDetailsLabel.SetClass( "fade-in", isShowing );
+		_activeText.SetClass( "fade-in", isShowing );
 
 		if ( isShowing )
-			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
+			_activeText.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	// Called from UI panel
