@@ -157,12 +157,12 @@ public partial class Player
 	[TTTEvent.Game.ClientJoined]
 	private void SyncClient( Client client )
 	{
+		if ( IsRoleKnown )
+			SendRole( To.Single( client ) );
+
 		if ( IsSpectator )
 			UpdateStatus( To.Single( client ) );
-
-		if ( IsConfirmedDead )
+		else if ( IsConfirmedDead )
 			ClientConfirmDeath( To.Single( client ), Confirmer );
-		else if ( IsRoleKnown )
-			SendRole( To.Single( client ) );
 	}
 }
