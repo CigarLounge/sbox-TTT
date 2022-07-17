@@ -16,7 +16,7 @@ public partial class InProgress : BaseState
 	public TimeUntil FakeTime { get; private set; }
 	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
 
-	public override string Name => "In Progress";
+	public override string Name { get; } = "In Progress";
 	public override int Duration => Game.InProgressTime;
 
 	private int _innocentTeamDeathCount = 0;

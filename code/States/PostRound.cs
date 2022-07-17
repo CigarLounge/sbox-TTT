@@ -18,7 +18,7 @@ public partial class PostRound : BaseState
 	[Net]
 	public WinType WinType { get; private set; }
 
-	public override string Name => "Post";
+	public override string Name { get; } = "Post";
 	public override int Duration => Game.PostRoundTime;
 
 	public PostRound() { }
