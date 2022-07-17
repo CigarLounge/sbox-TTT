@@ -65,7 +65,7 @@ public partial class Game
 			return;
 		}
 
-		player.SetRole( roleInfo.ClassName );
+		player.SetRole( roleInfo );
 	}
 
 	[ConCmd.Admin( Name = "ttt_force_restart" )]
