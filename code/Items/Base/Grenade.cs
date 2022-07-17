@@ -46,13 +46,7 @@ public abstract partial class Grenade : Carriable
 		{
 			Owner.Inventory.DropActive();
 			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f;
-
 			PhysicsBody.Velocity = PreviousOwner.EyeRotation.Forward * 600.0f + PreviousOwner.EyeRotation.Up * 200.0f + PreviousOwner.Velocity;
-
-			// This is fucked in the head, lets sort this this year
-			CollisionGroup = CollisionGroup.Debris;
-			SetInteractsExclude( CollisionLayer.Player );
-			SetInteractsAs( CollisionLayer.Debris );
 
 			_isThrown = true;
 			_ = ExplodeIn( TimeUntilExplode );

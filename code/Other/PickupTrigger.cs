@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTT;
 
@@ -12,7 +12,7 @@ public class PickupTrigger : ModelEntity
 {
 	public override void Spawn()
 	{
-		base.Spawn();
+		Tags.Add( "trigger" );
 
 		// Set the default size
 		SetTriggerSize( 16 );
@@ -26,7 +26,6 @@ public class PickupTrigger : ModelEntity
 	/// </summary>
 	public void SetTriggerSize( float radius )
 	{
-		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 20, 20, 16 ) );
-		CollisionGroup = CollisionGroup.Trigger;
+		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -radius, -radius, 0 ), new Vector3( radius, radius, radius ) );
 	}
 }

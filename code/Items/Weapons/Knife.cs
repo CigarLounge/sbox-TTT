@@ -138,7 +138,7 @@ public partial class Knife : Carriable
 		var trace = Trace.Ray( Position, newPosition )
 			.Radius( 0f )
 			.UseHitboxes()
-			.HitLayer( CollisionLayer.Debris )
+			.WithAnyTags( "solid" )
 			.Ignore( _thrower )
 			.Ignore( this )
 			.Run();

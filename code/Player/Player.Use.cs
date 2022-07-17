@@ -18,8 +18,7 @@ public partial class Player
 	{
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
 			.Ignore( this )
-			.HitLayer( CollisionLayer.Debris )
-			.HitLayer( CollisionLayer.Solid )
+			.WithAnyTags( "solid", "trigger" )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )

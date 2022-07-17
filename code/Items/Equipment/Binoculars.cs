@@ -48,7 +48,7 @@ public partial class Binoculars : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MaxHintDistance )
 			.Ignore( this )
 			.Ignore( Owner )
-			.HitLayer( CollisionLayer.Debris )
+			.WithTag( "trigger" )
 			.Run();
 
 		_corpse = trace.Entity as Corpse;

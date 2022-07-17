@@ -53,18 +53,16 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	public override void Spawn()
 	{
-		base.Spawn();
-
 		SetModel( WorldModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		CollisionGroup = CollisionGroup.Weapon;
-		SetInteractsAs( CollisionLayer.Debris );
+		Tags.Add( "trigger" );
+		MoveType = MoveType.Physics;
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
 		CurrentCount = DefaultAmmoCount;
-
-		PickupTrigger = new PickupTrigger
-		{
-			Parent = this
-		};
+		PickupTrigger = new PickupTrigger { Parent = this };
 	}
 
 	public override void StartTouch( Entity other )

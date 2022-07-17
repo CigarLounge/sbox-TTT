@@ -15,7 +15,7 @@ public static class Scoring
 		if ( Game.Current.State is not InProgress )
 			return;
 
-		if ( player.DiedBySuicide )
+		if ( !player.KilledByPlayer )
 		{
 			player.RoundScore -= player.Role.Scoring.SuicidePenalty;
 		}

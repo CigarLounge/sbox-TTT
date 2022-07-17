@@ -51,6 +51,8 @@ public partial class Player : AnimatedEntity
 		base.Spawn();
 
 		Tags.Add( "player" );
+		Tags.Add( "solid" );
+
 		SetModel( "models/citizen/citizen.vmdl" );
 		Role = new NoneRole();
 
@@ -294,23 +296,13 @@ public partial class Player : AnimatedEntity
 
 	public void CreateHull()
 	{
-		CollisionGroup = CollisionGroup.Player;
-		AddCollisionLayer( CollisionLayer.Player );
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
-
 		MoveType = MoveType.MOVETYPE_WALK;
 		EnableHitboxes = true;
 	}
 
 	public override void StartTouch( Entity other )
 	{
-		if ( other is PickupTrigger )
-		{
-			Touch( other.Parent );
-
-			return;
-		}
-
 		if ( !IsServer )
 			return;
 
