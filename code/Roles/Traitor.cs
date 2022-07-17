@@ -24,7 +24,7 @@ public class Traitor : Role
 
 			var otherPlayer = client.Pawn as Player;
 
-			if ( otherPlayer.Team == Team.Traitors )
+			if ( otherPlayer.Team == Team )
 			{
 				player.SendRole( To.Single( otherPlayer ) );
 				otherPlayer.SendRole( To.Single( player ) );
