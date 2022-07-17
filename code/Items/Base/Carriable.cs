@@ -57,13 +57,12 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.Spawn();
 
+		Tags.Add( "trigger" );
 		MoveType = MoveType.Physics;
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
-		CollisionGroup = CollisionGroup.Weapon;
-		SetInteractsAs( CollisionLayer.Debris );
 
 		if ( string.IsNullOrWhiteSpace( ClassName ) )
 		{

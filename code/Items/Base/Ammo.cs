@@ -21,7 +21,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	public int CurrentCount { get; private set; }
 
 	public Player Dropper { get; set; }
-	public PickupTrigger PickupTrigger { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
@@ -53,18 +52,16 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	public override void Spawn()
 	{
-		base.Spawn();
-
 		SetModel( WorldModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		CollisionGroup = CollisionGroup.Weapon;
-		SetInteractsAs( CollisionLayer.Debris );
-		CurrentCount = DefaultAmmoCount;
+		Tags.Add( "trigger" );
+		MoveType = MoveType.Physics;
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
 
-		PickupTrigger = new PickupTrigger
-		{
-			Parent = this
-		};
+		CurrentCount = DefaultAmmoCount;
 	}
 
 	public override void StartTouch( Entity other )

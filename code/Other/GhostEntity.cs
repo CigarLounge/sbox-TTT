@@ -21,9 +21,7 @@ public class GhostEntity : ModelEntity
 	{
 		RealEntity = entity;
 		Model = entity.Model;
-
 		RenderColor = RenderColor.WithAlpha( 0.5f );
-		CollisionGroup = CollisionGroup.Trigger;
 
 		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
 	}

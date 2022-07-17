@@ -86,7 +86,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		if ( !player.DiedBySuicide )
+		if ( player.KilledByPlayer )
 			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
 		else if ( player.LastDamage.Flags == DamageFlags.Fall )
 			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.SteamName} fell to their death." );

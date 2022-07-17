@@ -78,14 +78,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public override void Spawn()
 	{
-		base.Spawn();
-
+		Tags.Add( "trigger" );
 		MoveType = MoveType.Physics;
 		UsePhysicsCollision = true;
-
-		SetInteractsAs( CollisionLayer.Debris );
-		SetInteractsWith( CollisionLayer.WORLD_GEOMETRY );
-		SetInteractsExclude( CollisionLayer.Player );
 	}
 
 	/// <summary>

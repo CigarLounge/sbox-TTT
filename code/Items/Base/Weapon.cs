@@ -269,18 +269,24 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
-		var InWater = Map.Physics.IsPointWater( start );
+		var underWater = Trace.TestPoint( start, "water" );
 
 		var trace = Trace.Ray( start, end )
-			.UseHitboxes()
-			.HitLayer( CollisionLayer.Water, !InWater )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( Owner )
-			.Ignore( this )
-			.Size( radius )
-			.Run();
+				.UseHitboxes()
+				.WithAnyTags( "solid", "player", "glass", "trigger" )
+				.Ignore( this )
+				.Size( radius );
 
-		yield return trace;
+		//
+		// If we're not underwater then we can hit water
+		//
+		if ( !underWater )
+			trace = trace.WithAnyTags( "water" );
+
+		var tr = trace.Run();
+
+		if ( tr.Hit )
+			yield return tr;
 
 		//
 		// Another trace, bullet going through thin material, penetrating water surface?

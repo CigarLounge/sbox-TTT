@@ -52,8 +52,7 @@ public partial class Player
 	{
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
 			.Ignore( CurrentPlayer )
-			.HitLayer( CollisionLayer.Debris )
-			.HitLayer( CollisionLayer.Solid )
+			.WithAnyTags( "solid", "trigger" )
 			.UseHitboxes()
 			.Run();
 

@@ -54,9 +54,9 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// We count all player deaths not caused by other players as suicides.
+	/// Whether or not they were killed by another Player.
 	/// </summary>
-	public bool DiedBySuicide => LastAttacker is not Player || LastAttacker == this;
+	public bool KilledByPlayer => LastAttacker is Player otherPlayer && otherPlayer != this;
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -114,7 +114,7 @@ public partial class Player
 
 		Client.AddInt( "deaths" );
 
-		if ( !DiedBySuicide )
+		if ( KilledByPlayer )
 		{
 			LastAttacker.Client.AddInt( "kills" );
 			(LastAttacker as Player).PlayersKilled.Add( this );
