@@ -3,20 +3,20 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
+public enum Channel
+{
+	All,
+	Team,
+	Spectator
+}
+
 [UseTemplate]
 public partial class ChatBox : Panel
 {
-	public enum Channel
-	{
-		All,
-		Team,
-		Spectator
-	}
+	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
+	private static readonly Color _spectatorChatColor = PlayerStatus.Spectator.GetColor();
 
-	private static readonly Color _allChatColor = Color.FromBytes( 26, 196, 77 );
-	private static readonly Color _spectatorChatColor = Color.FromBytes( 252, 219, 56 );
-
-	public static ChatBox Instance;
+	public static ChatBox Instance { get; private set; }
 
 	public Panel EntryCanvas { get; set; }
 	public TabTextEntry Input { get; set; }
