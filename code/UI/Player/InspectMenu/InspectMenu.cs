@@ -103,7 +103,7 @@ public partial class InspectMenu : Panel
 			_dna.SetImage( "/ui/inspectmenu/dna.png" );
 
 		_lastSeen.Enabled( _player.LastSeenPlayer.IsValid() );
-		if ( _player.LastSeenPlayer.IsValid() )
+		if ( _lastSeen.IsEnabled() )
 		{
 			_lastSeen.SetImage( "/ui/inspectmenu/lastseen.png" );
 			_lastSeen.SetImageText( _player.LastSeenPlayer.SteamName );

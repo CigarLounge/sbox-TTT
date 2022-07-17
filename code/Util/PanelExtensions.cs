@@ -18,6 +18,10 @@ public static class PanelExtensions
 
 	public static bool IsEnabled( this Panel panel )
 	{
+		if ( panel.HasClass( "disabled" ) )
+			return false;
+
+		// s&box bug oddly doesn't detect our disabled panels...
 		return panel.IsVisible;
 	}
 
