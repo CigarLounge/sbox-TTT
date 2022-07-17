@@ -4,7 +4,7 @@
 	{
 		Team = "Traitors"
 		Color = "0.87451,0.15294,0.2,1"
-		IconPath = resource:"ui/traitor-icon.jpg"
+		IconPath = resource:"ui/traitor-icon.png"
 		DefaultCredits = 200
 		Weapons = 
 		[
@@ -29,6 +29,7 @@
 		CanRetrieveCredits = true
 		CanTeamChat = true
 		CanAttachCorpses = true
+		RequiredKarma = 0
 		Karma = 
 		{
 			AttackerKillReward = 40

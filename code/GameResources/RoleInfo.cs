@@ -8,7 +8,7 @@ namespace TTT;
 [GameResource( "Role", "role", "TTT role template.", Icon = "🎭" )]
 public class RoleInfo : GameResource
 {
-	public Team Team { get; set; } = Team.None;
+	public Team Team { get; set; }
 
 	[Category( "UI" )]
 	public Color Color { get; set; }
@@ -18,7 +18,7 @@ public class RoleInfo : GameResource
 
 	[Category( "Shop" )]
 	[Description( "The amount of credits the player spawns with." )]
-	public int DefaultCredits { get; set; } = 0;
+	public int DefaultCredits { get; set; }
 
 	[Category( "Shop" ), ResourceType( "weapon" )]
 	public List<string> Weapons { get; set; } = new();
@@ -29,11 +29,15 @@ public class RoleInfo : GameResource
 	[Category( "Shop" ), ResourceType( "perk" )]
 	public List<string> Perks { get; set; } = new();
 
-	public bool CanRetrieveCredits { get; set; } = false;
+	public bool CanRetrieveCredits { get; set; }
 
-	public bool CanTeamChat { get; set; } = false;
+	[Description( "This includes sending messages and voice chat." )]
+	public bool CanTeamChat { get; set; }
 
-	public bool CanAttachCorpses { get; set; } = false;
+	public bool CanAttachCorpses { get; set; }
+
+	[Description( "The minimum amount of karma a player has to have to be assigned this role." )]
+	public int RequiredKarma { get; set; }
 
 	public KarmaConfig Karma { get; set; }
 
