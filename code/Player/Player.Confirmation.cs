@@ -41,7 +41,7 @@ public partial class Player
 			var oldStatus = _status;
 			_status = value;
 
-			Event.Run( TTTEvent.Player.StatusChanged, this, oldStatus );
+			Event.Run( GameEvent.Player.StatusChanged, this, oldStatus );
 		}
 	}
 
@@ -154,7 +154,7 @@ public partial class Player
 		Status = status;
 	}
 
-	[TTTEvent.Game.ClientJoined]
+	[GameEvent.Client.Joined]
 	private void SyncClient( Client client )
 	{
 		if ( IsRoleKnown )

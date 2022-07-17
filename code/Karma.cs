@@ -81,7 +81,7 @@ public static class Karma
 		return _karmaGroupList[index];
 	}
 
-	[TTTEvent.Player.Spawned]
+	[GameEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
 		if ( Game.Current.State is not PreRound )
@@ -102,7 +102,7 @@ public static class Karma
 	}
 
 
-	[TTTEvent.Player.TookDamage]
+	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
 		if ( Game.Current.State is not InProgress )
@@ -138,7 +138,7 @@ public static class Karma
 		}
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
@@ -192,7 +192,7 @@ public static class Karma
 		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

@@ -6,7 +6,7 @@ namespace TTT;
 
 public static class Scoring
 {
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
@@ -30,7 +30,7 @@ public static class Scoring
 		}
 	}
 
-	[TTTEvent.Player.CorpseFound]
+	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
 		if ( !Host.IsServer )
@@ -40,7 +40,7 @@ public static class Scoring
 		finder.RoundScore += finder.Role.Scoring.CorpseFoundReward;
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

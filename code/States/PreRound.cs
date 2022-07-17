@@ -34,7 +34,7 @@ public class PreRound : BaseState
 	{
 		base.OnStart();
 
-		Event.Run( TTTEvent.Round.Started );
+		Event.Run( GameEvent.Round.Started );
 
 		if ( !Host.IsServer )
 			return;

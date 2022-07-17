@@ -237,7 +237,7 @@ public partial class DNA : EntityComponent
 		return TargetPlayer.IsAlive() ? TargetPlayer : TargetPlayer.Corpse;
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		internalId = Rand.Int( 0, 500 );

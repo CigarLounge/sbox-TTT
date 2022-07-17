@@ -131,7 +131,7 @@ public partial class Player
 		DeleteFlashlight();
 		DeleteItems();
 
-		Event.Run( TTTEvent.Player.Killed, this );
+		Event.Run( GameEvent.Player.Killed, this );
 		Game.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
@@ -145,7 +145,7 @@ public partial class Player
 			ClearButtons();
 
 		DeleteFlashlight();
-		Event.Run( TTTEvent.Player.Killed, this );
+		Event.Run( GameEvent.Player.Killed, this );
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -178,7 +178,7 @@ public partial class Player
 		LastDamage = info;
 
 		Health -= info.Damage;
-		Event.Run( TTTEvent.Player.TookDamage, this );
+		Event.Run( GameEvent.Player.TookDamage, this );
 
 		SendDamageInfo( To.Single( this ) );
 
@@ -259,7 +259,7 @@ public partial class Player
 		LastDamage = info;
 
 		if ( IsLocalPawn )
-			Event.Run( TTTEvent.Player.TookDamage, this );
+			Event.Run( GameEvent.Player.TookDamage, this );
 	}
 
 	[ClientRpc]

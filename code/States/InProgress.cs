@@ -73,7 +73,7 @@ public partial class InProgress : BaseState
 	{
 		base.OnStart();
 
-		Event.Run( TTTEvent.Round.RolesAssigned );
+		Event.Run( GameEvent.Round.RolesAssigned );
 
 		if ( !Host.IsServer )
 			return;
@@ -178,7 +178,7 @@ public partial class InProgress : BaseState
 		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
-	[TTTEvent.Player.RoleChanged]
+	[GameEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChange( Player player, Role oldRole )
 	{
 		if ( Host.IsClient )

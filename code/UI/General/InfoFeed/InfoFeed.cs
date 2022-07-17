@@ -62,7 +62,7 @@ public partial class InfoFeed : Panel
 			entry.AddLabel( suffix, "append" );
 	}
 
-	[TTTEvent.Player.CorpseFound]
+	[GameEvent.Player.CorpseFound]
 	private void OnCorpseFound( Player player )
 	{
 		AddPlayerToPlayerEntry
@@ -74,7 +74,7 @@ public partial class InfoFeed : Panel
 		);
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		if ( !TabMenus.Instance.IsVisible )

@@ -91,7 +91,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 		return _players[type];
 	}
 
-	[TTTEvent.Player.RoleChanged]
+	[GameEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChanged( Player player, Role oldRole )
 	{
 		if ( oldRole is not null )

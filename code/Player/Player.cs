@@ -111,7 +111,7 @@ public partial class Player : AnimatedEntity
 			DressPlayer();
 			ResetInterpolation();
 
-			Event.Run( TTTEvent.Player.Spawned, this );
+			Event.Run( GameEvent.Player.Spawned, this );
 			Game.Current.State.OnPlayerSpawned( this );
 		}
 		else
@@ -141,7 +141,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		CreateFlashlight();
-		Event.Run( TTTEvent.Player.Spawned, this );
+		Event.Run( GameEvent.Player.Spawned, this );
 	}
 
 	public override void Simulate( Client client )

@@ -28,7 +28,7 @@ public partial class Player
 
 			_role.OnSelect( this );
 
-			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
+			Event.Run( GameEvent.Player.RoleChanged, this, oldRole );
 		}
 	}
 
@@ -85,7 +85,7 @@ public partial class Player
 		IsRoleKnown = true;
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		if ( !IsClient || IsLocalPawn )
