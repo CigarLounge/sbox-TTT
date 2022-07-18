@@ -108,7 +108,7 @@ public static class Karma
 		if ( Game.Current.State is not InProgress )
 			return;
 
-		var attacker = player.LastDamage.Attacker as Player;
+		var attacker = player.LastAttacker as Player;
 
 		if ( !attacker.IsValid() || !player.IsValid() )
 			return;
@@ -126,7 +126,6 @@ public static class Karma
 			 * If ( WasAvoidable( attacker, victim ) )
 			 *		return;
 			 */
-
 
 			var penalty = GetHurtPenalty( player.ActiveKarma, damage, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
