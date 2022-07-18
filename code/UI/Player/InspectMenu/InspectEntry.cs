@@ -1,41 +1,25 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class InspectEntry : Panel
 {
-	public string ActiveText { get; private set; }
-	private readonly Image _inspectIcon;
-	private readonly Label _iconText;
+	public string ActiveText { get; set; }
+	private Image InspectIcon { get; set; }
+	private Label IconText { get; set; }
 
 	public InspectEntry( Panel parent, string iconText, string activeText, string imagePath )
 	{
 		Parent = parent;
-
-		AddClass( "rounded" );
-		AddClass( "text-shadow" );
-		AddClass( "background-color-gradient" );
-
-		_inspectIcon = Add.Image();
-		_inspectIcon.AddClass( "inspect-icon" );
-
-		_iconText = Add.Label();
-		_iconText.AddClass( "icon-text" );
-
-		_iconText.Text = iconText;
+		IconText.Text = iconText;
 		ActiveText = activeText;
-		_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-	}
-
-	public void SetActiveText( string text )
-	{
-		ActiveText = text;
+		InspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 	}
 
 	public void SetImageText( string text )
 	{
-		_iconText.Text = text;
+		IconText.Text = text;
 	}
 }

@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System.Collections.Generic;
 
 namespace TTT.UI;
@@ -119,13 +118,13 @@ public partial class InspectMenu : Panel
 
 		var timeSinceDeath = _player.TimeSinceDeath.Relative.TimerString();
 		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
-		_timeSinceDeath.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
+		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 		if ( _dna.IsEnabled() )
 		{
-			_dna.SetActiveText( $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}." );
 			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
 
 		var isShowing = _selectedInspectEntry is not null;
