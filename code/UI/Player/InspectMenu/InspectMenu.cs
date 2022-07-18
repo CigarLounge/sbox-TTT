@@ -16,13 +16,12 @@ public partial class InspectMenu : Panel
 	private InspectEntry _timeSinceDeath;
 	private InspectEntry _dna;
 
-	private Panel InspectContainer { get; set; }
 	private Image PlayerAvatar { get; set; }
 	private Label RoleName { get; set; }
 	private Label PlayerName { get; set; }
 	private Panel IconsContainer { get; set; }
 	private Button CallDetectiveButton { get; set; }
-	private Label _activeText;
+	private Label ActiveText { get; set; }
 
 	public InspectMenu( Corpse corpse )
 	{
@@ -79,9 +78,6 @@ public partial class InspectMenu : Panel
 			foreach ( var perk in _corpse.Perks )
 				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.Icon.ResourcePath );
 
-		_activeText = InspectContainer.Add.Label();
-		_activeText.AddClass( "active-text" );
-
 		foreach ( var entry in _inspectionEntries )
 		{
 			entry.AddEventListener( "onmouseover", () => { _selectedInspectEntry = entry; } );
@@ -132,10 +128,10 @@ public partial class InspectMenu : Panel
 		}
 
 		var isShowing = _selectedInspectEntry is not null;
-		_activeText.SetClass( "fade-in", isShowing );
+		ActiveText.SetClass( "fade-in", isShowing );
 
 		if ( isShowing )
-			_activeText.Text = _selectedInspectEntry.ActiveText;
+			ActiveText.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	// Called from UI panel

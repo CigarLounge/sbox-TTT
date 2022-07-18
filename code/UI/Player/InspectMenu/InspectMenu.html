@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="InspectMenu.scss">
 
 <root class="text-shadow">
-    <div @ref="InspectContainer" class="inspect-container">
+    <div class="inspect-container">
         <div style="flex-direction: column">
             <div class="header-panel">
                 <Image @ref="PlayerAvatar" class="avatar-image box-shadow"></Image>
@@ -13,5 +13,6 @@
             </div>
         </div>
         <div @ref="IconsContainer" class="icons-container"></div>
+        <text @ref="ActiveText" class="active-text"></text>
     </div>
 </root>
