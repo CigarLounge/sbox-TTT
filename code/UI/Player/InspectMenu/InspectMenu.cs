@@ -55,6 +55,7 @@ public partial class InspectMenu : Panel
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
 
 		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
+		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 
 		if ( _player.LastSeenPlayer.IsValid() )
 			AddInspectEntry( _player.LastSeenPlayer.SteamName,
