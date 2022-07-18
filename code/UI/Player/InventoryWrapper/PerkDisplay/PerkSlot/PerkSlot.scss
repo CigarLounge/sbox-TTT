@@ -5,6 +5,8 @@ PerkSlot
     flex-direction: column;
     align-items: center;
     margin: 5 0 5 0;
+    transition: opacity 0.1s ease-out;
+    transition: left 0.1s ease-in;
 
     .name
     {
@@ -40,5 +42,15 @@ PerkSlot
         opacity: 0.9;
         background-repeat: no-repeat;
         background-size: cover;
+    }
+
+    &:outro
+    {
+        opacity: 0;
+    }
+
+    &:intro
+    {
+        left: 25px;
     }
 }
