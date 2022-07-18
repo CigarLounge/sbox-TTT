@@ -29,9 +29,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public List<Particles> Ropes { get; private set; } = new();
 	public List<PhysicsJoint> RopeSprings { get; private set; } = new();
 
-	// We need this so we don't send information to players multiple times
-	// The HashSet consists of NetworkIds
-	private readonly HashSet<int> _playersWhoGotKillInfo = new();
+	// We use this HashSet of NetworkIds to avoid sending kill information
+	// to players multiple times.
+	private readonly HashSet<int> _playersWithKillInfo = new();
 
 	public Corpse() { }
 
@@ -73,7 +73,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		Player.SetClothingBodyGroups( this, 1 );
 
-		_playersWhoGotKillInfo.Add( player.NetworkIdent );
+		_playersWithKillInfo.Add( player.NetworkIdent );
 	}
 
 	public override void Spawn()
@@ -165,10 +165,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		foreach ( var client in to )
 		{
-			if ( _playersWhoGotKillInfo.Contains( client.Pawn.NetworkIdent ) )
+			if ( _playersWithKillInfo.Contains( client.Pawn.NetworkIdent ) )
 				continue;
 
-			_playersWhoGotKillInfo.Add( client.Pawn.NetworkIdent );
+			_playersWithKillInfo.Add( client.Pawn.NetworkIdent );
 
 			Player.SendDamageInfo( To.Single( client ) );
 
