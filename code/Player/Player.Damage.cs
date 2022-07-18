@@ -56,7 +56,7 @@ public partial class Player
 	/// <summary>
 	/// Whether or not they were killed by another Player.
 	/// </summary>
-	public bool KilledByPlayer => LastAttacker is Player otherPlayer && otherPlayer != this;
+	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
