@@ -8,9 +8,9 @@ public class InspectEntry : Panel
 {
 	public string ActiveText { get; private set; }
 	private readonly Image _inspectIcon;
-	private readonly Label _inspectLabel;
+	private readonly Label _iconText;
 
-	public InspectEntry( Panel parent )
+	public InspectEntry( Panel parent, string iconText, string activeText, string imagePath )
 	{
 		Parent = parent;
 
@@ -21,17 +21,11 @@ public class InspectEntry : Panel
 		_inspectIcon = Add.Image();
 		_inspectIcon.AddClass( "inspect-icon" );
 
-		_inspectLabel = Add.Label();
-		_inspectLabel.AddClass( "inspect-label" );
-	}
+		_iconText = Add.Label();
+		_iconText.AddClass( "icon-text" );
 
-	public void SetTexture( Texture texture )
-	{
-		_inspectIcon.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-	}
-
-	public void SetImage( string imagePath )
-	{
+		_iconText.Text = iconText;
+		ActiveText = activeText;
 		_inspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
 	}
 
@@ -42,6 +36,6 @@ public class InspectEntry : Panel
 
 	public void SetImageText( string text )
 	{
-		_inspectLabel.Text = text;
+		_iconText.Text = text;
 	}
 }
