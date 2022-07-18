@@ -180,17 +180,22 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void ClientCorpseFound( Player finder )
+	private void ClientCorpseFound( Player finder, bool wasPreviouslyFound = false )
 	{
 		IsFound = true;
 		Finder = finder;
-		Event.Run( GameEvent.Player.CorpseFound, Player );
+
+		if ( Finder.IsValid() && !wasPreviouslyFound )
+			Event.Run( GameEvent.Player.CorpseFound, Player );
 	}
 
 	[ClientRpc]
 	private void ClientSearch( int creditsRetrieved = 0 )
 	{
 		Player.Status = Player.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
+
+		foreach ( var deadPlayer in Player.PlayersKilled )
+			deadPlayer.Status = deadPlayer.IsConfirmedDead ? PlayerStatus.ConfirmedDead : PlayerStatus.MissingInAction;
 
 		if ( creditsRetrieved <= 0 )
 			return;
