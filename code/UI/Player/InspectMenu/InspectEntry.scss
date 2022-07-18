@@ -1,0 +1,36 @@
+InspectEntry 
+{
+    flex-direction: column;
+    width: 90px;
+    height: 90px;
+    margin: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    box-shadow: 0 0 10px black;
+    transition: transform 0.1s ease-in;
+
+    &:hover 
+    {
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    .inspect-icon 
+    {
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 100%;
+        width: 100%;
+    }
+
+    .icon-text
+    {
+        position: absolute;
+        bottom: -28px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+}
