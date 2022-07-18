@@ -9,7 +9,6 @@ public class EventSummary : Panel
 {
 	public static EventSummary Instance;
 
-	private Panel Empty { get; init; }
 	private Panel Header { get; init; }
 	private Panel Events { get; init; }
 
@@ -23,11 +22,10 @@ public class EventSummary : Panel
 	{
 		Events.DeleteChildren();
 
-		if ( GeneralMenu.Instance is not null )
+		if ( GeneralMenu.Instance is not null && !GeneralMenu.Instance.LastEventSummaryData.Events.IsNullOrEmpty() )
 			for ( var i = 0; i < GeneralMenu.Instance.LastEventSummaryData.Events.Length; ++i )
 				AddEvent( GeneralMenu.Instance.LastEventSummaryData.Events[i] );
 
-		Empty.Enabled( !Events.Children.Any() );
 		Header.Enabled( Events.Children.Any() );
 	}
 
