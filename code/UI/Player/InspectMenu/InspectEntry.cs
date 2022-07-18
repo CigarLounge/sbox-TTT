@@ -7,8 +7,8 @@ namespace TTT.UI;
 public class InspectEntry : Panel
 {
 	public string ActiveText { get; set; }
-	private Image InspectIcon { get; set; }
-	private Label IconText { get; set; }
+	private Image InspectIcon { get; init; }
+	private Label IconText { get; init; }
 
 	public InspectEntry( Panel parent, string iconText, string activeText, string imagePath )
 	{
