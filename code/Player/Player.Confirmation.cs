@@ -104,6 +104,7 @@ public partial class Player
 		{
 			Corpse.IsFound = true;
 			Corpse.SendPlayer( To.Everyone );
+			Corpse.ClientCorpseFound( To.Everyone, null );
 		}
 	}
 
@@ -164,5 +165,11 @@ public partial class Player
 			UpdateStatus( To.Single( client ) );
 		else if ( IsConfirmedDead )
 			ClientConfirmDeath( To.Single( client ), Confirmer );
+
+		if ( Corpse.IsValid() && Corpse.IsFound )
+		{
+			Corpse.SendPlayer( To.Single( this ) );
+			Corpse.ClientCorpseFound( To.Single( client ), Corpse.Finder, true );
+		}
 	}
 }
