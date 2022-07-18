@@ -7,7 +7,7 @@ public static class PanelExtensions
 {
 	public static void Enabled( this Panel panel, bool enabled )
 	{
-		panel.SetClass( "disabled", !enabled );
+		panel.Style.Display = enabled ? DisplayMode.Flex : DisplayMode.None;
 	}
 
 	public static void EnableFade( this Panel panel, bool enabled )
@@ -18,11 +18,7 @@ public static class PanelExtensions
 
 	public static bool IsEnabled( this Panel panel )
 	{
-		if ( panel.HasClass( "disabled" ) )
-			return false;
-
-		// s&box bug oddly doesn't detect our disabled panels...
-		return panel.IsVisible;
+		return panel.Style.Display != DisplayMode.None;
 	}
 
 	public static void SetTexture( this Image image, Texture texture )
