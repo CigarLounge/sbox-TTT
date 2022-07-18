@@ -48,8 +48,8 @@ public partial class InspectMenu : Panel
 
 		if ( _player.LastAttackerWeaponInfo is not null )
 			AddInspectEntry( $"{_player.LastAttackerWeaponInfo.Title}",
-							 $"It appears a {_player.LastAttackerWeaponInfo.Title} was used to kill them.",
-							 _player.LastAttackerWeaponInfo.Icon.ResourcePath );
+			$"It appears a {_player.LastAttackerWeaponInfo.Title} was used to kill them.",
+			_player.LastAttackerWeaponInfo.Icon.ResourcePath );
 
 		var hitboxGroup = (HitboxGroup)_player.GetHitboxGroup( _player.LastDamage.HitboxIndex );
 		if ( hitboxGroup == HitboxGroup.Head )
@@ -59,8 +59,8 @@ public partial class InspectMenu : Panel
 
 		if ( _player.LastSeenPlayer.IsValid() )
 			AddInspectEntry( _player.LastSeenPlayer.SteamName,
-							 $"The last person they saw was {_player.LastSeenPlayer.SteamName}... killer or coincidence?",
-							 "/ui/inspectmenu/lastseen.png" );
+			$"The last person they saw was {_player.LastSeenPlayer.SteamName}... killer or coincidence?",
+			"/ui/inspectmenu/lastseen.png" );
 
 		if ( _player.PlayersKilled.Count > 0 )
 		{
@@ -72,8 +72,8 @@ public partial class InspectMenu : Panel
 
 		if ( !string.IsNullOrEmpty( _corpse.C4Note ) )
 			AddInspectEntry( "C4 Defuse Note",
-							 $"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
-							 "/ui/inspectmenu/c4note.png" );
+			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
+			"/ui/inspectmenu/c4note.png" );
 
 		if ( !_corpse.Perks.IsNullOrEmpty() )
 			foreach ( var perk in _corpse.Perks )
