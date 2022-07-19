@@ -4,7 +4,7 @@
 	{
 		IsLimited = true
 		Price = 100
-		IconPath = ""
+		IconPath = resource:"ui/perks/disguiser.png"
 		Description = "Hides your ID info while on. Also avoids being the person last seen by a victim."
 		ClassName = "ttt_perk_disguiser"
 	}
