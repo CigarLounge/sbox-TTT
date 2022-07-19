@@ -103,7 +103,7 @@ public partial class Hands : Carriable
 			return;
 
 		// Only allow dynamic entities to be picked up.
-		if ( trace.Body is null || trace.Body.BodyType == PhysicsBodyType.Keyframed || trace.Body.BodyType == PhysicsBodyType.Static )
+		if ( trace.Body is null || trace.Body.BodyType != PhysicsBodyType.Dynamic )
 			return;
 
 		// Cannot pickup items held by other players.
