@@ -107,7 +107,6 @@ public partial class Knife : Carriable
 		else
 			Owner.Inventory.Drop( this );
 
-		MoveType = MoveType.None;
 		Position = trace.EndPosition;
 		Rotation = PreviousOwner.EyeRotation * _throwRotation;
 		Velocity = PreviousOwner.EyeRotation.Forward * (1250f + PreviousOwner.Velocity.Length);
@@ -176,19 +175,15 @@ public partial class Knife : Carriable
 
 				trace.Surface.DoBulletImpact( trace );
 
-				MoveType = MoveType.None;
 				Position -= trace.Direction * 4f; // Make the knife stuck in the terrain.			
 
 				break;
 			}
 			default:
 			{
-				MoveType = MoveType.Physics;
 				Position = oldPosition - trace.Direction * 5;
 				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
-
 				PhysicsEnabled = true;
-
 				break;
 			}
 		}

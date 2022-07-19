@@ -55,7 +55,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		Tags.Add( "trigger" );
 		SetModel( WorldModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		MoveType = MoveType.Physics;
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 		EnableHideInFirstPerson = true;

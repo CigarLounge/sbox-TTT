@@ -74,8 +74,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		if ( !valid || !Input.Pressed( InputButton.SecondaryAttack ) )
 			return;
 
-		var dropped = Owner.Inventory.DropEntity<T>( this );
-		dropped.MoveType = MoveType.None;
+		var dropped = Owner.Inventory.DropEntity( this );
 		dropped.Transform = GhostEntity.Transform;
 		dropped.Velocity = 0;
 
