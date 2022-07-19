@@ -1,33 +1,56 @@
+@import "/ui/Hud.scss";
+
 PerkSlot
 {
     flex-direction: column;
     align-items: center;
+    margin: 10 0;
+    transition: opacity 0.1s ease-out;
+    transition: left 0.1s ease-out;
 
     .name
     {
-        font-size: 12px;
+        position: absolute;
+        top: -10px;
+        font-size: 14px;
         font-weight: 600;        
     }
 
-    .active
+    .active-text
     {
-        font-size: 22px;
+        position: absolute;
+        text-align: center;
+        top: 77px;
+        font-size: 14px;
+        padding: 0 5px 0 5px;
         font-weight: bold;
         z-index: 1;
+        background-color: $secondary;
     }
 
     .icon-panel
     {
-        width: 100px;
-        height: 100px;
+        width: 80px;
+        height: 80px;
     }
 
     img
     {
         height: 100%;
         width: 100%;
-        opacity: 0.65;
+        opacity: 0.9;
         background-repeat: no-repeat;
         background-size: cover;
+        margin: 4px;
+    }
+
+    &:outro
+    {
+        opacity: 0;
+    }
+
+    &:intro
+    {
+        left: 25px;
     }
 }
