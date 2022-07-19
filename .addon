@@ -87,6 +87,11 @@
           "a": "player",
           "b": "debris",
           "r": "Ignore"
+        },
+        {
+          "a": "trigger",
+          "b": "trigger",
+          "r": "Collide"
         }
       ]
     }

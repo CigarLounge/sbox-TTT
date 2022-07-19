@@ -9,14 +9,17 @@ public class GrabbableProp : IGrabbable
 
 	private const float ThrowForce = 500;
 	private readonly Player _owner;
+	private readonly bool _isTrigger = false;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
+		_isTrigger = grabbedEntity.Tags.Has( "trigger" );
 
 		GrabbedEntity = grabbedEntity;
+		GrabbedEntity.Tags.Remove( "trigger" );
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
@@ -41,6 +44,7 @@ public class GrabbableProp : IGrabbable
 		if ( GrabbedEntity.IsValid() )
 		{
 			GrabbedEntity.EnableHideInFirstPerson = true;
+			GrabbedEntity.Tags.Set( "trigger", _isTrigger );
 			GrabbedEntity.SetParent( null );
 
 			if ( GrabbedEntity is Carriable carriable )
