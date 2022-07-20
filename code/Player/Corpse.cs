@@ -79,7 +79,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public override void Spawn()
 	{
 		Tags.Add( "trigger" );
-		MoveType = MoveType.Physics;
+		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 	}
 

@@ -238,7 +238,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 			Owner = Owner,
 			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
 			Rotation = Owner.EyeRotation,
-			Velocity = Owner.EyeRotation.Forward * DropVelocity
+			Velocity = Owner.EyeRotation.Forward * DropVelocity,
+			PhysicsEnabled = true
 		};
 
 		return droppedEntity;

@@ -6,7 +6,7 @@ namespace TTT;
 public interface IGrabbable
 {
 	bool IsHolding { get; }
-	void Drop();
+	Entity Drop();
 	void Update( Player player );
 	void SecondaryAction();
 }

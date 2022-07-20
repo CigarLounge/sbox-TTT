@@ -58,7 +58,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		base.Spawn();
 
 		Tags.Add( "trigger" );
-		MoveType = MoveType.Physics;
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 		EnableHideInFirstPerson = true;
@@ -199,7 +198,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			return;
 
 		Owner = carrier;
-		MoveType = MoveType.None;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 	}
@@ -212,7 +210,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			return;
 
 		Owner = null;
-		MoveType = MoveType.Physics;
 		EnableDrawing = true;
 		EnableAllCollisions = true;
 		TimeSinceDropped = 0;

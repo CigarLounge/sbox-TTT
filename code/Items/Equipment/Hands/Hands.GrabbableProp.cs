@@ -7,19 +7,16 @@ public class GrabbableProp : IGrabbable
 {
 	public ModelEntity GrabbedEntity { get; set; }
 
-	private const float ThrowForce = 500;
 	private readonly Player _owner;
-	private readonly bool _isTrigger = false;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
-		_isTrigger = grabbedEntity.Tags.Has( "trigger" );
 
 		GrabbedEntity = grabbedEntity;
-		GrabbedEntity.Tags.Remove( "trigger" );
+		GrabbedEntity.EnableAllCollisions = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
@@ -39,19 +36,21 @@ public class GrabbableProp : IGrabbable
 			Drop();
 	}
 
-	public void Drop()
+	public Entity Drop()
 	{
-		if ( GrabbedEntity.IsValid() )
+		var grabbedEntity = GrabbedEntity;
+		if ( grabbedEntity.IsValid() )
 		{
-			GrabbedEntity.EnableHideInFirstPerson = true;
-			GrabbedEntity.Tags.Set( "trigger", _isTrigger );
-			GrabbedEntity.SetParent( null );
+			grabbedEntity.EnableHideInFirstPerson = true;
+			grabbedEntity.EnableAllCollisions = true;
+			grabbedEntity.SetParent( null );
 
-			if ( GrabbedEntity is Carriable carriable )
+			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );
 		}
 
 		GrabbedEntity = null;
+		return grabbedEntity;
 	}
 
 	public void SecondaryAction()
@@ -59,9 +58,9 @@ public class GrabbableProp : IGrabbable
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 
-		if ( GrabbedEntity.IsValid() )
-			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * ThrowForce;
-		Drop();
+		var droppedEntity = Drop();
+		if ( droppedEntity.IsValid() )
+			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
 		_ = WaitForAnimationFinish();
 	}

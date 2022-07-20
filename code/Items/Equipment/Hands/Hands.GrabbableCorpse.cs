@@ -29,12 +29,13 @@ public class GrabbableCorpse : IGrabbable
 		_joint = PhysicsJoint.CreateFixed( _handPhysicsBody, _corpse.PhysicsBody );
 	}
 
-	public void Drop()
+	public Entity Drop()
 	{
 		if ( _joint.IsValid() )
 			_joint.Remove();
 
 		_handPhysicsBody = null;
+		return _corpse;
 	}
 
 	public void Update( Player player )
