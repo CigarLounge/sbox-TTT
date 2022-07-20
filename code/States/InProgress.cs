@@ -175,7 +175,7 @@ public partial class InProgress : BaseState
 	private static void GiveTraitorCredits( Player traitor )
 	{
 		traitor.Credits += Game.TraitorDetectiveKillReward;
-		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
+		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), traitor, $"have received {Game.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[GameEvent.Player.RoleChanged]
