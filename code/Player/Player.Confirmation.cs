@@ -108,6 +108,11 @@ public partial class Player
 		}
 	}
 
+	/// <summary>
+	/// If the player is <strong><see cref="PlayerStatus.MissingInAction"/></strong>,
+	/// update the status for the client owner 
+	/// and <strong><see cref="Team.Traitors"/></strong>.
+	/// </summary>
 	public void UpdateMissingInAction()
 	{
 		Host.AssertServer();
@@ -168,7 +173,7 @@ public partial class Player
 
 		if ( Corpse.IsValid() && Corpse.IsFound )
 		{
-			Corpse.SendPlayer( To.Single( this ) );
+			Corpse.SendPlayer( To.Single( client ) );
 			Corpse.ClientCorpseFound( To.Single( client ), Corpse.Finder, true );
 		}
 	}

@@ -13,6 +13,10 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool HasCredits { get; private set; }
 
 	public Player Player { get; set; }
+	/// <summary>
+	/// Whether or not this corpse has been found by a player
+	/// or revealed at the end of a round.
+	/// </summary>
 	public bool IsFound { get; set; }
 	/// <summary>
 	/// The player who identified this body (this does not include covert searches).
