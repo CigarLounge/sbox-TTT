@@ -9,7 +9,7 @@ namespace TTT;
 [Title( "Sniper Ammo" )]
 public class SniperAmmo : Ammo
 {
-	public override AmmoType Type => AmmoType.Sniper;
-	public override int DefaultAmmoCount => 10;
+	protected override AmmoType Type => AmmoType.Sniper;
+	protected override int DefaultAmmoCount => 10;
 	protected override string WorldModelPath => "models/ammo/ammo_sniper/ammo_sniper.vmdl";
 }

@@ -299,13 +299,7 @@ public abstract partial class Weapon : Carriable
 			return;
 
 		if ( IsServer )
-		{
-			var ammoCrate = Ammo.Create( Info.AmmoType, AmmoClip );
-			ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
-			ammoCrate.Rotation = Owner.EyeRotation;
-			ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + Owner.EyeRotation.Forward * Player.DropVelocity;
-			ammoCrate.Dropper = Owner;
-		}
+			Ammo.Drop( Owner, Info.AmmoType, AmmoClip );
 
 		AmmoClip = 0;
 	}
