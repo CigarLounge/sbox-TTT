@@ -81,15 +81,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 
-	public override void StartTouch( Entity other )
-	{
-		if ( !IsServer )
-			return;
-
-		if ( other is Player player && player.IsAlive() && (player != PreviousOwner || TimeSinceDropped >= 1f) )
-			player.Inventory.Add( this );
-	}
-
 	public virtual void ActiveStart( Player player )
 	{
 		EnableDrawing = true;

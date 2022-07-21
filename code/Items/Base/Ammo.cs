@@ -79,7 +79,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		if ( !IsServer )
 			return;
 
-		if ( other is Player player && player.IsAlive() && (player != _dropper || _timeSincedDropped >= 1f) )
+		if ( other is Player player && (player != _dropper || _timeSincedDropped >= 1f) )
 			GiveAmmo( player );
 	}
 
