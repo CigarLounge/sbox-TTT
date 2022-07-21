@@ -126,6 +126,7 @@ public partial class Player
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+		EnableTouch = false;
 
 		Inventory.DropAll();
 		DeleteFlashlight();
