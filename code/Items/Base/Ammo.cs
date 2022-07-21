@@ -20,11 +20,12 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	[Net]
 	public int CurrentCount { get; private set; }
 
-	public Player Dropper { get; set; }
 	public virtual AmmoType Type => AmmoType.None;
 	public virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
-	private TimeSince _timeSinceDropped = 0;
+
+	private Player _dropper;
+	private TimeSince _timeSincedDropped;
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
 	{
@@ -50,6 +51,17 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		return ammo;
 	}
 
+	public static Ammo Drop( Player dropper, AmmoType ammoType, int count = 0 )
+	{
+		var ammoCrate = Create( ammoType, count );
+		ammoCrate.Position = dropper.EyePosition + dropper.EyeRotation.Forward * 40;
+		ammoCrate.Rotation = dropper.EyeRotation;
+		ammoCrate.PhysicsGroup.Velocity = dropper.Velocity + dropper.EyeRotation.Forward * Player.DropVelocity;
+		ammoCrate._dropper = dropper;
+		ammoCrate._timeSincedDropped = 0;
+		return ammoCrate;
+	}
+
 	public override void Spawn()
 	{
 		Tags.Add( "trigger" );
@@ -64,9 +76,10 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	public override void StartTouch( Entity other )
 	{
-		base.StartTouch( other );
+		if ( !IsServer )
+			return;
 
-		if ( other is Player player && (player != Dropper || _timeSinceDropped >= 1f) )
+		if ( other is Player player && player.IsAlive() && (player != _dropper || _timeSincedDropped >= 1f) )
 			GiveAmmo( player );
 	}
 

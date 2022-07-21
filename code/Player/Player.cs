@@ -300,29 +300,6 @@ public partial class Player : AnimatedEntity
 		EnableHitboxes = true;
 	}
 
-	public override void StartTouch( Entity other )
-	{
-		if ( !IsServer )
-			return;
-
-		if ( !this.IsAlive() )
-			return;
-
-		switch ( other )
-		{
-			case Ammo ammo:
-			{
-				ammo.StartTouch( this );
-				break;
-			}
-			case Carriable carriable:
-			{
-				Inventory.Pickup( carriable );
-				break;
-			}
-		}
-	}
-
 	public void DeleteItems()
 	{
 		ClearAmmo();

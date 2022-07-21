@@ -68,12 +68,6 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool Contains( Carriable entity ) => _list.Contains( entity );
 
-	public void Pickup( Carriable carriable )
-	{
-		if ( Add( carriable ) )
-			Sound.FromEntity( Strings.WeaponPickupSound, Owner );
-	}
-
 	public bool HasFreeSlot( SlotType slotType )
 	{
 		return _slotCapacity[(int)slotType] > 0;

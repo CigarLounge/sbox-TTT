@@ -81,6 +81,15 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 
+	public override void StartTouch( Entity other )
+	{
+		if ( !IsServer )
+			return;
+
+		if ( other is Player player && player.IsAlive() && (player != PreviousOwner || TimeSinceDropped >= 1f) )
+			player.Inventory.Add( this );
+	}
+
 	public virtual void ActiveStart( Player player )
 	{
 		EnableDrawing = true;
@@ -200,6 +209,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		Owner = carrier;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+		Sound.FromEntity( Strings.WeaponPickupSound, Owner );
 	}
 
 	public virtual void OnCarryDrop( Player dropper )
