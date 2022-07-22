@@ -306,9 +306,6 @@ public partial class Player : AnimatedEntity
 		if ( !IsServer )
 			return;
 
-		if ( !this.IsAlive() )
-			return;
-
 		switch ( other )
 		{
 			case Ammo ammo:
