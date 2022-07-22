@@ -56,6 +56,7 @@ public partial class Player
 		Controller = null;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
 

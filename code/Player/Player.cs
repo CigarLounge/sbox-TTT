@@ -60,12 +60,12 @@ public partial class Player : AnimatedEntity
 		LifeState = LifeState.Respawnable;
 		Transmit = TransmitType.Always;
 
-		Predictable = true;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
 		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
+		EnableTouch = false;
 
 		Animator = new PlayerAnimator();
 		Camera = new FreeSpectateCamera();
@@ -104,6 +104,7 @@ public partial class Player : AnimatedEntity
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
+			EnableTouch = true;
 
 			Controller = new WalkController();
 			Camera = new FirstPersonCamera();
