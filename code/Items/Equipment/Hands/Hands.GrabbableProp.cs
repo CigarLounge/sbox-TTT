@@ -17,6 +17,7 @@ public class GrabbableProp : IGrabbable
 
 		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableAllCollisions = false;
+		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
@@ -42,6 +43,7 @@ public class GrabbableProp : IGrabbable
 		if ( grabbedEntity.IsValid() )
 		{
 			grabbedEntity.EnableHideInFirstPerson = true;
+			GrabbedEntity.EnableTouch = true;
 			grabbedEntity.EnableAllCollisions = true;
 			grabbedEntity.SetParent( null );
 
