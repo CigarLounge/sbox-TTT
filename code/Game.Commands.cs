@@ -12,6 +12,9 @@ public partial class Game
 		if ( !player.IsValid() )
 			return;
 
+		if ( player.IsForcedSpectator )
+			player.ToggleForcedSpectator();
+
 		player.Respawn();
 	}
 
