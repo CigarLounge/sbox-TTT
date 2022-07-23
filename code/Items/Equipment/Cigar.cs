@@ -34,11 +34,7 @@ public class Cigar : Carriable
 		_trailParticle = null;
 		_trailParticle ??= Particles.Create( "particles/muzzle/barrel_smoke", this, "muzzle" );
 
-		Owner.TakeDamage
-		(
-			DamageInfo.Generic( 1 )
-			.WithAttacker( Owner )
-			.WithWeapon( this )
-		);
+		if ( Host.IsServer )
+			Owner.TakeDamage( DamageInfo.Generic( 1 ).WithAttacker( Owner ).WithWeapon( this ) );
 	}
 }
