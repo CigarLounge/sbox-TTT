@@ -118,6 +118,10 @@ public partial class Player
 		{
 			LastAttacker.Client.AddInt( "kills" );
 			(LastAttacker as Player).PlayersKilled.Add( this );
+
+			var hitboxGroup = (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex );
+			if ( hitboxGroup == HitboxGroup.Head )
+				DetachDetectiveHat();
 		}
 
 		BecomeCorpse();

@@ -118,6 +118,9 @@ public partial class Hands : Carriable
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
 				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
+			case DetectiveHat hat:
+				_grabbedEntity = new GrabbableHat( Owner, GrabPoint, hat );
+				break;
 			case ModelEntity model:
 				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( _maxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
 					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model );

@@ -55,7 +55,7 @@ public class GrabbableProp : IGrabbable
 		return grabbedEntity;
 	}
 
-	public void SecondaryAction()
+	public virtual void SecondaryAction()
 	{
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );

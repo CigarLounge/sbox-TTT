@@ -35,16 +35,19 @@ public partial class Player
 		AttachClothing( entity );
 	}
 
-	public void RemoveClothing( string path )
+	public bool RemoveClothing( string path )
 	{
 		for ( var i = Clothes.Count - 1; i >= 0; i-- )
 		{
 			var clothingPiece = Clothes[i];
-			if ( clothingPiece.ModelPath == path )
-			{
-				clothingPiece.Delete();
-			}
+			if ( clothingPiece.ModelPath != path )
+				continue;
+
+			clothingPiece.Delete();
+			return true;
 		}
+
+		return false;
 	}
 
 	public void RemoveAllClothing()
@@ -60,6 +63,15 @@ public partial class Player
 		clothing.SetParent( this, true );
 		clothing.EnableShadowInFirstPerson = true;
 		clothing.EnableHideInFirstPerson = true;
+	}
+
+	private void DetachDetectiveHat()
+	{
+		var hadDetectiveHat = RemoveClothing( DetectiveHat.Path );
+		if ( !hadDetectiveHat )
+			return;
+
+		_ = new DetectiveHat { Position = GetBoneTransform( "head" ).Position };
 	}
 
 	// So that the clothes we use don't clip with the player model.
