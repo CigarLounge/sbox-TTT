@@ -19,7 +19,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// </summary>
 	public bool IsFound { get; set; }
 	/// <summary>
-	/// The player who identified this body (this does not include covert searches).
+	/// The player who identified this corpse (this does not include covert searches).
 	/// </summary>
 	public Player Finder { get; private set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
@@ -48,7 +48,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Owner = player;
 		Transform = player.Transform;
 
-		if ( Player.LastDamage.Flags == DamageFlags.Bullet && Player.LastAttacker is Player killer )
+		if ( Player.LastDamage.Flags.HasFlag( DamageFlags.Bullet ) && Player.LastAttacker is Player killer )
 		{
 			var dna = new DNA( killer );
 			Components.Add( dna );
@@ -93,7 +93,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// <param name="searcher">The player who is searching this corpse.</param>
 	/// <param name="covert">Whether or not this is a covert search.</param>
 	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
-	public void Search( Player searcher, bool covert, bool retrieveCredits = true )
+	public void Search( Player searcher, bool covert = false, bool retrieveCredits = true )
 	{
 		Host.AssertServer();
 		Assert.NotNull( searcher );
