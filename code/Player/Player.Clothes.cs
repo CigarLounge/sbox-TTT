@@ -68,10 +68,8 @@ public partial class Player
 	private void DetachDetectiveHat()
 	{
 		var hadDetectiveHat = RemoveClothing( DetectiveHat.Path );
-		if ( !hadDetectiveHat )
-			return;
-
-		_ = new DetectiveHat { Position = GetBoneTransform( "head" ).Position };
+		if ( hadDetectiveHat )
+			_ = new DetectiveHat { Position = GetBoneTransform( "head" ).Position };
 	}
 
 	// So that the clothes we use don't clip with the player model.
