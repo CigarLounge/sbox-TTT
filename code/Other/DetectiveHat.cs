@@ -3,6 +3,7 @@ using Sandbox;
 namespace TTT;
 
 [HideInEditor]
+[EditorModel( "models/detective_hat/detective_hat.vmdl" )]
 [Title( "Detective Hat" )]
 public partial class DetectiveHat : Prop, IEntityHint
 {
@@ -18,7 +19,7 @@ public partial class DetectiveHat : Prop, IEntityHint
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	public void Attach( Player player )
+	public void PutOn( Player player )
 	{
 		player.AttachClothing( Path );
 		Delete();

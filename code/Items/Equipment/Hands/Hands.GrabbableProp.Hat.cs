@@ -15,7 +15,7 @@ public class GrabbableHat : GrabbableProp
 
 	public override void SecondaryAction()
 	{
-		_hat?.Attach( _owner );
+		_hat?.PutOn( _owner );
 		_hat?.Delete();
 	}
 }
