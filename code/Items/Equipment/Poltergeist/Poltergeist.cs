@@ -7,14 +7,13 @@ namespace TTT;
 [Title( "Poltergeist" )]
 public class Poltergeist : Weapon
 {
-	private const float MaxPlacementDistance = 1250f;
 	private TraceResult _trace;
 
 	public override void Simulate( Client client )
 	{
 		base.Simulate( client );
 
-		_trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * MaxPlacementDistance )
+		_trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.MaxHintDistance )
 			.Ignore( this )
 			.Ignore( Owner )
 			.Run();
@@ -22,19 +21,13 @@ public class Poltergeist : Weapon
 
 	protected override void AttackPrimary()
 	{
-		// TODO: Consider sound effects, weapon effects, etc.
-		if ( AmmoClip == 0 )
+		if ( !HasValidPlacement() || AmmoClip == 0 )
 			return;
 
 		AmmoClip--;
 		Owner.SetAnimParameter( "b_attack", true );
 		PlaySound( Info.FireSound );
 		AttachEnt();
-	}
-
-	protected override bool CanPrimaryAttack()
-	{
-		return Input.Pressed( InputButton.PrimaryAttack ) && HasValidPlacement();
 	}
 
 	private void AttachEnt()
@@ -45,6 +38,6 @@ public class Poltergeist : Weapon
 
 	private bool HasValidPlacement()
 	{
-		return _trace.Hit && _trace.Entity is ModelEntity;
+		return _trace.Hit && _trace.Entity.PhysicsGroup is not null;
 	}
 }

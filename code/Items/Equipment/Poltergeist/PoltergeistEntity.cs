@@ -4,7 +4,7 @@ namespace TTT;
 
 [ClassName( "ttt_entity_poltergeist" )]
 [HideInEditor]
-public partial class PoltergeistEntity : Prop
+public partial class PoltergeistEntity : ModelEntity
 {
 	private static readonly Model _worldModel = Model.Load( "models/poltergeist/poltergeist_attachment.vmdl" );
 	private const int BounceForce = 950;
@@ -30,6 +30,8 @@ public partial class PoltergeistEntity : Prop
 
 	private void Bounce()
 	{
+		// TODO: How about we do a Radius check for any players, then send the object flying
+		// in the direction of the player?
 		if ( Parent.IsValid() )
 		{
 			var randDirection = Rand.Float( -BounceForce, BounceForce );
