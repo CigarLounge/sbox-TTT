@@ -9,6 +9,8 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = ""
+		PrimaryAttackHint = "Deploy"
+		SecondaryAttackHint = "Plant"
 		DeployTime = 0
 		IsLimited = true
 		Price = 100

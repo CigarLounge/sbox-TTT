@@ -27,6 +27,12 @@ public class CarriableInfo : ItemInfo
 	[Title( "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModelPath { get; set; } = "";
 
+	[Category( "UI" ), Description( "UI element that will inform the player what Primary Attack does" )]
+	public string PrimaryAttackHint { get; set; } = "";
+
+	[Category( "UI" ), Description( "UI element that will inform the player what Secondary Attack does" )]
+	public string SecondaryAttackHint { get; set; } = "";
+
 	[Category( "Stats" )]
 	public float DeployTime { get; set; } = 0.6f;
 

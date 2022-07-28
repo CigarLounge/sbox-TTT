@@ -9,16 +9,13 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = resource:"models/dnascanner/huladoll.vmdl"
+		PrimaryAttackHint = "Fetch DNA"
+		SecondaryAttackHint = "Scan"
 		DeployTime = 0
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = false
 		Price = 100
 		IconPath = ""
 		Description = ""
-		Icon = null
 		ClassName = "ttt_equipment_dnascanner"
-		Title = null
 	}
 }

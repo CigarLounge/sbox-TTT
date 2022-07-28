@@ -173,9 +173,15 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		HandsModelEntity = null;
 	}
 
-	public virtual void CreateHudElements() { }
+	public virtual void CreateHudElements()
+	{
+		UI.CarriableHint.Instance.Show( Info.PrimaryAttackHint, Info.SecondaryAttackHint );
+	}
 
-	public virtual void DestroyHudElements() { }
+	public virtual void DestroyHudElements()
+	{
+		UI.CarriableHint.Instance.Hide();
+	}
 
 	public virtual bool CanCarry( Player carrier )
 	{

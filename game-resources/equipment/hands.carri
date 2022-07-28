@@ -2,24 +2,20 @@
 {
 	data = 
 	{
-		Slot = 4
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = false
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = null
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = ""
+		PrimaryAttackHint = "Pickup / Throw"
+		SecondaryAttackHint = "Drop"
 		DeployTime = 0.6
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = null
-		Buyable = false
 		IsLimited = false
 		Price = 0
-		icon = ""
+		IconPath = ""
 		Description = ""
-		"cached-icon" = null
 		ClassName = "ttt_equipment_hands"
-		Title = null
 	}
 }

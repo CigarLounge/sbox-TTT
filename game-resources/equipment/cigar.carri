@@ -9,6 +9,8 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = resource:"models/cigar/cigar.vmdl"
+		PrimaryAttackHint = "Smoke"
+		SecondaryAttackHint = ""
 		DeployTime = 0
 		IsLimited = true
 		Price = 0
