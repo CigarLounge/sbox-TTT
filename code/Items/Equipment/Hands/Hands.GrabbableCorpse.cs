@@ -44,7 +44,7 @@ public class GrabbableCorpse : IGrabbable
 		if ( _handPhysicsBody is null )
 			return;
 
-		foreach ( var spring in _corpse?.RopeSprings )
+		foreach ( var spring in _corpse?.RopeJoints )
 		{
 			if ( Vector3.DistanceBetween( spring.Body1.Position, spring.Point2.LocalPosition ) > Player.UseDistance * 1.5 )
 			{
@@ -82,7 +82,7 @@ public class GrabbableCorpse : IGrabbable
 		spring.EnableAngularConstraint = false;
 
 		_corpse.Ropes.Add( rope );
-		_corpse.RopeSprings.Add( spring );
+		_corpse.RopeJoints.Add( spring );
 
 		Drop();
 	}

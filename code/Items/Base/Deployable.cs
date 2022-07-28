@@ -7,6 +7,9 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
 	public GhostEntity GhostEntity { get; private set; }
 
+	public override string PrimaryAttackHint => CanDrop ? "Deploy" : string.Empty;
+	public override string SecondaryAttackHint => CanPlant ? "Plant" : string.Empty;
+
 	protected virtual bool CanDrop => true;
 	protected virtual bool CanPlant => true;
 

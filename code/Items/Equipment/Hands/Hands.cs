@@ -18,7 +18,7 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
-	public override string PrimaryAttackHint => _grabbedEntity?.PrimaryAttackHint ?? string.Empty;
+	public override string PrimaryAttackHint => _grabbedEntity?.PrimaryAttackHint ?? "Pickup";
 	public override string SecondaryAttackHint => _grabbedEntity?.SecondaryAttackHint ?? string.Empty;
 
 	public Entity GrabPoint { get; private set; }

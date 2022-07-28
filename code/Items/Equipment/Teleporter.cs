@@ -7,6 +7,9 @@ namespace TTT;
 [Title( "Teleporter" )]
 public partial class Teleporter : Carriable
 {
+	public override string PrimaryAttackHint => LocationIsSet ? "Teleport" : string.Empty;
+	public override string SecondaryAttackHint => "Set teleport location";
+
 	[Net, Predicted]
 	public int Charges { get; private set; } = 16;
 

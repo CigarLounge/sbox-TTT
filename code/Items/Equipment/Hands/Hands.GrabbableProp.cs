@@ -59,6 +59,12 @@ public class GrabbableProp : IGrabbable
 
 	public void SecondaryAction()
 	{
+		if ( Host.IsClient )
+		{
+			_grabbedEntity = null;
+			return;
+		}
+
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 

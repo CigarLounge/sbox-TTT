@@ -53,12 +53,12 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual string SlotText => string.Empty;
 
 	/// <summary>
-	/// Instructional text that will display next to a Primary Attack glyph
+	/// Instructional text that will display next to a Primary Attack glyph.
 	/// </summary>
 	public virtual string PrimaryAttackHint => string.Empty;
 
 	/// <summary>
-	/// Instructional text that will display next to a Secondary Attack glyph
+	/// Instructional text that will display next to a Secondary Attack glyph.
 	/// </summary>
 	public virtual string SecondaryAttackHint => string.Empty;
 

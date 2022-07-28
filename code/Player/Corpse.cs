@@ -31,7 +31,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public bool HasCalledDetective { get; set; } = false;
 
 	public List<Particles> Ropes { get; private set; } = new();
-	public List<PhysicsJoint> RopeSprings { get; private set; } = new();
+	public List<PhysicsJoint> RopeJoints { get; private set; } = new();
 
 	// We use this HashSet of NetworkIds to avoid sending kill information
 	// to players multiple times.
@@ -243,11 +243,11 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		foreach ( var rope in Ropes )
 			rope.Destroy( true );
 
-		foreach ( var spring in RopeSprings )
+		foreach ( var spring in RopeJoints )
 			spring.Remove();
 
 		Ropes.Clear();
-		RopeSprings.Clear();
+		RopeJoints.Clear();
 	}
 
 	protected override void OnDestroy()
