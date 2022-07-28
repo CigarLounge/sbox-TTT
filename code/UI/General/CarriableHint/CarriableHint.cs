@@ -1,3 +1,4 @@
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -16,27 +17,25 @@ public class CarriableHint : Panel
 	public CarriableHint()
 	{
 		Instance = this;
-		Hide();
 	}
 
-	public void Show( string primaryAttackHint, string secondaryAttackHint )
+	public override void Tick()
 	{
-		if ( !string.IsNullOrEmpty( primaryAttackHint ) )
-		{
-			PrimaryAttackLabel.Text = primaryAttackHint;
-			PrimaryAttackPanel.Enabled( true );
-		}
+		if ( Local.Pawn is not Player player )
+			return;
 
-		if ( !string.IsNullOrEmpty( secondaryAttackHint ) )
-		{
-			SecondaryAttackLabel.Text = secondaryAttackHint;
-			SecondaryAttackPanel.Enabled( true );
-		}
-	}
+		this.Enabled( player.ActiveChild is not null );
+		if ( !this.IsEnabled() )
+			return;
 
-	public void Hide()
-	{
-		PrimaryAttackPanel.Enabled( false );
-		SecondaryAttackPanel.Enabled( false );
+		var primaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.PrimaryAttackHint );
+		PrimaryAttackPanel.Enabled( primaryHintEnabled );
+		if ( primaryHintEnabled )
+			PrimaryAttackLabel.Text = player.ActiveChild.PrimaryAttackHint;
+
+		var secondaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.SecondaryAttackHint );
+		SecondaryAttackPanel.Enabled( secondaryHintEnabled );
+		if ( secondaryHintEnabled )
+			SecondaryAttackLabel.Text = player.ActiveChild.SecondaryAttackHint;
 	}
 }

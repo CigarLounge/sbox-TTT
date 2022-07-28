@@ -16,6 +16,9 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
+	public override string PrimaryAttackHint => IsHoldingEntity ? "Throw" : "Pickup";
+	public override string SecondaryAttackHint => IsHoldingEntity ? "Drop" : string.Empty;
+
 	public Entity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
@@ -32,25 +35,22 @@ public partial class Hands : Carriable
 		if ( !IsServer )
 			return;
 
-		using ( Prediction.Off() )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 		{
-			if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					_grabbedEntity?.SecondaryAction();
-				else
-					TryGrabEntity();
-			}
-			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					_grabbedEntity?.Drop();
-				else
-					PushEntity();
-			}
-
-			_grabbedEntity?.Update( Owner );
+			if ( IsHoldingEntity )
+				_grabbedEntity?.SecondaryAction();
+			else
+				TryGrabEntity();
 		}
+		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		{
+			if ( IsHoldingEntity )
+				_grabbedEntity?.Drop();
+			else
+				PushEntity();
+		}
+
+		_grabbedEntity?.Update( Owner );
 	}
 
 	private void PushEntity()

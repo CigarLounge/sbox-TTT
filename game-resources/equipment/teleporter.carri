@@ -9,8 +9,6 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = resource:"models/teleporter/teleporter.vmdl"
-		PrimaryAttackHint = "Teleport to set location"
-		SecondaryAttackHint = "Set teleporter location"
 		DeployTime = 0.6
 		IsLimited = true
 		Price = 100

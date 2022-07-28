@@ -9,8 +9,6 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = resource:"models/dnascanner/huladoll.vmdl"
-		PrimaryAttackHint = "Fetch DNA"
-		SecondaryAttackHint = "Scan"
 		DeployTime = 0
 		IsLimited = false
 		Price = 100

@@ -9,8 +9,6 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = resource:"models/binoculars/binoculars.vmdl"
-		PrimaryAttackHint = ""
-		SecondaryAttackHint = "Scope in"
 		DeployTime = 0
 		IsLimited = false
 		Price = 100
