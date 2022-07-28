@@ -9,7 +9,7 @@
 		HandsModelPath = ""
 		HoldType = "None"
 		WorldModelPath = ""
-		PrimaryAttackHint = "Pickup / Throw"
+		PrimaryAttackHint = "Interact"
 		SecondaryAttackHint = "Drop"
 		DeployTime = 0.6
 		IsLimited = false
