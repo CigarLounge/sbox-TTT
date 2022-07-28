@@ -4,15 +4,16 @@ namespace TTT;
 
 public class GrabbableCorpse : IGrabbable
 {
+	public string PrimaryAttackHint => !IsHolding ? "Pickup" : AttachmentHint;
+	private string AttachmentHint => !_corpse.Ropes.IsNullOrEmpty() ? "Detach" : _owner.Role.CanAttachCorpses ? "Attach" : string.Empty;
+
+	public string SecondaryAttackHint { get => IsHolding ? "Drop" : string.Empty; }
+	public bool IsHolding { get => _joint.IsValid(); }
+
 	private readonly Player _owner;
 	private readonly Corpse _corpse;
 	private PhysicsBody _handPhysicsBody;
 	private readonly FixedJoint _joint;
-
-	public bool IsHolding
-	{
-		get => _joint.IsValid();
-	}
 
 	public GrabbableCorpse( Player player, Corpse corpse )
 	{

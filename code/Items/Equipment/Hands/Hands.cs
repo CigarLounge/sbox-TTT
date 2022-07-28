@@ -5,6 +5,8 @@ namespace TTT;
 
 public interface IGrabbable
 {
+	string PrimaryAttackHint { get; }
+	string SecondaryAttackHint { get; }
 	bool IsHolding { get; }
 	Entity Drop();
 	void Update( Player player );
@@ -16,8 +18,8 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
-	public override string PrimaryAttackHint => IsHoldingEntity ? "Throw" : "Pickup";
-	public override string SecondaryAttackHint => IsHoldingEntity ? "Drop" : string.Empty;
+	public override string PrimaryAttackHint => _grabbedEntity?.PrimaryAttackHint ?? string.Empty;
+	public override string SecondaryAttackHint => _grabbedEntity?.SecondaryAttackHint ?? string.Empty;
 
 	public Entity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
@@ -32,9 +34,6 @@ public partial class Hands : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( !IsServer )
-			return;
-
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 		{
 			if ( IsHoldingEntity )
@@ -98,12 +97,7 @@ public partial class Hands : Carriable
 			.EntitiesOnly()
 			.Run();
 
-		// Make sure trace is hit and not null.
-		if ( !trace.Hit || !trace.Entity.IsValid() )
-			return;
-
-		// Only allow dynamic entities to be picked up.
-		if ( trace.Body is null || trace.Body.BodyType != PhysicsBodyType.Dynamic )
+		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Entity.PhysicsGroup is null )
 			return;
 
 		// Cannot pickup items held by other players.

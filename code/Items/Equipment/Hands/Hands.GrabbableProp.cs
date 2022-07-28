@@ -5,45 +5,47 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public ModelEntity GrabbedEntity { get; set; }
+	public string PrimaryAttackHint { get => _grabbedEntity.IsValid() ? "Throw" : "Pickup"; }
+	public string SecondaryAttackHint { get => _grabbedEntity.IsValid() ? "Drop" : string.Empty; }
+	public bool IsHolding => _grabbedEntity is not null || _isThrowing;
 
+	private ModelEntity _grabbedEntity;
 	private readonly Player _owner;
-	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
 	private bool _isThrowing = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
 
-		GrabbedEntity = grabbedEntity;
-		GrabbedEntity.EnableAllCollisions = false;
-		GrabbedEntity.EnableTouch = false;
-		GrabbedEntity.EnableHideInFirstPerson = false;
-		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+		_grabbedEntity = grabbedEntity;
+		_grabbedEntity.EnableAllCollisions = false;
+		_grabbedEntity.EnableTouch = false;
+		_grabbedEntity.EnableHideInFirstPerson = false;
+		_grabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
 
 	public void Update( Player player )
 	{
 		// Incase someone walks up and picks up the carriable from the player's hands
 		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
-		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
+		var carriableHasOwner = _grabbedEntity is Carriable && _grabbedEntity.Owner.IsValid();
 		if ( carriableHasOwner )
 		{
-			GrabbedEntity.EnableHideInFirstPerson = true;
-			GrabbedEntity = null;
+			_grabbedEntity.EnableHideInFirstPerson = true;
+			_grabbedEntity = null;
 		}
 
-		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
+		if ( !_grabbedEntity.IsValid() || !_owner.IsValid() )
 			Drop();
 	}
 
 	public Entity Drop()
 	{
-		var grabbedEntity = GrabbedEntity;
+		var grabbedEntity = _grabbedEntity;
 		if ( grabbedEntity.IsValid() )
 		{
 			grabbedEntity.EnableHideInFirstPerson = true;
-			GrabbedEntity.EnableTouch = true;
+			grabbedEntity.EnableTouch = true;
 			grabbedEntity.EnableAllCollisions = true;
 			grabbedEntity.SetParent( null );
 
@@ -51,7 +53,7 @@ public class GrabbableProp : IGrabbable
 				carriable.OnCarryDrop( _owner );
 		}
 
-		GrabbedEntity = null;
+		_grabbedEntity = null;
 		return grabbedEntity;
 	}
 
