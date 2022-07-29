@@ -8,7 +8,7 @@
 		ViewModelPath = ""
 		HandsModelPath = ""
 		HoldType = "None"
-		WorldModelPath = ""
+		WorldModelPath = resource:"models/health_station/health_station.vmdl"
 		DeployTime = 0
 		IsLimited = true
 		Price = 100
