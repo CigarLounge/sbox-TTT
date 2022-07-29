@@ -77,4 +77,13 @@ public partial class Game
 	[ConVar.Server( "ttt_credits_detectivekill", Help = "The number of credits a Traitor receives when they kill a Detective.", Saved = true )]
 	public static int TraitorDetectiveKillReward { get; set; } = 100;
 	#endregion
+
+	#region Spectating
+	[ConVar.Server("ttt_spec_prop_control", Help = "Whether spectators are allowed to possess props", Saved = true)]
+	public static bool PropPossessionEnabled { get; set; } = true;
+	[ConVar.Server("ttt_spec_prop_base", Help = "The maximum number of punches a spectator can have", Saved = true)]
+	public static int PropPossessionMaxPunches { get; set; } = 8;
+	[ConVar.Server("ttt_spec_prop_rechargetime", Help = "How many seconds it takes to recharge one punch", Saved = true)]
+	public static float PropPossessionRechargeTime { get; set; } = 1f;
+	#endregion
 }

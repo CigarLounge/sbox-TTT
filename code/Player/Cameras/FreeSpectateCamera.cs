@@ -62,5 +62,19 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles.roll = 0;
 
 		base.BuildInput( input );
+
+		if ( input.Pressed( InputButton.Use ) )
+			FindTargetProp();
+	}
+
+	private void FindTargetProp()
+	{
+		var lookDir = Rotation.From( _lookAngles ).Forward;
+		var tr = Trace.Ray( Position, Position + (lookDir * 100f) )
+			.EntitiesOnly()
+			.Run();
+		
+		if ( tr.Entity is Prop p )
+			ConsoleSystem.Run( "ttt_possess_prop", p.NetworkIdent );
 	}
 }

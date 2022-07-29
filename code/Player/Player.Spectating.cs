@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -19,6 +21,11 @@ public partial class Player
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 	private int _targetSpectatorIndex = 0;
+
+	[Net] public Prop? PossessedProp { get; set; }
+	[Net, Local] public int PossessionPunches { get; set; }
+	private TimeUntil _timeUntilRecharge = 0;
+	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
 	public void ToggleForcedSpectator()
 	{
@@ -76,8 +83,32 @@ public partial class Player
 			Camera = new FreeSpectateCamera();
 	}
 
+	public void PossessProp( Prop prop )
+	{
+		if ( !IsSpectator || PossessedProp is not null )
+			throw new Exception( $"cannot possess prop: {PossessedProp}" );
+
+		PossessedProp = prop;
+		Camera = new PropSpectateCamera();
+	}
+
 	private void ChangeSpectateCamera()
 	{
+		if ( IsServer && Camera is PropSpectateCamera )
+		{
+			if ( PossessedProp is null || !PossessedProp.IsValid || Input.Pressed( InputButton.Duck ) )
+			{
+				Camera = new FreeSpectateCamera();
+				PossessedProp = null;
+			}
+			else if ( PossessedProp.PhysicsBody is PhysicsBody b )
+			{
+				HandlePropPossession( b );
+			}
+
+			return;
+		}
+
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
@@ -99,6 +130,62 @@ public partial class Player
 			Camera = new ThirdPersonSpectateCamera();
 		else if ( Camera is ThirdPersonSpectateCamera )
 			Camera = new FirstPersonSpectatorCamera();
+	}
+
+	private void HandlePropPossession( PhysicsBody b )
+	{
+		// reference:
+		// https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/terrortown/gamemode/propspec.lua#L111
+
+		if ( Input.Forward + Input.Left == 0f && !Input.Pressed( InputButton.Jump ) ) { return; } // no movement
+
+		if ( !_timeUntilNextPunchAllowed ) { return; }
+		
+		if ( PossessedProp is IGrabbable grabbable && grabbable.IsHolding )
+			return; // can't move if prop is currently being held by a player
+
+		var mass = Math.Min( 150f, b.Mass );
+		var force = 110f * 100f;
+		var aim = Vector3.Forward * Input.Rotation;
+		var mf = mass * force;
+
+		_timeUntilNextPunchAllowed = 0.15f;
+
+		if ( Input.Pressed( InputButton.Jump ) )
+		{
+			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf ) );
+			_timeUntilNextPunchAllowed = 0.2f; // jump is penalised more
+		}
+		else if ( Input.Pressed( InputButton.Forward ) )
+		{
+			b.ApplyForceAt( b.MassCenter, aim * mf );
+		}
+		else if ( Input.Pressed( InputButton.Back ) )
+		{
+			b.ApplyForceAt( b.MassCenter, aim * mf * -1f );
+		}
+		else if ( Input.Pressed( InputButton.Left ) )
+		{
+			b.ApplyAngularImpulse( new Vector3( 0, 0, 200f * 10f ) );
+			b.ApplyForceAt( b.MassCenter, aim * mf / 3f );
+		}
+		else if ( Input.Pressed( InputButton.Right ) )
+		{
+			b.ApplyAngularImpulse( new Vector3( 0, 0, -200f * 10f ) );
+			b.ApplyForceAt( b.MassCenter, aim * mf / 3f );
+		}
+
+		PossessionPunches = Math.Max( PossessionPunches - 1, 0 );
+	}
+
+	[Event.Tick.Server]
+	public void RechargePossessionPunches()
+	{
+		if ( _timeUntilRecharge )
+		{
+			PossessionPunches = Math.Min( PossessionPunches + 1, Game.PropPossessionMaxPunches );
+			_timeUntilRecharge = Game.PropPossessionRechargeTime;
+		}
 	}
 
 	[GameEvent.Player.Killed]

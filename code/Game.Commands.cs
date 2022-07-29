@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -101,5 +102,30 @@ public partial class Game
 		Game.Current.RTVCount += 1;
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
+	}
+
+	[ConCmd.Server( "ttt_possess_prop" )]
+	public static void PossessProp( int propNetworkId )
+	{
+		if ( !PropPossessionEnabled )
+			return;
+
+		var target = Entity.All.OfType<Prop>().FirstOrDefault( p => p.NetworkIdent == propNetworkId );
+
+		if ( target is null )
+			return;
+
+		// Check if any other spectator is currently possessing this prop
+		var alreadyPossessed = Entity.All
+			.OfType<Player>()
+			.Any( p => p.IsSpectator && p.PossessedProp?.NetworkIdent == propNetworkId );
+
+		if ( alreadyPossessed )
+			return;
+
+		if ( ConsoleSystem.Caller.Pawn is not Player player || !player.IsSpectator || player.PossessedProp is not null )
+			return;
+
+		player.PossessProp( target );
 	}
 }
