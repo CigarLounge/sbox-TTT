@@ -4,15 +4,15 @@ namespace TTT;
 
 public class GrabbableCorpse : IGrabbable
 {
+	public string PrimaryAttackHint => !IsHolding ? "Pickup" : AttachmentHint;
+	private string AttachmentHint => !_corpse.Ropes.IsNullOrEmpty() ? "Detach" : _owner.Role.CanAttachCorpses ? "Attach" : string.Empty;
+	public string SecondaryAttackHint => IsHolding ? "Drop" : string.Empty;
+	public bool IsHolding => _joint.IsValid();
+
 	private readonly Player _owner;
 	private readonly Corpse _corpse;
 	private PhysicsBody _handPhysicsBody;
 	private readonly FixedJoint _joint;
-
-	public bool IsHolding
-	{
-		get => _joint.IsValid();
-	}
 
 	public GrabbableCorpse( Player player, Corpse corpse )
 	{
@@ -43,7 +43,7 @@ public class GrabbableCorpse : IGrabbable
 		if ( _handPhysicsBody is null )
 			return;
 
-		foreach ( var spring in _corpse?.RopeSprings )
+		foreach ( var spring in _corpse?.RopeJoints )
 		{
 			if ( Vector3.DistanceBetween( spring.Body1.Position, spring.Point2.LocalPosition ) > Player.UseDistance * 1.5 )
 			{
@@ -81,7 +81,7 @@ public class GrabbableCorpse : IGrabbable
 		spring.EnableAngularConstraint = false;
 
 		_corpse.Ropes.Add( rope );
-		_corpse.RopeSprings.Add( spring );
+		_corpse.RopeJoints.Add( spring );
 
 		Drop();
 	}

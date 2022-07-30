@@ -22,7 +22,7 @@
 		RecoilRecoveryScale = 0
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
-		TracerParticle = resource:"particles/tracer.standard.vpcf"
+		TracerParticle = "particles/tracer.standard.vpcf"
 		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
@@ -31,15 +31,10 @@
 		HoldType = "Rifle"
 		WorldModelPath = resource:"models/poltergeist/poltergeist.vmdl"
 		DeployTime = 0.6
-		HandsModel = null
-		ViewModel = null
-		WorldModel = null
 		IsLimited = true
 		Price = 100
 		IconPath = ""
 		Description = "WIP"
-		Icon = null
 		ClassName = "ttt_equipment_poltergeist"
-		Title = null
 	}
 }

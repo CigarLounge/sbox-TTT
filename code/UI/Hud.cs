@@ -31,10 +31,11 @@ public class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<FullScreenHintMenu>();
 		RootPanel.AddChild<TabMenus>();
 		RootPanel.AddChild<Crosshair>();
+		RootPanel.AddChild<CarriableHint>();
 		RootPanel.AddChild<RoleMenu>();
 		RootPanel.AddChild<DamageIndicator>();
 		RootPanel.AddChild<WorldPoints>();
-		RootPanel.AddChild<SpectatingInfo>();
+		RootPanel.AddChild<SpectatingHint>();
 	}
 
 	[Event.Hotload]

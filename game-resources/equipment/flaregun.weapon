@@ -31,15 +31,10 @@
 		HoldType = "Pistol"
 		WorldModelPath = resource:"models/flaregun/w_flaregun.vmdl"
 		DeployTime = 0.6
-		HandsModel = resource:"models/weapons/v_arms_ter.vmdl"
-		ViewModel = resource:"models/flaregun/v_flaregun.vmdl"
-		WorldModel = resource:"models/flaregun/w_flaregun.vmdl"
 		IsLimited = true
 		Price = 100
 		IconPath = null
 		Description = "Can be used to burn corpses so that they are never found. Limited ammo."
-		Icon = null
 		ClassName = "ttt_equipment_flaregun"
-		Title = null
 	}
 }

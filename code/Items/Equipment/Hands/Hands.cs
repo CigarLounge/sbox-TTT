@@ -5,6 +5,8 @@ namespace TTT;
 
 public interface IGrabbable
 {
+	string PrimaryAttackHint { get; }
+	string SecondaryAttackHint { get; }
 	bool IsHolding { get; }
 	Entity Drop();
 	void Update( Player player );
@@ -16,10 +18,13 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
+	public override string PrimaryAttackHint => IsHoldingEntity ? _grabbedEntity.PrimaryAttackHint : "Pickup";
+	public override string SecondaryAttackHint => IsHoldingEntity ? _grabbedEntity.SecondaryAttackHint : "Push";
+
 	public Entity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
-	private bool IsHoldingEntity => _grabbedEntity is not null && (_grabbedEntity?.IsHolding ?? false);
+	private bool IsHoldingEntity => _grabbedEntity?.IsHolding ?? false;
 	private bool _isPushingEntity = false;
 	private IGrabbable _grabbedEntity;
 
@@ -29,28 +34,22 @@ public partial class Hands : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( !IsServer )
-			return;
-
-		using ( Prediction.Off() )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 		{
-			if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					_grabbedEntity?.SecondaryAction();
-				else
-					TryGrabEntity();
-			}
-			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
-			{
-				if ( IsHoldingEntity )
-					_grabbedEntity?.Drop();
-				else
-					PushEntity();
-			}
-
-			_grabbedEntity?.Update( Owner );
+			if ( IsHoldingEntity )
+				_grabbedEntity?.SecondaryAction();
+			else
+				TryGrabEntity();
 		}
+		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		{
+			if ( IsHoldingEntity )
+				_grabbedEntity?.Drop();
+			else
+				PushEntity();
+		}
+
+		_grabbedEntity?.Update( Owner );
 	}
 
 	private void PushEntity()
@@ -59,7 +58,6 @@ public partial class Hands : Carriable
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-				.EntitiesOnly()
 				.Ignore( Owner )
 				.Run();
 
@@ -98,12 +96,7 @@ public partial class Hands : Carriable
 			.EntitiesOnly()
 			.Run();
 
-		// Make sure trace is hit and not null.
-		if ( !trace.Hit || !trace.Entity.IsValid() )
-			return;
-
-		// Only allow dynamic entities to be picked up.
-		if ( trace.Body is null || trace.Body.BodyType != PhysicsBodyType.Dynamic )
+		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Entity.PhysicsGroup is null )
 			return;
 
 		// Cannot pickup items held by other players.

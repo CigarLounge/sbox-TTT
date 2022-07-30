@@ -79,15 +79,14 @@ public partial class NewtonLauncher : Weapon
 	{
 		base.OnHit( trace );
 
-		if ( trace.Entity is not Player player )
+		if ( trace.Entity is not Player )
 			return;
-
-		player.GroundEntity = null;
 
 		var pushVel = trace.Direction * _forwardForce;
 		pushVel.z = Math.Max( pushVel.z, _upwardForce );
 
-		player.Velocity += pushVel;
+		trace.Entity.GroundEntity = null;
+		trace.Entity.Velocity += pushVel;
 	}
 
 	[ClientRpc]

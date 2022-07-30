@@ -65,7 +65,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 			_ => default( Ammo ),
 		};
 
-
 		if ( ammo is null )
 			return null;
 

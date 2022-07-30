@@ -15,6 +15,8 @@ public class GhostEntity : ModelEntity
 		EnableShadowCasting = false;
 		EnableSolidCollisions = false;
 		Transmit = TransmitType.Never;
+
+		Tags.Add( "trigger" );
 	}
 
 	public void SetEntity( ModelEntity entity )
@@ -22,8 +24,6 @@ public class GhostEntity : ModelEntity
 		RealEntity = entity;
 		Model = entity.Model;
 		RenderColor = RenderColor.WithAlpha( 0.5f );
-
-		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
 	}
 
 	public void ShowValid()
