@@ -280,7 +280,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Player.IsValid() || !player.IsLocalPawn || !CanSearch() || !Input.Down( GetSearchButton() ) )
+		if ( !Player.IsValid() || !player.IsLocalPawn || !Input.Down( GetSearchButton() ) || !CanSearch() )
 			UI.FullScreenHintMenu.Instance?.Close();
 		else if ( !Player.LastDamage.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
@@ -310,7 +310,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( searchButton == InputButton.PrimaryAttack )
 			return true;
 
-		return CurrentView.Position.Distance( Position ) <= Player.UseDistance;
+		return Position.Distance( CurrentView.Position ) <= Player.UseDistance;
 	}
 
 	public static InputButton GetSearchButton()
