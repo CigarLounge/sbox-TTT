@@ -25,6 +25,8 @@ public partial class DNAScanner : Carriable
 	[Net, Local]
 	private float Charge { get; set; } = MaxCharge;
 
+	public override string PrimaryAttackHint => "Fetch DNA";
+	public override string SecondaryAttackHint => !AutoScan ? "Scan" : string.Empty;
 	public override string SlotText => $"{(int)Charge}%";
 	public bool IsCharging => Charge < MaxCharge;
 
