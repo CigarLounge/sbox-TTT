@@ -34,7 +34,7 @@ public class RoundTimer : Panel
 		}
 
 		Timer.Text = inProgress.FakeTimeFormatted;
-		bool isTraitor = player.Team == Team.Traitors;
+		var isTraitor = player.Team == Team.Traitors;
 
 		if ( isTraitor && inProgress.TimeLeft != inProgress.FakeTime )
 		{
