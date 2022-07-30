@@ -6,7 +6,6 @@ public class GrabbableCorpse : IGrabbable
 {
 	public string PrimaryAttackHint => !IsHolding ? "Pickup" : AttachmentHint;
 	private string AttachmentHint => !_corpse.Ropes.IsNullOrEmpty() ? "Detach" : _owner.Role.CanAttachCorpses ? "Attach" : string.Empty;
-
 	public string SecondaryAttackHint => IsHolding ? "Drop" : string.Empty;
 	public bool IsHolding => _joint.IsValid();
 

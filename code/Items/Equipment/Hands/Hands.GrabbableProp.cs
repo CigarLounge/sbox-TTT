@@ -5,7 +5,7 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public string PrimaryAttackHint => _grabbedEntity.IsValid() ? "Throw" : "Pickup";
+	public string PrimaryAttackHint => _grabbedEntity.IsValid() ? "Throw" : string.Empty;
 	public string SecondaryAttackHint => _grabbedEntity.IsValid() ? "Drop" : string.Empty;
 	public bool IsHolding => _grabbedEntity is not null || _isThrowing;
 

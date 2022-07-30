@@ -18,13 +18,13 @@ public interface IGrabbable
 [Title( "Hands" )]
 public partial class Hands : Carriable
 {
-	public override string PrimaryAttackHint => _grabbedEntity?.PrimaryAttackHint ?? "Pickup";
-	public override string SecondaryAttackHint => _grabbedEntity?.SecondaryAttackHint ?? string.Empty;
+	public override string PrimaryAttackHint => IsHoldingEntity ? _grabbedEntity.PrimaryAttackHint : "Pickup";
+	public override string SecondaryAttackHint => IsHoldingEntity ? _grabbedEntity.SecondaryAttackHint : "Push";
 
 	public Entity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
-	private bool IsHoldingEntity => _grabbedEntity is not null && (_grabbedEntity?.IsHolding ?? false);
+	private bool IsHoldingEntity => _grabbedEntity?.IsHolding ?? false;
 	private bool _isPushingEntity = false;
 	private IGrabbable _grabbedEntity;
 
