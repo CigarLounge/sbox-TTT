@@ -3,14 +3,21 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public class BaseClothing : ModelEntity
+public class Clothing : ModelEntity
 {
-	public string ModelPath { get; set; }
+	public override void Spawn()
+	{
+		Tags.Add( "trigger" );
+
+		EnableAllCollisions = false;
+		PhysicsEnabled = false;
+		UsePhysicsCollision = false;
+	}
 }
 
 public partial class Player
 {
-	public List<BaseClothing> Clothes { get; protected set; } = new();
+	public List<Clothing> Clothes { get; protected set; } = new();
 
 	private void DressPlayer()
 	{
@@ -26,10 +33,7 @@ public partial class Player
 
 	public void AttachClothing( string path )
 	{
-		var entity = new BaseClothing
-		{
-			ModelPath = path
-		};
+		var entity = new Clothing();
 
 		entity.SetModel( path );
 		AttachClothing( entity );
@@ -40,7 +44,7 @@ public partial class Player
 		for ( var i = Clothes.Count - 1; i >= 0; i-- )
 		{
 			var clothingPiece = Clothes[i];
-			if ( clothingPiece.ModelPath != path )
+			if ( clothingPiece.Model.ResourcePath != path )
 				continue;
 
 			clothingPiece.Delete();
@@ -58,18 +62,11 @@ public partial class Player
 		SetClothingBodyGroups( this, 1 );
 	}
 
-	private void AttachClothing( BaseClothing clothing )
+	private void AttachClothing( Clothing clothing )
 	{
 		clothing.SetParent( this, true );
 		clothing.EnableShadowInFirstPerson = true;
 		clothing.EnableHideInFirstPerson = true;
-	}
-
-	private void DetachDetectiveHat()
-	{
-		var hadDetectiveHat = RemoveClothing( DetectiveHat.Path );
-		if ( hadDetectiveHat )
-			_ = new DetectiveHat { Position = GetBoneTransform( "head" ).Position };
 	}
 
 	// So that the clothes we use don't clip with the player model.

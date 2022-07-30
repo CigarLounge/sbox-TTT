@@ -19,6 +19,7 @@ public partial class Player
 			_role?.OnDeselect( this );
 			var oldRole = _role;
 			_role = value;
+
 			_isRoleKnown = false;
 			_playersWhoKnowTheRole.Clear();
 
