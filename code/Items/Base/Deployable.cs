@@ -44,7 +44,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			return;
 		}
 
-		if ( !CanPlant )
+		if ( !CanPlant || !Input.Pressed( InputButton.SecondaryAttack ) )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -52,12 +52,8 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			.Run();
 
 		if ( !trace.Hit )
-		{
-			GhostEntity.EnableDrawing = false;
-			return;
-		}
+			return;	
 
-		GhostEntity.EnableDrawing = true;
 		GhostEntity.Position = trace.EndPosition;
 		GhostEntity.Rotation = Rotation.From( trace.Normal.EulerAngles );
 
@@ -74,10 +70,11 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 
 		var valid = GhostEntity.IsPlacementValid( ref trace );
 
-		if ( !valid || !Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( !valid )
 			return;
 
 		var dropped = Owner.Inventory.DropEntity( this );
+		dropped.PhysicsEnabled = false;
 		dropped.Transform = GhostEntity.Transform;
 		dropped.Velocity = 0;
 

@@ -111,7 +111,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 		TimeSinceDeployed = 0;
 
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
@@ -121,9 +121,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual void ActiveEnd( Player player, bool dropped )
 	{
 		if ( !dropped )
-		{
 			EnableDrawing = false;
-		}
 
 		if ( IsClient )
 		{

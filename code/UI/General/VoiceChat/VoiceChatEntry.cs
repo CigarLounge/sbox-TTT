@@ -2,64 +2,51 @@ using System;
 
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class VoiceChatEntry : Panel
 {
 	public Friend Friend;
 
-	readonly Label Name;
-	readonly Image Avatar;
-	readonly Client Client;
+	private Label Name { get; init; }
+	private Image Avatar { get; init; }
 
+	private readonly Client _client;
 	private float _voiceLevel = 0.5f;
 	private float _targetVoiceLevel = 0;
-	private float _voiceTimeout = 0.1f;
+	private readonly float _voiceTimeout = 0.1f;
 
-	RealTimeSince timeSincePlayed;
+	RealTimeSince _timeSincePlayed;
 
 	public VoiceChatEntry( Panel parent, Client client ) : base( parent )
 	{
 		Parent = parent;
 
-		Client = client;
+		_client = client;
 		Friend = new( client.PlayerId );
 
-		Avatar = Add.Image( "", "avatar" );
 		Avatar.SetTexture( $"avatar:{client.PlayerId}" );
-
-		Name = Add.Label( Friend.Name, "name" );
-
-		AddClass( "background-color-gradient" );
-		AddClass( "rounded" );
-		AddClass( "opacity-heavy" );
-		AddClass( "text-shadow" );
+		Name.Text = Friend.Name;
 	}
 
 	public void Update( float level )
 	{
-		timeSincePlayed = 0;
-		Name.Text = Friend.Name;
+		_timeSincePlayed = 0;
 		_targetVoiceLevel = level;
+		Name.Text = Friend.Name;
 
-		if ( Client is not null && Client.IsValid() && Client.Pawn is Player player )
-		{
-			SetClass( "background-color-spectator", !player.IsAlive() );
-		}
+		if ( _client.IsValid() && _client.Pawn is Player player )
+			SetClass( "dead", !player.IsAlive() );
 	}
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		if ( IsDeleting )
-		{
 			return;
-		}
 
-		float timeoutInv = 1 - (timeSincePlayed / _voiceTimeout);
+		var timeoutInv = 1 - (_timeSincePlayed / _voiceTimeout);
 		timeoutInv = MathF.Min( timeoutInv * 2.0f, 1.0f );
 
 		if ( timeoutInv <= 0 )

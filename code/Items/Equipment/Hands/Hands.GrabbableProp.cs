@@ -5,55 +5,63 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public string PrimaryAttackHint => _grabbedEntity.IsValid() ? "Throw" : string.Empty;
-	public string SecondaryAttackHint => _grabbedEntity.IsValid() ? "Drop" : string.Empty;
-	public bool IsHolding => _grabbedEntity is not null || _isThrowing;
-
-	private ModelEntity _grabbedEntity;
+	private ModelEntity GrabbedEntity { get; set; }
+	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
+	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
+	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+	
 	private readonly Player _owner;
 	private bool _isThrowing = false;
+	private readonly bool _hasTriggerTag = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
 
-		_grabbedEntity = grabbedEntity;
-		_grabbedEntity.EnableAllCollisions = false;
-		_grabbedEntity.EnableTouch = false;
-		_grabbedEntity.EnableHideInFirstPerson = false;
-		_grabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+		// We want to be able to shoot whatever entity the player is holding.
+		// Let's give it a tag that interacts with bullets and doesn't collide with players.
+		_hasTriggerTag = grabbedEntity.Tags.Has( "trigger" );
+		if ( !_hasTriggerTag )
+			grabbedEntity.Tags.Add( "trigger" );
+
+		GrabbedEntity = grabbedEntity;
+		GrabbedEntity.EnableTouch = false;
+		GrabbedEntity.EnableHideInFirstPerson = false;
+		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
 
 	public void Update( Player player )
 	{
 		// Incase someone walks up and picks up the carriable from the player's hands
 		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
-		var carriableHasOwner = _grabbedEntity is Carriable && _grabbedEntity.Owner.IsValid();
+		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
 		if ( carriableHasOwner )
 		{
-			_grabbedEntity.EnableHideInFirstPerson = true;
-			_grabbedEntity = null;
+			GrabbedEntity.EnableHideInFirstPerson = true;
+			GrabbedEntity = null;
 		}
 
-		if ( !_grabbedEntity.IsValid() || !_owner.IsValid() )
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
 			Drop();
 	}
 
 	public Entity Drop()
 	{
-		var grabbedEntity = _grabbedEntity;
+		var grabbedEntity = GrabbedEntity;
 		if ( grabbedEntity.IsValid() )
 		{
+			if ( !_hasTriggerTag )
+				grabbedEntity.Tags.Remove( "trigger" );
+
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
-			grabbedEntity.EnableAllCollisions = true;
 			grabbedEntity.SetParent( null );
 
 			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );
 		}
 
-		_grabbedEntity = null;
+		GrabbedEntity = null;
 		return grabbedEntity;
 	}
 
@@ -61,7 +69,7 @@ public class GrabbableProp : IGrabbable
 	{
 		if ( Host.IsClient )
 		{
-			_grabbedEntity = null;
+			GrabbedEntity = null;
 			return;
 		}
 
