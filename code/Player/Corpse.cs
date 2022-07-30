@@ -73,7 +73,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		ApplyForceToBone( Player.LastDamage.Force, Player.GetHitboxBone( Player.LastDamage.HitboxIndex ) );
 
 		foreach ( var clothing in Player.Clothes.ToArray() )
-			clothing.SetParent( this, true );
+		{
+			if ( clothing.Model == Detective.Hat && (HitboxGroup)GetHitboxGroup( Player.LastDamage.HitboxIndex ) == HitboxGroup.Head )
+			{
+				clothing.Detach();
+				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force );
+			}
+			else
+				clothing.SetParent( this, true );
+		}
 
 		Player.SetClothingBodyGroups( this, 1 );
 
@@ -83,6 +91,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public override void Spawn()
 	{
 		Tags.Add( "trigger" );
+
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 	}

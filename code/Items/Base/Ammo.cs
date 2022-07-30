@@ -27,6 +27,29 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	private Player _dropper;
 	private TimeSince _timeSinceDropped = 0;
 
+	public override void Spawn()
+	{
+		Tags.Add( "trigger" );
+
+		SetModel( WorldModelPath );
+		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
+
+		CurrentCount = DefaultAmmoCount;
+	}
+
+	public override void StartTouch( Entity other )
+	{
+		base.StartTouch( other );
+
+		if ( other is Player player && (player != _dropper || _timeSinceDropped >= 1f) )
+			GiveAmmo( player );
+	}
+
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
 	{
 		Host.AssertServer();
@@ -58,27 +81,8 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		ammoCrate.PhysicsGroup.Velocity = dropper.Velocity + dropper.EyeRotation.Forward * Player.DropVelocity;
 		ammoCrate._dropper = dropper;
 		ammoCrate._timeSinceDropped = 0;
+
 		return ammoCrate;
-	}
-
-	public override void Spawn()
-	{
-		Tags.Add( "trigger" );
-		SetModel( WorldModelPath );
-		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		PhysicsEnabled = true;
-		UsePhysicsCollision = true;
-		EnableHideInFirstPerson = true;
-		EnableShadowInFirstPerson = true;
-		CurrentCount = DefaultAmmoCount;
-	}
-
-	public override void StartTouch( Entity other )
-	{
-		base.StartTouch( other );
-
-		if ( other is Player player && (player != _dropper || _timeSinceDropped >= 1f) )
-			GiveAmmo( player );
 	}
 
 	private void GiveAmmo( Player player )
