@@ -20,7 +20,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	[Net]
 	private int CurrentCount { get; set; }
 
-
 	protected virtual AmmoType Type => AmmoType.None;
 	protected virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
@@ -42,7 +41,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 			AmmoType.Rifle => new RifleAmmo(),
 			_ => default( Ammo ),
 		};
-
 
 		if ( ammo is null )
 			return null;

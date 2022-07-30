@@ -5,7 +5,7 @@ namespace TTT;
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
 	private Vector3 DefaultPosition { get; }
-	private const int CAMERA_DISTANCE = 120;
+	private const int CameraDistance = 120;
 
 	private Rotation _targetRot;
 	private Vector3 _targetPos;
@@ -35,7 +35,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		_targetRot = Rotation.From( _lookAngles );
 		Rotation = Rotation.Slerp( Rotation, _targetRot, 25f * RealTime.Delta );
 
-		_targetPos = GetSpectatePoint() + Rotation.Forward * -CAMERA_DISTANCE;
+		_targetPos = GetSpectatePoint() + Rotation.Forward * -CameraDistance;
 
 		var trace = Trace.Ray( GetSpectatePoint(), _targetPos )
 			.WorldOnly()

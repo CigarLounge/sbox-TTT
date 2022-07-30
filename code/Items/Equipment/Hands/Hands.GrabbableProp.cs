@@ -5,18 +5,26 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public ModelEntity GrabbedEntity { get; set; }
-
-	private readonly Player _owner;
+	private ModelEntity GrabbedEntity { get; set; }
+	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
+	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+	
+	private readonly Player _owner;
 	private bool _isThrowing = false;
+	private readonly bool _hasTriggerTag = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
 
+		// We want to be able to shoot whatever entity the player is holding.
+		// Let's give it a tag that interacts with bullets and doesn't collide with players.
+		_hasTriggerTag = grabbedEntity.Tags.Has( "trigger" );
+		if ( !_hasTriggerTag )
+			grabbedEntity.Tags.Add( "trigger" );
+
 		GrabbedEntity = grabbedEntity;
-		GrabbedEntity.EnableAllCollisions = false;
 		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
@@ -42,9 +50,11 @@ public class GrabbableProp : IGrabbable
 		var grabbedEntity = GrabbedEntity;
 		if ( grabbedEntity.IsValid() )
 		{
+			if ( !_hasTriggerTag )
+				grabbedEntity.Tags.Remove( "trigger" );
+
 			grabbedEntity.EnableHideInFirstPerson = true;
-			GrabbedEntity.EnableTouch = true;
-			grabbedEntity.EnableAllCollisions = true;
+			grabbedEntity.EnableTouch = true;
 			grabbedEntity.SetParent( null );
 
 			if ( grabbedEntity is Carriable carriable )
@@ -57,6 +67,12 @@ public class GrabbableProp : IGrabbable
 
 	public virtual void SecondaryAction()
 	{
+		if ( Host.IsClient )
+		{
+			GrabbedEntity = null;
+			return;
+		}
+
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 

@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class SpectatingInfo : Panel
+public class SpectatingHint : Panel
 {
 	private Panel SwapPanel { get; set; }
 	private Label PlayerName { get; set; }

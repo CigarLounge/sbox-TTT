@@ -65,7 +65,7 @@ public partial class C4Entity : Prop, IEntityHint
 		possibleSafeWires.Shuffle();
 
 		var safeWireCount = Wires.Count - GetBadWireCount( timer );
-		for ( int i = 0; i < safeWireCount; ++i )
+		for ( var i = 0; i < safeWireCount; ++i )
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
 		_totalSeconds = timer;
@@ -123,8 +123,8 @@ public partial class C4Entity : Prop, IEntityHint
 				continue;
 
 			var diff = player.Position - Position;
-			float dist = Vector3.DistanceBetween( Position, player.Position );
-			float damage = 225 - (0.1f * dist);
+			var dist = Vector3.DistanceBetween( Position, player.Position );
+			var damage = 225 - (0.1f * dist);
 
 			if ( damage <= 0 )
 				continue;

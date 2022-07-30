@@ -2,23 +2,18 @@
 {
 	data = 
 	{
-		Slot = 3
+		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = false
-		viewmodel = ""
-		handsmodel = ""
-		HoldType = 0
-		worldmodel = resource:"models/c4/c4.vmdl"
+		ViewModelPath = ""
+		HandsModelPath = ""
+		HoldType = "None"
+		WorldModelPath = resource:"models/c4/c4.vmdl"
 		DeployTime = 0
-		"cached-handsmodel" = null
-		"cached-viewmodel" = null
-		"cached-worldmodel" = resource:"models/c4/c4.vmdl"
 		IsLimited = true
 		Price = 100
-		icon = ""
+		IconPath = ""
 		Description = "Powerful timed explosive."
-		"cached-icon" = null
 		ClassName = "ttt_equipment_c4"
-		Title = null
 	}
 }

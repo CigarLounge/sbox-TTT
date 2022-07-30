@@ -12,7 +12,7 @@ namespace TTT;
 public class RandomGrenade : Entity
 {
 	private static readonly List<Type> _cachedGrenadeTypes = new();
-	private const int GRENADE_DISTANCE_UP = 4;
+	private const int GrenadeOffset = 4;
 
 	public override void Spawn()
 	{
@@ -28,7 +28,7 @@ public class RandomGrenade : Entity
 		if ( grenade is null )
 			return;
 
-		grenade.Position = Position + (Vector3.Up * GRENADE_DISTANCE_UP);
+		grenade.Position = Position + (Vector3.Up * GrenadeOffset);
 		grenade.Rotation = Rotation;
 	}
 

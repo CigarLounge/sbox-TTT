@@ -23,8 +23,8 @@ public class WalkController : Sandbox.WalkController
 		StopSpeed = 150.0f;
 	}
 
-	private const float _fallDamageThreshold = 650f;
-	private const float _fallDamageScale = 0.33f;
+	private const float FallDamageThreshold = 650f;
+	private const float FallDamageScale = 0.33f;
 
 	public override void Simulate()
 	{
@@ -34,9 +34,9 @@ public class WalkController : Sandbox.WalkController
 		if ( GroundEntity is null || fallVelocity <= 0 )
 			return;
 
-		if ( fallVelocity > _fallDamageThreshold )
+		if ( fallVelocity > FallDamageThreshold )
 		{
-			var damage = (MathF.Abs( fallVelocity ) - _fallDamageThreshold) * _fallDamageScale;
+			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
 
 			if ( Host.IsServer )
 			{
