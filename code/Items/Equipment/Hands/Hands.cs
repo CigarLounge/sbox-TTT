@@ -58,7 +58,6 @@ public partial class Hands : Carriable
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-				.EntitiesOnly()
 				.Ignore( Owner )
 				.Run();
 

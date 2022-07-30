@@ -7,9 +7,6 @@ namespace TTT;
 [Title( "Teleporter" )]
 public partial class Teleporter : Carriable
 {
-	public override string PrimaryAttackHint => LocationIsSet ? "Teleport" : string.Empty;
-	public override string SecondaryAttackHint => "Set teleport location";
-
 	[Net, Predicted]
 	public int Charges { get; private set; } = 16;
 
@@ -26,6 +23,8 @@ public partial class Teleporter : Carriable
 	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	public override string SlotText => Charges.ToString();
+	public override string PrimaryAttackHint => LocationIsSet ? "Teleport" : string.Empty;
+	public override string SecondaryAttackHint => "Set teleport location";
 
 	private const float TeleportTime = 4f;
 	private bool _hasReachedLocation;
@@ -105,8 +104,6 @@ public partial class Teleporter : Carriable
 	{
 		var trace = Trace.Ray( Owner.Position, Owner.Position )
 			.WorldOnly()
-			.Ignore( Owner )
-			.Ignore( this )
 			.Run();
 
 		LocationIsSet = true;
