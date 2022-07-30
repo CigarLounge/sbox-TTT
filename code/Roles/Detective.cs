@@ -7,6 +7,8 @@ namespace TTT;
 [Title( "Detective" )]
 public class Detective : Role
 {
+	public static readonly Model Hat = Model.Load( "models/detective_hat/detective_hat.vmdl" );
+
 	public override void OnSelect( Player player )
 	{
 		base.OnSelect( player );
@@ -17,7 +19,7 @@ public class Detective : Role
 		player.IsRoleKnown = true;
 		player.Inventory.Add( new DNAScanner() );
 		player.Perks.Add( new Armor() );
-		player.AttachClothing( DetectiveHat.Path );
+		player.AttachClothing( Hat.ResourcePath );
 	}
 
 	public override void OnDeselect( Player player )
@@ -25,6 +27,6 @@ public class Detective : Role
 		base.OnDeselect( player );
 
 		if ( Host.IsServer )
-			player.RemoveClothing( DetectiveHat.Path );
+			player.RemoveClothing( Hat.ResourcePath );
 	}
 }

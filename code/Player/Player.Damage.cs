@@ -108,6 +108,8 @@ public partial class Player
 
 	public override void OnKilled()
 	{
+		Host.AssertServer();
+
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;
@@ -118,10 +120,6 @@ public partial class Player
 		{
 			LastAttacker.Client.AddInt( "kills" );
 			(LastAttacker as Player).PlayersKilled.Add( this );
-
-			var hitboxGroup = (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex );
-			if ( hitboxGroup == HitboxGroup.Head )
-				DetachDetectiveHat();
 		}
 
 		BecomeCorpse();
