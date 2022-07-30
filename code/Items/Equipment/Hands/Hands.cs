@@ -61,7 +61,7 @@ public partial class Hands : Carriable
 				.Ignore( Owner )
 				.Run();
 
-		if ( !trace.Hit || !trace.Entity.IsValid() )
+		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Entity.IsWorld )
 			return;
 
 		_isPushingEntity = true;
