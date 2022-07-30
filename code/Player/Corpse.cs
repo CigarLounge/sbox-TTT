@@ -76,11 +76,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		{
 			if ( clothing.Model == Detective.Hat && (HitboxGroup)GetHitboxGroup( Player.LastDamage.HitboxIndex ) == HitboxGroup.Head )
 			{
-				clothing.Parent = null;
-				clothing.EnableAllCollisions = true;
-				clothing.PhysicsEnabled = true;
-				clothing.UsePhysicsCollision = true;
-				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force.Length *  Vector3.Up );
+				clothing.Detach();
+				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force.Length * Vector3.Up );
 			}
 			else
 				clothing.SetParent( this, true );

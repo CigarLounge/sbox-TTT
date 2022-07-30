@@ -13,6 +13,14 @@ public class Clothing : ModelEntity
 		PhysicsEnabled = false;
 		UsePhysicsCollision = false;
 	}
+
+	public void Detach()
+	{
+		Parent = null;
+		EnableAllCollisions = true;
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+	}
 }
 
 public partial class Player
