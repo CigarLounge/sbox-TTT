@@ -4,8 +4,10 @@ namespace TTT;
 
 public class GrabbableHat : GrabbableProp
 {
+	public override string PrimaryAttackHint => _hat.IsValid() ? "Put on" : string.Empty;
+
 	private readonly Player _owner;
-	public DetectiveHat _hat;
+	private readonly DetectiveHat _hat;
 
 	public GrabbableHat( Player owner, Entity grabPoint, DetectiveHat hat ) : base( owner, grabPoint, hat )
 	{
@@ -15,7 +17,10 @@ public class GrabbableHat : GrabbableProp
 
 	public override void SecondaryAction()
 	{
-		_hat?.PutOn( _owner );
-		_hat?.Delete();
+		if ( Host.IsServer )
+		{
+			_hat?.PutOn( _owner );
+			_hat?.Delete();
+		}
 	}
 }

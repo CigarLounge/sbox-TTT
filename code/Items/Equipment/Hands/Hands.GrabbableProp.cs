@@ -6,10 +6,10 @@ namespace TTT;
 public class GrabbableProp : IGrabbable
 {
 	private ModelEntity GrabbedEntity { get; set; }
-	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
-	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
+	public virtual string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
+	public virtual string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
-	
+
 	private readonly Player _owner;
 	private bool _isThrowing = false;
 	private readonly bool _hasTriggerTag = false;
