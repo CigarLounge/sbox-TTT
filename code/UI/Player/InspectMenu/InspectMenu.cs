@@ -69,7 +69,7 @@ public partial class InspectMenu : Panel
 			AddInspectEntry( "Kill List", activeText, "/ui/inspectmenu/killlist.png" );
 		}
 
-		if ( !string.IsNullOrEmpty( _corpse.C4Note ) )
+		if ( !_corpse.C4Note.IsNullOrEmpty() )
 			AddInspectEntry( "C4 Defuse Note",
 			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
 			"/ui/inspectmenu/c4note.png" );
@@ -156,7 +156,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
-		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
+		SendDetectiveMarker( To.Multiple( PlayerExtensions.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 
 	[ClientRpc]

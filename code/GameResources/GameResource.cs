@@ -25,7 +25,7 @@ public abstract class GameResource : Sandbox.GameResource
 
 	public static T GetInfo<T>( string className ) where T : GameResource
 	{
-		if ( string.IsNullOrEmpty( className ) || !_collection.ContainsKey( className ) )
+		if ( className.IsNullOrEmpty() || !_collection.ContainsKey( className ) )
 			return null;
 
 		return _collection[className] as T;
@@ -38,7 +38,7 @@ public abstract class GameResource : Sandbox.GameResource
 		if ( TypeLibrary is null )
 			return;
 
-		if ( string.IsNullOrWhiteSpace( ClassName ) )
+		if ( ClassName.IsNullOrEmpty() )
 			return;
 
 		if ( _collection.ContainsKey( ClassName ) )
@@ -54,7 +54,7 @@ public abstract class GameResource : Sandbox.GameResource
 		Title = typeDescription.Title;
 		_collection[ClassName] = this;
 
-		if ( !string.IsNullOrWhiteSpace( Title ) )
+		if ( !Title.IsNullOrEmpty() )
 			_collection[Title] = this;
 	}
 }

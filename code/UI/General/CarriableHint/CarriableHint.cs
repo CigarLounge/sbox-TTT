@@ -28,12 +28,12 @@ public class CarriableHint : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		var primaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.PrimaryAttackHint );
+		var primaryHintEnabled = !player.ActiveChild.PrimaryAttackHint.IsNullOrEmpty();
 		PrimaryAttackPanel.Enabled( primaryHintEnabled );
 		if ( primaryHintEnabled )
 			PrimaryAttackLabel.Text = player.ActiveChild.PrimaryAttackHint;
 
-		var secondaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.SecondaryAttackHint );
+		var secondaryHintEnabled = !player.ActiveChild.SecondaryAttackHint.IsNullOrEmpty();
 		SecondaryAttackPanel.Enabled( secondaryHintEnabled );
 		if ( secondaryHintEnabled )
 			SecondaryAttackLabel.Text = player.ActiveChild.SecondaryAttackHint;

@@ -33,7 +33,7 @@ public partial class Player
 	public void UpdateSpectatedPlayer( int increment = 0 )
 	{
 		var oldSpectatedPlayer = CurrentPlayer;
-		var players = Utils.GetAlivePlayers();
+		var players = PlayerExtensions.GetAlivePlayers();
 
 		if ( players.Count > 0 )
 		{
@@ -87,7 +87,7 @@ public partial class Player
 			return;
 		}
 
-		var spectatablePlayers = Utils.GetAlivePlayers().Count > 0;
+		var spectatablePlayers = PlayerExtensions.GetAlivePlayers().Count > 0;
 		if ( !spectatablePlayers )
 		{
 			if ( Camera is not FreeSpectateCamera )
