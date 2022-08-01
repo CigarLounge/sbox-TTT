@@ -112,7 +112,7 @@ public partial class Game
 
 		var target = Entity.All.OfType<Prop>().FirstOrDefault( p => p.NetworkIdent == propNetworkId );
 
-		if ( target is null )
+		if ( target is null || target.PhysicsBody is null )
 			return;
 
 		// Check if any other spectator is currently possessing this prop

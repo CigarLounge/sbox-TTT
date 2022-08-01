@@ -74,7 +74,7 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 			.EntitiesOnly()
 			.Run();
 		
-		if ( tr.Entity is Prop p )
+		if ( tr.Entity is Prop p && p.PhysicsBody is not null )
 			ConsoleSystem.Run( "ttt_possess_prop", p.NetworkIdent );
 	}
 }
