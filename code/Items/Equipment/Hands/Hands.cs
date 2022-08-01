@@ -54,7 +54,7 @@ public partial class Hands : Carriable
 
 	private void PushEntity()
 	{
-		if ( _isPushingEntity )
+		if ( !IsServer || _isPushingEntity )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
