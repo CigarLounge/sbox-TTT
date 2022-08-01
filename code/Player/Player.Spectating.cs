@@ -122,7 +122,7 @@ public partial class Player
 	{
 		if ( IsServer && Camera is PropSpectateCamera )
 		{
-			if ( PossessedProp is null || !PossessedProp.IsValid || Input.Pressed( InputButton.Duck ) )
+			if ( !PossessedProp.IsValid() || Input.Pressed( InputButton.Duck ) )
 			{
 				Camera = new FreeSpectateCamera();
 				PossessedProp = null;

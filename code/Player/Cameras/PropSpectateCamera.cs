@@ -21,7 +21,7 @@ public class PropSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Update()
 	{
-		if ( _prop is null || !_prop.IsValid )
+		if ( !_prop.IsValid() )
 			return;
 
 		_focusPoint = Vector3.Lerp( _focusPoint, _prop.Position, Time.Delta * 5.0f );

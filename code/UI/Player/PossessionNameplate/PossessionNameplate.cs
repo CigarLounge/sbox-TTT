@@ -20,7 +20,7 @@ public class PossessionNameplate : Panel
 
 	public override void Tick()
 	{
-		if ( _player is null || _prop is null )
+		if ( !_player.IsValid() || !_prop.IsValid() )
 		{
 			Delete();
 			return;

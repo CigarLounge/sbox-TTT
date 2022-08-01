@@ -113,7 +113,7 @@ public partial class Game
 
 		var target = Entity.FindByIndex( propNetworkId );
 		
-		if ( target is null || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
+		if ( !target.IsValid() || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
 			return;
 
 		player.PossessProp( prop );
