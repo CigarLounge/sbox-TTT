@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using Sandbox;
+using TTT.UI;
+using To = Sandbox.To;
 
 namespace TTT;
 
@@ -22,8 +24,9 @@ public partial class Player
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 	private int _targetSpectatorIndex = 0;
 
-	[Net] public Prop? PossessedProp { get; set; }
 	[Net, Local] public int PossessionPunches { get; set; }
+	public Prop PossessedProp; // serverside & clientside
+	private PossessionNameplate _possessionNameplate; // just clientside
 	private TimeUntil _timeUntilRecharge = 0;
 	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
@@ -85,11 +88,33 @@ public partial class Player
 
 	public void PossessProp( Prop prop )
 	{
-		if ( !IsSpectator || PossessedProp is not null )
-			throw new Exception( $"cannot possess prop: {PossessedProp}" );
-
 		PossessedProp = prop;
 		Camera = new PropSpectateCamera();
+
+		UpdatePossessionStatus( Utils.GetDeadClients().To(), prop );
+	}
+
+	[ClientRpc]
+	private void UpdatePossessionStatus( Prop prop )
+	{
+		if ( prop is null )
+		{
+			PossessedProp = null;
+			_possessionNameplate?.Delete();
+			_possessionNameplate = null;
+		}
+		else
+		{
+			_possessionNameplate?.Delete(); // there might already be a nameplate from a previous call, remove that
+			PossessedProp = prop;
+			_possessionNameplate = new PossessionNameplate( this, prop );
+		}
+	}
+
+	[GameEvent.Client.Joined]
+	private void SyncPossessionStatus( Client client )
+	{
+		UpdatePossessionStatus( To.Single( client ), PossessedProp );
 	}
 
 	private void ChangeSpectateCamera()
@@ -100,6 +125,8 @@ public partial class Player
 			{
 				Camera = new FreeSpectateCamera();
 				PossessedProp = null;
+
+				UpdatePossessionStatus( Utils.GetDeadClients().To(), null );
 			}
 			else
 			{
@@ -183,12 +210,47 @@ public partial class Player
 	}
 
 	[Event.Tick.Server]
-	public void RechargePossessionPunches()
+	private void RechargePossessionPunches()
 	{
-		if ( _timeUntilRecharge )
+		if ( _timeUntilRecharge && PossessedProp is not null )
 		{
 			PossessionPunches = Math.Min( PossessionPunches + 1, Game.PropPossessionMaxPunches );
 			_timeUntilRecharge = Game.PropPossessionRechargeTime;
+		}
+		else if ( PossessedProp is null )
+		{
+			PossessionPunches = 0;
+		}
+	}
+
+	[GameEvent.Player.StatusChanged]
+	private void CheckPossessionStatusAfterStatusChange( Player player, PlayerStatus oldStatus )
+	{
+		if ( !IsServer || player != this ) { return; }
+		
+		if ( player.Status == PlayerStatus.Alive ) // player has come alive
+		{
+			if ( PossessedProp is not null )
+			{
+				// player has come alive and is definitely no longer possessing any props
+				PossessedProp = null;
+				UpdatePossessionStatus( Utils.GetDeadClients().To(), null );
+				UpdatePossessionStatus( To.Single( Client ), null ); // also notify itself
+			}
+
+			// additionally, now the player has to forget who is possessing what
+			foreach ( var possessingPlayer in All.OfType<Player>().Where( p => p.PossessedProp is not null ) )
+			{
+				possessingPlayer.UpdatePossessionStatus( To.Single( Client ), null );
+			}
+		}
+		else if ( oldStatus == PlayerStatus.Alive )
+		{
+			// player has just died (or MIA -> Spectator) => needs to know who is possessing what
+			foreach ( var somePlayer in All.OfType<Player>().Where( p => p.PossessedProp is not null ) )
+			{
+				somePlayer.UpdatePossessionStatus( To.Single( Client ), somePlayer.PossessedProp );
+			}
 		}
 	}
 
