@@ -200,25 +200,16 @@ public partial class Player
 			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunchAllowed = 0.2f; // jump is penalised more
 		}
-		else if ( Input.Pressed( InputButton.Forward ) )
+		else if ( Input.Pressed( InputButton.Forward ) || Input.Pressed( InputButton.Back ) )
 		{
-			b.ApplyForceAt( b.MassCenter, aim * mf );
+			b.ApplyForceAt( b.MassCenter, Input.Forward * aim * mf );
 		}
-		else if ( Input.Pressed( InputButton.Back ) )
+		else if ( Input.Pressed( InputButton.Left ) || Input.Pressed( InputButton.Right ) )
 		{
-			b.ApplyForceAt( b.MassCenter, aim * mf * -1f );
-		}
-		else if ( Input.Pressed( InputButton.Left ) )
-		{
-			b.ApplyAngularImpulse( new Vector3( 0, 0, 200f * 10f ) );
+			b.ApplyAngularImpulse( new Vector3( 0, 0, Input.Left * 200f * 10f ) );
 			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
-		else if ( Input.Pressed( InputButton.Right ) )
-		{
-			b.ApplyAngularImpulse( new Vector3( 0, 0, -200f * 10f ) );
-			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
-		}
-
+		
 		PossessionPunches = Math.Max( PossessionPunches - 1, 0 );
 	}
 
