@@ -136,6 +136,9 @@ public partial class Player
 		{
 			if ( !PossessedProp.IsValid() || Input.Pressed( InputButton.Duck ) )
 			{
+				if ( PossessedProp.IsValid() )
+					PossessedProp.Owner = null;
+
 				Camera = new FreeSpectateCamera();
 				PossessedProp = null;
 
