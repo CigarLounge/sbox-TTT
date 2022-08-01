@@ -33,7 +33,7 @@ public partial class Game : Sandbox.Game
 		Host.AssertServer();
 		Assert.NotNull( state );
 
-		ForceStateChange( PlayerExtensions.HasMinimumPlayers() ? state : new WaitingState() );
+		ForceStateChange( Utils.HasMinimumPlayers() ? state : new WaitingState() );
 	}
 
 	/// <summary>

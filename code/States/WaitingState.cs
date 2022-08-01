@@ -8,7 +8,7 @@ public class WaitingState : BaseState
 
 	public override void OnSecond()
 	{
-		if ( Host.IsServer && PlayerExtensions.HasMinimumPlayers() )
+		if ( Host.IsServer && Utils.HasMinimumPlayers() )
 			Game.Current.ForceStateChange( new PreRound() );
 	}
 

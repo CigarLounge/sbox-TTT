@@ -50,7 +50,7 @@ public partial class InspectMenu : Panel
 			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
 			player.LastAttackerWeaponInfo.Icon.ResourcePath );
 
-		if ( player.KilledWithHeadShot() )
+		if ( player.KilledWithHeadShot )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
 
 		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
@@ -156,7 +156,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
-		SendDetectiveMarker( To.Multiple( PlayerExtensions.GetAliveClientsWithRole<Detective>() ), corpse.Position );
+		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 
 	[ClientRpc]

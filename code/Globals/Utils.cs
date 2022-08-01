@@ -1,16 +1,11 @@
+using Sandbox;
 using System;
 using System.Collections.Generic;
-using Sandbox;
 
 namespace TTT;
 
-public static class PlayerExtensions
+public static class Utils
 {
-	public static bool KilledWithHeadShot( this Player player )
-	{
-		return (HitboxGroup)player.GetHitboxGroup( player.LastDamage.HitboxIndex ) == HitboxGroup.Head;
-	}
-
 	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
 	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
 	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= Game.MinPlayers;

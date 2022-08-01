@@ -74,7 +74,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		foreach ( var clothing in Player.Clothes.ToArray() )
 		{
-			if ( clothing.Model == Detective.Hat && Player.KilledWithHeadShot() )
+			if ( clothing.Model == Detective.Hat && Player.KilledWithHeadShot )
 			{
 				clothing.Detach();
 				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force );

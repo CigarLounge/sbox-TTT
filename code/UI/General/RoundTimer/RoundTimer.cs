@@ -23,7 +23,7 @@ public class RoundTimer : Panel
 		RoundName.Text = Game.Current.State.Name;
 
 		if ( Game.Current.State is WaitingState )
-			Timer.Text = $"{PlayerExtensions.MinimumPlayerCount()} / {Game.MinPlayers}";
+			Timer.Text = $"{Utils.MinimumPlayerCount()} / {Game.MinPlayers}";
 		else
 			Timer.Text = $"{Game.Current.State.TimeLeftFormatted}";
 
