@@ -26,7 +26,7 @@ public class Hud : HudEntity<RootPanel>
 		RootPanel.AddChild<QuickChat>();
 		RootPanel.AddChild<VoiceChatDisplay>();
 		RootPanel.AddChild<RoundTimer>();
-		RootPanel.AddChild<PropPossessionInfo>();
+		RootPanel.AddChild<PossessionInfo>();
 		RootPanel.AddChild<VoiceList>();
 		RootPanel.AddChild<InfoFeed>();
 		RootPanel.AddChild<FullScreenHintMenu>();

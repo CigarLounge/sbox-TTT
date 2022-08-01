@@ -1,22 +1,19 @@
 ﻿@import "/ui/Hud.scss";
 
-PropPossessionInfo
+PossessionInfo
 {
   position: absolute;
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  justify-content: center;
-  align-items: center;
   border-radius: 4px;
-
+  
   transition: opacity 0.5s ease-in-out;
 
   text {
     padding: 8px 35px 8px 35px;
     font-size: 20px;
     font-weight: bold;
-    min-width: 175px;
   }
 
   .possession-progress {
@@ -26,8 +23,13 @@ PropPossessionInfo
     width: 25%;
     height: 100%;
     background-color: $info;
-    
-    transition: width 0.3s ease-in-out;
+    border-radius: 4px;
+  }
+  
+  &.active {
+    .possession-progress {
+      transition: width 0.3s ease-in-out;
+    }
   }
 
   &.fade-out {

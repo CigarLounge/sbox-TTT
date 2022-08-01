@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class PropPossessionInfo : Panel
+public class PossessionInfo : Panel
 {
 	private Panel PercentageDiv { get; set; }
 
@@ -16,11 +16,13 @@ public class PropPossessionInfo : Panel
 
 			var punchesFraction = (float)p.PossessionPunches / Game.PropPossessionMaxPunches;
 			PercentageDiv.Style.Width = Length.Fraction( punchesFraction );
+			AddClass( "active" );
 		}
 		else
 		{
-			PercentageDiv.Style.Width = Length.Fraction( 1 );
+			PercentageDiv.Style.Width = Length.Fraction( 0 );
 			this.EnableFade( false );
+			RemoveClass( "active" );
 		}
 	}
 }
