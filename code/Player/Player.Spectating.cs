@@ -101,9 +101,9 @@ public partial class Player
 				Camera = new FreeSpectateCamera();
 				PossessedProp = null;
 			}
-			else if ( PossessedProp.PhysicsBody is PhysicsBody b )
+			else
 			{
-				HandlePropPossession( b );
+				HandlePropMovement( PossessedProp.PhysicsBody );
 			}
 
 			return;
@@ -132,15 +132,19 @@ public partial class Player
 			Camera = new FirstPersonSpectatorCamera();
 	}
 
-	private void HandlePropPossession( PhysicsBody b )
+	private void HandlePropMovement( PhysicsBody b )
 	{
 		// reference:
 		// https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/terrortown/gamemode/propspec.lua#L111
 
-		if ( Input.Forward + Input.Left == 0f && !Input.Pressed( InputButton.Jump ) ) { return; } // no movement
+		if ( PossessionPunches <= 0 )
+			return;
+
+		if ( Input.Forward + Input.Left == 0f && !Input.Pressed( InputButton.Jump ) )
+			return; // no movement
 
 		if ( !_timeUntilNextPunchAllowed ) { return; }
-		
+
 		if ( PossessedProp is IGrabbable grabbable && grabbable.IsHolding )
 			return; // can't move if prop is currently being held by a player
 
@@ -167,12 +171,12 @@ public partial class Player
 		else if ( Input.Pressed( InputButton.Left ) )
 		{
 			b.ApplyAngularImpulse( new Vector3( 0, 0, 200f * 10f ) );
-			b.ApplyForceAt( b.MassCenter, aim * mf / 3f );
+			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
 		else if ( Input.Pressed( InputButton.Right ) )
 		{
 			b.ApplyAngularImpulse( new Vector3( 0, 0, -200f * 10f ) );
-			b.ApplyForceAt( b.MassCenter, aim * mf / 3f );
+			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
 
 		PossessionPunches = Math.Max( PossessionPunches - 1, 0 );
