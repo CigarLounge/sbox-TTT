@@ -393,7 +393,7 @@ public partial class Player : AnimatedEntity
 				Inventory.OnChildAdded( carriable );
 				break;
 			}
-			case BaseClothing clothing:
+			case Clothing clothing:
 			{
 				Clothes.Add( clothing );
 				break;
@@ -410,7 +410,7 @@ public partial class Player : AnimatedEntity
 				Inventory.OnChildRemoved( carriable );
 				break;
 			}
-			case BaseClothing clothing:
+			case Clothing clothing:
 			{
 				Clothes.Remove( clothing );
 				break;

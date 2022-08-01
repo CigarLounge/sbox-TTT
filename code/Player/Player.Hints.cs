@@ -39,7 +39,7 @@ public partial class Player
 		_currentHint = hint;
 	}
 
-	private void DeleteHint()
+	private static void DeleteHint()
 	{
 		_currentHintPanel?.Delete( true );
 		_currentHintPanel = null;
@@ -53,12 +53,11 @@ public partial class Player
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
 			.Ignore( CurrentPlayer )
 			.WithAnyTags( "solid", "trigger" )
-			.UseHitboxes()
 			.Run();
 
 		HoveredEntity = trace.Entity;
 
-		if ( HoveredEntity is IEntityHint hint && trace.StartPosition.Distance( trace.EndPosition ) <= hint.HintDistance )
+		if ( HoveredEntity is IEntityHint hint && trace.Distance <= hint.HintDistance )
 			return hint;
 
 		return null;
