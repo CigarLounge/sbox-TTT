@@ -107,25 +107,15 @@ public partial class Game
 	[ConCmd.Server( "ttt_possess_prop" )]
 	public static void PossessProp( int propNetworkId )
 	{
-		if ( !PropPossessionEnabled )
+		if ( !PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player 
+		                            || player.Status == PlayerStatus.Alive || player.PossessedProp is not null )
 			return;
 
-		var target = Entity.All.OfType<Prop>().FirstOrDefault( p => p.NetworkIdent == propNetworkId );
-
-		if ( target is null || target.PhysicsBody is null )
+		var target = Entity.FindByIndex( propNetworkId );
+		
+		if ( target is null || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
 			return;
 
-		// Check if any other spectator is currently possessing this prop
-		var alreadyPossessed = Entity.All
-			.OfType<Player>()
-			.Any( p => p.PossessedProp?.NetworkIdent == propNetworkId );
-
-		if ( alreadyPossessed )
-			return;
-
-		if ( ConsoleSystem.Caller.Pawn is not Player player || player.Status == PlayerStatus.Alive || player.PossessedProp is not null )
-			return;
-
-		player.PossessProp( target );
+		player.PossessProp( prop );
 	}
 }

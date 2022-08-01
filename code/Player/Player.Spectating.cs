@@ -90,6 +90,7 @@ public partial class Player
 	{
 		PossessedProp = prop;
 		Camera = new PropSpectateCamera();
+		prop.Owner = this;
 
 		UpdatePossessionStatus( Utils.GetDeadClients().To(), prop );
 	}
