@@ -103,12 +103,24 @@ public partial class Player
 			PossessedProp = null;
 			_possessionNameplate?.Delete();
 			_possessionNameplate = null;
+
+			if ( this == Local.Pawn )
+			{
+				// we are no longer possessing a prop
+				foreach ( var possessionInfo in Local.Hud.ChildrenOfType<PossessionInfo>().ToList() )
+				{
+					possessionInfo.Delete();
+				}
+			}
 		}
 		else
 		{
 			_possessionNameplate?.Delete(); // there might already be a nameplate from a previous call, remove that
 			PossessedProp = prop;
 			_possessionNameplate = new PossessionNameplate( this, prop );
+
+			if ( this == Local.Pawn )
+				Local.Hud.AddChild<PossessionInfo>();
 		}
 	}
 
