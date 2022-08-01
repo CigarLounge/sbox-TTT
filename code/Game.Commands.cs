@@ -118,12 +118,12 @@ public partial class Game
 		// Check if any other spectator is currently possessing this prop
 		var alreadyPossessed = Entity.All
 			.OfType<Player>()
-			.Any( p => p.IsSpectator && p.PossessedProp?.NetworkIdent == propNetworkId );
+			.Any( p => p.PossessedProp?.NetworkIdent == propNetworkId );
 
 		if ( alreadyPossessed )
 			return;
 
-		if ( ConsoleSystem.Caller.Pawn is not Player player || !player.IsSpectator || player.PossessedProp is not null )
+		if ( ConsoleSystem.Caller.Pawn is not Player player || player.Status == PlayerStatus.Alive || player.PossessedProp is not null )
 			return;
 
 		player.PossessProp( target );
