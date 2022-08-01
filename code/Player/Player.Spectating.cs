@@ -71,7 +71,7 @@ public partial class Player
 		LifeState = LifeState.Dead;
 
 		if ( Camera is not ISpectateCamera )
-			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+			Camera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeSpectateCamera();
 
 		DelayedDeathCameraChange();
 	}
@@ -82,14 +82,14 @@ public partial class Player
 		// move them to a free spectate camera.
 		await GameTask.DelaySeconds( 2 );
 
-		if ( Camera is RagdollSpectateCamera )
+		if ( Camera is FollowEntityCamera cam && cam.FollowedEntity is Corpse )
 			Camera = new FreeSpectateCamera();
 	}
 
 	public void PossessProp( Prop prop )
 	{
 		PossessedProp = prop;
-		Camera = new PropSpectateCamera();
+		Camera = new FollowEntityCamera( prop );
 		prop.Owner = this;
 
 		UpdatePossessionStatus( To.Multiple( Utils.GetDeadClients() ), prop );
@@ -132,7 +132,7 @@ public partial class Player
 
 	private void ChangeSpectateCamera()
 	{
-		if ( IsServer && Camera is PropSpectateCamera )
+		if ( IsServer && Camera is FollowEntityCamera cam && cam.FollowedEntity is Prop )
 		{
 			if ( !PossessedProp.IsValid() || Input.Pressed( InputButton.Duck ) )
 			{
@@ -152,7 +152,7 @@ public partial class Player
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
-		if ( Camera is RagdollSpectateCamera || Camera is FirstPersonSpectatorCamera )
+		if ( Camera is FollowEntityCamera || Camera is FirstPersonSpectatorCamera )
 		{
 			Camera = new FreeSpectateCamera();
 			return;
@@ -209,7 +209,7 @@ public partial class Player
 			b.ApplyAngularImpulse( new Vector3( 0, 0, Input.Left * 200f * 10f ) );
 			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
-		
+
 		PossessionPunches = Math.Max( PossessionPunches - 1, 0 );
 	}
 

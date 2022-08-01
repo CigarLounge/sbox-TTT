@@ -1,11 +1,15 @@
-using Sandbox;
+﻿using Sandbox;
 
 namespace TTT;
 
-public class PropSpectateCamera : CameraMode, ISpectateCamera
+public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 {
+	[Net, Local] public Entity FollowedEntity { get; set; }
 	private Vector3 _focusPoint;
-	private Prop _prop => (Local.Pawn as Player).PossessedProp;
+
+	public FollowEntityCamera() { }
+
+	public FollowEntityCamera( Entity followedEntity ) { FollowedEntity = followedEntity; }
 
 	public override void Activated()
 	{
@@ -21,14 +25,14 @@ public class PropSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Update()
 	{
-		if ( !_prop.IsValid() )
+		if ( !FollowedEntity.IsValid() )
 			return;
 
-		_focusPoint = Vector3.Lerp( _focusPoint, _prop.Position, Time.Delta * 5.0f );
+		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.Position, Time.Delta * 5.0f );
 
 		Rotation = Input.Rotation;
 
-		var trace = Trace.Ray( _prop.Position, _focusPoint + GetViewOffset() )
+		var trace = Trace.Ray( FollowedEntity.Position, _focusPoint + GetViewOffset() )
 			.WorldOnly()
 			.Run();
 
