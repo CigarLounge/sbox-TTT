@@ -92,7 +92,7 @@ public partial class Player
 		Camera = new PropSpectateCamera();
 		prop.Owner = this;
 
-		UpdatePossessionStatus( Utils.GetDeadClients().To(), prop );
+		UpdatePossessionStatus( To.Multiple( Utils.GetDeadClients() ), prop );
 	}
 
 	[ClientRpc]
@@ -127,7 +127,7 @@ public partial class Player
 				Camera = new FreeSpectateCamera();
 				PossessedProp = null;
 
-				UpdatePossessionStatus( Utils.GetDeadClients().To(), null );
+				UpdatePossessionStatus( To.Multiple( Utils.GetDeadClients() ), null );
 			}
 			else
 			{
@@ -228,14 +228,14 @@ public partial class Player
 	private void CheckPossessionStatusAfterStatusChange( Player player, PlayerStatus oldStatus )
 	{
 		if ( !IsServer || player != this ) { return; }
-		
+
 		if ( player.Status == PlayerStatus.Alive ) // player has come alive
 		{
 			if ( PossessedProp is not null )
 			{
 				// player has come alive and is definitely no longer possessing any props
 				PossessedProp = null;
-				UpdatePossessionStatus( Utils.GetDeadClients().To(), null );
+				UpdatePossessionStatus( To.Multiple( Utils.GetDeadClients() ), null );
 				UpdatePossessionStatus( To.Single( Client ), null ); // also notify itself
 			}
 
