@@ -99,6 +99,9 @@ public partial class Hands : Carriable
 		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Entity.PhysicsGroup is null )
 			return;
 
+		if ( trace.Entity is Player )
+			return;
+
 		// Cannot pickup items held by other players.
 		if ( trace.Entity.Parent is not null )
 			return;
