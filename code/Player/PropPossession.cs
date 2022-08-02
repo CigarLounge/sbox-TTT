@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using Sandbox;
 using TTT.UI;
 
@@ -15,7 +14,7 @@ public partial class PropPossession : EntityComponent<Player>
 	private PossessionInfo _info;
 
 	// Serverside:
-	private Player _player; // Entity property is cleared before OnDeactivate() called => need to store separately
+	private Player _player; // `Entity` property is cleared before OnDeactivate() called => need to store separately
 	private TimeUntil _timeUntilRecharge = 0;
 	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
@@ -35,16 +34,19 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
-			_nameplate = new PossessionNameplate( Entity, Prop );
-			_info = new PossessionInfo( this );
+			if ( Local.Pawn is Player p && p.Status != PlayerStatus.Alive )
+				_nameplate = new PossessionNameplate( Entity, Prop );
+
+			if ( Entity.IsLocalPawn )
+				_info = new PossessionInfo( this ); // local pawn is possessing a prop
 		}
 	}
 
-	protected override void OnDeactivate()
+	protected override void OnDeactivate() // `Entity` property is null when this is called
 	{
 		if ( Host.IsServer )
 		{
-			if ( _player.IsValid() )
+			if ( _player.IsValid() && _player.Status != PlayerStatus.Alive )
 				_player.Camera = new FreeSpectateCamera();
 
 			if ( Prop.IsValid() )
@@ -59,9 +61,60 @@ public partial class PropPossession : EntityComponent<Player>
 		_player = null;
 	}
 
+	[GameEvent.Player.StatusChanged]
+	private void OnStatusChanged( Player somePlayer, PlayerStatus oldStatus )
+	{
+		if ( somePlayer.Status == PlayerStatus.Alive )
+		{
+			// somePlayer has come alive
+			if ( Host.IsServer && somePlayer == Entity )
+			{
+				// _player is not possessing anything anymore since they have come alive
+				// we cannot immediately remove this component since that would remove all event handlers
+				// (including the one we are currently in) which would cause a InvalidOperationException
+				// (Collection was modified; enumeration operation may not execute)
+				RemoveThisComponentDelayed();
+			}
+
+			if ( Host.IsClient && somePlayer.IsLocalPawn )
+				_nameplate?.Delete(); // local player has come alive, must loose all nameplates
+		}
+		else if ( somePlayer.Status != PlayerStatus.Alive )
+		{
+			// somePlayer has died
+			if ( somePlayer.IsLocalPawn )
+				_nameplate = new PossessionNameplate( _player, Prop ); // local player has died => show nameplates
+		}
+	}
+
+	private async void RemoveThisComponentDelayed()
+	{
+		await GameTask.Delay( 1 );
+		_player?.Components.RemoveAny<PropPossession>();
+	}
+
+	[Event.Tick.Server]
+	private void RechargePunchesAndCheckProp()
+	{
+		if ( !Prop.IsValid() )
+		{
+			RemoveThisComponentDelayed(); // delayed removal for the same reason as above
+			return;
+		}
+
+		if ( _timeUntilRecharge )
+		{
+			Punches = Math.Min( Punches + 1, Game.PropPossessionMaxPunches );
+			_timeUntilRecharge = Game.PropPossessionRechargeTime;
+		}
+	}
+
 	[Event.BuildInput]
 	private void BuildInput( InputBuilder input )
 	{
+		if ( !Entity.IsValid() || !Entity.IsLocalPawn )
+			return;
+
 		if ( input.Pressed( InputButton.Duck ) )
 		{
 			CancelPossession();
@@ -75,6 +128,8 @@ public partial class PropPossession : EntityComponent<Player>
 
 		if ( forward + left != 0f || up )
 			MoveProp( forward, left, up, rotation );
+
+		input.SetButton( InputButton.Jump, false ); // cancel jump button so that spectator camera is not changed
 	}
 
 	[ConCmd.Server]
@@ -131,15 +186,5 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 
 		Punches = Math.Max( Punches - 1, 0 );
-	}
-
-	[Event.Tick.Server]
-	private void RechargePossessionPunches()
-	{
-		if ( _timeUntilRecharge )
-		{
-			Punches = Math.Min( Punches + 1, Game.PropPossessionMaxPunches );
-			_timeUntilRecharge = Game.PropPossessionRechargeTime;
-		}
 	}
 }
