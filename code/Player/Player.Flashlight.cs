@@ -94,8 +94,8 @@ public partial class Player
 			return;
 
 		// If there is something in the way between the muzzle and our eyes,
-		// move the flashlight back to the eyes. Use a line instead of a hull 
-		// for long barrels that intersect further inteo geometry.
+		// move the flashlight back to the eyes. Use a line instead of a hulloverlap
+		// around the muzzle for long barrels that intersect further into geometry.
 		var muzzle = muzzleTransform.Value;
 		var tr = Trace.Ray( muzzle.Position, EyePosition )
 			.Size( 1.5f )
