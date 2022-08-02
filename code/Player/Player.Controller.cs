@@ -31,7 +31,8 @@ public partial class PlayerController : PawnController
 	public bool Swimming { get; set; } = false;
 	[Net] public bool AutoJump { get; set; } = false;
 
-	public PlayerDuck Duck;
+	[Net, Change]
+	public PlayerDuck Duck { get; private init; }
 	public Unstuck Unstuck;
 
 	[Net, Predicted]

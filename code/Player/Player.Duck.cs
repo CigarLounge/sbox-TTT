@@ -15,19 +15,19 @@ public partial class PlayerDuck : BaseNetworkable
 	/// <summary> Is the player in a fully completed duck state? </summary>
 	// [Net]
 	// [Predicted]
-	// [Net, Predicted]
+	[Net, Predicted]
 	public bool Ducked { get; private set; } = false;
 	// [Net]
 	// [Predicted]
-	// [Net, Predicted]
+	[Net, Predicted]
 	public float Fraction { get; private set; } = 0f;
-	// [Net]
+	[Net]
 	public float ToggleSpeed { get; set; } = 7.0f;
 
-	// [Net]
+	[Net]
 	public float StuckDelay { get; set; } = 0.72f;
 	// [Predicted]
-	// [Net, Predicted]
+	[Net, Predicted]
 	public TimeUntil StuckUntil { get; private set; }
 
 
@@ -57,12 +57,14 @@ public partial class PlayerDuck : BaseNetworkable
 			// Ducking.
 			if ( !Ducked || Fraction < 1 )
 			{
-				if ( Prediction.FirstTime ) //Host.IsClient )
+				// if ( Prediction.FirstTime )
+				if ( Prediction.FirstTime && Host.IsClient )
 					Log.Info( $"[{Host.Name}] FractionBefore: {Fraction}" );
 
 				Fraction = Math.Clamp( Fraction + duckDelta, 0, 1 );
 
-				if ( Prediction.FirstTime ) //Host.IsClient )
+				// if ( Prediction.FirstTime )
+				if ( Prediction.FirstTime && Host.IsClient )
 					Log.Info( $"[{Host.Name}] FractionAfter: {Fraction}" );
 
 				if ( Fraction.AlmostEqual( 1 ) )
@@ -74,13 +76,15 @@ public partial class PlayerDuck : BaseNetworkable
 			// Standing.
 			if ( Ducked || Fraction > 0 )
 			{
-				if ( Prediction.FirstTime ) //Host.IsClient )
+				// if ( Prediction.FirstTime )
+				if ( Prediction.FirstTime && Host.IsClient )
 					Log.Info( $"[{Host.Name}] FractionBefore: {Fraction}" );
 
 				// TODO: Reapply duck if there's no room to unduck.
 				Fraction = Math.Clamp( Fraction - duckDelta, 0, 1 );
 
-				if ( Prediction.FirstTime ) //Host.IsClient )
+				// if ( Prediction.FirstTime )
+				if ( Prediction.FirstTime && Host.IsClient )
 					Log.Info( $"[{Host.Name}] FractionAfter: {Fraction}" );
 
 				if ( Fraction.AlmostEqual( 0 ) )
