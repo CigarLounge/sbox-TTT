@@ -164,7 +164,7 @@ public partial class PropPossession : EntityComponent<Player>
 			return; // can't move if prop is currently being held by a player
 
 		var mass = Math.Min( 150f, b.Mass );
-		var force = 110f * 100f;
+		var force = 110f * 75f;
 		var aim = Vector3.Forward * rotation;
 		var mf = mass * force;
 
