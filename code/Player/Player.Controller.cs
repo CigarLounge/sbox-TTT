@@ -9,37 +9,40 @@ namespace TTT;
 
 public partial class PlayerController : PawnController
 {
-	[Net] public float WalkSpeed { get; set; } = 110.0f;
-	[Net] public float DefaultSpeed { get; set; } = 237.0f;
-	[Net] public float Acceleration { get; set; } = 10.0f;
-	[Net] public float AirAcceleration { get; set; } = 50.0f;
-	[Net] public float FallSoundZ { get; set; } = -30.0f;
-	[Net] public float GroundFriction { get; set; } = 4.0f;
-	[Net] public float StopSpeed { get; set; } = 150.0f;
-	[Net] public float Size { get; set; } = 20.0f;
-	[Net] public float DistEpsilon { get; set; } = 0.03125f;
-	[Net] public float GroundAngle { get; set; } = 46.0f;
-	[Net] public float Bounce { get; set; } = 0.0f;
-	[Net] public float MoveFriction { get; set; } = 1.0f;
-	[Net] public float StepSize { get; set; } = 18.0f;
-	[Net] public float MaxNonJumpVelocity { get; set; } = 140.0f;
-	[Net] public float BodyGirth { get; set; } = 32.0f;
-	[Net] public float BodyHeight { get; set; } = 72.0f;
-	[Net] public float EyeHeight { get; set; } = 64.0f;
-	[Net] public float Gravity { get; set; } = 800.0f;
-	[Net] public float AirControl { get; set; } = 30.0f;
-	public bool Swimming { get; set; } = false;
-	[Net] public bool AutoJump { get; set; } = false;
+	[Net] public float DefaultSpeed { get; set; } = 237f;
+	[Net] public float WalkSpeed { get; set; } = 110f;
+	[Net] public float DuckSpeed { get; set; } = 93f;
 
-	[Net, Change]
-	public PlayerDuck Duck { get; private init; }
+	[Net] public float Acceleration { get; set; } = 10f;
+	[Net] public float GroundFriction { get; set; } = 4f;
+	[Net] public float StopSpeed { get; set; } = 150f;
+
+	[Net] public float StepSize { get; set; } = 18f;
+	[Net] public float MoveFriction { get; set; } = 1f;
+	[Net] public float FallSoundZ { get; set; } = -30f;
+	[Net] public float DistEpsilon { get; set; } = 0.03125f;
+	[Net] public float GroundAngle { get; set; } = 46f;
+	[Net] public float MaxNonJumpVelocity { get; set; } = 140f;
+	[Net] public float Bounce { get; set; } = 0f;
+
+	[Net] public float EyeHeight { get; set; } = 64f;
+	[Net] public float DefaultWidth { get; set; } = 32f;
+	[Net] public float DefaultHeight { get; set; } = 72f;
+	[Net] public float DuckHeight { get; set; } = 36f;
+
+	[Net] public bool AutoJump { get; set; } = false;
+	[Net] public float Gravity { get; set; } = 800f;
+	[Net] public float JumpSpeed { get; set; } = 180f;
+	[Net] public float AirControl { get; set; } = 30f;
+	[Net] public float AirAcceleration { get; set; } = 50f;
+
+
+	public bool Swimming { get; set; } = false;
+
 	public Unstuck Unstuck;
 
 	[Net, Predicted]
 	public bool Momentum { get; set; }
-
-	[Net] public float DuckHeight { get; set; } = 36f;
-	[Net] public float JumpSpeed { get; set; } = 180f;
 
 	private Vector3 _lastBaseVelocity;
 
@@ -49,7 +52,6 @@ public partial class PlayerController : PawnController
 
 	public PlayerController()
 	{
-		Duck = new PlayerDuck( this );
 	}
 
 	// public void OnDeactivate();
@@ -105,7 +107,7 @@ public partial class PlayerController : PawnController
 
 	public virtual void CategorizePosition( bool bStayOnGround )
 	{
-		SurfaceFriction = 1.0f;
+		SurfaceFriction = 1f;
 
 		// Doing this before we move may introduce a potential latency in water detection, but
 		// doing it after can get us stuck on the bottom in water if the amount we move up
@@ -140,7 +142,7 @@ public partial class PlayerController : PawnController
 			return;
 		}
 
-		var pm = TraceBBox( vBumpOrigin, point, 4.0f );
+		var pm = TraceBBox( vBumpOrigin, point, 4f );
 
 		if ( pm.Entity == null || Vector3.GetAngle( Vector3.Up, pm.Normal ) > GroundAngle )
 		{
@@ -155,7 +157,7 @@ public partial class PlayerController : PawnController
 			UpdateGroundEntity( pm );
 		}
 
-		if ( bMoveToEndPos && !pm.StartedSolid && pm.Fraction > 0.0f && pm.Fraction < 1.0f )
+		if ( bMoveToEndPos && !pm.StartedSolid && pm.Fraction > 0f && pm.Fraction < 1f )
 		{
 			Position = pm.EndPosition;
 		}
@@ -163,12 +165,9 @@ public partial class PlayerController : PawnController
 
 	public virtual float GetWishSpeed()
 	{
-		var ws = Duck.GetWishSpeed();
-
-		if ( ws >= 0 )
-			return ws;
-
-		if ( Input.Down( InputButton.Run ) )
+		if ( Ducked )
+			return DuckSpeed;
+		else if ( Input.Down( InputButton.Run ) )
 			return WalkSpeed;
 
 		return DefaultSpeed;
@@ -186,7 +185,7 @@ public partial class PlayerController : PawnController
 	{
 		if ( !Momentum )
 		{
-			Velocity += (1.0f + (Time.Delta * 0.5f)) * BaseVelocity;
+			Velocity += (1f + (Time.Delta * 0.5f)) * BaseVelocity;
 			BaseVelocity = Vector3.Zero;
 		}
 
@@ -244,7 +243,7 @@ public partial class PlayerController : PawnController
 		WishVelocity = WishVelocity.Normal * inSpeed;
 		WishVelocity *= GetWishSpeed();
 
-		Duck.PreTick();
+		DuckPreTick();
 
 		var bStayOnGround = false;
 		if ( Swimming )
@@ -330,7 +329,7 @@ public partial class PlayerController : PawnController
 		var vecend = vecstart + flatforward * 24f;
 
 		var tr = TraceBBox( vecstart, vecend, 0f );
-		if ( tr.Fraction < 1.0f )
+		if ( tr.Fraction < 1f )
 		{
 			const float WATERJUMP_HEIGHT = 8f;
 			vecstart.z += Position.z + EyeHeight + WATERJUMP_HEIGHT;
@@ -338,12 +337,12 @@ public partial class PlayerController : PawnController
 			vecend = vecstart + flatforward * 24f;
 
 			tr = TraceBBox( vecstart, vecend );
-			if ( tr.Fraction == 1.0f )
+			if ( tr.Fraction == 1f )
 			{
 				vecstart = vecend;
 				vecend.z -= 1024f;
 				tr = TraceBBox( vecstart, vecend );
-				if ( (tr.Fraction < 1.0f) && (tr.Normal.z >= 0.7f) )
+				if ( (tr.Fraction < 1f) && (tr.Normal.z >= 0.7f) )
 				{
 					Velocity = Velocity.WithZ( 356f );
 					TimeSinceWaterJump = 0f;
@@ -403,8 +402,8 @@ public partial class PlayerController : PawnController
 	/// </summary>
 	public void UpdateView( bool snapCamera = false )
 	{
-		// var eyeZ = Duck.Ducked ? DuckHeight - (BodyHeight - EyeHeight) : EyeHeight;
-		var eyeZ = Duck.EyeHeight();
+		// var eyeZ = Ducked ? DuckHeight - (BodyHeight - EyeHeight) : EyeHeight;
+		var eyeZ = ActiveEyeHeight();
 		EyeLocalPosition = Vector3.Up * (eyeZ * Pawn.Scale);
 
 		UpdateBBox();

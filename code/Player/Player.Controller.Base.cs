@@ -16,9 +16,21 @@ public partial class PlayerController : PawnController
 	/// </summary>
 	public virtual BBox GetHull()
 	{
-		var girth = BodyGirth * 0.5f;
+		var girth = DefaultWidth * 0.5f;
 		var mins = new Vector3( -girth, -girth, 0 );
-		var maxs = new Vector3( +girth, +girth, BodyHeight );
+		var maxs = new Vector3( +girth, +girth, DefaultHeight );
+
+		return new BBox( mins, maxs );
+	}
+
+	/// <summary>
+	/// This is temporary, get the hull size for the player's collision
+	/// </summary>
+	public virtual BBox GetDuckedHull()
+	{
+		var girth = DefaultWidth * 0.5f;
+		var mins = new Vector3( -girth, -girth, 0 );
+		var maxs = new Vector3( +girth, +girth, DuckHeight );
 
 		return new BBox( mins, maxs );
 	}
@@ -40,13 +52,12 @@ public partial class PlayerController : PawnController
 	/// </summary>
 	public virtual void UpdateBBox()
 	{
-		var girth = BodyGirth * 0.5f;
+		var girth = DefaultWidth * 0.5f;
 
 		var mins = new Vector3( -girth, -girth, 0 ) * Pawn.Scale;
-		var maxs = new Vector3( +girth, +girth, BodyHeight ) * Pawn.Scale;
+		var maxs = new Vector3( +girth, +girth, DefaultHeight ) * Pawn.Scale;
 
-		Duck.UpdateBBox( ref mins, ref maxs, Pawn.Scale );
-
+		UpdateBBox( ref mins, ref maxs, Pawn.Scale );
 		SetBBox( mins, maxs );
 	}
 
