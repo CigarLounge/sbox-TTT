@@ -106,7 +106,20 @@ public partial class Player : AnimatedEntity
 			EnableDrawing = true;
 			EnableTouch = true;
 
-			Controller = new WalkController();
+			Controller = new PlayerController()
+			{
+				AirAcceleration = 65f, //1500f,
+				WalkSpeed = 110f,
+				DefaultSpeed = 230f,
+				StopSpeed = 105f,
+				Acceleration = 8f,
+				GroundFriction = 5,
+				AutoJump = false,
+				// Matches HL2 according to 'test/scale` map.
+				JumpSpeed = 180f,
+				Gravity = 800f,
+			};
+
 			Camera = new FirstPersonCamera();
 
 			CreateHull();
@@ -284,7 +297,7 @@ public partial class Player : AnimatedEntity
 
 	#region Controller
 	[Net, Predicted]
-	public PawnController Controller { get; set; }
+	public PlayerController Controller { get; set; }
 
 	[Net, Predicted]
 	public PawnController DevController { get; set; }
