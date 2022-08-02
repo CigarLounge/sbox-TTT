@@ -7,9 +7,9 @@ PossessionInfo
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   border-radius: 4px;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
   
-  transition: opacity 0.5s ease-in-out;
-
   text {
     padding: 8px 35px 8px 35px;
     font-size: 20px;
@@ -24,16 +24,11 @@ PossessionInfo
     height: 100%;
     background-color: $info;
     border-radius: 4px;
+    transition: width 0.3s ease-in-out;
   }
   
-  &.active {
-    .possession-progress {
-      transition: width 0.3s ease-in-out;
-    }
+  &:intro, &:outro {
+    opacity: 0;
   }
 
-  &.fade-out {
-    opacity: 0;
-    /* ^ I think this is necessary because .opacity-heavy has higher precedence than the .fade-out class */
-  }
 }

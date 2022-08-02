@@ -16,7 +16,7 @@ public class SpectatingHint : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.PossessedProp is not null )
+		if ( player.Components.TryGet<PropPossession>( out _ ) )
 		{
 			JumpGlyph.SetButton( InputButton.Duck );
 			JumpAction.SetText( "to no longer possess the prop" );

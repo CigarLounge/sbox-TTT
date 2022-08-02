@@ -107,15 +107,15 @@ public partial class Game
 	[ConCmd.Server( "ttt_possess_prop" )]
 	public static void PossessProp( int propNetworkId )
 	{
-		if ( !PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player 
-		                            || player.Status == PlayerStatus.Alive || player.PossessedProp is not null )
+		if ( !PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player
+		                            || player.Status == PlayerStatus.Alive || player.Components.TryGet<PropPossession>( out _ ) )
 			return;
 
 		var target = Entity.FindByIndex( propNetworkId );
-		
+
 		if ( !target.IsValid() || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
 			return;
 
-		player.PossessProp( prop );
+		player.Components.Add( new PropPossession( prop ) );
 	}
 }
