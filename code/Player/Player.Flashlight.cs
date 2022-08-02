@@ -82,11 +82,29 @@ public partial class Player
 		if ( !_viewLight.Enabled )
 			return;
 
-		var transform = new Transform( EyePosition, EyeRotation );
-		_viewLight.Transform = transform;
+		var eyeTransform = new Transform( EyePosition, EyeRotation );
+		_viewLight.Transform = eyeTransform;
 
-		if ( ActiveChild.IsValid() )
-			_viewLight.Transform = ActiveChild.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		if ( !ActiveChild.IsValid() )
+			return;
+
+		var muzzleTransform = ActiveChild.ViewModelEntity?.GetAttachment( "muzzle" );
+
+		if ( !muzzleTransform.HasValue )
+			return;
+
+		// If there is something in the way between the muzzle and our eyes,
+		// move the flashlight back to the eyes. Use a line instead of a hull 
+		// for long barrels that intersect further inteo geometry.
+		var muzzle = muzzleTransform.Value;
+		var tr = Trace.Ray( muzzle.Position, EyePosition )
+			.Size( 1.5f )
+			.Ignore( this )
+			.Ignore( ActiveChild )
+			.Run();
+
+		_viewLight.Position = tr.Hit ? EyePosition : muzzle.Position;
+		_viewLight.Rotation = muzzle.Rotation;
 	}
 
 	private SpotLightEntity CreateLight()
