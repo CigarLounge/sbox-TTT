@@ -155,7 +155,7 @@ public partial class Player : AnimatedEntity
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		SimulateActiveChild( client, ActiveChild );
+		SimulateActiveChild( client );
 
 		if ( this.IsAlive() )
 		{
@@ -335,22 +335,19 @@ public partial class Player : AnimatedEntity
 
 	public Carriable LastActiveChild { get; set; }
 
-	public void SimulateActiveChild( Client client, Carriable child )
+	public void SimulateActiveChild( Client client )
 	{
-		if ( LastActiveChild != child )
+		if ( LastActiveChild != ActiveChild )
 		{
-			OnActiveChildChanged( LastActiveChild, child );
-			LastActiveChild = child;
+			OnActiveChildChanged( LastActiveChild, ActiveChild );
+			LastActiveChild = ActiveChild;
 		}
 
-		if ( !LastActiveChild.IsValid() )
+		if ( !ActiveChild.IsValid() || !ActiveChild.IsAuthority )
 			return;
 
-		if ( !LastActiveChild.IsAuthority )
-			return;
-
-		if ( LastActiveChild.TimeSinceDeployed > LastActiveChild.Info.DeployTime )
-			LastActiveChild.Simulate( client );
+		if ( ActiveChild.TimeSinceDeployed > ActiveChild.Info.DeployTime )
+			ActiveChild.Simulate( client );
 	}
 
 	public void OnActiveChildChanged( Carriable previous, Carriable next )
