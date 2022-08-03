@@ -109,7 +109,7 @@ public partial class Player
 		var origin = mz.Position + downOffset;
 
 		// If there IS something between our eyes and the muzzle, add the distance.
-		if ( muzzleTrace.Hit)
+		if ( muzzleTrace.Hit )
 		{
 			var dist = (muzzleTrace.EndPosition - mz.Position).Length;
 			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * dist) + downOffset;
