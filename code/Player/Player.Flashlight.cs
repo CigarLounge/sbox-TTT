@@ -71,9 +71,6 @@ public partial class Player
 		_viewLight = null;
 	}
 
-	[ConVar.Client( "ttt_visualizeflashlight" )]
-	public static bool VisualizeFlashlight { get; set; } = false;
-
 	[Event.Frame]
 	private void Frame()
 	{
@@ -137,14 +134,6 @@ public partial class Player
 		origin -= direction * pullbackMult;
 		_viewLight.Position = origin;
 		_viewLight.Rotation = mz.Rotation;
-
-		if ( !VisualizeFlashlight )
-			return;
-
-		DebugOverlay.Sphere( origin, 2, Color.Green, depthTest: false );
-		DebugOverlay.Line( origin, fwdTrace.EndPosition, Color.Red );
-		DebugOverlay.Box( fwdTrace.EndPosition, Vector3.One * -4, Vector3.One * 4, Color.Blue, depthTest: false );
-		DebugOverlay.Sphere( mz.Position, 2f, Color.Red );
 	}
 
 	private SpotLightEntity CreateLight()
