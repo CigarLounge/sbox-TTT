@@ -71,6 +71,9 @@ public partial class Player
 		_viewLight = null;
 	}
 
+	[ConVar.Client( "ttt_visualizeflashlight" )]
+	public static bool VisualizeFlashlight { get; set; } = false;
+
 	[Event.Frame]
 	private void Frame()
 	{
@@ -93,18 +96,55 @@ public partial class Player
 		if ( !muzzleTransform.HasValue )
 			return;
 
-		// If there is something in the way between the muzzle and our eyes,
-		// move the flashlight back to the eyes. Use a line instead of a hulloverlap
-		// around the muzzle for long barrels that intersect further into geometry.
-		var muzzle = muzzleTransform.Value;
-		var tr = Trace.Ray( muzzle.Position, EyePosition )
-			.Size( 1.5f )
+		var mz = muzzleTransform.Value;
+
+		// First check if there is something like a door/wall between the muzzle and our eyes.
+		var muzzleTrace = Trace.Ray( mz.Position, EyePosition )
+			.Size( 2 )
 			.Ignore( this )
 			.Ignore( ActiveChild )
 			.Run();
 
-		_viewLight.Position = tr.Hit ? EyePosition : muzzle.Position;
-		_viewLight.Rotation = muzzle.Rotation;
+		Vector3 downOffset = Vector3.Down * 2f;
+		var origin = mz.Position + downOffset;
+
+		// If there IS something between our eyes and the muzzle, add the distance.
+		if ( muzzleTrace.Hit)
+		{
+			var dist = (muzzleTrace.EndPosition - mz.Position).Length;
+			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * dist) + downOffset;
+		}
+
+		// Continue with the forward trace.
+		var destination = origin + mz.Rotation.Forward * _viewLight.Range;
+		var direction = destination - origin;
+
+		var fwdTrace = Trace.Box( Vector3.One * 2, origin, destination )
+			.Ignore( this )
+			.Ignore( ActiveChild )
+			.Run();
+
+		var distance = (fwdTrace.EndPosition - origin).Length;
+
+		float pullbackMult = 0;
+		const float pullbackThreshold = 48f;
+		if ( distance < pullbackThreshold )
+		{
+			var pullbackAmount = pullbackThreshold - distance;
+			pullbackMult = MathX.Remap( pullbackAmount, 0, pullbackThreshold, 0.0f, 0.045f );
+		}
+
+		origin -= direction * pullbackMult;
+		_viewLight.Position = origin;
+		_viewLight.Rotation = mz.Rotation;
+
+		if ( !VisualizeFlashlight )
+			return;
+
+		DebugOverlay.Sphere( origin, 2, Color.Green, depthTest: false );
+		DebugOverlay.Line( origin, fwdTrace.EndPosition, Color.Red );
+		DebugOverlay.Box( fwdTrace.EndPosition, Vector3.One * -4, Vector3.One * 4, Color.Blue, depthTest: false );
+		DebugOverlay.Sphere( mz.Position, 2f, Color.Red );
 	}
 
 	private SpotLightEntity CreateLight()
