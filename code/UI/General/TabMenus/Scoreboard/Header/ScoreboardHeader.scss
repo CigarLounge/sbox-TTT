@@ -8,7 +8,7 @@ scoreboardheader
     .terry-image
     {
         position: absolute;
-        top: -70px;
+        top: -60px;
         background-image: url("/ui/scoreboard-terry.png");
         background-repeat: no-repeat;
         background-size: cover;
@@ -26,13 +26,14 @@ scoreboardheader
 
     .server-name-label
     {
-        font-size: 20px;
-        font-weight: 600;
+        bottom: -10px;
+        font-size: 25px;
+        font-weight: bolder;
     }
 
     .server-description-label
     {
-        font-weight: 400;
+        font-weight: 500;
     }
 
     .server-data-panel
