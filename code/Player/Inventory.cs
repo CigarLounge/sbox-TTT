@@ -14,8 +14,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public Carriable Active
 	{
-		get => Owner.ActiveChild;
-		private set => Owner.ActiveChild = value;
+		get => Owner.ActiveCarriable;
+		private set => Owner.ActiveCarriable = value;
 	}
 
 	public Carriable this[int i] => _list[i];
