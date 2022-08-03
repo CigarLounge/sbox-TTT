@@ -153,8 +153,8 @@ public partial class Player : AnimatedEntity
 		controller?.Simulate( client, this, Animator );
 
 		if ( Input.Pressed( InputButton.Menu ) )
-			if ( ActiveCarriable.IsValid() && LastKnownCarriable.IsValid() )
-				(ActiveCarriable, LastKnownCarriable) = (LastKnownCarriable, LastKnownCarriable);
+			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
+				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
 
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
@@ -336,16 +336,17 @@ public partial class Player : AnimatedEntity
 	#region ActiveCarriable
 	[Net, Predicted]
 	public Carriable ActiveCarriable { get; set; }
-	public Carriable LastActiveCarriable { get; set; }
-	public Carriable LastKnownCarriable { get; set; }
+
+	public Carriable _lastActiveCarriable;
+	public Carriable _lastKnownCarriable;
 
 	public void SimulateActiveCarriable( Client client )
 	{
-		if ( LastActiveCarriable != ActiveCarriable )
+		if ( _lastActiveCarriable != ActiveCarriable )
 		{
-			OnActiveCarriableChanged( LastActiveCarriable, ActiveCarriable );
-			LastKnownCarriable = LastActiveCarriable;
-			LastActiveCarriable = ActiveCarriable;
+			OnActiveCarriableChanged( _lastActiveCarriable, ActiveCarriable );
+			_lastKnownCarriable = _lastActiveCarriable;
+			_lastActiveCarriable = ActiveCarriable;
 		}
 
 		if ( !ActiveCarriable.IsValid() || !ActiveCarriable.IsAuthority )
