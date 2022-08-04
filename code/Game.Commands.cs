@@ -104,18 +104,4 @@ public partial class Game
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
 	}
 
-	[ConCmd.Server( "ttt_possess_prop" )]
-	public static void PossessProp( int propNetworkId )
-	{
-		if ( !PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player
-		                            || player.Status == PlayerStatus.Alive || player.Components.TryGet<PropPossession>( out _ ) )
-			return;
-
-		var target = Entity.FindByIndex( propNetworkId );
-
-		if ( !target.IsValid() || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
-			return;
-
-		player.Components.Add( new PropPossession( prop ) );
-	}
 }

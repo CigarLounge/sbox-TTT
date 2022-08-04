@@ -133,6 +133,23 @@ public partial class PropPossession : EntityComponent<Player>
 	}
 
 	[ConCmd.Server]
+	public static void BeginPossession( int propNetworkIdent )
+	{
+		if ( !Game.PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		if ( player.IsAlive() || player.Components.TryGet<PropPossession>( out _ ) )
+			return;
+
+		var target = Sandbox.Entity.FindByIndex( propNetworkIdent );
+
+		if ( !target.IsValid() || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
+			return;
+
+		player.Components.Add( new PropPossession( prop ) );
+	}
+
+	[ConCmd.Server]
 	private static void CancelPossession()
 	{
 		(ConsoleSystem.Caller.Pawn as Player).Components.RemoveAny<PropPossession>();

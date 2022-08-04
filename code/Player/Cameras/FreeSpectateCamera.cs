@@ -73,8 +73,8 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		var tr = Trace.Ray( Position, Position + (lookDir * 100f) )
 			.EntitiesOnly()
 			.Run();
-		
-		if ( tr.Entity is Prop p && p.PhysicsBody is not null )
-			ConsoleSystem.Run( "ttt_possess_prop", p.NetworkIdent );
+
+		if ( tr.Entity is Prop prop && prop.PhysicsBody is not null )
+			PropPossession.BeginPossession( prop.NetworkIdent );
 	}
 }
