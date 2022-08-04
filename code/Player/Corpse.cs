@@ -328,7 +328,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var player = Local.Pawn as Player;
 
-		if ( player.ActiveChild is not Binoculars binoculars )
+		if ( player.ActiveCarriable is not Binoculars binoculars )
 			return InputButton.Use;
 
 		if ( !binoculars.IsZoomed )

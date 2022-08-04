@@ -54,7 +54,7 @@ public partial class Hands : Carriable
 
 	private void PushEntity()
 	{
-		if ( _isPushingEntity )
+		if ( !IsServer || _isPushingEntity )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -97,6 +97,9 @@ public partial class Hands : Carriable
 			.Run();
 
 		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Entity.PhysicsGroup is null )
+			return;
+
+		if ( trace.Entity is Player )
 			return;
 
 		// Cannot pickup items held by other players.

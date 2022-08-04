@@ -62,7 +62,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// </summary>
 	public virtual string SecondaryAttackHint => string.Empty;
 
-	public bool IsActiveChild => Owner?.ActiveChild == this;
+	public bool IsActiveCarriable => Owner?.ActiveCarriable == this;
 
 	public override void Spawn()
 	{

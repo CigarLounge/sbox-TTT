@@ -42,7 +42,7 @@ public partial class MapSelectionState : BaseState
 		(
 			Votes.GroupBy( x => x.Value )
 			.OrderBy( x => x.Count() )
-			.First().Key
+			.Last().Key
 		);
 	}
 
