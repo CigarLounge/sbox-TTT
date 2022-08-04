@@ -6,7 +6,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class PossessionInfo : Panel
 {
-	private Panel PercentageDiv { get; set; }
+	private Panel PercentagePanel { get; init; }
 
 	private PropPossession _possession;
 
@@ -19,6 +19,6 @@ public class PossessionInfo : Panel
 	public override void Tick()
 	{
 		var punchesFraction = (float)_possession.Punches / Game.PropPossessionMaxPunches;
-		PercentageDiv.Style.Width = Length.Fraction( punchesFraction );
+		PercentagePanel.Style.Width = Length.Fraction( punchesFraction );
 	}
 }

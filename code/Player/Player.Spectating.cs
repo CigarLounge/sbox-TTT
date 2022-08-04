@@ -72,7 +72,7 @@ public partial class Player
 		// move them to a free spectate camera.
 		await GameTask.DelaySeconds( 2 );
 
-		if ( Camera is FollowEntityCamera cam && cam.FollowedEntity is Corpse )
+		if ( Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
 			Camera = new FreeSpectateCamera();
 	}
 

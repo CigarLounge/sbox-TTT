@@ -6,21 +6,22 @@ namespace TTT;
 
 public partial class PropPossession : EntityComponent<Player>
 {
-	[Net] public Prop Prop { get; set; }
-	[Net, Local] public int Punches { get; set; }
+	[Net]
+	public Prop Prop { get; set; }
+	[Net, Local]
+	public int Punches { get; set; }
 
-	// Clientside:
-	private PossessionNameplate _nameplate;
-	private PossessionInfo _info;
-
-	// Serverside:
 	private Player _player; // `Entity` property is cleared before OnDeactivate() called => need to store separately
 	private TimeUntil _timeUntilRecharge = 0;
 	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
+	// Clientside
+	private PossessionNameplate _nameplate;
+	private PossessionInfo _info;
+
 	public PropPossession() { }
 
-	public PropPossession( Prop prop ) { Prop = prop; }
+	public PropPossession( Prop prop ) => Prop = prop;
 
 	protected override void OnActivate()
 	{
@@ -34,7 +35,7 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
-			if ( Local.Pawn is Player p && p.Status != PlayerStatus.Alive )
+			if ( Local.Pawn is Player player && !player.IsAlive() )
 				_nameplate = new PossessionNameplate( Entity, Prop );
 
 			if ( Entity.IsLocalPawn )
@@ -46,7 +47,7 @@ public partial class PropPossession : EntityComponent<Player>
 	{
 		if ( Host.IsServer )
 		{
-			if ( _player.IsValid() && _player.Status != PlayerStatus.Alive )
+			if ( _player.IsValid() && !_player.IsAlive() )
 				_player.Camera = new FreeSpectateCamera();
 
 			if ( Prop.IsValid() )
