@@ -50,8 +50,7 @@ public partial class InspectMenu : Panel
 			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
 			player.LastAttackerWeaponInfo.Icon.ResourcePath );
 
-		var hitboxGroup = (HitboxGroup)player.GetHitboxGroup( player.LastDamage.HitboxIndex );
-		if ( hitboxGroup == HitboxGroup.Head )
+		if ( player.KilledWithHeadShot )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
 
 		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
@@ -70,7 +69,7 @@ public partial class InspectMenu : Panel
 			AddInspectEntry( "Kill List", activeText, "/ui/inspectmenu/killlist.png" );
 		}
 
-		if ( !string.IsNullOrEmpty( _corpse.C4Note ) )
+		if ( !_corpse.C4Note.IsNullOrEmpty() )
 			AddInspectEntry( "C4 Defuse Note",
 			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
 			"/ui/inspectmenu/c4note.png" );

@@ -187,7 +187,7 @@ public abstract partial class Weapon : Carriable
 	[ClientRpc]
 	protected virtual void ShootEffects()
 	{
-		if ( !string.IsNullOrEmpty( Info.MuzzleFlashParticle ) )
+		if ( !Info.MuzzleFlashParticle.IsNullOrEmpty() )
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
@@ -223,7 +223,7 @@ public abstract partial class Weapon : Carriable
 
 				var fullEndPosition = trace.EndPosition + trace.Direction * bulletSize;
 
-				if ( !string.IsNullOrEmpty( Info.TracerParticle ) && trace.Distance > 200 )
+				if ( !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
 					tracer?.SetPosition( 0, trace.StartPosition );

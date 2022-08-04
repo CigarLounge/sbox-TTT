@@ -4,6 +4,8 @@ namespace TTT;
 
 public static class StringExtensions
 {
+	public static bool IsNullOrEmpty( this string s ) => s is null || s.Length == 0;
+
 	public static string FirstCharToUpper( this string input )
 	{
 		return input switch

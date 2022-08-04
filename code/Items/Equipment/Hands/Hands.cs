@@ -115,7 +115,7 @@ public partial class Hands : Carriable
 				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
 			case ModelEntity model:
-				if ( !model.CollisionBounds.Size.HasGreatorOrEqualAxis( _maxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
+				if ( !HasGreatorOrEqualAxis( model.CollisionBounds.Size, _maxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
 					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
 				break;
 		}
@@ -167,6 +167,11 @@ public partial class Hands : Carriable
 		{
 			animator.SetAnimParameter( "holdtype", 0 );
 		}
+	}
+
+	private static bool HasGreatorOrEqualAxis( Vector3 local, Vector3 other )
+	{
+		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
 	}
 
 	[Event.Entity.PreCleanup]
