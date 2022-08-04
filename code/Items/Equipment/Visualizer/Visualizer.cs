@@ -1,5 +1,6 @@
 namespace TTT;
 
+// WIP, not currently added to any shop.
 [Category( "Equipment" )]
 [ClassName( "ttt_equipment_visualizer" )]
 [Title( "Visualizer" )]
