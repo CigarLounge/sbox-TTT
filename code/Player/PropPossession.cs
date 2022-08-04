@@ -125,7 +125,7 @@ public partial class PropPossession : EntityComponent<Player>
 		float forward = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
 		float left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? 1f : 0f);
 		bool up = input.Pressed( InputButton.Jump );
-		Rotation rotation = Rotation.From( input.ViewAngles );
+		var rotation = Rotation.From( input.ViewAngles );
 
 		if ( forward + left != 0f || up )
 			MoveProp( forward, left, up, rotation );
@@ -153,14 +153,13 @@ public partial class PropPossession : EntityComponent<Player>
 	[ConCmd.Server]
 	private static void CancelPossession()
 	{
-		(ConsoleSystem.Caller.Pawn as Player).Components.RemoveAny<PropPossession>();
+		ConsoleSystem.Caller.Pawn.Components.RemoveAny<PropPossession>();
 	}
 
 	[ConCmd.Server]
 	private static void MoveProp( float forward, float left, bool up, Rotation rotation )
 	{
-		(ConsoleSystem.Caller.Pawn as Player).Components.Get<PropPossession>()
-			.HandlePropMovement( forward, left, up, rotation );
+		ConsoleSystem.Caller.Pawn.Components.Get<PropPossession>().HandlePropMovement( forward, left, up, rotation );
 	}
 
 	private void HandlePropMovement( float forward, float left, bool up, Rotation rotation )
