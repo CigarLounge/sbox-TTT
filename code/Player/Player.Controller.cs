@@ -36,6 +36,13 @@ public partial class PlayerController : PawnController
 	[Net] public float AirControl { get; set; } = 30f;
 	[Net] public float AirAcceleration { get; set; } = 50f;
 
+	/// <summary> Multiply excess speed by this much. </summary>
+	[Net] public float HopDampen { get; set; } = 0.7f;
+	/// <summary> Don't dampen until they have this much extra speed. </summary>
+	[Net] public float HopSpeedTolerance { get; set; } = 20f;
+	/// <summary> Never reduce their speed more than this amount. </summary>
+	[Net] public float HopReductionLimit { get; set; } = 50f;
+
 
 	public bool Swimming { get; set; } = false;
 
@@ -296,7 +303,23 @@ public partial class PlayerController : PawnController
 
 		ClearGroundEntity();
 
-		Velocity = Velocity.WithZ( JumpSpeed );
+		// Reduce insane speeds in a casual gamemode.
+		var flatVel = Velocity.WithZ( 0 );
+		var flatSpeed = flatVel.Length;
+		var flatSpeedMax = DefaultSpeed + HopSpeedTolerance;
+
+		if ( flatSpeed > 0 && flatSpeed > flatSpeedMax )
+		{
+			var extraSpeed = flatSpeed - flatSpeedMax;
+			var reduceSpeed = Math.Min( extraSpeed * HopDampen, HopReductionLimit );
+			var newSpeed = flatSpeed - reduceSpeed;
+
+			// Log.Info( $"[BHop] Speed reduced by {reduceSpeed} ({flatSpeed}->{newSpeed})" );
+			flatVel *= newSpeed / flatSpeed;
+		}
+
+		Velocity = flatVel.WithZ( JumpSpeed );
+		// Velocity = Velocity.WithZ( JumpSpeed );
 		// Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 
 		AddEvent( "jump" );
