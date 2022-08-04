@@ -102,14 +102,13 @@ public partial class Player
 			.Ignore( ActiveCarriable )
 			.Run();
 
-		Vector3 downOffset = Vector3.Down * 2f;
+		var downOffset = Vector3.Down * 2f;
 		var origin = mz.Position + downOffset;
 
 		// If there IS something between our eyes and the muzzle, add the distance.
 		if ( muzzleTrace.Hit )
 		{
-			var dist = (muzzleTrace.EndPosition - mz.Position).Length;
-			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * dist) + downOffset;
+			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * muzzleTrace.Distance) + downOffset;
 		}
 
 		// Continue with the forward trace.
@@ -121,17 +120,15 @@ public partial class Player
 			.Ignore( ActiveCarriable )
 			.Run();
 
-		var distance = (fwdTrace.EndPosition - origin).Length;
-
-		float pullbackMult = 0;
+		var pullbackAmount = 0.0f;
 		const float pullbackThreshold = 48f;
-		if ( distance < pullbackThreshold )
+		if ( fwdTrace.Distance < pullbackThreshold )
 		{
-			var pullbackAmount = pullbackThreshold - distance;
-			pullbackMult = MathX.Remap( pullbackAmount, 0, pullbackThreshold, 0.0f, 0.045f );
+			pullbackAmount = (pullbackThreshold - fwdTrace.Distance).Remap( 0, pullbackThreshold, 0.0f, 0.045f );
 		}
 
-		origin -= direction * pullbackMult;
+		origin -= direction * pullbackAmount;
+
 		_viewLight.Position = origin;
 		_viewLight.Rotation = mz.Rotation;
 	}
