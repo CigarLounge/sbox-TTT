@@ -58,7 +58,7 @@ public partial class InfoFeed : Panel
 		var rightLabel = entry.AddLabel( right.IsLocalPawn ? "You" : right.SteamName, "right" );
 		rightLabel.Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
 
-		if ( !string.IsNullOrEmpty( suffix ) )
+		if ( !suffix.IsNullOrEmpty() )
 			entry.AddLabel( suffix, "append" );
 	}
 

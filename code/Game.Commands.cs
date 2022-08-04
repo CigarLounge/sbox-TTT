@@ -21,7 +21,7 @@ public partial class Game
 	[ConCmd.Admin( Name = "ttt_giveitem" )]
 	public static void GiveItem( string itemName )
 	{
-		if ( string.IsNullOrEmpty( itemName ) )
+		if ( itemName.IsNullOrEmpty() )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;

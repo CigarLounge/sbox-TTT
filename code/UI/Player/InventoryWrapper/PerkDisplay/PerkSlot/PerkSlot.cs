@@ -22,6 +22,6 @@ public class PerkSlot : Panel
 		base.Tick();
 
 		IconText.Text = _perk.SlotText;
-		IconText.Enabled( !string.IsNullOrEmpty( _perk.SlotText ) );
+		IconText.Enabled( !_perk.SlotText.IsNullOrEmpty() );
 	}
 }

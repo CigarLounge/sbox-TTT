@@ -74,7 +74,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		foreach ( var clothing in Player.Clothes.ToArray() )
 		{
-			if ( clothing.Model == Detective.Hat && (HitboxGroup)GetHitboxGroup( Player.LastDamage.HitboxIndex ) == HitboxGroup.Head )
+			if ( clothing.Model == Detective.Hat && Player.KilledWithHeadShot )
 			{
 				clothing.Detach();
 				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force );
@@ -328,7 +328,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		var player = Local.Pawn as Player;
 
-		if ( player.ActiveChild is not Binoculars binoculars )
+		if ( player.ActiveCarriable is not Binoculars binoculars )
 			return InputButton.Use;
 
 		if ( !binoculars.IsZoomed )
