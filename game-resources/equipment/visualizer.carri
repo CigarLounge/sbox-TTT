@@ -8,12 +8,12 @@
 		ViewModelPath = ""
 		HandsModelPath = ""
 		HoldType = "None"
-		WorldModelPath = resource:"models/health_station/health_station.vmdl"
+		WorldModelPath = resource:"models/visualizer/visualizer.vmdl"
 		DeployTime = 0
 		IsLimited = true
 		Price = 100
-		IconPath = resource:"ui/equipment/microwave.png"
-		Description = "A modified microwave which dispenses health to any injured players."
-		ClassName = "ttt_equipment_healthstation"
+		IconPath = null
+		Description = "<ADD DESCRIPTION>"
+		ClassName = "ttt_equipment_visualizer"
 	}
 }

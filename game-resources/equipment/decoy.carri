@@ -8,7 +8,7 @@
 		ViewModelPath = ""
 		HandsModelPath = ""
 		HoldType = "None"
-		WorldModelPath = ""
+		WorldModelPath = resource:"models/decoy/decoy.vmdl"
 		DeployTime = 0
 		IsLimited = true
 		Price = 100

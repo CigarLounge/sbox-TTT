@@ -108,6 +108,8 @@ public partial class Player
 
 	public override void OnKilled()
 	{
+		Host.AssertServer();
+
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;

@@ -121,9 +121,6 @@ public partial class ChatBox : Panel
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
-			return;
-
 		if ( message == Strings.RTVCommand )
 		{
 			Game.RockTheVote();
