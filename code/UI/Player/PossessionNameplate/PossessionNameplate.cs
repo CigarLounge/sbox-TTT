@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class PossessionNameplate : Panel
+public class PossessionNameplate : WorldPanel
 {
 	private Label PlayerName { get; set; }
 	private Player _player;
@@ -15,10 +15,11 @@ public class PossessionNameplate : Panel
 		_player = player;
 		_prop = prop;
 		PlayerName.SetText( player.SteamName );
-		Local.Hud.AddChild( this );
+		SceneObject.Flags.ViewModelLayer = true;
 	}
 
-	public override void Tick()
+	[Event.Frame]
+	private void FrameUpdate()
 	{
 		if ( !_player.IsValid() || !_prop.IsValid() )
 		{
@@ -26,22 +27,11 @@ public class PossessionNameplate : Panel
 			return;
 		}
 
-		var occluded = Trace.Ray( CurrentView.Position, _prop.WorldSpaceBounds.Center )
-			.WorldAndEntities()
-			.Ignore( _prop )
-			.Run()
-			.Hit;
+		var tx = Transform;
+		tx.Position = _prop.WorldSpaceBounds.Center;
+		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
-		if ( occluded )
-		{
-			Style.Opacity = 0f;
-			return;
-		}
-
-		var screenPos = _prop.WorldSpaceBounds.Center.ToScreen();
-
-		Style.Opacity = 1;
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		Transform = tx;
 	}
+
 }
