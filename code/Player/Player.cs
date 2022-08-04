@@ -152,10 +152,14 @@ public partial class Player : AnimatedEntity
 		var controller = GetActiveController();
 		controller?.Simulate( client, this, Animator );
 
+		if ( Input.Pressed( InputButton.Menu ) )
+			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
+				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
+
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		SimulateActiveChild( client );
+		SimulateActiveCarriable( client );
 
 		if ( this.IsAlive() )
 		{
@@ -198,7 +202,7 @@ public partial class Player : AnimatedEntity
 		}
 
 		DisplayEntityHints();
-		ActiveChild?.FrameSimulate( client );
+		ActiveCarriable?.FrameSimulate( client );
 	}
 
 	/// <summary>
@@ -208,7 +212,7 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public override void PostCameraSetup( ref CameraSetup setup )
 	{
-		ActiveChild?.PostCameraSetup( ref setup );
+		ActiveCarriable?.PostCameraSetup( ref setup );
 	}
 
 	/// <summary>
@@ -219,7 +223,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		ActiveChild?.BuildInput( input );
+		ActiveCarriable?.BuildInput( input );
 
 		if ( input.StopProcessing )
 			return;
@@ -237,8 +241,8 @@ public partial class Player : AnimatedEntity
 		if ( !this.IsAlive() )
 			return;
 
-		ActiveChild?.RenderHud( screenSize );
-		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild );
+		ActiveCarriable?.RenderHud( screenSize );
+		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveCarriable );
 	}
 
 	#region Animator
@@ -329,28 +333,30 @@ public partial class Player : AnimatedEntity
 		RemoveAllClothing();
 	}
 
-	#region ActiveChild
+	#region ActiveCarriable
 	[Net, Predicted]
-	public Carriable ActiveChild { get; set; }
+	public Carriable ActiveCarriable { get; set; }
 
-	public Carriable LastActiveChild { get; set; }
+	public Carriable _lastActiveCarriable;
+	public Carriable _lastKnownCarriable;
 
-	public void SimulateActiveChild( Client client )
+	public void SimulateActiveCarriable( Client client )
 	{
-		if ( LastActiveChild != ActiveChild )
+		if ( _lastActiveCarriable != ActiveCarriable )
 		{
-			OnActiveChildChanged( LastActiveChild, ActiveChild );
-			LastActiveChild = ActiveChild;
+			OnActiveCarriableChanged( _lastActiveCarriable, ActiveCarriable );
+			_lastKnownCarriable = _lastActiveCarriable;
+			_lastActiveCarriable = ActiveCarriable;
 		}
 
-		if ( !ActiveChild.IsValid() || !ActiveChild.IsAuthority )
+		if ( !ActiveCarriable.IsValid() || !ActiveCarriable.IsAuthority )
 			return;
 
-		if ( ActiveChild.TimeSinceDeployed > ActiveChild.Info.DeployTime )
-			ActiveChild.Simulate( client );
+		if ( ActiveCarriable.TimeSinceDeployed > ActiveCarriable.Info.DeployTime )
+			ActiveCarriable.Simulate( client );
 	}
 
-	public void OnActiveChildChanged( Carriable previous, Carriable next )
+	public void OnActiveCarriableChanged( Carriable previous, Carriable next )
 	{
 		previous?.ActiveEnd( this, previous.Owner != this );
 		next?.ActiveStart( this );
@@ -361,14 +367,9 @@ public partial class Player : AnimatedEntity
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
 			var droppedEntity = Inventory.DropActive();
-
 			if ( droppedEntity is not null )
-			{
 				if ( droppedEntity.PhysicsGroup is not null )
-				{
 					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * DropVelocity;
-				}
-			}
 		}
 	}
 	#endregion
@@ -376,9 +377,7 @@ public partial class Player : AnimatedEntity
 	private void SimulatePerks()
 	{
 		foreach ( var perk in Perks )
-		{
 			perk.Simulate( Client );
-		}
 	}
 
 	public override void OnChildAdded( Entity child )
