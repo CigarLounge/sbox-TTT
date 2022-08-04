@@ -30,8 +30,8 @@ public partial class Player
 			transform.Rotation *= Rotation.From( new Angles( 0, 90, 0 ) );
 			_worldLight.Transform = transform;
 
-			if ( ActiveChild.IsValid() )
-				_worldLight.Transform = ActiveChild.GetAttachment( "muzzle" ) ?? transform;
+			if ( ActiveCarriable.IsValid() )
+				_worldLight.Transform = ActiveCarriable.GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( TimeSinceLightToggled > 0.25f && toggle )
@@ -85,10 +85,10 @@ public partial class Player
 		var eyeTransform = new Transform( EyePosition, EyeRotation );
 		_viewLight.Transform = eyeTransform;
 
-		if ( !ActiveChild.IsValid() )
+		if ( !ActiveCarriable.IsValid() )
 			return;
 
-		var muzzleTransform = ActiveChild.ViewModelEntity?.GetAttachment( "muzzle" );
+		var muzzleTransform = ActiveCarriable.ViewModelEntity?.GetAttachment( "muzzle" );
 
 		if ( !muzzleTransform.HasValue )
 			return;
@@ -99,7 +99,7 @@ public partial class Player
 		var muzzleTrace = Trace.Ray( mz.Position, EyePosition )
 			.Size( 2 )
 			.Ignore( this )
-			.Ignore( ActiveChild )
+			.Ignore( ActiveCarriable )
 			.Run();
 
 		Vector3 downOffset = Vector3.Down * 2f;
@@ -118,7 +118,7 @@ public partial class Player
 
 		var fwdTrace = Trace.Box( Vector3.One * 2, origin, destination )
 			.Ignore( this )
-			.Ignore( ActiveChild )
+			.Ignore( ActiveCarriable )
 			.Run();
 
 		var distance = (fwdTrace.EndPosition - origin).Length;
