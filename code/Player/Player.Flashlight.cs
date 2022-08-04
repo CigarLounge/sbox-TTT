@@ -72,7 +72,7 @@ public partial class Player
 	}
 
 	[Event.Frame]
-	private void Frame()
+	private void FrameUpdate()
 	{
 		if ( !_viewLight.IsValid() )
 			return;
@@ -107,9 +107,7 @@ public partial class Player
 
 		// If there IS something between our eyes and the muzzle, add the distance.
 		if ( muzzleTrace.Hit )
-		{
 			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * muzzleTrace.Distance) + downOffset;
-		}
 
 		// Continue with the forward trace.
 		var destination = origin + mz.Rotation.Forward * _viewLight.Range;
@@ -123,9 +121,7 @@ public partial class Player
 		var pullbackAmount = 0.0f;
 		const float pullbackThreshold = 48f;
 		if ( fwdTrace.Distance < pullbackThreshold )
-		{
 			pullbackAmount = (pullbackThreshold - fwdTrace.Distance).Remap( 0, pullbackThreshold, 0.0f, 0.045f );
-		}
 
 		origin -= direction * pullbackAmount;
 
