@@ -18,8 +18,7 @@ public partial class Player
 	{
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
 			.Ignore( this )
-			.HitLayer( CollisionLayer.Debris )
-			.HitLayer( CollisionLayer.Solid )
+			.WithAnyTags( "solid", "trigger" )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )
@@ -73,10 +72,10 @@ public partial class Player
 		if ( entity is not IUse use )
 			return false;
 
-		if ( !use.IsUsable( this ) )
+		if ( entity.Position.Distance( EyePosition ) > UseDistance )
 			return false;
 
-		if ( entity.Position.Distance( EyePosition ) > UseDistance )
+		if ( !use.IsUsable( this ) )
 			return false;
 
 		return true;

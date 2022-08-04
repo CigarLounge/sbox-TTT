@@ -187,7 +187,7 @@ public abstract partial class Weapon : Carriable
 	[ClientRpc]
 	protected virtual void ShootEffects()
 	{
-		if ( !string.IsNullOrEmpty( Info.MuzzleFlashParticle ) )
+		if ( !Info.MuzzleFlashParticle.IsNullOrEmpty() )
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
@@ -223,7 +223,7 @@ public abstract partial class Weapon : Carriable
 
 				var fullEndPosition = trace.EndPosition + trace.Direction * bulletSize;
 
-				if ( !string.IsNullOrEmpty( Info.TracerParticle ) && trace.Distance > 200 )
+				if ( !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
 					tracer?.SetPosition( 0, trace.StartPosition );
@@ -269,18 +269,24 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
-		var InWater = Map.Physics.IsPointWater( start );
+		var underWater = Trace.TestPoint( start, "water" );
 
 		var trace = Trace.Ray( start, end )
-			.UseHitboxes()
-			.HitLayer( CollisionLayer.Water, !InWater )
-			.HitLayer( CollisionLayer.Debris )
-			.Ignore( Owner )
-			.Ignore( this )
-			.Size( radius )
-			.Run();
+				.UseHitboxes()
+				.WithAnyTags( "solid", "player", "glass", "trigger" )
+				.Ignore( this )
+				.Size( radius );
 
-		yield return trace;
+		//
+		// If we're not underwater then we can hit water
+		//
+		if ( !underWater )
+			trace = trace.WithAnyTags( "water" );
+
+		var tr = trace.Run();
+
+		if ( tr.Hit )
+			yield return tr;
 
 		//
 		// Another trace, bullet going through thin material, penetrating water surface?
@@ -293,13 +299,7 @@ public abstract partial class Weapon : Carriable
 			return;
 
 		if ( IsServer )
-		{
-			var ammoCrate = Ammo.Create( Info.AmmoType, AmmoClip );
-			ammoCrate.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 40;
-			ammoCrate.Rotation = Owner.EyeRotation;
-			ammoCrate.PhysicsGroup.Velocity = Owner.Velocity + Owner.EyeRotation.Forward * Player.DropVelocity;
-			ammoCrate.Dropper = Owner;
-		}
+			Ammo.Drop( Owner, Info.AmmoType, AmmoClip );
 
 		AmmoClip = 0;
 	}

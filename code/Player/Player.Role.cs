@@ -19,6 +19,7 @@ public partial class Player
 			_role?.OnDeselect( this );
 			var oldRole = _role;
 			_role = value;
+
 			_isRoleKnown = false;
 			_playersWhoKnowTheRole.Clear();
 
@@ -28,7 +29,7 @@ public partial class Player
 
 			_role.OnSelect( this );
 
-			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
+			Event.Run( GameEvent.Player.RoleChanged, this, oldRole );
 		}
 	}
 
@@ -64,6 +65,12 @@ public partial class Player
 
 		foreach ( var client in to )
 		{
+			if ( client.Pawn is null )
+			{
+				ClientSetRole( To.Single( client ), Role.Info );
+				continue;
+			}
+
 			var id = client.Pawn.NetworkIdent;
 			if ( _playersWhoKnowTheRole.Contains( id ) )
 				continue;
@@ -73,24 +80,24 @@ public partial class Player
 		}
 	}
 
-	public void SetRole( string className )
+	public void SetRole( RoleInfo roleInfo )
 	{
-		if ( className == Role.Innocent.Info.ClassName )
+		if ( roleInfo == Role.Innocent.Info )
 			Role = Role.Innocent;
-		else if ( className == Role.Traitor.Info.ClassName )
+		else if ( roleInfo == Role.Traitor.Info )
 			Role = Role.Traitor;
-		else if ( className == Role.Detective.Info.ClassName )
+		else if ( roleInfo == Role.Detective.Info )
 			Role = Role.Detective;
 	}
 
 	[ClientRpc]
 	private void ClientSetRole( RoleInfo roleInfo )
 	{
-		SetRole( roleInfo.ClassName );
+		SetRole( roleInfo );
 		IsRoleKnown = true;
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		if ( !IsClient || IsLocalPawn )

@@ -43,7 +43,7 @@ public static class EventLogger
 		Events.Add( eventInfo );
 	}
 
-	[TTTEvent.Round.Started]
+	[GameEvent.Round.Started]
 	private static void OnRoundStart()
 	{
 		if ( !Host.IsServer )
@@ -54,7 +54,7 @@ public static class EventLogger
 		LogEvent( EventType.Round, Game.InProgressTime, "The round started." );
 	}
 
-	[TTTEvent.Round.Ended]
+	[GameEvent.Round.Ended]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )
@@ -65,7 +65,7 @@ public static class EventLogger
 		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
 	}
 
-	[TTTEvent.Player.TookDamage]
+	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
 		if ( !Host.IsServer )
@@ -80,19 +80,19 @@ public static class EventLogger
 			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeLeft, $"{player.SteamName} took {info.Damage} damage." );
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
 			return;
 
-		if ( !player.DiedBySuicide )
+		if ( player.KilledByPlayer )
 			LogEvent( EventType.PlayerKill, Game.Current.State.TimeLeft, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
 		else if ( player.LastDamage.Flags == DamageFlags.Fall )
 			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeLeft, $"{player.SteamName} fell to their death." );
 	}
 
-	[TTTEvent.Player.CorpseFound]
+	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
 		if ( !Host.IsServer )

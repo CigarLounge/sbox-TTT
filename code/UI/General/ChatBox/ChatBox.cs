@@ -3,20 +3,20 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
+public enum Channel
+{
+	All,
+	Team,
+	Spectator
+}
+
 [UseTemplate]
 public partial class ChatBox : Panel
 {
-	public enum Channel
-	{
-		All,
-		Team,
-		Spectator
-	}
+	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
+	private static readonly Color _spectatorChatColor = PlayerStatus.Spectator.GetColor();
 
-	private static readonly Color _allChatColor = Color.FromBytes( 26, 196, 77 );
-	private static readonly Color _spectatorChatColor = Color.FromBytes( 252, 219, 56 );
-
-	public static ChatBox Instance;
+	public static ChatBox Instance { get; private set; }
 
 	public Panel EntryCanvas { get; set; }
 	public TabTextEntry Input { get; set; }
@@ -84,11 +84,11 @@ public partial class ChatBox : Panel
 		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, string c = "" )
+	public void AddEntry( string name, string message, string classes = "" )
 	{
 		var entry = new ChatEntry( name, message );
-		if ( !string.IsNullOrEmpty( c ) )
-			entry.AddClass( c );
+		if ( !classes.IsNullOrEmpty() )
+			entry.AddClass( classes );
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -100,7 +100,7 @@ public partial class ChatBox : Panel
 
 	private void Submit()
 	{
-		if ( string.IsNullOrWhiteSpace( Input.Text ) )
+		if ( Input.Text.IsNullOrEmpty() )
 			return;
 
 		if ( Input.Text == Strings.RTVCommand )
@@ -119,9 +119,6 @@ public partial class ChatBox : Panel
 	public static void SendChat( string message, Channel channel = Channel.All )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
-			return;
-
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
 		if ( message == Strings.RTVCommand )

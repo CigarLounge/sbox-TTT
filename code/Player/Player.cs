@@ -51,6 +51,8 @@ public partial class Player : AnimatedEntity
 		base.Spawn();
 
 		Tags.Add( "player" );
+		Tags.Add( "solid" );
+
 		SetModel( "models/citizen/citizen.vmdl" );
 		Role = Role.None;
 
@@ -58,12 +60,12 @@ public partial class Player : AnimatedEntity
 		LifeState = LifeState.Respawnable;
 		Transmit = TransmitType.Always;
 
-		Predictable = true;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 		EnableHideInFirstPerson = true;
 		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
+		EnableTouch = false;
 
 		Animator = new PlayerAnimator();
 		Camera = new FreeSpectateCamera();
@@ -102,6 +104,7 @@ public partial class Player : AnimatedEntity
 
 			EnableAllCollisions = true;
 			EnableDrawing = true;
+			EnableTouch = true;
 
 			Controller = new WalkController();
 			Camera = new FirstPersonCamera();
@@ -111,7 +114,7 @@ public partial class Player : AnimatedEntity
 			DressPlayer();
 			ResetInterpolation();
 
-			Event.Run( TTTEvent.Player.Spawned, this );
+			Event.Run( GameEvent.Player.Spawned, this );
 			Game.Current.State.OnPlayerSpawned( this );
 		}
 		else
@@ -141,7 +144,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		CreateFlashlight();
-		Event.Run( TTTEvent.Player.Spawned, this );
+		Event.Run( GameEvent.Player.Spawned, this );
 	}
 
 	public override void Simulate( Client client )
@@ -149,10 +152,14 @@ public partial class Player : AnimatedEntity
 		var controller = GetActiveController();
 		controller?.Simulate( client, this, Animator );
 
+		if ( Input.Pressed( InputButton.Menu ) )
+			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
+				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
+
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		SimulateActiveChild( client, ActiveChild );
+		SimulateActiveCarriable( client );
 
 		if ( this.IsAlive() )
 		{
@@ -195,7 +202,7 @@ public partial class Player : AnimatedEntity
 		}
 
 		DisplayEntityHints();
-		ActiveChild?.FrameSimulate( client );
+		ActiveCarriable?.FrameSimulate( client );
 	}
 
 	/// <summary>
@@ -205,7 +212,7 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public override void PostCameraSetup( ref CameraSetup setup )
 	{
-		ActiveChild?.PostCameraSetup( ref setup );
+		ActiveCarriable?.PostCameraSetup( ref setup );
 	}
 
 	/// <summary>
@@ -216,7 +223,7 @@ public partial class Player : AnimatedEntity
 		if ( input.StopProcessing )
 			return;
 
-		ActiveChild?.BuildInput( input );
+		ActiveCarriable?.BuildInput( input );
 
 		if ( input.StopProcessing )
 			return;
@@ -234,8 +241,8 @@ public partial class Player : AnimatedEntity
 		if ( !this.IsAlive() )
 			return;
 
-		ActiveChild?.RenderHud( screenSize );
-		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveChild );
+		ActiveCarriable?.RenderHud( screenSize );
+		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveCarriable );
 	}
 
 	#region Animator
@@ -294,23 +301,12 @@ public partial class Player : AnimatedEntity
 
 	public void CreateHull()
 	{
-		CollisionGroup = CollisionGroup.Player;
-		AddCollisionLayer( CollisionLayer.Player );
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
-
-		MoveType = MoveType.MOVETYPE_WALK;
 		EnableHitboxes = true;
 	}
 
 	public override void StartTouch( Entity other )
 	{
-		if ( other is PickupTrigger )
-		{
-			Touch( other.Parent );
-
-			return;
-		}
-
 		if ( !IsServer )
 			return;
 
@@ -331,37 +327,36 @@ public partial class Player : AnimatedEntity
 
 	public void DeleteItems()
 	{
-		Components.RemoveAll();
 		ClearAmmo();
 		Inventory.DeleteContents();
+		Perks.DeleteContents();
 		RemoveAllClothing();
 	}
 
-	#region ActiveChild
+	#region ActiveCarriable
 	[Net, Predicted]
-	public Carriable ActiveChild { get; set; }
+	public Carriable ActiveCarriable { get; set; }
 
-	public Carriable LastActiveChild { get; set; }
+	public Carriable _lastActiveCarriable;
+	public Carriable _lastKnownCarriable;
 
-	public void SimulateActiveChild( Client client, Carriable child )
+	public void SimulateActiveCarriable( Client client )
 	{
-		if ( LastActiveChild != child )
+		if ( _lastActiveCarriable != ActiveCarriable )
 		{
-			OnActiveChildChanged( LastActiveChild, child );
-			LastActiveChild = child;
+			OnActiveCarriableChanged( _lastActiveCarriable, ActiveCarriable );
+			_lastKnownCarriable = _lastActiveCarriable;
+			_lastActiveCarriable = ActiveCarriable;
 		}
 
-		if ( !LastActiveChild.IsValid() )
+		if ( !ActiveCarriable.IsValid() || !ActiveCarriable.IsAuthority )
 			return;
 
-		if ( !LastActiveChild.IsAuthority )
-			return;
-
-		if ( LastActiveChild.TimeSinceDeployed > LastActiveChild.Info.DeployTime )
-			LastActiveChild.Simulate( client );
+		if ( ActiveCarriable.TimeSinceDeployed > ActiveCarriable.Info.DeployTime )
+			ActiveCarriable.Simulate( client );
 	}
 
-	public void OnActiveChildChanged( Carriable previous, Carriable next )
+	public void OnActiveCarriableChanged( Carriable previous, Carriable next )
 	{
 		previous?.ActiveEnd( this, previous.Owner != this );
 		next?.ActiveStart( this );
@@ -372,14 +367,9 @@ public partial class Player : AnimatedEntity
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
 		{
 			var droppedEntity = Inventory.DropActive();
-
 			if ( droppedEntity is not null )
-			{
 				if ( droppedEntity.PhysicsGroup is not null )
-				{
 					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * DropVelocity;
-				}
-			}
 		}
 	}
 	#endregion
@@ -387,9 +377,7 @@ public partial class Player : AnimatedEntity
 	private void SimulatePerks()
 	{
 		foreach ( var perk in Perks )
-		{
 			perk.Simulate( Client );
-		}
 	}
 
 	public override void OnChildAdded( Entity child )
@@ -401,7 +389,7 @@ public partial class Player : AnimatedEntity
 				Inventory.OnChildAdded( carriable );
 				break;
 			}
-			case BaseClothing clothing:
+			case Clothing clothing:
 			{
 				Clothes.Add( clothing );
 				break;
@@ -418,7 +406,7 @@ public partial class Player : AnimatedEntity
 				Inventory.OnChildRemoved( carriable );
 				break;
 			}
-			case BaseClothing clothing:
+			case Clothing clothing:
 			{
 				Clothes.Remove( clothing );
 				break;

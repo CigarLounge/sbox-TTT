@@ -10,7 +10,7 @@ public partial class MapSelectionState : BaseState
 	[Net]
 	public IDictionary<Client, string> Votes { get; private set; }
 
-	public override string Name => "Map Selection";
+	public override string Name { get; } = "Map Selection";
 	public override int Duration => Game.MapSelectionTime;
 
 	public static async Task<IEnumerable<string>> GetMapIdents()
@@ -42,7 +42,7 @@ public partial class MapSelectionState : BaseState
 		(
 			Votes.GroupBy( x => x.Value )
 			.OrderBy( x => x.Count() )
-			.First().Key
+			.Last().Key
 		);
 	}
 

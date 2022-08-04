@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System.Collections.Generic;
 
 namespace TTT.UI;
@@ -9,145 +8,76 @@ namespace TTT.UI;
 public partial class InspectMenu : Panel
 {
 	private readonly Corpse _corpse;
-	private readonly Player _player;
 	private InspectEntry _selectedInspectEntry;
 
 	private readonly List<InspectEntry> _inspectionEntries = new();
-	private readonly InspectEntry _timeSinceDeath;
-	private readonly InspectEntry _deathCause;
-	private readonly InspectEntry _weapon;
-	private readonly InspectEntry _headshot;
-	private readonly InspectEntry _dna;
-	private readonly InspectEntry _lastSeen;
-	private readonly InspectEntry _killList;
-	private readonly InspectEntry _c4Note;
+	private InspectEntry _timeSinceDeath;
+	private InspectEntry _dna;
 
-	private Panel InspectContainer { get; set; }
-	private Image PlayerAvatar { get; set; }
-	private Label RoleName { get; set; }
-	private Label PlayerName { get; set; }
-	private Panel IconsContainer { get; set; }
-	private Button CallDetectiveButton { get; set; }
-	private readonly Label _inspectDetailsLabel;
+	private Image PlayerAvatar { get; init; }
+	private Label RoleName { get; init; }
+	private Label PlayerName { get; init; }
+	private Panel IconsContainer { get; init; }
+	private Button CallDetectiveButton { get; init; }
+	private Label ActiveText { get; init; }
 
 	public InspectMenu( Corpse corpse )
 	{
 		Assert.NotNull( corpse );
 
-		_timeSinceDeath = new InspectEntry( IconsContainer );
-		_timeSinceDeath.Enabled( true );
-		_timeSinceDeath.SetImage( "/ui/inspectmenu/time.png" );
-		_inspectionEntries.Add( _timeSinceDeath );
-
-		_deathCause = new InspectEntry( IconsContainer );
-		_deathCause.Enabled( false );
-		_inspectionEntries.Add( _deathCause );
-
-		_weapon = new InspectEntry( IconsContainer );
-		_weapon.Enabled( false );
-		_inspectionEntries.Add( _weapon );
-
-		_headshot = new InspectEntry( IconsContainer );
-		_headshot.Enabled( false );
-		_inspectionEntries.Add( _headshot );
-
-		_dna = new InspectEntry( IconsContainer );
-		_dna.Enabled( false );
-		_inspectionEntries.Add( _dna );
-
-		_lastSeen = new InspectEntry( IconsContainer );
-		_lastSeen.Enabled( false );
-		_inspectionEntries.Add( _lastSeen );
-
-		_killList = new InspectEntry( IconsContainer );
-		_killList.Enabled( false );
-		_inspectionEntries.Add( _killList );
-
-		_c4Note = new InspectEntry( IconsContainer );
-		_c4Note.Enabled( false );
-		_inspectionEntries.Add( _c4Note );
-
-		_inspectDetailsLabel = InspectContainer.Add.Label();
-		_inspectDetailsLabel.AddClass( "inspect-details-label" );
-
 		_corpse = corpse;
-		_player = corpse.Player;
-		SetConfirmationData();
+		var player = corpse.Player;
+
+		PlayerAvatar.SetTexture( $"avatar:{player.SteamId}" );
+		PlayerName.Text = player.SteamName;
+		RoleName.Text = player.Role.Title;
+		RoleName.Style.FontColor = player.Role.Color;
+
+		SetupInspectIcons();
 	}
 
-	private void SetConfirmationData()
+	private void SetupInspectIcons()
 	{
-		PlayerAvatar.SetTexture( $"avatar:{_player.SteamId}" );
-		PlayerName.Text = _player.SteamName;
-		RoleName.Text = _player.Role.Title;
-		RoleName.Style.FontColor = _player.Role.Color;
+		var player = _corpse.Player;
 
-		var (name, imageText, activeText) = GetCauseOfDeathStrings();
-		_deathCause.Enabled( true );
-		_deathCause.SetImage( $"/ui/inspectmenu/{name}.png" );
-		_deathCause.SetImageText( imageText );
-		_deathCause.SetActiveText( activeText );
+		_timeSinceDeath = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/time.png" );
 
-		var hitboxGroup = (HitboxGroup)_player.GetHitboxGroup( _player.LastDamage.HitboxIndex );
-		_headshot.Enabled( hitboxGroup == HitboxGroup.Head );
+		var (name, deathImageText, deathActiveText) = GetCauseOfDeathStrings();
+		AddInspectEntry( deathImageText, deathActiveText, $"/ui/inspectmenu/{name}.png" );
 
-		if ( _headshot.IsEnabled() )
-		{
-			_headshot.SetImage( "/ui/inspectmenu/headshot.png" );
-			_headshot.SetImageText( "Headshot" );
-			_headshot.SetActiveText( "The fatal wound was a headshot. No time to scream." );
-		}
+		if ( player.LastAttackerWeaponInfo is not null )
+			AddInspectEntry( $"{player.LastAttackerWeaponInfo.Title}",
+			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
+			player.LastAttackerWeaponInfo.Icon.ResourcePath );
 
+		if ( player.KilledWithHeadShot )
+			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
+
+		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
-		if ( _dna.IsEnabled() )
-			_dna.SetImage( "/ui/inspectmenu/dna.png" );
 
-		_lastSeen.Enabled( _player.LastSeenPlayer.IsValid() );
-		if ( _player.LastSeenPlayer.IsValid() )
+		if ( player.LastSeenPlayer.IsValid() )
+			AddInspectEntry( player.LastSeenPlayer.SteamName,
+			$"The last person they saw was {player.LastSeenPlayer.SteamName}... killer or coincidence?",
+			"/ui/inspectmenu/lastseen.png" );
+
+		if ( player.PlayersKilled.Count > 0 )
 		{
-			_lastSeen.SetImage( "/ui/inspectmenu/lastseen.png" );
-			_lastSeen.SetImageText( _player.LastSeenPlayer.SteamName );
-			_lastSeen.SetActiveText( $"The last person they saw was {_player.LastSeenPlayer.SteamName}... killer or coincidence?" );
+			var activeText = "You found a list of kills that confirms the death(s) of... ";
+			for ( var i = 0; i < player.PlayersKilled.Count; ++i )
+				activeText += i == player.PlayersKilled.Count - 1 ? $"{player.PlayersKilled[i].SteamName}." : $"{player.PlayersKilled[i].SteamName}, ";
+			AddInspectEntry( "Kill List", activeText, "/ui/inspectmenu/killlist.png" );
 		}
 
-		_weapon.Enabled( _player.LastAttackerWeaponInfo is not null );
-		if ( _weapon.IsEnabled() )
-		{
-			_weapon.SetTexture( _player.LastAttackerWeaponInfo.Icon );
-			_weapon.SetImageText( $"{_player.LastAttackerWeaponInfo.Title}" );
-			_weapon.SetActiveText( $"It appears a {_player.LastAttackerWeaponInfo.Title} was used to kill them." );
-		}
-
-		_killList.Enabled( _player.PlayersKilled.Count > 0 );
-		if ( _killList.IsEnabled() )
-		{
-			_killList.SetImage( "/ui/inspectmenu/killlist.png" );
-			_killList.SetImageText( "Kill List" );
-			var text = "You found a list of kills that confirms the death(s) of...";
-			foreach ( var deadPlayer in _player.PlayersKilled )
-				text += $"{deadPlayer.SteamName}\n";
-			_killList.SetActiveText( text );
-		}
-
-		_c4Note.Enabled( !string.IsNullOrEmpty( _corpse.C4Note ) );
-		if ( _c4Note.IsEnabled() )
-		{
-			_c4Note.SetImage( "/ui/inspectmenu/c4note.png" );
-			_c4Note.SetImageText( "C4 Defuse Note" );
-			_c4Note.SetActiveText( $"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4." );
-		}
+		if ( !_corpse.C4Note.IsNullOrEmpty() )
+			AddInspectEntry( "C4 Defuse Note",
+			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
+			"/ui/inspectmenu/c4note.png" );
 
 		if ( !_corpse.Perks.IsNullOrEmpty() )
 		{
 			foreach ( var perk in _corpse.Perks )
-			{
-				var perkEntry = new InspectEntry( IconsContainer );
-				perkEntry.SetTexture( perk.Icon );
-				perkEntry.SetImageText( perk.Title );
-				perkEntry.SetActiveText( $"They were carrying {perk.Title}." );
-
-				_inspectionEntries.Add( perkEntry );
-			}
+				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.Icon.ResourcePath );
 		}
 
 		foreach ( var entry in _inspectionEntries )
@@ -157,9 +87,16 @@ public partial class InspectMenu : Panel
 		}
 	}
 
+	private InspectEntry AddInspectEntry( string iconText, string activeText, string imagePath )
+	{
+		var entry = new InspectEntry( IconsContainer, iconText, activeText, imagePath );
+		_inspectionEntries.Add( entry );
+		return entry;
+	}
+
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _player.LastDamage.Flags switch
+		return _corpse.Player.LastDamage.Flags switch
 		{
 			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
 			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
@@ -178,25 +115,27 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		CallDetectiveButton.Enabled( _player.IsConfirmedDead );
+		var player = _corpse.Player;
+
+		CallDetectiveButton.Enabled( player.IsConfirmedDead );
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
 
-		var timeSinceDeath = _player.TimeSinceDeath.Relative.TimerString();
+		var timeSinceDeath = player.TimeSinceDeath.Relative.TimerString();
 		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
-		_timeSinceDeath.SetActiveText( $"They died roughly {timeSinceDeath} ago." );
+		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 		if ( _dna.IsEnabled() )
 		{
-			_dna.SetActiveText( $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}." );
 			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
 
 		var isShowing = _selectedInspectEntry is not null;
-		_inspectDetailsLabel.SetClass( "fade-in", isShowing );
+		ActiveText.SetClass( "fade-in", isShowing );
 
 		if ( isShowing )
-			_inspectDetailsLabel.Text = _selectedInspectEntry.ActiveText;
+			ActiveText.Text = _selectedInspectEntry.ActiveText;
 	}
 
 	// Called from UI panel
@@ -216,7 +155,7 @@ public partial class InspectMenu : Panel
 		if ( !enemy.IsValid() || enemy is not Corpse corpse )
 			return;
 
-		ChatBox.AddInfo( $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
+		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
 		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 

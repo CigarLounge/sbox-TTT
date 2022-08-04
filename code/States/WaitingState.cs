@@ -4,7 +4,7 @@ namespace TTT;
 
 public class WaitingState : BaseState
 {
-	public override string Name => "Waiting";
+	public override string Name { get; } = "Waiting";
 
 	public override void OnSecond()
 	{

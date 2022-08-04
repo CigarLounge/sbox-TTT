@@ -43,7 +43,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public BaseViewModel ViewModelEntity { get; protected set; }
 
 	/// <summary>
-	/// Utility - return the entity we should be spawning particles from etc
+	/// Return the entity we should be spawning particles from.
 	/// </summary>
 	public virtual ModelEntity EffectEntity => (ViewModelEntity.IsValid() && IsFirstPersonMode) ? ViewModelEntity : this;
 
@@ -51,21 +51,30 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// The text that will show up in the inventory slot.
 	/// </summary>
 	public virtual string SlotText => string.Empty;
-	public bool IsActiveChild => Owner?.ActiveChild == this;
+
+	/// <summary>
+	/// Instructional text that will display next to a Primary Attack glyph.
+	/// </summary>
+	public virtual string PrimaryAttackHint => string.Empty;
+
+	/// <summary>
+	/// Instructional text that will display next to a Secondary Attack glyph.
+	/// </summary>
+	public virtual string SecondaryAttackHint => string.Empty;
+
+	public bool IsActiveCarriable => Owner?.ActiveCarriable == this;
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		MoveType = MoveType.Physics;
+		Tags.Add( "trigger" );
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
-		CollisionGroup = CollisionGroup.Weapon;
-		SetInteractsAs( CollisionLayer.Debris );
 
-		if ( string.IsNullOrWhiteSpace( ClassName ) )
+		if ( ClassName.IsNullOrEmpty() )
 		{
 			Log.Error( this + " doesn't have a class name!" );
 			return;
@@ -79,7 +88,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrWhiteSpace( ClassName ) )
+		if ( !ClassName.IsNullOrEmpty() )
 			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 
@@ -102,7 +111,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 		TimeSinceDeployed = 0;
 
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
@@ -112,9 +121,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual void ActiveEnd( Player player, bool dropped )
 	{
 		if ( !dropped )
-		{
 			EnableDrawing = false;
-		}
 
 		if ( IsClient )
 		{
@@ -200,7 +207,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			return;
 
 		Owner = carrier;
-		MoveType = MoveType.None;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
 	}
@@ -213,7 +219,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 			return;
 
 		Owner = null;
-		MoveType = MoveType.Physics;
 		EnableDrawing = true;
 		EnableAllCollisions = true;
 		TimeSinceDropped = 0;

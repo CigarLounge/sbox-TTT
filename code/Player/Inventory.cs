@@ -14,8 +14,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public Carriable Active
 	{
-		get => Owner.ActiveChild;
-		private set => Owner.ActiveChild = value;
+		get => Owner.ActiveCarriable;
+		private set => Owner.ActiveCarriable = value;
 	}
 
 	public Carriable this[int i] => _list[i];
@@ -238,7 +238,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 			Owner = Owner,
 			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
 			Rotation = Owner.EyeRotation,
-			Velocity = Owner.EyeRotation.Forward * DropVelocity
+			Velocity = Owner.EyeRotation.Forward * DropVelocity,
+			PhysicsEnabled = true
 		};
 
 		return droppedEntity;

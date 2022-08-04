@@ -41,7 +41,7 @@ public partial class Player
 			var oldStatus = _status;
 			_status = value;
 
-			Event.Run( TTTEvent.Player.StatusChanged, this, oldStatus );
+			Event.Run( GameEvent.Player.StatusChanged, this, oldStatus );
 		}
 	}
 
@@ -85,8 +85,8 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// Reveal the player's role, if the player's MIA confirm his death and
-	/// reveal the player's corpse if not already.
+	/// Reveals the player's role.
+	/// If the player is MIA, confirm his death and send the player's corpse to everyone.
 	/// </summary>
 	public void Reveal()
 	{
@@ -104,9 +104,15 @@ public partial class Player
 		{
 			Corpse.IsFound = true;
 			Corpse.SendPlayer( To.Everyone );
+			Corpse.ClientCorpseFound( To.Everyone, null );
 		}
 	}
 
+	/// <summary>
+	/// If the player is <strong><see cref="PlayerStatus.MissingInAction"/></strong>,
+	/// update the status for the client owner 
+	/// and <strong><see cref="Team.Traitors"/></strong>.
+	/// </summary>
 	public void UpdateMissingInAction()
 	{
 		Host.AssertServer();
@@ -154,15 +160,21 @@ public partial class Player
 		Status = status;
 	}
 
-	[TTTEvent.Game.ClientJoined]
+	[GameEvent.Client.Joined]
 	private void SyncClient( Client client )
 	{
+		if ( IsRoleKnown )
+			SendRole( To.Single( client ) );
+
 		if ( IsSpectator )
 			UpdateStatus( To.Single( client ) );
-
-		if ( IsConfirmedDead )
+		else if ( IsConfirmedDead )
 			ClientConfirmDeath( To.Single( client ), Confirmer );
-		else if ( IsRoleKnown )
-			SendRole( To.Single( client ) );
+
+		if ( Corpse.IsValid() && Corpse.IsFound )
+		{
+			Corpse.SendPlayer( To.Single( client ) );
+			Corpse.ClientCorpseFound( To.Single( client ), Corpse.Finder, true );
+		}
 	}
 }

@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public static partial class TTTEvent
+public static partial class GameEvent
 {
 	public static class Player
 	{
@@ -73,7 +73,7 @@ public static partial class TTTEvent
 		/// <summary>
 		/// Occurs when a player takes damage.
 		/// <para><strong>Parameters:</strong></para>
-		/// <para>The <see cref="TTT.Player"/> who was damaged.</para>
+		/// <para>The <see cref="TTT.Player"/> who took damage.</para>
 		/// </summary>
 		public class TookDamageAttribute : EventAttribute
 		{

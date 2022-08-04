@@ -18,7 +18,7 @@ public partial class PostRound : BaseState
 	[Net]
 	public WinType WinType { get; private set; }
 
-	public override string Name => "Post";
+	public override string Name { get; } = "Post";
 	public override int Duration => Game.PostRoundTime;
 
 	public PostRound() { }
@@ -56,7 +56,7 @@ public partial class PostRound : BaseState
 		base.OnStart();
 
 		Game.Current.TotalRoundsPlayed++;
-		Event.Run( TTTEvent.Round.Ended, WinningTeam, WinType );
+		Event.Run( GameEvent.Round.Ended, WinningTeam, WinType );
 	}
 
 	protected override void OnTimeUp()

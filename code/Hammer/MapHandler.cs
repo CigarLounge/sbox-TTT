@@ -19,7 +19,7 @@ public static class MapHandler
 		}
 	}
 
-	[TTTEvent.Round.Started]
+	[GameEvent.Round.Started]
 	private static void CleanUp()
 	{
 		Map.Reset( Game.DefaultCleanupFilter );

@@ -40,7 +40,7 @@ public class DetectiveMarker : Panel
 		Style.Top = Length.Fraction( screenPos.y );
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private void OnPlayerKilled( Player player )
 	{
 		if ( player.IsLocalPawn )

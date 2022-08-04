@@ -15,7 +15,7 @@ public class RandomWeapon : Entity
 	/// Cached weapons list to use when `ExcludedWeapons` is NOT provided.
 	/// </summary>
 	private static readonly List<Type> _cachedWeaponTypes = new();
-	private const int WEAPON_DISTANCE_UP = 4;
+	private const int WeaponOffset = 4;
 
 	[Description( "If changed, will only spawn a weapon of the selected ammo type." )]
 	[Property]
@@ -52,7 +52,7 @@ public class RandomWeapon : Entity
 		if ( weapon is null )
 			return;
 
-		weapon.Position = Position + (Vector3.Up * WEAPON_DISTANCE_UP);
+		weapon.Position = Position + (Vector3.Up * WeaponOffset);
 		weapon.Rotation = Rotation;
 
 		if ( weapon.Info.AmmoType == AmmoType.None )

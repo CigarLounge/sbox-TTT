@@ -18,14 +18,37 @@ public enum AmmoType : byte
 public abstract partial class Ammo : Prop, IEntityHint, IUse
 {
 	[Net]
-	public int CurrentCount { get; private set; }
+	private int CurrentCount { get; set; }
 
-	public Player Dropper { get; set; }
-	public PickupTrigger PickupTrigger { get; set; }
-	public virtual AmmoType Type => AmmoType.None;
-	public virtual int DefaultAmmoCount => 30;
+	protected virtual AmmoType Type => AmmoType.None;
+	protected virtual int DefaultAmmoCount => 30;
 	protected virtual string WorldModelPath => string.Empty;
+
+	private Player _dropper;
 	private TimeSince _timeSinceDropped = 0;
+
+	public override void Spawn()
+	{
+		Tags.Add( "trigger" );
+
+		SetModel( WorldModelPath );
+		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+
+		PhysicsEnabled = true;
+		UsePhysicsCollision = true;
+		EnableHideInFirstPerson = true;
+		EnableShadowInFirstPerson = true;
+
+		CurrentCount = DefaultAmmoCount;
+	}
+
+	public override void StartTouch( Entity other )
+	{
+		base.StartTouch( other );
+
+		if ( other is Player player && (player != _dropper || _timeSinceDropped >= 1f) )
+			GiveAmmo( player );
+	}
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
 	{
@@ -42,7 +65,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 			_ => default( Ammo ),
 		};
 
-
 		if ( ammo is null )
 			return null;
 
@@ -51,28 +73,16 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 		return ammo;
 	}
 
-	public override void Spawn()
+	public static Ammo Drop( Player dropper, AmmoType ammoType, int count )
 	{
-		base.Spawn();
+		var ammoCrate = Create( ammoType, count );
+		ammoCrate.Position = dropper.EyePosition + dropper.EyeRotation.Forward * 40;
+		ammoCrate.Rotation = dropper.EyeRotation;
+		ammoCrate.PhysicsGroup.Velocity = dropper.Velocity + dropper.EyeRotation.Forward * Player.DropVelocity;
+		ammoCrate._dropper = dropper;
+		ammoCrate._timeSinceDropped = 0;
 
-		SetModel( WorldModelPath );
-		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		CollisionGroup = CollisionGroup.Weapon;
-		SetInteractsAs( CollisionLayer.Debris );
-		CurrentCount = DefaultAmmoCount;
-
-		PickupTrigger = new PickupTrigger
-		{
-			Parent = this
-		};
-	}
-
-	public override void StartTouch( Entity other )
-	{
-		base.StartTouch( other );
-
-		if ( other is Player player && (player != Dropper || _timeSinceDropped >= 1f) )
-			GiveAmmo( player );
+		return ammoCrate;
 	}
 
 	private void GiveAmmo( Player player )

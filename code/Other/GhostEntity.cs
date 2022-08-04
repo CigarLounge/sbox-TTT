@@ -15,17 +15,15 @@ public class GhostEntity : ModelEntity
 		EnableShadowCasting = false;
 		EnableSolidCollisions = false;
 		Transmit = TransmitType.Never;
+
+		Tags.Add( "trigger" );
 	}
 
 	public void SetEntity( ModelEntity entity )
 	{
 		RealEntity = entity;
 		Model = entity.Model;
-
 		RenderColor = RenderColor.WithAlpha( 0.5f );
-		CollisionGroup = CollisionGroup.Trigger;
-
-		SetupPhysicsFromModel( PhysicsMotionType.Keyframed );
 	}
 
 	public void ShowValid()

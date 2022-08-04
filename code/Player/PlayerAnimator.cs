@@ -47,9 +47,9 @@ public class PlayerAnimator : PawnAnimator
 
 		SetAnimParameter( "duck", _duck );
 
-		if ( player is not null && player.ActiveChild.IsValid() )
+		if ( player is not null && player.ActiveCarriable.IsValid() )
 		{
-			player.ActiveChild.SimulateAnimator( this );
+			player.ActiveCarriable.SimulateAnimator( this );
 		}
 		else
 		{
@@ -65,7 +65,7 @@ public class PlayerAnimator : PawnAnimator
 		//
 		// Our ideal player model rotation is the way we're facing
 		//
-		var allowYawDiff = player?.ActiveChild is null ? 90 : 50;
+		var allowYawDiff = player?.ActiveCarriable is null ? 90 : 50;
 
 		var turnSpeed = 0.01f;
 		if ( HasTag( "ducked" ) )

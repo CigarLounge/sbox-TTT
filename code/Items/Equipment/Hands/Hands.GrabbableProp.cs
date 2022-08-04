@@ -5,18 +5,27 @@ namespace TTT;
 
 public class GrabbableProp : IGrabbable
 {
-	public ModelEntity GrabbedEntity { get; set; }
-
-	private const float ThrowForce = 500;
-	private readonly Player _owner;
+	private ModelEntity GrabbedEntity { get; set; }
+	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
+	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
 	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+
+	private readonly Player _owner;
 	private bool _isThrowing = false;
+	private readonly bool _hasTriggerTag = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
 		_owner = owner;
 
+		// We want to be able to shoot whatever entity the player is holding.
+		// Let's give it a tag that interacts with bullets and doesn't collide with players.
+		_hasTriggerTag = grabbedEntity.Tags.Has( "trigger" );
+		if ( !_hasTriggerTag )
+			grabbedEntity.Tags.Add( "trigger" );
+
 		GrabbedEntity = grabbedEntity;
+		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
 	}
@@ -36,28 +45,40 @@ public class GrabbableProp : IGrabbable
 			Drop();
 	}
 
-	public void Drop()
+	public Entity Drop()
 	{
-		if ( GrabbedEntity.IsValid() )
+		var grabbedEntity = GrabbedEntity;
+		if ( grabbedEntity.IsValid() )
 		{
-			GrabbedEntity.EnableHideInFirstPerson = true;
-			GrabbedEntity.SetParent( null );
+			if ( !_hasTriggerTag )
+				grabbedEntity.Tags.Remove( "trigger" );
 
-			if ( GrabbedEntity is Carriable carriable )
+			grabbedEntity.EnableHideInFirstPerson = true;
+			grabbedEntity.EnableTouch = true;
+			grabbedEntity.SetParent( null );
+
+			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );
 		}
 
 		GrabbedEntity = null;
+		return grabbedEntity;
 	}
 
 	public void SecondaryAction()
 	{
+		if ( Host.IsClient )
+		{
+			GrabbedEntity = null;
+			return;
+		}
+
 		_isThrowing = true;
 		_owner.SetAnimParameter( "b_attack", true );
 
-		if ( GrabbedEntity.IsValid() )
-			GrabbedEntity.Velocity += _owner.EyeRotation.Forward * ThrowForce;
-		Drop();
+		var droppedEntity = Drop();
+		if ( droppedEntity.IsValid() )
+			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
 		_ = WaitForAnimationFinish();
 	}

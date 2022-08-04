@@ -9,6 +9,6 @@ namespace TTT;
 [Title( "SMG Ammo" )]
 public class SMGAmmo : Ammo
 {
-	public override AmmoType Type => AmmoType.PistolSMG;
+	protected override AmmoType Type => AmmoType.PistolSMG;
 	protected override string WorldModelPath => "models/ammo/ammo_smg/ammo_smg.vmdl";
 }

@@ -15,7 +15,7 @@ public partial class Radar : Perk
 	private readonly float _timeToExecute = 20f;
 	private RadarPointData[] _lastPositions;
 	private readonly List<UI.RadarPoint> _cachedPoints = new();
-	private readonly Color _defaultRadarColor = Color.FromBytes( 124, 252, 0 );
+	private readonly Color _defaultRadarColor = TeamExtensions.GetColor( Team.Innocents );
 	private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
 	public Radar()
@@ -88,7 +88,7 @@ public partial class Radar : Perk
 
 	private void ClearRadarPoints()
 	{
-		foreach ( UI.RadarPoint radarPoint in _cachedPoints )
+		foreach ( var radarPoint in _cachedPoints )
 			radarPoint.Delete( true );
 
 		_cachedPoints.Clear();

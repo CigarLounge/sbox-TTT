@@ -4,21 +4,16 @@ using System.Linq;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class VoiceChatDisplay : Panel
 {
-	public static VoiceChatDisplay Instance { get; internal set; }
+	public static VoiceChatDisplay Instance { get; private set; }
 
-	public VoiceChatDisplay() : base()
-	{
-		Instance = this;
-
-		StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatDisplay.scss" );
-	}
+	public VoiceChatDisplay() => Instance = this;
 
 	public void OnVoicePlayed( Client client, float level )
 	{
 		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
-
 		entry.Update( level );
 	}
 

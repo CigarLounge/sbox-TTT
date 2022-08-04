@@ -54,9 +54,14 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// We count all player deaths not caused by other players as suicides.
+	/// Whether or not they were killed by another Player.
 	/// </summary>
-	public bool DiedBySuicide => LastAttacker is not Player || LastAttacker == this;
+	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
+
+	/// <summary>
+	/// Whether or not the player was killed with a head shot.
+	/// </summary>
+	public bool KilledWithHeadShot => (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex ) == HitboxGroup.Head;
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -108,13 +113,15 @@ public partial class Player
 
 	public override void OnKilled()
 	{
+		Host.AssertServer();
+
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;
 
 		Client.AddInt( "deaths" );
 
-		if ( !DiedBySuicide )
+		if ( KilledByPlayer )
 		{
 			LastAttacker.Client.AddInt( "kills" );
 			(LastAttacker as Player).PlayersKilled.Add( this );
@@ -126,12 +133,13 @@ public partial class Player
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+		EnableTouch = false;
 
 		Inventory.DropAll();
 		DeleteFlashlight();
 		DeleteItems();
 
-		Event.Run( TTTEvent.Player.Killed, this );
+		Event.Run( GameEvent.Player.Killed, this );
 		Game.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
@@ -145,7 +153,7 @@ public partial class Player
 			ClearButtons();
 
 		DeleteFlashlight();
-		Event.Run( TTTEvent.Player.Killed, this );
+		Event.Run( GameEvent.Player.Killed, this );
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -178,7 +186,7 @@ public partial class Player
 		LastDamage = info;
 
 		Health -= info.Damage;
-		Event.Run( TTTEvent.Player.TookDamage, this );
+		Event.Run( GameEvent.Player.TookDamage, this );
 
 		SendDamageInfo( To.Single( this ) );
 
@@ -259,7 +267,7 @@ public partial class Player
 		LastDamage = info;
 
 		if ( IsLocalPawn )
-			Event.Run( TTTEvent.Player.TookDamage, this );
+			Event.Run( GameEvent.Player.TookDamage, this );
 	}
 
 	[ClientRpc]

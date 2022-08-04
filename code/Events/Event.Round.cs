@@ -2,7 +2,7 @@
 
 namespace TTT;
 
-public static partial class TTTEvent
+public static partial class GameEvent
 {
 	public static class Round
 	{

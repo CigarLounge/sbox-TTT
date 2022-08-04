@@ -23,13 +23,15 @@ public partial class DNAScanner : Carriable
 	public bool AutoScan { get; set; } = false;
 
 	[Net, Local]
-	private float Charge { get; set; } = MAX_CHARGE;
+	private float Charge { get; set; } = MaxCharge;
 
+	public override string PrimaryAttackHint => "Fetch DNA";
+	public override string SecondaryAttackHint => !AutoScan ? "Scan" : string.Empty;
 	public override string SlotText => $"{(int)Charge}%";
-	public bool IsCharging => Charge < MAX_CHARGE;
+	public bool IsCharging => Charge < MaxCharge;
 
-	private const float MAX_CHARGE = 100f;
-	private const float CHARGE_PER_SECOND = 2.2f;
+	private const float MaxCharge = 100f;
+	private const float ChargePerSecond = 2.2f;
 	private UI.DNAMarker _dnaMarker;
 
 	public override void Simulate( Client client )
@@ -103,7 +105,7 @@ public partial class DNAScanner : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
-			.HitLayer( CollisionLayer.Debris )
+			.WithTag( "trigger" )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )
@@ -157,7 +159,7 @@ public partial class DNAScanner : Carriable
 		if ( Owner is null )
 			return;
 
-		Charge = Math.Min( Charge + CHARGE_PER_SECOND * Time.Delta, MAX_CHARGE );
+		Charge = Math.Min( Charge + ChargePerSecond * Time.Delta, MaxCharge );
 
 		if ( AutoScan )
 			Scan();
@@ -237,7 +239,7 @@ public partial class DNA : EntityComponent
 		return TargetPlayer.IsAlive() ? TargetPlayer : TargetPlayer.Corpse;
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
 		internalId = Rand.Int( 0, 500 );

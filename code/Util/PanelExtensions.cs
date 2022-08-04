@@ -7,7 +7,7 @@ public static class PanelExtensions
 {
 	public static void Enabled( this Panel panel, bool enabled )
 	{
-		panel.SetClass( "disabled", !enabled );
+		panel.Style.Display = enabled ? DisplayMode.Flex : DisplayMode.None;
 	}
 
 	public static void EnableFade( this Panel panel, bool enabled )
@@ -18,16 +18,11 @@ public static class PanelExtensions
 
 	public static bool IsEnabled( this Panel panel )
 	{
-		return panel.IsVisible;
+		return panel.Style.Display != DisplayMode.None;
 	}
 
 	public static void SetTexture( this Image image, Texture texture )
 	{
 		image.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, "/ui/none.png" );
-	}
-
-	public static void SetImage( this Image image, string imagePath )
-	{
-		image.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, "/ui/none.png" );
 	}
 }

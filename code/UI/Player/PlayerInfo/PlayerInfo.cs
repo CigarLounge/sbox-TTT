@@ -20,7 +20,7 @@ public class PlayerInfo : Panel
 		Instance = this;
 	}
 
-	[TTTEvent.Player.TookDamage]
+	[GameEvent.Player.TookDamage]
 	private void OnHit( Player player )
 	{
 		if ( !this.IsEnabled() )

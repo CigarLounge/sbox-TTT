@@ -9,8 +9,11 @@ public partial class Game
 	public static void RespawnPlayer( int id = 0 )
 	{
 		var player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
-		if ( !player.IsValid() || player.IsSpectator )
+		if ( !player.IsValid() )
 			return;
+
+		if ( player.IsForcedSpectator )
+			player.ToggleForcedSpectator();
 
 		player.Respawn();
 	}
@@ -18,7 +21,7 @@ public partial class Game
 	[ConCmd.Admin( Name = "ttt_giveitem" )]
 	public static void GiveItem( string itemName )
 	{
-		if ( string.IsNullOrEmpty( itemName ) )
+		if ( itemName.IsNullOrEmpty() )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -65,7 +68,7 @@ public partial class Game
 			return;
 		}
 
-		player.SetRole( roleInfo.ClassName );
+		player.SetRole( roleInfo );
 	}
 
 	[ConCmd.Admin( Name = "ttt_force_restart" )]

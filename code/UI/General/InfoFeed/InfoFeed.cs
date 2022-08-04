@@ -7,7 +7,7 @@ namespace TTT.UI;
 [UseTemplate]
 public partial class InfoFeed : Panel
 {
-	public static InfoFeed Instance;
+	public static InfoFeed Instance { get; private set; }
 
 	public InfoFeed() => Instance = this;
 
@@ -24,12 +24,11 @@ public partial class InfoFeed : Panel
 	}
 
 	[ClientRpc]
-	public static void AddEntry( Client client, string message )
+	public static void AddEntry( Player player, string message )
 	{
 		var entry = Instance.AddChild<InfoFeedEntry>();
 
-		var player = client.Pawn as Player;
-		var leftLabel = entry.AddLabel( client == Local.Client ? "You" : client.Name, "left" );
+		var leftLabel = entry.AddLabel( player.IsLocalPawn ? "You" : player.SteamName, "left" );
 		leftLabel.Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
 
 		entry.AddLabel( message, "method" );
@@ -59,11 +58,11 @@ public partial class InfoFeed : Panel
 		var rightLabel = entry.AddLabel( right.IsLocalPawn ? "You" : right.SteamName, "right" );
 		rightLabel.Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
 
-		if ( !string.IsNullOrEmpty( suffix ) )
+		if ( !suffix.IsNullOrEmpty() )
 			entry.AddLabel( suffix, "append" );
 	}
 
-	[TTTEvent.Player.CorpseFound]
+	[GameEvent.Player.CorpseFound]
 	private void OnCorpseFound( Player player )
 	{
 		AddPlayerToPlayerEntry
@@ -75,26 +74,26 @@ public partial class InfoFeed : Panel
 		);
 	}
 
-	[TTTEvent.Round.RolesAssigned]
+	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
+		if ( Local.Pawn is not Player player )
+			return;
+
 		if ( !TabMenus.Instance.IsVisible )
 			TabMenus.Instance.SwapToScoreboard();
 
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
-		if ( Local.Pawn is not Player player )
-			return;
-
 		var karma = MathF.Round( player.BaseKarma );
-		var dF = MathF.Round( 100f - player.DamageFactor * 100f );
+		var df = MathF.Round( 100f - player.DamageFactor * 100f );
 
 		string text;
-		if ( dF == 0 )
+		if ( df == 0 )
 			text = $"Your karma is {karma}, you'll deal full damage this round.";
 		else
-			text = $"Your karma is {karma}, you'll deal {dF}% reduced damage this round.";
+			text = $"Your karma is {karma}, you'll deal {df}% reduced damage this round.";
 
 		AddEntry( text );
 	}

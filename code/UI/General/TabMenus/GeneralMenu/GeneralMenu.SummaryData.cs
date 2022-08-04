@@ -33,7 +33,7 @@ public partial class GeneralMenu : Panel
 
 		Instance.LastRoleSummaryData.Innocents = Role.Innocent.Players.ToList();
 		Instance.LastRoleSummaryData.Traitors = Role.Traitor.Players.ToList();
-		Instance.LastRoleSummaryData.Detectives = Role.Detective.Players.ToList();	
+		Instance.LastRoleSummaryData.Detectives = Role.Detective.Players.ToList();
 
 		RoleSummary.Instance?.Init();
 	}

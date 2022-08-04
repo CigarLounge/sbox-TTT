@@ -3,6 +3,8 @@
 	data = 
 	{
 		Team = "None"
+		Color = "0.78431,0.78431,0.78431,1"
+		IconPath = resource:"ui/none.png"
 		DefaultCredits = 0
 		Weapons = [  ]
 		Carriables = [  ]
@@ -10,8 +12,13 @@
 		CanRetrieveCredits = false
 		CanTeamChat = false
 		CanAttachCorpses = false
-		Color = "0.78431,0.78431,0.78431,1"
-		IconPath = resource:"ui/none.png"
+		RequiredKarma = 0
+		Karma = 
+		{
+		}
+		Scoring = 
+		{
+		}
 		ClassName = "ttt_role_none"
 	}
 }

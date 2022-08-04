@@ -56,6 +56,7 @@ public partial class Player
 		Controller = null;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
 
@@ -100,7 +101,7 @@ public partial class Player
 			Camera = new FirstPersonSpectatorCamera();
 	}
 
-	[TTTEvent.Player.Killed]
+	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsClient )
