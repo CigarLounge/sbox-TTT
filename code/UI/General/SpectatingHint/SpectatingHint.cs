@@ -8,8 +8,8 @@ public class SpectatingHint : Panel
 {
 	private Panel SwapPanel { get; set; }
 	private Label PlayerName { get; set; }
-	private Label JumpAction { get; init; }
-	private InputGlyph JumpGlyph { get; init; }
+	private Label HintAction { get; init; }
+	private InputGlyph HintGlyph { get; init; }
 
 	public override void Tick()
 	{
@@ -18,13 +18,13 @@ public class SpectatingHint : Panel
 
 		if ( player.Components.TryGet<PropPossession>( out _ ) )
 		{
-			JumpGlyph.SetButton( InputButton.Duck );
-			JumpAction.SetText( "to no longer possess the prop" );
+			HintGlyph.SetButton( InputButton.Duck );
+			HintAction.SetText( "to no longer possess the prop" );
 		}
 		else
 		{
-			JumpGlyph.SetButton( InputButton.Jump );
-			JumpAction.SetText( "to change spectating camera mode" );
+			HintGlyph.SetButton( InputButton.Jump );
+			HintAction.SetText( "to change spectating camera mode" );
 		}
 
 		this.Enabled( !player.IsAlive() );
