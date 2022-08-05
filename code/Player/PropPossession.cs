@@ -19,7 +19,7 @@ public partial class PropPossession : EntityComponent<Player>
 
 	// Clientside
 	private PossessionNameplate _nameplate;
-	private PunchMeter _info;
+	private PunchMeter _meter;
 
 	public PropPossession() { }
 
@@ -41,7 +41,7 @@ public partial class PropPossession : EntityComponent<Player>
 				_nameplate = new PossessionNameplate( Entity, Prop );
 
 			if ( Entity.IsLocalPawn )
-				_info = new PunchMeter( this );
+				_meter = new PunchMeter( this );
 		}
 	}
 
@@ -58,7 +58,7 @@ public partial class PropPossession : EntityComponent<Player>
 		else
 		{
 			_nameplate?.Delete();
-			_info?.Delete();
+			_meter?.Delete();
 		}
 
 		_player = null;
