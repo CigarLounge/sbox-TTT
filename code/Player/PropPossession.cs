@@ -99,23 +99,12 @@ public partial class PropPossession : EntityComponent<Player>
 	}
 
 	[Event.Tick.Server]
-	private static void RechargePunchesAndCheckProp()
+	private void OnServerTick()
 	{
-		foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
+		if ( _timeUntilRecharge )
 		{
-			var possession = entity.Components.Get<PropPossession>();
-
-			if ( !possession.Prop.IsValid() )
-			{
-				entity.Components.RemoveAny<PropPossession>();
-				return;
-			}
-
-			if ( possession._timeUntilRecharge )
-			{
-				possession.Punches = Math.Min( possession.Punches + 1, MaxPunches );
-				possession._timeUntilRecharge = RechargeTime;
-			}
+			Punches = Math.Min( Punches + 1, MaxPunches );
+			_timeUntilRecharge = RechargeTime;
 		}
 	}
 
