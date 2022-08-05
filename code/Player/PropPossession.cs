@@ -133,7 +133,7 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 
 		var forward = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
-		var left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? 1f : 0f);
+		var left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? -1f : 0f);
 		var up = input.Pressed( InputButton.Jump );
 		var rotation = Rotation.From( input.ViewAngles );
 
