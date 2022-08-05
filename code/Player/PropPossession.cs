@@ -180,8 +180,8 @@ public partial class PropPossession : EntityComponent<Player>
 		if ( Punches <= 0 )
 			return;
 
-		if ( forward + left == 0f && !up )
-			return; // no movement
+		if ( Math.Abs( forward ) > 1f || Math.Abs(left) > 1f )
+			return; // illegal values for forward/left
 
 		if ( !_timeUntilNextPunchAllowed ) { return; }
 
