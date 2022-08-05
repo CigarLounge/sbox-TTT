@@ -8,8 +8,8 @@ public class SpectatingHint : Panel
 {
 	private Panel SwapPanel { get; set; }
 	private Label PlayerName { get; set; }
-	private Label JumpAction { get; set; }
-	private InputGlyph JumpGlyph { get; set; }
+	private Label JumpAction { get; init; }
+	private InputGlyph JumpGlyph { get; init; }
 
 	public override void Tick()
 	{
