@@ -140,7 +140,7 @@ public partial class ChatBox : Panel
 			AddChat( player.Team.ToClients(), player.Client.Name, message, channel, player.Role.Info.ResourceId );
 	}
 
-	[ConCmd.Client( "chat_add", CanBeCalledFromServer = true )]
+	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
 	public static void AddChat( string name, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
@@ -157,7 +157,7 @@ public partial class ChatBox : Panel
 		}
 	}
 
-	[ConCmd.Client( "chat_add_info", CanBeCalledFromServer = true )]
+	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
 	public static void AddInfo( string message )
 	{
 		Instance?.AddEntry( message, "", "info" );
