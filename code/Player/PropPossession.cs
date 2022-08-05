@@ -89,6 +89,7 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
+			// Test
 			if ( player.IsLocalPawn )
 			{
 				// local player has died => show nameplates
@@ -183,7 +184,7 @@ public partial class PropPossession : EntityComponent<Player>
 		if ( Punches <= 0 )
 			return;
 
-		if ( Math.Abs( forward ) > 1f || Math.Abs(left) > 1f )
+		if ( Math.Abs( forward ) > 1f || Math.Abs( left ) > 1f )
 			return; // illegal values for forward/left
 
 		if ( !_timeUntilNextPunchAllowed ) { return; }
