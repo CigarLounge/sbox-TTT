@@ -8,6 +8,7 @@ public partial class PropPossession : EntityComponent<Player>
 {
 	[Net]
 	public Prop Prop { get; set; }
+
 	[Net, Local]
 	public int Punches { get; set; }
 
@@ -17,7 +18,7 @@ public partial class PropPossession : EntityComponent<Player>
 
 	// Clientside
 	private PossessionNameplate _nameplate;
-	private PossessionInfo _info;
+	private PunchMeter _info;
 
 	public PropPossession() { }
 
@@ -39,11 +40,11 @@ public partial class PropPossession : EntityComponent<Player>
 				_nameplate = new PossessionNameplate( Entity, Prop );
 
 			if ( Entity.IsLocalPawn )
-				_info = new PossessionInfo( this ); // local pawn is possessing a prop
+				_info = new PunchMeter( this );
 		}
 	}
 
-	protected override void OnDeactivate() // `Entity` property is null when this is called
+	protected override void OnDeactivate()
 	{
 		if ( Host.IsServer )
 		{
@@ -122,15 +123,16 @@ public partial class PropPossession : EntityComponent<Player>
 			return;
 		}
 
-		float forward = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
-		float left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? 1f : 0f);
-		bool up = input.Pressed( InputButton.Jump );
+		var forward = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
+		var left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? 1f : 0f);
+		var up = input.Pressed( InputButton.Jump );
 		var rotation = Rotation.From( input.ViewAngles );
 
 		if ( forward + left != 0f || up )
 			MoveProp( forward, left, up, rotation );
 
-		input.SetButton( InputButton.Jump, false ); // cancel jump button so that spectator camera is not changed
+		// Cancel jump button so that spectator camera is not changed
+		input.SetButton( InputButton.Jump, false );
 	}
 
 	[ConCmd.Server]
@@ -165,9 +167,6 @@ public partial class PropPossession : EntityComponent<Player>
 	private void HandlePropMovement( float forward, float left, bool up, Rotation rotation )
 	{
 		var b = Prop.PhysicsBody;
-
-		// reference:
-		// https://github.com/Facepunch/garrysmod/blob/master/garrysmod/gamemodes/terrortown/gamemode/propspec.lua#L111
 
 		if ( Punches <= 0 )
 			return;
