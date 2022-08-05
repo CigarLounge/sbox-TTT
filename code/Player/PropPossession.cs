@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sandbox;
 using TTT.UI;
 
@@ -64,50 +65,58 @@ public partial class PropPossession : EntityComponent<Player>
 	}
 
 	[GameEvent.Player.StatusChanged]
-	private void OnStatusChanged( Player somePlayer, PlayerStatus oldStatus )
+	private static void OnStatusChanged( Player player, PlayerStatus oldStatus )
 	{
-		if ( somePlayer.Status == PlayerStatus.Alive )
+		if ( player.IsAlive() )
 		{
-			// somePlayer has come alive
-			if ( Host.IsServer && somePlayer == Entity )
+			if ( Host.IsServer )
 			{
-				// _player is not possessing anything anymore since they have come alive
-				// we cannot immediately remove this component since that would remove all event handlers
-				// (including the one we are currently in) which would cause a InvalidOperationException
-				// (Collection was modified; enumeration operation may not execute)
-				RemoveThisComponentDelayed();
+				// player is not possessing anything anymore since they have come alive
+				player.Components.RemoveAny<PropPossession>();
 			}
 
-			if ( Host.IsClient && somePlayer.IsLocalPawn )
-				_nameplate?.Delete(); // local player has come alive, must loose all nameplates
+			if ( Host.IsClient && player.IsLocalPawn )
+			{
+				// local player has come alive, must loose all nameplates
+				foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
+				{
+					entity.Components.Get<PropPossession>()._nameplate?.Delete();
+				}
+			}
 		}
-		else if ( somePlayer.Status != PlayerStatus.Alive )
+		else
 		{
-			// somePlayer has died
-			if ( somePlayer.IsLocalPawn )
-				_nameplate = new PossessionNameplate( _player, Prop ); // local player has died => show nameplates
+			if ( player.IsLocalPawn )
+			{
+				// local player has died => show nameplates
+				foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
+				{
+					var possession = entity.Components.Get<PropPossession>();
+					possession._nameplate?.Delete();
+					possession._nameplate = new PossessionNameplate( possession._player, possession.Prop );
+				}
+			}
 		}
-	}
-
-	private async void RemoveThisComponentDelayed()
-	{
-		await GameTask.Delay( 1 );
-		_player?.Components.RemoveAny<PropPossession>();
 	}
 
 	[Event.Tick.Server]
-	private void RechargePunchesAndCheckProp()
+	private static void RechargePunchesAndCheckProp()
 	{
-		if ( !Prop.IsValid() )
+		foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
 		{
-			RemoveThisComponentDelayed(); // delayed removal for the same reason as above
-			return;
-		}
+			var possession = entity.Components.Get<PropPossession>();
 
-		if ( _timeUntilRecharge )
-		{
-			Punches = Math.Min( Punches + 1, Game.PropPossessionMaxPunches );
-			_timeUntilRecharge = Game.PropPossessionRechargeTime;
+			if ( !possession.Prop.IsValid() )
+			{
+				entity.Components.RemoveAny<PropPossession>();
+				return;
+			}
+
+			if ( possession._timeUntilRecharge )
+			{
+				possession.Punches = Math.Min( possession.Punches + 1, Game.PropPossessionMaxPunches );
+				possession._timeUntilRecharge = Game.PropPossessionRechargeTime;
+			}
 		}
 	}
 
