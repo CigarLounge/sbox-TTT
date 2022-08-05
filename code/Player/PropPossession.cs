@@ -7,6 +7,9 @@ namespace TTT;
 
 public partial class PropPossession : EntityComponent<Player>
 {
+	public const int MaxPunches = 8;
+	public const float RechargeTime = 1f;
+
 	[Net]
 	public Prop Prop { get; set; }
 
@@ -33,7 +36,7 @@ public partial class PropPossession : EntityComponent<Player>
 		{
 			_player.Camera = new FollowEntityCamera( Prop );
 			Prop.Owner = Entity;
-			_timeUntilRecharge = Game.PropPossessionRechargeTime;
+			_timeUntilRecharge = RechargeTime;
 		}
 		else
 		{
@@ -114,8 +117,8 @@ public partial class PropPossession : EntityComponent<Player>
 
 			if ( possession._timeUntilRecharge )
 			{
-				possession.Punches = Math.Min( possession.Punches + 1, Game.PropPossessionMaxPunches );
-				possession._timeUntilRecharge = Game.PropPossessionRechargeTime;
+				possession.Punches = Math.Min( possession.Punches + 1, MaxPunches );
+				possession._timeUntilRecharge = RechargeTime;
 			}
 		}
 	}
@@ -147,7 +150,7 @@ public partial class PropPossession : EntityComponent<Player>
 	[ConCmd.Server]
 	public static void BeginPossession( int propNetworkIdent )
 	{
-		if ( !Game.PropPossessionEnabled || ConsoleSystem.Caller.Pawn is not Player player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		if ( player.IsAlive() || player.Components.TryGet<PropPossession>( out _ ) )
