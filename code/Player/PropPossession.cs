@@ -8,13 +8,13 @@ namespace TTT;
 public partial class PropPossession : EntityComponent<Player>
 {
 	public const int MaxPunches = 8;
-	public const float RechargeTime = 1f;
-
-	[Net]
-	public Prop Prop { get; set; }
+	private const float RechargeTime = 1f;
 
 	[Net, Local]
-	public int Punches { get; set; }
+	public int Punches { get; private set; }
+
+	[Net]
+	private Prop Prop { get; set; }
 
 	private Player _player; // `Entity` property is cleared before OnDeactivate() called => need to store separately
 	private TimeUntil _timeUntilRecharge = 0;
@@ -34,16 +34,16 @@ public partial class PropPossession : EntityComponent<Player>
 
 		if ( Host.IsServer )
 		{
-			_player.Camera = new FollowEntityCamera( Prop );
 			Prop.Owner = Entity;
+			_player.Camera = new FollowEntityCamera( Prop );
 			_timeUntilRecharge = RechargeTime;
 		}
 		else
 		{
-			if ( Local.Pawn is Player player && !player.IsAlive() )
+			if ( !_player.IsAlive() )
 				_nameplate = new PossessionNameplate( Entity, Prop );
 
-			if ( Entity.IsLocalPawn )
+			if ( _player.IsLocalPawn )
 				_meter = new PunchMeter( this );
 		}
 	}
@@ -72,11 +72,7 @@ public partial class PropPossession : EntityComponent<Player>
 	{
 		if ( player.IsAlive() )
 		{
-			if ( Host.IsServer )
-			{
-				// player is not possessing anything anymore since they have come alive
-				player.Components.RemoveAny<PropPossession>();
-			}
+			player.Components.RemoveAny<PropPossession>();
 
 			if ( Host.IsClient && player.IsLocalPawn )
 			{
@@ -89,7 +85,6 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
-			// Test
 			if ( player.IsLocalPawn )
 			{
 				// local player has died => show nameplates
@@ -149,7 +144,7 @@ public partial class PropPossession : EntityComponent<Player>
 	}
 
 	[ConCmd.Server]
-	public static void BeginPossession( int propNetworkIdent )
+	public static void Possess( int propNetworkIdent )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;

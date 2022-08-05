@@ -5,7 +5,7 @@ namespace TTT;
 public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 {
 	[Net, Local]
-	public Entity FollowedEntity { get; set; }
+	public Entity FollowedEntity { get; private set; }
 
 	private Vector3 _focusPoint;
 

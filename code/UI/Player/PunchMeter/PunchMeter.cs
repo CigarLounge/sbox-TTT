@@ -7,8 +7,7 @@ namespace TTT.UI;
 public class PunchMeter : Panel
 {
 	private Panel PercentagePanel { get; init; }
-
-	private PropPossession _possession;
+	private readonly PropPossession _possession;
 
 	public PunchMeter( PropPossession possession )
 	{

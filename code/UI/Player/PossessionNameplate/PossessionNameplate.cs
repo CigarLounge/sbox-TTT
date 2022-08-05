@@ -7,8 +7,8 @@ namespace TTT.UI;
 public class PossessionNameplate : WorldPanel
 {
 	private Label PlayerName { get; set; }
-	private Player _player;
-	private Prop _prop;
+	private readonly Player _player;
+	private readonly Prop _prop;
 
 	public PossessionNameplate( Player player, Prop prop )
 	{
@@ -33,5 +33,4 @@ public class PossessionNameplate : WorldPanel
 
 		Transform = tx;
 	}
-
 }
