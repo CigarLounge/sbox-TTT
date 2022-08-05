@@ -84,11 +84,11 @@ public partial class ChatBox : Panel
 		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, string c = "" )
+	public void AddEntry( string name, string message, string classes = "" )
 	{
 		var entry = new ChatEntry( name, message );
-		if ( !string.IsNullOrEmpty( c ) )
-			entry.AddClass( c );
+		if ( !classes.IsNullOrEmpty() )
+			entry.AddClass( classes );
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -100,7 +100,7 @@ public partial class ChatBox : Panel
 
 	private void Submit()
 	{
-		if ( string.IsNullOrWhiteSpace( Input.Text ) )
+		if ( Input.Text.IsNullOrEmpty() )
 			return;
 
 		if ( Input.Text == Strings.RTVCommand )
@@ -119,9 +119,6 @@ public partial class ChatBox : Panel
 	public static void SendChat( string message, Channel channel = Channel.All )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
-			return;
-
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
 		if ( message == Strings.RTVCommand )
@@ -143,7 +140,7 @@ public partial class ChatBox : Panel
 			AddChat( player.Team.ToClients(), player.Client.Name, message, channel, player.Role.Info.ResourceId );
 	}
 
-	[ConCmd.Client( "chat_add", CanBeCalledFromServer = true )]
+	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
 	public static void AddChat( string name, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
@@ -160,7 +157,7 @@ public partial class ChatBox : Panel
 		}
 	}
 
-	[ConCmd.Client( "chat_add_info", CanBeCalledFromServer = true )]
+	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
 	public static void AddInfo( string message )
 	{
 		Instance?.AddEntry( message, "", "info" );

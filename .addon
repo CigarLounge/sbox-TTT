@@ -17,9 +17,7 @@
   "CodePath": "code",
   "RootNamespace": "TTT",
   "Metadata": {
-    "MapList": [
-      "mke.casino"
-    ],
+    "MapList": [],
     "MinPlayers": 1,
     "MaxPlayers": 64,
     "MapSelect": "Tagged",
@@ -94,6 +92,7 @@
           "r": "Collide"
         }
       ]
-    }
+    },
+    "GameCategory": "Mystery"
   }
 }

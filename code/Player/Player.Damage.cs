@@ -59,6 +59,11 @@ public partial class Player
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 
 	/// <summary>
+	/// Whether or not the player was killed with a head shot.
+	/// </summary>
+	public bool KilledWithHeadShot => (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex ) == HitboxGroup.Head;
+
+	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
 	/// damage penalty. It is networked and shown on clients.
 	/// </summary>

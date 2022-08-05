@@ -62,7 +62,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// </summary>
 	public virtual string SecondaryAttackHint => string.Empty;
 
-	public bool IsActiveChild => Owner?.ActiveChild == this;
+	public bool IsActiveCarriable => Owner?.ActiveCarriable == this;
 
 	public override void Spawn()
 	{
@@ -74,7 +74,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		if ( string.IsNullOrWhiteSpace( ClassName ) )
+		if ( ClassName.IsNullOrEmpty() )
 		{
 			Log.Error( this + " doesn't have a class name!" );
 			return;
@@ -88,7 +88,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.ClientSpawn();
 
-		if ( !string.IsNullOrWhiteSpace( ClassName ) )
+		if ( !ClassName.IsNullOrEmpty() )
 			Info = GameResource.GetInfo<CarriableInfo>( ClassName );
 	}
 

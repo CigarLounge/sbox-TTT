@@ -30,8 +30,8 @@ public partial class Player
 			transform.Rotation *= Rotation.From( new Angles( 0, 90, 0 ) );
 			_worldLight.Transform = transform;
 
-			if ( ActiveChild.IsValid() )
-				_worldLight.Transform = ActiveChild.GetAttachment( "muzzle" ) ?? transform;
+			if ( ActiveCarriable.IsValid() )
+				_worldLight.Transform = ActiveCarriable.GetAttachment( "muzzle" ) ?? transform;
 		}
 
 		if ( TimeSinceLightToggled > 0.25f && toggle )
@@ -72,7 +72,7 @@ public partial class Player
 	}
 
 	[Event.Frame]
-	private void Frame()
+	private void FrameUpdate()
 	{
 		if ( !_viewLight.IsValid() )
 			return;
@@ -82,11 +82,51 @@ public partial class Player
 		if ( !_viewLight.Enabled )
 			return;
 
-		var transform = new Transform( EyePosition, EyeRotation );
-		_viewLight.Transform = transform;
+		var eyeTransform = new Transform( EyePosition, EyeRotation );
+		_viewLight.Transform = eyeTransform;
 
-		if ( ActiveChild.IsValid() )
-			_viewLight.Transform = ActiveChild.ViewModelEntity?.GetAttachment( "muzzle" ) ?? transform;
+		if ( !ActiveCarriable.IsValid() )
+			return;
+
+		var muzzleTransform = ActiveCarriable.ViewModelEntity?.GetAttachment( "muzzle" );
+
+		if ( !muzzleTransform.HasValue )
+			return;
+
+		var mz = muzzleTransform.Value;
+
+		// First check if there is something like a door/wall between the muzzle and our eyes.
+		var muzzleTrace = Trace.Ray( mz.Position, EyePosition )
+			.Size( 2 )
+			.Ignore( this )
+			.Ignore( ActiveCarriable )
+			.Run();
+
+		var downOffset = Vector3.Down * 2f;
+		var origin = mz.Position + downOffset;
+
+		// If there IS something between our eyes and the muzzle, add the distance.
+		if ( muzzleTrace.Hit )
+			origin = muzzleTrace.EndPosition + (mz.Rotation.Backward * muzzleTrace.Distance) + downOffset;
+
+		// Continue with the forward trace.
+		var destination = origin + mz.Rotation.Forward * _viewLight.Range;
+		var direction = destination - origin;
+
+		var fwdTrace = Trace.Box( Vector3.One * 2, origin, destination )
+			.Ignore( this )
+			.Ignore( ActiveCarriable )
+			.Run();
+
+		var pullbackAmount = 0.0f;
+		const float pullbackThreshold = 48f;
+		if ( fwdTrace.Distance < pullbackThreshold )
+			pullbackAmount = (pullbackThreshold - fwdTrace.Distance).Remap( 0, pullbackThreshold, 0.0f, 0.045f );
+
+		origin -= direction * pullbackAmount;
+
+		_viewLight.Position = origin;
+		_viewLight.Rotation = mz.Rotation;
 	}
 
 	private SpotLightEntity CreateLight()

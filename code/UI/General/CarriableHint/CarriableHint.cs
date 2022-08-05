@@ -24,18 +24,18 @@ public class CarriableHint : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		this.Enabled( player.ActiveChild is not null );
+		this.Enabled( player.ActiveCarriable is not null );
 		if ( !this.IsEnabled() )
 			return;
 
-		var primaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.PrimaryAttackHint );
+		var primaryHintEnabled = !string.IsNullOrEmpty( player.ActiveCarriable.PrimaryAttackHint );
 		PrimaryAttackPanel.Enabled( primaryHintEnabled );
 		if ( primaryHintEnabled )
-			PrimaryAttackLabel.Text = player.ActiveChild.PrimaryAttackHint;
+			PrimaryAttackLabel.Text = player.ActiveCarriable.PrimaryAttackHint;
 
-		var secondaryHintEnabled = !string.IsNullOrEmpty( player.ActiveChild.SecondaryAttackHint );
+		var secondaryHintEnabled = !string.IsNullOrEmpty( player.ActiveCarriable.SecondaryAttackHint );
 		SecondaryAttackPanel.Enabled( secondaryHintEnabled );
 		if ( secondaryHintEnabled )
-			SecondaryAttackLabel.Text = player.ActiveChild.SecondaryAttackHint;
+			SecondaryAttackLabel.Text = player.ActiveCarriable.SecondaryAttackHint;
 	}
 }

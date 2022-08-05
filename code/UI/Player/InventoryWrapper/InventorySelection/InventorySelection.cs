@@ -46,7 +46,7 @@ public class InventorySelection : Panel
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeChild = player.ActiveChild;
+		var activeChild = player.ActiveCarriable;
 		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
@@ -65,8 +65,8 @@ public class InventorySelection : Panel
 			slot.SetClass( "rounded-bottom", isLast );
 			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
 
-			slot.SetClass( "active", slot.Carriable.IsActiveChild );
-			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveChild );
+			slot.SetClass( "active", slot.Carriable.IsActiveCarriable );
+			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveCarriable );
 
 			slot.UpdateSlotText( slot.Carriable.SlotText );
 		}
@@ -108,7 +108,7 @@ public class InventorySelection : Panel
 
 		var childrenList = Children.ToList();
 
-		var activeCarriable = player.ActiveChild;
+		var activeCarriable = player.ActiveCarriable;
 
 		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
 
