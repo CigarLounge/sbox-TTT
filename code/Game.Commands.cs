@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -103,5 +102,4 @@ public partial class Game
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
 	}
-
 }
