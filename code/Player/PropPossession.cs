@@ -16,7 +16,7 @@ public partial class PropPossession : EntityComponent<Player>
 	[Net]
 	private Prop Prop { get; set; }
 
-	private Player _player; // `Entity` property is cleared before OnDeactivate() called => need to store separately
+	private Player _player;
 	private TimeUntil _timeUntilRecharge = 0;
 	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
@@ -34,14 +34,14 @@ public partial class PropPossession : EntityComponent<Player>
 
 		if ( Host.IsServer )
 		{
-			Prop.Owner = Entity;
+			Prop.Owner = _player;
 			_player.Camera = new FollowEntityCamera( Prop );
 			_timeUntilRecharge = RechargeTime;
 		}
 		else
 		{
 			if ( !_player.IsAlive() )
-				_nameplate = new PossessionNameplate( Entity, Prop );
+				_nameplate = new PossessionNameplate( _player, Prop );
 
 			if ( _player.IsLocalPawn )
 				_meter = new PunchMeter( this );
@@ -128,7 +128,7 @@ public partial class PropPossession : EntityComponent<Player>
 		if ( forward + left != 0f || up )
 			MoveProp( forward, left, up, rotation );
 
-		// Cancel jump button so that spectator camera is not changed
+		// Ignore any jump inputs since we don't want to change spectating cameras.
 		input.SetButton( InputButton.Jump, false );
 	}
 
@@ -142,7 +142,6 @@ public partial class PropPossession : EntityComponent<Player>
 			return;
 
 		var target = Sandbox.Entity.FindByIndex( propNetworkIdent );
-
 		if ( !target.IsValid() || target is not Prop prop || prop.PhysicsBody is null || target.Owner is Player )
 			return;
 
@@ -171,10 +170,8 @@ public partial class PropPossession : EntityComponent<Player>
 		if ( Math.Abs( forward ) > 1f || Math.Abs( left ) > 1f )
 			return; // illegal values for forward/left
 
-		if ( !_timeUntilNextPunchAllowed ) { return; }
-
-		if ( Prop is IGrabbable grabbable && grabbable.IsHolding )
-			return; // can't move if prop is currently being held by a player
+		if ( !_timeUntilNextPunchAllowed )
+			return;
 
 		var mass = Math.Min( 150f, b.Mass );
 		var force = 110f * 75f;
