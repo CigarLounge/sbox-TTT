@@ -70,32 +70,23 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 	}
 
-	[GameEvent.Player.StatusChanged]
-	private static void OnStatusChanged( Player player, PlayerStatus oldStatus )
+	[GameEvent.Player.Spawned]
+	private static void OnPlayerSpawn( Player player )
 	{
-		if ( player.IsAlive() )
-		{
-			player.Components.RemoveAny<PropPossession>();
+		player.Components.RemoveAny<PropPossession>();
 
-			if ( Host.IsClient && player.IsLocalPawn )
-			{
-				_nameplates.ForEach( ( nameplate ) => nameplate?.Delete() );
-				_nameplates.Clear();
-			}
-		}
-		else
+		if ( Host.IsClient && player.IsLocalPawn )
 		{
-			// if ( player.IsLocalPawn )
-			// {
-			// 	// local player has died => show nameplates
-			// 	foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
-			// 	{
-			// 		var possession = entity.Components.Get<PropPossession>();
-			// 		possession._nameplate?.Delete();
-			// 		possession._nameplate = new PossessionNameplate( possession._player, possession.Prop );
-			// 	}
-			// }
+			_nameplates.ForEach( ( nameplate ) => nameplate?.Delete() );
+			_nameplates.Clear();
 		}
+	}
+
+	[GameEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
+	{
+		// TODO: Currently active nameplates should be created for the player.
+		// Network down some data to them and create em.
 	}
 
 	[Event.Tick.Server]
