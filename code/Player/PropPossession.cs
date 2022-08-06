@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sandbox;
 using TTT.UI;
@@ -21,6 +22,7 @@ public partial class PropPossession : EntityComponent<Player>
 	private TimeUntil _timeUntilNextPunchAllowed = 0;
 
 	// Clientside
+	private static readonly List<PossessionNameplate> _nameplates = new();
 	private PossessionNameplate _nameplate;
 	private PunchMeter _meter;
 
@@ -41,7 +43,10 @@ public partial class PropPossession : EntityComponent<Player>
 		else
 		{
 			if ( Local.Pawn is Player player && !player.IsAlive() )
+			{
 				_nameplate = new PossessionNameplate( _player, Prop );
+				_nameplates.Add( _nameplate );
+			}
 
 			if ( _player.IsLocalPawn )
 				_meter = new PunchMeter( this );
@@ -74,25 +79,22 @@ public partial class PropPossession : EntityComponent<Player>
 
 			if ( Host.IsClient && player.IsLocalPawn )
 			{
-				// local player has come alive, must loose all nameplates
-				foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
-				{
-					entity.Components.Get<PropPossession>()._nameplate?.Delete();
-				}
+				_nameplates.ForEach( ( nameplate ) => nameplate?.Delete() );
+				_nameplates.Clear();
 			}
 		}
 		else
 		{
-			if ( player.IsLocalPawn )
-			{
-				// local player has died => show nameplates
-				foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
-				{
-					var possession = entity.Components.Get<PropPossession>();
-					possession._nameplate?.Delete();
-					possession._nameplate = new PossessionNameplate( possession._player, possession.Prop );
-				}
-			}
+			// if ( player.IsLocalPawn )
+			// {
+			// 	// local player has died => show nameplates
+			// 	foreach ( var entity in Sandbox.Entity.All.Where( e => e.Components.Get<PropPossession>() is not null ) )
+			// 	{
+			// 		var possession = entity.Components.Get<PropPossession>();
+			// 		possession._nameplate?.Delete();
+			// 		possession._nameplate = new PossessionNameplate( possession._player, possession.Prop );
+			// 	}
+			// }
 		}
 	}
 
