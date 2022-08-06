@@ -40,7 +40,7 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
-			if ( !_player.IsAlive() )
+			if ( Local.Pawn is Player player && !player.IsAlive() )
 				_nameplate = new PossessionNameplate( _player, Prop );
 
 			if ( _player.IsLocalPawn )
@@ -63,8 +63,6 @@ public partial class PropPossession : EntityComponent<Player>
 			_nameplate?.Delete();
 			_meter?.Delete();
 		}
-
-		_player = null;
 	}
 
 	[GameEvent.Player.StatusChanged]
@@ -157,7 +155,7 @@ public partial class PropPossession : EntityComponent<Player>
 	[ConCmd.Server]
 	private static void MoveProp( float forward, float left, bool up, Rotation rotation )
 	{
-		ConsoleSystem.Caller.Pawn.Components.Get<PropPossession>().HandlePropMovement( forward, left, up, rotation );
+		ConsoleSystem.Caller.Pawn.Components.Get<PropPossession>()?.HandlePropMovement( forward, left, up, rotation );
 	}
 
 	private void HandlePropMovement( float forward, float left, bool up, Rotation rotation )
