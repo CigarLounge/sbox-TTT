@@ -105,6 +105,9 @@ public partial class PropPossession : EntityComponent<Player>
 	[Event.Tick.Server]
 	private void OnServerTick()
 	{
+		if ( !Prop.IsValid() )
+			_player.Components.RemoveAny<PropPossession>();
+
 		if ( _timeUntilRecharge )
 		{
 			Punches = Math.Min( Punches + 1, MaxPunches );
