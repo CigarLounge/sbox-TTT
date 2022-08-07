@@ -127,13 +127,13 @@ public partial class PropPossession : EntityComponent<Player>
 			return;
 		}
 
-		var forward = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
-		var left = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? -1f : 0f);
-		var up = input.Pressed( InputButton.Jump );
+		var vertical = input.Pressed( InputButton.Forward ) ? 1f : (input.Pressed( InputButton.Back ) ? -1f : 0f);
+		var horizontal = input.Pressed( InputButton.Left ) ? 1f : (input.Pressed( InputButton.Right ) ? -1f : 0f);
+		var jump = input.Pressed( InputButton.Jump );
 		var rotation = Rotation.From( input.ViewAngles );
 
-		if ( forward + left != 0f || up )
-			MoveProp( forward, left, up, rotation );
+		if ( vertical != 0f || horizontal != 0f || jump )
+			MoveProp( vertical, horizontal, jump, rotation );
 
 		// Ignore any jump inputs since we don't want to change spectating cameras.
 		input.SetButton( InputButton.Jump, false );
@@ -162,20 +162,17 @@ public partial class PropPossession : EntityComponent<Player>
 	}
 
 	[ConCmd.Server]
-	private static void MoveProp( float forward, float left, bool up, Rotation rotation )
+	private static void MoveProp( float vertical, float horizontal, bool jump, Rotation rotation )
 	{
-		ConsoleSystem.Caller.Pawn.Components.Get<PropPossession>()?.HandlePropMovement( forward, left, up, rotation );
+		ConsoleSystem.Caller.Pawn.Components.Get<PropPossession>()?.HandlePropMovement( vertical, horizontal, jump, rotation );
 	}
 
-	private void HandlePropMovement( float forward, float left, bool up, Rotation rotation )
+	private void HandlePropMovement( float vertical, float horizontal, bool jump, Rotation rotation )
 	{
 		var b = Prop.PhysicsBody;
 
 		if ( Punches <= 0 )
 			return;
-
-		if ( Math.Abs( forward ) > 1f || Math.Abs( left ) > 1f )
-			return; // illegal values for forward/left
 
 		if ( !_timeUntilNextPunchAllowed )
 			return;
@@ -187,18 +184,18 @@ public partial class PropPossession : EntityComponent<Player>
 
 		_timeUntilNextPunchAllowed = 0.15f;
 
-		if ( up )
+		if ( jump )
 		{
 			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf ) );
-			_timeUntilNextPunchAllowed = 0.2f; // jump is penalised more
+			_timeUntilNextPunchAllowed = 0.2f;
 		}
-		else if ( forward != 0f )
+		else if ( vertical != 0f )
 		{
-			b.ApplyForceAt( b.MassCenter, forward * aim * mf );
+			b.ApplyForceAt( b.MassCenter, vertical * aim * mf );
 		}
-		else if ( left != 0f )
+		else if ( horizontal != 0f )
 		{
-			b.ApplyAngularImpulse( new Vector3( 0, 0, left * 200f * 10f ) );
+			b.ApplyAngularImpulse( new Vector3( 0, 0, horizontal * 200f * 10f ) );
 			b.ApplyForceAt( b.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
 
