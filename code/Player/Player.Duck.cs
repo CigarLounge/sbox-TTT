@@ -59,7 +59,6 @@ public partial class PlayerController : PawnController
 				else
 					DuckFraction = Math.Clamp( DuckFraction - duckDelta, 0, 1 );
 
-
 				if ( DuckFraction.AlmostEqual( 0 ) )
 					UnDuck();
 			}
@@ -85,11 +84,11 @@ public partial class PlayerController : PawnController
 		{
 			DuckHoldUntil = DuckHoldTime;
 
-			var distToCeil = TraceBBox( Position, Position + (Vector3.Up * DefaultHeight * 2f) ).Distance;
-			var shift = MathF.Min( distToCeil, DuckHullOffset() );
+			// var distToCeil = TraceBBox( Position, Position + (Vector3.Up * DefaultHeight * 2f) ).Distance;
+			// var shift = MathF.Min( distToCeil, DuckHullOffset() );
 
-			Position += Vector3.Up * shift;
-			UpdateView( snapCamera: true );
+			// Position += Vector3.Up * shift;
+			// UpdateView( snapCamera: true );
 		}
 	}
 
@@ -116,14 +115,14 @@ public partial class PlayerController : PawnController
 		UpdateBBox();
 
 		// Extend legs downward only if airborne.
-		if ( GroundEntity == null )
+		/*if ( GroundEntity == null )
 		{
 			var distToGround = TraceBBox( Position, Position + Vector3.Down * DefaultHeight * 2f ).Distance;
 			var shift = MathF.Min( DuckHullOffset(), distToGround );
 
 			Position += Vector3.Down * shift;
 			UpdateView( snapCamera: true );
-		}
+		}*/
 	}
 
 	public float ActiveEyeHeight()

@@ -115,9 +115,12 @@ public partial class Player : AnimatedEntity
 				Acceleration = 8f,
 				GroundFriction = 5,
 				AutoJump = false,
+				// Custom values.
+				JumpSpeed = 325f,
+				Gravity = 800,
 				// Matches HL2 according to 'test/scale` map.
-				JumpSpeed = 180f,
-				Gravity = 800f,
+				// Gravity = 800f,
+				// JumpSpeed = 180f,
 			};
 
 			Camera = new FirstPersonCamera();
