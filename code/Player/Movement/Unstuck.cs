@@ -5,7 +5,6 @@ namespace TTT;
 public class Unstuck
 {
 	public BasePlayerController Controller;
-	public bool IsActive; // replicate
 
 	private int _stuckTries = 0;
 
@@ -67,9 +66,7 @@ public class Unstuck
 			else
 			{
 				if ( BasePlayerController.Debug )
-				{
 					DebugOverlay.Line( pos, Controller.Position, Color.Yellow, 0.5f, false );
-				}
 			}
 		}
 

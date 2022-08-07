@@ -33,36 +33,15 @@ public partial class WalkController : BasePlayerController
 	public Duck Duck;
 	public Unstuck Unstuck;
 
+	private const float FallDamageThreshold = 650f;
+	private const float FallDamageScale = 0.33f;
 	private Vector3 _lastBaseVelocity;
 	private float _surfaceFriction;
-	private bool _isTouchingLadder = false;
-	private Vector3 _ladderNormal;
-	private Vector3 _mins;
-	private Vector3 _maxs;
 
 	public WalkController()
 	{
 		Duck = new Duck( this );
 		Unstuck = new Unstuck( this );
-	}
-
-	public override BBox GetHull()
-	{
-		var girth = BodyGirth * 0.5f;
-		var mins = new Vector3( -girth, -girth, 0 );
-		var maxs = new Vector3( +girth, +girth, BodyHeight );
-
-		return new BBox( mins, maxs );
-	}
-
-	/// <summary>
-	/// Traces the current bbox and returns the result.
-	/// liftFeet will move the start position up by this amount, while keeping the top of the bbox at the same
-	/// position. This is good when tracing down because you won't be tracing through the ceiling above.
-	/// </summary>
-	public override TraceResult TraceBBox( Vector3 start, Vector3 end, float liftFeet = 0.0f )
-	{
-		return TraceBBox( start, end, _mins, _maxs, liftFeet );
 	}
 
 	public override void FrameSimulate()
@@ -77,27 +56,6 @@ public partial class WalkController : BasePlayerController
 		_lastBaseVelocity = BaseVelocity;
 		ApplyMomentum();
 		BaseSimulate();
-	}
-
-	private void SetBBox( Vector3 mins, Vector3 maxs )
-	{
-		if ( _mins == mins && _maxs == maxs )
-			return;
-
-		_mins = mins;
-		_maxs = maxs;
-	}
-
-	private void UpdateBBox()
-	{
-		var girth = BodyGirth * 0.5f;
-
-		var mins = new Vector3( -girth, -girth, 0 ) * Pawn.Scale;
-		var maxs = new Vector3( +girth, +girth, BodyHeight ) * Pawn.Scale;
-
-		Duck.UpdateBBox( ref mins, ref maxs, Pawn.Scale );
-
-		SetBBox( mins, maxs );
 	}
 
 	private float GetWishSpeed()
@@ -338,58 +296,6 @@ public partial class WalkController : BasePlayerController
 		Velocity -= BaseVelocity;
 	}
 
-	private void CheckLadder()
-	{
-		var wishvel = new Vector3( Input.Forward, Input.Left, 0 );
-		wishvel *= Input.Rotation.Angles().WithPitch( 0 ).ToRotation();
-		wishvel = wishvel.Normal;
-
-		if ( _isTouchingLadder )
-		{
-			if ( Input.Pressed( InputButton.Jump ) )
-			{
-				Velocity = _ladderNormal * 100.0f;
-				_isTouchingLadder = false;
-
-				return;
-
-			}
-			else if ( GroundEntity != null && _ladderNormal.Dot( wishvel ) > 0 )
-			{
-				_isTouchingLadder = false;
-				return;
-			}
-		}
-
-		const float ladderDistance = 1.0f;
-		var start = Position;
-		var end = start + (_isTouchingLadder ? (_ladderNormal * -1.0f) : wishvel) * ladderDistance;
-
-		var pm = Trace.Ray( start, end )
-					.Size( _mins, _maxs )
-					.WithTag( "ladder" )
-					.Ignore( Pawn )
-					.Run();
-
-		_isTouchingLadder = false;
-
-		if ( pm.Hit )
-		{
-			_isTouchingLadder = true;
-			_ladderNormal = pm.Normal;
-		}
-	}
-
-	private void LadderMove()
-	{
-		var velocity = WishVelocity;
-		var normalDot = velocity.Dot( _ladderNormal );
-		var cross = _ladderNormal * normalDot;
-		Velocity = velocity - cross + (-normalDot * _ladderNormal.Cross( Vector3.Up.Cross( _ladderNormal ).Normal ));
-
-		Move();
-	}
-
 	private void CategorizePosition( bool bStayOnGround )
 	{
 		_surfaceFriction = 1.0f;
@@ -545,6 +451,28 @@ public partial class WalkController : BasePlayerController
 
 		if ( GroundEntity != null )
 			Velocity = Velocity.WithZ( 0 );
+
+		var fallVelocity = -Pawn.Velocity.z;
+		if ( GroundEntity is null || fallVelocity <= 0 )
+			return;
+
+		if ( fallVelocity > FallDamageThreshold )
+		{
+			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
+
+			if ( Host.IsServer )
+			{
+				Pawn.TakeDamage( new DamageInfo
+				{
+					Attacker = Pawn,
+					Flags = DamageFlags.Fall,
+					Force = Vector3.Down * Velocity.Length,
+					Damage = damage,
+				} );
+			}
+
+			Pawn.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
+		}
 	}
 
 	/// <summary>
@@ -607,7 +535,7 @@ public partial class WalkController : BasePlayerController
 		var tr = TraceBBox( vecstart, vecend, 0f );
 		if ( tr.Fraction < 1.0f )
 		{
-			const float WATERJUMP_HEIGHT = 8f;
+			const float WATERJUMP_HEIGHT = 900f;
 			vecstart.z += Position.z + EyeHeight + WATERJUMP_HEIGHT;
 
 			vecend = vecstart + flatforward * 24f;
