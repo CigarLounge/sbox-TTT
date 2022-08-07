@@ -23,7 +23,6 @@ public partial class PropPossession : EntityComponent<Player>
 
 	// Clientside
 	private static readonly List<PossessionNameplate> _nameplates = new();
-	private PossessionNameplate _nameplate;
 	private PunchMeter _meter;
 
 	public PropPossession() { }
@@ -43,10 +42,7 @@ public partial class PropPossession : EntityComponent<Player>
 		else
 		{
 			if ( Local.Pawn is Player player && !player.IsAlive() )
-			{
-				_nameplate = new PossessionNameplate( _player, Prop );
-				_nameplates.Add( _nameplate );
-			}
+				_nameplates.Add( new PossessionNameplate( _player, Prop ) );
 
 			if ( _player.IsLocalPawn )
 				_meter = new PunchMeter( this );
@@ -65,7 +61,15 @@ public partial class PropPossession : EntityComponent<Player>
 		}
 		else
 		{
-			_nameplate?.Delete();
+			for ( var i = _nameplates.Count - 1; i >= 0; i-- )
+			{
+				var nameplate = _nameplates[i];
+				if ( nameplate.Player != _player )
+					continue;
+
+				nameplate.Delete( true );
+				_nameplates.Remove( nameplate );
+			}
 			_meter?.Delete();
 		}
 	}
@@ -85,8 +89,17 @@ public partial class PropPossession : EntityComponent<Player>
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		// TODO: Currently active nameplates should be created for the player.
-		// Network down some data to them and create em.
+		if ( Host.IsClient && player.IsLocalPawn )
+		{
+			foreach ( var ent in Sandbox.Entity.All )
+			{
+				if ( ent is not Player otherPlayer )
+					continue;
+
+				if ( otherPlayer.Components.TryGet( out PropPossession possessionComponent ) )
+					_nameplates.Add( new PossessionNameplate( possessionComponent._player, possessionComponent.Prop ) );
+			}
+		}
 	}
 
 	[Event.Tick.Server]

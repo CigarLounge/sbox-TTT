@@ -6,22 +6,22 @@ namespace TTT.UI;
 [UseTemplate]
 public class PossessionNameplate : WorldPanel
 {
+	public Player Player { get; init; }
 	private Label PlayerName { get; set; }
-	private readonly Player _player;
 	private readonly Prop _prop;
 
 	public PossessionNameplate( Player player, Prop prop )
 	{
-		_player = player;
-		_prop = prop;
+		Player = player;
 		PlayerName.SetText( player.SteamName );
 		SceneObject.Flags.ViewModelLayer = true;
+		_prop = prop;
 	}
 
 	[Event.Frame]
 	private void FrameUpdate()
 	{
-		if ( !_player.IsValid() || !_prop.IsValid() )
+		if ( !Player.IsValid() || !_prop.IsValid() )
 		{
 			Delete();
 			return;
