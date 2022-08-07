@@ -282,7 +282,7 @@ public partial class Player : AnimatedEntity
 
 	public float FootstepVolume()
 	{
-		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 0.2f;
+		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 5.0f;
 	}
 	#endregion
 
