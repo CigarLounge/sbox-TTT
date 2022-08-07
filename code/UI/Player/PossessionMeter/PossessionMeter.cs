@@ -4,12 +4,12 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class PunchMeter : Panel
+public class PossessionMeter : Panel
 {
 	private Panel PercentagePanel { get; init; }
 	private readonly PropPossession _possession;
 
-	public PunchMeter( PropPossession possession )
+	public PossessionMeter( PropPossession possession )
 	{
 		_possession = possession;
 		Local.Hud.AddChild( this );

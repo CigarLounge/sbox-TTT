@@ -23,7 +23,7 @@ public partial class PropPossession : EntityComponent<Player>
 
 	// Clientside
 	private static readonly List<PossessionNameplate> _nameplates = new();
-	private PunchMeter _meter;
+	private PossessionMeter _meter;
 
 	public PropPossession() { }
 
@@ -45,7 +45,7 @@ public partial class PropPossession : EntityComponent<Player>
 				_nameplates.Add( new PossessionNameplate( _player, Prop ) );
 
 			if ( _player.IsLocalPawn )
-				_meter = new PunchMeter( this );
+				_meter = new PossessionMeter( this );
 		}
 	}
 
