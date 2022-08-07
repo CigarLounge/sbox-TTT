@@ -221,6 +221,8 @@ public partial class WalkController : BasePlayerController
 
 		ClearGroundEntity();
 
+		PreventBhop();
+
 		var flGroundFactor = 1.0f;
 
 		var jumpHeight = Duck.IsActive ? 56 : 52;
@@ -585,5 +587,27 @@ public partial class WalkController : BasePlayerController
 		// if ( flDelta > 0.5f * DIST_EPSILON )
 
 		Position = trace.EndPosition;
+	}
+
+	/// <summary>
+	/// Translated code from CS:GO
+	/// </summary>
+	private void PreventBhop()
+	{
+		// Speed at which bunny jumping is limited
+		var maxscaledspeed = 1.1f * DefaultSpeed;
+		if ( maxscaledspeed <= 0.0f )
+			return;
+
+		// Current player speed
+		var spd = Velocity.Length;
+
+		if ( spd <= maxscaledspeed )
+			return;
+
+		// Apply this cropping fraction to velocity
+		var fraction = maxscaledspeed / spd;
+
+		Velocity *= fraction;
 	}
 }
