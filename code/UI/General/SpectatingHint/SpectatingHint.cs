@@ -13,10 +13,16 @@ public class SpectatingHint : Panel
 
 	public override void Tick()
 	{
+		base.Tick();
+
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( player.Components.TryGet<PropPossession>( out _ ) )
+		this.Enabled( !player.IsAlive() );
+		if ( !this.IsEnabled() )
+			return;
+
+		if ( player.Prop.IsValid() )
 		{
 			HintGlyph.SetButton( InputButton.Duck );
 			HintAction.SetText( "to no longer possess the prop" );
@@ -26,10 +32,6 @@ public class SpectatingHint : Panel
 			HintGlyph.SetButton( InputButton.Jump );
 			HintAction.SetText( "to change spectating camera mode" );
 		}
-
-		this.Enabled( !player.IsAlive() );
-		if ( !this.IsEnabled() )
-			return;
 
 		SwapPanel.EnableFade( player.IsSpectatingPlayer );
 		if ( SwapPanel.IsEnabled() )

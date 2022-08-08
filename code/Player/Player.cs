@@ -177,7 +177,11 @@ public partial class Player : AnimatedEntity
 
 			if ( !this.IsAlive() )
 			{
-				ChangeSpectateCamera();
+				if ( Prop is null )
+					ChangeSpectateCamera();
+				else
+					SimulatePossession();
+
 				return;
 			}
 

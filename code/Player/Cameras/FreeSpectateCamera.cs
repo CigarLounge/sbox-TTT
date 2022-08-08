@@ -69,12 +69,10 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 
 	private void FindTargetProp()
 	{
-		var lookDir = Rotation.From( _lookAngles ).Forward;
-		var tr = Trace.Ray( Position, Position + (lookDir * Player.UseDistance) )
-			.EntitiesOnly()
+		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.UseDistance )
 			.Run();
 
-		if ( tr.Entity is Prop prop && prop.PhysicsBody is not null )
-			PropPossession.Possess( prop.NetworkIdent );
+		if ( trace.Entity is Prop prop && prop.PhysicsBody is not null )
+			Player.Possess( prop.NetworkIdent );
 	}
 }
