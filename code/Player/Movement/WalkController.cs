@@ -3,8 +3,7 @@ using Sandbox;
 
 namespace TTT;
 
-[Library]
-public partial class WalkController : BasePlayerController
+public partial class WalkController : PawnController
 {
 	[Net] public float WalkSpeed { get; set; } = 110f;
 	[Net] public float DefaultSpeed { get; set; } = 230f;

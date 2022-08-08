@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class WalkController : BasePlayerController
+public partial class WalkController
 {
 	private bool _isTouchingLadder = false;
 	private Vector3 _ladderNormal;
