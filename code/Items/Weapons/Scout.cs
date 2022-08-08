@@ -45,7 +45,7 @@ public class Scout : Weapon
 		base.BuildInput( input );
 	}
 
-	public override void CreateHudElements()
+	protected override void CreateHudElements()
 	{
 		base.CreateHudElements();
 
@@ -55,7 +55,7 @@ public class Scout : Weapon
 		};
 	}
 
-	public override void DestroyHudElements()
+	protected override void DestroyHudElements()
 	{
 		base.DestroyHudElements();
 
