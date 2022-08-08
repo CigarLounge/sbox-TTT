@@ -18,9 +18,31 @@ public partial class ChatBox : Panel
 
 	public static ChatBox Instance { get; private set; }
 
-	public Panel EntryCanvas { get; set; }
-	public TabTextEntry Input { get; set; }
-	public Channel CurrentChannel { get; private set; } = Channel.All;
+	private Panel EntryCanvas { get; init; }
+	private TabTextEntry Input { get; init; }
+
+	private Channel _currentChannel;
+	public Channel CurrentChannel
+	{
+		get => _currentChannel;
+		private set
+		{
+			_currentChannel = value;
+
+			switch ( CurrentChannel )
+			{
+				case Channel.All:
+					Input.Style.BorderColor = _allChatColor;
+					return;
+				case Channel.Spectator:
+					Input.Style.BorderColor = _spectatorChatColor;
+					return;
+				case Channel.Team:
+					Input.Style.BorderColor = (Local.Pawn as Player).Role.Color;
+					return;
+			}
+		}
+	}
 
 	public bool IsOpen
 	{
@@ -58,23 +80,8 @@ public partial class ChatBox : Panel
 	{
 		base.Tick();
 
-		var player = Local.Pawn as Player;
-
 		if ( !IsOpen )
 			return;
-
-		switch ( CurrentChannel )
-		{
-			case Channel.All:
-				Input.Style.BorderColor = _allChatColor;
-				return;
-			case Channel.Spectator:
-				Input.Style.BorderColor = _spectatorChatColor;
-				return;
-			case Channel.Team:
-				Input.Style.BorderColor = player.Role.Color;
-				return;
-		}
 
 		Input.Placeholder = string.Empty;
 	}
@@ -170,14 +177,14 @@ public partial class ChatBox : Panel
 	[GameEvent.Player.Spawned]
 	private void OnPlayerSpawn( Player player )
 	{
-		if ( Host.IsClient && player.IsLocalPawn )
+		if ( player.IsLocalPawn )
 			CurrentChannel = Channel.All;
 	}
 
 	[GameEvent.Player.Killed]
 	private void OnPlayerKilled( Player player )
 	{
-		if ( Host.IsClient && player.IsLocalPawn )
+		if ( player.IsLocalPawn )
 			CurrentChannel = Channel.Spectator;
 	}
 }
