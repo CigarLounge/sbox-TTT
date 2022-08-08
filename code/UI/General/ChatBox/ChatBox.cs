@@ -63,11 +63,6 @@ public partial class ChatBox : Panel
 		if ( !IsOpen )
 			return;
 
-		if ( !player.IsAlive() )
-			CurrentChannel = Channel.Spectator;
-		else if ( !player.Role.CanTeamChat )
-			CurrentChannel = Channel.All;
-
 		switch ( CurrentChannel )
 		{
 			case Channel.All:
@@ -170,6 +165,20 @@ public partial class ChatBox : Panel
 
 		if ( player.Role.CanTeamChat )
 			CurrentChannel = CurrentChannel == Channel.All ? Channel.Team : Channel.All;
+	}
+
+	[GameEvent.Player.Spawned]
+	private void OnPlayerSpawn( Player player )
+	{
+		if ( Host.IsClient && player.IsLocalPawn )
+			CurrentChannel = Channel.All;
+	}
+
+	[GameEvent.Player.Killed]
+	private void OnPlayerKilled( Player player )
+	{
+		if ( Host.IsClient && player.IsLocalPawn )
+			CurrentChannel = Channel.Spectator;
 	}
 }
 
