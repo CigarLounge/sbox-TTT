@@ -4,11 +4,11 @@ namespace TTT;
 
 public class Unstuck
 {
-	public BasePlayerController Controller;
+	public WalkController Controller;
 
 	private int _stuckTries = 0;
 
-	public Unstuck( BasePlayerController controller )
+	public Unstuck( WalkController controller )
 	{
 		Controller = controller;
 	}

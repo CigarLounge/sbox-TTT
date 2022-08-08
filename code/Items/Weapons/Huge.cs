@@ -21,4 +21,11 @@ public class Huge : Weapon
 		// As we decrease ammo count, update the viewmodels "bullets" bodygroup.
 		ViewModelEntity?.SetBodyGroup( BulletsBodyGroup, Math.Min( AmmoClip, MaxBulletsChoice ) );
 	}
+
+	protected override void CreateViewModel()
+	{
+		base.CreateViewModel();
+
+		ViewModelEntity.SetBodyGroup( BulletsBodyGroup, Math.Min( AmmoClip, MaxBulletsChoice ) );
+	}
 }

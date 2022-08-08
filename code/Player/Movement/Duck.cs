@@ -3,16 +3,15 @@ using Sandbox;
 
 namespace TTT;
 
-[Library]
 public class Duck : BaseNetworkable
 {
-	public BasePlayerController Controller;
+	public WalkController Controller;
 	public bool IsActive;
 
 	private Vector3 _originalMins;
 	private Vector3 _originalMaxs;
 
-	public Duck( BasePlayerController controller )
+	public Duck( WalkController controller )
 	{
 		Controller = controller;
 	}

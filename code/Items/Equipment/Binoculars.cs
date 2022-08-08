@@ -68,7 +68,7 @@ public partial class Binoculars : Carriable
 			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
 	}
 
-	public override void DestroyHudElements()
+	protected override void DestroyHudElements()
 	{
 		base.DestroyHudElements();
 

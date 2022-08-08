@@ -138,54 +138,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public override void BuildInput( InputBuilder input ) { }
 
-	/// <summary>
-	/// Create the viewmodel. You can override this in your base classes if you want
-	/// to create a certain viewmodel entity.
-	/// </summary>
-	public virtual void CreateViewModel()
-	{
-		Host.AssertClient();
-
-		if ( Info.ViewModel is not null )
-		{
-			ViewModelEntity = new ViewModel
-			{
-				EnableViewmodelRendering = true,
-				Model = Info.ViewModel,
-				Owner = Owner,
-				Position = Position
-			};
-		}
-
-		if ( Info.HandsModel is not null )
-		{
-			HandsModelEntity = new BaseViewModel
-			{
-				EnableViewmodelRendering = true,
-				Model = Info.HandsModel,
-				Owner = Owner,
-				Position = Position
-			};
-
-			HandsModelEntity.SetParent( ViewModelEntity, true );
-		}
-	}
-
-	/// <summary>
-	/// We're done with the viewmodel - delete it
-	/// </summary>
-	public virtual void DestroyViewModel()
-	{
-		ViewModelEntity?.Delete();
-		ViewModelEntity = null;
-		HandsModelEntity?.Delete();
-		HandsModelEntity = null;
-	}
-
-	public virtual void CreateHudElements() { }
-
-	public virtual void DestroyHudElements() { }
-
 	public virtual bool CanCarry( Player carrier )
 	{
 		if ( Owner is not null )
@@ -230,6 +182,54 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		animator.SetAnimParameter( "aim_body_weight", 1.0f );
 		animator.SetAnimParameter( "holdtype_handedness", 0 );
 	}
+
+	/// <summary>
+	/// Create the viewmodel. You can override this in your base classes if you want
+	/// to create a certain viewmodel entity.
+	/// </summary>
+	protected virtual void CreateViewModel()
+	{
+		Host.AssertClient();
+
+		if ( Info.ViewModel is not null )
+		{
+			ViewModelEntity = new ViewModel
+			{
+				EnableViewmodelRendering = true,
+				Model = Info.ViewModel,
+				Owner = Owner,
+				Position = Position
+			};
+		}
+
+		if ( Info.HandsModel is not null )
+		{
+			HandsModelEntity = new BaseViewModel
+			{
+				EnableViewmodelRendering = true,
+				Model = Info.HandsModel,
+				Owner = Owner,
+				Position = Position
+			};
+
+			HandsModelEntity.SetParent( ViewModelEntity, true );
+		}
+	}
+
+	/// <summary>
+	/// We're done with the viewmodel - delete it
+	/// </summary>
+	protected virtual void DestroyViewModel()
+	{
+		ViewModelEntity?.Delete();
+		ViewModelEntity = null;
+		HandsModelEntity?.Delete();
+		HandsModelEntity = null;
+	}
+
+	protected virtual void CreateHudElements() { }
+
+	protected virtual void DestroyHudElements() { }
 
 	protected override void OnDestroy()
 	{
