@@ -78,6 +78,7 @@ public partial class PropPossession : EntityComponent<Prop>
 
 	// The player currently possessing this prop has spawned, we need to
 	// cancel the current prop possession.
+	// (Note "static" since we need to remove the current instance of this component)
 	[GameEvent.Player.Spawned]
 	private static void OnPlayerSpawned( Player player )
 	{
