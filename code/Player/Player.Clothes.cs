@@ -30,6 +30,7 @@ public partial class Player
 	private void DressPlayer()
 	{
 		AttachClothing( "models/citizen_clothes/hat/balaclava/models/balaclava.vmdl" );
+		AttachClothing( "models/citizen_clothes/hair/eyebrows/models/eyebrows.vmdl" );
 		AttachClothing( "models/citizen_clothes/jacket/longsleeve/models/longsleeve.vmdl" );
 		AttachClothing( "models/citizen_clothes/gloves/tactical_gloves/models/tactical_gloves.vmdl" );
 		AttachClothing( "models/citizen_clothes/trousers/smarttrousers/smarttrousers.vmdl" );
