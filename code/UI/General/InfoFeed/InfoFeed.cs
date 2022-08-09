@@ -83,6 +83,9 @@ public partial class InfoFeed : Panel
 		if ( !TabMenus.Instance.IsVisible )
 			TabMenus.Instance.SwapToScoreboard();
 
+		if ( !player.Client.IsValid() )
+			return;
+
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
