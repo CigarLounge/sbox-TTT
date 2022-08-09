@@ -76,6 +76,23 @@ public partial class PropPossession : EntityComponent<Prop>
 		_meter?.Delete( true );
 	}
 
+	// The player currently possessing this prop has spawned, we need to
+	// cancel the current prop possession.
+	[GameEvent.Player.Spawned]
+	private static void OnPlayerSpawned( Player player )
+	{
+		player.CancelPossession();
+	}
+
+	// Another player has spawned and needs the nameplate of this current
+	// prop possession removed (since they are alive now).
+	[GameEvent.Player.Spawned]
+	private void OnOtherPlayerSpawned( Player player )
+	{
+		if ( player.IsLocalPawn )
+			_nameplate?.Delete( true );
+	}
+
 	[GameEvent.Player.Killed]
 	private void OnPlayerKilled( Player player )
 	{

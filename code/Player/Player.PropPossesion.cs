@@ -20,7 +20,7 @@ public partial class Player
 	}
 
 	[Event.Entity.PreCleanup]
-	protected void CancelPossession()
+	public void CancelPossession()
 	{
 		if ( Prop.IsValid() )
 		{
@@ -29,7 +29,7 @@ public partial class Player
 		}
 
 		Prop = null;
-		Camera = new FreeSpectateCamera();
+		Camera = this.IsAlive() ? new FirstPersonCamera() : new FreeSpectateCamera();
 	}
 
 	[ConCmd.Server]
@@ -41,10 +41,10 @@ public partial class Player
 		if ( player.IsAlive() || player.Prop.IsValid() )
 			return;
 
-		var target = Entity.FindByIndex( propNetworkIdent );
+		var target = FindByIndex( propNetworkIdent );
 		if ( target is not Prop prop || !prop.IsValid() || prop.PhysicsBody is null || target.Owner is not null )
 			return;
-	
+
 		prop.Owner = player;
 		prop.Components.GetOrCreate<PropPossession>();
 		player.Prop = prop;
