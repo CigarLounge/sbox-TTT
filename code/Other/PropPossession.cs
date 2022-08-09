@@ -5,7 +5,7 @@ using System;
 namespace TTT;
 
 /// <summary>
-/// Allows to be pushed around by spectators.
+/// Allows a prop to be controlled by a spectator.
 /// </summary>
 public partial class PropPossession : EntityComponent<Prop>
 {
