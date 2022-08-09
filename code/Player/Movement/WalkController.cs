@@ -359,7 +359,7 @@ public partial class WalkController : PawnController
 	{
 		if ( !Momentum )
 		{
-			Velocity += (1.0f + (Time.Delta * 0.5f)) * BaseVelocity;
+			Velocity += (0.2f + (Time.Delta * 0.5f)) * BaseVelocity;
 			BaseVelocity = Vector3.Zero;
 		}
 
