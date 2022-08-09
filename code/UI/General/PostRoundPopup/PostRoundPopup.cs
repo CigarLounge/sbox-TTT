@@ -6,10 +6,10 @@ namespace TTT.UI;
 [UseTemplate]
 public class PostRoundPopup : Panel
 {
-	public static PostRoundPopup Instance;
 	private Label Header { get; init; }
+	private InputGlyph Glyph { get; init; }
 
-	public PostRoundPopup() => Instance = this;
+	public PostRoundPopup() { }
 
 	[GameEvent.Round.Ended]
 	private static void DisplayWinner( Team winningTeam, WinType winType )
@@ -17,16 +17,21 @@ public class PostRoundPopup : Panel
 		if ( !Host.IsClient )
 			return;
 
-		Local.Hud.AddChild( new PostRoundPopup() );
+		var roundPopup = new PostRoundPopup();
+		Local.Hud.AddChild( roundPopup );
 
-		Instance.Header.Text = winningTeam == Team.None ? "IT'S A TIE!" : $"THE {winningTeam.GetTitle()} WIN!";
-		Instance.Header.Style.FontColor = winningTeam.GetColor();
+		roundPopup.Header.Text = winningTeam == Team.None ? "IT'S A TIE!" : $"THE {winningTeam.GetTitle()} WIN!";
+		roundPopup.Header.Style.FontColor = winningTeam.GetColor();
+	}
+
+	public override void Tick()
+	{
+		Glyph.Style.Opacity = Input.Down( InputButton.View ) ? 1.0f : 0.5f;
 	}
 
 	[GameEvent.Round.Started]
 	private void Close()
 	{
 		Delete();
-		Instance = null;
 	}
 }
