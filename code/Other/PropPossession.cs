@@ -1,5 +1,4 @@
 ﻿using Sandbox;
-using Sandbox.UI;
 using System;
 
 namespace TTT;
@@ -15,6 +14,7 @@ public partial class PropPossession : EntityComponent<Prop>
 	public const int MaxPunches = 8;
 	private const float PunchRechargeTime = 1f;
 
+	private Player _player;
 	private UI.PossessionMeter _meter;
 	private UI.PossessionNameplate _nameplate;
 	private TimeUntil _timeUntilNextPunch = 0;
@@ -60,17 +60,21 @@ public partial class PropPossession : EntityComponent<Prop>
 	{
 		base.OnActivate();
 
+		_player = Entity.Owner as Player;
+
 		if ( Host.IsClient && !Local.Pawn.IsAlive() )
 			_nameplate = new( Entity );
 
 		if ( Entity.IsLocalPawn )
 			_meter = new( this );
-
 	}
 
 	protected override void OnDeactivate()
 	{
 		base.OnDeactivate();
+
+		if ( !_player.Prop.IsValid() )
+			_player.CancelPossession();
 
 		_nameplate?.Delete( true );
 		_meter?.Delete( true );
@@ -88,19 +92,17 @@ public partial class PropPossession : EntityComponent<Prop>
 	// Another player has spawned and needs the nameplate of this current
 	// prop possession removed (since they are alive now).
 	[GameEvent.Player.Spawned]
-	private void OnOtherPlayerSpawned( Player player )
+	private void DeleteNameplate( Player player )
 	{
 		if ( player.IsLocalPawn )
 			_nameplate?.Delete( true );
 	}
 
 	[GameEvent.Player.Killed]
-	private void OnPlayerKilled( Player player )
+	private void CreateNameplate( Player player )
 	{
-		if ( !player.IsLocalPawn )
-			return;
-
-		_nameplate = new( Entity );
+		if ( player.IsLocalPawn )
+			_nameplate = new( Entity );
 	}
 
 	[Event.Tick.Server]

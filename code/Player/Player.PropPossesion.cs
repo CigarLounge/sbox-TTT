@@ -9,7 +9,7 @@ public partial class Player
 
 	public void SimulatePossession()
 	{
-		if ( Input.Pressed( InputButton.Duck ) || !Prop.IsValid() )
+		if ( Input.Pressed( InputButton.Duck ) )
 		{
 			CancelPossession();
 			return;
@@ -22,6 +22,9 @@ public partial class Player
 	[Event.Entity.PreCleanup]
 	public void CancelPossession()
 	{
+		if ( !IsServer )
+			return;
+
 		if ( Prop.IsValid() )
 		{
 			Prop.Components.RemoveAny<PropPossession>();
@@ -29,7 +32,9 @@ public partial class Player
 		}
 
 		Prop = null;
-		Camera = this.IsAlive() ? new FirstPersonCamera() : new FreeSpectateCamera();
+
+		if ( !this.IsAlive() )
+			Camera = new FreeSpectateCamera();
 	}
 
 	[ConCmd.Server]

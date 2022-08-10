@@ -153,8 +153,10 @@ public partial class Player : AnimatedEntity
 		controller?.Simulate( client, this, Animator );
 
 		if ( Input.Pressed( InputButton.Menu ) )
+		{
 			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
 				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
+		}
 
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
