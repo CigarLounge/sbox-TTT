@@ -6,8 +6,8 @@ namespace TTT;
 
 public static class TeamExtensions
 {
-	private static readonly Dictionary<Team, HashSet<Client>> s_clients = new();
-	private static readonly Dictionary<Team, ColorGroup> s_properties = new();
+	private static readonly Dictionary<Team, HashSet<Client>> _clients = new();
+	private static readonly Dictionary<Team, ColorGroup> _properties = new();
 
 	static TeamExtensions()
 	{
@@ -16,24 +16,24 @@ public static class TeamExtensions
 		Team.Innocents.SetProperties( "Innocents", Color.FromBytes( 26, 196, 77 ) );
 		Team.Traitors.SetProperties( "Traitors", Color.FromBytes( 223, 40, 52 ) );
 
-		s_clients.Add( Team.None, new HashSet<Client>() );
-		s_clients.Add( Team.Innocents, new HashSet<Client>() );
-		s_clients.Add( Team.Traitors, new HashSet<Client>() );
+		_clients.Add( Team.None, new HashSet<Client>() );
+		_clients.Add( Team.Innocents, new HashSet<Client>() );
+		_clients.Add( Team.Traitors, new HashSet<Client>() );
 	}
 
 	public static string GetTitle( this Team team )
 	{
-		return s_properties[team].Title;
+		return _properties[team].Title;
 	}
 
 	public static Color GetColor( this Team team )
 	{
-		return s_properties[team].Color;
+		return _properties[team].Color;
 	}
 
 	public static void SetProperties( this Team team, string title, Color color )
 	{
-		s_properties[team] = new ColorGroup
+		_properties[team] = new ColorGroup
 		{
 			Title = title,
 			Color = color
@@ -42,26 +42,26 @@ public static class TeamExtensions
 
 	public static int GetCount( this Team team )
 	{
-		return s_clients[team].Count;
+		return _clients[team].Count;
 	}
 
 	public static To ToClients( this Team team )
 	{
-		return To.Multiple( s_clients[team] );
+		return To.Multiple( _clients[team] );
 	}
 
 	public static To ToAliveClients( this Team team )
 	{
-		return To.Multiple( s_clients[team].Where( x => x.Pawn.IsAlive() ) );
+		return To.Multiple( _clients[team].Where( x => x.Pawn.IsAlive() ) );
 	}
 
 	[GameEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChanged( Player player, Role oldRole )
 	{
 		if ( oldRole is not null )
-			s_clients[oldRole.Team].Remove( player.Client );
+			_clients[oldRole.Team].Remove( player.Client );
 
 		if ( player.Role is not null )
-			s_clients[player.Team].Add( player.Client );
+			_clients[player.Team].Add( player.Client );
 	}
 }

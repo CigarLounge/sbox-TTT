@@ -185,7 +185,7 @@ public partial class DNA : EntityComponent
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net]
 	public int Id { get; private set; }
-	private static int s_internalId = Rand.Int( 0, 500 );
+	private static int _internalId = Rand.Int( 0, 500 );
 
 	[Net]
 	public string SourceName { get; private set; }
@@ -205,7 +205,7 @@ public partial class DNA : EntityComponent
 		if ( Host.IsClient )
 			return;
 
-		Id = s_internalId++;
+		Id = _internalId++;
 
 		switch ( Entity )
 		{
@@ -242,6 +242,6 @@ public partial class DNA : EntityComponent
 	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
-		s_internalId = Rand.Int( 0, 500 );
+		_internalId = Rand.Int( 0, 500 );
 	}
 }
