@@ -77,14 +77,14 @@ public partial class InfoFeed : Panel
 	[GameEvent.Round.RolesAssigned]
 	private void OnRolesAssigned()
 	{
+		if ( Game.Current.State.HasStarted )
+			return;
+
 		if ( Local.Pawn is not Player player )
 			return;
 
 		if ( !TabMenus.Instance.IsVisible )
 			TabMenus.Instance.SwapToScoreboard();
-
-		if ( !player.Client.IsValid() )
-			return;
 
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
