@@ -3,47 +3,47 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public class Hud : HudEntity<RootPanel>
+public class Hud : RootPanel
 {
 	public Hud()
 	{
-		if ( !Host.IsClient )
-			return;
+		Local.Hud = this;
 
-		RootPanel.StyleSheet.Load( "/UI/Hud.scss" );
-		RootPanel.AddClass( "panel" );
-		RootPanel.AddClass( "fullscreen" );
+		StyleSheet.Load( "/UI/Hud.scss" );
+		AddClass( "panel" );
+		AddClass( "fullscreen" );
 
 		Init();
 	}
 
 	private void Init()
 	{
-		RootPanel.AddChild<HintDisplay>();
-		RootPanel.AddChild<PlayerInfo>();
-		RootPanel.AddChild<InventoryWrapper>();
-		RootPanel.AddChild<ChatBox>();
-		RootPanel.AddChild<QuickChat>();
-		RootPanel.AddChild<VoiceChatDisplay>();
-		RootPanel.AddChild<RoundTimer>();
-		RootPanel.AddChild<VoiceList>();
-		RootPanel.AddChild<InfoFeed>();
-		RootPanel.AddChild<FullScreenHintMenu>();
-		RootPanel.AddChild<TabMenus>();
-		RootPanel.AddChild<Crosshair>();
-		RootPanel.AddChild<CarriableHint>();
-		RootPanel.AddChild<RoleMenu>();
-		RootPanel.AddChild<DamageIndicator>();
-		RootPanel.AddChild<WorldPoints>();
-		RootPanel.AddChild<SpectatingHint>();
+		AddChild<HintDisplay>();
+		AddChild<PlayerInfo>();
+		AddChild<InventoryWrapper>();
+		AddChild<ChatBox>();
+		AddChild<QuickChat>();
+		AddChild<VoiceChatDisplay>();
+		AddChild<RoundTimer>();
+		AddChild<VoiceList>();
+		AddChild<InfoFeed>();
+		AddChild<FullScreenHintMenu>();
+		AddChild<TabMenus>();
+		AddChild<Crosshair>();
+		AddChild<CarriableHint>();
+		AddChild<RoleMenu>();
+		AddChild<DamageIndicator>();
+		AddChild<WorldPoints>();
+		AddChild<SpectatingHint>();
 	}
 
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		if ( !IsClient ) return;
+		if ( !Host.IsClient )
+			return;
 
-		Local.Hud.DeleteChildren( true );
+		DeleteChildren( true );
 		Init();
 	}
 }

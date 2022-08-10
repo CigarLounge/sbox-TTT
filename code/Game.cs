@@ -5,7 +5,7 @@ namespace TTT;
 
 public partial class Game : Sandbox.Game
 {
-	public new static Game Current { get; private set; }
+	public static new Game Current { get; private set; }
 
 	[Net, Change]
 	public BaseState State { get; private set; }
@@ -20,7 +20,7 @@ public partial class Game : Sandbox.Game
 	{
 		Current = this;
 
-		if ( IsServer )
+		if ( IsClient )
 			_ = new UI.Hud();
 	}
 
