@@ -6,8 +6,8 @@ public partial class Player
 {
 	public const float MaxHintDistance = 5000f;
 
-	private static UI.EntityHintPanel _currentHintPanel;
-	private static IEntityHint _currentHint;
+	private static UI.EntityHintPanel s_currentHintPanel;
+	private static IEntityHint s_currentHint;
 
 	private void DisplayEntityHints()
 	{
@@ -24,7 +24,7 @@ public partial class Player
 			return;
 		}
 
-		if ( hint == _currentHint )
+		if ( hint == s_currentHint )
 		{
 			hint.Tick( CurrentPlayer );
 			return;
@@ -32,20 +32,20 @@ public partial class Player
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( CurrentPlayer );
-		_currentHintPanel.Parent = UI.HintDisplay.Instance;
-		_currentHintPanel.Enabled( true );
+		s_currentHintPanel = hint.DisplayHint( CurrentPlayer );
+		s_currentHintPanel.Parent = UI.HintDisplay.Instance;
+		s_currentHintPanel.Enabled( true );
 
-		_currentHint = hint;
+		s_currentHint = hint;
 	}
 
 	private static void DeleteHint()
 	{
-		_currentHintPanel?.Delete( true );
-		_currentHintPanel = null;
+		s_currentHintPanel?.Delete( true );
+		s_currentHintPanel = null;
 		UI.FullScreenHintMenu.Instance?.Close();
 
-		_currentHint = null;
+		s_currentHint = null;
 	}
 
 	private IEntityHint FindHintableEntity()

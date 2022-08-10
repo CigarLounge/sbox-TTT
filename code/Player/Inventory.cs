@@ -54,8 +54,8 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool CanAdd( Carriable carriable )
 	{
-		if ( Host.IsClient && carriable.Parent == Owner )
-			return true;
+		if ( Host.IsClient )
+			return carriable.Parent == Owner;
 
 		if ( !HasFreeSlot( carriable.Info.Slot ) )
 			return false;
