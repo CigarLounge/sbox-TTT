@@ -61,6 +61,18 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles += input.AnalogLook;
 		_lookAngles.roll = 0;
 
+		if ( input.Pressed( InputButton.Use ) )
+			FindTargetProp();
+
 		base.BuildInput( input );
+	}
+
+	private void FindTargetProp()
+	{
+		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.UseDistance )
+			.Run();
+
+		if ( trace.Entity is Prop prop && prop.PhysicsBody is not null )
+			Player.Possess( prop.NetworkIdent );
 	}
 }

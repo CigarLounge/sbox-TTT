@@ -153,8 +153,10 @@ public partial class Player : AnimatedEntity
 		controller?.Simulate( client, this, Animator );
 
 		if ( Input.Pressed( InputButton.Menu ) )
+		{
 			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
 				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
+		}
 
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
@@ -177,7 +179,11 @@ public partial class Player : AnimatedEntity
 
 			if ( !this.IsAlive() )
 			{
-				ChangeSpectateCamera();
+				if ( Prop is null )
+					ChangeSpectateCamera();
+				else
+					SimulatePossession();
+
 				return;
 			}
 
