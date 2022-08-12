@@ -99,6 +99,7 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
+			Client.VoiceStereo = Game.ProximityChat;
 			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 

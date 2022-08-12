@@ -53,6 +53,7 @@ public partial class Player
 
 	public void MakeSpectator( bool useRagdollCamera = true )
 	{
+		Client.VoiceStereo = true;
 		Controller = null;
 		EnableAllCollisions = false;
 		EnableDrawing = false;

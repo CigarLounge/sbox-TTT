@@ -6,7 +6,7 @@ public partial class Game
 {
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
-	public static bool LoggerEnabled { get; set; } = false;
+	public static bool LoggerEnabled { get; set; }
 	#endregion
 
 	#region Round
@@ -28,7 +28,7 @@ public partial class Game
 
 	#region Debug
 	[ConVar.Server( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
-	public static bool PreventWin { get; set; } = false;
+	public static bool PreventWin { get; set; }
 	#endregion
 
 	#region Karma
@@ -60,7 +60,7 @@ public partial class Game
 	public static int AFKTimer { get; set; } = 180;
 
 	[ConVar.Server( "ttt_afk_kick", Help = "Kick any players that get marked AFK.", Saved = true )]
-	public static bool KickAFKPlayers { get; set; } = false;
+	public static bool KickAFKPlayers { get; set; }
 	#endregion
 
 	#region Credits
@@ -70,11 +70,26 @@ public partial class Game
 	[ConVar.Server( "ttt_credits_award_size", Help = "The number of credits awarded when the percentage is reached.", Saved = true )]
 	public static int CreditsAwarded { get; set; } = 100;
 
-
 	[ConVar.Server( "ttt_credits_traitordeath", Help = "The number of credits Detectives receive when a Traitor dies.", Saved = true )]
 	public static int DetectiveTraitorDeathReward { get; set; } = 100;
 
 	[ConVar.Server( "ttt_credits_detectivekill", Help = "The number of credits a Traitor receives when they kill a Detective.", Saved = true )]
 	public static int TraitorDetectiveKillReward { get; set; } = 100;
+	#endregion
+
+	#region Voice Chat
+	[ConVar.Server( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
+	public static bool ProximityChat { get; set; }
+
+	public static void UpdateVoiceChat( bool oldValue, bool newValue )
+	{
+		foreach ( var client in Client.All )
+		{
+			if ( !client.Pawn.IsAlive() )
+				continue;
+
+			client.VoiceStereo = newValue;
+		}
+	}
 	#endregion
 }
