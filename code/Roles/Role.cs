@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,6 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 {
 	private static readonly Dictionary<Type, HashSet<Player>> s_players = new();
 	public RoleInfo Info { get; private set; }
-
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
 	public HashSet<ItemInfo> ShopItems => Info.ShopItems;

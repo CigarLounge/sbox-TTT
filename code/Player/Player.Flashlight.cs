@@ -8,7 +8,7 @@ public partial class Player
 	public bool FlashlightEnabled { get; private set; } = false;
 
 	[Net, Local, Predicted]
-	public TimeSince TimeSinceLightToggled { get; private set; }
+	private TimeSince TimeSinceLightToggled { get; set; }
 
 	/// <summary>
 	/// The third person flashlight.

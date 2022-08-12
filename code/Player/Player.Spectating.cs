@@ -62,7 +62,7 @@ public partial class Player
 		LifeState = LifeState.Dead;
 
 		if ( Camera is not ISpectateCamera )
-			Camera = useRagdollCamera ? new RagdollSpectateCamera() : new FreeSpectateCamera();
+			Camera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeSpectateCamera();
 
 		DelayedDeathCameraChange();
 	}
@@ -73,7 +73,7 @@ public partial class Player
 		// move them to a free spectate camera.
 		await GameTask.DelaySeconds( 2 );
 
-		if ( Camera is RagdollSpectateCamera )
+		if ( Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
 			Camera = new FreeSpectateCamera();
 	}
 
@@ -82,7 +82,7 @@ public partial class Player
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
-		if ( Camera is RagdollSpectateCamera || Camera is FirstPersonSpectatorCamera )
+		if ( Camera is FollowEntityCamera || Camera is FirstPersonSpectatorCamera )
 		{
 			Camera = new FreeSpectateCamera();
 			return;

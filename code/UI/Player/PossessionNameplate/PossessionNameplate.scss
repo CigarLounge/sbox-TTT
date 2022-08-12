@@ -1,0 +1,17 @@
+﻿@import "/ui/Hud.scss";
+
+PossessionNameplate {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translateX(-50%) translateY(-50%);
+	
+	align-items: center;
+	justify-content: center;
+	
+	.name {
+		color: white;
+		font-size: 26px;
+		font-weight: bold;
+	}
+}

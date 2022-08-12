@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTT;
 
@@ -13,22 +13,6 @@ public partial class Player
 	public Entity HoveredEntity { get; private set; }
 
 	public const float UseDistance = 80f;
-
-	protected Entity FindHovered()
-	{
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
-			.Ignore( this )
-			.WithAnyTags( "solid", "trigger" )
-			.Run();
-
-		if ( !trace.Entity.IsValid() )
-			return null;
-
-		if ( trace.Entity.IsWorld )
-			return null;
-
-		return trace.Entity;
-	}
 
 	protected void PlayerUse()
 	{
@@ -57,14 +41,20 @@ public partial class Player
 		}
 	}
 
-	protected void StopUsing()
+	protected Entity FindHovered()
 	{
-		Using = null;
-	}
+		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
+			.Ignore( this )
+			.WithAnyTags( "solid", "trigger" )
+			.Run();
 
-	public void StartUsing( Entity entity )
-	{
-		Using = entity;
+		if ( !trace.Entity.IsValid() )
+			return null;
+
+		if ( trace.Entity.IsWorld )
+			return null;
+
+		return trace.Entity;
 	}
 
 	public bool CanUse( Entity entity )
@@ -90,5 +80,15 @@ public partial class Player
 			return true;
 
 		return false;
+	}
+
+	public void StartUsing( Entity entity )
+	{
+		Using = entity;
+	}
+
+	protected void StopUsing()
+	{
+		Using = null;
 	}
 }
