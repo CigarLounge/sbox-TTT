@@ -27,7 +27,7 @@ public partial class C4Entity : Prop, IEntityHint
 		Color.FromBytes( 255, 160, 50, 255 ) // Brown
 	};
 
-	private static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
+	public static readonly Model WorldModel = Model.Load( "models/c4/c4.vmdl" );
 
 	[Net]
 	public bool IsArmed { get; private set; }
@@ -77,7 +77,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		CloseC4ArmMenu();
 		if ( player.Team == Team.Traitors )
-			SendC4Marker( player.Team.ToAliveClients(), this );
+			SendC4Marker( Team.Traitors.ToAliveClients(), this );
 	}
 
 	public static int GetBadWireCount( int timer )
