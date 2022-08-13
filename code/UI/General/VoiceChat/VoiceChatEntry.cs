@@ -37,8 +37,8 @@ public class VoiceChatEntry : Panel
 		_targetVoiceLevel = level;
 		Name.Text = Friend.Name;
 
-		if ( _client.IsValid() && _client.Pawn is Player player )
-			SetClass( "dead", !player.IsAlive() );
+		if ( _client.IsValid() )
+			SetClass( "dead", !_client.Pawn.IsAlive() );
 	}
 
 	public override void Tick()
