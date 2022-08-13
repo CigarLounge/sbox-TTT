@@ -162,7 +162,7 @@ public partial class Player : AnimatedEntity
 		if ( Input.ActiveChild is Carriable carriable )
 			Inventory.SetActive( carriable );
 
-		SimulateActiveCarriable( client );
+		SimulateActiveCarriable();
 
 		if ( this.IsAlive() )
 		{
@@ -337,7 +337,7 @@ public partial class Player : AnimatedEntity
 		ClearAmmo();
 		Inventory.DeleteContents();
 		Perks.DeleteContents();
-		RemoveAllClothing();
+		ClothingContainer.ClearEntities();
 	}
 
 	#region ActiveCarriable
@@ -347,7 +347,7 @@ public partial class Player : AnimatedEntity
 	public Carriable _lastActiveCarriable;
 	public Carriable _lastKnownCarriable;
 
-	public void SimulateActiveCarriable( Client client )
+	public void SimulateActiveCarriable()
 	{
 		if ( _lastActiveCarriable != ActiveCarriable )
 		{
@@ -360,7 +360,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		if ( ActiveCarriable.TimeSinceDeployed > ActiveCarriable.Info.DeployTime )
-			ActiveCarriable.Simulate( client );
+			ActiveCarriable.Simulate( Client );
 	}
 
 	public void OnActiveCarriableChanged( Carriable previous, Carriable next )
@@ -389,36 +389,14 @@ public partial class Player : AnimatedEntity
 
 	public override void OnChildAdded( Entity child )
 	{
-		switch ( child )
-		{
-			case Carriable carriable:
-			{
-				Inventory.OnChildAdded( carriable );
-				break;
-			}
-			case Clothing clothing:
-			{
-				Clothes.Add( clothing );
-				break;
-			}
-		}
+		if ( child is Carriable carriable )
+			Inventory.OnChildAdded( carriable );
 	}
 
 	public override void OnChildRemoved( Entity child )
 	{
-		switch ( child )
-		{
-			case Carriable carriable:
-			{
-				Inventory.OnChildRemoved( carriable );
-				break;
-			}
-			case Clothing clothing:
-			{
-				Clothes.Remove( clothing );
-				break;
-			}
-		}
+		if ( child is Carriable carriable )
+			Inventory.OnChildRemoved( carriable );
 	}
 
 	protected override void OnComponentAdded( EntityComponent component )

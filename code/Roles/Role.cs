@@ -7,7 +7,7 @@ namespace TTT;
 
 public abstract class Role : IEquatable<Role>, IEquatable<string>
 {
-	private static readonly Dictionary<Type, HashSet<Player>> s_players = new();
+	private static readonly Dictionary<Type, HashSet<Player>> _players = new();
 	public RoleInfo Info { get; private set; }
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
@@ -84,25 +84,25 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	{
 		var type = typeof( T );
 
-		if ( !s_players.ContainsKey( type ) )
-			s_players.Add( type, new HashSet<Player>() );
+		if ( !_players.ContainsKey( type ) )
+			_players.Add( type, new HashSet<Player>() );
 
-		return s_players[type];
+		return _players[type];
 	}
 
 	[GameEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChanged( Player player, Role oldRole )
 	{
 		if ( oldRole is not null )
-			s_players[oldRole.GetType()].Remove( player );
+			_players[oldRole.GetType()].Remove( player );
 
 		var newRole = player.Role;
 		if ( newRole is not null )
 		{
-			if ( !s_players.ContainsKey( newRole.GetType() ) )
-				s_players.Add( newRole.GetType(), new HashSet<Player>() );
+			if ( !_players.ContainsKey( newRole.GetType() ) )
+				_players.Add( newRole.GetType(), new HashSet<Player>() );
 
-			s_players[newRole.GetType()].Add( player );
+			_players[newRole.GetType()].Add( player );
 		}
 	}
 
