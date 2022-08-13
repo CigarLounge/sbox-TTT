@@ -92,4 +92,7 @@ public partial class Game
 		}
 	}
 	#endregion
+
+	[ConVar.Server( "ttt_avatar_clothing" )]
+	public static bool AvatarClothing { get; set; } = true;
 }
