@@ -11,16 +11,16 @@ public class VoiceChatDisplay : Panel
 
 	public VoiceChatDisplay() => Instance = this;
 
-	public void OnVoicePlayed( Client client, float level )
+	public void OnVoicePlayed( Client client )
 	{
 		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
-		entry.Update( level );
+		entry.Update( client.VoiceLevel );
 	}
 
 	[Event.BuildInput]
 	private void BuildInput( InputBuilder input )
 	{
 		if ( input.Down( InputButton.Voice ) )
-			OnVoicePlayed( Local.Client, 1f );
+			OnVoicePlayed( Local.Client );
 	}
 }

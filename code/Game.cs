@@ -111,16 +111,9 @@ public partial class Game : Sandbox.Game
 		return true;
 	}
 
-	public override void OnVoicePlayed( long playerId, float level )
+	public override void OnVoicePlayed( Client client )
 	{
-		var client = Client.All.Where( x => x.PlayerId == playerId ).FirstOrDefault();
-		if ( client.IsValid() )
-		{
-			client.VoiceLevel = level;
-			client.TimeSinceLastVoice = 0;
-		}
-
-		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client, level );
+		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client );
 	}
 
 	public override void PostLevelLoaded()
