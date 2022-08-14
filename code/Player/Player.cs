@@ -145,6 +145,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		CreateFlashlight();
+
 		Event.Run( GameEvent.Player.Spawned, this );
 	}
 

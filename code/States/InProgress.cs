@@ -181,7 +181,7 @@ public partial class InProgress : BaseState
 	[GameEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChange( Player player, Role oldRole )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		if ( Game.Current.State is InProgress inProgress )

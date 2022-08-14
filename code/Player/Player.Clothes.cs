@@ -5,21 +5,31 @@ namespace TTT;
 
 public partial class Player
 {
-    public static List<Clothing> ClothingPreset { get; private set; } = new();
-    public ClothingContainer ClothingContainer { get; private init; } = new();
+	public static List<List<Clothing>> ClothingPresets { get; private set; } = new();
+	public ClothingContainer ClothingContainer { get; private init; } = new();
 
-    public void DressPlayer()
-    {
-        if ( Game.AvatarClothing )
-            ClothingContainer.LoadFromClient( Client );
-        else
-        {
-            ClothingContainer.Clothing.Clear();
+	private static List<Clothing> _currentPreset;
 
-            foreach ( var clothing in ClothingPreset )
-                ClothingContainer.Toggle( clothing );
-        }
+	public void DressPlayer()
+	{
+		// TODO: Don't load from client again if it's already loaded
+		if ( Game.AvatarClothing )
+			ClothingContainer.LoadFromClient( Client );
+		else
+		{
+			ClothingContainer.Clothing.Clear();
 
-        ClothingContainer.DressEntity( this );
-    }
+			foreach ( var clothing in _currentPreset )
+				ClothingContainer.Toggle( clothing );
+		}
+
+		ClothingContainer.DressEntity( this );
+	}
+
+	[Event.Entity.PostSpawn]
+	[GameEvent.Round.Started]
+	private static void OnRoundStart()
+	{
+		_currentPreset = Rand.FromList( ClothingPresets );
+	}
 }
