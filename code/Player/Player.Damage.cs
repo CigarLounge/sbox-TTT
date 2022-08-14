@@ -118,7 +118,6 @@ public partial class Player
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;
-
 		Client.AddInt( "deaths" );
 
 		if ( KilledByPlayer )
@@ -128,7 +127,6 @@ public partial class Player
 		}
 
 		BecomeCorpse();
-		RemoveAllDecals();
 		StopUsing();
 
 		EnableAllCollisions = false;

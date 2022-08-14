@@ -53,6 +53,7 @@ public partial class Player
 		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
 			.Ignore( CurrentPlayer )
 			.WithAnyTags( "solid", "trigger" )
+			.UseHitboxes()
 			.Run();
 
 		HoveredEntity = trace.Entity;

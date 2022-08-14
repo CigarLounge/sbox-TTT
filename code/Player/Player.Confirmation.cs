@@ -49,14 +49,11 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( !Corpse.IsValid() )
-			return;
-
-		Corpse.Delete();
+		Corpse?.Delete();
 		Corpse = null;
 	}
 
-	private void BecomeCorpse()
+	protected void BecomeCorpse()
 	{
 		Host.AssertServer();
 
@@ -118,7 +115,10 @@ public partial class Player
 		Host.AssertServer();
 
 		if ( !IsMissingInAction )
+		{
+			Log.Warning( $"{SteamName} is not MIA!" );
 			return;
+		}
 
 		UpdateStatus( Team.Traitors.ToClients() );
 
