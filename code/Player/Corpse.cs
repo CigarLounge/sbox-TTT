@@ -53,7 +53,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		this.CopyBonesFrom( player );
 		this.SetRagdollVelocityFrom( player );
 		ApplyForceToBone( Player.LastDamage.Force, Player.GetHitboxBone( Player.LastDamage.HitboxIndex ) );
-		TakeDecalsFrom( player );
 		CopyBodyGroups( player );
 		#endregion
 
@@ -116,6 +115,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		TakeDecalsFrom( Owner as ModelEntity );
 	}
 
 	/// <summary>
