@@ -96,7 +96,7 @@ public partial class Hands : Carriable
 			.EntitiesOnly()
 			.Run();
 
-		if ( !trace.Hit || !trace.Entity.IsValid() || trace.Body.BodyType != PhysicsBodyType.Dynamic )
+		if ( !trace.Hit || !trace.Entity.IsValid() || !trace.Body.IsValid() || trace.Body.BodyType != PhysicsBodyType.Dynamic )
 			return;
 
 		if ( trace.Entity is Player )
