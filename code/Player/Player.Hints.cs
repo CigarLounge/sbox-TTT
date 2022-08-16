@@ -57,7 +57,6 @@ public partial class Player
 			.Run();
 
 		HoveredEntity = trace.Entity;
-		HoveredEntityDistance = trace.Distance;
 
 		if ( HoveredEntity is IEntityHint hint && trace.Distance <= hint.HintDistance )
 			return hint;
