@@ -105,7 +105,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		var radius = 750f;
+		var radius = 600f;
 
 		if ( defusalDetonation )
 			radius /= 2.5f;
@@ -128,10 +128,7 @@ public partial class C4Entity : Prop, IEntityHint
 				continue;
 
 			var diff = player.Position - Position;
-			var damage = MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * -0.01f + 125;
-
-			if ( damage <= 0 )
-				continue;
+			var damage = 125 - MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * 0.01033057f;
 
 			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
 				.WithAttacker( Owner )
