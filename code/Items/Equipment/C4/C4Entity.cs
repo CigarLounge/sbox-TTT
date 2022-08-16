@@ -124,7 +124,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 			var diff = player.Position - Position;
 			var dist = Vector3.DistanceBetween( Position, player.Position );
-			var damage = (float) Math.Pow(Math.Max(0, dist - 490), 2) * -0.01f + 125;
+			var damage = (float)Math.Pow( Math.Max( 0, dist - 490 ), 2 ) * -0.01f + 125;
 
 			if ( damage <= 0 )
 				continue;
