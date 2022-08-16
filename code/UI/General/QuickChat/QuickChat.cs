@@ -50,8 +50,6 @@ public class QuickChat : Panel
 			_isShowing = !_isShowing;
 
 		this.Enabled( player.IsAlive() && _isShowing );
-		if ( !this.IsEnabled() )
-			return;
 
 		var newTarget = GetTarget();
 
