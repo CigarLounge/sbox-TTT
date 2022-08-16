@@ -15,7 +15,6 @@ public class QuickChat : Panel
 	private bool _isShowing = false;
 	private RealTimeSince _timeWithNoTarget;
 	private RealTimeSince _timeSinceLastMessage;
-
 	private readonly List<Label> _labels = new();
 	private static readonly List<string> _messages = new()
 	{

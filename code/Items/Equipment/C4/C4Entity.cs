@@ -105,7 +105,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		float radius = 750;
+		var radius = 750f;
 
 		if ( defusalDetonation )
 			radius /= 2.5f;
@@ -117,14 +117,18 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explosion( float radius )
 	{
-		foreach ( var entity in FindInSphere( Position, radius ) )
+		foreach ( var client in Client.All )
 		{
-			if ( entity is not Player player || !player.IsAlive() )
+			if ( client.Pawn is not Player player || !player.IsAlive() )
+				continue;
+
+			var dist = Vector3.DistanceBetween( Position, player.Position );
+
+			if ( dist > radius )
 				continue;
 
 			var diff = player.Position - Position;
-			var dist = Vector3.DistanceBetween( Position, player.Position );
-			var damage = (float)Math.Pow( Math.Max( 0, dist - 490 ), 2 ) * -0.01f + 125;
+			var damage = MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * -0.01f + 125;
 
 			if ( damage <= 0 )
 				continue;
