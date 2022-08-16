@@ -13,6 +13,7 @@ public partial class Player
 	public Entity HoveredEntity { get; private set; }
 
 	public const float UseDistance = 80f;
+	private float _traceDistance;
 
 	protected void PlayerUse()
 	{
@@ -54,6 +55,7 @@ public partial class Player
 		if ( trace.Entity.IsWorld )
 			return null;
 
+		_traceDistance = trace.Distance;
 		return trace.Entity;
 	}
 
@@ -62,7 +64,7 @@ public partial class Player
 		if ( entity is not IUse use )
 			return false;
 
-		if ( entity.Position.Distance( EyePosition ) > UseDistance )
+		if ( _traceDistance > UseDistance )
 			return false;
 
 		if ( !use.IsUsable( this ) )
@@ -74,6 +76,9 @@ public partial class Player
 	public bool CanContinueUsing( Entity entity )
 	{
 		if ( HoveredEntity != entity )
+			return false;
+
+		if ( _traceDistance > UseDistance )
 			return false;
 
 		if ( entity is IUse use && use.OnUse( this ) )
