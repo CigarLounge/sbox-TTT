@@ -105,10 +105,10 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explode( bool defusalDetonation = false )
 	{
-		float radius = 1500;
+		float radius = 750;
 
 		if ( defusalDetonation )
-			radius /= 1.5f;
+			radius /= 2.5f;
 
 		Explosion( radius );
 		Sound.FromWorld( ExplodeSound, Position );
@@ -124,7 +124,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 			var diff = player.Position - Position;
 			var dist = Vector3.DistanceBetween( Position, player.Position );
-			var damage = 225 - (0.1f * dist);
+			var damage = (float) Math.Pow(Math.Max(0, dist - 490), 2) * -0.01f + 125;
 
 			if ( damage <= 0 )
 				continue;
