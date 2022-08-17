@@ -3,11 +3,9 @@ using Sandbox;
 namespace TTT;
 
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
-{
-	private Vector3 DefaultPosition { get; }
+{	
 	private const int CameraDistance = 120;
-
-	private Rotation _targetRot;
+	private readonly Vector3 _defaultPosition;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
@@ -25,29 +23,27 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	{
 		if ( Local.Pawn is not Player player )
 			return;
-
-		Viewer = Local.Pawn;
+	
 		player.CurrentPlayer = null;
 	}
 
 	public override void Update()
 	{
-		_targetRot = Rotation.From( _lookAngles );
-		Rotation = Rotation.Slerp( Rotation, _targetRot, 25f * RealTime.Delta );
+		Rotation = Rotation.From( _lookAngles );
 
-		_targetPos = GetSpectatePoint() + Rotation.Forward * -CameraDistance;
+		_targetPos = Vector3.Lerp( _targetPos, GetSpectatePoint(), 50f * RealTime.Delta );
 
-		var trace = Trace.Ray( GetSpectatePoint(), _targetPos )
+		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -CameraDistance )
 			.WorldOnly()
 			.Run();
 
-		Position = Vector3.Lerp( Position, trace.EndPosition, 50f * RealTime.Delta );
+		Position = trace.EndPosition;
 	}
 
 	private Vector3 GetSpectatePoint()
 	{
 		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-			return DefaultPosition;
+			return _defaultPosition;
 
 		return player.CurrentPlayer.EyePosition;
 	}

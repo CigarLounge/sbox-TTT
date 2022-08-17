@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTT;
 
@@ -21,8 +21,6 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 
 		Position = CurrentView.Position;
 		Rotation = CurrentView.Rotation;
-
-		Viewer = null;
 	}
 
 	public override void Update()
@@ -30,15 +28,15 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 		if ( !FollowedEntity.IsValid() )
 			return;
 
-		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.Position, Time.Delta * 5.0f );
-
 		Rotation = Input.Rotation;
 
-		var trace = Trace.Ray( FollowedEntity.Position, _focusPoint + GetViewOffset() )
+		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.Position, 50f * RealTime.Delta );
+
+		var trace = Trace.Ray( _focusPoint, _focusPoint + GetViewOffset() )
 			.WorldOnly()
 			.Run();
 
-		Position = Vector3.Lerp( Position, trace.EndPosition, 50f * RealTime.Delta );
+		Position = trace.EndPosition;
 	}
 
 	public virtual Vector3 GetViewOffset()

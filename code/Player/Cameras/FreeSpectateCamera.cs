@@ -6,13 +6,9 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 {
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
-
+	private float _moveSpeed;
 	private Vector3 _targetPos;
 	private Rotation _targetRot;
-
-	private float _moveSpeed;
-
-	private const float LerpMode = 0;
 
 	public override void Activated()
 	{
@@ -28,13 +24,6 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		Viewer = Local.Pawn;
 	}
 
-	public override void Deactivated()
-	{
-		base.Deactivated();
-
-		Viewer = null;
-	}
-
 	public override void Update()
 	{
 		var mv = _moveInput.Normal * 300 * RealTime.Delta * Rotation * _moveSpeed;
@@ -42,8 +31,8 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_targetRot = Rotation.From( _lookAngles );
 		_targetPos += mv;
 
-		Position = Vector3.Lerp( Position, _targetPos, 10 * RealTime.Delta * (1 - LerpMode) );
-		Rotation = Rotation.Slerp( Rotation, _targetRot, 10 * RealTime.Delta * (1 - LerpMode) );
+		Position = _targetPos;
+		Rotation = _targetRot;
 	}
 
 	public override void BuildInput( InputBuilder input )

@@ -23,15 +23,11 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		if ( Local.Pawn is not Player player )
 			return;
 
-		Viewer = player;
 		player.CurrentPlayer = null;
 	}
 
 	public override void Update()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
 		Position = Vector3.Lerp( Position, Viewer.EyePosition, SmoothSpeed * Time.Delta );
 		Rotation = Rotation.Slerp( Rotation, Viewer.EyeRotation, SmoothSpeed * Time.Delta );
 	}
