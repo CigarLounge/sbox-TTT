@@ -6,8 +6,6 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
 	private Vector3 DefaultPosition { get; }
 	private const int CameraDistance = 120;
-
-	private Rotation _targetRot;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
@@ -32,8 +30,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Update()
 	{
-		_targetRot = Rotation.From( _lookAngles );
-		Rotation = _targetRot;
+		Rotation = Rotation.From( _lookAngles );
 
 		_targetPos = Vector3.Lerp( _targetPos, GetSpectatePoint(), 50f * RealTime.Delta );
 
