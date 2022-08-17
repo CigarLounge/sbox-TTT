@@ -368,12 +368,7 @@ public partial class WalkController : PawnController
 
 	private void BaseSimulate()
 	{
-		var targetz = Duck.IsActive ? 40 : EyeHeight;
-		var lerpspd = Duck.IsActive ? 8f : 24f;
-		var curz = EyeLocalPosition.z;
-		var newz = curz.LerpTo( targetz, Time.Delta * lerpspd );
-
-		EyeLocalPosition = Vector3.Up * (newz * Pawn.Scale);
+		EyeLocalPosition = Vector3.Up * (EyeHeight * Pawn.Scale);
 		UpdateBBox();
 
 		EyeLocalPosition += TraceOffset;

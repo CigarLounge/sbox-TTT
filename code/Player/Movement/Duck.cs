@@ -29,37 +29,13 @@ public class Duck : BaseNetworkable
 		}
 
 		if ( IsActive )
-			Controller.SetTag( "ducked" );
-	}
-
-	protected void TryDuck()
-	{
-		var wasactive = IsActive;
-		IsActive = true;
-
-		if ( !wasactive && IsActive )
-			Controller.Position += Vector3.Up * 14;
-	}
-
-	protected void TryUnDuck()
-	{
-		var wasactive = IsActive;
-
-		var pm = Controller.TraceBBox( Controller.Position, Controller.Position, _originalMins, _originalMaxs );
-		if ( pm.StartedSolid )
-			return;
-
-		IsActive = false;
-
-		if ( wasactive && !IsActive && Controller.GroundEntity == null )
 		{
-			var distToGround = Controller.TraceBBox( Controller.Position, Controller.Position + Vector3.Down * 1000 ).Distance;
-			var shift = MathF.Min( 14, distToGround );
-			Controller.Position += Vector3.Down * shift;
+			Controller.SetTag( "ducked" );
+			Controller.EyeLocalPosition *= 0.5f;
 		}
 	}
 
-	public virtual void UpdateBBox( ref Vector3 mins, ref Vector3 maxs, float scale )
+	public void UpdateBBox( ref Vector3 mins, ref Vector3 maxs, float scale )
 	{
 		_originalMins = mins;
 		_originalMaxs = maxs;
@@ -73,5 +49,19 @@ public class Duck : BaseNetworkable
 		if ( !IsActive )
 			return -1;
 		return 88;
+	}
+
+	private void TryDuck()
+	{
+		IsActive = true;
+	}
+
+	private void TryUnDuck()
+	{
+		var pm = Controller.TraceBBox( Controller.Position, Controller.Position, _originalMins, _originalMaxs );
+		if ( pm.StartedSolid )
+			return;
+
+		IsActive = false;
 	}
 }
