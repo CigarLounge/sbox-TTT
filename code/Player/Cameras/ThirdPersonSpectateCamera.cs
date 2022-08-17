@@ -3,10 +3,9 @@ using Sandbox;
 namespace TTT;
 
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
-{
-	private Vector3 DefaultPosition { get; }
+{	
 	private const int CameraDistance = 120;
-
+	private readonly Vector3 _defaultPosition;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
@@ -24,8 +23,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	{
 		if ( Local.Pawn is not Player player )
 			return;
-
-		Viewer = Local.Pawn;
+	
 		player.CurrentPlayer = null;
 	}
 
@@ -45,7 +43,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	private Vector3 GetSpectatePoint()
 	{
 		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-			return DefaultPosition;
+			return _defaultPosition;
 
 		return player.CurrentPlayer.EyePosition;
 	}

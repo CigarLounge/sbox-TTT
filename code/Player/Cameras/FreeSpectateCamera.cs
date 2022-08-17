@@ -6,13 +6,9 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 {
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
-
+	private float _moveSpeed;
 	private Vector3 _targetPos;
 	private Rotation _targetRot;
-
-	private float _moveSpeed;
-
-	private const float LerpMode = 0;
 
 	public override void Activated()
 	{
@@ -26,13 +22,6 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles = Rotation.Angles();
 
 		Viewer = Local.Pawn;
-	}
-
-	public override void Deactivated()
-	{
-		base.Deactivated();
-
-		Viewer = null;
 	}
 
 	public override void Update()

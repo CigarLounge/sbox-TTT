@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTT;
 
@@ -21,8 +21,6 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 
 		Position = CurrentView.Position;
 		Rotation = CurrentView.Rotation;
-
-		Viewer = null;
 	}
 
 	public override void Update()
