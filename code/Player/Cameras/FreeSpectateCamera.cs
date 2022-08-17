@@ -42,8 +42,8 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_targetRot = Rotation.From( _lookAngles );
 		_targetPos += mv;
 
-		Position = Vector3.Lerp( Position, _targetPos, 10 * RealTime.Delta * (1 - LerpMode) );
-		Rotation = Rotation.Slerp( Rotation, _targetRot, 10 * RealTime.Delta * (1 - LerpMode) );
+		Position = _targetPos;
+		Rotation = _targetRot;
 	}
 
 	public override void BuildInput( InputBuilder input )
