@@ -6,6 +6,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
 	private Vector3 DefaultPosition { get; }
 	private const int CameraDistance = 120;
+
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
