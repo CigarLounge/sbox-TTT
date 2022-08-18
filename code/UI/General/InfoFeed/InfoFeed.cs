@@ -100,4 +100,10 @@ public partial class InfoFeed : Panel
 
 		AddEntry( text );
 	}
+
+	[GameEvent.Round.Ended]
+	private void OnRoundEnded( Team winningTeam, WinType winType )
+	{
+		DeleteChildren();
+	}
 }
