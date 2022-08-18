@@ -28,8 +28,6 @@ public class WaitingState : BaseState
 
 	protected override void OnStart()
 	{
-		Event.Run( GameEvent.Round.Started );
-
 		if ( !Host.IsServer )
 			return;
 
