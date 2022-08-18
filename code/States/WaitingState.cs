@@ -28,10 +28,12 @@ public class WaitingState : BaseState
 
 	protected override void OnStart()
 	{
+		Event.Run( GameEvent.Round.Started );
+
 		if ( !Host.IsServer )
 			return;
 
-		foreach ( Client client in Client.All )
+		foreach ( var client in Client.All )
 		{
 			var player = client.Pawn as Player;
 			player.Respawn();
