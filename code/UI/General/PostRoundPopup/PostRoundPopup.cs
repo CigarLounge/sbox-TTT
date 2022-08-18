@@ -6,10 +6,11 @@ namespace TTT.UI;
 [UseTemplate]
 public class PostRoundPopup : Panel
 {
+	public static PostRoundPopup Instance { get; private set; }
 	private Label Header { get; init; }
-	private InputGlyph Glyph { get; init; }
+	private Label Content { get; init; }
 
-	public PostRoundPopup() { }
+	public PostRoundPopup() => Instance = this;
 
 	[GameEvent.Round.Ended]
 	private static void DisplayWinner( Team winningTeam, WinType winType )
@@ -17,21 +18,34 @@ public class PostRoundPopup : Panel
 		if ( !Host.IsClient )
 			return;
 
-		var roundPopup = new PostRoundPopup();
-		Local.Hud.AddChild( roundPopup );
+		Local.Hud.AddChild( new PostRoundPopup() );
 
-		roundPopup.Header.Text = winningTeam == Team.None ? "IT'S A TIE!" : $"THE {winningTeam.GetTitle()} WIN!";
-		roundPopup.Header.Style.FontColor = winningTeam.GetColor();
-	}
+		Instance.Header.Text = winningTeam == Team.None ? "IT'S A TIE!" : $"THE {winningTeam.GetTitle()} WIN!";
+		Instance.Header.Style.FontColor = winningTeam.GetColor();
 
-	public override void Tick()
-	{
-		Glyph.Style.Opacity = Input.Down( InputButton.View ) ? 1.0f : 0.5f;
+		switch ( winType )
+		{
+			case WinType.TimeUp:
+			{
+				Instance.Content.Text = "The Traitors ran out of time and lost!";
+				break;
+			}
+			case WinType.Elimination:
+			{
+				if ( winningTeam == Team.Innocents )
+					Instance.Content.Text = "The lovable Innocents eliminated the Traitors.";
+				else if ( winningTeam == Team.Traitors )
+					Instance.Content.Text = "The dastardly Traitors eliminated the Innocents.";
+
+				break;
+			}
+		}
 	}
 
 	[GameEvent.Round.Started]
 	private void Close()
 	{
 		Delete();
+		Instance = null;
 	}
 }
