@@ -128,6 +128,7 @@ public partial class C4Entity : Prop, IEntityHint
 				continue;
 
 			var diff = player.Position - Position;
+			// var damage = 100 - MathF.Pow( Math.Max( 0, dist - 540 ), 2 ) * 0.00226757f;
 			var damage = 125 - MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * 0.01033057f;
 
 			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
