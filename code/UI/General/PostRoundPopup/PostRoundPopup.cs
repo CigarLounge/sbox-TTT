@@ -27,15 +27,17 @@ public class PostRoundPopup : Panel
 		{
 			case WinType.TimeUp:
 			{
-				Instance.Content.Text = "The Traitors ran out of time and lost!";
+				Instance.Content.Text = "The Traitors fumbled their opportunity and ran out of time.";
 				break;
 			}
 			case WinType.Elimination:
 			{
 				if ( winningTeam == Team.Innocents )
-					Instance.Content.Text = "The lovable Innocents eliminated the Traitors.";
+					Instance.Content.Text = "The lovable Innocents eliminated all the Traitors.";
 				else if ( winningTeam == Team.Traitors )
-					Instance.Content.Text = "The dastardly Traitors eliminated the Innocents.";
+					Instance.Content.Text = "The dastardly Traitors murdered all the Innocents.";
+				else if ( winningTeam == Team.None )
+					Instance.Content.Text = "This is good, isn't it?";
 
 				break;
 			}
