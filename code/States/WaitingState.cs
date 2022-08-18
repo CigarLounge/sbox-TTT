@@ -28,6 +28,8 @@ public class WaitingState : BaseState
 
 	protected override void OnStart()
 	{
+		UI.PostRoundPopup.Instance?.Delete();
+
 		if ( !Host.IsServer )
 			return;
 
