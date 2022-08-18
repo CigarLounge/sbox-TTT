@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT.UI;
 
@@ -34,10 +35,8 @@ public class QuickChat : Panel
 		Instance = this;
 
 		var i = 0;
-		foreach ( Label label in Children )
-		{
+		foreach ( var label in Children.Cast<Label>() )
 			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
-		}
 	}
 
 	public override void Tick()
@@ -71,9 +70,6 @@ public class QuickChat : Panel
 			if ( i < 4 )
 				continue;
 
-			if ( !ShouldCapitalize( _target ) )
-				continue;
-
 			_labels[i].Text = _labels[i].Text.FirstCharToUpper();
 		}
 	}
@@ -95,18 +91,13 @@ public class QuickChat : Panel
 			case Player player:
 			{
 				if ( player.CanHint( localPlayer ) )
-					return player.Client.Name;
+					return $"\"{player.Client.Name}\"";
 				else
 					return "someone in disguise";
 			}
 		}
 
 		return NoTarget;
-	}
-
-	private static bool ShouldCapitalize( string target )
-	{
-		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
 	}
 
 	[Event.BuildInput]
