@@ -33,7 +33,6 @@ public partial class PostRound : BaseState
 
 	public static void Load( Team winningTeam, WinType winType )
 	{
-		Event.Run( GameEvent.Round.Ended, winningTeam, winType );
 		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 	}
 
@@ -57,6 +56,7 @@ public partial class PostRound : BaseState
 		base.OnStart();
 
 		Game.Current.TotalRoundsPlayed++;
+		Event.Run( GameEvent.Round.Ended, WinningTeam, WinType );
 	}
 
 	protected override void OnTimeUp()

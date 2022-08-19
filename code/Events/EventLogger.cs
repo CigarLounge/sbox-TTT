@@ -60,7 +60,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.Round, Game.Current.State.TimeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
+		LogEvent( EventType.Round, Game.Current.LastState.TimeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
 		WriteEvents();
 
 		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );

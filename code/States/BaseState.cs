@@ -21,7 +21,8 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public void Start()
 	{
-		if ( Host.IsServer && Duration > 0 ) {
+		if ( Host.IsServer && Duration > 0 )
+		{
 			TimeLeft = Duration;
 			TimeSinceStart = 0;
 		}
