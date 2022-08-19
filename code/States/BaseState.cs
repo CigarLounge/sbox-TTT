@@ -8,6 +8,9 @@ public abstract partial class BaseState : BaseNetworkable
 	public TimeUntil TimeLeft { get; protected set; }
 
 	[Net]
+	public TimeSince TimeSinceStart { get; protected set; }
+
+	[Net]
 	public bool HasStarted { get; private set; }
 
 	public virtual int Duration => 0;
@@ -18,8 +21,10 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public void Start()
 	{
-		if ( Host.IsServer && Duration > 0 )
+		if ( Host.IsServer && Duration > 0 ) {
 			TimeLeft = Duration;
+			TimeSinceStart = 0;
+		}
 
 		OnStart();
 	}
