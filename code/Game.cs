@@ -9,9 +9,7 @@ public partial class Game : Sandbox.Game
 
 	[Net, Change]
 	public BaseState State { get; private set; }
-
-	[Net]
-	public BaseState LastState { get; private set; }
+	private BaseState _lastState;
 
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
@@ -49,7 +47,6 @@ public partial class Game : Sandbox.Game
 		Host.AssertServer();
 
 		State?.Finish();
-		LastState = State;
 		State = state;
 		State.Start();
 	}
@@ -159,8 +156,8 @@ public partial class Game : Sandbox.Game
 
 	private void OnStateChanged( BaseState oldState, BaseState newState )
 	{
-		LastState = oldState;
-		LastState?.Finish();
-		newState?.Start();
+		_lastState?.Finish();
+		_lastState = newState;
+		_lastState?.Start();
 	}
 }

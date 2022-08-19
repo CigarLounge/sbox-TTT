@@ -31,6 +31,8 @@ public static class EventLogger
 
 	private const string LogFolder = "round-logs";
 
+	private static TimeSince _timeSinceStart;
+
 	private static void LogEvent( EventType eventType, float time, string description )
 	{
 		EventInfo eventInfo = new()
@@ -51,7 +53,8 @@ public static class EventLogger
 
 		Events.Clear();
 
-		LogEvent( EventType.Round, 0, "The round started." );
+		_timeSinceStart = 0;
+		LogEvent( EventType.Round, _timeSinceStart, "The round started." );
 	}
 
 	[GameEvent.Round.Ended]
@@ -60,7 +63,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.Round, Game.Current.LastState.TimeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
+		LogEvent( EventType.Round, _timeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
 		WriteEvents();
 
 		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
@@ -76,9 +79,9 @@ public static class EventLogger
 		var attacker = info.Attacker;
 
 		if ( attacker is Player && attacker != player )
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeSinceStart, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
 		else
-			LogEvent( EventType.PlayerTookDamage, Game.Current.State.TimeSinceStart, $"{player.SteamName} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{player.SteamName} took {info.Damage} damage." );
 	}
 
 	[GameEvent.Player.Killed]
@@ -88,9 +91,9 @@ public static class EventLogger
 			return;
 
 		if ( player.KilledByPlayer )
-			LogEvent( EventType.PlayerKill, Game.Current.State.TimeSinceStart, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
+			LogEvent( EventType.PlayerKill, _timeSinceStart, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
 		else if ( player.LastDamage.Flags == DamageFlags.Fall )
-			LogEvent( EventType.PlayerSuicide, Game.Current.State.TimeSinceStart, $"{player.SteamName} fell to their death." );
+			LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
 	}
 
 	[GameEvent.Player.CorpseFound]
@@ -99,7 +102,7 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
-		LogEvent( EventType.PlayerCorpseFound, Game.Current.State.TimeSinceStart, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
+		LogEvent( EventType.PlayerCorpseFound, _timeSinceStart, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
 	}
 
 	private static void WriteEvents()
