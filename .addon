@@ -93,6 +93,22 @@
         }
       ]
     },
-    "GameCategory": "Mystery"
+    "GameCategory": "Mystery",
+    "GameSettings": {
+      "ttt_avatar_clothing": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_avatar_clothing",
+        "DisplayName": "Avatar Clothing",
+        "DefaultValue": "false"
+      },
+      "ttt_proximity_chat": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_proximity_chat",
+        "DisplayName": "Proximity Chat",
+        "DefaultValue": "false"
+      }
+    }
   }
 }
