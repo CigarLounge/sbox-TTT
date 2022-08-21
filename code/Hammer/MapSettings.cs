@@ -18,11 +18,6 @@ public partial class MapSettings : Entity
 	protected Output OnRoundStart { get; set; }
 
 	/// <summary>
-	/// Fired once the roles have been assigned to each player.
-	/// </summary>
-	protected Output OnRolesAssigned { get; set; }
-
-	/// <summary>
 	/// Fired once a round has ended.
 	/// </summary>
 	protected Output<Team> OnRoundEnd { get; set; }
@@ -32,12 +27,10 @@ public partial class MapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => _ = SettingsSpawned.Fire( this );
 
-	[GameEvent.Round.Started]
-	private void RoundStarted() => _ = OnRoundStart.Fire( this );
+	[GameEvent.Round.Start]
+	private void RoundStart() => _ = OnRoundStart.Fire( this );
 
-	[GameEvent.Round.RolesAssigned]
-	private void RolesAssigned() => _ = OnRolesAssigned.Fire( this );
 
-	[GameEvent.Round.Ended]
-	private void RoundEnded( Team winningTeam, WinType winType ) => _ = OnRoundEnd.Fire( this, winningTeam );
+	[GameEvent.Round.End]
+	private void RoundEnd( Team winningTeam, WinType winType ) => _ = OnRoundEnd.Fire( this, winningTeam );
 }

@@ -28,7 +28,8 @@ public class WaitingState : BaseState
 
 	protected override void OnStart()
 	{
-		UI.PostRoundPopup.Instance?.Delete();
+		if ( Game.Current.TotalRoundsPlayed != 0 )
+			MapHandler.CleanUp();
 
 		if ( !Host.IsServer )
 			return;

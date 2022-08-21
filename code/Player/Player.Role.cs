@@ -92,8 +92,8 @@ public partial class Player
 		IsRoleKnown = true;
 	}
 
-	[GameEvent.Round.RolesAssigned]
-	private void OnRolesAssigned()
+	[GameEvent.Round.Start]
+	private void OnRoundStart()
 	{
 		if ( !IsClient || IsLocalPawn )
 			return;

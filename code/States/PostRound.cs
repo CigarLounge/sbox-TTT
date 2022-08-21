@@ -56,7 +56,7 @@ public partial class PostRound : BaseState
 		base.OnStart();
 
 		Game.Current.TotalRoundsPlayed++;
-		Event.Run( GameEvent.Round.Ended, WinningTeam, WinType );
+		Event.Run( GameEvent.Round.End, WinningTeam, WinType );
 	}
 
 	protected override void OnTimeUp()

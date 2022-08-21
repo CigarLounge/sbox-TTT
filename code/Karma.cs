@@ -191,7 +191,7 @@ public static class Karma
 		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
 	}
 
-	[GameEvent.Round.Ended]
+	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

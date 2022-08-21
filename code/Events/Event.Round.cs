@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 
 namespace TTT;
 
@@ -6,27 +6,17 @@ public static partial class GameEvent
 {
 	public static class Round
 	{
-		public const string Started = "ttt.round.started";
+		public const string Start = "ttt.round.start";
 
 		/// <summary>
-		/// Occurs when a new round starts.
+		/// Occurs when the roles have been assigned and the round has started.
 		/// </summary>
-		public class StartedAttribute : EventAttribute
+		public class StartAttribute : EventAttribute
 		{
-			public StartedAttribute() : base( Started ) { }
+			public StartAttribute() : base( Start ) { }
 		}
 
-		public const string RolesAssigned = "ttt.round.roles-assigned";
-
-		/// <summary>
-		/// Occurs when the roles have been assigned to each player.
-		/// </summary>
-		public class RolesAssignedAttribute : EventAttribute
-		{
-			public RolesAssignedAttribute() : base( RolesAssigned ) { }
-		}
-
-		public const string Ended = "ttt.round.ended";
+		public const string End = "ttt.round.end";
 
 		/// <summary>
 		/// Occurs when a round has ended.
@@ -34,9 +24,9 @@ public static partial class GameEvent
 		/// <para>The <see cref="Team"/> that won the round. </para>
 		/// <para>The <see cref="WinType"/>.</para>
 		/// </summary>
-		public class EndedAttribute : EventAttribute
+		public class EndAttribute : EventAttribute
 		{
-			public EndedAttribute() : base( Ended ) { }
+			public EndAttribute() : base( End ) { }
 		}
 	}
 }

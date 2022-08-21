@@ -45,7 +45,7 @@ public static class EventLogger
 		Events.Add( eventInfo );
 	}
 
-	[GameEvent.Round.RolesAssigned]
+	[GameEvent.Round.Start]
 	private static void OnRoundStart()
 	{
 		if ( !Host.IsServer )
@@ -57,7 +57,7 @@ public static class EventLogger
 		LogEvent( EventType.Round, _timeSinceStart, "The round started." );
 	}
 
-	[GameEvent.Round.Ended]
+	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

@@ -73,7 +73,7 @@ public partial class InProgress : BaseState
 	{
 		base.OnStart();
 
-		Event.Run( GameEvent.Round.RolesAssigned );
+		Event.Run( GameEvent.Round.Start );
 
 		if ( !Host.IsServer )
 			return;
@@ -82,8 +82,10 @@ public partial class InProgress : BaseState
 
 		// If the map isn't armed for TTT, just give the player(s) a fixed loadout.
 		if ( MapHandler.WeaponCount == 0 )
+		{
 			foreach ( var player in AlivePlayers )
 				GiveFixedLoadout( player );
+		}
 
 		foreach ( var ent in Entity.All )
 		{
