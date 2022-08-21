@@ -164,7 +164,7 @@ public partial class Player
 	private void SyncClient( Client client )
 	{
 		if ( IsRoleKnown )
-			SendRole( To.Single( client ) );
+			ClientSetRole( To.Single( client ), Role.Info );
 
 		if ( IsSpectator )
 			UpdateStatus( To.Single( client ) );

@@ -65,12 +65,6 @@ public partial class Player
 
 		foreach ( var client in to )
 		{
-			if ( client.Pawn is null )
-			{
-				ClientSetRole( To.Single( client ), Role.Info );
-				continue;
-			}
-
 			var id = client.Pawn.NetworkIdent;
 			if ( _playersWhoKnowTheRole.Contains( id ) )
 				continue;
