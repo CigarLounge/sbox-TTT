@@ -8,6 +8,7 @@ namespace TTT.UI;
 public class ScoreboardEntry : Panel
 {
 	public PlayerStatus PlayerStatus;
+	public bool Expanded = false;
 	private readonly Client _client;
 
 	private Image PlayerAvatar { get; init; }
@@ -15,6 +16,9 @@ public class ScoreboardEntry : Panel
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
+	private Label Tag { get; init; }
+
+	private ScoreboardEntryTagger EntryTagger { get; set; }
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
@@ -35,6 +39,7 @@ public class ScoreboardEntry : Panel
 
 		Ping.Text = _client.IsBot ? "BOT" : _client.Ping.ToString();
 		Score.Text = player.Score.ToString();
+		Tag.Text = "Test";
 
 		SetClass( "me", _client == Local.Client );
 
@@ -44,5 +49,27 @@ public class ScoreboardEntry : Panel
 			Style.BackgroundColor = null;
 
 		PlayerAvatar.SetTexture( $"avatar:{_client.PlayerId}" );
+	}
+
+	public void OnClick()
+	{
+		HandleExpand();
+	}
+
+	private void HandleExpand()
+	{
+		if (!Expanded) {
+			Style.Set("height", "76px");
+			EntryTagger = new ScoreboardEntryTagger(this, _client);
+
+			// AddChild(EntryTagger);
+			Parent.AddChild(EntryTagger);
+			Expanded = true;
+		}
+		else {
+			Style.Set("height", "38px");
+			EntryTagger.Delete(true);
+			Expanded = false;
+		}
 	}
 }

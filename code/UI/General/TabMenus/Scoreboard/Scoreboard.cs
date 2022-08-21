@@ -30,6 +30,9 @@ public class Scoreboard : Panel
 	{
 		var scoreboardGroup = GetScoreboardGroup( client );
 		var scoreboardEntry = scoreboardGroup.AddEntry( client );
+
+		scoreboardEntry.AddEventListener( "onclick", () => scoreboardEntry.OnClick() );
+
 		scoreboardGroup.GroupMembers++;
 
 		_entries.Add( client, scoreboardEntry );
