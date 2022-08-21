@@ -53,16 +53,12 @@ public partial class PostRound : BaseState
 
 	protected override void OnStart()
 	{
-		base.OnStart();
-
 		Game.Current.TotalRoundsPlayed++;
 		Event.Run( GameEvent.Round.End, WinningTeam, WinType );
 	}
 
 	protected override void OnTimeUp()
 	{
-		base.OnTimeUp();
-
 		bool shouldChangeMap;
 
 		shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;

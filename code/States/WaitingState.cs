@@ -29,7 +29,7 @@ public class WaitingState : BaseState
 	protected override void OnStart()
 	{
 		if ( Game.Current.TotalRoundsPlayed != 0 )
-			MapHandler.CleanUp();
+			MapHandler.Cleanup();
 
 		if ( !Host.IsServer )
 			return;

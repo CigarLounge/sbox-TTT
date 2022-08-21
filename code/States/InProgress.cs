@@ -71,8 +71,6 @@ public partial class InProgress : BaseState
 
 	protected override void OnStart()
 	{
-		base.OnStart();
-
 		Event.Run( GameEvent.Round.Start );
 
 		if ( !Host.IsServer )
@@ -107,8 +105,6 @@ public partial class InProgress : BaseState
 
 	protected override void OnTimeUp()
 	{
-		base.OnTimeUp();
-
 		PostRound.Load( Team.Innocents, WinType.TimeUp );
 	}
 

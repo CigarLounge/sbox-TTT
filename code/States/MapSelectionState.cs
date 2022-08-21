@@ -30,8 +30,6 @@ public partial class MapSelectionState : BaseState
 
 	protected override void OnTimeUp()
 	{
-		base.OnTimeUp();
-
 		if ( Votes.Count == 0 )
 		{
 			_ = SelectRandomMap();
@@ -48,10 +46,7 @@ public partial class MapSelectionState : BaseState
 
 	protected override void OnStart()
 	{
-		base.OnStart();
-
-		if ( Host.IsClient )
-			UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
+		UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
 	}
 
 	private async Task SelectRandomMap()

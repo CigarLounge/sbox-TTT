@@ -19,7 +19,7 @@ public static class MapHandler
 		}
 	}
 
-	public static void CleanUp()
+	public static void Cleanup()
 	{
 		Map.Reset( Game.DefaultCleanupFilter );
 		Sandbox.Internal.Decals.RemoveFromWorld();

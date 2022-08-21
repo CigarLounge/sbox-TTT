@@ -32,9 +32,7 @@ public class PreRound : BaseState
 
 	protected override void OnStart()
 	{
-		base.OnStart();
-
-		MapHandler.CleanUp();
+		MapHandler.Cleanup();
 
 		if ( !Host.IsServer )
 			return;
@@ -48,8 +46,6 @@ public class PreRound : BaseState
 
 	protected override void OnTimeUp()
 	{
-		base.OnTimeUp();
-
 		List<Player> players = new();
 		List<Player> spectators = new();
 
