@@ -107,6 +107,6 @@ public partial class InfoFeed : Panel
 	private void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		this.Enabled( false );
-		DeleteChildren();	
+		DeleteChildren();
 	}
 }

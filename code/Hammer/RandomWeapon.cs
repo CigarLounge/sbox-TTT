@@ -28,8 +28,6 @@ public class RandomWeapon : Entity
 
 	public override void Spawn()
 	{
-		base.Spawn();
-
 		Transmit = TransmitType.Never;
 		CacheWeaponTypes();
 

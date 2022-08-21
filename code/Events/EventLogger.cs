@@ -75,6 +75,9 @@ public static class EventLogger
 		if ( !Host.IsServer )
 			return;
 
+		if ( Game.Current.State is not InProgress )
+			return;
+
 		var info = player.LastDamage;
 		var attacker = info.Attacker;
 
@@ -88,6 +91,9 @@ public static class EventLogger
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Host.IsServer )
+			return;
+
+		if ( Game.Current.State is not InProgress )
 			return;
 
 		if ( player.KilledByPlayer )

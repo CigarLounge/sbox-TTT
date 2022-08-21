@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 
 namespace TTT;
@@ -105,6 +105,9 @@ public static class Karma
 	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
+		if ( !Host.IsServer )
+			return;
+
 		if ( Game.Current.State is not InProgress )
 			return;
 

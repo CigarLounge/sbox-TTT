@@ -11,8 +11,6 @@ public class RandomAmmo : Entity
 {
 	public override void Spawn()
 	{
-		base.Spawn();
-
 		Transmit = TransmitType.Never;
 
 		Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) ).Transform = Transform;

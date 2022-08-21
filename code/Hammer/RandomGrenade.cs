@@ -16,8 +16,6 @@ public class RandomGrenade : Entity
 
 	public override void Spawn()
 	{
-		base.Spawn();
-
 		Transmit = TransmitType.Never;
 		CacheGrenadeTypes();
 
