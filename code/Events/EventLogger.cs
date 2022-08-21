@@ -45,7 +45,7 @@ public static class EventLogger
 		Events.Add( eventInfo );
 	}
 
-	[GameEvent.Round.Started]
+	[GameEvent.Round.RolesAssigned]
 	private static void OnRoundStart()
 	{
 		if ( !Host.IsServer )
