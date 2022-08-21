@@ -74,9 +74,11 @@ public partial class InfoFeed : Panel
 		);
 	}
 
-	[GameEvent.Round.RolesAssigned]
-	private void OnRolesAssigned()
+	[GameEvent.Round.Start]
+	private void OnRoundStart()
 	{
+		this.Enabled( true );
+
 		if ( Game.Current.State.HasStarted )
 			return;
 
@@ -101,9 +103,10 @@ public partial class InfoFeed : Panel
 		AddEntry( text );
 	}
 
-	[GameEvent.Round.Ended]
-	private void OnRoundEnded( Team winningTeam, WinType winType )
+	[GameEvent.Round.End]
+	private void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		DeleteChildren();
+		this.Enabled( false );
+		DeleteChildren();	
 	}
 }
