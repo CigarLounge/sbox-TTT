@@ -8,7 +8,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class QuickChat : Panel
 {
-	public static QuickChat Instance;
+	public static QuickChat Instance { get; private set; }
 
 	private const string NoTarget = "nobody";
 	private string _target;
@@ -90,12 +90,12 @@ public class QuickChat : Panel
 				if ( corpse.Player is null )
 					return "an unidentified body";
 				else
-					return $"{corpse.Player.Client.Name}'s corpse";
+					return $"{corpse.Player.SteamName}'s corpse";
 			}
 			case Player player:
 			{
 				if ( player.CanHint( localPlayer ) )
-					return player.Client.Name;
+					return player.SteamName;
 				else
 					return "someone in disguise";
 			}
