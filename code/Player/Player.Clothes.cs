@@ -27,8 +27,8 @@ public partial class Player
 	}
 
 	[Event.Entity.PostSpawn]
-	[GameEvent.Round.Started]
-	private static void OnRoundStart()
+	[Event.Entity.PostCleanup]
+	private static void ChangeClothingPreset()
 	{
 		_currentPreset = Rand.FromList( ClothingPresets );
 	}

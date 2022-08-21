@@ -34,7 +34,7 @@ public class PreRound : BaseState
 	{
 		base.OnStart();
 
-		Event.Run( GameEvent.Round.Started );
+		MapHandler.CleanUp();
 
 		if ( !Host.IsServer )
 			return;

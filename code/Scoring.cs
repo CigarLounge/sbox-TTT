@@ -40,7 +40,7 @@ public static class Scoring
 		finder.RoundScore += finder.Role.Scoring.CorpseFoundReward;
 	}
 
-	[GameEvent.Round.Ended]
+	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsServer )

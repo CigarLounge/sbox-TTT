@@ -12,7 +12,7 @@ public class PostRoundPopup : Panel
 
 	public PostRoundPopup() => Instance = this;
 
-	[GameEvent.Round.Ended]
+	[GameEvent.Round.End]
 	private static void DisplayWinner( Team winningTeam, WinType winType )
 	{
 		if ( !Host.IsClient )
@@ -44,7 +44,7 @@ public class PostRoundPopup : Panel
 		}
 	}
 
-	[GameEvent.Round.Started]
+	[Event.Entity.PostCleanup]
 	private void Close()
 	{
 		Delete();
