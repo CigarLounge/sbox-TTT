@@ -41,8 +41,6 @@ public class ScoreboardEntry : Panel
 			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
 			btn.Style.FontColor = tagGroup.Color;
 		}
-
-		TagButtons.Enabled( false );
 	}
 
 	public void Update()
