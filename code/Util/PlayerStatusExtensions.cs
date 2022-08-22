@@ -1,4 +1,4 @@
-﻿namespace TTT;
+namespace TTT;
 
 public static class PlayerStatusExtensions
 {

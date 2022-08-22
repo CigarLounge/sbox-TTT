@@ -45,7 +45,7 @@ public class DamageIndicator : Panel
 			var wpos = CurrentView.Rotation.Inverse * (Position.WithZ( 0 ) - CurrentView.Position.WithZ( 0 )).Normal;
 			wpos = wpos.WithZ( 0 ).Normal;
 
-			float angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
+			var angle = MathF.Atan2( wpos.y, -1.0f * wpos.x );
 
 			var pt = new PanelTransform();
 

@@ -7,13 +7,13 @@ namespace TTT;
 [Title( "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
-	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );
+	private static readonly Model _worldModel = Model.Load( "models/radio/radio.vmdl" );
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		Model = WorldModel;
+		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 100f;
 	}
@@ -42,9 +42,7 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 	[ConCmd.Server]
 	public static void PlayRadio( int id, string sound )
 	{
-		var radio = Entity.FindByIndex( id ) as RadioEntity;
-
-		if ( radio is null || radio.Owner != ConsoleSystem.Caller.Pawn )
+		if ( Entity.FindByIndex( id ) is not RadioEntity radio || radio.Owner != ConsoleSystem.Caller.Pawn )
 			return;
 
 		radio.PlaySound( sound );

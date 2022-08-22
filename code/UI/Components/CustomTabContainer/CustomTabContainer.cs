@@ -63,7 +63,7 @@ public class CustomTabContainer : Panel
 	public void RemoveTab( string title )
 	{
 		var isActive = false;
-		for ( int i = Tabs.Count - 1; i >= 0; --i )
+		for ( var i = Tabs.Count - 1; i >= 0; --i )
 		{
 			var tab = Tabs[i];
 
@@ -108,34 +108,34 @@ public class CustomTabContainer : Panel
 	/// </summary>
 	public class Tab
 	{
-		private CustomTabContainer Parent;
 		public Button Button { get; protected set; }
 		public Panel Page { get; protected set; }
 		public string Title { get; protected set; }
+		private readonly CustomTabContainer _parent;
 
 		public Tab( CustomTabContainer tabControl, string title, string icon, Panel panel )
 		{
-			Parent = tabControl;
+			_parent = tabControl;
 			Page = panel;
 			Title = title;
 
-			Button = new( title, icon, () => Parent?.SwitchTab( this ) )
+			Button = new( title, icon, () => _parent?.SwitchTab( this ) )
 			{
 				Parent = tabControl.TabsContainer
 			};
 		}
 
-		bool active;
+		bool _active;
 
 		/// <summary>
 		/// Change appearance based on active status
 		/// </summary>
 		public bool Active
 		{
-			get => active;
+			get => _active;
 			set
 			{
-				active = value;
+				_active = value;
 				Button.SetClass( "active", value );
 				Page.SetClass( "active", value );
 			}

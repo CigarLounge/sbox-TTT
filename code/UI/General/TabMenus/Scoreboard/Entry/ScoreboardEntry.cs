@@ -24,13 +24,13 @@ public class ScoreboardEntry : Panel
 	{
 		_client = client;
 
-		foreach (var tagGroup in Player.TagGroupList)
+		foreach ( var tagGroup in Player.TagGroupList )
 		{
-			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); });
+			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
 			btn.Style.FontColor = tagGroup.Color;
 		}
 
-		TagButtons.Enabled(false);
+		TagButtons.Enabled( false );
 	}
 
 	public void Update()
@@ -60,24 +60,24 @@ public class ScoreboardEntry : Panel
 
 	public void OnClick()
 	{
-		if ((_client.Pawn as Player).Status is not PlayerStatus.Alive || _client.Pawn.IsLocalPawn)
+		if ( (_client.Pawn as Player).Status is not PlayerStatus.Alive || _client.Pawn.IsLocalPawn )
 			return;
 
-		if (TagButtons.IsEnabled())
+		if ( TagButtons.IsEnabled() )
 		{
-			Style.Set("height", "38px");
-			TagButtons.Enabled(false);
+			Style.Set( "height", "38px" );
+			TagButtons.Enabled( false );
 		}
 		else
 		{
-			Style.Set("height", "76px");
-			TagButtons.Enabled(true);
+			Style.Set( "height", "76px" );
+			TagButtons.Enabled( true );
 		}
 	}
 
-	private void SetTag(ColorGroup tagGroup)
+	private void SetTag( ColorGroup tagGroup )
 	{
-		if (tagGroup.Title == Tag.Text)
+		if ( tagGroup.Title == Tag.Text )
 		{
 			ResetTag();
 			return;
@@ -97,9 +97,9 @@ public class ScoreboardEntry : Panel
 		var player = Local.Pawn as Player;
 		try
 		{
-			player.TaggedPlayers.Remove(_client.Pawn);
+			player.TaggedPlayers.Remove( _client.Pawn );
 		}
-		catch (NullReferenceException)
+		catch ( NullReferenceException )
 		{ }
 	}
 

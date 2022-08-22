@@ -7,13 +7,13 @@ namespace TTT;
 [Title( "Decoy" )]
 public partial class DecoyEntity : Prop, IEntityHint, IUse
 {
-	private static readonly Model WorldModel = Model.Load( "models/decoy/decoy.vmdl" );
+	private static readonly Model _worldModel = Model.Load( "models/decoy/decoy.vmdl" );
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		Model = WorldModel;
+		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 100f;
 	}
