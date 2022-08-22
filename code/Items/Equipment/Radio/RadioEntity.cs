@@ -7,13 +7,13 @@ namespace TTT;
 [Title( "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
-	private static readonly Model WorldModel = Model.Load( "models/radio/radio.vmdl" );
+	private static readonly Model _worldModel = Model.Load( "models/radio/radio.vmdl" );
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		Model = WorldModel;
+		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 100f;
 	}

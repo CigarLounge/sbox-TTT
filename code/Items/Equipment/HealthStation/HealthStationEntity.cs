@@ -8,7 +8,7 @@ namespace TTT;
 [Title( "Health Station" )]
 public partial class HealthStationEntity : Prop, IEntityHint, IUse
 {
-	private static readonly Model WorldModel = Model.Load( "models/health_station/health_station.vmdl" );
+	private static readonly Model _worldModel = Model.Load( "models/health_station/health_station.vmdl" );
 
 	[Net]
 	public float StoredHealth { get; set; } = 200f;
@@ -20,7 +20,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		Model = WorldModel;
+		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 201f;
 	}
