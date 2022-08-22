@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 135
+		Decibels = 140
 		Sounds = 
 		[
 			resource:"sounds/weapons/ak47/ak47_fire-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 4167.7114
-		MinimumDistance = 208.38557
+		MaximumDistance = 4479.734
+		MinimumDistance = 223.9867
 	}
 }

@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 135
+		Decibels = 165
 		Sounds = 
 		[
 			resource:"sounds/weapons/mr96/mr96_fire-3.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 4167.7114
-		MinimumDistance = 208.38557
+		MaximumDistance = 6210.039
+		MinimumDistance = 310.50195
 	}
 }

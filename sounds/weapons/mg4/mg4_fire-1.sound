@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 135
+		Decibels = 145
 		Sounds = 
 		[
 			resource:"sounds/weapons/mg4/mg4_fire-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 4167.7114
-		MinimumDistance = 208.38557
+		MaximumDistance = 4803.1025
+		MinimumDistance = 240.15514
 	}
 }

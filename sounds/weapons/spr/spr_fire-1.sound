@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 140
+		Decibels = 165
 		Sounds = 
 		[
 			resource:"sounds/weapons/mp5/spr_fire-mono.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 4479.734
-		MinimumDistance = 223.9867
+		MaximumDistance = 6210.039
+		MinimumDistance = 310.50195
 	}
 }

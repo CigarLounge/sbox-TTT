@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 130
+		Decibels = 140
 		Sounds = 
 		[
 			resource:"sounds/equipment/flaregun/flaregun_fire-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 3867.0361
-		MinimumDistance = 193.3518
+		MaximumDistance = 4479.734
+		MinimumDistance = 223.9867
 	}
 }

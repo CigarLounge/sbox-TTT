@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 120
+		Decibels = 70
 		Sounds = 
 		[
 			resource:"sounds/weapons/vertec/gsr1911_fire_silenced-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 3299.7227
-		MinimumDistance = 164.98613
+		MaximumDistance = 1143.9335
+		MinimumDistance = 57.196674
 	}
 }

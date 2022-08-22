@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 135
+		Decibels = 160
 		Sounds = 
 		[
 			resource:"sounds/weapons/bekas/fire-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 4167.7114
-		MinimumDistance = 208.38557
+		MaximumDistance = 5841.2856
+		MinimumDistance = 292.0643
 	}
 }

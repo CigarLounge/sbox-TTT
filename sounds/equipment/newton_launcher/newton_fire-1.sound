@@ -7,13 +7,13 @@
 		VolumeRandom = 0
 		Pitch = 1
 		PitchRandom = 0
-		Decibels = 125
+		Decibels = 140
 		Sounds = 
 		[
 			resource:"sounds/equipment/newton_launcher/newton_fire-1.vsnd",
 		]
 		SelectionMode = "Random"
-		MaximumDistance = 3577.7063
-		MinimumDistance = 178.88531
+		MaximumDistance = 4479.734
+		MinimumDistance = 223.9867
 	}
 }
