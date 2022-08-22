@@ -2,9 +2,18 @@
 {
 	data = 
 	{
-		sounds = 
+		UI = false
+		Volume = 1
+		VolumeRandom = 0
+		Pitch = 1
+		PitchRandom = 0
+		Decibels = 135
+		Sounds = 
 		[
-			"sounds/weapons/mr96/mr96_fire-3.vsnd",
+			resource:"sounds/weapons/mr96/mr96_fire-3.vsnd",
 		]
+		SelectionMode = "Random"
+		MaximumDistance = 4167.7114
+		MinimumDistance = 208.38557
 	}
 }

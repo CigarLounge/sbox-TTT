@@ -2,16 +2,18 @@
 {
 	data = 
 	{
-		sounds = 
+		UI = false
+		Volume = 0.5
+		VolumeRandom = 0
+		Pitch = 1
+		PitchRandom = 0
+		Decibels = 135
+		Sounds = 
 		[
-			"sounds/weapons/ak47/ak47_fire-1.vsnd",
+			resource:"sounds/weapons/ak47/ak47_fire-1.vsnd",
 		]
-		ui = false
-		volume = 0.5
-		volumerandom = 0.0
-		pitch = 1.0
-		pitchrandom = 0.0
-		distancemax = 2000.0
-		selectionmode = "3"
+		SelectionMode = "Random"
+		MaximumDistance = 4167.7114
+		MinimumDistance = 208.38557
 	}
 }
