@@ -224,14 +224,11 @@ public partial class WalkController : PawnController
 
 		var flGroundFactor = 1.0f;
 
-		var jumpHeight = Duck.IsActive ? 56 : 52;
-		var flMul = MathF.Sqrt( 2f * Gravity * jumpHeight );
+		var flMul = 268.3281572999747f * 1.2f;
 		var startz = Velocity.z;
 
 		if ( Duck.IsActive )
-			Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );
-		else
-			Velocity += Vector3.Up * (startz + flMul * flGroundFactor);
+			flMul *= 0.8f;
 
 		Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );
 		Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
