@@ -2,16 +2,18 @@
 {
 	data = 
 	{
-		sounds = 
+		UI = false
+		Volume = 0.7
+		VolumeRandom = 0
+		Pitch = 1
+		PitchRandom = 0
+		Decibels = 160
+		Sounds = 
 		[
-			"sounds/weapons/bekas/fire-1.vsnd",
+			resource:"sounds/weapons/bekas/fire-1.vsnd",
 		]
-		ui = false
-		volume = 0.7
-		volumerandom = 0.0
-		pitch = 1.0
-		pitchrandom = 0.0
-		distancemax = 2000.0
-		selectionmode = "3"
+		SelectionMode = "Random"
+		MaximumDistance = 5841.2856
+		MinimumDistance = 292.0643
 	}
 }

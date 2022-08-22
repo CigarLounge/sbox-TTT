@@ -92,7 +92,7 @@ public partial class Hands : Carriable
 		var trace = Trace.Ray( eyePos, eyePos + eyeDir * Player.UseDistance )
 			.UseHitboxes()
 			.Ignore( Owner )
-			.WithAnyTags( "solid", "trigger" )
+			.WithAnyTags( "solid", "interactable" )
 			.EntitiesOnly()
 			.Run();
 

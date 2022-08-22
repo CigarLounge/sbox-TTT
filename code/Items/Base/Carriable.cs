@@ -68,7 +68,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		Tags.Add( "trigger" );
+		Tags.Add( "interactable" );
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
 		EnableHideInFirstPerson = true;

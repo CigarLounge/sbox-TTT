@@ -78,7 +78,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			if ( clothing.Model.ResourcePath == Detective.Hat.Model && Player.KilledWithHeadShot )
 			{
-				clothing.Tags.Add( "trigger" );
+				clothing.Tags.Add( "interactable" );
 				clothing.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 				clothing.PhysicsGroup.AddVelocity( Player.LastDamage.Force * 2 );
 			}
@@ -111,7 +111,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		Tags.Add( "trigger" );
+		Tags.Add( "interactable" );
 
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;

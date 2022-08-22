@@ -29,7 +29,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	public override void Spawn()
 	{
-		Tags.Add( "trigger" );
+		Tags.Add( "interactable" );
 
 		SetModel( WorldModelPath );
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
