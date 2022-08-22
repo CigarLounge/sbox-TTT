@@ -46,7 +46,7 @@ public partial class Player
 	{
 		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
 			.Ignore( this )
-			.WithAnyTags( "solid", "trigger" )
+			.WithAnyTags( "solid", "interactable" )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )
