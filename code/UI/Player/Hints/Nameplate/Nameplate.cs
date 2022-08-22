@@ -19,7 +19,7 @@ public class Nameplate : EntityHintPanel
 
 	public Nameplate( Player player ) => _player = player;
 
-	public Nameplate(Player player, Dictionary<Entity, ColorGroup> tagDict)
+	public Nameplate( Player player, Dictionary<Entity, ColorGroup> tagDict )
 	{
 		_player = player;
 		_tagDict = tagDict;
@@ -49,7 +49,7 @@ public class Nameplate : EntityHintPanel
 		}
 
 		var tagGroup = GetTagGroup();
-		if (tagGroup is not null)
+		if ( tagGroup is not null )
 		{
 			Tag.Text = tagGroup?.Title;
 			Tag.Style.FontColor = tagGroup?.Color;
@@ -62,7 +62,7 @@ public class Nameplate : EntityHintPanel
 		{
 			return _tagDict[_player];
 		}
-		catch (Exception)
+		catch ( Exception )
 		{
 			return null;
 		}
