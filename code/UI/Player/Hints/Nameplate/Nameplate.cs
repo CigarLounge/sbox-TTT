@@ -9,7 +9,7 @@ namespace TTT.UI;
 public class Nameplate : EntityHintPanel
 {
 	public readonly Player _player;
-	private Dictionary<Entity, ColorGroup> _tagDict;
+	private readonly Dictionary<Entity, ColorGroup> _tagDict;
 
 	private Label Name { get; init; }
 	private Label HealthStatus { get; init; }
@@ -62,7 +62,7 @@ public class Nameplate : EntityHintPanel
 		{
 			return _tagDict[_player];
 		}
-		catch (Exception e)
+		catch (Exception)
 		{
 			return null;
 		}

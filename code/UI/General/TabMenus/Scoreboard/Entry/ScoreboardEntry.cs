@@ -14,7 +14,6 @@ public class ScoreboardEntry : Panel
 
 	private Image PlayerAvatar { get; init; }
 	private Label PlayerName { get; init; }
-	private Panel TagPanel { get; init; }
 	private Label Tag { get; set; }
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
