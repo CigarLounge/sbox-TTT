@@ -4,10 +4,12 @@
     <div class="scoreboard-entry-div">
         <img @ref="PlayerAvatar" class="avatar" />
         <text @ref="PlayerName" class="name-label"></text>
-        <text @ref="Tag" class="tag-label"></text>
+        <div @ref="TagPanel">
+            <text @ref="Tag" class="tag-label"></text>
+        </div>
         <text @ref="Karma" class="stat"></text>
         <text @ref="Score" class="stat"></text>
         <text @ref="Ping" class="stat"></text>
     </div>
-    <div class="tag-buttons-div no-display"></div>
+    <div @ref="TagButtons" class="tag-buttons-div"></div>
 </root>

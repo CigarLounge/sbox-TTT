@@ -65,34 +65,29 @@ scoreboardentry
 {
     display: flex;
     justify-content: center;
-
-    &.no-display
-    {
-        display: none;
-    }
 }
 
-.Friend
+.friend
 {
     color: #01f901;
 }
 
-.Suspect
+.suspect
 {
     color: #b3b314;
 }
 
-.Avoid
+.avoid
 {
     color: #fc9501;
 }
 
-.Kill
+.kill
 {
     color: #f30302;
 }
 
-.Missing
+.missing
 {
     color: #82be82;
 }

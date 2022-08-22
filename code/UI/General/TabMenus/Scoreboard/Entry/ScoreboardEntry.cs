@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
-using System;
 
 namespace TTT.UI;
 
@@ -15,42 +14,28 @@ public class ScoreboardEntry : Panel
 
 	private Image PlayerAvatar { get; init; }
 	private Label PlayerName { get; init; }
-	private Label Tag { get; init; }
+	private Panel TagPanel { get; init; }
+	private Label Tag { get; set; }
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
 
-	private bool Expanded = false;
-	private List<string> _tags = new() { "Friend", "Suspect", "Avoid", "Kill", "Missing" };
+	private Panel TagButtons { get; init; }
 
-	private void SetTag(string tag)
-	{
-		int i = 0;
-		foreach (string cls in Tag.Class)
-		{
-			if (i >= 2)
-				Tag.RemoveClass(cls);
-			i++;
-		}
-
-		if (Tag.Text == tag)
-			Tag.Text = "";
-		else {
-			Tag.Text = tag;
-			Tag.AddClass(tag);
-		}
-	}
+	private bool _isExpanded = false;
+	private readonly static List<string> _tags = new() { "friend", "suspect", "avoid", "kill", "missing" };
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
 		_client = client;
 
-		// Add tag buttons below each entry
-		foreach (string tag in _tags)
+		foreach (var tag in _tags)
 		{
-			var btn = GetChild(1).Add.Button(tag, () => { SetTag(tag); });
+			var btn = TagButtons.Add.Button(tag.FirstCharToUpper(), () => { SetTag(tag); });
 			btn.AddClass(tag);
 		}
+
+		TagButtons.Enabled(false);
 	}
 
 	public void Update()
@@ -80,25 +65,36 @@ public class ScoreboardEntry : Panel
 
 	public void OnClick()
 	{
-		// Only allow tagging currently alive players, and only if the selected player is not the local player
 		if ((_client.Pawn as Player).Status is not PlayerStatus.Alive || _client.Pawn.IsLocalPawn)
 			return;
 
-		if (!Expanded) {
-			Style.Set("height", "76px");
-			GetChild(1).RemoveClass("no-display");
-			Expanded = true;
-		}
-		else {
+		if (TagButtons.IsEnabled())
+		{
 			Style.Set("height", "38px");
-			GetChild(1).AddClass("no-display");
-			Expanded = false;
+			TagButtons.Enabled(false);
+		}
+		else
+		{
+			Style.Set("height", "76px");
+			TagButtons.Enabled(true);
 		}
 	}
 
-	[GameEvent.Round.PreRound]
+	private void SetTag(string tag)
+	{
+		Tag.Delete();
+		if (tag == string.Empty || Tag.Text == tag.FirstCharToUpper())
+		{
+			Tag.Text = string.Empty;
+			return;
+		}
+
+		Tag = TagPanel.Add.Label(tag.FirstCharToUpper(), tag);
+	}
+
+	[Event.Entity.PostCleanup]
 	private void OnRoundStart()
 	{
-		SetTag("");
+		SetTag(string.Empty);
 	}
 }
