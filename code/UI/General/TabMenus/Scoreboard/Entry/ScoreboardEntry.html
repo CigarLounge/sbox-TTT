@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="ScoreboardEntry.scss">
 
-<root class="text-shadow entry">
-    <div class="scoreboard-entry-div">
+<root class="text-shadow">
+    <div class="entry">
         <img @ref="PlayerAvatar" class="avatar" />
         <text @ref="PlayerName" class="name-label"></text>
         <text @ref="Tag" class="tag-label"></text>
@@ -9,5 +9,5 @@
         <text @ref="Score" class="stat"></text>
         <text @ref="Ping" class="stat"></text>
     </div>
-    <div @ref="TagButtons" class="tag-buttons-div"></div>
+    <div @ref="TagButtons" style="display: none; justify-content: center;"></div>
 </root>

@@ -23,13 +23,13 @@ public class ScoreboardEntry : Panel
 	public PlayerStatus PlayerStatus;
 	private readonly Client _client;
 
+	private bool _isOpen = false;
 	private Image PlayerAvatar { get; init; }
 	private Label PlayerName { get; init; }
 	private Label Tag { get; set; }
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
-
 	private Panel TagButtons { get; init; }
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
@@ -72,19 +72,8 @@ public class ScoreboardEntry : Panel
 
 	public void OnClick()
 	{
-		if ( !_client.Pawn.IsAlive() || _client.Pawn.IsLocalPawn )
-			return;
-
-		if ( TagButtons.IsEnabled() )
-		{
-			Style.Set( "height", "38px" );
-			TagButtons.Enabled( false );
-		}
-		else
-		{
-			Style.Set( "height", "76px" );
-			TagButtons.Enabled( true );
-		}
+		TagButtons.Enabled( _isOpen = !_isOpen );
+		SetClass( "open", TagButtons.IsEnabled() );
 	}
 
 	private void SetTag( ColorGroup tagGroup )
