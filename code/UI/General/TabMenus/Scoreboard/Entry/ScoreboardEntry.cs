@@ -15,10 +15,10 @@ public class ScoreboardEntry : Panel
 
 	private Image PlayerAvatar { get; init; }
 	private Label PlayerName { get; init; }
+	private Label Tag { get; init; }
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
-	private Label Tag { get; init; }
 
 	private bool Expanded = false;
 	private List<string> _tags = new() { "Friend", "Suspect", "Avoid", "Kill", "Missing" };
