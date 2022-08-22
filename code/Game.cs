@@ -60,6 +60,7 @@ public partial class Game : Sandbox.Game
 	{
 		Event.Run( GameEvent.Client.Joined, client );
 
+		int test = 5;
 		var player = new Player();
 		client.Pawn = player;
 		player.SteamId = client.PlayerId;
