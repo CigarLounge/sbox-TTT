@@ -6,6 +6,13 @@ public static partial class GameEvent
 {
 	public static class Round
 	{
+		public const string PreRound = "ttt.round.preround";
+
+		public class PreRoundAttribute : EventAttribute
+		{
+			public PreRoundAttribute() : base( PreRound ) { }
+		}
+
 		public const string Start = "ttt.round.start";
 
 		/// <summary>

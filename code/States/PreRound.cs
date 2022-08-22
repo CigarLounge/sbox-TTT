@@ -32,6 +32,7 @@ public class PreRound : BaseState
 
 	protected override void OnStart()
 	{
+		Event.Run( GameEvent.Round.PreRound );
 		MapHandler.Cleanup();
 
 		if ( !Host.IsServer )

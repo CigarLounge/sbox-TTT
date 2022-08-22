@@ -61,40 +61,38 @@ scoreboardentry
     }
 }
 
-.tag-buttons-div.no-display
-{
-    display: none;
-}
-
 .tag-buttons-div
 {
     display: flex;
     justify-content: center;
-    color: red;
-    // margin-right: auto;
+
+    &.no-display
+    {
+        display: none;
+    }
 }
 
 .Friend
 {
-    color: green;
+    color: #01f901;
 }
 
 .Suspect
 {
-    color: yellow;
+    color: #b3b314;
 }
 
 .Avoid
 {
-    color: orange;
+    color: #fc9501;
 }
 
 .Kill
 {
-    color: red;
+    color: #f30302;
 }
 
 .Missing
 {
-    color: blue;
+    color: #82be82;
 }

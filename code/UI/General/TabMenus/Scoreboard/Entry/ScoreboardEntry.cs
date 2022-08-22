@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
@@ -20,32 +21,36 @@ public class ScoreboardEntry : Panel
 	private Label Tag { get; init; }
 
 	private bool Expanded = false;
-	// private Button FriendButton { get; init; }
-	// private Button SuspectButton { get; init; }
-	// private Button AvoidButton { get; init; }
-	// private Button KillButton { get; init; }
-	// private Button MissingButton { get; init; }
-
-	// private List<Button> Buttons;
-	// private List<string> _tags = new() { "Friend", "Suspect", "Avoid", "Kill", "Missing" };
-	// private List<string> _tags;
-
+	private List<string> _tags = new() { "Friend", "Suspect", "Avoid", "Kill", "Missing" };
 
 	private void SetTag(string tag)
 	{
-		Tag.Text = tag;
-		Tag.AddClass(tag);
+		int i = 0;
+		foreach (string cls in Tag.Class)
+		{
+			if (i >= 2)
+				Tag.RemoveClass(cls);
+			i++;
+		}
+
+		if (Tag.Text == tag)
+			Tag.Text = "";
+		else {
+			Tag.Text = tag;
+			Tag.AddClass(tag);
+		}
 	}
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
 		_client = client;
-		GetChild(1).Add.Button( "Friend", () =>  { SetTag( "Friend" ); } );
-		GetChild(1).Add.Button( "Suspect", () => { SetTag( "Suspect" ); } );
-		GetChild(1).Add.Button( "Avoid", () =>   { SetTag( "Avoid" ); } );
-		GetChild(1).Add.Button( "Kill", () =>    { SetTag( "Kill" ); } );
-		GetChild(1).Add.Button( "Missing", () => { SetTag( "Missing" ); } );
-		Karma.SetProperty("color", "red");
+
+		// Add tag buttons below each entry
+		foreach (string tag in _tags)
+		{
+			var btn = GetChild(1).Add.Button(tag, () => { SetTag(tag); });
+			btn.AddClass(tag);
+		}
 	}
 
 	public void Update()
@@ -71,17 +76,14 @@ public class ScoreboardEntry : Panel
 			Style.BackgroundColor = null;
 
 		PlayerAvatar.SetTexture( $"avatar:{_client.PlayerId}" );
-
-		Log.Info(GetChild(1));
 	}
 
 	public void OnClick()
 	{
-		HandleExpand();
-	}
+		// Only allow tagging currently alive players, and only if the selected player is not the local player
+		if ((_client.Pawn as Player).Status is not PlayerStatus.Alive || _client.Pawn.IsLocalPawn)
+			return;
 
-	private void HandleExpand()
-	{
 		if (!Expanded) {
 			Style.Set("height", "76px");
 			GetChild(1).RemoveClass("no-display");
@@ -92,5 +94,11 @@ public class ScoreboardEntry : Panel
 			GetChild(1).AddClass("no-display");
 			Expanded = false;
 		}
+	}
+
+	[GameEvent.Round.PreRound]
+	private void OnRoundStart()
+	{
+		SetTag("");
 	}
 }
