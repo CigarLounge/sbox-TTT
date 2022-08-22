@@ -1,5 +1,11 @@
 scoreboardentry
 {
+    display: flex;
+    flex-direction: column;
+}
+
+.scoreboard-entry-div
+{
     width: 100%;
     height: 38px;
     align-items: center;
@@ -53,4 +59,42 @@ scoreboardentry
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
     }
+}
+
+.tag-buttons-div.no-display
+{
+    display: none;
+}
+
+.tag-buttons-div
+{
+    display: flex;
+    justify-content: center;
+    color: red;
+    // margin-right: auto;
+}
+
+.Friend
+{
+    color: green;
+}
+
+.Suspect
+{
+    color: yellow;
+}
+
+.Avoid
+{
+    color: orange;
+}
+
+.Kill
+{
+    color: red;
+}
+
+.Missing
+{
+    color: blue;
 }
