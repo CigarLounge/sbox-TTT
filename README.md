@@ -26,8 +26,10 @@ TTT is a mafia-esque multiplayer game created using s&box. It's aimed to be the 
 # Discord
 Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 
-## Development
+## Gameplay
 
 You can checkout devblog update videos on my [YouTube channel](https://www.youtube.com/channel/UCk2IAm1j9o_3GWrqf537gNg). We also have a [website](https://sbox-ttt.github.io/) that showcases some gameplay screenshots.
+
+## [Contributing](https://github.com/sbox-TTT/TTT/wiki/Contributing)
 
 ## [License](https://github.com/sbox-TTT/TTT/blob/main/LICENSE.md)
