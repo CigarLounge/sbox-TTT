@@ -9,6 +9,17 @@ namespace TTT.UI;
 [UseTemplate]
 public class ScoreboardEntry : Panel
 {
+	public static Dictionary<Client, ColorGroup> TagCollection = new();
+
+	public static readonly ColorGroup[] TagGroups = new ColorGroup[]
+	{
+		new ColorGroup("Friend", Color.FromBytes(0, 255, 0)),
+		new ColorGroup("Suspect", Color.FromBytes(179, 179, 20)),
+		new ColorGroup("Avoid", Color.FromBytes(252, 149, 0)),
+		new ColorGroup("Kill", Color.FromBytes(255, 0, 0)),
+		new ColorGroup("Missing", Color.FromBytes(130, 190, 130))
+	};
+
 	public PlayerStatus PlayerStatus;
 	private readonly Client _client;
 
@@ -25,7 +36,7 @@ public class ScoreboardEntry : Panel
 	{
 		_client = client;
 
-		foreach ( var tagGroup in Player.TagGroupList )
+		foreach ( var tagGroup in TagGroups )
 		{
 			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
 			btn.Style.FontColor = tagGroup.Color;
@@ -61,7 +72,7 @@ public class ScoreboardEntry : Panel
 
 	public void OnClick()
 	{
-		if ( (_client.Pawn as Player).Status is not PlayerStatus.Alive || _client.Pawn.IsLocalPawn )
+		if ( !_client.Pawn.IsAlive() || _client.Pawn.IsLocalPawn )
 			return;
 
 		if ( TagButtons.IsEnabled() )
@@ -84,24 +95,15 @@ public class ScoreboardEntry : Panel
 			return;
 		}
 
-		var player = Local.Pawn as Player;
-
 		Tag.Text = tagGroup.Title;
 		Tag.Style.FontColor = tagGroup.Color;
-
-		player.TaggedPlayers[_client.Pawn] = tagGroup;
+		TagCollection[_client] = tagGroup;
 	}
 
 	private void ResetTag()
 	{
 		Tag.Text = string.Empty;
-		var player = Local.Pawn as Player;
-		try
-		{
-			player.TaggedPlayers.Remove( _client.Pawn );
-		}
-		catch ( NullReferenceException )
-		{ }
+		TagCollection.Remove( _client );
 	}
 
 	[Event.Entity.PostCleanup]

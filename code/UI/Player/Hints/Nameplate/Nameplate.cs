@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
@@ -9,7 +7,6 @@ namespace TTT.UI;
 public class Nameplate : EntityHintPanel
 {
 	public readonly Player _player;
-	private readonly Dictionary<Entity, ColorGroup> _tagDict;
 
 	private Label Name { get; init; }
 	private Label HealthStatus { get; init; }
@@ -18,12 +15,6 @@ public class Nameplate : EntityHintPanel
 	private Label Tag { get; init; }
 
 	public Nameplate( Player player ) => _player = player;
-
-	public Nameplate( Player player, Dictionary<Entity, ColorGroup> tagDict )
-	{
-		_player = player;
-		_tagDict = tagDict;
-	}
 
 	public override void Tick()
 	{
@@ -48,23 +39,14 @@ public class Nameplate : EntityHintPanel
 			Role.Style.FontColor = _player.Role.Color;
 		}
 
-		var tagGroup = GetTagGroup();
-		if ( tagGroup is not null )
+		if ( ScoreboardEntry.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
 		{
-			Tag.Text = tagGroup?.Title;
-			Tag.Style.FontColor = tagGroup?.Color;
+			Tag.Text = playerTag.Title;
+			Tag.Style.FontColor = playerTag.Color;
 		}
-	}
-
-	private ColorGroup? GetTagGroup()
-	{
-		try
+		else
 		{
-			return _tagDict[_player];
-		}
-		catch ( Exception )
-		{
-			return null;
+			Tag.Text = string.Empty;
 		}
 	}
 }
