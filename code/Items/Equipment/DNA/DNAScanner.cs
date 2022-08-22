@@ -105,7 +105,7 @@ public partial class DNAScanner : Carriable
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
-			.WithTag( "trigger" )
+			.WithTag( "interactable" )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )

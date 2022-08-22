@@ -12,7 +12,7 @@ public class GrabbableProp : IGrabbable
 
 	private readonly Player _owner;
 	private bool _isThrowing = false;
-	private readonly bool _hasTriggerTag = false;
+	private readonly bool _isInteractable = false;
 
 	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
 	{
@@ -20,9 +20,9 @@ public class GrabbableProp : IGrabbable
 
 		// We want to be able to shoot whatever entity the player is holding.
 		// Let's give it a tag that interacts with bullets and doesn't collide with players.
-		_hasTriggerTag = grabbedEntity.Tags.Has( "trigger" );
-		if ( !_hasTriggerTag )
-			grabbedEntity.Tags.Add( "trigger" );
+		_isInteractable = grabbedEntity.Tags.Has( "interactable" );
+		if ( !_isInteractable )
+			grabbedEntity.Tags.Add( "interactable" );
 
 		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableTouch = false;
@@ -50,8 +50,8 @@ public class GrabbableProp : IGrabbable
 		var grabbedEntity = GrabbedEntity;
 		if ( grabbedEntity.IsValid() )
 		{
-			if ( !_hasTriggerTag )
-				grabbedEntity.Tags.Remove( "trigger" );
+			if ( !_isInteractable )
+				grabbedEntity.Tags.Remove( "interactable" );
 
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;

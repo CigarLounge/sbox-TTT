@@ -16,7 +16,7 @@ public class GhostEntity : ModelEntity
 		EnableSolidCollisions = false;
 		Transmit = TransmitType.Never;
 
-		Tags.Add( "trigger" );
+		Tags.Add( "interactable" );
 	}
 
 	public void SetEntity( ModelEntity entity )
