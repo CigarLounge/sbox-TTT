@@ -12,6 +12,6 @@ public partial class Player : IEntityHint
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
 	{
-		return new UI.Nameplate( this );
+		return new UI.Nameplate( this, player.TaggedPlayers );
 	}
 }

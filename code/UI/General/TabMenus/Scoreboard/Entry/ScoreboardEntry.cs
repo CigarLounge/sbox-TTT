@@ -22,17 +22,14 @@ public class ScoreboardEntry : Panel
 
 	private Panel TagButtons { get; init; }
 
-	private bool _isExpanded = false;
-	private readonly static List<string> _tags = new() { "friend", "suspect", "avoid", "kill", "missing" };
-
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
 		_client = client;
 
-		foreach (var tag in _tags)
+		foreach (var tagGroup in Player.TagGroupList)
 		{
-			var btn = TagButtons.Add.Button(tag.FirstCharToUpper(), () => { SetTag(tag); });
-			btn.AddClass(tag);
+			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); });
+			btn.Style.FontColor = tagGroup.Color;
 		}
 
 		TagButtons.Enabled(false);
@@ -80,21 +77,37 @@ public class ScoreboardEntry : Panel
 		}
 	}
 
-	private void SetTag(string tag)
+	private void SetTag(ColorGroup tagGroup)
 	{
-		Tag.Delete();
-		if (tag == string.Empty || Tag.Text == tag.FirstCharToUpper())
+		if (tagGroup.Title == Tag.Text)
 		{
-			Tag.Text = string.Empty;
+			ResetTag();
 			return;
 		}
 
-		Tag = TagPanel.Add.Label(tag.FirstCharToUpper(), tag);
+		var player = Local.Pawn as Player;
+
+		Tag.Text = tagGroup.Title;
+		Tag.Style.FontColor = tagGroup.Color;
+
+		player.TaggedPlayers[_client.Pawn] = tagGroup;
+	}
+
+	private void ResetTag()
+	{
+		Tag.Text = string.Empty;
+		var player = Local.Pawn as Player;
+		try
+		{
+			player.TaggedPlayers.Remove(_client.Pawn);
+		}
+		catch (NullReferenceException)
+		{ }
 	}
 
 	[Event.Entity.PostCleanup]
 	private void OnRoundStart()
 	{
-		SetTag(string.Empty);
+		ResetTag();
 	}
 }
