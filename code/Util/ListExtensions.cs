@@ -10,6 +10,7 @@ public static class ListExtensions
 
 	public static void Shuffle<T>( this IList<T> list )
 	{
+		int test = 5;
 		Rand.SetSeed( Time.Tick );
 		var n = list.Count;
 		while ( n > 1 )
