@@ -1,0 +1,23 @@
+name: .NET Format
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  check-format:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Fetch repo code
+        uses: actions/checkout@v2
+
+      - name: Run dotnet format
+        run: dotnet format --no-restore --verify-no-changes ./code/
