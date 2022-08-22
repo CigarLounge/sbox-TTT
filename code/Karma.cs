@@ -166,7 +166,7 @@ public static class Karma
 			 *		return;
 			 */
 
-			var penalty = GetKillPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenaltyMultiplier);
+			var penalty = GetKillPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
 		}
 		else

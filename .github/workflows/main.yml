@@ -1,0 +1,27 @@
+name: .NET Format
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  linter:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+
+      - name: Fetch repo code
+        uses: actions/checkout@v2
+        
+      - name: .NET problem matcher
+        uses: xt0rted/dotnet-format-problem-matcher@v1
+
+      - name: Run linter
+        run: dotnet format --no-restore --verify-no-changes ./code/

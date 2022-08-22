@@ -79,7 +79,7 @@ public partial class DNAMenu : Panel
 	[ConCmd.Server]
 	public static void SetActiveSample( int id )
 	{
-		Player player = ConsoleSystem.Caller.Pawn as Player;
+		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
@@ -100,7 +100,7 @@ public partial class DNAMenu : Panel
 	[ConCmd.Server]
 	public static void DeleteSample( int id )
 	{
-		Player player = ConsoleSystem.Caller.Pawn as Player;
+		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 
@@ -121,7 +121,7 @@ public partial class DNAMenu : Panel
 	[ConCmd.Server]
 	public static void SetAutoScan( bool enabled )
 	{
-		Player player = ConsoleSystem.Caller.Pawn as Player;
+		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() )
 			return;
 

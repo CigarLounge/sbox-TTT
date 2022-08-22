@@ -1,4 +1,4 @@
-﻿using SandboxEditor;
+using SandboxEditor;
 
 namespace TTT;
 

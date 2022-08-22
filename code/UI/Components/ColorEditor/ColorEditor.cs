@@ -95,7 +95,7 @@ public class ColorEditor : Panel
 	}
 
 
-	ColorHsv color;
+	ColorHsv _color;
 
 	/// <summary>
 	/// The actual value. Setting the value will snap and clamp it.
@@ -103,20 +103,20 @@ public class ColorEditor : Panel
 	[Property]
 	public ColorHsv Value
 	{
-		get => color;
+		get => _color;
 		set
 		{
 			var hsv = value;
 
 			if ( SaturationValueSlider.HasActive && (hsv.Saturation < 0.1f || hsv.Value < 0.1f) && hsv.Hue == 0 )
-				hsv = hsv.WithHue( color.Hue );
+				hsv = hsv.WithHue( _color.Hue );
 
-			if ( color == value ) return;
+			if ( _color == value ) return;
 
-			color = hsv;
-			CreateValueEvent( "value", color.ToColor() );
+			_color = hsv;
+			CreateValueEvent( "value", _color.ToColor() );
 
-			SaturationValueSlider.Thumb.Style.BackgroundColor = color.WithAlpha( 1 );
+			SaturationValueSlider.Thumb.Style.BackgroundColor = _color.WithAlpha( 1 );
 			SaturationValueSlider.Thumb.Style.Dirty();
 
 			SaturationValueSlider.Style.BackgroundColor = new ColorHsv( hsv.Hue, 1, 1 );
@@ -137,12 +137,12 @@ public class ColorEditor : Panel
 	{
 		get
 		{
-			return color.Hue;
+			return _color.Hue;
 		}
 
 		set
 		{
-			Value = color.WithHue( value );
+			Value = _color.WithHue( value );
 		}
 	}
 
