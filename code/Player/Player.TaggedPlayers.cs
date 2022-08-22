@@ -15,7 +15,7 @@ public partial class Player
     };
 
     /// <summary>
-    /// Dictionary keying tagger entities to selected tag groups.
+    /// Dictionary keying tagged entities to selected tag groups.
     /// </summary>
     public Dictionary<Entity, ColorGroup> TaggedPlayers = new();
 }
