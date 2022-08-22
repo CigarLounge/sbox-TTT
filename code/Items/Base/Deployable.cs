@@ -1,4 +1,4 @@
-﻿using Sandbox;
+using Sandbox;
 using System;
 
 namespace TTT;
@@ -52,7 +52,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			.Run();
 
 		if ( !trace.Hit )
-			return;	
+			return;
 
 		GhostEntity.Position = trace.EndPosition;
 		GhostEntity.Rotation = Rotation.From( trace.Normal.EulerAngles );

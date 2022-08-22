@@ -42,9 +42,7 @@ public partial class RadioEntity : Prop, IEntityHint, IUse
 	[ConCmd.Server]
 	public static void PlayRadio( int id, string sound )
 	{
-		var radio = Entity.FindByIndex( id ) as RadioEntity;
-
-		if ( radio is null || radio.Owner != ConsoleSystem.Caller.Pawn )
+		if ( Entity.FindByIndex( id ) is not RadioEntity radio || radio.Owner != ConsoleSystem.Caller.Pawn )
 			return;
 
 		radio.PlaySound( sound );

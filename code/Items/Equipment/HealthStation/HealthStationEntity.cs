@@ -39,12 +39,12 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		if ( StoredHealth <= 0 )
 			return;
 
-		float healthNeeded = Player.MaxHealth - player.Health;
+		var healthNeeded = Player.MaxHealth - player.Health;
 
 		if ( healthNeeded <= 0 )
 			return;
 
-		float healAmount = Math.Min( StoredHealth, Math.Min( HealAmount * Time.Delta, healthNeeded ) );
+		var healAmount = Math.Min( StoredHealth, Math.Min( HealAmount * Time.Delta, healthNeeded ) );
 
 		player.Health += healAmount;
 

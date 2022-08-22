@@ -63,7 +63,7 @@ public class CustomTabContainer : Panel
 	public void RemoveTab( string title )
 	{
 		var isActive = false;
-		for ( int i = Tabs.Count - 1; i >= 0; --i )
+		for ( var i = Tabs.Count - 1; i >= 0; --i )
 		{
 			var tab = Tabs[i];
 

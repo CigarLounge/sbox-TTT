@@ -19,7 +19,7 @@ public class C4DefuseMenu : EntityHintPanel
 	{
 		_c4 = c4;
 
-		for ( int i = 0; i < C4Entity.Wires.Count; ++i )
+		for ( var i = 0; i < C4Entity.Wires.Count; ++i )
 		{
 			var wireNumber = i + 1;
 			var wire = new Wire( wireNumber, C4Entity.Wires[i] );

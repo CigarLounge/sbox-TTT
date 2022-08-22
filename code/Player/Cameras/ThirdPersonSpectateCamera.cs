@@ -3,7 +3,7 @@ using Sandbox;
 namespace TTT;
 
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
-{	
+{
 	private const int CameraDistance = 120;
 	private readonly Vector3 _defaultPosition;
 	private Vector3 _targetPos;
@@ -23,7 +23,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	{
 		if ( Local.Pawn is not Player player )
 			return;
-	
+
 		player.CurrentPlayer = null;
 	}
 
