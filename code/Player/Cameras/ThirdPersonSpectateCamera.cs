@@ -5,7 +5,6 @@ namespace TTT;
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
 	private const int CameraDistance = 120;
-	private readonly Vector3 _defaultPosition;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
@@ -43,7 +42,7 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	private Vector3 GetSpectatePoint()
 	{
 		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-			return _defaultPosition;
+			return Vector3.Zero;
 
 		return player.CurrentPlayer.EyePosition;
 	}

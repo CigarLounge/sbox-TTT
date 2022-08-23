@@ -9,16 +9,6 @@ namespace TTT.UI;
 [UseTemplate]
 public class ScoreboardEntry : Panel
 {
-	public static Dictionary<Client, ColorGroup> TagCollection = new();
-
-	public static readonly ColorGroup[] TagGroups = new ColorGroup[]
-	{
-		new ColorGroup("Friend", Color.FromBytes(0, 255, 0)),
-		new ColorGroup("Suspect", Color.FromBytes(179, 179, 20)),
-		new ColorGroup("Missing", Color.FromBytes(130, 190, 130)),
-		new ColorGroup("Kill", Color.FromBytes(255, 0, 0))
-	};
-
 	public PlayerStatus PlayerStatus;
 	private readonly Client _client;
 
@@ -65,7 +55,7 @@ public class ScoreboardEntry : Panel
 		if ( DropdownPanel == null )
 		{
 			DropdownPanel = new Panel( this, "dropdown" );
-			foreach ( var tagGroup in TagGroups )
+			foreach ( var tagGroup in Player.TagGroups )
 			{
 				var tagButton = DropdownPanel.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
 				tagButton.Style.FontColor = tagGroup.Color;
@@ -88,13 +78,13 @@ public class ScoreboardEntry : Panel
 
 		Tag.Text = tagGroup.Title;
 		Tag.Style.FontColor = tagGroup.Color;
-		TagCollection[_client] = tagGroup;
+		Player.TagCollection[_client] = tagGroup;
 	}
 
 	private void ResetTag()
 	{
 		Tag.Text = string.Empty;
-		TagCollection.Remove( _client );
+		Player.TagCollection.Remove( _client );
 	}
 
 	[Event.Entity.PostCleanup]

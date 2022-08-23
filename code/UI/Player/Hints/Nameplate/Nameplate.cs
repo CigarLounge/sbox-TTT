@@ -44,7 +44,7 @@ public class Nameplate : EntityHintPanel
 			Role.Enabled( false );
 		}
 
-		if ( ScoreboardEntry.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
+		if ( Player.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
 		{
 			Tag.Text = playerTag.Title;
 			Tag.Style.FontColor = playerTag.Color;
