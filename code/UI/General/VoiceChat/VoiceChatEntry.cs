@@ -16,7 +16,6 @@ public class VoiceChatEntry : Panel
 
 	private readonly WorldPanel _worldPanel;
 	private readonly Client _client;
-	private readonly Player _player;
 	private float _voiceLevel = 0.5f;
 	private float _targetVoiceLevel = 0;
 	private readonly float _voiceTimeout = 0.1f;
@@ -28,7 +27,6 @@ public class VoiceChatEntry : Panel
 		Parent = parent;
 
 		_client = client;
-		_player = client.Pawn as Player;
 		Friend = new( client.PlayerId );
 
 		Avatar.SetTexture( $"avatar:{client.PlayerId}" );
@@ -61,19 +59,19 @@ public class VoiceChatEntry : Panel
 		if ( timeoutInv <= 0 )
 		{
 			Delete();
-			_worldPanel?.Delete();
+			_worldPanel.Delete();
 			return;
 		}
 
 		_voiceLevel = _voiceLevel.LerpTo( _targetVoiceLevel, Time.Delta * 40.0f );
 
-		if ( !_player.IsAlive() )
+		if ( _client.Pawn is not Player player || !player.IsAlive() )
 		{
-			_worldPanel?.Delete();
+			_worldPanel.Delete();
 			return;
 		}
 
-		var tx = _player.GetBoneTransform( "head" );
+		var tx = player.GetBoneTransform( "head" );
 		tx.Position += Vector3.Up * 18f + (Vector3.Up * _voiceLevel);
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_worldPanel.Transform = tx;
