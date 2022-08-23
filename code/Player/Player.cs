@@ -141,6 +141,7 @@ public partial class Player : AnimatedEntity
 		else
 		{
 			CurrentChannel = Channel.All;
+			PlayersMuted = PlayersMute.None;
 			ClearButtons();
 		}
 
