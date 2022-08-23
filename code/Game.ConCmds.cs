@@ -93,7 +93,7 @@ public partial class Game
 		var player = ConsoleSystem.Caller.Pawn as Player;
 		if ( !player.IsValid() || player.IsAlive() )
 		{
-			Log.Error( $"Cannot toggle mute when alive!" );
+			Log.Warning( $"Cannot toggle mute when alive!" );
 			return;
 		}
 
