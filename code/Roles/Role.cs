@@ -28,7 +28,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	{
 		if ( player.IsLocalPawn )
 		{
-			if ( Info.ShopItems.Count > 0 )
+			if ( Info.ShopItems.Any() )
 				UI.RoleMenu.Instance.AddShopTab();
 
 			Player.RoleButtons = GetRoleButtons();
