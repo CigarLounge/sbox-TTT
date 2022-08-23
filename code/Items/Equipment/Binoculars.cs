@@ -86,7 +86,9 @@ public partial class Binoculars : Carriable
 			return;
 		}
 
-		PlaySound( Strings.ScopeInSound );
+		if ( IsClient )
+			PlaySound( Strings.ScopeInSound );
+
 		ZoomLevel++;
 		Owner.Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}
