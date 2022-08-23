@@ -148,7 +148,10 @@ public partial class Player
 		Host.AssertClient();
 
 		if ( IsLocalPawn )
+		{
+			CurrentChannel = Channel.Spectator;
 			ClearButtons();
+		}
 
 		DeleteFlashlight();
 		Event.Run( GameEvent.Player.Killed, this );

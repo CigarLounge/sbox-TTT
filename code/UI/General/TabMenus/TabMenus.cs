@@ -22,7 +22,7 @@ public partial class TabMenus : Panel
 		scoreboardButtons.AddClass( "spacing" );
 		scoreboardButtons.Add.ButtonWithIcon( "Menu", "menu_open", string.Empty, SwapToMenu );
 		scoreboardButtons.Add.ButtonWithIcon( "Round Summary", "leaderboard", string.Empty, SwapToRoundSummary );
-		_muteButton = scoreboardButtons.Add.ButtonWithIcon( "Mute Alive Players", "volume_up", string.Empty, Game.ToggleMute );
+		_muteButton = scoreboardButtons.Add.ButtonWithIcon( "Mute Alive Players", "volume_up", string.Empty, Player.ToggleMute );
 		_scoreboard = new Scoreboard( this, scoreboardButtons );
 
 		var settingsButtons = new Panel();

@@ -139,7 +139,10 @@ public partial class Player : AnimatedEntity
 		if ( !IsLocalPawn )
 			Role = new NoneRole();
 		else
+		{
+			CurrentChannel = Channel.All;
 			ClearButtons();
+		}
 
 		if ( IsSpectator )
 			return;

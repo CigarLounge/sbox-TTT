@@ -87,26 +87,6 @@ public partial class Game
 		player.ToggleForcedSpectator();
 	}
 
-	[ConCmd.Server( Name = "ttt_togglemute" )]
-	public static void ToggleMute()
-	{
-		var player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() || player.IsAlive() )
-		{
-			Log.Warning( $"Cannot toggle mute when alive!" );
-			return;
-		}
-
-		player.PlayersMuted = player.PlayersMuted switch
-		{
-			PlayersMute.None => PlayersMute.AlivePlayers,
-			PlayersMute.AlivePlayers => PlayersMute.Spectators,
-			PlayersMute.Spectators => PlayersMute.All,
-			PlayersMute.All => PlayersMute.None,
-			_ => PlayersMute.None
-		};
-	}
-
 	[ConCmd.Server( Name = "ttt_rtv" )]
 	public static void RockTheVote()
 	{

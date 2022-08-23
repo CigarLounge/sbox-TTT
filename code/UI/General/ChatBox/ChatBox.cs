@@ -3,13 +3,6 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public enum Channel
-{
-	All,
-	Team,
-	Spectator
-}
-
 [UseTemplate]
 public partial class ChatBox : Panel
 {
@@ -20,29 +13,6 @@ public partial class ChatBox : Panel
 
 	private Panel EntryCanvas { get; init; }
 	private TabTextEntry Input { get; init; }
-
-	private Channel _currentChannel;
-	public Channel CurrentChannel
-	{
-		get => _currentChannel;
-		private set
-		{
-			_currentChannel = value;
-
-			switch ( CurrentChannel )
-			{
-				case Channel.All:
-					Input.Style.BorderColor = _allChatColor;
-					return;
-				case Channel.Spectator:
-					Input.Style.BorderColor = _spectatorChatColor;
-					return;
-				case Channel.Team:
-					Input.Style.BorderColor = (Local.Pawn as Player).Role.Color;
-					return;
-			}
-		}
-	}
 
 	public bool IsOpen
 	{
@@ -78,10 +48,24 @@ public partial class ChatBox : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		if ( !IsOpen )
 			return;
+
+		if ( Local.Pawn is not Player player )
+			return;
+
+		switch ( player.CurrentChannel )
+		{
+			case Channel.All:
+				Input.Style.BorderColor = _allChatColor;
+				return;
+			case Channel.Spectator:
+				Input.Style.BorderColor = _spectatorChatColor;
+				return;
+			case Channel.Team:
+				Input.Style.BorderColor = player.Role.Color;
+				return;
+		}
 
 		Input.Placeholder = string.Empty;
 	}
@@ -114,11 +98,11 @@ public partial class ChatBox : Panel
 			}
 		}
 
-		SendChat( Input.Text, CurrentChannel );
+		SendChat( Input.Text );
 	}
 
 	[ConCmd.Server]
-	public static void SendChat( string message, Channel channel = Channel.All )
+	public static void SendChat( string message )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
@@ -136,10 +120,10 @@ public partial class ChatBox : Panel
 			return;
 		}
 
-		if ( channel == Channel.All )
-			AddChat( To.Everyone, player.Client.Name, message, channel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
-		else if ( channel == Channel.Team && player.Role.CanTeamChat )
-			AddChat( player.Team.ToClients(), player.Client.Name, message, channel, player.Role.Info.ResourceId );
+		if ( player.CurrentChannel == Channel.All )
+			AddChat( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
+		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
+			AddChat( player.Team.ToClients(), player.Client.Name, message, player.CurrentChannel, player.Role.Info.ResourceId );
 	}
 
 	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
@@ -171,21 +155,7 @@ public partial class ChatBox : Panel
 			return;
 
 		if ( player.Role.CanTeamChat )
-			CurrentChannel = CurrentChannel == Channel.All ? Channel.Team : Channel.All;
-	}
-
-	[GameEvent.Player.Spawned]
-	private void OnPlayerSpawn( Player player )
-	{
-		if ( player.IsLocalPawn )
-			CurrentChannel = Channel.All;
-	}
-
-	[GameEvent.Player.Killed]
-	private void OnPlayerKilled( Player player )
-	{
-		if ( player.IsLocalPawn )
-			CurrentChannel = Channel.Spectator;
+			player.CurrentChannel = player.CurrentChannel == Channel.All ? Channel.Team : Channel.All;
 	}
 }
 
