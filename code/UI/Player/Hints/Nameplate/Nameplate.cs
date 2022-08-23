@@ -33,10 +33,15 @@ public class Nameplate : EntityHintPanel
 		KarmaStatus.Text = karmaGroup.Title;
 
 		Name.Text = _player.Client?.Name ?? "";
+
 		if ( _player.Role is not NoneRole and not Innocent )
 		{
 			Role.Text = _player.Role.Title;
 			Role.Style.FontColor = _player.Role.Color;
+		}
+		else
+		{
+			Role.Enabled( false );
 		}
 
 		if ( ScoreboardEntry.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
@@ -46,7 +51,7 @@ public class Nameplate : EntityHintPanel
 		}
 		else
 		{
-			Tag.Text = string.Empty;
+			Tag.Enabled( false );
 		}
 	}
 }

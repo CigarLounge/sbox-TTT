@@ -22,24 +22,17 @@ public class ScoreboardEntry : Panel
 	public PlayerStatus PlayerStatus;
 	private readonly Client _client;
 
-	private bool _isOpen = false;
 	private Image PlayerAvatar { get; init; }
 	private Label PlayerName { get; init; }
 	private Label Tag { get; set; }
 	private Label Karma { get; init; }
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
-	private Panel TagButtons { get; init; }
+	private Panel DropdownPanel { get; set; }
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{
 		_client = client;
-
-		foreach ( var tagGroup in TagGroups )
-		{
-			var btn = TagButtons.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
-			btn.Style.FontColor = tagGroup.Color;
-		}
 	}
 
 	public void Update()
@@ -69,8 +62,20 @@ public class ScoreboardEntry : Panel
 
 	public void OnClick()
 	{
-		TagButtons.Enabled( _isOpen = !_isOpen );
-		SetClass( "open", TagButtons.IsEnabled() );
+		if ( DropdownPanel == null )
+		{
+			DropdownPanel = new Panel( this, "dropdown" );
+			foreach ( var tagGroup in TagGroups )
+			{
+				var tagButton = DropdownPanel.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
+				tagButton.Style.FontColor = tagGroup.Color;
+			}
+		}
+		else
+		{
+			DropdownPanel.Delete();
+			DropdownPanel = null;
+		}
 	}
 
 	private void SetTag( ColorGroup tagGroup )

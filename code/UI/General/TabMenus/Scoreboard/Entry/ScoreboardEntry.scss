@@ -2,6 +2,7 @@ scoreboardentry
 {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 
     .entry
     {
@@ -11,7 +12,6 @@ scoreboardentry
         justify-content: space-between;
         font-size: 14px;
         font-weight: 500;
-        display: flex;
         padding: 8px;
         height: 38px;
 
@@ -39,21 +39,6 @@ scoreboardentry
             padding-right: 25px;
         }
 
-        &:nth-child( odd )
-        {
-            background-color: #0a0a0a66;
-        }
-
-        &:nth-child( even )
-        {
-            background-color: #4b4b4b15;
-        }
-
-        &.me:nth-child(1)
-        {
-            background-color: #f2b42d1a;
-        }
-
         &:last-child
         {
             border-bottom-left-radius: 4px;
@@ -61,29 +46,58 @@ scoreboardentry
         }
     }
 
-    .open
+    .dropdown
     {
-        display: flex;
-        height: 76px;
+        justify-content: center;
+        transition: height 0.1s ease-out;
+        transition: opacity 0.01s ease-out;
+        height: 40px;
+
+        .friend
+        {
+            color: #01f901;
+        }
+    
+        .suspect
+        {
+            color: #b3b314;
+        }
+    
+        .kill
+        {
+            color: #f30302;
+        }
+    
+        .missing
+        {
+            color: #82be82;
+        }
+
+        &:intro
+        {
+            opacity: 0;
+            height: 0px;
+        }
+
+        &:outro
+        {
+            opacity: 0;
+            height: 0px;
+        }
     }
 
-    .friend
+    &:nth-child( odd )
     {
-        color: #01f901;
+        background-color: #0a0a0a66;
     }
 
-    .suspect
+    &:nth-child( even )
     {
-        color: #b3b314;
+        background-color: #4b4b4b15;
     }
 
-    .kill
+    &.me:nth-child(1)
     {
-        color: #f30302;
-    }
-
-    .missing
-    {
-        color: #82be82;
+        background-color: #f2b42d1a;
     }
 }
