@@ -72,7 +72,7 @@ public class VoiceChatEntry : Panel
 		}
 
 		var tx = player.GetBoneTransform( "head" );
-		tx.Position += Vector3.Up * 18f + (Vector3.Up * _voiceLevel);
+		tx.Position += Vector3.Up * 20f + (Vector3.Up * _voiceLevel);
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_worldPanel.Transform = tx;
 	}
