@@ -12,6 +12,7 @@ public class Nameplate : EntityHintPanel
 	private Label HealthStatus { get; init; }
 	private Label KarmaStatus { get; init; }
 	private Label Role { get; init; }
+	private Label Tag { get; init; }
 
 	public Nameplate( Player player ) => _player = player;
 
@@ -32,10 +33,25 @@ public class Nameplate : EntityHintPanel
 		KarmaStatus.Text = karmaGroup.Title;
 
 		Name.Text = _player.Client?.Name ?? "";
+
 		if ( _player.Role is not NoneRole and not Innocent )
 		{
 			Role.Text = _player.Role.Title;
 			Role.Style.FontColor = _player.Role.Color;
+		}
+		else
+		{
+			Role.Enabled( false );
+		}
+
+		if ( ScoreboardEntry.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
+		{
+			Tag.Text = playerTag.Title;
+			Tag.Style.FontColor = playerTag.Color;
+		}
+		else
+		{
+			Tag.Enabled( false );
 		}
 	}
 }
