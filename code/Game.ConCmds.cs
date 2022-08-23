@@ -87,6 +87,23 @@ public partial class Game
 		player.ToggleForcedSpectator();
 	}
 
+	[ConCmd.Server( Name = "ttt_togglemute" )]
+	public static void ToggleMute()
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.PlayersMuted = player.PlayersMuted switch
+		{
+			PlayerMute.None => PlayerMute.AlivePlayers,
+			PlayerMute.AlivePlayers => PlayerMute.Spectators,
+			PlayerMute.Spectators => PlayerMute.All,
+			PlayerMute.All => PlayerMute.None,
+			_ => PlayerMute.None
+		};
+	}
+
 	[ConCmd.Server( Name = "ttt_rtv" )]
 	public static void RockTheVote()
 	{

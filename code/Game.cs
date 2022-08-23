@@ -104,13 +104,19 @@ public partial class Game : Sandbox.Game
 
 	public override bool CanHearPlayerVoice( Client source, Client dest )
 	{
-		if ( !source.Pawn.IsAlive() && !dest.Pawn.IsAlive() )
-			return true;
-
-		if ( State is InProgress && !source.Pawn.IsAlive() && dest.Pawn.IsAlive() )
+		if ( source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
 			return false;
 
-		return true;
+		if ( destPlayer.PlayersMuted == PlayerMute.All )
+			return false;
+
+		if ( !sourcePlayer.IsAlive() && destPlayer.CanHearSpectators )
+			return true;
+
+		if ( State is InProgress && sourcePlayer.IsAlive() && destPlayer.CanHearAlivePlayers )
+			return true;
+
+		return false;
 	}
 
 	public override void OnVoicePlayed( Client client )

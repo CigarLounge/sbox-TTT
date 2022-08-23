@@ -20,13 +20,13 @@ public partial class GeneralMenu : Panel
 	private Button BackButton { get; set; }
 	private Button HomeButton { get; set; }
 
-	public GeneralMenu( Panel parent, Button swapButton )
+	public GeneralMenu( Panel parent, Panel buttons )
 	{
 		Parent = parent;
 		Instance = this;
 
 		AddPage( new HomePage() );
-		AddChild( swapButton );
+		AddChild( buttons );
 	}
 
 	/// <summary>

@@ -1,5 +1,6 @@
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -9,7 +10,7 @@ public partial class TabMenus : Panel
 
 	private readonly Scoreboard _scoreboard;
 	private readonly GeneralMenu _settingsMenu;
-	private bool _isViewingSummaryPage = false;
+	private readonly Button _muteButton;
 
 	public TabMenus()
 	{
@@ -17,17 +18,17 @@ public partial class TabMenus : Panel
 
 		StyleSheet.Load( "/UI/General/TabMenus/TabMenus.scss" );
 
-		var scoreboardButton = new Button( "Menu", "dehaze", SwapToMenu );
-		scoreboardButton.AddClass( "scoreboard-button" );
+		var scoreboardButtons = new Panel();
+		scoreboardButtons.AddClass( "spacing" );
+		scoreboardButtons.Add.ButtonWithIcon( "Menu", "menu_open", string.Empty, SwapToMenu );
+		scoreboardButtons.Add.ButtonWithIcon( "Round Summary", "leaderboard", string.Empty, SwapToRoundSummary );
+		_muteButton = scoreboardButtons.Add.ButtonWithIcon( "Mute Alive Players", "volume_up", string.Empty, Game.ToggleMute );
+		_scoreboard = new Scoreboard( this, scoreboardButtons );
 
-		_scoreboard = new Scoreboard( this, scoreboardButton );
-		_scoreboard.AddClass( "scoreboard" );
+		var settingsButtons = new Panel();
+		settingsButtons.Add.ButtonWithIcon( "Scoreboard", "people", string.Empty, SwapToScoreboard );
+		_settingsMenu = new GeneralMenu( this, settingsButtons );
 
-		var settingsMenuButton = new Button( "Scoreboard", "people", SwapToScoreboard );
-		settingsMenuButton.AddClass( "settings-button" );
-
-		_settingsMenu = new GeneralMenu( this, settingsMenuButton );
-		_settingsMenu.AddClass( "settings" );
 		_scoreboard.EnableFade( true );
 		_settingsMenu.EnableFade( false );
 	}
@@ -36,6 +37,13 @@ public partial class TabMenus : Panel
 	{
 		_scoreboard.EnableFade( false );
 		_settingsMenu.EnableFade( true );
+		GeneralMenu.Instance.PopToHomePage();
+	}
+
+	public void SwapToRoundSummary()
+	{
+		SwapToMenu();
+		GeneralMenu.Instance.GoToPage( new RoundSummaryPage() );
 	}
 
 	public void SwapToScoreboard()
@@ -44,30 +52,35 @@ public partial class TabMenus : Panel
 		_settingsMenu.EnableFade( false );
 	}
 
+	public override void Tick()
+	{
+		if ( Local.Client.Pawn is not Player player )
+			return;
+
+		switch ( player.PlayersMuted )
+		{
+			case PlayerMute.None:
+				_muteButton.Text = "Mute Alive Players";
+				_muteButton.Icon = "volume_up";
+				break;
+			case PlayerMute.AlivePlayers:
+				_muteButton.Text = "Mute Spectators";
+				_muteButton.Icon = "volume_off";
+				break;
+			case PlayerMute.Spectators:
+				_muteButton.Text = "Mute All Players";
+				_muteButton.Icon = "volume_off";
+				break;
+			case PlayerMute.All:
+				_muteButton.Text = "Unmute Players";
+				_muteButton.Icon = "volume_off";
+				break;
+		}
+	}
+
 	[Event.BuildInput]
 	private void MenuInput( InputBuilder input )
 	{
-		var isScoreDown = input.Down( InputButton.Score );
-
-		SetClass( "show", isScoreDown );
-
-		if ( Game.Current.State is InProgress )
-		{
-			SetClass( "show-override", false );
-			return;
-		}
-
-		if ( input.Released( InputButton.View ) )
-			_isViewingSummaryPage = false;
-
-		var isViewDown = input.Down( InputButton.View );
-		if ( isViewDown && !_isViewingSummaryPage )
-		{
-			SwapToMenu();
-			GeneralMenu.Instance.GoToPage( new RoundSummaryPage() );
-			_isViewingSummaryPage = true;
-		}
-
-		SetClass( "show-override", isViewDown || isScoreDown );
+		SetClass( "show", input.Down( InputButton.Score ) );
 	}
 }

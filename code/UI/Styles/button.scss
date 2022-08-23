@@ -10,6 +10,7 @@ button, .button
 	min-height: $button-size;
 	flex-shrink: 0;
 	align-items: center;
+	margin-right: 5px;
 
 	> iconpanel
 	{
@@ -34,7 +35,7 @@ button, .button
 
 	&.has-label.has-icon > iconpanel
 	{
-		margin-right: 10px;
+		margin-right: 5px;
 	}
 
 	&:hover

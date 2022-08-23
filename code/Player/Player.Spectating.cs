@@ -2,10 +2,25 @@ using Sandbox;
 
 namespace TTT;
 
+public enum PlayerMute
+{
+	None,
+	AlivePlayers,
+	Spectators,
+	All
+
+}
+
 public partial class Player
 {
 	[Net, Local]
 	public bool IsForcedSpectator { get; private set; } = false;
+
+	[Net, Local]
+	public PlayerMute PlayersMuted { get; set; } = PlayerMute.None;
+
+	public bool CanHearSpectators => !this.IsAlive() && (PlayersMuted != PlayerMute.Spectators || PlayersMuted != PlayerMute.All);
+	public bool CanHearAlivePlayers => this.IsAlive() && (PlayersMuted != PlayerMute.AlivePlayers || PlayersMuted != PlayerMute.All);
 
 	private Player _spectatedPlayer;
 	public Player CurrentPlayer

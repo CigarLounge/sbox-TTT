@@ -14,11 +14,11 @@ public class Scoreboard : Panel
 	private Panel Container { get; init; }
 	private Panel Content { get; init; }
 
-	public Scoreboard( Panel parent, Button swapButton ) : base()
+	public Scoreboard( Panel parent, Panel buttons ) : base()
 	{
 		Parent = parent;
 
-		Container.AddChild( swapButton );
+		Container.AddChild( buttons );
 
 		AddScoreboardGroup( PlayerStatus.Alive );
 		AddScoreboardGroup( PlayerStatus.MissingInAction );
