@@ -91,8 +91,11 @@ public partial class Game
 	public static void ToggleMute()
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() )
+		if ( !player.IsValid() || player.IsAlive() )
+		{
+			Log.Error( $"Cannot toggle mute when alive!" );
 			return;
+		}
 
 		player.PlayersMuted = player.PlayersMuted switch
 		{
