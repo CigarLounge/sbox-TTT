@@ -25,7 +25,7 @@ public partial class Player
 	[ConVar.ClientData( "muted_players" )]
 	public PlayersMute PlayersMuted { get; set; } = PlayersMute.None;
 
-	public bool CanHearSpectators => !this.IsAlive() && (PlayersMuted != PlayersMute.Spectators || PlayersMuted != PlayersMute.All);
+	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && (PlayersMuted != PlayersMute.Spectators || PlayersMuted != PlayersMute.All);
 	public bool CanHearAlivePlayers => this.IsAlive() && (PlayersMuted != PlayersMute.AlivePlayers || PlayersMuted != PlayersMute.All);
 
 	public static void ToggleMute()
