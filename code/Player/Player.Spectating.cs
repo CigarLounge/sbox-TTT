@@ -8,7 +8,6 @@ public enum PlayersMute
 	AlivePlayers,
 	Spectators,
 	All
-
 }
 
 public partial class Player
