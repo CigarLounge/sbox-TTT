@@ -15,7 +15,6 @@ public class ScoreboardEntry : Panel
 	{
 		new ColorGroup("Friend", Color.FromBytes(0, 255, 0)),
 		new ColorGroup("Suspect", Color.FromBytes(179, 179, 20)),
-		new ColorGroup("Avoid", Color.FromBytes(252, 149, 0)),
 		new ColorGroup("Kill", Color.FromBytes(255, 0, 0)),
 		new ColorGroup("Missing", Color.FromBytes(130, 190, 130))
 	};
