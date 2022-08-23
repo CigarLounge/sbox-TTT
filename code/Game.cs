@@ -107,7 +107,7 @@ public partial class Game : Sandbox.Game
 		if ( source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
 			return false;
 
-		if ( destPlayer.PlayersMuted == PlayersMute.All )
+		if ( destPlayer.MuteFilter == MuteFilter.All )
 			return false;
 
 		if ( !sourcePlayer.IsAlive() && !destPlayer.CanHearSpectators )

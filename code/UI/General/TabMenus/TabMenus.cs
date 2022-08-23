@@ -61,21 +61,21 @@ public partial class TabMenus : Panel
 		if ( !_muteButton.IsEnabled() )
 			return;
 
-		switch ( player.PlayersMuted )
+		switch ( player.MuteFilter )
 		{
-			case PlayersMute.None:
+			case MuteFilter.None:
 				_muteButton.Text = "Mute Alive Players";
 				_muteButton.Icon = "volume_up";
 				break;
-			case PlayersMute.AlivePlayers:
+			case MuteFilter.AlivePlayers:
 				_muteButton.Text = "Mute Spectators";
 				_muteButton.Icon = "volume_off";
 				break;
-			case PlayersMute.Spectators:
+			case MuteFilter.Spectators:
 				_muteButton.Text = "Mute All Players";
 				_muteButton.Icon = "volume_off";
 				break;
-			case PlayersMute.All:
+			case MuteFilter.All:
 				_muteButton.Text = "Unmute Players";
 				_muteButton.Icon = "volume_off";
 				break;

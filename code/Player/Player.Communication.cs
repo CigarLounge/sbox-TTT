@@ -9,7 +9,7 @@ public enum Channel
 	Spectator
 }
 
-public enum PlayersMute
+public enum MuteFilter
 {
 	None,
 	AlivePlayers,
@@ -22,17 +22,17 @@ public partial class Player
 	[ConVar.ClientData( "channel_current" )]
 	public Channel CurrentChannel { get; set; } = Channel.Spectator;
 
-	[ConVar.ClientData( "muted_players" )]
-	public PlayersMute PlayersMuted { get; set; } = PlayersMute.None;
+	[ConVar.ClientData( "mute_filter" )]
+	public MuteFilter MuteFilter { get; set; } = MuteFilter.None;
 
-	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && PlayersMuted != PlayersMute.Spectators && PlayersMuted != PlayersMute.All;
-	public bool CanHearAlivePlayers => PlayersMuted != PlayersMute.AlivePlayers && PlayersMuted != PlayersMute.All;
+	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
+	public bool CanHearAlivePlayers => MuteFilter != MuteFilter.AlivePlayers && MuteFilter != MuteFilter.All;
 
 	public static void ToggleMute()
 	{
 		var player = Local.Pawn as Player;
 
-		if ( ++player.PlayersMuted > PlayersMute.All )
-			player.PlayersMuted = PlayersMute.None;
+		if ( ++player.MuteFilter > MuteFilter.All )
+			player.MuteFilter = MuteFilter.None;
 	}
 }
