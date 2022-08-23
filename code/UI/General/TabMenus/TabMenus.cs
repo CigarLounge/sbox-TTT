@@ -59,19 +59,19 @@ public partial class TabMenus : Panel
 
 		switch ( player.PlayersMuted )
 		{
-			case PlayerMute.None:
+			case PlayersMute.None:
 				_muteButton.Text = "Mute Alive Players";
 				_muteButton.Icon = "volume_up";
 				break;
-			case PlayerMute.AlivePlayers:
+			case PlayersMute.AlivePlayers:
 				_muteButton.Text = "Mute Spectators";
 				_muteButton.Icon = "volume_off";
 				break;
-			case PlayerMute.Spectators:
+			case PlayersMute.Spectators:
 				_muteButton.Text = "Mute All Players";
 				_muteButton.Icon = "volume_off";
 				break;
-			case PlayerMute.All:
+			case PlayersMute.All:
 				_muteButton.Text = "Unmute Players";
 				_muteButton.Icon = "volume_off";
 				break;

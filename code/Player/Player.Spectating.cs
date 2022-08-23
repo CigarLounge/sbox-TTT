@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public enum PlayerMute
+public enum PlayersMute
 {
 	None,
 	AlivePlayers,
@@ -17,10 +17,10 @@ public partial class Player
 	public bool IsForcedSpectator { get; private set; } = false;
 
 	[Net, Local]
-	public PlayerMute PlayersMuted { get; set; } = PlayerMute.None;
+	public PlayersMute PlayersMuted { get; set; } = PlayersMute.None;
 
-	public bool CanHearSpectators => !this.IsAlive() && (PlayersMuted != PlayerMute.Spectators || PlayersMuted != PlayerMute.All);
-	public bool CanHearAlivePlayers => this.IsAlive() && (PlayersMuted != PlayerMute.AlivePlayers || PlayersMuted != PlayerMute.All);
+	public bool CanHearSpectators => !this.IsAlive() && (PlayersMuted != PlayersMute.Spectators || PlayersMuted != PlayersMute.All);
+	public bool CanHearAlivePlayers => this.IsAlive() && (PlayersMuted != PlayersMute.AlivePlayers || PlayersMuted != PlayersMute.All);
 
 	private Player _spectatedPlayer;
 	public Player CurrentPlayer
@@ -127,5 +127,12 @@ public partial class Player
 
 		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
 			localPlayer.Camera = new FreeSpectateCamera();
+	}
+
+	[GameEvent.Round.Start]
+	private void UnmutePlayers()
+	{
+		if ( Host.IsServer )
+			PlayersMuted = PlayersMute.None;
 	}
 }

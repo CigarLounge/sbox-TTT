@@ -96,11 +96,11 @@ public partial class Game
 
 		player.PlayersMuted = player.PlayersMuted switch
 		{
-			PlayerMute.None => PlayerMute.AlivePlayers,
-			PlayerMute.AlivePlayers => PlayerMute.Spectators,
-			PlayerMute.Spectators => PlayerMute.All,
-			PlayerMute.All => PlayerMute.None,
-			_ => PlayerMute.None
+			PlayersMute.None => PlayersMute.AlivePlayers,
+			PlayersMute.AlivePlayers => PlayersMute.Spectators,
+			PlayersMute.Spectators => PlayersMute.All,
+			PlayersMute.All => PlayersMute.None,
+			_ => PlayersMute.None
 		};
 	}
 
