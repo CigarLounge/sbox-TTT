@@ -32,14 +32,8 @@ public partial class Player
 	{
 		var player = Local.Pawn as Player;
 
-		player.PlayersMuted = player.PlayersMuted switch
-		{
-			PlayersMute.None => PlayersMute.AlivePlayers,
-			PlayersMute.AlivePlayers => PlayersMute.Spectators,
-			PlayersMute.Spectators => PlayersMute.All,
-			PlayersMute.All => PlayersMute.None,
-			_ => PlayersMute.None
-		};
+		if ( ++player.PlayersMuted > PlayersMute.All )
+			player.PlayersMuted = PlayersMute.None;
 	}
 
 	[GameEvent.Round.Start]
