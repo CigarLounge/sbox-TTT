@@ -41,3 +41,17 @@ VoiceChatEntry
         background: linear-gradient(#fcc82d, #c59813);
     }
 }
+
+WorldPanel
+{
+    justify-content: center;
+    align-items: center;
+
+    .voice-icon
+    {
+        background-size: contain;
+        width: 64px;
+        height: 64px;
+        font-size: 500px;
+    }
+}
