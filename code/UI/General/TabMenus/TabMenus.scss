@@ -15,24 +15,9 @@ TabMenus
         opacity: 1;
     }
 
-    &.show-override
-    {
-        opacity: 1;
-    }
-
     .fade-in 
     {
         bottom: 25px;
         opacity: 0.985;
-    }
-
-    .scoreboard-button
-    {
-        width: 140px;
-    }
-
-    .settings-button 
-    {
-        width: 170px;
     }
 }
