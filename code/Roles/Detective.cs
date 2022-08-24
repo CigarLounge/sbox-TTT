@@ -22,5 +22,6 @@ public class Detective : Role
 
 		player.ClothingContainer.Toggle( Hat );
 		player.ClothingContainer.DressEntity( player );
+		player.ClothingContainer.Toggle( Hat );
 	}
 }
