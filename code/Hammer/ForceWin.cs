@@ -17,6 +17,11 @@ public class ForceWin : Entity
 	[Property]
 	public bool UseActivatorsTeam { get; set; }
 
+	public override void Spawn()
+	{
+		Transmit = TransmitType.Never;
+	}
+
 	[Input]
 	public void ActivateForceWin( Entity activator )
 	{

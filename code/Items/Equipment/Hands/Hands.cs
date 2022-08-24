@@ -147,6 +147,7 @@ public partial class Hands : Carriable
 	public override void ActiveEnd( Player player, bool dropped )
 	{
 		_grabbedEntity?.Drop();
+
 		base.ActiveEnd( player, dropped );
 	}
 
