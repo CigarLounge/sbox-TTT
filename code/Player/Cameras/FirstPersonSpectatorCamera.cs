@@ -20,11 +20,8 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 
 	public override void Update()
 	{
-		if ( !_owner.CurrentPlayer.IsValid() )
-		{
-			_owner.Camera = new FreeSpectateCamera();
+		if ( !_owner.IsSpectatingPlayer )
 			return;
-		}
 
 		Position = Vector3.Lerp( Position, Viewer.EyePosition, SmoothSpeed * Time.Delta );
 		Rotation = Rotation.Slerp( Rotation, Viewer.EyeRotation, SmoothSpeed * Time.Delta );
