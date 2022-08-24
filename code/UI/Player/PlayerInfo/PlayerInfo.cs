@@ -41,7 +41,7 @@ public class PlayerInfo : Panel
 	{
 		var player = Local.Pawn as Player;
 
-		this.Enabled( player.CurrentPlayer.IsAlive() );
+		this.Enabled( player.CurrentPlayer.IsValid() && player.CurrentPlayer.IsAlive() );
 		if ( !this.IsEnabled() )
 			return;
 

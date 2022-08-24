@@ -19,7 +19,7 @@ public partial class Player
 	}
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
-	private int _targetSpectatorIndex = 0;
+	private int _spectatorIndex = 0;
 
 	public void ToggleForcedSpectator()
 	{
@@ -33,23 +33,21 @@ public partial class Player
 
 	public void UpdateSpectatedPlayer( int increment = 0 )
 	{
-		var oldSpectatedPlayer = CurrentPlayer;
 		var players = Utils.GetAlivePlayers();
-
 		if ( players.Count > 0 )
 		{
-			_targetSpectatorIndex += increment;
+			_spectatorIndex += increment;
 
-			if ( _targetSpectatorIndex >= players.Count )
-				_targetSpectatorIndex = 0;
-			else if ( _targetSpectatorIndex < 0 )
-				_targetSpectatorIndex = players.Count - 1;
+			if ( _spectatorIndex >= players.Count )
+				_spectatorIndex = 0;
+			else if ( _spectatorIndex < 0 )
+				_spectatorIndex = players.Count - 1;
 
-			CurrentPlayer = players[_targetSpectatorIndex];
+			CurrentPlayer = players[_spectatorIndex];
 		}
 
 		if ( Camera is ISpectateCamera camera )
-			camera.OnUpdateSpectatedPlayer( oldSpectatedPlayer, CurrentPlayer );
+			camera.OnUpdateSpectatedPlayer( CurrentPlayer );
 	}
 
 	public void MakeSpectator( bool useRagdollCamera = true )

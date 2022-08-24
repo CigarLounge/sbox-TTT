@@ -4,47 +4,37 @@ namespace TTT;
 
 public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
-	private const int CameraDistance = 120;
+	private Player _owner;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
-	public override void Activated()
+	protected override void OnActivate()
 	{
-		base.Activated();
-
-		if ( Local.Pawn is not Player player )
-			return;
-
-		player.UpdateSpectatedPlayer();
+		_owner = Entity as Player;
+		_owner.UpdateSpectatedPlayer();
 	}
 
 	public override void Deactivated()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
-		player.CurrentPlayer = null;
+		_owner.CurrentPlayer = null;
 	}
 
 	public override void Update()
 	{
-		Rotation = Rotation.From( _lookAngles );
+		if ( !_owner.CurrentPlayer.IsValid() )
+		{
+			_owner.Camera = new FreeSpectateCamera();
+			return;
+		}
 
-		_targetPos = Vector3.Lerp( _targetPos, GetSpectatePoint(), 50f * RealTime.Delta );
+		_targetPos = Vector3.Lerp( _targetPos, _owner.CurrentPlayer.EyePosition, 50f * RealTime.Delta );
 
-		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -CameraDistance )
+		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -120 )
 			.WorldOnly()
 			.Run();
 
+		Rotation = Rotation.From( _lookAngles );
 		Position = trace.EndPosition;
-	}
-
-	private Vector3 GetSpectatePoint()
-	{
-		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-			return Vector3.Zero;
-
-		return player.CurrentPlayer.EyePosition;
 	}
 
 	public override void BuildInput( InputBuilder input )
@@ -52,13 +42,10 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles += input.AnalogLook;
 		_lookAngles.roll = 0;
 
-		if ( Local.Pawn is Player player )
-		{
-			if ( input.Pressed( InputButton.PrimaryAttack ) )
-				player.UpdateSpectatedPlayer( 1 );
-			else if ( input.Pressed( InputButton.SecondaryAttack ) )
-				player.UpdateSpectatedPlayer( -1 );
-		}
+		if ( input.Pressed( InputButton.PrimaryAttack ) )
+			_owner.UpdateSpectatedPlayer( 1 );
+		else if ( input.Pressed( InputButton.SecondaryAttack ) )
+			_owner.UpdateSpectatedPlayer( -1 );
 
 		base.BuildInput( input );
 	}
