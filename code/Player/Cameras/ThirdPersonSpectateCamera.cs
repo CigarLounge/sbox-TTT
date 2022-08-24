@@ -2,8 +2,11 @@ using Sandbox;
 
 namespace TTT;
 
-public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
+public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
+	[Net, Local]
+	public Player InitialSpectatedPlayer { get; set; }
+
 	private Player _owner;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
@@ -11,7 +14,11 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	protected override void OnActivate()
 	{
 		_owner = Entity as Player;
-		_owner.UpdateSpectatedPlayer();
+
+		if ( InitialSpectatedPlayer.IsValid() )
+			_owner.CurrentPlayer = InitialSpectatedPlayer;
+		else
+			_owner.UpdateSpectatedPlayer();
 	}
 
 	public override void Deactivated()

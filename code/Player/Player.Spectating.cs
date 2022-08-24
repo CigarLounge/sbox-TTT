@@ -101,6 +101,22 @@ public partial class Player
 			Camera = new FirstPersonSpectatorCamera();
 	}
 
+	[ConCmd.Server]
+	public static void SpectatePlayer( int spectatedPlayerIndent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		if ( player.IsAlive() )
+			return;
+
+		var target = FindByIndex( spectatedPlayerIndent );
+		if ( target is not Player spectatedPlayer )
+			return;
+
+		player.Camera = new ThirdPersonSpectateCamera { InitialSpectatedPlayer = spectatedPlayer };
+	}
+
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
