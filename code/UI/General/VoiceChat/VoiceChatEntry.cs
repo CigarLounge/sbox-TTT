@@ -36,7 +36,7 @@ public class VoiceChatEntry : Panel
 		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
-		_worldPanel.SceneObject.RenderingEnabled = !_client.Pawn.IsLocalPawn;
+		_worldPanel.SceneObject.RenderingEnabled = !_client.Pawn.IsFirstPersonMode;
 	}
 
 	public void Update( float level )
