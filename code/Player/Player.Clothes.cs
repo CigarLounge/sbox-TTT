@@ -15,7 +15,7 @@ public partial class Player
 	/// <summary>
 	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(Client)"/> again.
 	/// </summary>
-	private List<Clothing> _avatarClothes;
+	private readonly List<Clothing> _avatarClothes;
 
 	public void DressPlayer()
 	{

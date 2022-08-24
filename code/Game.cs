@@ -84,8 +84,6 @@ public partial class Game : Sandbox.Game
 
 	public override void RenderHud()
 	{
-		base.RenderHud();
-
 		if ( Local.Pawn is not Player player )
 			return;
 
@@ -121,8 +119,6 @@ public partial class Game : Sandbox.Game
 
 	public override void PostLevelLoaded()
 	{
-		base.PostLevelLoaded();
-
 		ForceStateChange( new WaitingState() );
 	}
 

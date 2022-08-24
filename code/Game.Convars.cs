@@ -78,7 +78,7 @@ public partial class Game
 	#endregion
 
 	#region Voice Chat
-	[ConVar.Server( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
+	[ConVar.Replicated( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
 	public static bool ProximityChat { get; set; }
 
 	public static void UpdateVoiceChat( bool oldValue, bool newValue )

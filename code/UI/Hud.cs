@@ -40,9 +40,6 @@ public class Hud : RootPanel
 	[Event.Hotload]
 	private void OnHotReload()
 	{
-		if ( !Host.IsClient )
-			return;
-
 		DeleteChildren( true );
 		Init();
 	}
