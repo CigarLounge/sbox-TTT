@@ -9,7 +9,7 @@ public partial class Player
 	public ClothingContainer ClothingContainer { get; private init; } = new();
 
 	/// <summary>
-	/// The current preset from <see cref="Player.ClothingPresets"/>.
+	/// The current preset from <see cref="ClothingPresets"/>.
 	/// </summary>
 	private static List<Clothing> _currentPreset;
 	/// <summary>
@@ -19,10 +19,7 @@ public partial class Player
 
 	public void DressPlayer()
 	{
-		if ( Game.AvatarClothing )
-			ClothingContainer.Clothing = _avatarClothes;
-		else
-			ClothingContainer.Clothing = new( _currentPreset );
+		ClothingContainer.Clothing = Game.AvatarClothing ? _avatarClothes : _currentPreset;
 
 		ClothingContainer.DressEntity( this );
 	}
