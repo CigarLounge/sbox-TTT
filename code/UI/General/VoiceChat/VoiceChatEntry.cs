@@ -36,6 +36,7 @@ public class VoiceChatEntry : Panel
 		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
+		_worldPanel.SceneObject.RenderingEnabled = !_client.Pawn.IsLocalPawn;
 	}
 
 	public void Update( float level )
@@ -58,18 +59,21 @@ public class VoiceChatEntry : Panel
 
 		if ( timeoutInv <= 0 )
 		{
+			_worldPanel?.Delete();
 			Delete();
-			_worldPanel.Delete();
 			return;
 		}
 
 		_voiceLevel = _voiceLevel.LerpTo( _targetVoiceLevel, Time.Delta * 40.0f );
 
-		if ( _client.Pawn is not Player player || !player.IsAlive() )
+		if ( _worldPanel is null || _client.Pawn is not Player player || !player.IsAlive() )
 		{
-			_worldPanel.Delete();
+			_worldPanel?.Delete();
 			return;
 		}
+
+		if ( !_worldPanel.SceneObject.RenderingEnabled )
+			return;
 
 		var tx = player.GetBoneTransform( "head" );
 		var rolePlateOffset = player.Components.Get<RolePlate>() is not null ? 27f : 20f;
