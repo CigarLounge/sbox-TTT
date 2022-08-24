@@ -44,14 +44,7 @@ public class Nameplate : EntityHintPanel
 			Role.Enabled( false );
 		}
 
-		if ( Player.TagCollection.TryGetValue( _player.Client, out var playerTag ) )
-		{
-			Tag.Text = playerTag.Title;
-			Tag.Style.FontColor = playerTag.Color;
-		}
-		else
-		{
-			Tag.Enabled( false );
-		}
+		Tag.Text = _player.TagGroup.Title;
+		Tag.Style.FontColor = _player.TagGroup.Color;
 	}
 }
