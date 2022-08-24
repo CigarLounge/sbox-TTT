@@ -23,7 +23,10 @@ public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Deactivated()
 	{
-		_owner.CurrentPlayer = null;
+		// We don't need to remove the current player if we are swapping
+		// to a FirstPersonSpectatorCamera. It should be the same player.
+		if ( _owner.Camera is not FirstPersonSpectatorCamera )
+			_owner.CurrentPlayer = null;
 	}
 
 	public override void Update()

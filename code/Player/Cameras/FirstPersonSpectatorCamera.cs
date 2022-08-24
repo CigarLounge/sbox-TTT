@@ -10,7 +10,7 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 	protected override void OnActivate()
 	{
 		_owner = Entity as Player;
-		_owner.UpdateSpectatedPlayer();
+		Viewer = _owner.CurrentPlayer;
 	}
 
 	public override void Deactivated()
