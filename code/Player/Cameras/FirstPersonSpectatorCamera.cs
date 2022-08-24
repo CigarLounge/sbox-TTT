@@ -15,8 +15,7 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 
 	public override void Deactivated()
 	{
-		if ( _owner.Camera is not ISpectateCamera )
-			_owner.CurrentPlayer = null;
+		_owner.CurrentPlayer = null;
 	}
 
 	public override void Update()
