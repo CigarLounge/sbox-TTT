@@ -8,6 +8,9 @@ public partial class Player
 	public static List<List<Clothing>> ClothingPresets { get; private set; } = new();
 	public ClothingContainer ClothingContainer { get; private init; } = new();
 
+	/// <summary>
+	/// The current preset from <see cref="Player.ClothingPresets"/>.
+	/// </summary>
 	private static List<Clothing> _currentPreset;
 	/// <summary>
 	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(Client)"/> again.
@@ -19,12 +22,7 @@ public partial class Player
 		if ( Game.AvatarClothing )
 			ClothingContainer.Clothing = _avatarClothes;
 		else
-		{
-			ClothingContainer.Clothing.Clear();
-
-			foreach ( var clothing in _currentPreset )
-				ClothingContainer.Toggle( clothing );
-		}
+			ClothingContainer.Clothing = new( _currentPreset );
 
 		ClothingContainer.DressEntity( this );
 	}
