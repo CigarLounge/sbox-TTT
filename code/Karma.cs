@@ -22,9 +22,6 @@ public static class Karma
 		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
 	};
 
-	/// <summary>
-	/// Compute the reward for hurting a traitor.
-	/// </summary>
 	public static float GetHurtReward( float damage, float multiplier )
 	{
 		return MaxValue * Math.Clamp( damage * multiplier, 0, 1 );

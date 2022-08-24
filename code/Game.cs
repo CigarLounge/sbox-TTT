@@ -60,12 +60,7 @@ public partial class Game : Sandbox.Game
 	{
 		Event.Run( GameEvent.Client.Joined, client );
 
-		var player = new Player();
-		client.Pawn = player;
-		player.SteamId = client.PlayerId;
-		player.SteamName = client.Name;
-		player.BaseKarma = Karma.DefaultValue;
-		player.ActiveKarma = player.BaseKarma;
+		var player = new Player( client );
 
 		State.OnPlayerJoin( player );
 
@@ -89,8 +84,6 @@ public partial class Game : Sandbox.Game
 
 	public override void RenderHud()
 	{
-		base.RenderHud();
-
 		if ( Local.Pawn is not Player player )
 			return;
 
@@ -126,8 +119,6 @@ public partial class Game : Sandbox.Game
 
 	public override void PostLevelLoaded()
 	{
-		base.PostLevelLoaded();
-
 		ForceStateChange( new WaitingState() );
 	}
 
