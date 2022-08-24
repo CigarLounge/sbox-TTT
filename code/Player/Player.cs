@@ -40,6 +40,18 @@ public partial class Player : AnimatedEntity
 
 	public const float DropVelocity = 300;
 
+	public Player( Client client ) : this()
+	{
+		client.Pawn = this;
+		SteamId = client.PlayerId;
+		SteamName = client.Name;
+		BaseKarma = Karma.DefaultValue;
+		ActiveKarma = BaseKarma;
+
+		ClothingContainer.LoadFromClient( client );
+		_avatarClothes = new( ClothingContainer.Clothing );
+	}
+
 	public Player()
 	{
 		Inventory = new( this );

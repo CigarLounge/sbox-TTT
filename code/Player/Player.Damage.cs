@@ -127,6 +127,7 @@ public partial class Player
 		}
 
 		BecomeCorpse();
+		RemoveAllDecals();
 		StopUsing();
 
 		EnableAllCollisions = false;

@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
 
 namespace TTT.UI;
 
 [UseTemplate]
 public class ScoreboardEntry : Panel
 {
-	public PlayerStatus PlayerStatus;
-	private readonly Client _client;
-
 	private static readonly ColorGroup[] _tagGroups = new ColorGroup[]
 	{
 		new ColorGroup("Friend", Color.FromBytes(0, 255, 0)),
@@ -27,6 +23,9 @@ public class ScoreboardEntry : Panel
 	private Label Score { get; init; }
 	private Label Ping { get; init; }
 	private Panel DropdownPanel { get; set; }
+
+	public PlayerStatus PlayerStatus;
+	private readonly Client _client;
 
 	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
 	{

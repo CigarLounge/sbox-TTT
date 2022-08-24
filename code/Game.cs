@@ -60,12 +60,7 @@ public partial class Game : Sandbox.Game
 	{
 		Event.Run( GameEvent.Client.Joined, client );
 
-		var player = new Player();
-		client.Pawn = player;
-		player.SteamId = client.PlayerId;
-		player.SteamName = client.Name;
-		player.BaseKarma = Karma.DefaultValue;
-		player.ActiveKarma = player.BaseKarma;
+		var player = new Player( client );
 
 		State.OnPlayerJoin( player );
 
