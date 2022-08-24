@@ -9,12 +9,15 @@ public partial class Player
 	public ClothingContainer ClothingContainer { get; private init; } = new();
 
 	private static List<Clothing> _currentPreset;
+	/// <summary>
+	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(Client)"/> again.
+	/// </summary>
+	private List<Clothing> _avatarClothes;
 
 	public void DressPlayer()
 	{
-		// TODO: Don't load from client again if it's already loaded
 		if ( Game.AvatarClothing )
-			ClothingContainer.LoadFromClient( Client );
+			ClothingContainer.Clothing = _avatarClothes;
 		else
 		{
 			ClothingContainer.Clothing.Clear();
