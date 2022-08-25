@@ -83,26 +83,10 @@ public partial class Player
 
 		Camera = Camera switch
 		{
-			FreeSpectateCamera => new ThirdPersonCamera(),
-			ThirdPersonCamera => new FirstPersonSpectatorCamera(),
+			FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+			ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
 			FollowEntityCamera or FirstPersonSpectatorCamera or _ => new FreeSpectateCamera(),
 		};
-	}
-
-	[ConCmd.Server]
-	public static void SpectatePlayer( int spectatedPlayerIndent )
-	{
-		if ( ConsoleSystem.Caller.Pawn is not Player player )
-			return;
-
-		if ( player.IsAlive() )
-			return;
-
-		var target = FindByIndex( spectatedPlayerIndent );
-		if ( target is not Player spectatedPlayer )
-			return;
-
-		player.Camera = new ThirdPersonSpectateCamera { InitialSpectatedPlayer = spectatedPlayer };
 	}
 
 	[GameEvent.Player.Killed]

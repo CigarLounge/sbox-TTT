@@ -4,7 +4,6 @@ namespace TTT;
 
 public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
-	[Net, Local]
 	public Player InitialSpectatedPlayer { get; set; }
 
 	private Player _owner;
