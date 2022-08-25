@@ -81,24 +81,12 @@ public partial class Player
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
-		if ( Camera is FollowEntityCamera || Camera is FirstPersonSpectatorCamera )
+		Camera = Camera switch
 		{
-			Camera = new FreeSpectateCamera();
-			return;
-		}
-
-		var spectatablePlayers = Utils.GetAlivePlayers().Count > 0;
-		if ( !spectatablePlayers )
-		{
-			if ( Camera is not FreeSpectateCamera )
-				Camera = new FreeSpectateCamera();
-			return;
-		}
-
-		if ( Camera is FreeSpectateCamera )
-			Camera = new ThirdPersonSpectateCamera();
-		else if ( Camera is ThirdPersonSpectateCamera )
-			Camera = new FirstPersonSpectatorCamera();
+			FreeSpectateCamera => new ThirdPersonCamera(),
+			ThirdPersonCamera => new FirstPersonSpectatorCamera(),
+			FollowEntityCamera or FirstPersonSpectatorCamera or _ => new FreeSpectateCamera(),
+		};
 	}
 
 	[ConCmd.Server]

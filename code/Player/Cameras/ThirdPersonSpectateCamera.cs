@@ -32,7 +32,10 @@ public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 	public override void Update()
 	{
 		if ( !_owner.IsSpectatingPlayer )
+		{
+			_owner.Camera = new FreeSpectateCamera();
 			return;
+		}
 
 		_targetPos = Vector3.Lerp( _targetPos, _owner.CurrentPlayer.EyePosition, 50f * RealTime.Delta );
 
