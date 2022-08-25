@@ -33,9 +33,9 @@ public class RolePlate : EntityComponent<Player>
 	[Event.Frame]
 	private void FrameUpdate()
 	{
-		_worldPanel.SceneObject.RenderingEnabled = !Entity.IsFirstPersonMode && Entity.IsAlive();
+		_worldPanel.Enabled( !Entity.IsFirstPersonMode && Entity.IsAlive() );
 
-		if ( !_worldPanel.SceneObject.RenderingEnabled )
+		if ( !_worldPanel.IsEnabled() )
 			return;
 
 		var tx = Entity.GetBoneTransform( "head" );
