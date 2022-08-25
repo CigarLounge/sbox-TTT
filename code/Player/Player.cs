@@ -190,6 +190,9 @@ public partial class Player : AnimatedEntity
 		if ( IsClient )
 		{
 			ActivateRoleButton();
+
+			if ( !Prop.IsValid() )
+				ChangeSpectateCamera();
 		}
 		else
 		{
@@ -197,9 +200,7 @@ public partial class Player : AnimatedEntity
 
 			if ( !this.IsAlive() )
 			{
-				if ( Prop is null )
-					ChangeSpectateCamera();
-				else
+				if ( Prop.IsValid() )
 					SimulatePossession();
 
 				return;
