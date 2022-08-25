@@ -85,19 +85,4 @@ public partial class Player
 		SetRole( roleInfo );
 		IsRoleKnown = true;
 	}
-
-	[GameEvent.Round.Start]
-	private void OnRoundStart()
-	{
-		if ( !IsClient || IsLocalPawn )
-			return;
-
-		if ( IsSpectator )
-			return;
-
-		// After the roles have been assigned, set everyone
-		// to being innocent clientside.
-		if ( !IsRoleKnown )
-			Role = new Innocent();
-	}
 }
