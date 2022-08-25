@@ -39,8 +39,13 @@ public partial class Player
 	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
 	public bool CanHearAlivePlayers => MuteFilter != MuteFilter.AlivePlayers && MuteFilter != MuteFilter.All;
 
-	public TimeSince TimceSinceLastWords { get; private set; }
-	public string LastWords { get; private set; }
+	public string LastWords
+	{
+		get => _timeSinceLastWords < 3 ? _lastWords : string.Empty;
+		set => _lastWords = value;
+	}
+	private string _lastWords;
+	private TimeSince _timeSinceLastWords;
 
 	public static void ToggleMute()
 	{
@@ -52,7 +57,7 @@ public partial class Player
 
 	public void SetLastWords( string lastMessage )
 	{
-		TimceSinceLastWords = 0;
+		_timeSinceLastWords = 0;
 		LastWords = lastMessage;
 	}
 }

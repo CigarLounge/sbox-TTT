@@ -99,8 +99,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( c4Note is not null )
 			C4Note = c4Note.SafeWireNumber.ToString();
 
-		if ( player.TimceSinceLastWords < 3 )
-			LastWords = player.LastWords;
+		LastWords = player.LastWords;
 
 		Perks = new PerkInfo[Player.Perks.Count];
 		for ( var i = 0; i < Player.Perks.Count; i++ )
