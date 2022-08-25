@@ -84,13 +84,22 @@ public partial class Player
 	}
 
 	[GameEvent.Player.Killed]
-	private static void OnPlayerKilled( Player player )
+	private static async void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsClient )
+		if ( Host.IsServer )
 			return;
 
-		var localPlayer = Local.Pawn as Player;
+		if ( player.IsLocalPawn )
+		{
+			// If the player is still watching their ragdoll, automatically
+			// move them to a free spectate camera after two seconds.
+			await GameTask.DelaySeconds( 2 );
 
+			if ( !player.IsAlive() && player.Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
+				player.Camera = new FreeSpectateCamera();
+		}
+
+		var localPlayer = Local.Pawn as Player;
 		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
 			localPlayer.Camera = new FreeSpectateCamera();
 	}
