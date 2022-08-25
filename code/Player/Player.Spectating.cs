@@ -98,9 +98,11 @@ public partial class Player
 			if ( !player.IsAlive() && player.Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
 				player.Camera = new FreeSpectateCamera();
 		}
-
-		var localPlayer = Local.Pawn as Player;
-		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
-			localPlayer.Camera = new FreeSpectateCamera();
+		else
+		{
+			var localPlayer = Local.Pawn as Player;
+			if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
+				localPlayer.Camera = new FreeSpectateCamera();
+		}
 	}
 }
