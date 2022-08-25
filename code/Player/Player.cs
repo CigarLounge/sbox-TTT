@@ -191,8 +191,9 @@ public partial class Player : AnimatedEntity
 		{
 			ActivateRoleButton();
 
-			if ( !Prop.IsValid() )
-				ChangeSpectateCamera();
+			if ( !this.IsAlive() )
+				if ( !Prop.IsValid() )
+					ChangeSpectateCamera();
 		}
 		else
 		{

@@ -62,22 +62,16 @@ public partial class Player
 
 		if ( Camera is not ISpectateCamera )
 			Camera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeSpectateCamera();
-
-		DelayedDeathCameraChange();
-	}
-
-	private async void DelayedDeathCameraChange()
-	{
-		// If the player is still watching their ragdoll, automatically
-		// move them to a free spectate camera.
-		await GameTask.DelaySeconds( 2 );
-
-		if ( Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
-			Camera = new FreeSpectateCamera();
 	}
 
 	private void ChangeSpectateCamera()
 	{
+		if ( !IsSpectatingPlayer && Camera is not FreeSpectateCamera and not FollowEntityCamera )
+		{
+			Camera = new FreeSpectateCamera();
+			return;
+		}
+
 		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
 
