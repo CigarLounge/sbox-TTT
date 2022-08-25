@@ -91,7 +91,9 @@ public class ScoreboardEntry : Panel
 	private void ResetTag()
 	{
 		Tag.Text = string.Empty;
-		(_client.Pawn as Player).TagGroup = default;
+
+		if ( _client.IsValid() && _client.Pawn.IsValid() )
+			(_client.Pawn as Player).TagGroup = default;
 	}
 
 	[Event.Entity.PostCleanup]
