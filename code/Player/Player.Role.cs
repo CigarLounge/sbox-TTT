@@ -96,8 +96,8 @@ public partial class Player
 			return;
 
 		// After the roles have been assigned, set everyone
-		// to being innocent clientside.
+		// to being None clientside.
 		if ( !IsRoleKnown )
-			Role = new Innocent();
+			Role = new NoneRole();
 	}
 }
