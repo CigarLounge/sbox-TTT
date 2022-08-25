@@ -25,6 +25,11 @@ public partial class RoleCheck : Entity
 	/// </summary>
 	protected Output OnFail { get; private set; }
 
+	public override void Spawn()
+	{
+		Transmit = TransmitType.Never;
+	}
+
 	[Input]
 	public void Activate( Entity activator )
 	{

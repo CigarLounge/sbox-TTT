@@ -14,6 +14,21 @@ public partial class CreditAdjust : Entity
 	[Property]
 	public int Credits { get; private set; } = 100;
 
+	/// <summary>
+	/// Fires when credits are successfully added or removed from activator.
+	/// </summary>
+	protected Output OnSuccess { get; set; }
+
+	/// <summary>
+	/// Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits.
+	/// </summary>
+	protected Output OnFailure { get; set; }
+
+	public override void Spawn()
+	{
+		Transmit = TransmitType.Never;
+	}
+
 	[Input]
 	public void ExchangeCredits( Entity activator )
 	{
@@ -33,14 +48,4 @@ public partial class CreditAdjust : Entity
 			_ = OnFailure.Fire( activator );
 		}
 	}
-
-	/// <summary>
-	/// Fires when credits are successfully added or removed from activator.
-	/// </summary>
-	protected Output OnSuccess { get; set; }
-
-	/// <summary>
-	/// Fires if credits cannot be removed or added to activator. Such as not having enough credits for removal as a player cannot have 'negative' credits.
-	/// </summary>
-	protected Output OnFailure { get; set; }
 }

@@ -1,8 +1,7 @@
-using System;
-
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
+using System;
 
 namespace TTT.UI;
 
@@ -36,7 +35,7 @@ public class VoiceChatEntry : Panel
 		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
-		_worldPanel.SceneObject.RenderingEnabled = !_client.Pawn.IsFirstPersonMode;
+		_worldPanel.Enabled( !_client.Pawn.IsFirstPersonMode );
 	}
 
 	public void Update( float level )
@@ -72,7 +71,7 @@ public class VoiceChatEntry : Panel
 			return;
 		}
 
-		if ( !_worldPanel.SceneObject.RenderingEnabled )
+		if ( !_worldPanel.IsEnabled() )
 			return;
 
 		var tx = player.GetBoneTransform( "head" );

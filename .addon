@@ -31,10 +31,9 @@
         "trigger": "Trigger",
         "ladder": "Ignore",
         "water": "Trigger",
+        "interactable": "Unset",
         "player": "Unset",
-        "glass": "Unset",
-        "debris": "Unset",
-        "interactable": "Trigger"
+        "glass": "Unset"
       },
       "Pairs": [
         {
@@ -48,14 +47,9 @@
           "r": "Ignore"
         },
         {
-          "a": "trigger",
-          "b": "solid",
-          "r": "Trigger"
-        },
-        {
           "a": "solid",
           "b": "trigger",
-          "r": "Collide"
+          "r": "Trigger"
         },
         {
           "a": "playerclip",
@@ -64,33 +58,11 @@
         },
         {
           "a": "trigger",
-          "b": "player",
-          "r": "Trigger"
+          "b": "player"
         },
         {
-          "a": "glass",
-          "b": "glass",
-          "r": "Ignore"
-        },
-        {
-          "a": "player",
-          "b": "glass",
-          "r": "Trigger"
-        },
-        {
-          "a": "trigger",
-          "b": "glass",
-          "r": "Ignore"
-        },
-        {
-          "a": "player",
-          "b": "debris",
-          "r": "Ignore"
-        },
-        {
-          "a": "trigger",
-          "b": "trigger",
-          "r": "Collide"
+          "a": "ladder",
+          "b": "player"
         },
         {
           "a": "interactable",
@@ -98,19 +70,32 @@
           "r": "Collide"
         },
         {
-          "a": "glass",
-          "b": "interactable",
-          "r": "Ignore"
-        },
-        {
-          "a": "player",
-          "b": "interactable",
+          "a": "interactable",
+          "b": "player",
           "r": "Trigger"
         },
         {
-          "a": "solid",
-          "b": "interactable",
-          "r": "Collide"
+          "a": "player",
+          "b": "player"
+        },
+        {
+          "a": "player",
+          "b": "glass",
+          "r": "Trigger"
+        },
+        {
+          "a": "trigger",
+          "b": "glass",
+          "r": "Ignore"
+        },
+        {
+          "a": "glass",
+          "b": "glass",
+          "r": "Ignore"
+        },
+        {
+          "a": "water",
+          "b": "glass"
         }
       ]
     },
