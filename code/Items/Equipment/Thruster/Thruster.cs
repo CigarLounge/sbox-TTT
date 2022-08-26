@@ -3,9 +3,9 @@ using Sandbox;
 namespace TTT;
 
 [Category( "Equipment" )]
-[ClassName( "ttt_equipment_thruster" )]
-[Title( "Thruster" )]
-public partial class Thruster : Deployable<ThrusterEntity>
+[ClassName( "ttt_equipment_thrustermine" )]
+[Title( "Thruster Mine" )]
+public partial class ThrusterMine : Deployable<ThrusterMineEntity>
 {
 	[Net, Local]
 	public int Ammo { get; protected set; } = 5;
@@ -13,9 +13,9 @@ public partial class Thruster : Deployable<ThrusterEntity>
 
 	protected override bool CanDrop => false;
 
-	protected override ThrusterEntity Deploy( TraceResult trace )
+	protected override ThrusterMineEntity Deploy( TraceResult trace )
 	{
-		var dropped = new ThrusterEntity
+		var dropped = new ThrusterMineEntity
 		{
 			Owner = this,
 			PhysicsEnabled = true,

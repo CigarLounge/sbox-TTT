@@ -111,7 +111,6 @@ public partial class C4Entity : Prop, IEntityHint
 			radius /= 2.5f;
 
 		Explosion( radius );
-		Sound.FromWorld( ExplodeSound, Position );
 		Delete();
 	}
 
@@ -137,6 +136,8 @@ public partial class C4Entity : Prop, IEntityHint
 
 			player.TakeDamage( damageInfo );
 		}
+
+		Sound.FromWorld( ExplodeSound, Position );
 	}
 
 	protected override void OnDestroy()

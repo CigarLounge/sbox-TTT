@@ -13,7 +13,7 @@
 		IsLimited = true
 		Price = 100
 		IconPath = null
-		Description = "Attach a thruster to a prop to propel it towards players."
-		ClassName = "ttt_equipment_thruster"
+		Description = "Attach a mine to a prop which when tripped propels itself towards players."
+		ClassName = "ttt_equipment_thrustermine"
 	}
 }
