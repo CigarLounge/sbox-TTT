@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Linq;
 
 namespace TTT;
 
@@ -34,14 +33,5 @@ public class GhostEntity : ModelEntity
 	public void ShowInvalid()
 	{
 		RenderColor = Color.Red.WithAlpha( 0.5f );
-	}
-
-	public bool IsPlacementValid( ref TraceResult trace )
-	{
-		var position = trace.EndPosition;
-		var bounds = CollisionBounds;
-		var entities = Entity.FindInBox( bounds + position );
-
-		return !entities.Any();
 	}
 }

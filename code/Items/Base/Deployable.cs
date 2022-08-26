@@ -1,17 +1,18 @@
 using Sandbox;
 using System;
+using System.Linq;
 
 namespace TTT;
 
 public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
-	public GhostEntity GhostEntity { get; private set; }
-
 	public override string PrimaryAttackHint => CanDrop ? "Deploy" : string.Empty;
 	public override string SecondaryAttackHint => CanPlant ? "Plant" : string.Empty;
 
 	protected virtual bool CanDrop => true;
 	protected virtual bool CanPlant => true;
+
+	private GhostEntity GhostEntity { get; set; }
 
 	public override void ActiveStart( Player player )
 	{
@@ -48,7 +49,8 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-			.WorldOnly()
+			.Ignore( this )
+			.Ignore( Owner )
 			.Run();
 
 		if ( !trace.Hit )
@@ -68,17 +70,12 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			);
 		}
 
-		var valid = GhostEntity.IsPlacementValid( ref trace );
+		var valid = IsPlacementValid( trace );
 
 		if ( !valid )
 			return;
 
-		var dropped = Owner.Inventory.DropEntity( this );
-		dropped.PhysicsEnabled = false;
-		dropped.Transform = GhostEntity.Transform;
-		dropped.Velocity = 0;
-
-		OnDeploy( dropped );
+		OnDeploy( Deploy( trace ) );
 	}
 
 	public override void FrameSimulate( Client client )
@@ -89,7 +86,8 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-			.WorldOnly()
+			.Ignore( this )
+			.Ignore( Owner )
 			.Run();
 
 		if ( !trace.Hit )
@@ -113,12 +111,30 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			);
 		}
 
-		var valid = GhostEntity.IsPlacementValid( ref trace );
+		var valid = IsPlacementValid( trace );
 
 		if ( valid )
 			GhostEntity.ShowValid();
 		else
 			GhostEntity.ShowInvalid();
+	}
+
+	protected virtual bool IsPlacementValid( TraceResult trace )
+	{
+		var position = trace.EndPosition;
+		var bounds = CollisionBounds;
+		var entities = FindInBox( bounds + position );
+
+		return !entities.Any();
+	}
+
+	protected virtual T Deploy( TraceResult trace )
+	{
+		var dropped = Owner.Inventory.DropEntity( this );
+		dropped.PhysicsEnabled = false;
+		dropped.Transform = GhostEntity.Transform;
+		dropped.Velocity = 0;
+		return dropped;
 	}
 
 	protected virtual void OnDeploy( T entity ) { }
