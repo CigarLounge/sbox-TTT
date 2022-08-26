@@ -9,9 +9,9 @@ namespace TTT;
 public partial class Disguiser : Perk
 {
 	[Net, Local]
-	public bool IsEnabled { get; set; } = false;
+	public bool IsActive { get; set; } = false;
 
-	public override string SlotText => IsEnabled ? "ON" : "OFF";
+	public override string SlotText => IsActive ? "ON" : "OFF";
 	private readonly float _lockOutSeconds = 1f;
 	private bool _isLocked = false;
 
@@ -21,7 +21,7 @@ public partial class Disguiser : Perk
 		{
 			if ( Host.IsServer )
 			{
-				IsEnabled = !IsEnabled;
+				IsActive = !IsActive;
 				_isLocked = true;
 			}
 
