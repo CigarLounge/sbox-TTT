@@ -67,8 +67,7 @@ public partial class Radar : Perk
 				if ( !player.IsAlive() )
 					continue;
 
-				var disguiserEnabled = player.Perks.Find<Disguiser>()?.IsActive ?? false;
-				if ( disguiserEnabled )
+				if ( !Entity.CanHint( player ) )
 					continue;
 
 				pointData.Add( new RadarPointData
