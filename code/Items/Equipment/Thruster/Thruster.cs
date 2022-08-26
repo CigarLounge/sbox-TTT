@@ -20,6 +20,7 @@ public partial class Thruster : Deployable<ThrusterEntity>
 			Owner = this,
 			PhysicsEnabled = true,
 			Position = trace.EndPosition,
+			Rotation = Rotation.From( trace.Normal.EulerAngles ),
 			Velocity = 0,
 			Parent = trace.Entity
 		};
