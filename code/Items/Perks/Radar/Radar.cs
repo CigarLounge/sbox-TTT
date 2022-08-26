@@ -67,6 +67,9 @@ public partial class Radar : Perk
 				if ( !player.IsAlive() )
 					continue;
 
+				if ( !Entity.CanHint( player ) )
+					continue;
+
 				pointData.Add( new RadarPointData
 				{
 					Position = player.Position + _radarPointOffset,
