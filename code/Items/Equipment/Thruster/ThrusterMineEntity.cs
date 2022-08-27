@@ -83,6 +83,7 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 			}
 		}
 
+		// Couldn't find a player within the radius, send it flying in a random direction.
 		if ( !detectedPlayer )
 		{
 			var randDirection = Rand.Float( BounceForce, -BounceForce );
@@ -105,9 +106,6 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 		if ( !this.IsValid() )
 			return;
 
-		Particles.Create( "particles/thrustermine/explode.vpcf", Position );
-		Sound.FromWorld( "explode", Position );
-
 		foreach ( var ent in FindInSphere( Position, TripRadius ) )
 		{
 			if ( ent is not Player player || !player.IsAlive() )
@@ -128,6 +126,9 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 
 			player.TakeDamage( damageInfo );
 		}
+
+		Particles.Create( "particles/thrustermine/explode.vpcf", Position );
+		Sound.FromWorld( "explode", Position );
 
 		onExplode?.Invoke();
 	}
