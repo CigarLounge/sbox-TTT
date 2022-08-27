@@ -17,10 +17,9 @@ public class VoiceChatDisplay : Panel
 		entry.Update( client.VoiceLevel );
 	}
 
-	[Event.BuildInput]
-	private void BuildInput( InputBuilder input )
+	public override void Tick()
 	{
-		if ( input.Down( InputButton.Voice ) )
+		if ( Voice.IsRecording )
 			OnVoicePlayed( Local.Client );
 	}
 }
