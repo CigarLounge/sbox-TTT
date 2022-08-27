@@ -8,8 +8,8 @@ namespace TTT;
 public partial class ThrusterMine : Deployable<ThrusterMineEntity>
 {
 	[Net, Local]
-	public int Ammo { get; protected set; } = 5;
-	public override string SlotText => $"{Ammo}";
+	public int RemainingMines { get; protected set; } = 5;
+	public override string SlotText => $"{RemainingMines}";
 
 	protected override bool CanDrop => false;
 
@@ -25,9 +25,9 @@ public partial class ThrusterMine : Deployable<ThrusterMineEntity>
 			Parent = trace.Entity
 		};
 
-		Ammo -= 1;
+		RemainingMines -= 1;
 
-		if ( Ammo <= 0 )
+		if ( RemainingMines <= 0 )
 			Delete();
 
 		return dropped;

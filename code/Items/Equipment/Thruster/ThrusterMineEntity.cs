@@ -10,13 +10,8 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 {
 	private static readonly Model _worldModel = Model.Load( "models/thruster/thruster.vmdl" );
 
-	private const string TriggerSound = "thrustermine-trigger";
-	private const string ExplodeSound = "explode";
-	private const string ExplodeParticle = "particles/thrustermine/explode.vpcf";
-	private const string BounceExplodeSound = "discombobulator_explode-1";
-	private const string BounceParticle = "particles/discombobulator/explode.vpcf";
 	private const float BounceForce = 700f;
-	private const int MaxBounces = 5;
+	private const int MaxBounces = 4;
 	private const float TripRadius = 200f;
 
 	private bool _isTriggered => _triggerLight.Color == Color.Green;
@@ -63,57 +58,55 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 			{
 				if ( ent is Player player && player.IsAlive() )
 				{
-					Sound.FromWorld( TriggerSound, Position );
+					Sound.FromWorld( "thrustermine-trigger", Position );
 					_triggerLight.Color = Color.Green;
+					_timeUntilNextBounce = 1f;
 					break;
 				}
 			}
 		}
 
-		if ( _timeUntilNextBounce && _isTriggered )
+		if ( _isTriggered && _timeUntilNextBounce )
 			Bounce();
 	}
 
 	private void Bounce()
 	{
-		if ( Parent.IsValid() )
+		var detectedPlayer = false;
+		foreach ( var ent in FindInSphere( Parent.Position, TripRadius * 3 ) )
 		{
-			var foundPlayer = false;
-			foreach ( var ent in FindInSphere( Parent.Position, TripRadius * 3 ) )
+			if ( ent is Player player && player.IsAlive() )
 			{
-				if ( ent is Player player && player.IsAlive() )
-				{
-					foundPlayer = true;
-					Parent.Velocity = (player.Position - Parent.Position).Normal * BounceForce;
-					break;
-				}
+				detectedPlayer = true;
+				Parent.Velocity = (player.Position - Parent.Position).Normal * BounceForce;
+				break;
 			}
-
-			if ( !foundPlayer )
-			{
-				var randDirection = Rand.Float( BounceForce, -BounceForce );
-				Parent.Velocity = new Vector3( randDirection, randDirection, randDirection );
-			}
-
-			Particles.Create( BounceParticle, Position );
-			Sound.FromWorld( BounceExplodeSound, Position );
-
-			DelayedExplosion();
 		}
+
+		if ( !detectedPlayer )
+		{
+			var randDirection = Rand.Float( BounceForce, -BounceForce );
+			Parent.Velocity = new Vector3( randDirection, randDirection, randDirection );
+		}
+
+		Particles.Create( "particles/discombobulator/explode.vpcf", Position );
+		Sound.FromWorld( "discombobulator_explode-1", Position );
+
+		DelayedExplosion();
 
 		_bounces += 1;
 		_timeUntilNextBounce = 2f;
 	}
 
-	private async void DelayedExplosion( Action onFinish = null )
+	private async void DelayedExplosion( Action onExplode = null )
 	{
 		await GameTask.DelaySeconds( 0.5f );
 
 		if ( !this.IsValid() )
 			return;
 
-		Particles.Create( ExplodeParticle, Position );
-		Sound.FromWorld( ExplodeSound, Position );
+		Particles.Create( "particles/thrustermine/explode.vpcf", Position );
+		Sound.FromWorld( "explode", Position );
 
 		foreach ( var ent in FindInSphere( Position, TripRadius ) )
 		{
@@ -136,6 +129,6 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 			player.TakeDamage( damageInfo );
 		}
 
-		onFinish?.Invoke();
+		onExplode?.Invoke();
 	}
 }
