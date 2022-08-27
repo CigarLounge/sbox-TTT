@@ -51,6 +51,7 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 
 		_isMineArmed = true;
 		_triggerLight.Color = Color.Red;
+		Sound.FromWorld( "thrustermine-armed", Position );
 	}
 
 	[Event.Tick.Server]

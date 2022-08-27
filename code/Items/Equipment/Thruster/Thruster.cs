@@ -25,6 +25,8 @@ public partial class ThrusterMine : Deployable<ThrusterMineEntity>
 			Parent = trace.Entity
 		};
 
+		Sound.FromWorld( "thrustermine-plant", dropped.Position );
+
 		RemainingMines -= 1;
 
 		if ( RemainingMines <= 0 )
