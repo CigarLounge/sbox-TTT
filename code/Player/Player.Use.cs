@@ -16,13 +16,13 @@ public partial class Player
 	public const float UseDistance = 80f;
 	private float _traceDistance;
 
-	private Vector3? firstUsablePoint(Entity entity)
+	private Vector3? firstUsablePoint( Entity entity )
 	{
 		var physicsBodies = entity.PhysicsGroup?.Bodies?.ToList();
 		for ( var i = 0; i < (physicsBodies?.Count ?? 0); i++ )
 		{
 			var firstUsablePoint = physicsBodies[i].FindClosestPoint( EyePosition );
-			if ( EyePosition.Distance(firstUsablePoint) <= UseDistance )
+			if ( EyePosition.Distance( firstUsablePoint ) <= UseDistance )
 			{
 				return firstUsablePoint;
 			}
@@ -82,7 +82,7 @@ public partial class Player
 		if ( !use.IsUsable( this ) )
 			return false;
 
-		if ( _traceDistance > UseDistance && firstUsablePoint(entity) == null )
+		if ( _traceDistance > UseDistance && firstUsablePoint( entity ) == null )
 		{
 			return false;
 		}
@@ -95,7 +95,7 @@ public partial class Player
 		if ( HoveredEntity != entity )
 			return false;
 
-		if ( _traceDistance > UseDistance && firstUsablePoint(entity) == null)
+		if ( _traceDistance > UseDistance && firstUsablePoint( entity ) == null )
 		{
 			return false;
 		}
