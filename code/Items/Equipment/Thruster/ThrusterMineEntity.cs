@@ -10,15 +10,15 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 {
 	private static readonly Model _worldModel = Model.Load( "models/thruster/thruster.vmdl" );
 
-	private const float BounceForce = 700f;
-	private const int MaxBounces = 4;
+	private const float ThrustForce = 700f;
+	private const int MaxThrusts = 4;
 	private const float TripRadius = 200f;
 
-	private bool _isTriggered => _triggerLight.Color == Color.Green;
+	private bool _isMineArmed = false;
+	private bool _isMineTriggered = false;
 	private PointLightEntity _triggerLight;
-	private int _bounces = 0;
-	private TimeUntil _timeUntilActivation = 3f;
-	private TimeUntil _timeUntilNextBounce = 3f;
+	private int _thrusts = 0;
+	private TimeUntil _timeUntilNextThrust;
 
 	public override void Spawn()
 	{
@@ -33,44 +33,61 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 			Range = 3,
 			Falloff = 1.0f,
 			Brightness = 2,
-			Color = Color.Red,
+			Color = Color.Yellow,
 			Owner = this,
 			Parent = this,
 			Rotation = Rotation,
 		};
+
+		Arm();
+	}
+
+	private async void Arm()
+	{
+		await GameTask.DelaySeconds( 3f );
+
+		if ( !this.IsValid() )
+			return;
+
+		_isMineArmed = true;
+		_triggerLight.Color = Color.Red;
 	}
 
 	[Event.Tick.Server]
 	private void OnServerTick()
 	{
-		if ( _bounces >= MaxBounces || !Parent.IsValid() || Parent.Owner.IsValid() )
+		if ( _thrusts >= MaxThrusts || !Parent.IsValid() || Parent.Owner.IsValid() )
 		{
 			DelayedExplosion( () => { Delete(); } );
 			return;
 		}
 
-		if ( !_timeUntilActivation )
+		if ( !_isMineArmed )
 			return;
 
-		if ( !_isTriggered )
-		{
-			foreach ( var ent in FindInSphere( Position, TripRadius ) )
-			{
-				if ( ent is Player player && player.IsAlive() )
-				{
-					Sound.FromWorld( "thrustermine-trigger", Position );
-					_triggerLight.Color = Color.Green;
-					_timeUntilNextBounce = 1f;
-					break;
-				}
-			}
-		}
+		if ( !_isMineTriggered )
+			CheckTrigger();
 
-		if ( _isTriggered && _timeUntilNextBounce )
-			Bounce();
+		if ( _isMineTriggered && _timeUntilNextThrust )
+			Thrust();
 	}
 
-	private void Bounce()
+	private void CheckTrigger()
+	{
+		foreach ( var ent in FindInSphere( Position, TripRadius ) )
+		{
+			if ( ent is Player player && player.IsAlive() )
+			{
+				Sound.FromWorld( "thrustermine-trigger", Position );
+				_triggerLight.Color = Color.Green;
+				_timeUntilNextThrust = 1f;
+				_isMineTriggered = true;
+				break;
+			}
+		}
+	}
+
+	private void Thrust()
 	{
 		var detectedPlayer = false;
 		foreach ( var ent in FindInSphere( Parent.Position, TripRadius * 3 ) )
@@ -78,7 +95,7 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 			if ( ent is Player player && player.IsAlive() )
 			{
 				detectedPlayer = true;
-				Parent.Velocity = (player.Position - Parent.Position).Normal * BounceForce;
+				Parent.Velocity = (player.Position - Parent.Position).Normal * ThrustForce;
 				break;
 			}
 		}
@@ -86,7 +103,7 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 		// Couldn't find a player within the radius, send it flying in a random direction.
 		if ( !detectedPlayer )
 		{
-			var randDirection = Rand.Float( BounceForce, -BounceForce );
+			var randDirection = Rand.Float( ThrustForce, -ThrustForce );
 			Parent.Velocity = new Vector3( randDirection, randDirection, randDirection );
 		}
 
@@ -95,8 +112,8 @@ public partial class ThrusterMineEntity : Prop, IEntityHint
 
 		DelayedExplosion();
 
-		_bounces += 1;
-		_timeUntilNextBounce = 2f;
+		_thrusts += 1;
+		_timeUntilNextThrust = 2f;
 	}
 
 	private async void DelayedExplosion( Action onExplode = null )

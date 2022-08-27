@@ -71,7 +71,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 	public void Pickup( Carriable carriable )
 	{
 		if ( Add( carriable ) )
-			Sound.FromEntity( Strings.WeaponPickupSound, Owner );
+			Sound.FromEntity( "pickup_weapon", Owner );
 	}
 
 	public bool HasFreeSlot( SlotType slotType )

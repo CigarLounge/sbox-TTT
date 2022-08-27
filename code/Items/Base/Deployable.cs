@@ -51,6 +51,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
+			.WithAnyTags( "solid", "interactable" )
 			.Run();
 
 		if ( !trace.Hit )
@@ -88,6 +89,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
+			.WithAnyTags( "solid", "interactable" )
 			.Run();
 
 		if ( !trace.Hit )
