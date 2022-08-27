@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Linq;
 
 namespace TTT;
 
@@ -14,6 +15,20 @@ public partial class Player
 
 	public const float UseDistance = 80f;
 	private float _traceDistance;
+
+	private Vector3? firstUsablePoint(Entity entity)
+	{
+		var physicsBodies = entity.PhysicsGroup?.Bodies?.ToList();
+		for ( var i = 0; i < (physicsBodies?.Count ?? 0); i++ )
+		{
+			var firstUsablePoint = physicsBodies[i].FindClosestPoint( EyePosition );
+			if ( EyePosition.Distance(firstUsablePoint) <= UseDistance )
+			{
+				return firstUsablePoint;
+			}
+		}
+		return null;
+	}
 
 	protected void PlayerUse()
 	{
@@ -64,11 +79,13 @@ public partial class Player
 		if ( entity is not IUse use )
 			return false;
 
-		if ( _traceDistance > UseDistance )
-			return false;
-
 		if ( !use.IsUsable( this ) )
 			return false;
+
+		if ( _traceDistance > UseDistance && firstUsablePoint(entity) == null )
+		{
+			return false;
+		}
 
 		return true;
 	}
@@ -78,8 +95,10 @@ public partial class Player
 		if ( HoveredEntity != entity )
 			return false;
 
-		if ( _traceDistance > UseDistance )
+		if ( _traceDistance > UseDistance && firstUsablePoint(entity) == null)
+		{
 			return false;
+		}
 
 		if ( entity is IUse use && use.OnUse( this ) )
 			return true;
