@@ -83,9 +83,7 @@ public partial class Player
 			return false;
 
 		if ( _traceDistance > UseDistance && firstUsablePoint( entity ) == null )
-		{
 			return false;
-		}
 
 		return true;
 	}
@@ -96,9 +94,7 @@ public partial class Player
 			return false;
 
 		if ( _traceDistance > UseDistance && firstUsablePoint( entity ) == null )
-		{
 			return false;
-		}
 
 		if ( entity is IUse use && use.OnUse( this ) )
 			return true;
