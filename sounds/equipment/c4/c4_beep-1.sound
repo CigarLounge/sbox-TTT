@@ -2,16 +2,18 @@
 {
 	data = 
 	{
-		sounds = 
+		UI = false
+		Volume = 0.1
+		VolumeRandom = 0
+		Pitch = 1
+		PitchRandom = 0
+		Decibels = 75
+		Sounds = 
 		[
-			"sounds/equipment/c4/c4_beep-1.vsnd",
+			resource:"sounds/equipment/c4/c4_beep-1.vsnd",
 		]
-		ui = false
-		volume = 0.1
-		volumerandom = 0.0
-		pitch = 1.0
-		pitchrandom = 0.0
-		distancemax = 1500.0
-		selectionmode = "3"
+		SelectionMode = "Random"
+		MaximumDistance = 1308.4543
+		MinimumDistance = 65.42272
 	}
 }

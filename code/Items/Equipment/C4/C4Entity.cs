@@ -36,7 +36,6 @@ public partial class C4Entity : Prop, IEntityHint
 	public TimeUntil TimeUntilExplode { get; private set; }
 
 	private RealTimeUntil _nextBeepTime = 0f;
-	private float _totalSeconds = 0f;
 	private UI.C4Timer _c4Timer;
 	private readonly List<int> _safeWireNumbers = new();
 
@@ -68,7 +67,6 @@ public partial class C4Entity : Prop, IEntityHint
 		for ( var i = 0; i < safeWireCount; ++i )
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
-		_totalSeconds = timer;
 		TimeUntilExplode = timer;
 		IsArmed = true;
 
@@ -173,8 +171,8 @@ public partial class C4Entity : Prop, IEntityHint
 
 		if ( _nextBeepTime )
 		{
-			PlaySound( BeepSound );
-			_nextBeepTime = _totalSeconds / 45;
+			Sound.FromEntity( BeepSound, this );
+			_nextBeepTime = Math.Max( TimeUntilExplode / 25, 0.2f );
 		}
 
 		if ( TimeUntilExplode )
