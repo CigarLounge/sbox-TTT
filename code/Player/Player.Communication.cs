@@ -42,7 +42,11 @@ public partial class Player
 	public string LastWords
 	{
 		get => _timeSinceLastWords < 3 ? _lastWords : string.Empty;
-		set => _lastWords = value;
+		set
+		{
+			_timeSinceLastWords = 0;
+			_lastWords = value;
+		}
 	}
 	private string _lastWords;
 	private TimeSince _timeSinceLastWords;
@@ -53,11 +57,5 @@ public partial class Player
 
 		if ( ++player.MuteFilter > MuteFilter.All )
 			player.MuteFilter = MuteFilter.None;
-	}
-
-	public void SetLastWords( string lastMessage )
-	{
-		_timeSinceLastWords = 0;
-		LastWords = lastMessage;
 	}
 }
