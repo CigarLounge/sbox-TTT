@@ -89,6 +89,9 @@ public partial class ChatBox : Panel
 		if ( Input.Text.IsNullOrEmpty() )
 			return;
 
+		if ( Input.Text.Contains( '\n' ) || Input.Text.Contains( '\r' ) )
+			return;
+
 		if ( Input.Text == Strings.RTVCommand )
 		{
 			if ( Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) )
