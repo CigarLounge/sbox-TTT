@@ -37,6 +37,9 @@ public partial class Game
 
 	[ConVar.Server( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
 	public static bool KarmaLowAutoKick { get; set; } = true;
+
+	[ConVar.Server( "ttt_karma_min", Help = "The minimum karma a player can have before they get kicked.", Saved = true )]
+	public static int KarmaMinValue { get; set; } = 500;
 	#endregion
 
 	#region Map

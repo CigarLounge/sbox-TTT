@@ -11,7 +11,6 @@ public static class Karma
 	public const float FallOff = 0.25f;
 	public const float RoundHeal = 5;
 	public const float MaxValue = 1250;
-	public const float MinValue = 450;
 
 	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
 	{
@@ -74,7 +73,7 @@ public static class Karma
 		if ( player.BaseKarma >= DefaultValue )
 			return _karmaGroupList[^1];
 
-		var index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / _karmaGroupList.Length));
+		var index = (int)((player.BaseKarma - Game.KarmaMinValue - 1) / ((DefaultValue - Game.KarmaMinValue) / _karmaGroupList.Length));
 		return _karmaGroupList[index];
 	}
 
@@ -188,7 +187,7 @@ public static class Karma
 
 	private static bool CheckAutoKick( Player player )
 	{
-		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
+		return Game.KarmaLowAutoKick && player.BaseKarma < Game.KarmaMinValue;
 	}
 
 	[GameEvent.Round.End]
