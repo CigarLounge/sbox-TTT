@@ -12,7 +12,7 @@ public partial class Radar : Perk
 	private TimeUntil TimeUntilExecution { get; set; }
 
 	public override string SlotText => TimeUntilExecution.Relative.CeilToInt().ToString();
-	private readonly float _timeToExecute = 2f;
+	private readonly float _timeToExecute = 20f;
 	private RadarPointData[] _lastPositions;
 	private readonly List<UI.RadarPoint> _cachedPoints = new();
 	private readonly Color _defaultRadarColor = TeamExtensions.GetColor( Team.Innocents );
