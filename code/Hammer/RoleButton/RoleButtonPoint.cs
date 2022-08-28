@@ -39,6 +39,12 @@ public class RoleButtonPoint : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
+		if ( !_roleButton.IsValid() )
+		{
+			Delete();
+			return;
+		}
+
 		var screenPos = _roleButton.Position.ToScreen();
 
 		this.Enabled( screenPos.z > 0f );
