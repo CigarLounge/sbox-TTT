@@ -40,7 +40,7 @@ public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -120 )
 			.WorldOnly()
 			.Run();
-	
+
 		Position = trace.EndPosition;
 	}
 
