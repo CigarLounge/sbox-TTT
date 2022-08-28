@@ -19,7 +19,7 @@ public partial class Player
 	}
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
-	private int _targetSpectatorIndex = 0;
+	private int _spectatorIndex = 0;
 
 	public void ToggleForcedSpectator()
 	{
@@ -33,23 +33,21 @@ public partial class Player
 
 	public void UpdateSpectatedPlayer( int increment = 0 )
 	{
-		var oldSpectatedPlayer = CurrentPlayer;
 		var players = Utils.GetAlivePlayers();
-
 		if ( players.Count > 0 )
 		{
-			_targetSpectatorIndex += increment;
+			_spectatorIndex += increment;
 
-			if ( _targetSpectatorIndex >= players.Count )
-				_targetSpectatorIndex = 0;
-			else if ( _targetSpectatorIndex < 0 )
-				_targetSpectatorIndex = players.Count - 1;
+			if ( _spectatorIndex >= players.Count )
+				_spectatorIndex = 0;
+			else if ( _spectatorIndex < 0 )
+				_spectatorIndex = players.Count - 1;
 
-			CurrentPlayer = players[_targetSpectatorIndex];
+			CurrentPlayer = players[_spectatorIndex];
 		}
 
 		if ( Camera is ISpectateCamera camera )
-			camera.OnUpdateSpectatedPlayer( oldSpectatedPlayer, CurrentPlayer );
+			camera.OnUpdateSpectatedPlayer( CurrentPlayer );
 	}
 
 	public void MakeSpectator( bool useRagdollCamera = true )
@@ -64,54 +62,47 @@ public partial class Player
 
 		if ( Camera is not ISpectateCamera )
 			Camera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeSpectateCamera();
-
-		DelayedDeathCameraChange();
-	}
-
-	private async void DelayedDeathCameraChange()
-	{
-		// If the player is still watching their ragdoll, automatically
-		// move them to a free spectate camera.
-		await GameTask.DelaySeconds( 2 );
-
-		if ( Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
-			Camera = new FreeSpectateCamera();
 	}
 
 	private void ChangeSpectateCamera()
 	{
-		if ( !Input.Pressed( InputButton.Jump ) )
-			return;
-
-		if ( Camera is FollowEntityCamera || Camera is FirstPersonSpectatorCamera )
+		if ( !IsSpectatingPlayer && Camera is not FreeSpectateCamera and not FollowEntityCamera )
 		{
 			Camera = new FreeSpectateCamera();
 			return;
 		}
 
-		var spectatablePlayers = Utils.GetAlivePlayers().Count > 0;
-		if ( !spectatablePlayers )
-		{
-			if ( Camera is not FreeSpectateCamera )
-				Camera = new FreeSpectateCamera();
+		if ( !Input.Pressed( InputButton.Jump ) )
 			return;
-		}
 
-		if ( Camera is FreeSpectateCamera )
-			Camera = new ThirdPersonSpectateCamera();
-		else if ( Camera is ThirdPersonSpectateCamera )
-			Camera = new FirstPersonSpectatorCamera();
+		Camera = Camera switch
+		{
+			FreeSpectateCamera => new ThirdPersonSpectateCamera(),
+			ThirdPersonSpectateCamera => new FirstPersonSpectatorCamera(),
+			FollowEntityCamera or FirstPersonSpectatorCamera or _ => new FreeSpectateCamera(),
+		};
 	}
 
 	[GameEvent.Player.Killed]
-	private static void OnPlayerKilled( Player player )
+	private static async void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsClient )
+		if ( Host.IsServer )
 			return;
 
-		var localPlayer = Local.Pawn as Player;
+		if ( player.IsLocalPawn )
+		{
+			// If the player is still watching their ragdoll, automatically
+			// move them to a free spectate camera after two seconds.
+			await GameTask.DelaySeconds( 2 );
 
-		if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
-			localPlayer.Camera = new FreeSpectateCamera();
+			if ( !player.IsAlive() && player.Camera is FollowEntityCamera followCamera && followCamera.FollowedEntity is Corpse )
+				player.Camera = new FreeSpectateCamera();
+		}
+		else
+		{
+			var localPlayer = Local.Pawn as Player;
+			if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
+				localPlayer.Camera = new FreeSpectateCamera();
+		}
 	}
 }

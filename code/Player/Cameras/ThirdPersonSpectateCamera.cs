@@ -2,49 +2,46 @@ using Sandbox;
 
 namespace TTT;
 
-public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
+public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 {
-	private const int CameraDistance = 120;
+	public Player InitialSpectatedPlayer { get; set; }
+
+	private Player _owner;
 	private Vector3 _targetPos;
 	private Angles _lookAngles;
 
-	public override void Activated()
+	protected override void OnActivate()
 	{
-		base.Activated();
+		_owner = Entity as Player;
 
-		if ( Local.Pawn is not Player player )
-			return;
-
-		player.UpdateSpectatedPlayer();
+		if ( InitialSpectatedPlayer.IsValid() )
+			_owner.CurrentPlayer = InitialSpectatedPlayer;
+		else
+			_owner.UpdateSpectatedPlayer();
 	}
 
 	public override void Deactivated()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
-		player.CurrentPlayer = null;
+		// We don't need to remove the current player if we are swapping
+		// to a FirstPersonSpectatorCamera. It should be the same player.
+		if ( _owner.Camera is not FirstPersonSpectatorCamera )
+			_owner.CurrentPlayer = null;
 	}
 
 	public override void Update()
 	{
+		if ( !_owner.IsSpectatingPlayer )
+			return;
+
 		Rotation = Rotation.From( _lookAngles );
 
-		_targetPos = Vector3.Lerp( _targetPos, GetSpectatePoint(), 50f * RealTime.Delta );
+		_targetPos = Vector3.Lerp( _targetPos, _owner.CurrentPlayer.EyePosition, 50f * RealTime.Delta );
 
-		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -CameraDistance )
+		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -120 )
 			.WorldOnly()
 			.Run();
 
 		Position = trace.EndPosition;
-	}
-
-	private Vector3 GetSpectatePoint()
-	{
-		if ( Local.Pawn is not Player player || !player.IsSpectatingPlayer )
-			return Vector3.Zero;
-
-		return player.CurrentPlayer.EyePosition;
 	}
 
 	public override void BuildInput( InputBuilder input )
@@ -52,13 +49,10 @@ public class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles += input.AnalogLook;
 		_lookAngles.roll = 0;
 
-		if ( Local.Pawn is Player player )
-		{
-			if ( input.Pressed( InputButton.PrimaryAttack ) )
-				player.UpdateSpectatedPlayer( 1 );
-			else if ( input.Pressed( InputButton.SecondaryAttack ) )
-				player.UpdateSpectatedPlayer( -1 );
-		}
+		if ( input.Pressed( InputButton.PrimaryAttack ) )
+			_owner.UpdateSpectatedPlayer( 1 );
+		else if ( input.Pressed( InputButton.SecondaryAttack ) )
+			_owner.UpdateSpectatedPlayer( -1 );
 
 		base.BuildInput( input );
 	}

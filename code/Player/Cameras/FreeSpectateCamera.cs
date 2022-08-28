@@ -4,6 +4,7 @@ namespace TTT;
 
 public class FreeSpectateCamera : CameraMode, ISpectateCamera
 {
+	private Player _owner;
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
 	private float _moveSpeed;
@@ -12,7 +13,7 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 
 	public override void Activated()
 	{
-		base.Activated();
+		_owner = Entity as Player;
 
 		_targetPos = CurrentView.Position;
 		_targetRot = CurrentView.Rotation;
@@ -51,17 +52,19 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		_lookAngles.roll = 0;
 
 		if ( input.Pressed( InputButton.Use ) )
-			FindTargetProp();
+			FindSpectateTarget();
 
 		base.BuildInput( input );
 	}
 
-	private void FindTargetProp()
+	private void FindSpectateTarget()
 	{
 		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.UseDistance )
 			.Run();
 
 		if ( trace.Entity is Prop prop && prop.PhysicsBody is not null )
 			Player.Possess( prop.NetworkIdent );
+		else if ( trace.Entity is Player player )
+			_owner.Camera = new ThirdPersonSpectateCamera { InitialSpectatedPlayer = player };
 	}
 }
