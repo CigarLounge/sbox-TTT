@@ -16,7 +16,7 @@ public static class ListExtensions
 		while ( n > 1 )
 		{
 			n--;
-			var k = _random.Next( 0, n );
+			var k = _random.Next( 0, n + 1 );
 			(list[n], list[k]) = (list[k], list[n]);
 		}
 	}
