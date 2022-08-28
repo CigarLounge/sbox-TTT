@@ -29,6 +29,27 @@ public partial class Player
 	public Player LastSeenPlayer { get; set; }
 	public List<Player> PlayersKilled { get; set; } = new();
 
+	private string _lastWords;
+	private TimeSince _timeSinceLastWords;
+	public string LastWords
+	{
+		get
+		{
+			if ( _timeSinceLastWords > 3 )
+				_lastWords = string.Empty;
+
+			return _lastWords;
+		}
+		set
+		{
+			if ( !this.IsAlive() )
+				return;
+
+			_timeSinceLastWords = 0;
+			_lastWords = value;
+		}
+	}
+
 	private PlayerStatus _status;
 	public PlayerStatus Status
 	{

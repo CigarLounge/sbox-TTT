@@ -74,6 +74,11 @@ public partial class InspectMenu : Panel
 			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
 			"/ui/inspectmenu/c4note.png" );
 
+		if ( !_corpse.LastWords.IsNullOrEmpty() )
+			AddInspectEntry( "Last Words",
+			$"Their last words were... \"{_corpse.LastWords}\"",
+			"/ui/inspectmenu/lastwords.png" );
+
 		if ( !_corpse.Perks.IsNullOrEmpty() )
 		{
 			foreach ( var perk in _corpse.Perks )

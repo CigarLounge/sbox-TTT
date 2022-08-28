@@ -121,9 +121,14 @@ public partial class ChatBox : Panel
 		}
 
 		if ( player.CurrentChannel == Channel.All )
+		{
+			player.LastWords = message;
 			AddChat( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
+		}
 		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
+		{
 			AddChat( player.Team.ToClients(), player.Client.Name, message, player.CurrentChannel, player.Role.Info.ResourceId );
+		}
 	}
 
 	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
