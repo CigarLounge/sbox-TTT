@@ -39,25 +39,11 @@ public partial class Player
 	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
 	public bool CanHearAlivePlayers => MuteFilter != MuteFilter.AlivePlayers && MuteFilter != MuteFilter.All;
 
-	public string LastWords
-	{
-		get => _timeSinceLastWords < 3 ? _lastWords : string.Empty;
-		set => _lastWords = value;
-	}
-	private string _lastWords;
-	private TimeSince _timeSinceLastWords;
-
 	public static void ToggleMute()
 	{
 		var player = Local.Pawn as Player;
 
 		if ( ++player.MuteFilter > MuteFilter.All )
 			player.MuteFilter = MuteFilter.None;
-	}
-
-	public void SetLastWords( string lastMessage )
-	{
-		_timeSinceLastWords = 0;
-		LastWords = lastMessage;
 	}
 }

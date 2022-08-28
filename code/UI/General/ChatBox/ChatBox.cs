@@ -122,7 +122,7 @@ public partial class ChatBox : Panel
 
 		if ( player.CurrentChannel == Channel.All )
 		{
-			player.SetLastWords( message );
+			player.LastWords = message;
 			AddChat( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
 		}
 		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
