@@ -35,7 +35,7 @@ public partial class Player
 	{
 		get
 		{
-			if ( this.IsAlive() && _timeSinceLastWords > 3 )
+			if ( _timeSinceLastWords > 3 )
 				_lastWords = string.Empty;
 
 			return _lastWords;
@@ -165,7 +165,6 @@ public partial class Player
 		Confirmer = null;
 		Corpse = null;
 		LastSeenPlayer = null;
-		_lastWords = string.Empty;
 		PlayersKilled.Clear();
 	}
 
