@@ -76,7 +76,7 @@ public partial class InspectMenu : Panel
 
 		if ( !_corpse.LastWords.IsNullOrEmpty() )
 			AddInspectEntry( "Last Words",
-			$"Their last words were... \"{_corpse.Player.LastWords}\"",
+			$"Their last words were... \"{_corpse.LastWords}\"",
 			"/ui/inspectmenu/lastwords.png" );
 
 		if ( !_corpse.Perks.IsNullOrEmpty() )
