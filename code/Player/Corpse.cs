@@ -24,7 +24,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public Player Finder { get; private set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
-	public string LastWords { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 	public Player[] KillList { get; private set; }
 
@@ -98,8 +97,6 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )
 			C4Note = c4Note.SafeWireNumber.ToString();
-
-		LastWords = player.LastWords;
 
 		Perks = new PerkInfo[Player.Perks.Count];
 		for ( var i = 0; i < Player.Perks.Count; i++ )
@@ -216,7 +213,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( To.Single( client ), KillList, Perks, C4Note, LastWords, TimeUntilDNADecay );
+			SendMiscInfo( To.Single( client ), KillList, Perks, C4Note, Player.LastWords, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
 				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayer );
@@ -259,7 +256,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		Perks = perks;
 		C4Note = c4Note;
-		LastWords = lastWords;
+		Player.LastWords = lastWords;
 		TimeUntilDNADecay = dnaDecay;
 	}
 
