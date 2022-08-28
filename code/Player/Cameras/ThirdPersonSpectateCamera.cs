@@ -33,13 +33,14 @@ public partial class ThirdPersonSpectateCamera : CameraMode, ISpectateCamera
 		if ( !_owner.IsSpectatingPlayer )
 			return;
 
+		Rotation = Rotation.From( _lookAngles );
+
 		_targetPos = Vector3.Lerp( _targetPos, _owner.CurrentPlayer.EyePosition, 50f * RealTime.Delta );
 
 		var trace = Trace.Ray( _targetPos, _targetPos + Rotation.Forward * -120 )
 			.WorldOnly()
 			.Run();
-
-		Rotation = Rotation.From( _lookAngles );
+	
 		Position = trace.EndPosition;
 	}
 
