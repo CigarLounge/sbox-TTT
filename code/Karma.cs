@@ -5,12 +5,9 @@ namespace TTT;
 
 public static class Karma
 {
-	// Maybe turn these values into ServerVars down the line.
 	public const float CleanBonus = 30;
-	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
 	public const float RoundHeal = 5;
-	public const float MaxValue = 1250;
 
 	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
 	{
@@ -23,7 +20,7 @@ public static class Karma
 
 	public static float GetHurtReward( float damage, float multiplier )
 	{
-		return MaxValue * Math.Clamp( damage * multiplier, 0, 1 );
+		return Game.KarmaMaxValue * Math.Clamp( damage * multiplier, 0, 1 );
 	}
 
 	public static float GetHurtPenalty( float victimKarma, float damage, float multiplier )
@@ -33,7 +30,7 @@ public static class Karma
 
 	public static float GetKillReward( float multiplier )
 	{
-		return MaxValue * Math.Clamp( multiplier, 0, 1 );
+		return Game.KarmaMaxValue * Math.Clamp( multiplier, 0, 1 );
 	}
 
 	public static float GetKillPenalty( float victimKarma, float multiplier )
@@ -50,19 +47,19 @@ public static class Karma
 	private static void GiveReward( Player player, float reward )
 	{
 		reward = DecayMultiplier( player ) * reward;
-		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, MaxValue );
+		player.ActiveKarma = Math.Min( player.ActiveKarma + reward, Game.KarmaMaxValue );
 	}
 
 	private static float DecayMultiplier( Player player )
 	{
-		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
+		if ( FallOff <= 0 || player.ActiveKarma < Game.KarmaStartValue )
 			return 1;
 
-		if ( player.ActiveKarma >= MaxValue )
+		if ( player.ActiveKarma >= Game.KarmaMaxValue )
 			return 1;
 
-		var baseDiff = MaxValue - DefaultValue;
-		var plyDiff = player.ActiveKarma - DefaultValue;
+		var baseDiff = Game.KarmaMaxValue - Game.KarmaStartValue;
+		var plyDiff = player.ActiveKarma - Game.KarmaStartValue;
 		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
@@ -70,10 +67,10 @@ public static class Karma
 
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
-		if ( player.BaseKarma >= DefaultValue )
+		if ( player.BaseKarma >= Game.KarmaStartValue )
 			return _karmaGroupList[^1];
 
-		var index = (int)((player.BaseKarma - Game.KarmaMinValue - 1) / ((DefaultValue - Game.KarmaMinValue) / _karmaGroupList.Length));
+		var index = (int)((player.BaseKarma - Game.KarmaMinValue - 1) / ((Game.KarmaStartValue - Game.KarmaMinValue) / _karmaGroupList.Length));
 		return _karmaGroupList[index];
 	}
 
@@ -85,13 +82,13 @@ public static class Karma
 
 		player.TimeUntilClean = 0;
 
-		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
+		if ( !Game.KarmaEnabled || player.BaseKarma >= Game.KarmaStartValue )
 		{
 			player.DamageFactor = 1f;
 			return;
 		}
 
-		var k = player.BaseKarma - DefaultValue;
+		var k = player.BaseKarma - Game.KarmaStartValue;
 		var damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 
 		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
