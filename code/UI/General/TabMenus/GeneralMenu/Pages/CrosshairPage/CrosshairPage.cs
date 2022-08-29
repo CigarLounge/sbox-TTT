@@ -35,7 +35,7 @@ public partial class CrosshairPage : Panel
 	public void SaveCrosshairData()
 	{
 		if ( Crosshair.Instance is not null )
-			FileSystem.Data.WriteJson( "crosshair.json", Crosshair.Instance.Config );
+			FileSystem.Data.WriteJson( Crosshair.FilePath, Crosshair.Instance.Config );
 
 		GeneralMenu.Instance.PopPage();
 	}

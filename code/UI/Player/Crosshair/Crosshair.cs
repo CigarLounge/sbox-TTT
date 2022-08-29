@@ -5,7 +5,7 @@ namespace TTT.UI;
 
 public class Crosshair : Panel
 {
-	private const string FilePath = "crosshair.json";
+	public const string FilePath = "crosshair.json";
 
 	public class Properties
 	{
