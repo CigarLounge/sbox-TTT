@@ -69,12 +69,12 @@ public class RandomWeapon : Entity
 		if ( !_cachedWeaponTypes.IsNullOrEmpty() )
 			return;
 
-		var weapons = TypeLibrary.GetTypes<Weapon>();
-		foreach ( var weaponType in weapons )
+		var weapons = TypeLibrary.GetDescriptions<Weapon>();
+		foreach ( var weaponDesc in weapons )
 		{
-			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponType );
+			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponDesc.TargetType );
 			if ( weaponInfo is not null && weaponInfo.Spawnable )
-				_cachedWeaponTypes.Add( weaponType );
+				_cachedWeaponTypes.Add( weaponDesc.TargetType );
 		}
 	}
 }
