@@ -50,7 +50,7 @@ public partial class MapSelectionState : BaseState
 		state.Votes[player.Client] = map;
 	}
 
-	private static List<string> GetLocalMapIdents()
+	private static async Task<List<string>> GetLocalMapIdents()
 	{
 		var maps = new List<string>();
 
@@ -59,8 +59,13 @@ public partial class MapSelectionState : BaseState
 			return maps;
 
 		var splitMaps = rawMaps.Split( "\n" );
-		foreach ( var map in splitMaps )
-			maps.Add( map.Trim() );
+		foreach ( var rawMap in splitMaps )
+		{
+			var mapIdent = rawMap.Trim();
+			var package = await Package.Fetch( mapIdent, true );
+			if ( package is not null && package.PackageType == Package.Type.Map )
+				maps.Add( mapIdent );
+		}
 
 		return maps;
 	}
@@ -83,7 +88,7 @@ public partial class MapSelectionState : BaseState
 	[Event.Entity.PostSpawn]
 	private static async void OnFinishedLoading()
 	{
-		var maps = GetLocalMapIdents();
+		var maps = await GetLocalMapIdents();
 		if ( maps.IsNullOrEmpty() )
 			maps = await GetRemoteMapIdents();
 
