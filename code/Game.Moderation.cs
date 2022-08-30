@@ -56,7 +56,10 @@ public partial class Game : Sandbox.Game
 	public static void BanPlayer( Client client, string reason, bool saveBan )
 	{
 		if ( _bannedClients.Any( ( bannedClient ) => bannedClient.SteamId == client.PlayerId ) )
+		{
+			Log.Error( $"{client.Name} is already banned!" );
 			return;
+		}
 
 		client.Kick();
 		_bannedClients.Add( new BannedClient { SteamId = client.PlayerId, Reason = reason } );
