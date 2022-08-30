@@ -6,8 +6,9 @@ namespace TTT.UI;
 [UseTemplate]
 public class SpectatingHint : Panel
 {
-	private Panel SwapPanel { get; set; }
-	private Label PlayerName { get; set; }
+	private Panel PropPossessHint { get; init; }
+	private Panel SwapSpectatingPlayerPanel { get; init; }
+	private Label PlayerName { get; init; }
 	private Label SpectatingHintLabel { get; init; }
 	private InputGlyph SpectatingGlyph { get; init; }
 
@@ -22,7 +23,11 @@ public class SpectatingHint : Panel
 		if ( !this.IsEnabled() )
 			return;
 
-		if ( player.Prop.IsValid() )
+		var isPossessingProp = player.Prop.IsValid();
+
+		PropPossessHint.Enabled( !isPossessingProp );
+
+		if ( isPossessingProp )
 		{
 			SpectatingGlyph.SetButton( InputButton.Duck );
 			SpectatingHintLabel.SetText( "to no longer possess the prop" );
@@ -33,8 +38,8 @@ public class SpectatingHint : Panel
 			SpectatingHintLabel.SetText( "to change spectating camera mode" );
 		}
 
-		SwapPanel.EnableFade( player.IsSpectatingPlayer );
-		if ( SwapPanel.IsEnabled() )
+		SwapSpectatingPlayerPanel.EnableFade( player.IsSpectatingPlayer );
+		if ( SwapSpectatingPlayerPanel.IsEnabled() )
 		{
 			PlayerName.Text = player.CurrentPlayer?.Client?.Name;
 			PlayerName.Style.FontColor = player.CurrentPlayer?.Role?.Color;
