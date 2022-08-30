@@ -5,13 +5,24 @@ namespace TTT;
 
 public static class Karma
 {
-	// Maybe turn these values into ServerVars down the line.
+	[ConVar.Server( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
+	public static bool Enabled { get; set; } = true;
+
+	[ConVar.Server( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
+	public static bool LowAutoKick { get; set; } = true;
+
+	[ConVar.Server( "ttt_karma_start", Help = "The starting karma value a player begins with.", Saved = true )]
+	public static int StartValue { get; set; } = 1000;
+
+	[ConVar.Server( "ttt_karma_max", Help = "The maximum karma value a player can have.", Saved = true )]
+	public static int MaxValue { get; set; } = 1250;
+
+	[ConVar.Server( "ttt_karma_min", Help = "The minimum karma a player can have before they get kicked.", Saved = true )]
+	public static int MinValue { get; set; } = 500;
+
 	public const float CleanBonus = 30;
-	public const float DefaultValue = 1000;
 	public const float FallOff = 0.25f;
 	public const float RoundHeal = 5;
-	public const float MaxValue = 1250;
-	public const float MinValue = 450;
 
 	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
 	{
@@ -56,14 +67,14 @@ public static class Karma
 
 	private static float DecayMultiplier( Player player )
 	{
-		if ( FallOff <= 0 || player.ActiveKarma < DefaultValue )
+		if ( FallOff <= 0 || player.ActiveKarma < StartValue )
 			return 1;
 
 		if ( player.ActiveKarma >= MaxValue )
 			return 1;
 
-		var baseDiff = MaxValue - DefaultValue;
-		var plyDiff = player.ActiveKarma - DefaultValue;
+		var baseDiff = MaxValue - StartValue;
+		var plyDiff = player.ActiveKarma - StartValue;
 		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
@@ -71,10 +82,10 @@ public static class Karma
 
 	public static ColorGroup GetKarmaGroup( Player player )
 	{
-		if ( player.BaseKarma >= DefaultValue )
+		if ( player.BaseKarma >= StartValue )
 			return _karmaGroupList[^1];
 
-		var index = (int)((player.BaseKarma - MinValue - 1) / ((DefaultValue - MinValue) / _karmaGroupList.Length));
+		var index = (int)((player.BaseKarma - MinValue - 1) / ((StartValue - MinValue) / _karmaGroupList.Length));
 		return _karmaGroupList[index];
 	}
 
@@ -86,13 +97,13 @@ public static class Karma
 
 		player.TimeUntilClean = 0;
 
-		if ( !Game.KarmaEnabled || player.BaseKarma >= DefaultValue )
+		if ( !Enabled || player.BaseKarma >= StartValue )
 		{
 			player.DamageFactor = 1f;
 			return;
 		}
 
-		var k = player.BaseKarma - DefaultValue;
+		var k = player.BaseKarma - StartValue;
 		var damageFactor = 1 + (0.0007f * k) + (-0.000002f * (k * k));
 
 		player.DamageFactor = Math.Clamp( damageFactor, 0.1f, 1f );
@@ -188,7 +199,7 @@ public static class Karma
 
 	private static bool CheckAutoKick( Player player )
 	{
-		return Game.KarmaLowAutoKick && player.BaseKarma < MinValue;
+		return LowAutoKick && player.BaseKarma < MinValue;
 	}
 
 	[GameEvent.Round.End]
@@ -204,7 +215,7 @@ public static class Karma
 			RoundIncrement( player );
 			Rebase( player );
 
-			if ( Game.KarmaEnabled && CheckAutoKick( player ) )
+			if ( Enabled && CheckAutoKick( player ) )
 				client.Kick();
 		}
 	}
