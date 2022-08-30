@@ -14,7 +14,7 @@ public partial class CrosshairPage : Panel
 	public int Thickness { get; set; } = 5;
 	public int Gap { get; set; } = 0;
 
-	public Color SelectedColor { get; set; } = Color.White;
+	public ColorHsv SelectedColor { get; set; } = Color.White;
 
 	public CrosshairPage()
 	{
