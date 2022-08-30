@@ -40,7 +40,7 @@ public partial class Game : Sandbox.Game
 		}
 	}
 
-	[ConCmd.Admin( Name = "ttt_ban_steamid", Help = "Ban the user from the server" )]
+	[ConCmd.Admin( Name = "ttt_ban_steamid", Help = "Ban the user with the steamid" )]
 	public static void BanPlayerWithSteamID( long steamId, string reason = "" )
 	{
 		foreach ( var client in Client.All )
@@ -51,6 +51,14 @@ public partial class Game : Sandbox.Game
 			BanPlayer( client, reason, true );
 			break;
 		}
+	}
+
+	[ConCmd.Admin( Name = "ttt_removeban_steamid", Help = "Remove the ban from a user" )]
+	public static void RemoveBanWithSteamId( long steamId )
+	{
+		var bansRemoved = _bannedClients.RemoveAll( ( bannedClient ) => bannedClient.SteamId == steamId );
+		if ( bansRemoved > 0 )
+			FileSystem.Data.WriteJson( BanFilePath, _bannedClients );
 	}
 
 	public static void BanPlayer( Client client, string reason, bool saveBan )
