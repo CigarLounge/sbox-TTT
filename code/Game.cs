@@ -23,6 +23,7 @@ public partial class Game : Sandbox.Game
 		if ( IsClient )
 			_ = new UI.Hud();
 
+		LoadBannedClients();
 		LoadResources();
 	}
 

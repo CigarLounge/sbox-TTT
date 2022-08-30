@@ -205,7 +205,7 @@ public static class Karma
 			Rebase( player );
 
 			if ( Game.KarmaEnabled && CheckAutoKick( player ) )
-				client.Kick();
+				Game.BanPlayer( player.Client, "Karma did not meet minimum threshold!", false );
 		}
 	}
 
