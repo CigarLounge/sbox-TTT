@@ -39,7 +39,7 @@ public class ScoreboardEntry : Panel
 
 		PlayerName.Text = _client.Name;
 
-		Karma.Enabled( Game.KarmaEnabled );
+		Karma.Enabled( TTT.Karma.Enabled );
 
 		if ( Karma.IsEnabled() )
 			Karma.Text = MathF.Round( player.BaseKarma ).ToString();

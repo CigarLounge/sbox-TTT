@@ -31,23 +31,6 @@ public partial class Game
 	public static bool PreventWin { get; set; }
 	#endregion
 
-	#region Karma
-	[ConVar.Server( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
-	public static bool KarmaEnabled { get; set; } = true;
-
-	[ConVar.Server( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
-	public static bool KarmaLowAutoKick { get; set; } = true;
-
-	[ConVar.Server( "ttt_karma_max", Help = "The maximum karma value a player can have.", Saved = true )]
-	public static int KarmaMaxValue { get; set; } = 1250;
-
-	[ConVar.Server( "ttt_karma_start", Help = "The starting karma value a player begins with.", Saved = true )]
-	public static int KarmaStartValue { get; set; } = 1000;
-
-	[ConVar.Server( "ttt_karma_min", Help = "The minimum karma a player can have before they get kicked.", Saved = true )]
-	public static int KarmaMinValue { get; set; } = 500;
-	#endregion
-
 	#region Map
 	[ConVar.Server( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
