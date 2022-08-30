@@ -7,9 +7,6 @@ namespace TTT;
 
 public partial class MapSelectionState : BaseState
 {
-	[Net, Change]
-	public static IList<string> MapIdents { get; private set; }
-
 	[Net]
 	public IDictionary<Client, string> Votes { get; private set; }
 
@@ -20,7 +17,7 @@ public partial class MapSelectionState : BaseState
 	{
 		if ( Votes.Count == 0 )
 		{
-			Global.ChangeLevel( !MapIdents.IsNullOrEmpty() ? MapIdents.ElementAt( Rand.Int( 0, MapIdents.Count - 1 ) ) : Game.DefaultMap );
+			Global.ChangeLevel( !Game.Current.MapVoteIdents.IsNullOrEmpty() ? Game.Current.MapVoteIdents.ElementAt( Rand.Int( 0, Game.Current.MapVoteIdents.Count - 1 ) ) : Game.DefaultMap );
 			return;
 		}
 
@@ -79,11 +76,6 @@ public partial class MapSelectionState : BaseState
 		return packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
 
-	private static void OnMapIdentsChange( IList<string> old, IList<string> newValue )
-	{
-		Log.Info( newValue );
-	}
-
 	[Event.Entity.PostSpawn]
 	private static async void OnFinishedLoading()
 	{
@@ -91,6 +83,7 @@ public partial class MapSelectionState : BaseState
 		if ( maps.IsNullOrEmpty() )
 			maps = await GetRemoteMapIdents();
 
-		MapIdents = maps;
+		maps.Shuffle();
+		Game.Current.MapVoteIdents = maps;
 	}
 }

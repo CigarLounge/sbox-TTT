@@ -25,10 +25,12 @@ public partial class MapVotePanel : Panel
 				panel.Delete( true );
 		}
 
-		var mapIdents = MapSelectionState.MapIdents;
+		var mapIdents = Game.Current.MapVoteIdents;
+		if ( mapIdents.IsNullOrEmpty() )
+			return;
 
-		// foreach ( var ident in mapIdents )
-		// 	AddMap( ident );
+		foreach ( var ident in mapIdents )
+			AddMap( ident );
 	}
 
 	private MapIcon AddMap( string fullIdent )

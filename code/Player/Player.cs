@@ -181,9 +181,6 @@ public partial class Player : AnimatedEntity
 
 		SimulateActiveCarriable();
 
-		if ( Host.IsClient )
-			Log.Info( MapSelectionState.MapIdents );
-
 		if ( this.IsAlive() )
 		{
 			SimulateFlashlight();

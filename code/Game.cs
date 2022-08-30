@@ -12,6 +12,9 @@ public partial class Game : Sandbox.Game
 	private BaseState _lastState;
 
 	[Net]
+	public IList<string> MapVoteIdents { get; set; }
+
+	[Net]
 	public int TotalRoundsPlayed { get; set; }
 
 	public int RTVCount { get; set; }
