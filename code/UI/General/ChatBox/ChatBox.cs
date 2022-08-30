@@ -33,11 +33,6 @@ public partial class ChatBox : Panel
 	{
 		Instance = this;
 
-		Sandbox.Hooks.Chat.OnOpenChat += () =>
-		{
-			IsOpen = !IsOpen;
-		};
-
 		EntryCanvas.PreferScrollToBottom = true;
 		EntryCanvas.TryScrollToBottom();
 
@@ -48,10 +43,13 @@ public partial class ChatBox : Panel
 
 	public override void Tick()
 	{
-		if ( !IsOpen )
+		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( Local.Pawn is not Player player )
+		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
+			IsOpen = true;
+
+		if ( !IsOpen )
 			return;
 
 		switch ( player.CurrentChannel )
