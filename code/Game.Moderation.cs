@@ -36,6 +36,7 @@ public partial class Game : Sandbox.Game
 
 			_bannedClients.Remove( bannedClient );
 			FileSystem.Data.WriteJson( BanFilePath, _bannedClients );
+			break;
 		}
 
 		return true;
