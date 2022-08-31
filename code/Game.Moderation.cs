@@ -1,4 +1,5 @@
 using Sandbox;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,17 +9,13 @@ public struct BannedClient
 {
 	public long SteamId { get; set; }
 	public string Reason { get; set; }
+	public DateTime Length { get; set; }
 }
 
 public partial class Game : Sandbox.Game
 {
 	private const string BanFilePath = "bans.json";
 	private static List<BannedClient> _bannedClients = new();
-
-	public override bool ShouldConnect( long playerId )
-	{
-		return !_bannedClients.Any( ( bannedClient ) => bannedClient.SteamId == playerId );
-	}
 
 	private void LoadBannedClients()
 	{
@@ -27,23 +24,25 @@ public partial class Game : Sandbox.Game
 			_bannedClients = clients;
 	}
 
-	[ConCmd.Admin( Name = "ttt_ban_name", Help = "Ban the client with the following name." )]
-	public static void BanPlayerWithName( string name, string reason = "" )
+	public override bool ShouldConnect( long playerId )
 	{
-		foreach ( var client in Client.All )
+		foreach ( var bannedClient in _bannedClients )
 		{
-			if ( client.Name != name )
+			if ( bannedClient.SteamId != playerId )
 				continue;
 
-			BanPlayer( client, reason, true );
-			return;
+			if ( bannedClient.Length >= DateTime.Now )
+				return false;
+
+			_bannedClients.Remove( bannedClient );
+			FileSystem.Data.WriteJson( BanFilePath, _bannedClients );
 		}
 
-		Log.Warning( $"Unable to find player with name {name}" );
+		return true;
 	}
 
-	[ConCmd.Admin( Name = "ttt_ban_steamid", Help = "Ban the client with the following steam id." )]
-	public static void BanPlayerWithSteamId( string rawSteamId, string reason = "" )
+	[ConCmd.Admin( Name = "ttt_ban", Help = "Ban the client with the following steam id." )]
+	public static void BanPlayer( string rawSteamId, int minutes = default, string reason = "" )
 	{
 		var steamId = long.Parse( rawSteamId );
 
@@ -52,7 +51,16 @@ public partial class Game : Sandbox.Game
 			if ( client.PlayerId != steamId )
 				continue;
 
-			BanPlayer( client, reason, true );
+			client.Kick();
+			_bannedClients.Add(
+				new BannedClient
+				{
+					SteamId = client.PlayerId,
+					Length = minutes == default ? DateTime.MaxValue : DateTime.Now.AddMinutes( minutes ),
+					Reason = reason
+				}
+			);
+			FileSystem.Data.WriteJson( BanFilePath, _bannedClients );
 			return;
 		}
 
@@ -77,38 +85,8 @@ public partial class Game : Sandbox.Game
 		Log.Warning( $"Unable to find player with steam id {rawSteamId}" );
 	}
 
-	public static void BanPlayer( Client client, string reason, bool writeBan )
-	{
-		if ( _bannedClients.Any( ( bannedClient ) => bannedClient.SteamId == client.PlayerId ) )
-		{
-			Log.Warning( $"{client.Name} is already banned!" );
-			return;
-		}
-
-		client.Kick();
-		_bannedClients.Add( new BannedClient { SteamId = client.PlayerId, Reason = reason } );
-
-		if ( writeBan )
-			FileSystem.Data.WriteJson( BanFilePath, _bannedClients );
-	}
-
-	[ConCmd.Admin( Name = "ttt_kick_name", Help = "Kick the client with the following name." )]
-	public static void KickPlayerWithName( string name )
-	{
-		foreach ( var client in Client.All )
-		{
-			if ( client.Name != name )
-				continue;
-
-			client.Kick();
-			return;
-		}
-
-		Log.Warning( $"Unable to find player with name {name}" );
-	}
-
-	[ConCmd.Admin( Name = "ttt_kick_steamid", Help = "Kick the client with the following steam id." )]
-	public static void KickPlayerWithSteamId( string rawSteamId )
+	[ConCmd.Admin( Name = "ttt_kick", Help = "Kick the client with the following steam id." )]
+	public static void KickPlayer( string rawSteamId )
 	{
 		var steamId = long.Parse( rawSteamId );
 
