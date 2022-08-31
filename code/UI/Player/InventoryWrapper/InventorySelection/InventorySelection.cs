@@ -42,7 +42,7 @@ public class InventorySelection : Panel
 
 		foreach ( var carriable in player.Inventory )
 		{
-			if ( !_entries.ContainsKey( carriable ) )
+			if ( !_entries.ContainsKey( carriable ) && (carriable.Info.Spawnable || player.IsRoleKnown) )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
