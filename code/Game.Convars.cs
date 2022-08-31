@@ -26,6 +26,11 @@ public partial class Game
 	public static int MapSelectionTime { get; set; } = 15;
 	#endregion
 
+	#region Spectating
+	[ConVar.Replicated( "ttt_spectating_info", Help = "When enabled provides spectating info such as the player's weapons and perks.", Saved = true )]
+	public static bool SpectatingInfo { get; set; } = true;
+	#endregion
+
 	#region Debug
 	[ConVar.Server( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
 	public static bool PreventWin { get; set; }

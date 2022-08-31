@@ -38,20 +38,21 @@ public class InventorySelection : Panel
 	{
 		base.Tick();
 
-		var player = (Local.Pawn as Player).CurrentPlayer;
+		var player = Local.Pawn as Player;
+		var currentPlayer = Game.SpectatingInfo ? player.CurrentPlayer : player;
 
-		foreach ( var carriable in player.Inventory )
+		foreach ( var carriable in currentPlayer.Inventory )
 		{
 			if ( !_entries.ContainsKey( carriable ) )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 
-		var activeChild = player.ActiveCarriable;
+		var activeChild = currentPlayer.ActiveCarriable;
 		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
 
 		foreach ( var slot in _entries.Values )
 		{
-			if ( !player.Inventory.Contains( slot.Carriable ) )
+			if ( !currentPlayer.Inventory.Contains( slot.Carriable ) )
 			{
 				_entries.Remove( slot.Carriable );
 				slot?.Delete();

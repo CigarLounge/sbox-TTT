@@ -14,8 +14,9 @@ public class PerkDisplay : Panel
 		base.Tick();
 
 		var player = Local.Pawn as Player;
+		var currentPlayer = Game.SpectatingInfo ? player.CurrentPlayer : player;
 
-		foreach ( var perk in player.Perks )
+		foreach ( var perk in currentPlayer.Perks )
 		{
 			if ( !_entries.ContainsKey( perk ) )
 			{
@@ -28,7 +29,7 @@ public class PerkDisplay : Panel
 			var perk = keyValue.Key;
 			var slot = keyValue.Value;
 
-			if ( !player.Perks.Contains( perk ) )
+			if ( !currentPlayer.Perks.Contains( perk ) )
 			{
 				_entries.Remove( perk );
 				slot?.Delete();
