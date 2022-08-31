@@ -27,8 +27,8 @@ public partial class Game
 	#endregion
 
 	#region Spectating
-	[ConVar.Replicated( "ttt_spectating_info", Help = "When enabled provides spectating info such as the player's weapons and perks.", Saved = true )]
-	public static bool SpectatingInfo { get; set; } = true;
+	[ConVar.Replicated( "ttt_spectating_info", Help = "When enabled provides additional spectating info such as the player's weapons and perks.", Saved = true )]
+	public static bool SpectatingInfo { get; set; }
 	#endregion
 
 	#region Debug

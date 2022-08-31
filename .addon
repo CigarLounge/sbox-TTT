@@ -114,6 +114,13 @@
         "ConVarName": "ttt_proximity_chat",
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
+      },
+      "ttt_spectating_info": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_spectating_info",
+        "DisplayName": "Extra Spectating Info",
+        "DefaultValue": "false"
       }
     }
   }
