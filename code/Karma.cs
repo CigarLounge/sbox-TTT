@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Collections.Generic;
 
 namespace TTT;
 
@@ -19,6 +20,8 @@ public static class Karma
 
 	[ConVar.Server( "ttt_karma_min", Help = "The minimum karma a player can have before they get kicked.", Saved = true )]
 	public static int MinValue { get; set; } = 500;
+
+	public static Dictionary<long, float> SavedPlayerValues { get; private set; } = new();
 
 	public const float CleanBonus = 30;
 	public const float FallOff = 0.25f;
@@ -223,5 +226,17 @@ public static class Karma
 	private static void Rebase( Player player )
 	{
 		player.BaseKarma = player.ActiveKarma;
+	}
+
+	[GameEvent.Client.Joined]
+	private static void InitClientKarma( Client client )
+	{
+		client.SetValue( Strings.Karma, SavedPlayerValues.TryGetValue( client.PlayerId, out var value ) ? value : StartValue );
+	}
+
+	[GameEvent.Client.Disconnected]
+	private static void SaveKarma( Client client )
+	{
+		SavedPlayerValues[client.PlayerId] = (client.Pawn as Player).ActiveKarma;
 	}
 }

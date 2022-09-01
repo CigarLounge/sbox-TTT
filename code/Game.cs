@@ -23,7 +23,6 @@ public partial class Game : Sandbox.Game
 		if ( IsClient )
 			_ = new UI.Hud();
 
-		LoadBannedClients();
 		LoadResources();
 	}
 
@@ -57,6 +56,14 @@ public partial class Game : Sandbox.Game
 		// Do nothing. Base implementation just adds to a kill feed and prints to console.
 	}
 
+	public override bool ShouldConnect( long playerId )
+	{
+		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
+			return value >= Karma.MinValue;
+
+		return true;
+	}
+
 	public override void ClientJoined( Client client )
 	{
 		Event.Run( GameEvent.Client.Joined, client );
@@ -70,7 +77,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Event.Run( GameEvent.Client.Disconnected, client, reason );
+		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );

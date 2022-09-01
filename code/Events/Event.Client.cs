@@ -23,12 +23,11 @@ public static partial class GameEvent
 		/// <summary>
 		/// Called everytime a player leaves the game.
 		/// <para><strong>Parameters:</strong></para>
-		/// <para>The <see cref="Sandbox.Client"/> that joined.</para>
-		/// <para>The <see cref="NetworkDisconnectionReason"/></para>
+		/// <para>The <see cref="Sandbox.Client"/> that disconnected.</para>
 		/// </summary>
-		public class ClientDisconnectedAttribute : EventAttribute
+		public class DisconnectedAttribute : EventAttribute
 		{
-			public ClientDisconnectedAttribute() : base( Disconnected ) { }
+			public DisconnectedAttribute() : base( Disconnected ) { }
 		}
 	}
 }
