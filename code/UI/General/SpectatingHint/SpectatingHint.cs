@@ -14,8 +14,6 @@ public class SpectatingHint : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		if ( Local.Pawn is not Player player )
 			return;
 
@@ -39,7 +37,7 @@ public class SpectatingHint : Panel
 		}
 
 		SwapSpectatingPlayerPanel.EnableFade( player.IsSpectatingPlayer );
-		if ( SwapSpectatingPlayerPanel.IsEnabled() )
+		if ( player.IsSpectatingPlayer )
 		{
 			PlayerName.Text = player.CurrentPlayer?.Client?.Name;
 			PlayerName.Style.FontColor = player.CurrentPlayer?.Role?.Color;
