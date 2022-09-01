@@ -59,7 +59,7 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 
 	private void FindSpectateTarget()
 	{
-		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.UseDistance )
+		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.MaxHintDistance )
 			.Run();
 
 		if ( trace.Entity is Prop prop && prop.PhysicsBody is not null )

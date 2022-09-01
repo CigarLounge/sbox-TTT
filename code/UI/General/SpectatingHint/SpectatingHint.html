@@ -2,7 +2,7 @@
 
 <root>
     <div class="text-shadow" style="align-items: center; flex-direction: column;">
-        <div @ref="SwapPanel" class="swap-panel">
+        <div @ref="SwapSpectatingPlayerPanel" class="swap-panel">
             <text @ref="PlayerName" class="name"></text>
             <div style="align-items: center;">
                 <text>Press</text>
@@ -11,6 +11,12 @@
                 <inputglyph button="SecondaryAttack" />
                 <text>to swap active player</text>
             </div>
+        </div>
+
+        <div @ref="FindTargetHit" style="align-items: center;">
+            <text>Press</text>
+            <inputglyph @ref="SpectatingGlyph" button="Use" />
+            <text>to spectate a player or possess a prop</text>
         </div>
 
         <div style="align-items: center;">
