@@ -13,11 +13,14 @@ public struct BannedClient
 
 public partial class Game : Sandbox.Game
 {
-	public const string BanFilePath = "bans.json";
 	public static readonly List<BannedClient> BannedClients = new();
+	public const string BanFilePath = "bans.json";
 
 	public override bool ShouldConnect( long playerId )
 	{
+		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
+			return value >= Karma.MinValue;
+
 		foreach ( var bannedClient in BannedClients )
 		{
 			if ( bannedClient.SteamId != playerId )
@@ -29,9 +32,6 @@ public partial class Game : Sandbox.Game
 			BannedClients.Remove( bannedClient );
 			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 		}
-
-		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
-			return value >= Karma.MinValue;
 
 		return true;
 	}

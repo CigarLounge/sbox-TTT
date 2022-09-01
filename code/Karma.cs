@@ -219,7 +219,7 @@ public static class Karma
 			Rebase( player );
 
 			if ( Enabled && CheckAutoKick( player ) )
-				player.Client.Kick();
+				client.Kick();
 		}
 	}
 
