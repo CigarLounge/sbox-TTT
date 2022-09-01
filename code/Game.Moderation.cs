@@ -57,7 +57,7 @@ public partial class Game : Sandbox.Game
 			return;
 		}
 
-		// Player isn't currently in the game, we should ban anyways.
+		// Player isn't currently in the server, we should ban anyways.
 		BannedClients.Add(
 			new BannedClient
 			{
