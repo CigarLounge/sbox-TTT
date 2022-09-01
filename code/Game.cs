@@ -26,8 +26,10 @@ public partial class Game : Sandbox.Game
 		if ( IsClient )
 			_ = new UI.Hud();
 
+		if ( Host.IsServer )
+			LoadBannedClients();
+
 		LoadResources();
-		LoadBannedClients();
 	}
 
 	/// <summary>
@@ -128,6 +130,9 @@ public partial class Game : Sandbox.Game
 
 	public override void Shutdown()
 	{
+		if ( Host.IsClient )
+			return;
+
 		FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
