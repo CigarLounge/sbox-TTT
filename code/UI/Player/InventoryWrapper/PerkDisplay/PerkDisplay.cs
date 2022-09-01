@@ -15,12 +15,9 @@ public class PerkDisplay : Panel
 
 		var player = (Local.Pawn as Player).CurrentPlayer;
 
-		if ( !player.IsRoleKnown )
-			return;
-
 		foreach ( var perk in player.Perks )
 		{
-			if ( !_entries.ContainsKey( perk ) )
+			if ( !_entries.ContainsKey( perk ) && player.IsRoleKnown )
 			{
 				_entries[perk] = AddPerkSlot( perk );
 			}
