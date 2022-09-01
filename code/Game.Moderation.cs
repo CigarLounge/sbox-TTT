@@ -36,7 +36,7 @@ public partial class Game : Sandbox.Game
 		return true;
 	}
 
-	private void LoadBannedClients()
+	private static void LoadBannedClients()
 	{
 		var clients = FileSystem.Data.ReadJson<List<BannedClient>>( BanFilePath );
 		if ( !clients.IsNullOrEmpty() )
