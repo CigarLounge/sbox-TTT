@@ -61,6 +61,8 @@ public partial class MapSelectionState : BaseState
 			var package = await Package.Fetch( mapIdent, true );
 			if ( package is not null && package.PackageType == Package.Type.Map )
 				maps.Add( mapIdent );
+			else
+				Log.Error( $"{mapIdent} does not exist as a s&box map!" );
 		}
 
 		return maps;
