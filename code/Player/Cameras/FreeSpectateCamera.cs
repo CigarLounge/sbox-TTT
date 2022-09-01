@@ -59,12 +59,9 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 
 	private void FindSpectateTarget()
 	{
-		var trace = Trace.Ray( Position, Position + Rotation.Forward * Player.MaxHintDistance )
-			.Run();
-
-		if ( trace.Entity is Prop prop && prop.PhysicsBody is not null )
+		if ( _owner.HoveredEntity is Prop prop && prop.PhysicsBody is not null )
 			Player.Possess( prop.NetworkIdent );
-		else if ( trace.Entity is Player player )
+		else if ( _owner.HoveredEntity is Player player )
 			_owner.Camera = new ThirdPersonSpectateCamera { InitialSpectatedPlayer = player };
 	}
 }
