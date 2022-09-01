@@ -5,19 +5,6 @@ namespace TTT;
 
 public partial class Game
 {
-
-	[ConCmd.Admin( Name = "ttt_ban", Help = "Ban the client with the following steam id." )]
-	public static void Ban( string rawSteamId )
-	{
-		var steamId = long.Parse( rawSteamId );
-
-		foreach ( var client in Client.All )
-		{
-			if ( client.PlayerId == steamId )
-				client.Ban();
-		}
-	}
-
 	[ConCmd.Admin( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( int id = 0 )
 	{

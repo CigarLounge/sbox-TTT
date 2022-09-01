@@ -24,6 +24,7 @@ public partial class Game : Sandbox.Game
 			_ = new UI.Hud();
 
 		LoadResources();
+		LoadBannedClients();
 	}
 
 	/// <summary>
@@ -54,14 +55,6 @@ public partial class Game : Sandbox.Game
 	public override void OnKilled( Entity pawn )
 	{
 		// Do nothing. Base implementation just adds to a kill feed and prints to console.
-	}
-
-	public override bool ShouldConnect( long playerId )
-	{
-		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
-			return value >= Karma.MinValue;
-
-		return true;
 	}
 
 	public override void ClientJoined( Client client )
