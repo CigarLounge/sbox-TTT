@@ -17,6 +17,5 @@ public static class ClientExtensions
 				Reason = reason
 			}
 		);
-		FileSystem.Data.WriteJson( Game.BanFilePath, Game.BannedClients );
 	}
 }

@@ -30,7 +30,6 @@ public partial class Game : Sandbox.Game
 				return false;
 
 			BannedClients.Remove( bannedClient );
-			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 		}
 
 		return true;
@@ -71,7 +70,6 @@ public partial class Game : Sandbox.Game
 				continue;
 
 			BannedClients.Remove( bannedClient );
-			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 			return;
 		}
 

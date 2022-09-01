@@ -123,6 +123,11 @@ public partial class Game : Sandbox.Game
 		ForceStateChange( new WaitingState() );
 	}
 
+	public override void Shutdown()
+	{
+		FileSystem.Data.WriteJson( BanFilePath, BannedClients );
+	}
+
 	[Event.Tick]
 	private void Tick()
 	{
