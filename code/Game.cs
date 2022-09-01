@@ -24,6 +24,7 @@ public partial class Game : Sandbox.Game
 			_ = new UI.Hud();
 
 		LoadResources();
+		LoadBannedClients();
 	}
 
 	/// <summary>
@@ -69,7 +70,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Event.Run( GameEvent.Client.Disconnected, client, reason );
+		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
@@ -120,6 +121,11 @@ public partial class Game : Sandbox.Game
 	public override void PostLevelLoaded()
 	{
 		ForceStateChange( new WaitingState() );
+	}
+
+	public override void Shutdown()
+	{
+		FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
 	[Event.Tick]
