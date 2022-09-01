@@ -17,11 +17,7 @@ public partial class MapSelectionState : BaseState
 	{
 		if ( Votes.Count == 0 )
 		{
-			Global.ChangeLevel(
-				Game.Current.MapVoteIdents.IsNullOrEmpty() ?
-				Game.DefaultMap :
-				Game.Current.MapVoteIdents.ElementAt( Rand.Int( 0, Game.Current.MapVoteIdents.Count - 1 ) )
-			);
+			Global.ChangeLevel( Rand.FromList( Game.Current.MapVoteIdents as List<string> ) ?? Game.DefaultMap );
 			return;
 		}
 
