@@ -57,7 +57,15 @@ public partial class Game : Sandbox.Game
 			return;
 		}
 
-		Log.Warning( $"Unable to find player with steam id {rawSteamId}" );
+		// Player isn't currently in the game, we should ban anyways.
+		BannedClients.Add(
+			new BannedClient
+			{
+				SteamId = steamId,
+				Duration = minutes == default ? DateTime.MaxValue : DateTime.Now.AddMinutes( minutes ),
+				Reason = reason
+			}
+		);
 	}
 
 	[ConCmd.Admin( Name = "ttt_ban_remove", Help = "Remove the ban on a client using a steam id." )]
