@@ -115,6 +115,18 @@
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
       }
+    },
+    "Physics": {
+      "SubSteps": 4,
+      "TimeScale": 1,
+      "Gravity": "0,0,-800",
+      "AirDensity": 1.2,
+      "SleepingEnabled": true,
+      "SimulationMode": "Continuous",
+      "PositionIterations": 2,
+      "VelocityIterations": 8,
+      "SoftBodyIterations": 1,
+      "SoftBodySubsteps": 1
     }
   }
 }
