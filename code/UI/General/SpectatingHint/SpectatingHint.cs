@@ -6,7 +6,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class SpectatingHint : Panel
 {
-	private Panel PropPossessHint { get; init; }
+	private Panel FindTargetHit { get; init; }
 	private Panel SwapSpectatingPlayerPanel { get; init; }
 	private Label PlayerName { get; init; }
 	private Label SpectatingHintLabel { get; init; }
@@ -25,7 +25,7 @@ public class SpectatingHint : Panel
 
 		var isPossessingProp = player.Prop.IsValid();
 
-		PropPossessHint.Enabled( !isPossessingProp );
+		FindTargetHit.Enabled( !isPossessingProp && !player.IsSpectatingPlayer );
 
 		if ( isPossessingProp )
 		{
