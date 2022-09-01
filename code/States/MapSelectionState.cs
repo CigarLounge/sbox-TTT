@@ -13,6 +13,8 @@ public partial class MapSelectionState : BaseState
 	public override string Name { get; } = "Map Selection";
 	public override int Duration => Game.MapSelectionTime;
 
+	public const string MapsFile = "maps.txt";
+
 	protected override void OnTimeUp()
 	{
 		if ( Votes.Count == 0 )
@@ -46,11 +48,22 @@ public partial class MapSelectionState : BaseState
 		state.Votes[player.Client] = map;
 	}
 
+	[Event.Entity.PostSpawn]
+	private static async void OnFinishedLoading()
+	{
+		var maps = await GetLocalMapIdents();
+		if ( maps.IsNullOrEmpty() )
+			maps = await GetRemoteMapIdents();
+
+		maps.Shuffle();
+		Game.Current.MapVoteIdents = maps;
+	}
+
 	private static async Task<List<string>> GetLocalMapIdents()
 	{
 		var maps = new List<string>();
 
-		var rawMaps = FileSystem.Data.ReadAllText( "maps.txt" );
+		var rawMaps = FileSystem.Data.ReadAllText( MapsFile );
 		if ( rawMaps.IsNullOrEmpty() )
 			return maps;
 
@@ -81,16 +94,5 @@ public partial class MapSelectionState : BaseState
 
 		var packages = await query.RunAsync( default );
 		return packages.Select( ( p ) => p.FullIdent ).ToList();
-	}
-
-	[Event.Entity.PostSpawn]
-	private static async void OnFinishedLoading()
-	{
-		var maps = await GetLocalMapIdents();
-		if ( maps.IsNullOrEmpty() )
-			maps = await GetRemoteMapIdents();
-
-		maps.Shuffle();
-		Game.Current.MapVoteIdents = maps;
 	}
 }
