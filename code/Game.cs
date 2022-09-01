@@ -26,7 +26,7 @@ public partial class Game : Sandbox.Game
 		if ( IsClient )
 			_ = new UI.Hud();
 
-		if ( Host.IsServer )
+		if ( Host.IsDedicatedServer )
 			LoadBannedClients();
 
 		LoadResources();
@@ -130,10 +130,8 @@ public partial class Game : Sandbox.Game
 
 	public override void Shutdown()
 	{
-		if ( Host.IsClient )
-			return;
-
-		FileSystem.Data.WriteJson( BanFilePath, BannedClients );
+		if ( Host.IsDedicatedServer )
+			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
 	[Event.Tick]
