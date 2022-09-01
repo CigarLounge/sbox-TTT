@@ -19,7 +19,7 @@ public partial class Game : Sandbox.Game
 	public override bool ShouldConnect( long playerId )
 	{
 		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
-			if ( value <= Karma.MinValue )
+			if ( value < Karma.MinValue )
 				return false;
 
 		foreach ( var bannedClient in BannedClients )
