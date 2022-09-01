@@ -58,7 +58,8 @@ public partial class Game : Sandbox.Game
 		}
 
 		// Player isn't currently in the server, we should ban anyways.
-		BannedClients.Add(
+		BannedClients.Add
+		(
 			new BannedClient
 			{
 				SteamId = steamId,
