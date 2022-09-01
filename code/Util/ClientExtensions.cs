@@ -13,7 +13,7 @@ public static class ClientExtensions
 			new BannedClient
 			{
 				SteamId = client.PlayerId,
-				Length = minutes == default ? DateTime.MaxValue : DateTime.Now.AddMinutes( minutes ),
+				Duration = minutes == default ? DateTime.MaxValue : DateTime.Now.AddMinutes( minutes ),
 				Reason = reason
 			}
 		);

@@ -8,7 +8,7 @@ public struct BannedClient
 {
 	public long SteamId { get; set; }
 	public string Reason { get; set; }
-	public DateTime Length { get; set; }
+	public DateTime Duration { get; set; }
 }
 
 public partial class Game : Sandbox.Game
@@ -19,14 +19,15 @@ public partial class Game : Sandbox.Game
 	public override bool ShouldConnect( long playerId )
 	{
 		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
-			return value >= Karma.MinValue;
+			if ( value <= Karma.MinValue )
+				return false;
 
 		foreach ( var bannedClient in BannedClients )
 		{
 			if ( bannedClient.SteamId != playerId )
 				continue;
 
-			if ( bannedClient.Length >= DateTime.Now )
+			if ( bannedClient.Duration >= DateTime.Now )
 				return false;
 
 			BannedClients.Remove( bannedClient );
