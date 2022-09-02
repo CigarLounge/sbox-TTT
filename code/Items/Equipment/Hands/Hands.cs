@@ -38,7 +38,7 @@ public partial class Hands : Carriable
 
 	public override void Simulate( Client client )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
@@ -106,7 +106,7 @@ public partial class Hands : Carriable
 			return;
 
 		// Cannot pickup items held by other players.
-		if ( trace.Entity.Parent is not null )
+		if ( trace.Entity.Parent.IsValid() )
 			return;
 
 		switch ( trace.Entity )
@@ -156,7 +156,7 @@ public partial class Hands : Carriable
 
 	public override void SimulateAnimator( PawnAnimator animator )
 	{
-		if ( Host.IsClient )
+		if ( !Host.IsServer )
 			return;
 
 		if ( IsHoldingEntity || IsPushing )
