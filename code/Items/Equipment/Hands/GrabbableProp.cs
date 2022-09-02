@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Threading.Tasks;
 
 namespace TTT;
 
@@ -33,7 +32,7 @@ public class GrabbableProp : IGrabbable
 	public void Update( Player player )
 	{
 		// Incase someone walks up and picks up the carriable from the player's hands
-		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
+		// we just need to reset "EnableHideInFirstPerson".
 		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
 		if ( carriableHasOwner )
 		{
@@ -74,12 +73,6 @@ public class GrabbableProp : IGrabbable
 			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
 		_owner.SetAnimParameter( "b_attack", true );
-		_ = WaitForAnimationFinish();
-	}
-
-	private async Task WaitForAnimationFinish()
-	{
-		await GameTask.DelaySeconds( 0.6f );
-		_isThrowing = false;
+		Utils.DelayAction( 0.6f, () => _isThrowing = false );
 	}
 }

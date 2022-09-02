@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Sandbox;
 
 namespace TTT;
@@ -30,7 +29,7 @@ public partial class Hands : Carriable
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
 	private bool IsHoldingEntity => _grabbedEntity is not null && _grabbedEntity.IsHolding;
-	private bool _isPushingEntity = false;
+	private bool IsPushing { get; set; } = false;
 	private IGrabbable _grabbedEntity;
 
 	private const float MaxPickupMass = 205;
@@ -67,7 +66,7 @@ public partial class Hands : Carriable
 
 	private void PushEntity()
 	{
-		if ( _isPushingEntity )
+		if ( IsPushing )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -79,14 +78,13 @@ public partial class Hands : Carriable
 
 		trace.Entity.Velocity += Owner.EyeRotation.Forward * PushForce;
 
-		_isPushingEntity = true;
-		_ = WaitForAnimationFinish();
-	}
+		IsPushing = true;
 
-	private async Task WaitForAnimationFinish()
-	{
-		await GameTask.DelaySeconds( 0.6f );
-		_isPushingEntity = false;
+		Owner.SetAnimParameter( "b_attack", true );
+		Owner.SetAnimParameter( "holdtype", 4 );
+		Owner.SetAnimParameter( "holdtype_handedness", 0 );
+
+		Utils.DelayAction( 0.5f, () => IsPushing = false );
 	}
 
 	private void TryGrabEntity()
@@ -161,9 +159,7 @@ public partial class Hands : Carriable
 		if ( Host.IsClient )
 			return;
 
-		animator.SetAnimParameter( "b_attack", animator.HasTag( "push" ) );
-
-		if ( IsHoldingEntity )
+		if ( IsHoldingEntity || IsPushing )
 		{
 			animator.SetAnimParameter( "holdtype", 4 );
 			animator.SetAnimParameter( "holdtype_handedness", 0 );

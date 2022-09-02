@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace TTT;
 
@@ -31,5 +32,11 @@ public static class Utils
 				clients.Add( client );
 
 		return clients;
+	}
+
+	public static async void DelayAction( float seconds, Action callback )
+	{
+		await GameTask.DelaySeconds( seconds );
+		callback?.Invoke();
 	}
 }
