@@ -7,7 +7,7 @@ public class GrabbableProp : IGrabbable
 	private ModelEntity GrabbedEntity { get; set; }
 	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
 	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
-	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+	public bool IsHolding => GrabbedEntity.IsValid() || _isThrowing;
 
 	private readonly Player _owner;
 	private bool _isThrowing = false;
