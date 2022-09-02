@@ -67,19 +67,13 @@ public class GrabbableProp : IGrabbable
 
 	public void SecondaryAction()
 	{
-		if ( Host.IsClient )
-		{
-			GrabbedEntity = null;
-			return;
-		}
-
 		_isThrowing = true;
-		_owner.SetAnimParameter( "b_attack", true );
 
 		var droppedEntity = Drop();
 		if ( droppedEntity.IsValid() )
 			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
+		_owner.SetAnimParameter( "b_attack", true );
 		_ = WaitForAnimationFinish();
 	}
 
