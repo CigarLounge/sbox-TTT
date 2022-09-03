@@ -5,7 +5,7 @@ namespace TTT;
 
 public partial class NoCollide : EntityComponent<ModelEntity>
 {
-	private const int MinimumVelocity = 200;
+	private TimeUntil _timeUntilRemoved = 0.1f;
 	private ModelEntity _entity;
 
 	protected override void OnActivate()
@@ -40,11 +40,8 @@ public partial class NoCollide : EntityComponent<ModelEntity>
 		if ( !_entity.IsValid() )
 			return;
 
-		var bounds = _entity.CollisionBounds;
-		var entities = Sandbox.Entity.FindInBox( bounds + _entity.Position );
-
 		// FindInBox includes the entity itself, therefore Count() == 1.
-		if ( entities.Count() == 1 && _entity.Velocity.Length < MinimumVelocity )
+		if ( _timeUntilRemoved && Sandbox.Entity.FindInBox( _entity.CollisionBounds + _entity.Position ).Count() == 1 )
 			_entity.Components.RemoveAny<NoCollide>();
 	}
 }
