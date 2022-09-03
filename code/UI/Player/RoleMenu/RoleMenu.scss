@@ -9,7 +9,7 @@ RoleMenu
     pointer-events: all;
     z-index: 2;
     height: 100%;
-    opacity: 0;
+    // opacity: 0;
     transition: all 0.15s ease-out;
 
     .background
@@ -25,9 +25,8 @@ RoleMenu
     {
         justify-content: center;
         align-self: center;
-        width: 683px;
-        min-height: 590px;
-        max-height: 700px;
+        width: 35%;
+        height: 50%;
         flex-direction: column;
 
         .header
