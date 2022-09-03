@@ -50,12 +50,14 @@ public class GrabbableProp : IGrabbable
 		if ( grabbedEntity.IsValid() )
 		{
 			if ( !_isInteractable )
+			{
+				grabbedEntity.Components.GetOrCreate<NoCollide>();
 				grabbedEntity.Tags.Remove( "interactable" );
+			}
 
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
 			grabbedEntity.SetParent( null );
-			grabbedEntity.Position += _owner.EyeRotation.Forward * 1;
 
 			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );
@@ -71,7 +73,7 @@ public class GrabbableProp : IGrabbable
 
 		var droppedEntity = Drop();
 		if ( droppedEntity.IsValid() )
-			droppedEntity.Velocity = _owner.EyeRotation.Forward * Player.DropVelocity;
+			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
 		_owner.SetAnimParameter( "b_attack", true );
 		Utils.DelayAction( 0.6f, () => _isThrowing = false );
