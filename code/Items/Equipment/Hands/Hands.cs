@@ -34,7 +34,7 @@ public partial class Hands : Carriable
 
 	private const float MaxPickupMass = 205;
 	private const float PushForce = 350f;
-	private readonly Vector3 _maxPickupSize = new( 75, 75, 75 );
+	private readonly Vector3 _maxPickupSize = new( 26, 22, 50 );
 
 	public override void Simulate( Client client )
 	{
@@ -118,7 +118,7 @@ public partial class Hands : Carriable
 				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
 				break;
 			case ModelEntity model:
-				if ( !HasGreatorOrEqualAxis( model.CollisionBounds.Size, _maxPickupSize ) && model.PhysicsGroup.Mass < MaxPickupMass )
+				if ( CanPickup( model ) )
 					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
 				break;
 		}
@@ -170,9 +170,13 @@ public partial class Hands : Carriable
 		}
 	}
 
-	private static bool HasGreatorOrEqualAxis( Vector3 local, Vector3 other )
+	private bool CanPickup( ModelEntity entity )
 	{
-		return local.x >= other.x || local.y >= other.y || local.z >= other.z;
+		if ( entity.PhysicsGroup.Mass > MaxPickupMass )
+			return false;
+
+		var size = entity.CollisionBounds.Size;
+		return size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z;
 	}
 
 	[Event.Entity.PreCleanup]
