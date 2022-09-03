@@ -6,6 +6,7 @@ ShopItem
     align-items: center;
     width: 20%;
     transition: transform 0.1s ease-in;
+    margin: 0 0 15 0;
 
     .icon
     {
@@ -34,7 +35,7 @@ ShopItem
             color: $info;
             font-weight: bold;
             font-size: 14px;
-            bottom: 7px;
+            bottom: 5px;
         }
     }
 
