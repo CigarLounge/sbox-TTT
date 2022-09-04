@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Threading.Tasks;
 
 namespace TTT;
 
@@ -8,7 +7,7 @@ public class GrabbableProp : IGrabbable
 	private ModelEntity GrabbedEntity { get; set; }
 	public string PrimaryAttackHint => GrabbedEntity.IsValid() ? "Throw" : string.Empty;
 	public string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : string.Empty;
-	public bool IsHolding => GrabbedEntity is not null || _isThrowing;
+	public bool IsHolding => GrabbedEntity.IsValid() || _isThrowing;
 
 	private readonly Player _owner;
 	private bool _isThrowing = false;
@@ -33,7 +32,7 @@ public class GrabbableProp : IGrabbable
 	public void Update( Player player )
 	{
 		// Incase someone walks up and picks up the carriable from the player's hands
-		// we just need to reset "EnableHideInFirstPerson", all other parenting is handled on pickup.
+		// we just need to reset "EnableHideInFirstPerson".
 		var carriableHasOwner = GrabbedEntity is Carriable && GrabbedEntity.Owner.IsValid();
 		if ( carriableHasOwner )
 		{
@@ -51,7 +50,10 @@ public class GrabbableProp : IGrabbable
 		if ( grabbedEntity.IsValid() )
 		{
 			if ( !_isInteractable )
+			{
+				grabbedEntity.Components.GetOrCreate<NoCollide>();
 				grabbedEntity.Tags.Remove( "interactable" );
+			}
 
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
@@ -67,25 +69,13 @@ public class GrabbableProp : IGrabbable
 
 	public void SecondaryAction()
 	{
-		if ( Host.IsClient )
-		{
-			GrabbedEntity = null;
-			return;
-		}
-
 		_isThrowing = true;
-		_owner.SetAnimParameter( "b_attack", true );
 
 		var droppedEntity = Drop();
 		if ( droppedEntity.IsValid() )
 			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
 
-		_ = WaitForAnimationFinish();
-	}
-
-	private async Task WaitForAnimationFinish()
-	{
-		await GameTask.DelaySeconds( 0.6f );
-		_isThrowing = false;
+		_owner.SetAnimParameter( "b_attack", true );
+		Utils.DelayAction( 0.6f, () => _isThrowing = false );
 	}
 }

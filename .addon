@@ -33,7 +33,8 @@
         "water": "Trigger",
         "interactable": "Unset",
         "player": "Unset",
-        "glass": "Unset"
+        "glass": "Unset",
+        "nocollide": "Ignore"
       },
       "Pairs": [
         {
@@ -96,6 +97,21 @@
         {
           "a": "water",
           "b": "glass"
+        },
+        {
+          "a": "solid",
+          "b": "nocollide",
+          "r": "Collide"
+        },
+        {
+          "a": "player",
+          "b": "nocollide",
+          "r": "Ignore"
+        },
+        {
+          "a": "glass",
+          "b": "nocollide",
+          "r": "Collide"
         }
       ]
     },

@@ -59,6 +59,8 @@ public class GrabbableCorpse : IGrabbable
 
 	public void SecondaryAction()
 	{
+		_corpse.RemoveRopeAttachments();
+
 		if ( !_owner.Role.CanAttachCorpses )
 			return;
 
@@ -66,22 +68,24 @@ public class GrabbableCorpse : IGrabbable
 			.Ignore( _owner )
 			.Run();
 
-		_corpse.RemoveRopeAttachments();
-
 		if ( !trace.Hit || !trace.Entity.IsWorld )
 			return;
 
-		var rope = Particles.Create( "particles/rope/rope.vpcf", _corpse );
 		var worldLocalPos = trace.Body.Transform.PointToLocal( trace.EndPosition );
-		rope.SetPosition( 1, worldLocalPos );
-
 		var spring = PhysicsJoint.CreateLength( _corpse.PhysicsBody, trace.Body.LocalPoint( worldLocalPos ), 10 );
 		spring.SpringLinear = new( 5, 0.3f );
 		spring.Collisions = true;
 		spring.EnableAngularConstraint = false;
-
-		_corpse.Ropes.Add( rope );
 		_corpse.RopeJoints.Add( spring );
+
+		// We need to turn off prediction in order for the particle to appear on the local client.
+		using ( Prediction.Off() )
+		{
+			var rope = Particles.Create( "particles/rope/rope.vpcf" );
+			rope.SetEntityBone( 0, _corpse, 0 );
+			rope.SetPosition( 1, worldLocalPos );
+			_corpse.Ropes.Add( rope );
+		}
 
 		Drop();
 	}
