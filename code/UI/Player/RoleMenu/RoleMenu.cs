@@ -40,7 +40,7 @@ public partial class RoleMenu : Panel
 	public override void Tick()
 	{
 		var player = Local.Pawn as Player;
-		if ( !player.IsAlive() || TabContainer.Tabs.Count == 0 || Game.Current.State is not InProgress )
+		if ( !player.IsAlive() || TabContainer.Tabs.Count == 0 )
 		{
 			SetClass( "fade-in", false );
 			return;

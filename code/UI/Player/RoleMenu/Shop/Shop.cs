@@ -1,93 +1,57 @@
+using System.Linq;
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
-using System.Collections.Generic;
-
 namespace TTT.UI;
 
+[UseTemplate]
 public partial class Shop : Panel
 {
-	private readonly Panel _shopContainer;
-	private readonly Label _creditLabel;
-	private readonly Panel _itemPanel;
-	private readonly Panel _scrollIcon;
-	private readonly Label _itemDescriptionLabel;
-	private static ItemInfo _selectedItemInfo;
-	private readonly List<ShopItem> _shopItems = new();
+	private Label Credits { get; init; }
+	private Panel Items { get; init; }
+	private Label Description { get; init; }
 
-	public Shop() : base()
+	private ItemInfo _selectedItem;
+
+	public override void Tick()
 	{
-		StyleSheet.Load( "/UI/Player/RoleMenu/Shop/Shop.scss" );
+		if ( Local.Pawn is not Player player )
+			return;
 
-		_shopContainer = new Panel( this );
-		_shopContainer.AddClass( "shop-container" );
+		Credits.Text = $" {player.Credits} credits";
 
-		var creditPanel = _shopContainer.Add.Panel();
-		creditPanel.Add.Label( "You have ", "credit-label" );
-		_creditLabel = creditPanel.Add.Label();
-		_creditLabel.AddClass( "credits" );
+		Description.SetClass( "fade-in", _selectedItem is not null );
+		if ( _selectedItem is not null )
+			Description.Text = _selectedItem.Description;
 
-		_itemPanel = new Panel( _shopContainer );
-		_itemPanel.AddClass( "item-panel" );
-
-		_scrollIcon = _shopContainer.Add.Icon( "south", "scroll-icon" );
-		_scrollIcon.EnableFade( false );
-
-		_itemDescriptionLabel = _shopContainer.Add.Label();
-		_itemDescriptionLabel.AddClass( "item-description-label" );
+		foreach ( var shopItem in Items.Children.Cast<ShopItem>() )
+			shopItem.UpdateAvailability( player.CanPurchase( shopItem.ItemInfo ) );
 	}
 
-	public void AddRoleShopItems( Player player )
+	private void AddShopItem( ItemInfo itemInfo )
 	{
-		foreach ( var item in player.Role.ShopItems )
-			AddRoleShopItem( item );
-	}
+		var shopItem = new ShopItem( itemInfo );
 
-	private void AddRoleShopItem( ItemInfo itemInfo )
-	{
-		ShopItem item = new( _itemPanel, itemInfo );
-
-		item.AddEventListener( "onmouseover", () => { _selectedItemInfo = itemInfo; } );
-		item.AddEventListener( "onmouseout", () => { _selectedItemInfo = null; } );
-		item.AddEventListener( "onclick", () =>
+		shopItem.AddEventListener( "onmouseover", () => { _selectedItem = itemInfo; } );
+		shopItem.AddEventListener( "onmouseout", () => { _selectedItem = null; } );
+		shopItem.AddEventListener( "onclick", () =>
 		{
-			if ( item.IsDisabled )
+			if ( shopItem.IsDisabled )
 				return;
 
 			Player.PurchaseItem( itemInfo.ResourceId );
 		} );
 
-		_shopItems.Add( item );
-	}
-
-	public override void Tick()
-	{
-		if ( !IsVisible || Local.Pawn is not Player player )
-			return;
-
-		if ( player.Role.ShopItems.Count == 0 )
-			return;
-
-		_creditLabel.Text = $"{player.Credits} credits";
-		_itemDescriptionLabel.SetClass( "fade-in", _selectedItemInfo is not null );
-		if ( _selectedItemInfo is not null )
-			_itemDescriptionLabel.Text = _selectedItemInfo.Description;
-
-		if ( _shopItems.Count == 0 )
-			AddRoleShopItems( player );
-
-		foreach ( var shopItem in _shopItems )
-		{
-			shopItem.UpdateAvailability( player.CanPurchase( shopItem.ItemInfo ) );
-		}
-
-		_scrollIcon.EnableFade( _itemPanel.ScrollOffset.y < 10 && _shopItems.Count > 8 );
+		Items.AddChild( shopItem );
 	}
 
 	[GameEvent.Player.RoleChanged]
 	private void OnRoleChange( Player player, Role oldRole )
 	{
-		_shopItems.ForEach( ( item ) => item.Delete( true ) );
-		_shopItems.Clear();
+		if ( !player.IsLocalPawn )
+			return;
+
+		Items.DeleteChildren( true );
+		foreach ( var item in player.Role.ShopItems )
+			AddShopItem( item );
 	}
 }

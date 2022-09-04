@@ -24,7 +24,7 @@ public partial class RadioMenu : Panel
 
 		foreach ( var sound in _sounds )
 		{
-			Add.Button( sound.Key, () =>
+			Add.Button( sound.Key, "box-shadow background-color-gradient", () =>
 			{
 				RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Rand.Int( 0, sound.Value.Count - 1 )] );
 			} );
