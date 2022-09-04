@@ -12,6 +12,9 @@ public partial class Game : Sandbox.Game
 	private BaseState _lastState;
 
 	[Net]
+	public IList<string> MapVoteIdents { get; set; }
+
+	[Net]
 	public int TotalRoundsPlayed { get; set; }
 
 	public int RTVCount { get; set; }
@@ -22,6 +25,9 @@ public partial class Game : Sandbox.Game
 
 		if ( IsClient )
 			_ = new UI.Hud();
+
+		if ( Host.IsDedicatedServer )
+			LoadBannedClients();
 
 		LoadResources();
 	}
@@ -69,7 +75,7 @@ public partial class Game : Sandbox.Game
 
 	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
 	{
-		Event.Run( GameEvent.Client.Disconnected, client, reason );
+		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
@@ -120,6 +126,12 @@ public partial class Game : Sandbox.Game
 	public override void PostLevelLoaded()
 	{
 		ForceStateChange( new WaitingState() );
+	}
+
+	public override void Shutdown()
+	{
+		if ( Host.IsDedicatedServer )
+			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
 	[Event.Tick]

@@ -11,7 +11,7 @@ TTT is a mafia-esque multiplayer game created using s&box. It's aimed to be the 
 ## Credits
 
 ### Team
-- [Matthew Zegar](https://github.com/mzegar)
+- [Matthew Zegar](https://github.com/matekdev)
 - [Kosta Novosel](https://github.com/kolexxx)
 
 ### Direct Contributors

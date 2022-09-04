@@ -13,26 +13,13 @@ public partial class MapSelectionState : BaseState
 	public override string Name { get; } = "Map Selection";
 	public override int Duration => Game.MapSelectionTime;
 
-	public static async Task<IEnumerable<string>> GetMapIdents()
-	{
-		var query = new Package.Query
-		{
-			Type = Package.Type.Map,
-			Order = Package.Order.User,
-			Take = 99,
-		};
-
-		query.Tags.Add( "game:" + Global.GameIdent );
-
-		var packages = await query.RunAsync( default );
-		return packages.Select( ( p ) => p.FullIdent );
-	}
+	public const string MapsFile = "maps.txt";
 
 	protected override void OnTimeUp()
 	{
 		if ( Votes.Count == 0 )
 		{
-			_ = SelectRandomMap();
+			Global.ChangeLevel( Rand.FromList( Game.Current.MapVoteIdents as List<string> ) ?? Game.DefaultMap );
 			return;
 		}
 
@@ -49,15 +36,6 @@ public partial class MapSelectionState : BaseState
 		UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
 	}
 
-	private async Task SelectRandomMap()
-	{
-		var mapIdents = await GetMapIdents();
-		if ( !mapIdents.Any() )
-			Global.ChangeLevel( Game.DefaultMap );
-		else
-			Global.ChangeLevel( mapIdents.ElementAt( Rand.Int( 0, mapIdents.Count() - 1 ) ) );
-	}
-
 	[ConCmd.Server]
 	public static void SetVote( string map )
 	{
@@ -68,5 +46,54 @@ public partial class MapSelectionState : BaseState
 			return;
 
 		state.Votes[player.Client] = map;
+	}
+
+	[Event.Entity.PostSpawn]
+	private static async void OnFinishedLoading()
+	{
+		var maps = await GetLocalMapIdents();
+		if ( maps.IsNullOrEmpty() )
+			maps = await GetRemoteMapIdents();
+
+		maps.Shuffle();
+		Game.Current.MapVoteIdents = maps;
+	}
+
+	private static async Task<List<string>> GetLocalMapIdents()
+	{
+		var maps = new List<string>();
+
+		var rawMaps = FileSystem.Data.ReadAllText( MapsFile );
+		if ( rawMaps.IsNullOrEmpty() )
+			return maps;
+
+		var splitMaps = rawMaps.Split( "\n" );
+		foreach ( var rawMap in splitMaps )
+		{
+			var mapIdent = rawMap.Trim();
+			var package = await Package.Fetch( mapIdent, true );
+
+			if ( package is not null && package.PackageType == Package.Type.Map )
+				maps.Add( mapIdent );
+			else
+				Log.Error( $"{mapIdent} does not exist as a s&box map!" );
+		}
+
+		return maps;
+	}
+
+	private static async Task<List<string>> GetRemoteMapIdents()
+	{
+		var query = new Package.Query
+		{
+			Type = Package.Type.Map,
+			Order = Package.Order.User,
+			Take = 99,
+		};
+
+		query.Tags.Add( "game:" + Global.GameIdent );
+
+		var packages = await query.RunAsync( default );
+		return packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
 }

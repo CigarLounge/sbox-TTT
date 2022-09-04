@@ -45,7 +45,6 @@ public partial class Player : AnimatedEntity
 		client.Pawn = this;
 		SteamId = client.PlayerId;
 		SteamName = client.Name;
-		BaseKarma = Karma.DefaultValue;
 		ActiveKarma = BaseKarma;
 
 		ClothingContainer.LoadFromClient( client );

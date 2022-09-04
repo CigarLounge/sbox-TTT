@@ -35,12 +35,12 @@ public class RandomGrenade : Entity
 		if ( !_cachedGrenadeTypes.IsNullOrEmpty() )
 			return;
 
-		var grenadeTypes = TypeLibrary.GetTypes<Grenade>();
-		foreach ( var grenadeType in grenadeTypes )
+		var grenades = TypeLibrary.GetDescriptions<Grenade>();
+		foreach ( var grenadeDesc in grenades )
 		{
-			var grenadeInfo = GameResource.GetInfo<CarriableInfo>( grenadeType );
+			var grenadeInfo = GameResource.GetInfo<CarriableInfo>( grenadeDesc.TargetType );
 			if ( grenadeInfo is not null && grenadeInfo.Spawnable )
-				_cachedGrenadeTypes.Add( grenadeType );
+				_cachedGrenadeTypes.Add( grenadeDesc.TargetType );
 		}
 	}
 }

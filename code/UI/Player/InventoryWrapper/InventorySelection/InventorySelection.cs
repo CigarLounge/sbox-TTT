@@ -36,13 +36,11 @@ public class InventorySelection : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		var player = (Local.Pawn as Player).CurrentPlayer;
 
 		foreach ( var carriable in player.Inventory )
 		{
-			if ( !_entries.ContainsKey( carriable ) )
+			if ( !_entries.ContainsKey( carriable ) && (carriable.Info.Spawnable || player.IsRoleKnown) )
 				_entries[carriable] = AddInventorySlot( carriable );
 		}
 

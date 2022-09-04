@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
 
@@ -26,12 +25,10 @@ public partial class MapVotePanel : Panel
 				panel.Delete( true );
 		}
 
-		_ = PopulateMaps();
-	}
+		var mapIdents = Game.Current.MapVoteIdents;
+		if ( mapIdents.IsNullOrEmpty() )
+			return;
 
-	private async Task PopulateMaps()
-	{
-		var mapIdents = await MapSelectionState.GetMapIdents();
 		foreach ( var ident in mapIdents )
 			AddMap( ident );
 	}

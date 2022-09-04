@@ -25,11 +25,11 @@ public class MapIcon : Panel
 	private async Task FetchMapInformation()
 	{
 		var package = await Package.Fetch( Ident, true );
-		if ( package is null )
+		if ( package is null || package.PackageType != Package.Type.Map )
+		{
+			Delete();
 			return;
-
-		if ( package.PackageType != Package.Type.Map )
-			return;
+		}
 
 		Title.Text = package.Title;
 		Org.Text = package.Org.Title;
