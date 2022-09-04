@@ -7,7 +7,7 @@ namespace TTT;
 [Title( "Radio" )]
 public partial class RadioEntity : Prop, IEntityHint, IUse
 {
-	private static readonly Model _worldModel = Model.Load( "models/radio/radio.vmdl" );
+	private static readonly Model _worldModel = Model.Load( "models/radio/radioterror.vmdl" );
 
 	public override void Spawn()
 	{

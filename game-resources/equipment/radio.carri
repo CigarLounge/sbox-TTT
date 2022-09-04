@@ -8,7 +8,7 @@
 		ViewModelPath = ""
 		HandsModelPath = ""
 		HoldType = "None"
-		WorldModelPath = resource:"models/radio/radio.vmdl"
+		WorldModelPath = resource:"models/radio/radioterror.vmdl"
 		DeployTime = 0
 		IsLimited = true
 		Price = 100
