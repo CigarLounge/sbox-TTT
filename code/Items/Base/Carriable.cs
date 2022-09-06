@@ -176,6 +176,14 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		TimeSinceDropped = 0;
 	}
 
+	public override Sound PlaySound( string soundName, string attachment )
+	{
+		if ( Owner.IsValid() )
+			return Owner.PlaySound( soundName, attachment );
+
+		return base.PlaySound( soundName, attachment );
+	}
+
 	public virtual void SimulateAnimator( PawnAnimator animator )
 	{
 		animator.SetAnimParameter( "holdtype", (int)Info.HoldType );
