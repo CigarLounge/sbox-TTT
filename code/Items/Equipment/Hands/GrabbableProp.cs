@@ -52,7 +52,7 @@ public class GrabbableProp : IGrabbable
 			if ( !_isInteractable )
 			{
 				grabbedEntity.Tags.Remove( "interactable" );
-				grabbedEntity.Components.GetOrCreate<NoCollide>();
+				grabbedEntity.Components.GetOrCreate<IgnoreDamage>();
 			}
 
 			grabbedEntity.EnableHideInFirstPerson = true;

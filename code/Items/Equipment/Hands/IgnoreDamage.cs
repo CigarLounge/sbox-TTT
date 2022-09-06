@@ -2,8 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class NoCollide : EntityComponent<ModelEntity>
+public partial class IgnoreDamage : EntityComponent<ModelEntity>
 {
+	public const string Tag = "ignoredamage";
 	private ModelEntity _entity;
 
 	protected override void OnActivate()
@@ -12,7 +13,7 @@ public partial class NoCollide : EntityComponent<ModelEntity>
 			return;
 
 		_entity = Entity;
-		_entity.Tags.Add( "nocollide" );
+		_entity.Tags.Add( Tag );
 	}
 
 	protected override void OnDeactivate()
@@ -20,7 +21,7 @@ public partial class NoCollide : EntityComponent<ModelEntity>
 		if ( !Host.IsServer || !_entity.IsValid() )
 			return;
 
-		_entity.Tags.Remove( "nocollide" );
+		_entity.Tags.Remove( Tag );
 	}
 
 	[Event.Tick.Server]
@@ -30,6 +31,6 @@ public partial class NoCollide : EntityComponent<ModelEntity>
 			return;
 
 		if ( _entity.Velocity.Length == 0 )
-			_entity.Components.RemoveAny<NoCollide>();
+			_entity.Components.RemoveAny<IgnoreDamage>();
 	}
 }

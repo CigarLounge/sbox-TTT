@@ -176,7 +176,7 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( info.Attacker is Prop && info.Attacker.Tags.Has( "nocollide" ) )
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) )
 			return;
 
 		if ( !this.IsAlive() )
