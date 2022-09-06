@@ -55,7 +55,6 @@ public class GrabbableProp : IGrabbable
 				grabbedEntity.Components.GetOrCreate<NoCollide>();
 			}
 
-			grabbedEntity.LastAttacker = _owner;
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
 			grabbedEntity.SetParent( null );
