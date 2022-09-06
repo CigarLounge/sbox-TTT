@@ -52,9 +52,10 @@ public class GrabbableProp : IGrabbable
 			if ( !_isInteractable )
 			{
 				grabbedEntity.Tags.Remove( "interactable" );
-				grabbedEntity.Components.GetOrCreate<NoCollide>();
+				grabbedEntity.Components.GetOrCreate<IgnoreDamage>();
 			}
 
+			grabbedEntity.LastAttacker = _owner;
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
 			grabbedEntity.SetParent( null );

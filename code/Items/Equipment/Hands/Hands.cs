@@ -77,6 +77,7 @@ public partial class Hands : Carriable
 			return;
 
 		trace.Entity.Velocity += Owner.EyeRotation.Forward * PushForce;
+		trace.Entity.LastAttacker = Owner;
 
 		IsPushing = true;
 

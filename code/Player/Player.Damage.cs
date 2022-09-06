@@ -53,8 +53,22 @@ public partial class Player
 		set => base.Health = Math.Clamp( value, 0, MaxHealth );
 	}
 
+	public new Entity LastAttacker
+	{
+		get => base.LastAttacker;
+		set
+		{
+			// If anyone uses a prop to kill someone.
+			if ( value is Prop prop && prop.LastAttacker is Player propAttacker )
+				base.LastAttacker = propAttacker;
+			else
+				base.LastAttacker = value;
+		}
+	}
+
 	/// <summary>
 	/// Whether or not they were killed by another Player.
+	/// This includes if the Player used a prop to kill them.
 	/// </summary>
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 
@@ -163,6 +177,9 @@ public partial class Player
 		Host.AssertServer();
 
 		if ( !this.IsAlive() )
+			return;
+
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.Flags.HasFlag( DamageFlags.PhysicsImpact ) )
 			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
