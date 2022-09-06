@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -33,7 +34,9 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 		if ( !_entity.IsValid() )
 			return;
 
-		if ( _entity.Velocity.Length == 0 )
+		// Once it no longer clips with any other entity remove the component.
+		// FindInBox includes the entity itself. therefore the Count() == 1.
+		if ( Sandbox.Entity.FindInBox( _entity.CollisionBounds + _entity.Position ).Count() == 1 )
 			_entity.Components.RemoveAny<IgnoreDamage>();
 	}
 }
