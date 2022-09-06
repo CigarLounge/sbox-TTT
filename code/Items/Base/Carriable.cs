@@ -178,11 +178,10 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public override Sound PlaySound( string soundName, string attachment )
 	{
-		if ( Host.IsClient )
-			return Local.Pawn.PlaySound( soundName )
-				.SetVolume( 0.9f );
+		if ( Owner.IsValid() )
+			return Owner.PlaySound( soundName, attachment );
 
-		return Sound.FromEntity( To.Multiple( Client.All.Where( x => x != Prediction.CurrentHost ) ), soundName, this );
+		return base.PlaySound( soundName, attachment );
 	}
 
 	public virtual void SimulateAnimator( PawnAnimator animator )
