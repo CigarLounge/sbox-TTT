@@ -2,6 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
+/// <summary>
+/// If this component is present on a prop any "PhysicsImpact" damage dealt to a player will be ignored.
+/// </summary>
 public partial class IgnoreDamage : EntityComponent<ModelEntity>
 {
 	public const string Tag = "ignoredamage";

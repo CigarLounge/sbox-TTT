@@ -176,10 +176,10 @@ public partial class Player
 	{
 		Host.AssertServer();
 
-		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) )
+		if ( !this.IsAlive() )
 			return;
 
-		if ( !this.IsAlive() )
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.Flags.HasFlag( DamageFlags.PhysicsImpact ) )
 			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
