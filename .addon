@@ -34,7 +34,7 @@
         "interactable": "Unset",
         "player": "Unset",
         "glass": "Unset",
-        "nocollide": "Ignore"
+        "debris": "Ignore"
       },
       "Pairs": [
         {
@@ -100,18 +100,18 @@
         },
         {
           "a": "solid",
-          "b": "nocollide",
+          "b": "debris",
           "r": "Collide"
         },
         {
           "a": "player",
-          "b": "nocollide",
+          "b": "debris",
           "r": "Ignore"
         },
         {
           "a": "glass",
-          "b": "nocollide",
-          "r": "Collide"
+          "b": "debris",
+          "r": "Trigger"
         }
       ]
     },
