@@ -14,6 +14,7 @@ public class VoiceChatEntry : Panel
 	private Image Avatar { get; init; }
 
 	private readonly WorldPanel _worldPanel;
+	private readonly RolePlate _rolePlate;
 	private readonly Client _client;
 	private float _voiceLevel = 0.5f;
 	private float _targetVoiceLevel = 0;
@@ -36,6 +37,8 @@ public class VoiceChatEntry : Panel
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
 		_worldPanel.Enabled( !_client.Pawn.IsFirstPersonMode );
+
+		_rolePlate = client.Pawn.Components.Get<RolePlate>();
 	}
 
 	public void Update( float level )
@@ -65,7 +68,7 @@ public class VoiceChatEntry : Panel
 
 		_voiceLevel = _voiceLevel.LerpTo( _targetVoiceLevel, Time.Delta * 40.0f );
 
-		if ( _worldPanel is null || _client.Pawn is not Player player || !player.IsAlive() )
+		if ( !_worldPanel.IsValid() || _client.Pawn is not Player player || !player.IsAlive() )
 		{
 			_worldPanel?.Delete();
 			return;
@@ -75,7 +78,7 @@ public class VoiceChatEntry : Panel
 			return;
 
 		var tx = player.GetBoneTransform( "head" );
-		var rolePlateOffset = player.Components.Get<RolePlate>() is not null ? 27f : 20f;
+		var rolePlateOffset = _rolePlate is not null ? 27f : 20f;
 		tx.Position += Vector3.Up * rolePlateOffset + (Vector3.Up * _voiceLevel);
 		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_worldPanel.Transform = tx;

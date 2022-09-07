@@ -223,7 +223,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void ClientCorpseFound( Player finder, bool wasPreviouslyFound = false )
+	public void ClientCorpseFound( Player finder, bool wasPreviouslyFound = false )
 	{
 		IsFound = true;
 		Finder = finder;
