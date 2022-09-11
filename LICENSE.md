@@ -86,7 +86,7 @@ Any distribution of sbox-TTT or a substantial portion of sbox-TTT must include t
     ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.  
  
        
-If you would like to use the sbox-TTT for a commercial purpose, an external release, or have questions in general, please contact Cigar Lounge at 
+If you would like to use the sbox-TTT for a commercial purpose, not as an S&Box addon, or have questions in general, please contact Cigar Lounge at 
 cigarlounge.sbox@gmail.com.
 
 Special Thanks to Bad King Urgrain for creating the original "Trouble in Terrorist Town" for Garry's Mod, for which sbox-TTT takes inspiration from.
