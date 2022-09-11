@@ -16,6 +16,8 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	private const float HealAmount = 5; // The amount of health given per second.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
+	private UI.HealthStationCharges _healthStationCharges;
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -23,6 +25,20 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 		Health = 201f;
+	}
+
+	public override void ClientSpawn()
+	{
+		base.ClientSpawn();
+
+		_healthStationCharges = new( this );
+	}
+
+	protected override void OnDestroy()
+	{
+		_healthStationCharges?.Delete( true );
+
+		base.OnDestroy();
 	}
 
 	[Event.Tick.Server]
