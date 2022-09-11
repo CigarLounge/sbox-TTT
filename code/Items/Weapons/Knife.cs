@@ -23,12 +23,12 @@ public partial class Knife : Carriable
 	private Rotation _throwRotation = Rotation.From( new Angles( 90, 0, 0 ) );
 	private float _gravityModifier;
 
-	private static bool CanBackstab( Entity attacker, Entity target )
+	private static bool CanBackstab( Vector3 attackerPos, Entity target )
 	{
 		// Get delta between entity positions (as Vector2, so without Z)
 		var delta = new Vector2(
-			target.Position.x - attacker.Position.x,
-			target.Position.y - attacker.Position.y );
+			target.Position.x - attackerPos.x,
+			target.Position.y - attackerPos.y );
 
 		// Is the attacker behind the target? (position wise)		
 		// +1.0 == directly behind, -1.0 == directly in front, so
@@ -89,7 +89,7 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player player )
 		{
-			if ( CanBackstab( Owner, player ) )
+			if ( CanBackstab( Owner.Position, player ) )
 				damage = BackstabDamage;
 
 			player.DistanceToAttacker = 0;
@@ -174,8 +174,9 @@ public partial class Knife : Carriable
 			{
 				trace.Surface.DoBulletImpact( trace );
 
-				var damageInfo = DamageInfo.Generic( NormalDamage )
-					.WithPosition( trace.EndPosition )
+				var damageInfo = DamageInfo.Generic(
+					damage: CanBackstab( _thrownFrom, player ) ? BackstabDamage : NormalDamage
+				).WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
 					.WithFlag( DamageFlags.Slash )
 					.WithAttacker( _thrower )
