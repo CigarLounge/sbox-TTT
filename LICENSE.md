@@ -20,13 +20,23 @@ EXCLUDED DIRECTORIES: Files located within the directories listed
 
 You may, free of charge, download and use sbox-TTT to develop a
 	modified sbox-TTT. You may distribute your modified sbox-TTT in 
-	source and object code form, but only for free.
+	source and object code form, but only for free and as an addon for Facepunch's S&Box.
 
 You may copy, modify, and distribute sbox-TTT and any 
 	modifications you make to sbox-TTT in source and object code
-	form, but only for free. Any distribution of this sbox-TTT must 
-	include this LICENSE.md file.
-	
+	form, but only for free and as an addon for Facepunch's S&Box.
+	Any distribution of this sbox-TTT must include this LICENSE.md file.
+
+As stated above all distributions of sbox-TTT must be free and as an addon for Facepunch's S&Box.
+	This means that any "External" or "Standalone" distributions are strictly forbidden.
+	"External" or "Standalone" distributions are defined as: 
+		"Distribution of modified sbox-TTT code, in source and object code form,
+		that no longer acts as an addon for Facepunch's S&Box."
+	Examples of "External" or "Standalone" distribution would include, but is not limited to: 
+		A Distribution that still runs on S&Box, but isn't an addon.
+		A Distribution that is released on the Steam, or any other digital store front.
+		A Distribution that functions without a copy of S&Box.
+
 If you run sbox-TTT on a server and let other users communicate with 
 	it there, your server must also affix the following notice in 
 	plain view for the end-users to see: 
@@ -76,7 +86,7 @@ Any distribution of sbox-TTT or a substantial portion of sbox-TTT must include t
     ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.  
  
        
-If you would like to use the sbox-TTT for a commercial purpose, or have questions in general, please contact Cigar Lounge at 
+If you would like to use the sbox-TTT for a commercial purpose, an external release, or have questions in general, please contact Cigar Lounge at 
 cigarlounge.sbox@gmail.com.
 
 Special Thanks to Bad King Urgrain for creating the original "Trouble in Terrorist Town" for Garry's Mod, for which sbox-TTT takes inspiration from.
