@@ -14,11 +14,27 @@ public partial class Knife : Carriable
 	private const string SwingSound = "knife_swing-1";
 	private const string FleshHit = "knife_flesh_hit-1";
 
+	private const float NormalDamage = 50.0f;
+	private const float BackstabDamage = 100.0f;
+
 	private bool _isThrown = false;
 	private Player _thrower;
 	private Vector3 _thrownFrom;
 	private Rotation _throwRotation = Rotation.From( new Angles( 90, 0, 0 ) );
 	private float _gravityModifier;
+
+	private static bool CanBackstab( Entity attacker, Entity target )
+	{
+		// Get delta between entity positions (as Vector2, so without Z)
+		var delta = new Vector2(
+			target.Position.x - attacker.Position.x,
+			target.Position.y - attacker.Position.y );
+
+		// Is the attacker behind the target? (position wise)		
+		// +1.0 == directly behind, -1.0 == directly in front, so
+		// >0.0 means the attacker is at the back half of the target
+		return Vector2.Dot( delta.Normal, target.Rotation.Forward ) > 0.45f; // A little above 90 degrees
+	}
 
 	public override void Simulate( Client client )
 	{
@@ -30,7 +46,7 @@ public partial class Knife : Carriable
 			using ( LagCompensation() )
 			{
 				TimeSinceStab = 0;
-				MeleeAttack( 100f, 100f, 8f );
+				MeleeAttack( 100f, 8f );
 			}
 		}
 		else if ( Input.Released( InputButton.SecondaryAttack ) )
@@ -47,7 +63,7 @@ public partial class Knife : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	private void MeleeAttack( float damage, float range, float radius )
+	private void MeleeAttack( float range, float radius )
 	{
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
@@ -69,20 +85,25 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
+		var damage = NormalDamage;
+
+		if ( trace.Entity is Player player )
+		{
+			if ( CanBackstab( Owner, player ) )
+				damage = BackstabDamage;
+
+			player.DistanceToAttacker = 0;
+			PlaySound( FleshHit );
+			Owner.Inventory.DropActive();
+			Delete();
+		}
+
 		var damageInfo = DamageInfo.Generic( damage )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
 			.WithWeapon( this )
 			.WithFlag( DamageFlags.Slash );
-
-		if ( trace.Entity is Player player )
-		{
-			player.DistanceToAttacker = 0;
-			PlaySound( FleshHit );
-			Owner.Inventory.DropActive();
-			Delete();
-		}
 
 		trace.Entity.TakeDamage( damageInfo );
 	}
@@ -153,7 +174,7 @@ public partial class Knife : Carriable
 			{
 				trace.Surface.DoBulletImpact( trace );
 
-				var damageInfo = DamageInfo.Generic( 100f )
+				var damageInfo = DamageInfo.Generic( NormalDamage )
 					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
 					.WithFlag( DamageFlags.Slash )
