@@ -6,7 +6,6 @@ namespace TTT.UI;
 public class HealthStationCharges : WorldPanel
 {
 	private readonly HealthStationEntity _healthStation;
-
 	private Label Label { get; init; }
 
 	public HealthStationCharges( HealthStationEntity healthStation ) => _healthStation = healthStation;
