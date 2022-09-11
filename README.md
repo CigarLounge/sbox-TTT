@@ -2,7 +2,7 @@
 
 # [s&box TTT](https://cigarlounge.github.io/)
 
-[![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-red)](https://github.com/CigarLounge/sbox-TTT/blob/main/LICENSE.md)
+[![License](https://img.shields.io/badge/license-agreement-red)](https://github.com/CigarLounge/sbox-TTT/blob/main/LICENSE.md)
 [![Discord](https://img.shields.io/discord/949508550118481970?label=discord)](https://discord.gg/rrsrakF8N3)
 ![GitHub Repo stars](https://img.shields.io/github/stars/CigarLounge/sbox-TTT?style=social)
 
@@ -15,13 +15,13 @@ TTT is a mafia-esque multiplayer game created using s&box. It's aimed to be the 
 - [Kosta Novosel](https://github.com/kolexxx)
 
 ### Direct Contributors
-- [Pukes](https://twitter.com/ILikeADaArt) - Equipment models
+- [Pukes](https://github.com/imPukes) - Equipment models
 
 ### Community Shoutouts
 - Facepunch's open-source gamemodes
 
 ### Special Thanks
-- [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from
+- [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from.
 
 # Discord
 Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
