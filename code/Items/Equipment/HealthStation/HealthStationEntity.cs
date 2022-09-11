@@ -16,7 +16,10 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	private const float HealAmount = 5; // The amount of health given per second.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
+	private readonly Color _usageColor = new Color32( 173, 216, 230 );
+	private PointLightEntity _usageLight;
 	private UI.HealthStationCharges _healthStationCharges;
+	private TimeSince _timeSinceLastUsage;
 
 	public override void Spawn()
 	{
@@ -24,7 +27,19 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 		Model = _worldModel;
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
-		Health = 201f;
+		Health = 200f;
+
+		_usageLight = new PointLightEntity
+		{
+			Enabled = true,
+			DynamicShadows = true,
+			Range = 13,
+			Brightness = 20,
+			Color = Color.Transparent,
+			Owner = this,
+			Parent = this,
+			Rotation = Rotation,
+		};
 	}
 
 	public override void ClientSpawn()
@@ -36,6 +51,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	protected override void OnDestroy()
 	{
+		_usageLight?.Delete();
 		_healthStationCharges?.Delete( true );
 
 		base.OnDestroy();
@@ -44,6 +60,8 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
+		_usageLight.Color = _timeSinceLastUsage < 0.1f ? _usageColor : Color.Transparent;
+
 		if ( StoredHealth >= 200f )
 			return;
 
@@ -71,6 +89,8 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
+		_timeSinceLastUsage = 0f;
+
 		var player = user as Player;
 		HealPlayer( player );
 
