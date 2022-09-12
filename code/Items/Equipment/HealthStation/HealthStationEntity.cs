@@ -18,7 +18,6 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	private const float TimeUntilNextHeal = 0.2f; // The time before we give out another heal.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
-	private readonly Color _usageColor = new Color32( 173, 216, 230 );
 	private PointLightEntity _usageLight;
 	private UI.HealthStationCharges _healthStationCharges;
 	private RealTimeSince _timeSinceLastUsage;
@@ -34,11 +33,11 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 		_usageLight = new PointLightEntity
 		{
-			Enabled = true,
+			Enabled = false,
 			DynamicShadows = true,
 			Range = 13,
 			Brightness = 20,
-			Color = Color.Transparent,
+			Color = new Color32( 173, 216, 230 ),
 			Owner = this,
 			Parent = this,
 			Rotation = Rotation,
@@ -63,7 +62,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		_usageLight.Color = _timeSinceLastUsage < 0.4f ? _usageColor : Color.Transparent;
+		_usageLight.SetLightEnabled( _timeSinceLastUsage < TimeUntilNextHeal * 2 );
 
 		if ( StoredHealth >= 200f )
 			return;
