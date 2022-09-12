@@ -21,8 +21,8 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	private readonly Color _usageColor = new Color32( 173, 216, 230 );
 	private PointLightEntity _usageLight;
 	private UI.HealthStationCharges _healthStationCharges;
-	private TimeSince _timeSinceLastUsage;
-	private TimeUntil _isHealAvailable;
+	private RealTimeSince _timeSinceLastUsage;
+	private RealTimeUntil _isHealAvailable;
 
 	public override void Spawn()
 	{
