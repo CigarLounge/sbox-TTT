@@ -37,7 +37,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 			DynamicShadows = true,
 			Range = 13,
 			Brightness = 20,
-			Color = new Color32( 173, 216, 230 ),
+			Color = new Color32( 47, 106, 127 ),
 			Owner = this,
 			Parent = this,
 			Rotation = Rotation,
