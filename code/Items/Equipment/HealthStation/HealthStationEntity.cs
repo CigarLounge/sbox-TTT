@@ -13,13 +13,16 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Net]
 	public float StoredHealth { get; set; } = 200f;
 
-	private const float HealAmount = 5; // The amount of health given per second.
+	public const string BeepSound = "health_station-beep";
+	private const float HealAmount = 1; // The amount of health given per health.
+	private const float TimeUntilNextHeal = 0.2f; // The time before we give out another heal.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
 	private readonly Color _usageColor = new Color32( 173, 216, 230 );
 	private PointLightEntity _usageLight;
 	private UI.HealthStationCharges _healthStationCharges;
 	private TimeSince _timeSinceLastUsage;
+	private TimeUntil _isHealAvailable;
 
 	public override void Spawn()
 	{
@@ -60,7 +63,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		_usageLight.Color = _timeSinceLastUsage < 0.1f ? _usageColor : Color.Transparent;
+		_usageLight.Color = _timeSinceLastUsage < 0.2f ? _usageColor : Color.Transparent;
 
 		if ( StoredHealth >= 200f )
 			return;
@@ -74,14 +77,15 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 			return;
 
 		var healthNeeded = Player.MaxHealth - player.Health;
-
-		if ( healthNeeded <= 0 )
+		if ( healthNeeded <= 0 || !_isHealAvailable )
 			return;
 
-		var healAmount = Math.Min( StoredHealth, Math.Min( HealAmount * Time.Delta, healthNeeded ) );
+		_timeSinceLastUsage = 0f;
+		_isHealAvailable = TimeUntilNextHeal;
+		PlaySound( BeepSound );
 
+		var healAmount = Math.Min( HealAmount, healthNeeded );
 		player.Health += healAmount;
-
 		StoredHealth -= healAmount;
 	}
 
@@ -89,8 +93,6 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		_timeSinceLastUsage = 0f;
-
 		var player = user as Player;
 		HealPlayer( player );
 
