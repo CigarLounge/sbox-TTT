@@ -63,7 +63,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		_usageLight.Color = _timeSinceLastUsage < 0.2f ? _usageColor : Color.Transparent;
+		_usageLight.Color = _timeSinceLastUsage < TimeUntilNextHeal ? _usageColor : Color.Transparent;
 
 		if ( StoredHealth >= 200f )
 			return;
