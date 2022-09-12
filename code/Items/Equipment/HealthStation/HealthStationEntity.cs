@@ -14,7 +14,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	public float StoredHealth { get; set; } = 200f;
 
 	public const string BeepSound = "health_station-beep";
-	private const float HealAmount = 1; // The amount of health given per health.
+	private const float HealAmount = 1; // The amount of health given per usage.
 	private const float TimeUntilNextHeal = 0.2f; // The time before we give out another heal.
 	private const float RechargeAmount = 0.5f; // The amount of health recharged per second.
 
@@ -63,7 +63,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 	[Event.Tick.Server]
 	private void ServerTick()
 	{
-		_usageLight.Color = _timeSinceLastUsage < TimeUntilNextHeal ? _usageColor : Color.Transparent;
+		_usageLight.Color = _timeSinceLastUsage < 0.4f ? _usageColor : Color.Transparent;
 
 		if ( StoredHealth >= 200f )
 			return;
