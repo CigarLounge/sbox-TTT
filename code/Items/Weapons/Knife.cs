@@ -4,7 +4,6 @@ namespace TTT;
 
 [Category( "Weapons" )]
 [ClassName( "ttt_weapon_knife" )]
-[HideInEditor]
 [Title( "Knife" )]
 public partial class Knife : Carriable
 {
