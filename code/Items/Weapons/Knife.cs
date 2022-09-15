@@ -1,9 +1,11 @@
 using Sandbox;
+using SandboxEditor;
 
 namespace TTT;
 
 [Category( "Weapons" )]
 [ClassName( "ttt_weapon_knife" )]
+[HammerEntity]
 [Title( "Knife" )]
 public partial class Knife : Carriable
 {
