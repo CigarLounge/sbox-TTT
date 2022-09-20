@@ -114,6 +114,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		base.Spawn();
 
 		Tags.Add( "interactable" );
+		Tags.Add( "corpse" );
 
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
