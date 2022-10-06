@@ -3,16 +3,12 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
+[UseTemplate]
 public class Hud : RootPanel
 {
 	public Hud()
 	{
 		Local.Hud = this;
-
-		StyleSheet.Load( "/UI/Hud.scss" );
-		AddClass( "panel" );
-		AddClass( "fullscreen" );
-
 		Init();
 	}
 
