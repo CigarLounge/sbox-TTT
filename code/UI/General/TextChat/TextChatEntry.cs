@@ -4,14 +4,14 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class ChatEntry : Panel
+public class TextChatEntry : Panel
 {
 	public Label Name { get; init; }
 	public Label Message { get; init; }
 
 	private RealTimeSince _timeSinceCreation;
 
-	public ChatEntry( string name, string message, Color? color = null )
+	public TextChatEntry( string name, string message, Color? color = null )
 	{
 		_timeSinceCreation = 0;
 		Name.Text = name;

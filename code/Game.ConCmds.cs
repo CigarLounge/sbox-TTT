@@ -100,6 +100,6 @@ public partial class Game
 		client.SetValue( Strings.HasRockedTheVote, true );
 		Game.Current.RTVCount += 1;
 
-		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
+		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
 	}
 }

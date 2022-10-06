@@ -121,7 +121,7 @@ public class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			ChatBox.SendChat( _labels[keyboardIndexPressed - 1].Text );
+			TextChat.SendChat( _labels[keyboardIndexPressed - 1].Text );
 			_timeSinceLastMessage = 0;
 		}
 

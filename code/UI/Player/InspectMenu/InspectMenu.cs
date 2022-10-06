@@ -160,7 +160,7 @@ public partial class InspectMenu : Panel
 		if ( !enemy.IsValid() || enemy is not Corpse corpse )
 			return;
 
-		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
+		TextChat.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
 		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 
