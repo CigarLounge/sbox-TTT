@@ -261,15 +261,6 @@ public partial class Player : AnimatedEntity
 		Animator.BuildInput( input );
 	}
 
-	public void RenderHud( Vector2 screenSize )
-	{
-		if ( !this.IsAlive() )
-			return;
-
-		ActiveCarriable?.RenderHud( screenSize );
-		UI.Crosshair.Instance?.RenderCrosshair( screenSize * 0.5, ActiveCarriable );
-	}
-
 	#region Animator
 	[Net, Predicted]
 	public PawnAnimator Animator { get; private set; }
