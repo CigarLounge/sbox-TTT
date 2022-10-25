@@ -204,9 +204,6 @@ public partial class Player
 		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
 		LastDamage = info;
 
-		if ( info.Hitbox.HasTag( "gear" ) )
-			Log.Info( "true" );
-
 		Health -= info.Damage;
 		Event.Run( GameEvent.Player.TookDamage, this );
 
