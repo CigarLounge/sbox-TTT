@@ -19,9 +19,5 @@ public class Detective : Role
 		player.IsRoleKnown = true;
 		player.Inventory.Add( new DNAScanner() );
 		player.Perks.Add( new Armor() );
-
-		player.ClothingContainer.Toggle( Hat );
-		player.ClothingContainer.DressEntity( player );
-		player.ClothingContainer.Toggle( Hat );
 	}
 }

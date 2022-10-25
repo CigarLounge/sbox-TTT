@@ -130,24 +130,6 @@ public partial class Game : Sandbox.Game
 	private static void LoadResources()
 	{
 		Detective.Hat = ResourceLibrary.Get<Clothing>( "models/detective_hat/detective_hat.clothing" );
-
-		Player.ClothingPresets.Add( new List<Clothing>() );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hat/balaclava/balaclava.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hair/eyebrows/eyebrows_black.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/jacket/longsleeve/longsleeve.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/gloves/tactical_gloves/tactical_gloves.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/smarttrousers/trousers.smart.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shoes/trainers/trainers.clothing" ) );
-
-		Player.ClothingPresets.Add( new List<Clothing>() );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hat/balaclava/balaclava.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hair/eyebrows/eyebrows.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shirt/flannel_shirt/variations/blue_shirt/blue_shirt.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/gloves/tactical_gloves/tactical_gloves.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/cargopants/cargo_pants_army.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing" ) );
-		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shoes/trainers/trainers.clothing" ) );
 	}
 
 	private void OnStateChanged( BaseState oldState, BaseState newState )

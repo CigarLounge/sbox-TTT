@@ -5,22 +5,22 @@ namespace TTT;
 
 public partial class Player
 {
-	public static List<List<Clothing>> ClothingPresets { get; private set; } = new();
 	public ClothingContainer ClothingContainer { get; private init; } = new();
+	private static List<Clothing> _selectedPreset = new();
 
-	/// <summary>
-	/// The current preset from <see cref="ClothingPresets"/>.
-	/// </summary>
-	private static List<Clothing> _currentPreset;
 	/// <summary>
 	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(Client)"/> again.
 	/// </summary>
 	private readonly List<Clothing> _avatarClothes;
 
-	public void DressPlayer()
+	/// <summary>
+	/// Dresses the player with the given clothes.
+	/// <para><strong>Parameters:</strong></para>
+	/// <para>The clothes to dress the player with.</para>
+	/// </summary>
+	public void DressPlayer( List<Clothing> clothing = default )
 	{
-		ClothingContainer.Clothing = Game.AvatarClothing ? _avatarClothes : _currentPreset;
-
+		ClothingContainer.Clothing = Game.AvatarClothing ? _avatarClothes : clothing.IsNullOrEmpty() ? _selectedPreset : clothing;
 		ClothingContainer.DressEntity( this );
 	}
 
@@ -28,6 +28,6 @@ public partial class Player
 	[Event.Entity.PostCleanup]
 	private static void ChangeClothingPreset()
 	{
-		_currentPreset = Rand.FromList( ClothingPresets );
+		_selectedPreset = Rand.FromList( GameResource.GetInfo<RoleInfo>( typeof( NoneRole ) ).ClothingSets );
 	}
 }

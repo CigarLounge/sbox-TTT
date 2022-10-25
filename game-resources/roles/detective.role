@@ -5,6 +5,19 @@
 		Team = "Innocents"
 		Color = "0.09804,0.4,1,1"
 		IconPath = resource:"ui/detective-icon.png"
+		ClothingSets = 
+		[
+			[ 
+				resource:"models/detective_hat/detective_hat.clothing",
+				resource:"models/citizen_clothes/hat/balaclava/balaclava.clothing",
+				resource:"models/citizen_clothes/shoes/boots/black_boots.clothing",
+				resource:"models/citizen_clothes/trousers/jeans/jeans_black.clothing",
+				resource:"models/citizen_clothes/shirt/buttoned_shirt/buttoned_shirt.clothing",
+				resource:"models/citizen_clothes/jacket/hivis_jacket/hivis_jacket.clothing",
+				resource:"models/citizen_clothes/gloves/rubber_gloves/rubber_gloves.clothing",
+				resource:"models/citizen_clothes/hair/eyebrows/eyebrows.clothing",
+			],
+		]
 		DefaultCredits = 100
 		Weapons = 
 		[

@@ -48,6 +48,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
+		player.DressPlayer( Rand.FromList( Info.ClothingSets ) );
 	}
 
 	public virtual void OnDeselect( Player player )

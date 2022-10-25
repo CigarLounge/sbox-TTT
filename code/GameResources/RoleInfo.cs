@@ -16,6 +16,9 @@ public class RoleInfo : GameResource
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
+	[Category( "Clothing" )]
+	public List<List<Clothing>> ClothingSets { get; set; } = new();
+
 	[Category( "Shop" )]
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; }
