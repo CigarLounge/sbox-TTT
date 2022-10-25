@@ -123,7 +123,7 @@ public partial class Player : AnimatedEntity
 
 			CreateHull();
 			CreateFlashlight();
-			DressPlayer();
+			DressPlayer( _avatarClothes );
 			ResetInterpolation();
 
 			Event.Run( GameEvent.Player.Spawned, this );
