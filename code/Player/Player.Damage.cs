@@ -75,7 +75,7 @@ public partial class Player
 	/// <summary>
 	/// Whether or not the player was killed with a head shot.
 	/// </summary>
-	public bool KilledWithHeadShot => (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex ) == HitboxGroup.Head;
+	public bool KilledWithHeadShot => LastDamage.Hitbox.HasTag( "head" );
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -204,6 +204,9 @@ public partial class Player
 		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
 		LastDamage = info;
 
+		if ( info.Hitbox.HasTag( "gear" ) )
+			Log.Info( "true" );
+
 		Health -= info.Damage;
 		Event.Run( GameEvent.Player.TookDamage, this );
 
@@ -227,7 +230,6 @@ public partial class Player
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
 			LastDamage.Flags,
-			LastDamage.HitboxIndex,
 			LastDamage.Position,
 			DistanceToAttacker
 		);
@@ -240,16 +242,15 @@ public partial class Player
 		if ( Perks.Has<Armor>() )
 			damageMultiplier *= Armor.ReductionPercentage;
 
-		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
-
-		if ( hitboxGroup == HitboxGroup.Head )
+		if ( info.Hitbox.HasTag( "head" ) )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
-
 			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;
 		}
-		else if ( hitboxGroup >= HitboxGroup.LeftArm && hitboxGroup <= HitboxGroup.Gear )
+		else if ( info.Hitbox.HasAnyTags( "arm", "hand" ) )
+		{
 			damageMultiplier *= 0.55f;
+		}
 
 		return damageMultiplier;
 	}
@@ -270,13 +271,12 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, int hI, Vector3 p, float dTA )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, Vector3 p, float dTA )
 	{
 		var info = DamageInfo.Generic( d )
 			.WithAttacker( a )
 			.WithWeapon( w )
 			.WithFlag( dF )
-			.WithHitbox( hI )
 			.WithPosition( p );
 
 		DistanceToAttacker = dTA;
