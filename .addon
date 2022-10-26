@@ -3,6 +3,7 @@
   "Type": "game",
   "Org": "matt",
   "Ident": "ttt",
+  "Tags": "",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
@@ -131,6 +132,10 @@
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
       }
-    }
+    },
+    "ParentPackage": "",
+    "GeneralExtensions": true,
+    "TargettedExtensions": true,
+    "ExtensionApiVersion": 1001
   }
 }
