@@ -18,14 +18,10 @@ button, .button
 		display: none;
 	}
 
-	> .button-label
-	{
-		display: none;
-	}
-
 	&.has-icon > iconpanel
 	{
 		display: flex;
+		margin-right: 5px;
 	}
 
 	&.has-label > .button-label
