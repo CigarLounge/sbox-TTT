@@ -77,6 +77,16 @@ public partial class Game
 		Game.Current.ChangeState( new PreRound() );
 	}
 
+	[ConCmd.Admin( Name = "ttt_change_map" )]
+	public static async void ChangeMap( string mapIdent )
+	{
+		var package = await Package.Fetch( mapIdent, true );
+		if ( package is not null && package.PackageType == Package.Type.Map )
+			Global.ChangeLevel( mapIdent );
+		else
+			Log.Error( $"{mapIdent} does not exist as a s&box map!" );
+	}
+
 	[ConCmd.Server( Name = "ttt_forcespec" )]
 	public static void ToggleForceSpectator()
 	{
