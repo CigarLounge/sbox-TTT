@@ -296,7 +296,8 @@ public abstract partial class Weapon : Carriable
 		{
 			trace = Trace.Ray( tr.EndPosition, end * 20000f )
 				.UseHitboxes()
-				.WithAnyTags( "solid", "player", "interactable" )
+				.WithAnyTags( "solid", "player", "glass", "interactable" )
+				.Ignore( tr.Entity )
 				.Size( radius );
 
 			tr = trace.Run();
