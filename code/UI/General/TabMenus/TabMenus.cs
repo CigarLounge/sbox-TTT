@@ -57,9 +57,7 @@ public partial class TabMenus : Panel
 		if ( Local.Client.Pawn is not Player player )
 			return;
 
-		_muteButton.Enabled( !player.IsAlive() );
-		if ( !_muteButton.IsEnabled() )
-			return;
+		_muteButton.SetClass( "inactive", player.IsAlive() );
 
 		switch ( player.MuteFilter )
 		{
