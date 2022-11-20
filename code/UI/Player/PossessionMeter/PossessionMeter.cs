@@ -17,7 +17,7 @@ public class PossessionMeter : Panel
 
 	public override void Tick()
 	{
-		var punchesFraction = (float)_possession.Punches / PropPossession.MaxPunches;
+		var punchesFraction = (float)_possession.Punches / _possession.MaxPunches;
 		PercentagePanel.Style.Width = Length.Fraction( punchesFraction );
 	}
 }

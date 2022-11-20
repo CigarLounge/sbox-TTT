@@ -71,6 +71,16 @@ public partial class Game
 		player.SetRole( roleInfo );
 	}
 
+	[ConCmd.Admin( Name = "ttt_setkarma" )]
+	public static void SetKarma( int karma )
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.ActiveKarma = karma;
+	}
+
 	[ConCmd.Admin( Name = "ttt_force_restart" )]
 	public static void ForceRestart()
 	{

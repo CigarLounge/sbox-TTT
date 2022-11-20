@@ -11,7 +11,8 @@ public partial class PropPossession : EntityComponent<Prop>
 	[Net, Local]
 	public int Punches { get; private set; }
 
-	public const int MaxPunches = 8;
+	[Net, Local]
+	public int MaxPunches { get; private set; }
 	private const float PunchRechargeTime = 1f;
 
 	private Player _player;
@@ -61,6 +62,8 @@ public partial class PropPossession : EntityComponent<Prop>
 		base.OnActivate();
 
 		_player = Entity.Owner as Player;
+
+		MaxPunches = (int)Math.Min( Math.Max( 0, _player.ActiveKarma / 100 ), 13 );
 
 		if ( Host.IsClient && !Local.Pawn.IsAlive() )
 			_nameplate = new( Entity );
