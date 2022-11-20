@@ -289,8 +289,21 @@ public abstract partial class Weapon : Carriable
 			yield return tr;
 
 		//
-		// Another trace, bullet going through thin material, penetrating water surface?
+		// Wallbang through glass
 		//
+		var glassHit = Array.Find( tr.Tags, ( tag ) => tag == "glass" ) is not null;
+		if ( glassHit )
+		{
+			trace = Trace.Ray( tr.EndPosition, end * 20000f )
+				.UseHitboxes()
+				.WithAnyTags( "solid", "player", "interactable" )
+				.Size( radius );
+
+			tr = trace.Run();
+
+			if ( tr.Hit )
+				yield return tr;
+		}
 	}
 
 	protected void DropAmmo()
