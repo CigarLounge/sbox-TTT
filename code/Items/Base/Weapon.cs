@@ -208,6 +208,9 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
+		// Seed rand using the tick, so bullet cones match on client and server
+		Rand.SetSeed( Time.Tick );
+
 		while ( bulletCount-- > 0 )
 		{
 			var forward = Owner.EyeRotation.Forward;
