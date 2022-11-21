@@ -208,9 +208,6 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
-		// Seed rand using the tick, so bullet cones match on client and server
-		Rand.SetSeed( Time.Tick );
-
 		while ( bulletCount-- > 0 )
 		{
 			var forward = Owner.EyeRotation.Forward;
@@ -269,6 +266,8 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
+		var traceResults = new List<TraceResult>();
+
 		var underWater = Trace.TestPoint( start, "water" );
 
 		var trace = Trace.Ray( start, end )
@@ -286,11 +285,27 @@ public abstract partial class Weapon : Carriable
 		var tr = trace.Run();
 
 		if ( tr.Hit )
-			yield return tr;
+			traceResults.Add( tr );
 
 		//
-		// Another trace, bullet going through thin material, penetrating water surface?
+		// Let people shoot through glass
 		//
+		var hitGlass = Array.Find( tr.Tags, ( tag ) => tag == "glass" ) is not null;
+		if ( hitGlass )
+		{
+			trace = Trace.Ray( tr.EndPosition, end )
+				.UseHitboxes()
+				.WithAnyTags( "solid", "player", "glass", "interactable" )
+				.Ignore( tr.Entity )
+				.Size( radius );
+
+			tr = trace.Run();
+
+			if ( tr.Hit )
+				traceResults.Add( tr );
+		}
+
+		return traceResults;
 	}
 
 	protected void DropAmmo()
