@@ -45,7 +45,7 @@ public partial class Game
 	#region Weapons
 	[ConVar.Replicated( "ttt_backstabs_enabled",
 		Help = "True: knife attacks can only kill in 1 strike from behind." +
-		"False: all attacks with the knife result in a 1 hit kill. " )]
+		"False: any attack with the knife will result in a 1 hit kill." )]
 	public static bool EnableBackstabs { get; set; } = true;
 	#endregion
 

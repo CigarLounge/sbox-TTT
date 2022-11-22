@@ -131,6 +131,13 @@
         "ConVarName": "ttt_proximity_chat",
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
+      },
+      "ttt_backstabs_enabled": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_backstabs_enabled",
+        "DisplayName": "Enable Backstabs",
+        "DefaultValue": "true"
       }
     },
     "ParentPackage": "",
