@@ -55,14 +55,6 @@ public partial class Game
 	public static bool KickAFKPlayers { get; set; }
 	#endregion
 
-	#region Weapons
-	[ConVar.Replicated("ttt_knife_backstab_dot", 
-		Help = "What the dot product of the viewangles between the stabber and the stabbee is compared to. " +
-		"Essentially, how forgiving/precise the backstab calculation is.", 
-		Saved = true)]
-	public static float KnifeBackstabDot { get; set; } = -0.3f;
-	#endregion
-
 	#region Credits
 	[ConVar.Server( "ttt_credits_award_pct", Help = "When this percentage of Innocents are dead, Traitors are given credits.", Saved = true )]
 	public static float CreditsAwardPercentage { get; set; } = 0.35f;
