@@ -31,7 +31,7 @@ public partial class Knife : Carriable
 			using ( LagCompensation() )
 			{
 				TimeSinceStab = 0;
-				MeleeAttack( 100f, 100f, 8f );
+				StabAttack( 100f, 8f );
 			}
 		}
 		else if ( Input.Released( InputButton.SecondaryAttack ) )
@@ -48,7 +48,7 @@ public partial class Knife : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	private void MeleeAttack( float damage, float range, float radius )
+	private void StabAttack( float range, float radius )
 	{
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
@@ -70,7 +70,8 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( damage )
+		// Damage starts at 50 and multiplies to 100 on a backstab.
+		var damageInfo = DamageInfo.Generic( 50 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
@@ -79,26 +80,34 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player otherPlayer )
 		{
-			// Discard all z values to 
+			otherPlayer.DistanceToAttacker = 0;
+			PlaySound( FleshHit );
+
+			// Discard all z values to simplify to 2D.
 			var toTarget = (otherPlayer.Position - Owner.Position).WithZ( 0 ).Normal;
 			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
 			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
 
+			// Get all the dot products.
 			var behindDot = Vector3.Dot( toTarget, targetForward );
 			var facingDot = Vector3.Dot( toTarget, ownerForward );
 			var viewDot = Vector3.Dot( targetForward, ownerForward );
 
+			// Determine if it's a backstab.
 			var isBackstab = (behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f);
 
-			Log.Error( $"Was backstab: {isBackstab}" );
+			if ( isBackstab )
+				damageInfo.Damage *= 2;
 
-			//otherPlayer.DistanceToAttacker = 0;
-			PlaySound( FleshHit );
-			//Owner.Inventory.DropActive();
-			//Delete();
+			// The stab will result in a kill, destroy the knife.
+			if ( otherPlayer.Health - damageInfo.Damage <= 0 )
+			{
+				Owner.Inventory.DropActive();
+				Delete();
+			}
 		}
 
-		//trace.Entity.TakeDamage( damageInfo );
+		trace.Entity.TakeDamage( damageInfo );
 	}
 
 	private void Throw()
