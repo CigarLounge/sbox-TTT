@@ -70,7 +70,8 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( 50 )
+		var stabDamage = Game.EnableBackstabs ? 50 : 100;
+		var damageInfo = DamageInfo.Generic( stabDamage )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
@@ -93,10 +94,10 @@ public partial class Knife : Carriable
 
 			var isBackstab = (behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f);
 
-			if ( isBackstab )
+			if ( isBackstab && Game.EnableBackstabs )
 				damageInfo.Damage *= 2;
 
-			if ( otherPlayer.Health - damageInfo.Damage <= 0 )
+			if ( otherPlayer.Health - stabDamage <= 0 )
 			{
 				Owner.Inventory.DropActive();
 				Delete();

@@ -42,6 +42,13 @@ public partial class Game
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
+	#region Weapons
+	[ConVar.Replicated( "ttt_backstabs_enabled",
+		Help = "True: knife attacks can only kill in 1 strike from behind." +
+		"False: all attacks with the knife result in a 1 hit kill. " )]
+	public static bool EnableBackstabs { get; set; } = true;
+	#endregion
+
 	#region Minimum Players
 	[ConVar.Replicated( "ttt_min_players", Help = "The minimum players to start the game.", Saved = true )]
 	public static int MinPlayers { get; set; } = 2;
