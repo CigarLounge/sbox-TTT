@@ -70,7 +70,6 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		// Damage starts at 50 and multiplies to 100 on a backstab.
 		var damageInfo = DamageInfo.Generic( 50 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
@@ -88,18 +87,15 @@ public partial class Knife : Carriable
 			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
 			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
 
-			// Get all the dot products.
 			var behindDot = Vector3.Dot( toTarget, targetForward );
 			var facingDot = Vector3.Dot( toTarget, ownerForward );
 			var viewDot = Vector3.Dot( targetForward, ownerForward );
 
-			// Determine if it's a backstab.
 			var isBackstab = (behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f);
 
 			if ( isBackstab )
 				damageInfo.Damage *= 2;
 
-			// The stab will result in a kill, destroy the knife.
 			if ( otherPlayer.Health - damageInfo.Damage <= 0 )
 			{
 				Owner.Inventory.DropActive();
