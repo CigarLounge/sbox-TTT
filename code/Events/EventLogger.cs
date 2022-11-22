@@ -20,9 +20,6 @@ public class EventInfo
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
 	public string Description { get; set; }
-
-	public static byte[] Serialize( EventInfo[] data ) => Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
-	public static EventInfo[] Deserialize( byte[] bytes ) => JsonSerializer.Deserialize<EventInfo[]>( bytes );
 }
 
 public static class EventLogger
@@ -66,7 +63,7 @@ public static class EventLogger
 		LogEvent( EventType.Round, _timeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
 		WriteEvents();
 
-		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
+		UI.GeneralMenu.SendSummaryData( Events.Serialize() );
 	}
 
 	[GameEvent.Player.TookDamage]
@@ -82,9 +79,9 @@ public static class EventLogger
 		var attacker = info.Attacker;
 
 		if ( attacker is Player && attacker != player )
-			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{attacker.Client.Name} did {Math.Round( info.Damage )} damage to {player.SteamName}" );
 		else
-			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{player.SteamName} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{player.SteamName} took {Math.Round( info.Damage )} damage." );
 	}
 
 	[GameEvent.Player.Killed]

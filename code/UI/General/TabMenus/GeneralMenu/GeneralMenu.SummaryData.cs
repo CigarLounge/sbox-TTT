@@ -16,7 +16,7 @@ public partial class GeneralMenu : Panel
 
 	public struct EventSummaryData
 	{
-		public EventInfo[] Events { get; set; }
+		public List<EventInfo> Events { get; set; }
 	}
 
 	public RoleSummaryData LastRoleSummaryData;
@@ -28,7 +28,7 @@ public partial class GeneralMenu : Panel
 		if ( Instance is null )
 			return;
 
-		Instance.LastEventSummaryData.Events = EventInfo.Deserialize( eventBytes );
+		Instance.LastEventSummaryData.Events = eventBytes.Deserialize<List<EventInfo>>();
 		EventSummary.Instance?.Init();
 
 		Instance.LastRoleSummaryData.Innocents = Role.GetPlayers<Innocent>()?.ToList();

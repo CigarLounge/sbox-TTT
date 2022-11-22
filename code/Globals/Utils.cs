@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace TTT;
@@ -39,4 +40,7 @@ public static class Utils
 		await GameTask.DelaySeconds( seconds );
 		callback?.Invoke();
 	}
+
+	public static byte[] Serialize<T>( this T data ) => JsonSerializer.SerializeToUtf8Bytes( data );
+	public static T Deserialize<T>( this byte[] bytes ) => JsonSerializer.Deserialize<T>( bytes );
 }

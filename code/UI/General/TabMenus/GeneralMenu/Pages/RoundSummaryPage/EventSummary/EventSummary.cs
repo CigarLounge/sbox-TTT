@@ -23,8 +23,8 @@ public class EventSummary : Panel
 		Events.DeleteChildren();
 
 		if ( GeneralMenu.Instance is not null && !GeneralMenu.Instance.LastEventSummaryData.Events.IsNullOrEmpty() )
-			for ( var i = 0; i < GeneralMenu.Instance.LastEventSummaryData.Events.Length; ++i )
-				AddEvent( GeneralMenu.Instance.LastEventSummaryData.Events[i] );
+			foreach ( var summaryEvent in GeneralMenu.Instance.LastEventSummaryData.Events )
+				AddEvent( summaryEvent );
 
 		Header.Enabled( Events.Children.Any() );
 	}
