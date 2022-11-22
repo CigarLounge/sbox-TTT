@@ -77,15 +77,28 @@ public partial class Knife : Carriable
 			.WithWeapon( this )
 			.WithFlag( DamageFlags.Slash );
 
-		if ( trace.Entity is Player player )
+		if ( trace.Entity is Player otherPlayer )
 		{
-			player.DistanceToAttacker = 0;
+			// Discard all z values to 
+			var toTarget = (otherPlayer.Position - Owner.Position).WithZ( 0 ).Normal;
+			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
+			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
+
+			var behindDot = Vector3.Dot( toTarget, targetForward );
+			var facingDot = Vector3.Dot( toTarget, ownerForward );
+			var viewDot = Vector3.Dot( targetForward, ownerForward );
+
+			var isBackstab = (behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f);
+
+			Log.Error( $"Was backstab: {isBackstab}" );
+
+			//otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
-			Owner.Inventory.DropActive();
-			Delete();
+			//Owner.Inventory.DropActive();
+			//Delete();
 		}
 
-		trace.Entity.TakeDamage( damageInfo );
+		//trace.Entity.TakeDamage( damageInfo );
 	}
 
 	private void Throw()
