@@ -70,8 +70,7 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		var stabDamage = Game.KnifeBackstabs ? 50 : 100;
-		var damageInfo = DamageInfo.Generic( stabDamage )
+		var damageInfo = DamageInfo.Generic( Game.KnifeBackstabs ? 50 : 100 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
