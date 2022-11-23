@@ -7,7 +7,7 @@ namespace TTT;
 public partial class Player
 {
 	[Net]
-	public List<int> Ammo { get; set; } = new();
+	public IList<int> Ammo { get; set; }
 
 	private static readonly int[] _ammoCap = new int[] { 0, 60, 16, 20, 12, 60 };
 

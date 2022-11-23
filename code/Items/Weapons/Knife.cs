@@ -31,7 +31,7 @@ public partial class Knife : Carriable
 			using ( LagCompensation() )
 			{
 				TimeSinceStab = 0;
-				StabAttack( 100f, 8f );
+				StabAttack( 35f, 8f );
 			}
 		}
 		else if ( Input.Released( InputButton.SecondaryAttack ) )
@@ -57,7 +57,6 @@ public partial class Knife : Carriable
 		var endPosition = Owner.EyePosition + Owner.EyeRotation.Forward * range;
 
 		var trace = Trace.Ray( Owner.EyePosition, endPosition )
-			.UseHitboxes( true )
 			.Ignore( Owner )
 			.Radius( radius )
 			.Run();
@@ -84,7 +83,7 @@ public partial class Knife : Carriable
 
 			// TF2 magic
 			// Discard all z values to simplify to 2D.
-			var toTarget = (otherPlayer.Position - Owner.Position).WithZ( 0 ).Normal;
+			var toTarget = (otherPlayer.WorldSpaceBounds.Center - Owner.WorldSpaceBounds.Center).WithZ( 0 ).Normal;
 			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
 			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
 
