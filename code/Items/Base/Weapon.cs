@@ -147,7 +147,7 @@ public abstract partial class Weapon : Carriable
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
+		ShootBullet( Info.Spread, 1.5f, Info.Damage, 2.0f, Info.BulletsPerFire );
 	}
 
 	protected virtual void AttackSecondary() { }
