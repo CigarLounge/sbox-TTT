@@ -82,6 +82,7 @@ public partial class Knife : Carriable
 			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
 
+			// TF2 magic
 			// Discard all z values to simplify to 2D.
 			var toTarget = (otherPlayer.Position - Owner.Position).WithZ( 0 ).Normal;
 			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
