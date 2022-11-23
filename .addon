@@ -131,11 +131,47 @@
         "ConVarName": "ttt_proximity_chat",
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
+      },
+      "ttt_backstabs_enabled": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_backstabs_enabled",
+        "DisplayName": "Enable Backstabs",
+        "DefaultValue": "true"
       }
     },
     "ParentPackage": "",
     "GeneralExtensions": true,
     "TargettedExtensions": true,
-    "ExtensionApiVersion": 1001
+    "ExtensionApiVersion": 1001,
+    "PackageSettings": [
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_proximity_chat",
+        "DisplayName": "Proxmity Chat",
+        "DefaultValue": "false",
+        "Description": "When enabled voice chat will be heard in a proxmity instead of globally.",
+        "Group": ""
+      },
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_avatar_clothing",
+        "DisplayName": "Avatar Clothing",
+        "DefaultValue": "false",
+        "Description": "When enabled players will use their Terry clothing instead of the predefined TTT clothing.",
+        "Group": ""
+      },
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_knife_backstabs",
+        "DisplayName": "Knife Backstabs",
+        "DefaultValue": "true",
+        "Description": "When enabled knives will only one shot if done in the back.",
+        "Group": ""
+      }
+    ]
   }
 }

@@ -31,7 +31,7 @@ public partial class Knife : Carriable
 			using ( LagCompensation() )
 			{
 				TimeSinceStab = 0;
-				MeleeAttack( 100f, 100f, 8f );
+				StabAttack( 100f, 8f );
 			}
 		}
 		else if ( Input.Released( InputButton.SecondaryAttack ) )
@@ -48,7 +48,7 @@ public partial class Knife : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	private void MeleeAttack( float damage, float range, float radius )
+	private void StabAttack( float range, float radius )
 	{
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
@@ -70,22 +70,41 @@ public partial class Knife : Carriable
 		if ( !IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( damage )
+		var damageInfo = DamageInfo.Generic( Game.KnifeBackstabs ? 50 : 100 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
 			.WithWeapon( this )
 			.WithFlag( DamageFlags.Slash );
 
-		if ( trace.Entity is Player player )
+		if ( trace.Entity is Player otherPlayer )
 		{
-			player.DistanceToAttacker = 0;
+			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
-			Owner.Inventory.DropActive();
-			Delete();
+
+			// TF2 magic
+			// Discard all z values to simplify to 2D.
+			var toTarget = (otherPlayer.Position - Owner.Position).WithZ( 0 ).Normal;
+			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
+			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
+
+			var behindDot = Vector3.Dot( toTarget, targetForward );
+			var facingDot = Vector3.Dot( toTarget, ownerForward );
+			var viewDot = Vector3.Dot( targetForward, ownerForward );
+
+			var isBackstab = behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f;
+
+			if ( Game.KnifeBackstabs && isBackstab )
+				damageInfo.Damage *= 2;
 		}
 
 		trace.Entity.TakeDamage( damageInfo );
+
+		if ( trace.Entity is Player && !trace.Entity.IsAlive() )
+		{
+			Owner.Inventory.DropActive();
+			Delete();
+		}
 	}
 
 	private void Throw()

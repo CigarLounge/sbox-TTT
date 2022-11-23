@@ -42,6 +42,11 @@ public partial class Game
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
+	#region Weapons
+	[ConVar.Replicated( "ttt_knife_backstabs", Help = "When enabled the knife will only one shot from the back." )]
+	public static bool KnifeBackstabs { get; set; } = true;
+	#endregion
+
 	#region Minimum Players
 	[ConVar.Replicated( "ttt_min_players", Help = "The minimum players to start the game.", Saved = true )]
 	public static int MinPlayers { get; set; } = 2;
