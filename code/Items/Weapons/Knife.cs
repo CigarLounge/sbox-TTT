@@ -81,20 +81,22 @@ public partial class Knife : Carriable
 			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
 
-			// TF2 magic
-			// Discard all z values to simplify to 2D.
-			var toTarget = (otherPlayer.WorldSpaceBounds.Center - Owner.WorldSpaceBounds.Center).WithZ( 0 ).Normal;
-			var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
-			var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
+			if ( Game.KnifeBackstabs )
+			{
+				// TF2 magic
+				// Discard all z values to simplify to 2D.
+				var toTarget = (otherPlayer.WorldSpaceBounds.Center - Owner.WorldSpaceBounds.Center).WithZ( 0 ).Normal;
+				var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
+				var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
 
-			var behindDot = Vector3.Dot( toTarget, targetForward );
-			var facingDot = Vector3.Dot( toTarget, ownerForward );
-			var viewDot = Vector3.Dot( targetForward, ownerForward );
+				var behindDot = Vector3.Dot( toTarget, targetForward );
+				var facingDot = Vector3.Dot( toTarget, ownerForward );
+				var viewDot = Vector3.Dot( targetForward, ownerForward );
 
-			var isBackstab = behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f;
-
-			if ( Game.KnifeBackstabs && isBackstab )
-				damageInfo.Damage *= 2;
+				var isBackstab = behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f;
+				if ( isBackstab )
+					damageInfo.Damage *= 2;
+			}
 		}
 
 		trace.Entity.TakeDamage( damageInfo );
