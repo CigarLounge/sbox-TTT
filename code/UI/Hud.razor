@@ -1,0 +1,51 @@
+@using Sandbox;
+@using Sandbox.UI;
+@namespace TTT.UI
+@inherits RootPanel
+@attribute [StyleSheet("/ui/Hud.scss")]
+
+<root class="panel">
+    <HintDisplay />
+    <PlayerInfo />
+    <InventoryWrapper />
+    <TextChat />
+    <QuickChat />
+    <VoiceChatDisplay />
+    <RoundTimer />
+    <VoiceList />
+    <InfoFeed />
+    <FullScreenHintMenu />
+    <TabMenus />
+    <Crosshair />
+    <CarriableHint />
+    <RoleMenu />
+    <DamageIndicator />
+    <WorldPoints />
+    <SpectatingHint />
+</root>
+
+@* <HintDisplay />
+    <PlayerInfo />
+    <InventoryWrapper />
+    <TextChat />
+    <QuickChat />
+    <VoiceChatDisplay />
+    <RoundTimer />
+    <VoiceList />
+    <InfoFeed />
+    <FullScreenHintMenu />
+    <TabMenus />
+    <Crosshair />
+    <CarriableHint />
+    <RoleMenu />
+    <DamageIndicator />
+    <WorldPoints />
+    <SpectatingHint /> *@
+
+@code
+{
+    public Hud()
+    {
+        Local.Hud = this;
+    }
+}
