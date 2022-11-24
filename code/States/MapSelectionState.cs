@@ -84,7 +84,7 @@ public partial class MapSelectionState : BaseState
 
 	private static async Task<List<string>> GetRemoteMapIdents()
 	{
-		var queryResult = await Package.FindAsync( "type:map sort:popular ttt ", take: 99 );
+		var queryResult = await Package.FindAsync( "type:map sort:popular +ttt ", take: 99 );
 		return queryResult.Packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
 }
