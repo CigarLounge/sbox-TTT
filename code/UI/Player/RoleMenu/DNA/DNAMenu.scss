@@ -38,7 +38,7 @@ DNAMenu
         {
             font-size: 50px;
             font-weight: 600;
-            color: $info;
+            color: $tertiary;
         }
 
         .charge-status
@@ -72,7 +72,7 @@ DNAMenu
         .delete-button
         {
             font-size: 23px;
-            color: $info;
+            color: $tertiary;
             cursor: pointer;
             margin-right: 5px;
 
@@ -89,7 +89,7 @@ DNAMenu
 
         &.selected
         {
-            border-color: $info;
+            border-color: $tertiary;
         }
     }
 }
