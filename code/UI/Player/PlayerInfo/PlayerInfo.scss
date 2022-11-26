@@ -1,7 +1,6 @@
 PlayerInfo
 {
     position: absolute;
-    flex-direction: row;
     bottom: 25px;
     left: 25px;
 
@@ -10,12 +9,8 @@ PlayerInfo
         padding: 2px 15px;
         border-radius: 4 0 0 4;
         justify-content: center;
-
-        text
-        {
-            font-size: 30px;
-            font-weight: bold;
-        }
+        font-size: 30px;
+        font-weight: bold;
     }
 
     .health-container
@@ -24,22 +19,12 @@ PlayerInfo
         padding: 2px 10px;
         border-radius: 0 4 4 0;
         justify-content: center;
+        font-size: 30px;
+        font-weight: bold;
 
-        text
+        &.hit
         {
-            font-size: 30px;
-            font-weight: bold;
-        }
-    }
-
-    &.hit
-    {
-        .health-container
-        {
-            text
-            {
-                color: rgb(255, 189, 189);
-            }
+            color: rgb(255, 189, 189);
         }
     }
 }

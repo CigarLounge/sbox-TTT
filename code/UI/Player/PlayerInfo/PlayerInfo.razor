@@ -6,11 +6,11 @@
 
 <root class="opacity-heavy text-shadow">
     <div @ref="RoleContainer" class="role-container">
-        <text @ref="Role"></text>
+        <text @ref="Role" />
     </div>
 
     <div @ref="HealthContainer" class="health-container background-color-gradient">
-        <text @ref="Health"></text>
+        <text @ref="Health" />
     </div>
 </root>
 
@@ -34,6 +34,7 @@
         if (player.CurrentPlayer.Role is NoneRole)
         {
             RoleContainer.Enabled(false);
+
             HealthContainer.Style.BorderTopLeftRadius = 4;
             HealthContainer.Style.BorderBottomLeftRadius = 4;
         }
@@ -56,7 +57,7 @@
         if (!this.IsEnabled())
             return;
 
-        AddClass("hit");
-        Utils.DelayAction(0.2f, () => { RemoveClass("hit"); });
+        HealthContainer.AddClass("hit");
+        Utils.DelayAction(0.2f, () => { HealthContainer.RemoveClass("hit"); });
     }
 }
