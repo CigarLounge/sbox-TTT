@@ -11,7 +11,7 @@
 		Damage = 50
 		DamageFallOffStart = 0
 		DamageFallOffEnd = 0
-		HeadshotMultiplier = 2
+		HeadshotMultiplier = 3
 		Spread = 0.01
 		PrimaryRate = 0.75
 		SecondaryRate = 0

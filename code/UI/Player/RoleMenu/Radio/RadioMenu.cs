@@ -10,12 +10,12 @@ public partial class RadioMenu : Panel
 	// TODO: Let's hook up some of the other sounds like death, fire, explore, etc.
 	private static readonly Dictionary<string, List<string>> _sounds = new()
 	{
-		{ "Pistol", new List<string>() { "vertec_fire-1", "p250_fire-1" } },
-		{ "SMG", new List<string>() { "mp5_fire-1", "mp7_fire-1" } },
-		{ "Rifle", new List<string>() { "ak47_fire-1", "m4_fire-1" } },
+		{ "Pistol", new List<string>() { "p250_fire-1" } },
+		{ "SMG", new List<string>() { "mp5_fire-1" } },
+		{ "Rifle", new List<string>() { "m4_fire-1" } },
 		{ "Sniper", new List<string>() { "spr_fire-1" } },
 		{ "Shotgun", new List<string>() { "bekas_fire-1" } },
-		{ "Silenced", new List<string>() { "vertec_fire_silenced-1", "mp7_fire_silenced-1" } },
+		{ "Silenced", new List<string>() { "vertec_fire_silenced-1" } },
 	};
 
 	public RadioMenu()
