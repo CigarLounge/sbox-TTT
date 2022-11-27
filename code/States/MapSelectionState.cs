@@ -84,8 +84,7 @@ public partial class MapSelectionState : BaseState
 
 	private static async Task<List<string>> GetRemoteMapIdents()
 	{
-		var ident = Global.GameIdent.Replace( "#local", "" );
-		var queryResult = await Package.FindAsync( $"type:map game:{ident}", take: 99 );
+		var queryResult = await Package.FindAsync( $"type:map game:{Global.GameIdent.Replace( "#local", "" )}", take: 99 );
 		return queryResult.Packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
 }
