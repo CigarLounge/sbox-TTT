@@ -84,6 +84,7 @@ public partial class MapSelectionState : BaseState
 
 	private static async Task<List<string>> GetRemoteMapIdents()
 	{
+		// TODO: Wait for https://github.com/sboxgame/issues/issues/2605 to be fixed.
 		var queryResult = await Package.FindAsync( $"type:map game:{Global.GameIdent.Replace( "#local", "" )}", take: 99 );
 		return queryResult.Packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
