@@ -2,17 +2,6 @@
 @using TTT;
 @using Sandbox.UI;
 @namespace TTT.UI
-@attribute [StyleSheet("/UI/Player/PlayerInfo/PlayerInfo.scss")]
-
-<root class="opacity-heavy text-shadow">
-    <div @ref="RoleContainer" class="role-container">
-        <text @ref="Role" />
-    </div>
-
-    <div @ref="HealthContainer" class="health-container background-color-gradient">
-        <text @ref="Health" />
-    </div>
-</root>
 
 @code
 {
@@ -61,3 +50,42 @@
         Utils.DelayAction(0.2f, () => { HealthContainer.RemoveClass("hit"); });
     }
 }
+
+<root class="opacity-heavy text-shadow">
+    <div @ref="RoleContainer" class="role-container">
+        <text @ref="Role" />
+    </div>
+
+    <div @ref="HealthContainer" class="health-container background-color-gradient">
+        <text @ref="Health" />
+    </div>
+</root>
+
+<style>
+    PlayerInfo {
+        position: absolute;
+        bottom: 25px;
+        left: 25px;
+
+        .role-container {
+            padding: 2px 15px;
+            border-radius: 4 0 0 4;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .health-container {
+            width: 115px;
+            padding: 2px 10px;
+            border-radius: 0 4 4 0;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+
+            &.hit {
+                color: rgb(255, 189, 189);
+            }
+        }
+    }
+</style>
