@@ -8,12 +8,12 @@
 		FireMode = "Automatic"
 		BulletsPerFire = 1
 		ClipSize = 30
-		Damage = 17
+		Damage = 18
 		DamageFallOffStart = 0
 		DamageFallOffEnd = 0
 		HeadshotMultiplier = 1.5
 		Spread = 0.03
-		PrimaryRate = 9
+		PrimaryRate = 8
 		SecondaryRate = 0
 		ReserveAmmo = 0
 		ReloadTime = 3.1
