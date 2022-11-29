@@ -3,7 +3,7 @@
   "Type": "game",
   "Org": "matt",
   "Ident": "ttt",
-  "Tags": "",
+  "Tags": "ttt social",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
@@ -172,6 +172,11 @@
         "Description": "When enabled knives will only one shot if done in the back.",
         "Group": ""
       }
-    ]
+    ],
+    "DefaultLeaderboards": null,
+    "Summary": "A vanilla TTT experience with quality of life improvements",
+    "Description": "An attempt to create a vanilla TTT experience with quality of life improvements thrown in.\n\n\uD83D\uDCE3 Socials\nhttps://discord.gg/rrsrakF8N3\nhttps://cigarlounge.github.io/\n\n\uD83D\uDEA7 2022-11-20 \uD83D\uDEA7\n- Prop possession punches based on karma\n- Glass wallbanging\n\n\uD83D\uDEA7 2022-10-26 \uD83D\uDEA7\n- Addon support\n\n\uD83D\uDEA7 2022-09-07 \uD83D\uDEA7\n- Prop kill punishing\n- Fixed hand prop interaction\n\n\uD83D\uDEA7 2022-08-23 \uD83D\uDEA7\n- Player muting\n- Player voice chat indicator\n\n",
+    "ReplaceTags": "ttt social mafia",
+    "Public": true
   }
 }

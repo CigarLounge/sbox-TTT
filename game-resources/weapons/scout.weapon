@@ -13,7 +13,7 @@
 		DamageFallOffEnd = 0
 		HeadshotMultiplier = 3
 		Spread = 0.01
-		PrimaryRate = 0.75
+		PrimaryRate = 0.7
 		SecondaryRate = 0
 		ReserveAmmo = 0
 		ReloadTime = 3.1

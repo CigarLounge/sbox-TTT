@@ -8,7 +8,7 @@
 		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 13
-		Damage = 18
+		Damage = 13
 		DamageFallOffStart = 0
 		DamageFallOffEnd = 0
 		HeadshotMultiplier = 1.5
