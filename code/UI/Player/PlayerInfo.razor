@@ -1,4 +1,3 @@
-@using Sandbox.UI;
 @namespace TTT.UI
 
 @code
@@ -11,7 +10,7 @@
 
     public override void Tick()
     {
-        if (Local.Pawn is not TTT.Player player)
+        if (Local.Pawn is not Player player)
             return;
 
         this.Enabled(player.CurrentPlayer.IsValid() && player.CurrentPlayer.IsAlive());
@@ -32,7 +31,7 @@
     }
 
     [GameEvent.Player.TookDamage]
-    private void OnHit(TTT.Player player)
+    private void OnHit(Player player)
     {
         if (!this.IsEnabled())
             return;

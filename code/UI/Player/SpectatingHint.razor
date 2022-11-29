@@ -1,0 +1,85 @@
+@namespace TTT.UI
+
+@code {
+    private Panel FindTargetHint { get; set; }
+    private Panel SwapSpectatingPlayerPanel { get; set; }
+    private Label PlayerName { get; set; }
+    private Label SpectatingHintLabel { get; set; }
+    private InputGlyph SpectatingGlyph { get; set; }
+
+    public override void Tick()
+    {
+        if (Local.Pawn is not Player player)
+            return;
+
+        this.Enabled(!player.IsAlive());
+        if (!this.IsEnabled())
+            return;
+
+        var isPossessingProp = player.Prop.IsValid();
+
+        FindTargetHint.Enabled(!isPossessingProp && !player.IsSpectatingPlayer);
+
+        if (isPossessingProp)
+        {
+            SpectatingGlyph.SetButton(InputButton.Duck);
+            SpectatingHintLabel.SetText("to no longer possess the prop");
+        }
+        else
+        {
+            SpectatingGlyph.SetButton(InputButton.Jump);
+            SpectatingHintLabel.SetText("to change spectating camera mode");
+        }
+
+        SwapSpectatingPlayerPanel.Enabled(player.IsSpectatingPlayer);
+        if (player.IsSpectatingPlayer)
+        {
+            PlayerName.Text = player.CurrentPlayer?.Client?.Name;
+            PlayerName.Style.FontColor = player.CurrentPlayer?.Role?.Color;
+        }
+    }
+}
+
+<root>
+    <div class="text-shadow" style="align-items: center; flex-direction: column;">
+        <div @ref=SwapSpectatingPlayerPanel style="align-items: center; flex-direction: column;">
+            <text @ref=PlayerName class="name"></text>
+            <div style="align-items: center;">
+                <text>Press</text>
+                <inputglyph button="PrimaryAttack" />
+                <text>or</text>
+                <inputglyph button="SecondaryAttack" />
+                <text>to swap active player</text>
+            </div>
+        </div>
+
+        <div @ref=FindTargetHint style="align-items: center;">
+            <text>Press</text>
+            <inputglyph button="Use" />
+            <text>to spectate a player or possess a prop</text>
+        </div>
+
+        <div style="align-items: center;">
+            <text>Press</text>
+            <inputglyph @ref=SpectatingGlyph button="Jump" />
+            <text @ref=SpectatingHintLabel>to change spectating camera mode</text>
+        </div>
+    </div>
+</root>
+
+<style>
+    SpectatingHint {
+        position: absolute;
+        left: 50%;
+        bottom: 25px;
+        transform: translateX(-50%);
+        font-size: 17px;
+        font-weight: 500;
+        align-items: center;
+
+        .name {
+            font-size: 30px;
+            font-weight: 600;
+        }
+    }
+</style>
