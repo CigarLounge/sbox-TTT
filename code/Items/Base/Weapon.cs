@@ -92,6 +92,8 @@ public abstract partial class Weapon : Carriable
 
 	public override void BuildInput()
 	{
+		base.BuildInput();
+
 		var oldPitch = Owner.ViewAngles.pitch;
 		var oldYaw = Owner.ViewAngles.yaw;
 

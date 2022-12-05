@@ -39,6 +39,8 @@ public class Scout : Weapon
 
 	public override void BuildInput()
 	{
+		base.BuildInput();
+
 		if ( IsScoped )
 			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.1f );
 	}
@@ -47,10 +49,7 @@ public class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" )
-		{
-			Parent = Local.Hud
-		};
+		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Local.Hud };
 	}
 
 	protected override void DestroyHudElements()

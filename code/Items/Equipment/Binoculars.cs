@@ -62,6 +62,8 @@ public partial class Binoculars : Carriable
 
 	public override void BuildInput()
 	{
+		base.BuildInput();
+
 		if ( IsZoomed )
 			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
 	}
