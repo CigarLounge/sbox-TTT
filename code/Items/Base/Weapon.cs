@@ -90,19 +90,17 @@ public abstract partial class Weapon : Carriable
 			OnReloadFinish();
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		var oldPitch = Owner.ViewAngles.pitch;
+		var oldYaw = Owner.ViewAngles.yaw;
 
-		var oldPitch = input.ViewAngles.pitch;
-		var oldYaw = input.ViewAngles.yaw;
-
-		input.ViewAngles.pitch -= CurrentRecoil.y * Time.Delta;
-		input.ViewAngles.yaw -= CurrentRecoil.x * Time.Delta;
+		Owner.ViewAngles.WithPitch( CurrentRecoil.y * Time.Delta );
+		Owner.ViewAngles.WithYaw( CurrentRecoil.x * Time.Delta );
 
 		CurrentRecoil -= CurrentRecoil
-			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
-			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );
+			.WithY( (oldPitch - Owner.ViewAngles.pitch) * Info.RecoilRecoveryScale )
+			.WithX( (oldYaw - Owner.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
 
 	protected virtual bool CanPrimaryAttack()

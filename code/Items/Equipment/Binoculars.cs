@@ -60,12 +60,13 @@ public partial class Binoculars : Carriable
 			_corpse.Search( Owner, Input.Down( InputButton.Run ), false );
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		if ( Local.Pawn is not Player player )
+			return;
 
 		if ( IsZoomed )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
+			player.ViewAngles = Angles.Lerp( player.OriginalViewAngles, player.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
 	}
 
 	protected override void DestroyHudElements()
