@@ -27,14 +27,14 @@ public class FirstPersonSpectatorCamera : CameraMode, ISpectateCamera
 		Rotation = Rotation.Slerp( Rotation, Viewer.EyeRotation, SmoothSpeed * Time.Delta );
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		if ( input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			_owner.UpdateSpectatedPlayer( 1 );
-		else if ( input.Pressed( InputButton.SecondaryAttack ) )
+		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			_owner.UpdateSpectatedPlayer( -1 );
 
-		base.BuildInput( input );
+		base.BuildInput();
 	}
 
 	public void OnUpdateSpectatedPlayer( Player newSpectatedPlayer )
