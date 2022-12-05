@@ -34,7 +34,7 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		var mass = Math.Min( 150f, physicsBody.Mass );
 		var force = 110f * 75f;
-		var aim = Vector3.Forward * Input.Rotation;
+		var aim = Vector3.Forward * _player.ViewAngles.ToRotation();
 		var mf = mass * force;
 
 		_timeUntilNextPunch = 0.15f;
@@ -44,13 +44,13 @@ public partial class PropPossession : EntityComponent<Prop>
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunch = 0.2f;
 		}
-		else if ( Input.Forward != 0f )
+		else if ( _player.InputDirection.x != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, Input.Forward * aim * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.x * aim * mf );
 		}
-		else if ( Input.Left != 0f )
+		else if ( _player.InputDirection.y != 0f )
 		{
-			physicsBody.ApplyAngularImpulse( new Vector3( 0, 0, Input.Left * 200f * 10f ) );
+			physicsBody.ApplyAngularImpulse( new Vector3( 0, 0, _player.InputDirection.y * 200f * 10f ) );
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
 
