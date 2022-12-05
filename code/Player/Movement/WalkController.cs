@@ -47,7 +47,8 @@ public partial class WalkController : PawnController
 	{
 		base.FrameSimulate();
 
-		EyeRotation = Input.Rotation;
+		var pl = Pawn as Player;
+		EyeRotation = pl.ViewAngles.ToRotation();
 	}
 
 	public override void Simulate()
@@ -254,38 +255,12 @@ public partial class WalkController : PawnController
 
 	private void WaterMove()
 	{
-		var wishvel = WishVelocity;
+		var wishdir = WishVelocity.Normal;
+		var wishspeed = WishVelocity.Length;
 
-		if ( Input.Down( InputButton.Jump ) )
-		{
-			wishvel[2] += DefaultSpeed;
-		}
-		else if ( wishvel.IsNearlyZero() )
-		{
-			wishvel[2] -= 60;
-		}
-		else
-		{
-			var upwardMovememnt = Input.Forward * (Rotation * Vector3.Forward).z * 2;
-			upwardMovememnt = Math.Clamp( upwardMovememnt, 0f, DefaultSpeed );
-			wishvel[2] += Input.Up + upwardMovememnt;
-		}
+		wishspeed *= 0.8f;
 
-		var speed = Velocity.Length;
-		var wishspeed = Math.Min( wishvel.Length, DefaultSpeed ) * 0.8f;
-		var wishdir = wishvel.Normal;
-
-		if ( speed > 0 )
-		{
-			var newspeed = speed - Time.Delta * speed * GroundFriction * _surfaceFriction;
-			if ( newspeed < 0.1f )
-				newspeed = 0;
-
-			Velocity *= newspeed / speed;
-		}
-
-		if ( wishspeed >= 0.1f )
-			Accelerate( wishdir, wishspeed, 100, Acceleration );
+		Accelerate( wishdir, wishspeed, 100, Acceleration );
 
 		Velocity += BaseVelocity;
 
@@ -365,11 +340,18 @@ public partial class WalkController : PawnController
 
 	private void BaseSimulate()
 	{
+		var player = Pawn as Player;
+
 		EyeLocalPosition = Vector3.Up * (EyeHeight * Pawn.Scale);
 		UpdateBBox();
 
 		EyeLocalPosition += TraceOffset;
-		EyeRotation = Input.Rotation;
+
+		// If we're a bot, spin us around 180 degrees.
+		if ( player.Client.IsBot )
+			EyeRotation = player.ViewAngles.WithYaw( player.ViewAngles.yaw + 180f ).ToRotation();
+		else
+			EyeRotation = player.ViewAngles.ToRotation();
 
 		if ( Unstuck.TestAndFix() )
 			return;
@@ -397,13 +379,16 @@ public partial class WalkController : PawnController
 				ApplyFriction( GroundFriction * _surfaceFriction * 1 );
 		}
 
-		WishVelocity = new Vector3( Input.Forward, Input.Left, 0 );
+		//
+		// Work out wish velocity.. just take input, rotate it to view, clamp to -1, 1
+		//
+		WishVelocity = new Vector3( player.InputDirection.x.Clamp( -1f, 1f ), player.InputDirection.y.Clamp( -1f, 1f ), 0 );
 		var inSpeed = WishVelocity.Length.Clamp( 0, 1 );
 
 		if ( !Swimming )
-			WishVelocity *= Input.Rotation.Angles().WithPitch( 0 ).ToRotation();
+			WishVelocity *= player.ViewAngles.WithPitch( 0 ).ToRotation();
 		else
-			WishVelocity *= Input.Rotation.Angles().ToRotation();
+			WishVelocity *= player.ViewAngles.ToRotation();
 
 
 		if ( !Swimming && !_isTouchingLadder )
