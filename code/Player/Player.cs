@@ -9,7 +9,7 @@ public partial class Player : AnimatedEntity
 	public Perks Perks { get; private init; }
 
 	[ClientInput]
-	public Vector3 InputDirection { get; protected set; }
+	public Vector3 InputDirection { get; set; }
 
 	[ClientInput]
 	public Entity ActiveChildInput { get; set; }

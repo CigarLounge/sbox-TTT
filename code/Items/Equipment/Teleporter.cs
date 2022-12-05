@@ -95,7 +95,7 @@ public partial class Teleporter : Carriable
 			return;
 
 		Owner.ActiveCarriable = this;
-		Owner.ViewAngles = Angles.Zero; // TODO: Test this.
+		Owner.InputDirection = 0;
 		Input.ClearButton( InputButton.Jump );
 		Input.ClearButton( InputButton.Drop );
 	}
