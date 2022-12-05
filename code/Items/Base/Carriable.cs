@@ -96,8 +96,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		EnableDrawing = true;
 
-		var animator = player.Animator;
-
+		var animator = player.GetActiveAnimator();
 		if ( animator is not null )
 			SimulateAnimator( animator );
 

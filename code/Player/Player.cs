@@ -88,7 +88,7 @@ public partial class Player : AnimatedEntity
 		EnableShadowInFirstPerson = true;
 		EnableTouch = false;
 
-		Animator = new PlayerAnimator();
+		Animator = new PlayerAnimator(); // TODO: Do we need this?
 		Camera = new FreeSpectateCamera();
 	}
 

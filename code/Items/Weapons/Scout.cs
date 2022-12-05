@@ -37,12 +37,10 @@ public class Scout : Weapon
 		base.Simulate( client );
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
 		if ( IsScoped )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
-
-		base.BuildInput( input );
+			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.1f );
 	}
 
 	protected override void CreateHudElements()

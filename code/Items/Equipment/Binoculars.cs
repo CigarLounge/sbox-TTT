@@ -62,11 +62,8 @@ public partial class Binoculars : Carriable
 
 	public override void BuildInput()
 	{
-		if ( Local.Pawn is not Player player )
-			return;
-
 		if ( IsZoomed )
-			player.ViewAngles = Angles.Lerp( player.OriginalViewAngles, player.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
+			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.5f / MathF.Pow( 2.5f, ZoomLevel ) );
 	}
 
 	protected override void DestroyHudElements()

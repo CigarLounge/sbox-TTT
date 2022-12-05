@@ -87,17 +87,18 @@ public partial class Teleporter : Carriable
 		}
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		if ( Local.Pawn is not Player player )
+			return;
 
 		if ( !IsTeleporting )
 			return;
 
-		input.ActiveChild = this;
-		input.ClearButton( InputButton.Jump );
-		input.ClearButton( InputButton.Drop );
-		input.InputDirection = 0;
+		player.ActiveCarriable = this;
+		player.ViewAngles = Angles.Zero; // TODO: Test this.
+		Input.ClearButton( InputButton.Jump );
+		Input.ClearButton( InputButton.Drop );
 	}
 
 	private void SetLocation()
