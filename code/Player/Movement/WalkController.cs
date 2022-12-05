@@ -253,14 +253,40 @@ public partial class WalkController : PawnController
 		Velocity -= BaseVelocity;
 	}
 
-	private void WaterMove()
+	private void WaterMove( Player player )
 	{
-		var wishdir = WishVelocity.Normal;
-		var wishspeed = WishVelocity.Length;
+		var wishvel = WishVelocity;
 
-		wishspeed *= 0.8f;
+		if ( Input.Down( InputButton.Jump ) )
+		{
+			wishvel[2] += DefaultSpeed;
+		}
+		else if ( wishvel.IsNearlyZero() )
+		{
+			wishvel[2] -= 60;
+		}
+		else
+		{
+			var upwardMovememnt = player.InputDirection.x * (Rotation * Vector3.Forward).z * 2;
+			upwardMovememnt = Math.Clamp( upwardMovememnt, 0f, DefaultSpeed );
+			wishvel[2] += player.InputDirection.z + upwardMovememnt;
+		}
 
-		Accelerate( wishdir, wishspeed, 100, Acceleration );
+		var speed = Velocity.Length;
+		var wishspeed = Math.Min( wishvel.Length, DefaultSpeed ) * 0.8f;
+		var wishdir = wishvel.Normal;
+
+		if ( speed > 0 )
+		{
+			var newspeed = speed - Time.Delta * speed * GroundFriction * _surfaceFriction;
+			if ( newspeed < 0.1f )
+				newspeed = 0;
+
+			Velocity *= newspeed / speed;
+		}
+
+		if ( wishspeed >= 0.1f )
+			Accelerate( wishdir, wishspeed, 100, Acceleration );
 
 		Velocity += BaseVelocity;
 
@@ -346,12 +372,7 @@ public partial class WalkController : PawnController
 		UpdateBBox();
 
 		EyeLocalPosition += TraceOffset;
-
-		// If we're a bot, spin us around 180 degrees.
-		if ( player.Client.IsBot )
-			EyeRotation = player.ViewAngles.WithYaw( player.ViewAngles.yaw + 180f ).ToRotation();
-		else
-			EyeRotation = player.ViewAngles.ToRotation();
+		EyeRotation = player.ViewAngles.ToRotation();
 
 		if ( Unstuck.TestAndFix() )
 			return;
@@ -405,7 +426,7 @@ public partial class WalkController : PawnController
 			if ( Pawn.WaterLevel.AlmostEqual( 0.6f, .05f ) )
 				CheckWaterJump();
 
-			WaterMove();
+			WaterMove( player );
 		}
 		else if ( _isTouchingLadder )
 		{

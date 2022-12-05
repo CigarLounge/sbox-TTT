@@ -23,7 +23,7 @@ public partial class Player
 		}
 
 		var isAnyKeyPressed = Buttons.Any( Input.Down );
-		var isMouseMoving = Input.AnalogMove != Vector3.Zero; // TODO: Check if this is correct.
+		var isMouseMoving = Input.MouseDelta != Vector2.Zero;
 
 		if ( isAnyKeyPressed || isMouseMoving )
 		{
