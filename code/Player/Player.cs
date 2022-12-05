@@ -11,8 +11,8 @@ public partial class Player : AnimatedEntity
 	[ClientInput]
 	public Vector3 InputDirection { get; protected set; }
 
-	// [ClientInput]
-	// public Entity ActiveChildInput { get; set; } // TODO: Lets see if we need this.
+	[ClientInput]
+	public Entity ActiveChildInput { get; set; }
 
 	[ClientInput]
 	public Angles ViewAngles { get; set; }
@@ -88,7 +88,7 @@ public partial class Player : AnimatedEntity
 		EnableShadowInFirstPerson = true;
 		EnableTouch = false;
 
-		Animator = new PlayerAnimator(); // TODO: Do we need this?
+		Animator = new PlayerAnimator();
 		Camera = new FreeSpectateCamera();
 	}
 
@@ -185,7 +185,8 @@ public partial class Player : AnimatedEntity
 				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
 		}
 
-		Inventory.SetActive( ActiveCarriable );
+		if ( ActiveChildInput is Carriable carriable )
+			Inventory.SetActive( carriable );
 
 		SimulateActiveCarriable();
 

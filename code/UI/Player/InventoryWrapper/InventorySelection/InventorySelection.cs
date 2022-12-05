@@ -138,15 +138,14 @@ public class InventorySelection : Panel
 			{
 				// The user isn't holding an active carriable, or is holding a weapon that has a different
 				// hold type than the one selected using the keyboard. We can just select the first weapon.
-				player.ActiveCarriable = weaponsOfSlotTypeSelected.FirstOrDefault();
+				player.ActiveChildInput = weaponsOfSlotTypeSelected.FirstOrDefault();
 			}
 			else
 			{
 				// The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
 				// Find the next possible weapon within the hold types.
-
 				activeCarriableOfSlotTypeIndex = GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count );
-				player.ActiveCarriable = weaponsOfSlotTypeSelected[activeCarriableOfSlotTypeIndex];
+				player.ActiveChildInput = weaponsOfSlotTypeSelected[activeCarriableOfSlotTypeIndex];
 			}
 		}
 
@@ -157,7 +156,7 @@ public class InventorySelection : Panel
 				 p is InventorySlot slot && slot.Carriable == activeCarriable );
 
 			var newSelectedIndex = ClampSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
-			player.ActiveCarriable = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
+			player.ActiveChildInput = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
 		}
 	}
 
