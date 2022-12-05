@@ -110,12 +110,12 @@ public class QuickChat : Panel
 	}
 
 	[Event.BuildInput]
-	private void BuildInput( InputBuilder input )
+	private void BuildInput()
 	{
 		if ( !this.IsEnabled() )
 			return;
 
-		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed( input );
+		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed();
 		if ( keyboardIndexPressed <= 0 ) // Only accept keyboard numbers 1-9
 			return;
 

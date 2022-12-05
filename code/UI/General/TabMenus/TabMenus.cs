@@ -81,8 +81,8 @@ public partial class TabMenus : Panel
 	}
 
 	[Event.BuildInput]
-	private void MenuInput( InputBuilder input )
+	private void BuildInput()
 	{
-		SetClass( "show", input.Down( InputButton.Score ) );
+		SetClass( "show", Input.Down( InputButton.Score ) );
 	}
 }
