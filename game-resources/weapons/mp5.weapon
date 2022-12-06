@@ -17,8 +17,8 @@
 		SecondaryRate = 0
 		ReserveAmmo = 0
 		ReloadTime = 2.8
-		VerticalRecoil = 1
-		HorizontalRecoilRange = 0.5
+		VerticalRecoil = 8
+		HorizontalRecoilRange = 2
 		RecoilRecoveryScale = 10
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/muzzle/flash_medium.vpcf"

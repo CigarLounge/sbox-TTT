@@ -35,8 +35,8 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	private Angles RecoilOnShoot => new( -Info.VerticalRecoil, Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), 0 );
-	private Queue<Angles> RecoilQueue { get; set; } = new();
+	private Vector2 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil );
+	private Vector2 CurrentRecoil { get; set; } = Vector2.Zero;
 
 	public override void Spawn()
 	{
@@ -95,11 +95,18 @@ public abstract partial class Weapon : Carriable
 	{
 		base.BuildInput();
 
-		if ( RecoilQueue.Any() )
-		{
-			var recoil = RecoilQueue.Dequeue();
-			Owner.ViewAngles += recoil;
-		}
+		var oldPitch = Owner.ViewAngles.pitch;
+		var oldYaw = Owner.ViewAngles.yaw;
+
+		var recoil = Owner.ViewAngles;
+		recoil.pitch -= CurrentRecoil.y * Time.Delta;
+		recoil.yaw -= CurrentRecoil.x * Time.Delta;
+
+		Owner.ViewAngles = recoil;
+
+		CurrentRecoil -= CurrentRecoil
+			.WithY( (oldPitch - Owner.ViewAngles.pitch) * Info.RecoilRecoveryScale )
+			.WithX( (oldYaw - Owner.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
 
 	protected virtual bool CanPrimaryAttack()
@@ -188,7 +195,7 @@ public abstract partial class Weapon : Carriable
 			Particles.Create( Info.MuzzleFlashParticle, EffectEntity, "muzzle" );
 
 		ViewModelEntity?.SetAnimParameter( "fire", true );
-		RecoilQueue.Enqueue( RecoilOnShoot );
+		CurrentRecoil += RecoilOnShoot;
 	}
 
 	[ClientRpc]
