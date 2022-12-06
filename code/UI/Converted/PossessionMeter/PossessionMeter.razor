@@ -1,22 +1,5 @@
 @namespace TTT.UI
 
-@code {
-    private Panel PercentagePanel { get; set; }
-    private readonly PropPossession _possession;
-
-    public PossessionMeter(PropPossession possession)
-    {
-        _possession = possession;
-        Local.Hud.AddChild(this);
-    }
-
-    public override void Tick()
-    {
-        var punchesFraction = (float)_possession.Punches / _possession.MaxPunches;
-        PercentagePanel.Style.Width = Length.Fraction(punchesFraction);
-    }
-}
-
 <root class="background-color-gradient opacity-heavy rounded text-shadow fade-out">
     <div @ref=PercentagePanel class="possession-progress background-color-tertiary" />
     <text>PUNCH-O-METER</text>
