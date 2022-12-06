@@ -97,7 +97,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		EnableDrawing = true;
 
 		var animator = player.Animator;
-
 		if ( animator is not null )
 			SimulateAnimator( animator );
 
@@ -134,7 +133,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	public override void FrameSimulate( Client client ) { }
 
-	public override void BuildInput( InputBuilder input ) { }
+	public override void BuildInput() { }
 
 	public virtual bool CanCarry( Player carrier )
 	{

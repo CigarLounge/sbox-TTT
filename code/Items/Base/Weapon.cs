@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -34,8 +35,8 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	private Vector3 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
-	private Vector3 CurrentRecoil { get; set; } = Vector3.Zero;
+	private Vector2 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil );
+	private Vector2 CurrentRecoil { get; set; } = Vector2.Zero;
 
 	public override void Spawn()
 	{
@@ -90,19 +91,22 @@ public abstract partial class Weapon : Carriable
 			OnReloadFinish();
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		base.BuildInput();
 
-		var oldPitch = input.ViewAngles.pitch;
-		var oldYaw = input.ViewAngles.yaw;
+		var oldPitch = Owner.ViewAngles.pitch;
+		var oldYaw = Owner.ViewAngles.yaw;
 
-		input.ViewAngles.pitch -= CurrentRecoil.y * Time.Delta;
-		input.ViewAngles.yaw -= CurrentRecoil.x * Time.Delta;
+		var recoil = Owner.ViewAngles;
+		recoil.pitch -= CurrentRecoil.y * Time.Delta;
+		recoil.yaw -= CurrentRecoil.x * Time.Delta;
+
+		Owner.ViewAngles = recoil;
 
 		CurrentRecoil -= CurrentRecoil
-			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
-			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );
+			.WithY( (oldPitch - Owner.ViewAngles.pitch) * Info.RecoilRecoveryScale )
+			.WithX( (oldYaw - Owner.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
 
 	protected virtual bool CanPrimaryAttack()

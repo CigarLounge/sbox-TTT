@@ -87,17 +87,17 @@ public partial class Teleporter : Carriable
 		}
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		base.BuildInput();
 
 		if ( !IsTeleporting )
 			return;
 
-		input.ActiveChild = this;
-		input.ClearButton( InputButton.Jump );
-		input.ClearButton( InputButton.Drop );
-		input.InputDirection = 0;
+		Owner.ActiveCarriable = this;
+		Owner.InputDirection = 0;
+		Input.ClearButton( InputButton.Jump );
+		Input.ClearButton( InputButton.Drop );
 	}
 
 	private void SetLocation()

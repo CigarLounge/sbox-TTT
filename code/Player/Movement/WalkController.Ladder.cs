@@ -9,8 +9,10 @@ public partial class WalkController
 
 	private void CheckLadder()
 	{
-		var wishvel = new Vector3( Input.Forward, Input.Left, 0 );
-		wishvel *= Input.Rotation.Angles().WithPitch( 0 ).ToRotation();
+		var player = Pawn as Player;
+
+		var wishvel = new Vector3( player.InputDirection.x, player.InputDirection.y, 0 );
+		wishvel *= player.ViewAngles.WithPitch( 0 ).ToRotation();
 		wishvel = wishvel.Normal;
 
 		if ( _isTouchingLadder )

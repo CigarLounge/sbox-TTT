@@ -36,25 +36,25 @@ public class FreeSpectateCamera : CameraMode, ISpectateCamera
 		Rotation = _targetRot;
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		_moveInput = input.AnalogMove;
+		_moveInput = Input.AnalogMove;
 
 		_moveSpeed = 1;
 
-		if ( input.Down( InputButton.Run ) )
+		if ( Input.Down( InputButton.Run ) )
 			_moveSpeed = 5;
 
-		if ( input.Down( InputButton.Duck ) )
+		if ( Input.Down( InputButton.Duck ) )
 			_moveSpeed = 0.2f;
 
-		_lookAngles += input.AnalogLook;
+		_lookAngles += Input.AnalogLook;
 		_lookAngles.roll = 0;
 
-		if ( input.Pressed( InputButton.Use ) )
+		if ( Input.Pressed( InputButton.Use ) )
 			FindSpectateTarget();
 
-		base.BuildInput( input );
+		base.BuildInput();
 	}
 
 	private void FindSpectateTarget()

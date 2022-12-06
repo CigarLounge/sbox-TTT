@@ -47,7 +47,8 @@ public partial class WalkController : PawnController
 	{
 		base.FrameSimulate();
 
-		EyeRotation = Input.Rotation;
+		var pl = Pawn as Player;
+		EyeRotation = pl.ViewAngles.ToRotation();
 	}
 
 	public override void Simulate()
@@ -254,6 +255,7 @@ public partial class WalkController : PawnController
 
 	private void WaterMove()
 	{
+		var player = Pawn as Player;
 		var wishvel = WishVelocity;
 
 		if ( Input.Down( InputButton.Jump ) )
@@ -266,9 +268,9 @@ public partial class WalkController : PawnController
 		}
 		else
 		{
-			var upwardMovememnt = Input.Forward * (Rotation * Vector3.Forward).z * 2;
+			var upwardMovememnt = player.InputDirection.x * (Rotation * Vector3.Forward).z * 2;
 			upwardMovememnt = Math.Clamp( upwardMovememnt, 0f, DefaultSpeed );
-			wishvel[2] += Input.Up + upwardMovememnt;
+			wishvel[2] += player.InputDirection.z + upwardMovememnt;
 		}
 
 		var speed = Velocity.Length;
@@ -365,11 +367,13 @@ public partial class WalkController : PawnController
 
 	private void BaseSimulate()
 	{
+		var player = Pawn as Player;
+
 		EyeLocalPosition = Vector3.Up * (EyeHeight * Pawn.Scale);
 		UpdateBBox();
 
 		EyeLocalPosition += TraceOffset;
-		EyeRotation = Input.Rotation;
+		EyeRotation = player.ViewAngles.ToRotation();
 
 		if ( Unstuck.TestAndFix() )
 			return;
@@ -397,13 +401,16 @@ public partial class WalkController : PawnController
 				ApplyFriction( GroundFriction * _surfaceFriction * 1 );
 		}
 
-		WishVelocity = new Vector3( Input.Forward, Input.Left, 0 );
+		//
+		// Work out wish velocity.. just take input, rotate it to view, clamp to -1, 1
+		//
+		WishVelocity = new Vector3( player.InputDirection.x.Clamp( -1f, 1f ), player.InputDirection.y.Clamp( -1f, 1f ), 0 );
 		var inSpeed = WishVelocity.Length.Clamp( 0, 1 );
 
 		if ( !Swimming )
-			WishVelocity *= Input.Rotation.Angles().WithPitch( 0 ).ToRotation();
+			WishVelocity *= player.ViewAngles.WithPitch( 0 ).ToRotation();
 		else
-			WishVelocity *= Input.Rotation.Angles().ToRotation();
+			WishVelocity *= player.ViewAngles.ToRotation();
 
 
 		if ( !Swimming && !_isTouchingLadder )

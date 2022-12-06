@@ -25,10 +25,10 @@ public class InventorySelection : Panel
 			InputButton.Slot9
 	};
 
-	public static int GetKeyboardNumberPressed( InputBuilder input )
+	public static int GetKeyboardNumberPressed()
 	{
 		for ( var i = 0; i < _slotInputButtons.Length; i++ )
-			if ( input.Pressed( _slotInputButtons[i] ) )
+			if ( Input.Pressed( _slotInputButtons[i] ) )
 				return i;
 
 		return -1;
@@ -91,11 +91,9 @@ public class InventorySelection : Panel
 	}
 
 	[Event.BuildInput]
-	private void BuildInput( InputBuilder input )
+	private void BuildInput()
 	{
-		var player = Local.Pawn as Player;
-
-		if ( !player.IsAlive() )
+		if ( Local.Pawn is not Player player || !player.IsAlive() )
 			return;
 
 		if ( !Children.Any() )
@@ -108,7 +106,7 @@ public class InventorySelection : Panel
 
 		var activeCarriable = player.ActiveCarriable;
 
-		var keyboardIndexPressed = GetKeyboardNumberPressed( input );
+		var keyboardIndexPressed = GetKeyboardNumberPressed();
 
 		if ( keyboardIndexPressed != -1 )
 		{
@@ -140,36 +138,35 @@ public class InventorySelection : Panel
 			{
 				// The user isn't holding an active carriable, or is holding a weapon that has a different
 				// hold type than the one selected using the keyboard. We can just select the first weapon.
-				input.ActiveChild = weaponsOfSlotTypeSelected.FirstOrDefault();
+				player.ActiveChildInput = weaponsOfSlotTypeSelected.FirstOrDefault();
 			}
 			else
 			{
 				// The user is holding a weapon that has the same hold type as the keyboard index the user pressed.
 				// Find the next possible weapon within the hold types.
-
 				activeCarriableOfSlotTypeIndex = GetNextWeaponIndex( activeCarriableOfSlotTypeIndex, weaponsOfSlotTypeSelected.Count );
-				input.ActiveChild = weaponsOfSlotTypeSelected[activeCarriableOfSlotTypeIndex];
+				player.ActiveChildInput = weaponsOfSlotTypeSelected[activeCarriableOfSlotTypeIndex];
 			}
 		}
 
-		var mouseWheelIndex = input.MouseWheel;
+		var mouseWheelIndex = Input.MouseWheel;
 		if ( mouseWheelIndex != 0 )
 		{
 			var activeCarriableIndex = childrenList.FindIndex( ( p ) =>
 				 p is InventorySlot slot && slot.Carriable == activeCarriable );
 
-			var newSelectedIndex = NormalizeSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
-			input.ActiveChild = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
+			var newSelectedIndex = ClampSlotIndex( -mouseWheelIndex + activeCarriableIndex, childrenList.Count - 1 );
+			player.ActiveChildInput = (childrenList[newSelectedIndex] as InventorySlot)?.Carriable;
 		}
 	}
 
 	// Keyboard selection can only increment the index by 1.
 	private int GetNextWeaponIndex( int index, int count )
 	{
-		return NormalizeSlotIndex( index + 1, count - 1 );
+		return ClampSlotIndex( index + 1, count - 1 );
 	}
 
-	private int NormalizeSlotIndex( int index, int maxIndex )
+	private int ClampSlotIndex( int index, int maxIndex )
 	{
 		return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
 	}

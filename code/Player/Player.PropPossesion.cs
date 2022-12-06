@@ -15,7 +15,7 @@ public partial class Player
 			return;
 		}
 
-		if ( Input.Pressed( InputButton.Jump ) || Input.Forward != 0f || Input.Left != 0f )
+		if ( Input.Pressed( InputButton.Jump ) || InputDirection.x != 0f || InputDirection.y != 0f )
 			Prop.Components.Get<PropPossession>().Punch();
 	}
 
