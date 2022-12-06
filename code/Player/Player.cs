@@ -177,7 +177,7 @@ public partial class Player : AnimatedEntity
 	public override void Simulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.Simulate( client, this, GetActiveAnimator() );
+		controller?.Simulate( client, this, Animator );
 
 		if ( Input.Pressed( InputButton.Menu ) )
 		{
@@ -225,7 +225,7 @@ public partial class Player : AnimatedEntity
 	public override void FrameSimulate( Client client )
 	{
 		var controller = GetActiveController();
-		controller?.FrameSimulate( client, this, GetActiveAnimator() );
+		controller?.FrameSimulate( client, this, Animator );
 
 		if ( WaterLevel > 0.9f )
 			Audio.SetEffect( "underwater", 1, velocity: 5.0f );
@@ -275,7 +275,7 @@ public partial class Player : AnimatedEntity
 		if ( Input.StopProcessing )
 			return;
 
-		GetActiveAnimator()?.BuildInput();
+		Animator?.BuildInput();
 	}
 
 	#region Animator
@@ -284,14 +284,7 @@ public partial class Player : AnimatedEntity
 	/// interacting with the animation graph.
 	/// </summary>
 	[Net, Predicted]
-	private PawnAnimator Animator { get; set; }
-
-	/// <summary>
-	/// Return the controller to use. Remember any logic you use here needs to match
-	/// on both client and server. This is called as an accessor every tick.. so maybe
-	/// avoid creating new classes here or you're gonna be making a ton of garbage!
-	/// </summary>
-	public virtual PawnAnimator GetActiveAnimator() => Animator;
+	public PawnAnimator Animator { get; private set; }
 
 	TimeSince _timeSinceLastFootstep;
 
