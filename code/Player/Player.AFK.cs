@@ -22,8 +22,8 @@ public partial class Player
 			return;
 		}
 
-		var isAnyKeyPressed = Buttons.Any( button => Input.Down( button ) );
-		var isMouseMoving = Input.MouseDelta != Vector3.Zero;
+		var isAnyKeyPressed = Buttons.Any( Input.Down );
+		var isMouseMoving = Input.MouseDelta != Vector2.Zero;
 
 		if ( isAnyKeyPressed || isMouseMoving )
 		{

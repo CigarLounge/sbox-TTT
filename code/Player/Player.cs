@@ -8,6 +8,16 @@ public partial class Player : AnimatedEntity
 	public Inventory Inventory { get; private init; }
 	public Perks Perks { get; private init; }
 
+	[ClientInput]
+	public Vector3 InputDirection { get; set; }
+
+	[ClientInput]
+	public Entity ActiveChildInput { get; set; }
+
+	[ClientInput]
+	public Angles ViewAngles { get; set; }
+	public Angles OriginalViewAngles { get; private set; }
+
 	public CameraMode Camera
 	{
 		get => Components.Get<CameraMode>();
@@ -175,7 +185,7 @@ public partial class Player : AnimatedEntity
 				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
 		}
 
-		if ( Input.ActiveChild is Carriable carriable )
+		if ( ActiveChildInput is Carriable carriable )
 			Inventory.SetActive( carriable );
 
 		SimulateActiveCarriable();
@@ -218,13 +228,9 @@ public partial class Player : AnimatedEntity
 		controller?.FrameSimulate( client, this, Animator );
 
 		if ( WaterLevel > 0.9f )
-		{
 			Audio.SetEffect( "underwater", 1, velocity: 5.0f );
-		}
 		else
-		{
 			Audio.SetEffect( "underwater", 0, velocity: 1.0f );
-		}
 
 		DisplayEntityHints();
 		ActiveCarriable?.FrameSimulate( client );
@@ -243,25 +249,40 @@ public partial class Player : AnimatedEntity
 	/// <summary>
 	/// Called from the gamemode, clientside only.
 	/// </summary>
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		if ( input.StopProcessing )
+		OriginalViewAngles = ViewAngles;
+		InputDirection = Input.AnalogMove;
+
+		if ( Input.StopProcessing )
 			return;
 
-		ActiveCarriable?.BuildInput( input );
+		var look = Input.AnalogLook;
 
-		if ( input.StopProcessing )
+		if ( ViewAngles.pitch > 90f || ViewAngles.pitch < -90f )
+			look = look.WithYaw( look.yaw * -1f );
+
+		var viewAngles = ViewAngles;
+		viewAngles += look;
+		viewAngles.pitch = viewAngles.pitch.Clamp( -89f, 89f );
+		viewAngles.roll = 0f;
+		ViewAngles = viewAngles.Normal;
+
+		ActiveCarriable?.BuildInput();
+
+		GetActiveController()?.BuildInput();
+
+		if ( Input.StopProcessing )
 			return;
 
-		GetActiveController()?.BuildInput( input );
-
-		if ( input.StopProcessing )
-			return;
-
-		Animator.BuildInput( input );
+		Animator?.BuildInput();
 	}
 
 	#region Animator
+	/// <summary>
+	/// The player animator is responsible for positioning/rotating the player and
+	/// interacting with the animation graph.
+	/// </summary>
 	[Net, Predicted]
 	public PawnAnimator Animator { get; private set; }
 

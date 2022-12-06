@@ -7,6 +7,7 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 	[Net, Local]
 	public Entity FollowedEntity { get; private set; }
 
+	private Player _owner;
 	private Vector3 _focusPoint;
 
 	public FollowEntityCamera() { }
@@ -17,6 +18,7 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 	{
 		base.Activated();
 
+		_owner = Entity as Player;
 		_focusPoint = CurrentView.Position - GetViewOffset();
 
 		Position = CurrentView.Position;
@@ -28,7 +30,7 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 		if ( !FollowedEntity.IsValid() )
 			return;
 
-		Rotation = Input.Rotation;
+		Rotation = _owner.ViewAngles.ToRotation();
 
 		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.Position, 50f * RealTime.Delta );
 
@@ -41,6 +43,6 @@ public partial class FollowEntityCamera : CameraMode, ISpectateCamera
 
 	public virtual Vector3 GetViewOffset()
 	{
-		return Input.Rotation.Forward * -130 + Vector3.Up * 20;
+		return _owner.ViewAngles.ToRotation().Forward * -130 + Vector3.Up * 20;
 	}
 }

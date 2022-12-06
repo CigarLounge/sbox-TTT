@@ -37,22 +37,19 @@ public class Scout : Weapon
 		base.Simulate( client );
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		if ( IsScoped )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
+		base.BuildInput();
 
-		base.BuildInput( input );
+		if ( IsScoped )
+			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.1f );
 	}
 
 	protected override void CreateHudElements()
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" )
-		{
-			Parent = Local.Hud
-		};
+		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Local.Hud };
 	}
 
 	protected override void DestroyHudElements()
