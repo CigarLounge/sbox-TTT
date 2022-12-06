@@ -253,8 +253,9 @@ public partial class WalkController : PawnController
 		Velocity -= BaseVelocity;
 	}
 
-	private void WaterMove( Player player )
+	private void WaterMove()
 	{
+		var player = Pawn as Player;
 		var wishvel = WishVelocity;
 
 		if ( Input.Down( InputButton.Jump ) )
@@ -426,7 +427,7 @@ public partial class WalkController : PawnController
 			if ( Pawn.WaterLevel.AlmostEqual( 0.6f, .05f ) )
 				CheckWaterJump();
 
-			WaterMove( player );
+			WaterMove();
 		}
 		else if ( _isTouchingLadder )
 		{
