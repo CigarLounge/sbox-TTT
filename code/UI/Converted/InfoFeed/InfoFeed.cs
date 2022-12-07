@@ -15,7 +15,6 @@ public partial class InfoFeed : Panel
 	private const int MaxMessagesDisplayed = 4;
 	private const float DisplayDuration = 5f;
 	private readonly Queue<InfoFeedEntry> _entryQueue = new();
-	private readonly Queue<InfoFeedEntry> _displayQueue = new();
 	private TimeUntil _timeUntilNextDisplay = 0f;
 	private TimeSince _timeSinceLastDisplayed = 0f;
 	private TimeUntil _timeUntilNextDelete = 0f;
@@ -27,19 +26,18 @@ public partial class InfoFeed : Panel
 
 	public override void Tick()
 	{
-		if ( _entryQueue.Any() && _timeUntilNextDisplay && _displayQueue.Count < MaxMessagesDisplayed )
+		if ( _entryQueue.Any() && _timeUntilNextDisplay && ChildrenCount < MaxMessagesDisplayed )
 		{
 			var newEntry = _entryQueue.Dequeue();
 			Instance.AddChild( newEntry );
-			_displayQueue.Enqueue( newEntry );
 
 			_timeUntilNextDisplay = 1f;
 			_timeSinceLastDisplayed = 0f;
 		}
 
-		if ( _displayQueue.Any() && _timeUntilNextDelete && _timeSinceLastDisplayed > DisplayDuration )
+		if ( Children.Any() && _timeUntilNextDelete && _timeSinceLastDisplayed > DisplayDuration )
 		{
-			var oldEntry = _displayQueue.Dequeue();
+			var oldEntry = Children.ElementAt( 0 );
 			oldEntry.Delete();
 			_timeUntilNextDelete = DisplayDuration;
 		}
