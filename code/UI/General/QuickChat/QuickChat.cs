@@ -109,7 +109,7 @@ public class QuickChat : Panel
 		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
 	}
 
-	[Event.BuildInput]
+	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
 		if ( !this.IsEnabled() )
