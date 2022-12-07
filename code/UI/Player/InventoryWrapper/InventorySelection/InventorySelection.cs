@@ -90,7 +90,7 @@ public class InventorySelection : Panel
 		return inventorySlot;
 	}
 
-	[Event.BuildInput]
+	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
 		if ( Local.Pawn is not Player player || !player.IsAlive() )

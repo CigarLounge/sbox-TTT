@@ -80,7 +80,7 @@ public partial class TabMenus : Panel
 		}
 	}
 
-	[Event.BuildInput]
+	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
 		SetClass( "show", Input.Down( InputButton.Score ) );
