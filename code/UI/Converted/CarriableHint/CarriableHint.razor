@@ -1,0 +1,26 @@
+@namespace TTT.UI
+
+<root>
+    <div class="text-shadow">
+        <div @ref=PrimaryAttackPanel style="align-items: center;">
+            <inputglyph button="PrimaryAttack" />
+            <text @ref=PrimaryAttackLabel />
+        </div>
+        <div style="width: 20px" />
+        <div @ref=SecondaryAttackPanel style="align-items: center;">
+            <inputglyph button="SecondaryAttack" />
+            <text @ref=SecondaryAttackLabel />
+        </div>
+    </div>
+</root>
+
+<style>
+    CarriableHint {
+        position: absolute;
+        left: 50%;
+        bottom: 25px;
+        transform: translateX(-50%);
+        font-size: 17px;
+        font-weight: 500;
+    }
+</style>

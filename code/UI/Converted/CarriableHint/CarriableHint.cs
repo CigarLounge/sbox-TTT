@@ -3,21 +3,13 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class CarriableHint : Panel
+public partial class CarriableHint : Panel
 {
-	public static CarriableHint Instance;
-
 	private Panel PrimaryAttackPanel { get; set; }
 	private Panel SecondaryAttackPanel { get; set; }
 
 	private Label PrimaryAttackLabel { get; set; }
 	private Label SecondaryAttackLabel { get; set; }
-
-	public CarriableHint()
-	{
-		Instance = this;
-	}
 
 	public override void Tick()
 	{
