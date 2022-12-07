@@ -119,8 +119,6 @@ public partial class Player : AnimatedEntity
 		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
 		EnableTouch = false;
-
-		Animator = new PlayerAnimator();
 		Camera = new FreeSpectateCamera();
 	}
 
@@ -208,8 +206,7 @@ public partial class Player : AnimatedEntity
 
 	public override void Simulate( Client client )
 	{
-		var controller = GetActiveController();
-		controller?.Simulate( client, this, Animator );
+		SimulateAnimation( GetActiveController() );
 
 		if ( Input.Pressed( InputButton.Menu ) )
 		{
@@ -256,26 +253,13 @@ public partial class Player : AnimatedEntity
 
 	public override void FrameSimulate( Client client )
 	{
-		var controller = GetActiveController();
-		controller?.FrameSimulate( client, this, Animator );
-
-		if ( WaterLevel > 0.9f )
-			Audio.SetEffect( "underwater", 1, velocity: 5.0f );
-		else
-			Audio.SetEffect( "underwater", 0, velocity: 1.0f );
-
-		DisplayEntityHints();
-		ActiveCarriable?.FrameSimulate( client );
-	}
-
-	/// <summary>
-	/// Called after the camera setup logic has run. Allow the player to
-	/// do stuff to the camera, or using the camera. Such as positioning entities
-	/// relative to it, like viewmodels etc.
-	/// </summary>
-	public override void PostCameraSetup( ref CameraSetup setup )
-	{
-		ActiveCarriable?.PostCameraSetup( ref setup );
+		Camera.ZNear = 1f;
+		Camera.ZFar = 25000.0f;
+		Camera.Rotation = ViewAngles.ToRotation();
+		Camera.Position = EyePosition;
+		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Local.UserPreference.FieldOfView );
+		Camera.FirstPersonViewer = this;
+		Camera.Main.SetViewModelCamera( Camera.FieldOfView, 0.01f, 100.0f );
 	}
 
 	/// <summary>
@@ -303,20 +287,7 @@ public partial class Player : AnimatedEntity
 		ActiveCarriable?.BuildInput();
 
 		GetActiveController()?.BuildInput();
-
-		if ( Input.StopProcessing )
-			return;
-
-		Animator?.BuildInput();
 	}
-
-	#region Animator
-	/// <summary>
-	/// The player animator is responsible for positioning/rotating the player and
-	/// interacting with the animation graph.
-	/// </summary>
-	[Net, Predicted]
-	public PawnAnimator Animator { get; private set; }
 
 	TimeSince _timeSinceLastFootstep;
 
@@ -353,7 +324,6 @@ public partial class Player : AnimatedEntity
 	{
 		return Velocity.WithZ( 0 ).Length.LerpInverse( 0.0f, 200.0f ) * 5.0f;
 	}
-	#endregion
 
 	#region Controller
 	[Net, Predicted]
@@ -365,6 +335,59 @@ public partial class Player : AnimatedEntity
 	public PawnController GetActiveController()
 	{
 		return DevController ?? Controller;
+	}
+
+	private void SimulateAnimation( PawnController controller )
+	{
+		if ( controller == null )
+			return;
+
+		// where should we be rotated to
+		var turnSpeed = 0.02f;
+
+		Rotation rotation;
+
+		// If we're a bot, spin us around 180 degrees.
+		if ( Client.IsBot )
+			rotation = ViewAngles.WithYaw( ViewAngles.yaw + 180f ).ToRotation();
+		else
+			rotation = ViewAngles.ToRotation();
+
+		var idealRotation = Rotation.LookAt( rotation.Forward.WithZ( 0 ), Vector3.Up );
+		Rotation = Rotation.Slerp( Rotation, idealRotation, controller.WishVelocity.Length * Time.Delta * turnSpeed );
+		Rotation = Rotation.Clamp( idealRotation, 45.0f, out var shuffle ); // lock facing to within 45 degrees of look direction
+
+		var animHelper = new CitizenAnimationHelper( this );
+
+		animHelper.WithWishVelocity( controller.WishVelocity );
+		animHelper.WithVelocity( controller.Velocity );
+		animHelper.WithLookAt( EyePosition + EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
+		animHelper.AimAngle = rotation;
+		animHelper.FootShuffle = shuffle;
+		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, controller.HasTag( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
+		animHelper.VoiceLevel = (Host.IsClient && Client.IsValid()) ? Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f : 0.0f;
+		animHelper.IsGrounded = GroundEntity != null;
+		animHelper.IsSitting = controller.HasTag( "sitting" );
+		animHelper.IsNoclipping = controller.HasTag( "noclip" );
+		animHelper.IsClimbing = controller.HasTag( "climbing" );
+		animHelper.IsSwimming = WaterLevel >= 0.5f;
+		animHelper.IsWeaponLowered = false;
+
+		if ( controller.HasEvent( "jump" ) )
+			animHelper.TriggerJump();
+
+		if ( ActiveCarriable != _lastActiveCarriable )
+			animHelper.TriggerDeploy();
+
+		if ( ActiveCarriable is not null )
+			ActiveCarriable.SimulateAnimator( animHelper );
+		else
+		{
+			animHelper.HoldType = CitizenAnimationHelper.HoldTypes.None;
+			animHelper.AimBodyWeight = 0.5f;
+		}
+
+		_lastActiveCarriable = ActiveCarriable;
 	}
 	#endregion
 
