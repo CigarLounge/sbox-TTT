@@ -32,6 +32,38 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
+	public Vector3 EyePosition
+	{
+		get => Transform.PointToWorld( EyeLocalPosition );
+		set => EyeLocalPosition = Transform.PointToLocal( value );
+	}
+
+	/// <summary>
+	/// Position a player should be looking from in local to the entity coordinates.
+	/// </summary>
+	[Net, Predicted]
+	public Vector3 EyeLocalPosition { get; set; }
+
+	/// <summary>
+	/// Rotation of the entity's "eyes", i.e. rotation for the camera when this entity is used as the view entity.
+	/// </summary>
+	public Rotation EyeRotation
+	{
+		get => Transform.RotationToWorld( EyeLocalRotation );
+		set => EyeLocalRotation = Transform.RotationToLocal( value );
+	}
+
+	/// <summary>
+	/// Rotation of the entity's "eyes", i.e. rotation for the camera when this entity is used as the view entity. In local to the entity coordinates.
+	/// </summary>
+	[Net, Predicted]
+	public Rotation EyeLocalRotation { get; set; }
+
+	/// <summary>
+	/// Override the aim ray to use the player's eye position and rotation.
+	/// </summary>
+	public override Ray AimRay => new( EyePosition, EyeRotation.Forward );
+
 	/// <summary>
 	/// The player earns score by killing players on opposite teams, confirming bodies
 	/// or surviving the round.
