@@ -1,10 +1,9 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
-using System;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class InfoFeed : Panel
 {
 	public static InfoFeed Instance { get; private set; }
@@ -85,22 +84,17 @@ public partial class InfoFeed : Panel
 		if ( Local.Pawn is not Player player )
 			return;
 
-		if ( !TabMenus.Instance.IsVisible )
-			TabMenus.Instance.SwapToScoreboard();
+		// TODO: Revert.
+		// if ( !TabMenus.Instance.IsVisible )
+		// 	TabMenus.Instance.SwapToScoreboard();
 
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {Game.InProgressSecondsPerDeath} seconds per death." );
 
 		var karma = MathF.Round( player.BaseKarma );
 		var df = MathF.Round( 100f - player.DamageFactor * 100f );
-
-		string text;
-		if ( df == 0 )
-			text = $"Your karma is {karma}, you'll deal full damage this round.";
-		else
-			text = $"Your karma is {karma}, you'll deal {df}% reduced damage this round.";
-
-		AddEntry( text );
+		var damageFactor = df == 0 ? $"Your karma is {karma}, you'll deal full damage this round." : $"Your karma is {karma}, you'll deal {df}% reduced damage this round.";
+		AddEntry( damageFactor );
 	}
 
 	[GameEvent.Round.End]
