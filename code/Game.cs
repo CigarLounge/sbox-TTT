@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public partial class Game : Sandbox.Game
+public partial class Game : GameManager
 {
 	public static new Game Current { get; private set; }
 

@@ -11,7 +11,7 @@ public struct BannedClient
 	public DateTime Duration { get; set; }
 }
 
-public partial class Game : Sandbox.Game
+public partial class Game : GameManager
 {
 	public static readonly List<BannedClient> BannedClients = new();
 	public const string BanFilePath = "bans.json";

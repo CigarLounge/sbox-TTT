@@ -78,7 +78,7 @@ public partial class Game
 	[ConVar.Replicated( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
 	public static bool ProximityChat { get; set; }
 
-	public static void UpdateVoiceChat( bool oldValue, bool newValue )
+	public static void UpdateVoiceChat( bool _, bool newValue )
 	{
 		foreach ( var client in Client.All )
 		{

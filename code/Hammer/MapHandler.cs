@@ -21,7 +21,7 @@ public static class MapHandler
 
 	public static void Cleanup()
 	{
-		Map.Reset( Sandbox.Game.DefaultCleanupFilter );
+		Map.Reset( GameManager.DefaultCleanupFilter );
 		Decal.Clear( true, true );
 	}
 }
