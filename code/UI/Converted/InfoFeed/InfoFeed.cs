@@ -1,6 +1,7 @@
 using System;
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -11,58 +12,55 @@ public partial class InfoFeed : Panel
 	public InfoFeed() => Instance = this;
 
 	[ClientRpc]
-	public static void AddEntry( string method )
+	public static void AddEntry( string message )
 	{
-		Instance.AddChild<InfoFeedEntry>().AddLabel( method, "method" );
+		var entry = new InfoFeedEntry();
+		entry.Add.Label( message );
+		Instance.AddChild( entry );
 	}
 
 	[ClientRpc]
-	public static void AddEntry( string method, Color color )
+	public static void AddEntry( string message, Color color )
 	{
-		Instance.AddChild<InfoFeedEntry>().AddLabel( method, "method" ).Style.FontColor = color;
+		var entry = new InfoFeedEntry();
+		entry.Add.Label( message ).Style.FontColor = color;
+		Instance.AddChild( entry );
 	}
 
 	[ClientRpc]
 	public static void AddEntry( Player player, string message )
 	{
-		var entry = Instance.AddChild<InfoFeedEntry>();
-
-		var leftLabel = entry.AddLabel( player.IsLocalPawn ? "You" : player.SteamName, "left" );
-		leftLabel.Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
-
-		entry.AddLabel( message, "method" );
+		var entry = new InfoFeedEntry();
+		entry.Add.Label( player.IsLocalPawn ? "You" : player.SteamName, "entry" ).Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
+		entry.Add.Label( message );
+		Instance.AddChild( entry );
 	}
 
 	[ClientRpc]
-	public static void AddRoleEntry( RoleInfo roleInfo, string interaction )
+	public static void AddRoleEntry( RoleInfo roleInfo, string message )
 	{
-		var entry = Instance.AddChild<InfoFeedEntry>();
-
-		var leftLabel = entry.AddLabel( $"{roleInfo.Title}s", "left" );
-		leftLabel.Style.FontColor = roleInfo.Color;
-
-		entry.AddLabel( interaction, "method" );
+		var entry = new InfoFeedEntry();
+		entry.Add.Label( $"{roleInfo.Title}s", "entry" ).Style.FontColor = roleInfo.Color;
+		entry.Add.Label( message );
+		Instance.AddChild( entry );
 	}
 
 	[ClientRpc]
-	public static void AddPlayerToPlayerEntry( Player left, Player right, string method, string suffix = "" )
+	public static void AddPlayerToPlayerEntry( Player left, Player right, string message, string suffix = "" )
 	{
-		var entry = Instance.AddChild<InfoFeedEntry>();
-
-		var leftLabel = entry.AddLabel( left.IsLocalPawn ? "You" : left.SteamName, "left" );
-		leftLabel.Style.FontColor = !left.IsRoleKnown ? Color.White : left.Role.Color;
-
-		entry.AddLabel( method, "method" );
-
-		var rightLabel = entry.AddLabel( right.IsLocalPawn ? "You" : right.SteamName, "right" );
-		rightLabel.Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
+		var entry = new InfoFeedEntry();
+		entry.Add.Label( left.IsLocalPawn ? "You" : left.SteamName, "entry" ).Style.FontColor = !left.IsRoleKnown ? Color.White : left.Role.Color;
+		entry.Add.Label( message );
+		entry.Add.Label( right.IsLocalPawn ? "You" : right.SteamName, "entry" ).Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
 
 		if ( !suffix.IsNullOrEmpty() )
-			entry.AddLabel( suffix, "append" );
+			entry.Add.Label( suffix );
+
+		Instance.AddChild( entry );
 	}
 
 	[GameEvent.Player.CorpseFound]
-	private void OnCorpseFound( Player player )
+	private static void OnCorpseFound( Player player )
 	{
 		AddPlayerToPlayerEntry
 		(
@@ -98,7 +96,7 @@ public partial class InfoFeed : Panel
 	}
 
 	[GameEvent.Round.End]
-	private void OnRoundEnd( Team winningTeam, WinType winType )
+	private void OnRoundEnd( Team _, WinType _1 )
 	{
 		this.Enabled( false );
 		DeleteChildren();
