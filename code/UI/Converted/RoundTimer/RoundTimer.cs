@@ -3,21 +3,17 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RoundTimer : Panel
+public partial class RoundTimer : Panel
 {
-	private Label RoundName { get; init; }
-	private Label Timer { get; init; }
-	private Label SubText { get; init; }
+	private Label RoundName { get; set; }
+	private Label Timer { get; set; }
+	private Label SubText { get; set; }
 
 	public override void Tick()
 	{
 		base.Tick();
 
-		if ( Game.Current.State is null )
-			return;
-
-		if ( Local.Pawn is not Player player )
+		if ( Game.Current.State is null || Local.Pawn is not Player player )
 			return;
 
 		RoundName.Text = Game.Current.State.Name;
