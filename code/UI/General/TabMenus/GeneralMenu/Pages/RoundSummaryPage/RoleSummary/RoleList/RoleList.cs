@@ -29,7 +29,7 @@ public class RoleList : Panel
 			return;
 
 		var playerContainer = PlayersContainer.Add.Panel( "player" );
-		playerContainer.Add.Image( $"avatar:{player.Client.PlayerId}", "avatar" );
+		playerContainer.Add.Image( $"avatar:{player.Client.SteamId}", "avatar" );
 		playerContainer.Add.Label( player.Client.Name, "name-label" );
 		playerContainer.Add.Panel( "spacer" );
 		playerContainer.Add.Label( Math.Round( player.BaseKarma ).ToString(), "karma-label" );

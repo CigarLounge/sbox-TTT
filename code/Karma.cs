@@ -231,12 +231,12 @@ public static class Karma
 	[GameEvent.Client.Joined]
 	private static void InitClientKarma( Client client )
 	{
-		client.SetValue( Strings.Karma, SavedPlayerValues.TryGetValue( client.PlayerId, out var value ) ? value : StartValue );
+		client.SetValue( Strings.Karma, SavedPlayerValues.TryGetValue( client.SteamId, out var value ) ? value : StartValue );
 	}
 
 	[GameEvent.Client.Disconnected]
 	private static void SaveKarma( Client client )
 	{
-		SavedPlayerValues[client.PlayerId] = (client.Pawn as Player).ActiveKarma;
+		SavedPlayerValues[client.SteamId] = (client.Pawn as Player).ActiveKarma;
 	}
 }

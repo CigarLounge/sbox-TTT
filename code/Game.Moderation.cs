@@ -16,15 +16,15 @@ public partial class Game : Sandbox.Game
 	public static readonly List<BannedClient> BannedClients = new();
 	public const string BanFilePath = "bans.json";
 
-	public override bool ShouldConnect( long playerId )
+	public override bool ShouldConnect( long steamId )
 	{
-		if ( Karma.SavedPlayerValues.TryGetValue( playerId, out var value ) )
+		if ( Karma.SavedPlayerValues.TryGetValue( steamId, out var value ) )
 			if ( value < Karma.MinValue )
 				return false;
 
 		foreach ( var bannedClient in BannedClients )
 		{
-			if ( bannedClient.SteamId != playerId )
+			if ( bannedClient.SteamId != steamId )
 				continue;
 
 			if ( bannedClient.Duration >= DateTime.Now )
@@ -50,7 +50,7 @@ public partial class Game : Sandbox.Game
 
 		foreach ( var client in Client.All )
 		{
-			if ( client.PlayerId != steamId )
+			if ( client.SteamId != steamId )
 				continue;
 
 			client.Ban( minutes, reason );
@@ -93,7 +93,7 @@ public partial class Game : Sandbox.Game
 
 		foreach ( var client in Client.All )
 		{
-			if ( client.PlayerId == steamId )
+			if ( client.SteamId == steamId )
 				continue;
 
 			client.Kick();

@@ -27,9 +27,9 @@ public class VoiceChatEntry : Panel
 		Parent = parent;
 
 		_client = client;
-		Friend = new( client.PlayerId );
+		Friend = new( client.SteamId );
 
-		Avatar.SetTexture( $"avatar:{client.PlayerId}" );
+		Avatar.SetTexture( $"avatar:{client.SteamId}" );
 		Name.Text = Friend.Name;
 
 		_worldPanel = new WorldPanel();

@@ -13,7 +13,7 @@ public class VoiceChatDisplay : Panel
 
 	public void OnVoicePlayed( Client client )
 	{
-		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
+		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.SteamId ) ?? new VoiceChatEntry( this, client );
 		entry.Update( client.VoiceLevel );
 	}
 

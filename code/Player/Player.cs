@@ -53,7 +53,7 @@ public partial class Player : AnimatedEntity
 	public Player( Client client ) : this()
 	{
 		client.Pawn = this;
-		SteamId = client.PlayerId;
+		SteamId = client.SteamId;
 		SteamName = client.Name;
 		ActiveKarma = BaseKarma;
 

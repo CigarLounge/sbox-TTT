@@ -54,7 +54,7 @@ public class ScoreboardEntry : Panel
 		else
 			Style.BackgroundColor = null;
 
-		PlayerAvatar.SetTexture( $"avatar:{_client.PlayerId}" );
+		PlayerAvatar.SetTexture( $"avatar:{_client.SteamId}" );
 	}
 
 	public void OnClick()

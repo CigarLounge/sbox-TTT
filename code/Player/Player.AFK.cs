@@ -35,12 +35,12 @@ public partial class Player
 		{
 			if ( Game.KickAFKPlayers )
 			{
-				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was kicked from the server for being AFK." );
+				Log.Warning( $"Player ID: {Client.SteamId}, Name: {Client.Name} was kicked from the server for being AFK." );
 				Client.Kick();
 			}
 			else
 			{
-				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was moved to spectating for being AFK." );
+				Log.Warning( $"Player ID: {Client.SteamId}, Name: {Client.Name} was moved to spectating for being AFK." );
 				ToggleForcedSpectator();
 			}
 		}
