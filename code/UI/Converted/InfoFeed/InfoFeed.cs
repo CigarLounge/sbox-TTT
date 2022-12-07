@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -11,52 +12,67 @@ public partial class InfoFeed : Panel
 
 	public InfoFeed() => Instance = this;
 
+	private const int MaxMessagesDisplayed = 4;
+	private const float DisplayDuration = 5f;
+	private readonly Queue<InfoFeedEntry> _entryQueue = new();
+	private readonly Queue<InfoFeedEntry> _displayQueue = new();
+	private TimeUntil _timeUntilNextDisplay = 0f;
+	private TimeSince _timeSinceLastDisplayed = 0f;
+	private TimeUntil _timeUntilNextDelete = 0f;
+
+	public void AddToFeed( InfoFeedEntry entry )
+	{
+		_entryQueue.Enqueue( entry );
+	}
+
+	public override void Tick()
+	{
+		if ( _entryQueue.Any() && _timeUntilNextDisplay && _displayQueue.Count < MaxMessagesDisplayed )
+		{
+			var newEntry = _entryQueue.Dequeue();
+			Instance.AddChild( newEntry );
+			_displayQueue.Enqueue( newEntry );
+
+			_timeUntilNextDisplay = 1f;
+			_timeSinceLastDisplayed = 0f;
+		}
+
+		if ( _displayQueue.Any() && _timeUntilNextDelete && _timeSinceLastDisplayed > DisplayDuration )
+		{
+			var oldEntry = _displayQueue.Dequeue();
+			oldEntry.Delete();
+			_timeUntilNextDelete = DisplayDuration;
+		}
+	}
+
 	[ClientRpc]
 	public static void AddEntry( string message )
 	{
-		var entry = new InfoFeedEntry();
-		entry.Add.Label( message );
-		Instance.AddChild( entry );
+		Instance.AddToFeed( new InfoFeedEntry( message ) );
 	}
 
 	[ClientRpc]
 	public static void AddEntry( string message, Color color )
 	{
-		var entry = new InfoFeedEntry();
-		entry.Add.Label( message ).Style.FontColor = color;
-		Instance.AddChild( entry );
+		Instance.AddToFeed( new InfoFeedEntry( message, color ) );
 	}
 
 	[ClientRpc]
 	public static void AddEntry( Player player, string message )
 	{
-		var entry = new InfoFeedEntry();
-		entry.Add.Label( player.IsLocalPawn ? "You" : player.SteamName, "entry" ).Style.FontColor = !player.IsRoleKnown ? Color.White : player.Role.Color;
-		entry.Add.Label( message );
-		Instance.AddChild( entry );
+		Instance.AddToFeed( new InfoFeedEntry( player, message ) );
 	}
 
 	[ClientRpc]
 	public static void AddRoleEntry( RoleInfo roleInfo, string message )
 	{
-		var entry = new InfoFeedEntry();
-		entry.Add.Label( $"{roleInfo.Title}s", "entry" ).Style.FontColor = roleInfo.Color;
-		entry.Add.Label( message );
-		Instance.AddChild( entry );
+		Instance.AddToFeed( new InfoFeedEntry( roleInfo, message ) );
 	}
 
 	[ClientRpc]
 	public static void AddPlayerToPlayerEntry( Player left, Player right, string message, string suffix = "" )
 	{
-		var entry = new InfoFeedEntry();
-		entry.Add.Label( left.IsLocalPawn ? "You" : left.SteamName, "entry" ).Style.FontColor = !left.IsRoleKnown ? Color.White : left.Role.Color;
-		entry.Add.Label( message );
-		entry.Add.Label( right.IsLocalPawn ? "You" : right.SteamName, "entry" ).Style.FontColor = !right.IsRoleKnown ? Color.White : right.Role.Color;
-
-		if ( !suffix.IsNullOrEmpty() )
-			entry.Add.Label( suffix );
-
-		Instance.AddChild( entry );
+		Instance.AddToFeed( new InfoFeedEntry( left, right, message, suffix ) );
 	}
 
 	[GameEvent.Player.CorpseFound]
