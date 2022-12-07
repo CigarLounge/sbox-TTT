@@ -27,10 +27,7 @@ public class RolePlate : EntityComponent<Player>
 		_worldPanel = null;
 	}
 
-	/// <summary>
-	/// Called for every plate, while it's active.
-	/// </summary>
-	[Event.Frame]
+	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
 		_worldPanel.Enabled( !Entity.IsFirstPersonMode && Entity.IsAlive() );

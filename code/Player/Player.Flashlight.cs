@@ -70,7 +70,7 @@ public partial class Player
 		_viewLight = null;
 	}
 
-	[Event.Frame]
+	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
 		if ( !_viewLight.IsValid() )

@@ -16,7 +16,7 @@ public class PossessionNameplate : WorldPanel
 		_prop = prop;
 	}
 
-	[Event.Frame]
+	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
 		var tx = Transform;
