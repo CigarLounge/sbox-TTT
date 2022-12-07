@@ -86,10 +86,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		EnableDrawing = true;
 
-		var animator = player.Animator;
-		if ( animator is not null )
-			SimulateAnimator( animator );
-
 		if ( IsLocalPawn )
 		{
 			CreateViewModel();
