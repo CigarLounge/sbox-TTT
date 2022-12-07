@@ -155,19 +155,19 @@ public partial class Hands : Carriable
 		base.ActiveEnd( player, dropped );
 	}
 
-	public override void SimulateAnimator( PawnAnimator animator )
+	public override void SimulateAnimator( CitizenAnimationHelper anim )
 	{
 		if ( !Host.IsServer )
 			return;
 
 		if ( IsHoldingEntity || IsPushing )
 		{
-			animator.SetAnimParameter( "holdtype", 4 );
-			animator.SetAnimParameter( "holdtype_handedness", 0 );
+			anim.HoldType = CitizenAnimationHelper.HoldTypes.HoldItem;
+			anim.Handedness = 0;
 		}
 		else
 		{
-			animator.SetAnimParameter( "holdtype", 0 );
+			anim.HoldType = CitizenAnimationHelper.HoldTypes.None;
 		}
 	}
 

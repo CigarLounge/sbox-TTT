@@ -13,16 +13,6 @@ public enum SlotType
 	Grenade,
 }
 
-public enum HoldType
-{
-	None,
-	Pistol,
-	Rifle,
-	Shotgun,
-	Carry,
-	Fists
-}
-
 [Title( "Carriable" ), Icon( "luggage" )]
 public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 {
@@ -181,11 +171,11 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		return base.PlaySound( soundName, attachment );
 	}
 
-	public virtual void SimulateAnimator( PawnAnimator animator )
+	public virtual void SimulateAnimator( CitizenAnimationHelper anim )
 	{
-		animator.SetAnimParameter( "holdtype", (int)Info.HoldType );
-		animator.SetAnimParameter( "aim_body_weight", 1.0f );
-		animator.SetAnimParameter( "holdtype_handedness", 0 );
+		anim.HoldType = Info.HoldType;
+		anim.AimBodyWeight = 1.0f;
+		anim.Handedness = 0;
 	}
 
 	/// <summary>
