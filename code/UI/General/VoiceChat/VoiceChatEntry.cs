@@ -36,9 +36,9 @@ public class VoiceChatEntry : Panel
 		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
-		_worldPanel.Enabled( !_client.Pawn.IsFirstPersonMode );
+		_worldPanel.Enabled( !_client.Pawn.AsEntity().IsFirstPersonMode );
 
-		_rolePlate = client.Pawn.Components.Get<RolePlate>();
+		_rolePlate = client.Pawn.AsEntity().Components.Get<RolePlate>();
 	}
 
 	public void Update( float level )
@@ -48,7 +48,7 @@ public class VoiceChatEntry : Panel
 		Name.Text = Friend.Name;
 
 		if ( _client.IsValid() )
-			SetClass( "dead", !_client.Pawn.IsAlive() );
+			SetClass( "dead", !_client.Pawn.AsEntity().IsAlive() );
 	}
 
 	public override void Tick()

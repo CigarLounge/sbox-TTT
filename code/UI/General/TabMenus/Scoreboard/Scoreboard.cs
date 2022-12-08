@@ -31,7 +31,8 @@ public class Scoreboard : Panel
 		var scoreboardGroup = GetScoreboardGroup( client );
 		var scoreboardEntry = scoreboardGroup.AddEntry( client );
 
-		if ( !client.Pawn.IsLocalPawn && client.Pawn.IsAlive() )
+		var pawn = client.Pawn.AsEntity();
+		if ( !pawn.IsLocalPawn && pawn.IsAlive() )
 		{
 			scoreboardEntry.AddEventListener( "onclick", () => scoreboardEntry.OnClick() );
 			scoreboardEntry.Style.Cursor = "pointer";
