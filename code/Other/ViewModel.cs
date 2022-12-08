@@ -18,18 +18,18 @@ public class ViewModel : BaseViewModel
 	private float _yawInertia;
 	private float _pitchInertia;
 
-	public override void PostCameraSetup( ref CameraSetup camSetup )
+	public override void PlaceViewmodel()
 	{
-		base.PostCameraSetup( ref camSetup );
-		camSetup.ViewModel.FieldOfView = 65f;
-
 		if ( !Local.Pawn.IsValid() )
 			return;
 
+		var inPos = Camera.Position;
+		var inRot = Camera.Rotation;
+
 		if ( !_activated )
 		{
-			_lastPitch = camSetup.Rotation.Pitch();
-			_lastYaw = camSetup.Rotation.Yaw();
+			_lastPitch = inRot.Pitch();
+			_lastYaw = inRot.Yaw();
 
 			_yawInertia = 0;
 			_pitchInertia = 0;
@@ -37,14 +37,12 @@ public class ViewModel : BaseViewModel
 			_activated = true;
 		}
 
-		Position = camSetup.Position;
-		Rotation = camSetup.Rotation;
-
 		var cameraBoneIndex = GetBoneIndex( "camera" );
 		if ( cameraBoneIndex != -1 )
-		{
-			camSetup.Rotation *= Rotation.Inverse * GetBoneTransform( cameraBoneIndex ).Rotation;
-		}
+			inRot *= Rotation.Inverse * GetBoneTransform( cameraBoneIndex ).Rotation;
+
+		Position = inPos;
+		Rotation = inRot;
 
 		var newPitch = Rotation.Pitch();
 		var newYaw = Rotation.Yaw();
@@ -86,12 +84,13 @@ public class ViewModel : BaseViewModel
 		_bobAnim += Time.Delta * BobCycleTime;
 
 		var twoPI = System.MathF.PI * 2.0f;
+
 		if ( _bobAnim > twoPI )
 			_bobAnim -= twoPI;
 
 		var speed = new Vector2( velocity.x, velocity.y ).Length;
 		speed = speed > 10.0 ? speed : 0.0f;
-		var offset = BobDirection * (speed * 0.003f) * System.MathF.Cos( _bobAnim );
+		var offset = BobDirection * (speed * 0.005f) * System.MathF.Cos( _bobAnim );
 		offset = offset.WithZ( -System.MathF.Abs( offset.z ) );
 
 		return offset;
