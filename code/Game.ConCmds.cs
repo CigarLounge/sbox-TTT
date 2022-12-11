@@ -122,4 +122,14 @@ public partial class TTTGame
 
 		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({TTTGame.Current.RTVCount}/{MathF.Round( Game.Clients.Count * TTTGame.RTVThreshold )})" );
 	}
+
+	[ConCmd.Server( Name = "kill" )]
+	public static void Kill()
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.Kill();
+	}
 }
