@@ -69,7 +69,7 @@ public partial class Knife : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( TTTGame.KnifeBackstabs ? 50 : 100 )
+		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
@@ -80,7 +80,7 @@ public partial class Knife : Carriable
 			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
 
-			if ( TTTGame.KnifeBackstabs )
+			if ( GameManager.KnifeBackstabs )
 			{
 				// TF2 magic
 				// Discard all z values to simplify to 2D.

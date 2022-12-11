@@ -10,7 +10,7 @@ public static class Utils
 {
 	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
 	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
-	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= TTTGame.MinPlayers;
+	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= GameManager.MinPlayers;
 
 	public static List<IClient> GetAliveClientsWithRole<T>() where T : Role => GetClients( ( pl ) => pl.IsAlive() && pl.Role is T );
 	public static List<IClient> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );

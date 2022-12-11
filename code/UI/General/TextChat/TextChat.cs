@@ -110,13 +110,13 @@ public partial class TextChat : Panel
 
 		if ( message == Strings.RTVCommand )
 		{
-			TTTGame.RockTheVote();
+			GameManager.RockTheVote();
 			return;
 		}
 
 		if ( !player.IsAlive() )
 		{
-			var clients = TTTGame.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
+			var clients = GameManager.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
 			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}

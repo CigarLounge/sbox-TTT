@@ -36,11 +36,11 @@ public partial class HomePage : Panel
 
 	public void RockTheVote()
 	{
-		TTTGame.RockTheVote();
+		GameManager.RockTheVote();
 	}
 
 	public void ToggleForceSpectator()
 	{
-		TTTGame.ToggleForceSpectator();
+		GameManager.ToggleForceSpectator();
 	}
 }

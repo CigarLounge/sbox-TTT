@@ -34,7 +34,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public virtual void OnPlayerSpawned( Player player )
 	{
-		TTTGame.Current.MoveToSpawnpoint( player );
+		GameManager.Current.MoveToSpawnpoint( player );
 	}
 
 	public virtual void OnPlayerKilled( Player player )
@@ -85,7 +85,7 @@ public abstract partial class BaseState : BaseNetworkable
 	{
 		await GameTask.DelaySeconds( 1 );
 
-		if ( player.IsValid() && TTTGame.Current.State == this )
+		if ( player.IsValid() && GameManager.Current.State == this )
 			player.Respawn();
 	}
 }

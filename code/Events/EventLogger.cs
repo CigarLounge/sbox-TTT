@@ -72,7 +72,7 @@ public static class EventLogger
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var info = player.LastDamage;
@@ -90,7 +90,7 @@ public static class EventLogger
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		if ( player.KilledByPlayer )
@@ -111,7 +111,7 @@ public static class EventLogger
 
 	private static void WriteEvents()
 	{
-		if ( !TTTGame.LoggerEnabled )
+		if ( !GameManager.LoggerEnabled )
 			return;
 
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )

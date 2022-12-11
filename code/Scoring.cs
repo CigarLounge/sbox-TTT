@@ -12,7 +12,7 @@ public static class Scoring
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		if ( !player.KilledByPlayer )

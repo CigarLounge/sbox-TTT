@@ -79,7 +79,7 @@ public partial class InfoFeed : Panel
 	{
 		this.Enabled( true );
 
-		if ( TTTGame.Current.State.HasStarted )
+		if ( GameManager.Current.State.HasStarted )
 			return;
 
 		if ( Game.LocalPawn is not Player player )
@@ -89,7 +89,7 @@ public partial class InfoFeed : Panel
 			TabMenus.Instance.SwapToScoreboard();
 
 		AddEntry( "Roles have been assigned and the round has begun..." );
-		AddEntry( $"Traitors will receive an additional {TTTGame.InProgressSecondsPerDeath} seconds per death." );
+		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
 
 		var karma = MathF.Round( player.BaseKarma );
 		var df = MathF.Round( 100f - player.DamageFactor * 100f );

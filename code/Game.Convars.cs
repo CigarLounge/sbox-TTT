@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class TTTGame
+public partial class GameManager
 {
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]

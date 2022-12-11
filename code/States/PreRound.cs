@@ -7,7 +7,7 @@ namespace TTT;
 public class PreRound : BaseState
 {
 	public override string Name { get; } = "Preparing";
-	public override int Duration => TTTGame.Current.TotalRoundsPlayed == 0 ? TTTGame.PreRoundTime * 2 : TTTGame.PreRoundTime;
+	public override int Duration => GameManager.Current.TotalRoundsPlayed == 0 ? GameManager.PreRoundTime * 2 : GameManager.PreRoundTime;
 
 	public override void OnPlayerSpawned( Player player )
 	{
@@ -72,7 +72,7 @@ public class PreRound : BaseState
 
 		AssignRoles( players );
 
-		TTTGame.Current.ChangeState( new InProgress
+		GameManager.Current.ChangeState( new InProgress
 		{
 			AlivePlayers = players,
 			Spectators = spectators,

@@ -17,7 +17,7 @@ public partial class InProgress : BaseState
 	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
 
 	public override string Name { get; } = "In Progress";
-	public override int Duration => TTTGame.InProgressTime;
+	public override int Duration => GameManager.InProgressTime;
 
 	private int _innocentTeamDeathCount = 0;
 	private readonly List<RoleButton> _logicButtons = new();
@@ -26,20 +26,20 @@ public partial class InProgress : BaseState
 	{
 		base.OnPlayerKilled( player );
 
-		TimeLeft += TTTGame.InProgressSecondsPerDeath;
+		TimeLeft += GameManager.InProgressSecondsPerDeath;
 
 		if ( player.Team == Team.Innocents )
 			_innocentTeamDeathCount += 1;
 
 		var percentDead = (float)_innocentTeamDeathCount / Team.Innocents.GetCount();
-		if ( percentDead >= TTTGame.CreditsAwardPercentage )
+		if ( percentDead >= GameManager.CreditsAwardPercentage )
 		{
-			GivePlayersCredits<Traitor>( TTTGame.CreditsAwarded );
+			GivePlayersCredits<Traitor>( GameManager.CreditsAwarded );
 			_innocentTeamDeathCount = 0;
 		}
 
 		if ( player.Role is Traitor )
-			GivePlayersCredits<Detective>( TTTGame.DetectiveTraitorDeathReward );
+			GivePlayersCredits<Detective>( GameManager.DetectiveTraitorDeathReward );
 		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
 			GiveTraitorCredits( p );
 
@@ -129,21 +129,21 @@ public partial class InProgress : BaseState
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.PreventWin )
+		if ( GameManager.PreventWin )
 			TimeLeft += 1f;
 
 		if ( TimeLeft )
 			OnTimeUp();
 
 		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-			TTTGame.Current.ForceStateChange( new WaitingState() );
+			GameManager.Current.ForceStateChange( new WaitingState() );
 	}
 
 	private bool ChangeRoundIfOver()
 	{
 		var result = IsRoundOver();
 
-		if ( result != Team.None && !TTTGame.PreventWin )
+		if ( result != Team.None && !GameManager.PreventWin )
 		{
 			PostRound.Load( result, WinType.Elimination );
 			return true;
@@ -172,8 +172,8 @@ public partial class InProgress : BaseState
 
 	private static void GiveTraitorCredits( Player traitor )
 	{
-		traitor.Credits += TTTGame.TraitorDetectiveKillReward;
-		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), traitor, $"have received {TTTGame.TraitorDetectiveKillReward} credits for killing a Detective" );
+		traitor.Credits += GameManager.TraitorDetectiveKillReward;
+		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), traitor, $"have received {GameManager.TraitorDetectiveKillReward} credits for killing a Detective" );
 	}
 
 	[GameEvent.Player.RoleChanged]
@@ -182,7 +182,7 @@ public partial class InProgress : BaseState
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is InProgress inProgress )
+		if ( GameManager.Current.State is InProgress inProgress )
 			inProgress.ChangeRoundIfOver();
 	}
 }

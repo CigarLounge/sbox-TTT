@@ -153,7 +153,7 @@ public partial class Player
 		DeleteItems();
 
 		Event.Run( GameEvent.Player.Killed, this );
-		TTTGame.Current.State.OnPlayerKilled( this );
+		GameManager.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
 	}
@@ -184,7 +184,7 @@ public partial class Player
 
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-			if ( TTTGame.Current.State is not InProgress and not PostRound )
+			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
 			// if ( !info.Flags.HasFlag( DamageFlags.Slash ) )

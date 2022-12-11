@@ -11,7 +11,7 @@ public partial class MapSelectionState : BaseState
 	public IDictionary<IClient, string> Votes { get; private set; }
 
 	public override string Name { get; } = "Map Selection";
-	public override int Duration => TTTGame.MapSelectionTime;
+	public override int Duration => GameManager.MapSelectionTime;
 
 	public const string MapsFile = "maps.txt";
 
@@ -19,7 +19,7 @@ public partial class MapSelectionState : BaseState
 	{
 		if ( Votes.Count == 0 )
 		{
-			Game.ChangeLevel( Game.Random.FromList( TTTGame.Current.MapVoteIdents as List<string> ) ?? TTTGame.DefaultMap );
+			Game.ChangeLevel( Game.Random.FromList( GameManager.Current.MapVoteIdents as List<string> ) ?? GameManager.DefaultMap );
 			return;
 		}
 
@@ -39,7 +39,7 @@ public partial class MapSelectionState : BaseState
 	[ConCmd.Server]
 	public static void SetVote( string map )
 	{
-		if ( TTTGame.Current.State is not MapSelectionState state )
+		if ( GameManager.Current.State is not MapSelectionState state )
 			return;
 
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -56,7 +56,7 @@ public partial class MapSelectionState : BaseState
 			maps = await GetRemoteMapIdents();
 
 		maps.Shuffle();
-		TTTGame.Current.MapVoteIdents = maps;
+		GameManager.Current.MapVoteIdents = maps;
 	}
 
 	private static async Task<List<string>> GetLocalMapIdents()

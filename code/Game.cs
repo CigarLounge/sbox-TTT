@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace TTT;
 
-public partial class TTTGame : GameManager
+public partial class GameManager : Sandbox.GameManager
 {
-	public static new TTTGame Current { get; private set; }
+	public static new GameManager Current { get; private set; }
 
 	[Net, Change]
 	public BaseState State { get; private set; }
@@ -20,7 +20,7 @@ public partial class TTTGame : GameManager
 
 	public int RTVCount { get; set; }
 
-	public TTTGame()
+	public GameManager()
 	{
 		Current = this;
 

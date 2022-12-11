@@ -14,20 +14,20 @@ public class RoundTimer : Panel
 	{
 		base.Tick();
 
-		if ( TTTGame.Current.State is null )
+		if ( GameManager.Current.State is null )
 			return;
 
 		if ( Game.LocalPawn is not Player player )
 			return;
 
-		RoundName.Text = TTTGame.Current.State.Name;
+		RoundName.Text = GameManager.Current.State.Name;
 
-		if ( TTTGame.Current.State is WaitingState )
-			Timer.Text = $"{Utils.MinimumPlayerCount()} / {TTTGame.MinPlayers}";
+		if ( GameManager.Current.State is WaitingState )
+			Timer.Text = $"{Utils.MinimumPlayerCount()} / {GameManager.MinPlayers}";
 		else
-			Timer.Text = $"{TTTGame.Current.State.TimeLeftFormatted}";
+			Timer.Text = $"{GameManager.Current.State.TimeLeftFormatted}";
 
-		if ( TTTGame.Current.State is not InProgress inProgress )
+		if ( GameManager.Current.State is not InProgress inProgress )
 		{
 			SubText.SetClass( "show", false );
 			return;

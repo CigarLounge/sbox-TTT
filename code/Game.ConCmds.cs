@@ -3,7 +3,7 @@ using System;
 
 namespace TTT;
 
-public partial class TTTGame
+public partial class GameManager
 {
 	[ConCmd.Admin( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( int id = 0 )
@@ -54,7 +54,7 @@ public partial class TTTGame
 	[ConCmd.Admin( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -84,7 +84,7 @@ public partial class TTTGame
 	[ConCmd.Admin( Name = "ttt_force_restart" )]
 	public static void ForceRestart()
 	{
-		TTTGame.Current.ChangeState( new PreRound() );
+		GameManager.Current.ChangeState( new PreRound() );
 	}
 
 	[ConCmd.Admin( Name = "ttt_change_map" )]
@@ -118,9 +118,9 @@ public partial class TTTGame
 			return;
 
 		client.SetValue( Strings.HasRockedTheVote, true );
-		TTTGame.Current.RTVCount += 1;
+		GameManager.Current.RTVCount += 1;
 
-		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({TTTGame.Current.RTVCount}/{MathF.Round( Game.Clients.Count * TTTGame.RTVThreshold )})" );
+		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({GameManager.Current.RTVCount}/{MathF.Round( Game.Clients.Count * GameManager.RTVThreshold )})" );
 	}
 
 	[ConCmd.Server( Name = "kill" )]

@@ -33,7 +33,7 @@ public partial class RoleCheck : Entity
 	[Input]
 	public void Activate( Entity activator )
 	{
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		if ( activator is Player player )

@@ -134,7 +134,7 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
-			Client.Voice.WantsStereo = TTTGame.ProximityChat;
+			Client.Voice.WantsStereo = GameManager.ProximityChat;
 			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
@@ -151,7 +151,7 @@ public partial class Player : AnimatedEntity
 			ResetInterpolation();
 
 			Event.Run( GameEvent.Player.Spawned, this );
-			TTTGame.Current.State.OnPlayerSpawned( this );
+			GameManager.Current.State.OnPlayerSpawned( this );
 		}
 		else
 		{

@@ -95,7 +95,7 @@ public static class Karma
 	[GameEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
-		if ( TTTGame.Current.State is not PreRound )
+		if ( GameManager.Current.State is not PreRound )
 			return;
 
 		player.TimeUntilClean = 0;
@@ -119,7 +119,7 @@ public static class Karma
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var attacker = player.LastAttacker as Player;
@@ -157,7 +157,7 @@ public static class Karma
 		if ( !Game.IsServer )
 			return;
 
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var attacker = player.LastAttacker as Player;

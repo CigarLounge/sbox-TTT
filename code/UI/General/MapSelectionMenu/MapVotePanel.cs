@@ -25,7 +25,7 @@ public partial class MapVotePanel : Panel
 				panel.Delete( true );
 		}
 
-		var mapIdents = TTTGame.Current.MapVoteIdents;
+		var mapIdents = GameManager.Current.MapVoteIdents;
 		if ( mapIdents.IsNullOrEmpty() )
 			return;
 
@@ -50,7 +50,7 @@ public partial class MapVotePanel : Panel
 
 	public override void Tick()
 	{
-		var mapSelectionState = TTTGame.Current.State as MapSelectionState;
+		var mapSelectionState = GameManager.Current.State as MapSelectionState;
 
 		TimeText.Text = mapSelectionState.TimeLeftFormatted;
 

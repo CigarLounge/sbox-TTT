@@ -19,7 +19,7 @@ public partial class Player
 
 	public void DressPlayer()
 	{
-		ClothingContainer.Clothing = TTTGame.AvatarClothing ? _avatarClothes : _currentPreset;
+		ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
 
 		ClothingContainer.DressEntity( this );
 	}

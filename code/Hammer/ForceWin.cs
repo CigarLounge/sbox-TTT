@@ -25,7 +25,7 @@ public class ForceWin : Entity
 	[Input]
 	public void ActivateForceWin( Entity activator )
 	{
-		if ( TTTGame.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		if ( UseActivatorsTeam )

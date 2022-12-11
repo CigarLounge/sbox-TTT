@@ -8,7 +8,7 @@ public static class ClientExtensions
 	public static void Ban( this IClient client, int minutes = default, string reason = "" )
 	{
 		client.Kick();
-		TTTGame.BannedClients.Add
+		GameManager.BannedClients.Add
 		(
 			new BannedClient
 			{
