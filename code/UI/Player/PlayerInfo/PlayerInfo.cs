@@ -39,7 +39,7 @@ public class PlayerInfo : Panel
 
 	public override void Tick()
 	{
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
 		this.Enabled( player.CurrentPlayer.IsValid() && player.CurrentPlayer.IsAlive() );
 		if ( !this.IsEnabled() )

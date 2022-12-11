@@ -13,7 +13,7 @@ public class PerkDisplay : Panel
 	{
 		base.Tick();
 
-		var player = (Local.Pawn as Player).CurrentPlayer;
+		var player = (Game.LocalPawn as Player).CurrentPlayer;
 
 		foreach ( var perk in player.Perks )
 		{

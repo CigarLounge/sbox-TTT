@@ -9,10 +9,10 @@ public static class Scoring
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		if ( !player.KilledByPlayer )
@@ -33,7 +33,7 @@ public static class Scoring
 	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		var finder = player.Corpse.Finder;
@@ -43,13 +43,13 @@ public static class Scoring
 	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		var alivePlayersCount = new List<int>( new int[3] );
 		var deadPlayersCount = new List<int>( new int[3] );
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 
@@ -71,7 +71,7 @@ public static class Scoring
 		else
 			traitorBonus -= (int)MathF.Floor( alivePlayersCount[1] / 2f );
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 

@@ -31,9 +31,9 @@ public partial class Player
 			return;
 		}
 
-		if ( _timeSinceLastAction > Game.AFKTimer )
+		if ( _timeSinceLastAction > TTTGame.AFKTimer )
 		{
-			if ( Game.KickAFKPlayers )
+			if ( TTTGame.KickAFKPlayers )
 			{
 				Log.Warning( $"Player ID: {Client.SteamId}, Name: {Client.Name} was kicked from the server for being AFK." );
 				Client.Kick();

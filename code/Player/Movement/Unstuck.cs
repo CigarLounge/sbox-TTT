@@ -37,7 +37,7 @@ public class Unstuck
 		// Client can't jiggle its way out, needs to wait for
 		// server correction to come
 		//
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			return true;
 
 		var AttemptsPerTick = 20;

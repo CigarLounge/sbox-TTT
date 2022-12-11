@@ -36,7 +36,7 @@ public class InventorySelection : Panel
 
 	public override void Tick()
 	{
-		var player = (Local.Pawn as Player).CurrentPlayer;
+		var player = (Game.LocalPawn as Player).CurrentPlayer;
 
 		foreach ( var carriable in player.Inventory )
 		{
@@ -93,7 +93,7 @@ public class InventorySelection : Panel
 	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
-		if ( Local.Pawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
 			return;
 
 		if ( !Children.Any() )

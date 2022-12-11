@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -21,7 +21,7 @@ public class Cigar : Carriable
 		_trailParticle?.Destroy( true );
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Pressed( InputButton.PrimaryAttack ) && _timeUntilNextSmoke )
 			Smoke();
@@ -35,7 +35,7 @@ public class Cigar : Carriable
 		_trailParticle = null;
 		_trailParticle ??= Particles.Create( "particles/muzzle/barrel_smoke", this, "muzzle" );
 
-		if ( Host.IsServer )
+		if ( Game.IsServer )
 			Owner.TakeDamage( DamageInfo.Generic( 1 ).WithAttacker( Owner ).WithWeapon( this ) );
 	}
 }

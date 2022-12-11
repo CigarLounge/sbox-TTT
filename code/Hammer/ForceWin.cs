@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -25,7 +25,7 @@ public class ForceWin : Entity
 	[Input]
 	public void ActivateForceWin( Entity activator )
 	{
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		if ( UseActivatorsTeam )

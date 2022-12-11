@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -13,6 +13,6 @@ public class RandomAmmo : Entity
 	{
 		Transmit = TransmitType.Never;
 
-		Ammo.Create( (AmmoType)Rand.Int( 1, 5 ) ).Transform = Transform;
+		Ammo.Create( (AmmoType)Game.Random.Int( 1, 5 ) ).Transform = Transform;
 	}
 }

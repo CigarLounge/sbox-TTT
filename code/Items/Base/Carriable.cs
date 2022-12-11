@@ -96,7 +96,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 		TimeSinceDeployed = 0;
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
@@ -108,16 +108,16 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		if ( !dropped )
 			EnableDrawing = false;
 
-		if ( IsClient )
+		if ( Game.IsClient )
 		{
 			DestroyViewModel();
 			DestroyHudElements();
 		}
 	}
 
-	public override void Simulate( Client client ) { }
+	public override void Simulate( IClient client ) { }
 
-	public override void FrameSimulate( Client client ) { }
+	public override void FrameSimulate( IClient client ) { }
 
 	public override void BuildInput() { }
 
@@ -135,10 +135,10 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual void OnCarryStart( Player carrier )
 	{
 		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
-		if ( IsClient )
+		if ( Game.IsClient )
 			Info ??= GameResource.GetInfo<CarriableInfo>( GetType() );
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Owner = carrier;
@@ -150,7 +150,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		PreviousOwner = dropper;
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Owner = null;
@@ -180,7 +180,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// </summary>
 	protected virtual void CreateViewModel()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( Info.ViewModel is not null )
 		{

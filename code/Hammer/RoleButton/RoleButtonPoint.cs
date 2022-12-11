@@ -22,7 +22,7 @@ public class RoleButtonPoint : Panel
 		_maxViewDistance = roleButton.Radius;
 		_minViewDistance = Math.Min( _minViewDistance, _maxViewDistance / 2 );
 
-		Local.Hud.AddChild( this );
+		Game.RootPanel.AddChild( this );
 
 		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.RoleName );
 		if ( roleInfo is not null )
@@ -36,7 +36,7 @@ public class RoleButtonPoint : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		if ( !_roleButton.IsValid() )

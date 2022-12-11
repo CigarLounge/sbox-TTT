@@ -33,9 +33,9 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		GhostEntity?.Delete();
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( CanDrop && Input.Pressed( InputButton.PrimaryAttack ) )
@@ -81,7 +81,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		OnDeploy( dropped );
 	}
 
-	public override void FrameSimulate( Client client )
+	public override void FrameSimulate( IClient client )
 	{
 		base.FrameSimulate( client );
 

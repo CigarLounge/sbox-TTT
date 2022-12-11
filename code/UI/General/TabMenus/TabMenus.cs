@@ -54,7 +54,7 @@ public partial class TabMenus : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Client.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		_muteButton.SetClass( "inactive", player.IsAlive() );

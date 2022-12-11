@@ -45,7 +45,7 @@ public static class EventLogger
 	[GameEvent.Round.Start]
 	private static void OnRoundStart()
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Events.Clear();
@@ -57,7 +57,7 @@ public static class EventLogger
 	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		LogEvent( EventType.Round, _timeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
@@ -69,10 +69,10 @@ public static class EventLogger
 	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		var info = player.LastDamage;
@@ -87,22 +87,23 @@ public static class EventLogger
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		if ( player.KilledByPlayer )
 			LogEvent( EventType.PlayerKill, _timeSinceStart, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
-		else if ( player.LastDamage.Flags == DamageFlags.Fall )
-			LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
+		// TODO: Handle fall damage with tag.
+		// else if ( player.LastDamage.Flags == DamageFlags.Fall )
+		// 	LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
 	}
 
 	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		LogEvent( EventType.PlayerCorpseFound, _timeSinceStart, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
@@ -110,13 +111,13 @@ public static class EventLogger
 
 	private static void WriteEvents()
 	{
-		if ( !Game.LoggerEnabled )
+		if ( !TTTGame.LoggerEnabled )
 			return;
 
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )
 			FileSystem.Data.CreateDirectory( LogFolder );
 
-		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
+		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Game.Server.MapIdent}";
 		if ( !FileSystem.Data.DirectoryExists( mapFolderPath ) )
 			FileSystem.Data.CreateDirectory( mapFolderPath );
 
@@ -126,7 +127,7 @@ public static class EventLogger
 
 	private static string GetEventSummary()
 	{
-		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
+		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Game.Server.MapIdent}\n";
 
 		for ( var i = 0; i < Events.Count; ++i )
 			summary += $"{Events[i].Time.TimerString()} - {Events[i].Description}\n";

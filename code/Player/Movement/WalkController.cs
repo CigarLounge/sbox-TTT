@@ -379,7 +379,7 @@ public partial class WalkController : PawnController
 			return;
 
 		CheckLadder();
-		Swimming = Pawn.WaterLevel > 0.6f;
+		Swimming = Pawn.GetWaterLevel() > 0.6f;
 
 		if ( !Swimming && !_isTouchingLadder )
 		{
@@ -424,7 +424,7 @@ public partial class WalkController : PawnController
 		var bStayOnGround = false;
 		if ( Swimming )
 		{
-			if ( Pawn.WaterLevel.AlmostEqual( 0.6f, .05f ) )
+			if ( Pawn.GetWaterLevel().AlmostEqual( 0.6f, .05f ) )
 				CheckWaterJump();
 
 			WaterMove();
@@ -460,12 +460,12 @@ public partial class WalkController : PawnController
 		{
 			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
 
-			if ( Host.IsServer )
+			if ( Game.IsServer )
 			{
 				Pawn.TakeDamage( new DamageInfo
 				{
 					Attacker = Pawn,
-					Flags = DamageFlags.Fall,
+					// Flags = DamageFlags.Fall,
 					Force = Vector3.Down * Velocity.Length,
 					Damage = damage,
 				} );

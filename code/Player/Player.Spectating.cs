@@ -5,6 +5,9 @@ namespace TTT;
 
 public partial class Player
 {
+	[Net, Predicted]
+	public BaseCamera CurrentCamera { get; set; }
+
 	[Net, Local]
 	public bool IsForcedSpectator { get; private set; } = false;
 
@@ -52,7 +55,7 @@ public partial class Player
 
 	public void MakeSpectator( bool useRagdollCamera = true )
 	{
-		Client.VoiceStereo = true;
+		Client.Voice.WantsStereo = true;
 		Controller = null;
 		EnableAllCollisions = false;
 		EnableDrawing = false;
@@ -86,7 +89,7 @@ public partial class Player
 	[GameEvent.Player.Killed]
 	private static async void OnPlayerKilled( Player player )
 	{
-		if ( Host.IsServer )
+		if ( Game.IsServer )
 			return;
 
 		if ( player.IsLocalPawn )
@@ -100,7 +103,7 @@ public partial class Player
 		}
 		else
 		{
-			var localPlayer = Local.Pawn as Player;
+			var localPlayer = Game.LocalPawn as Player;
 			if ( localPlayer.IsSpectatingPlayer && localPlayer.CurrentPlayer == player )
 				localPlayer.Camera = new FreeSpectateCamera();
 		}

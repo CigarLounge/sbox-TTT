@@ -27,7 +27,7 @@ public class DetectiveMarker : Panel
 			return;
 		}
 
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 		Distance.Text = $"{player.Position.Distance( CorpseLocation ).SourceUnitsToMeters():n0}m";
 
 		var screenPos = CorpseLocation.ToScreen();

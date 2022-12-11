@@ -18,7 +18,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public void Start()
 	{
-		if ( Host.IsServer && Duration > 0 )
+		if ( Game.IsServer && Duration > 0 )
 			TimeLeft = Duration;
 
 		OnStart();
@@ -26,7 +26,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public void Finish()
 	{
-		if ( Host.IsServer )
+		if ( Game.IsServer )
 			TimeLeft = 0f;
 
 		OnFinish();
@@ -34,7 +34,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public virtual void OnPlayerSpawned( Player player )
 	{
-		Game.Current.MoveToSpawnpoint( player );
+		TTTGame.Current.MoveToSpawnpoint( player );
 	}
 
 	public virtual void OnPlayerKilled( Player player )
@@ -60,7 +60,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public virtual void OnSecond()
 	{
-		if ( Host.IsServer && TimeLeft )
+		if ( Game.IsServer && TimeLeft )
 			OnTimeUp();
 	}
 
@@ -72,9 +72,9 @@ public abstract partial class BaseState : BaseNetworkable
 
 	protected static void RevealEveryone()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 			player.Reveal();
@@ -85,7 +85,7 @@ public abstract partial class BaseState : BaseNetworkable
 	{
 		await GameTask.DelaySeconds( 1 );
 
-		if ( player.IsValid() && Game.Current.State == this )
+		if ( player.IsValid() && TTTGame.Current.State == this )
 			player.Respawn();
 	}
 }

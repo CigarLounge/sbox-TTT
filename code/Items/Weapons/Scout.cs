@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -23,9 +23,9 @@ public class Scout : Weapon
 		_defaultFOV = player.Camera.FieldOfView;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
-		if ( IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Game.IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
 		{
 			if ( Prediction.FirstTime )
 			{
@@ -49,7 +49,7 @@ public class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Local.Hud };
+		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Game.RootPanel };
 	}
 
 	protected override void DestroyHudElements()

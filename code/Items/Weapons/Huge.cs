@@ -1,6 +1,6 @@
-using Sandbox;
-using SandboxEditor;
 using System;
+using Editor;
+using Sandbox;
 
 namespace TTT;
 
@@ -14,7 +14,7 @@ public class Huge : Weapon
 	private const string BulletsBodyGroup = "bullets";
 	private const int MaxBulletsChoice = 7;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		base.Simulate( client );
 

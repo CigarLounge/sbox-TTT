@@ -22,7 +22,7 @@ public partial class Player
 	[Event.Entity.PreCleanup]
 	public void CancelPossession()
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( Prop.IsValid() )

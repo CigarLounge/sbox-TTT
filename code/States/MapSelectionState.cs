@@ -8,10 +8,10 @@ namespace TTT;
 public partial class MapSelectionState : BaseState
 {
 	[Net]
-	public IDictionary<Client, string> Votes { get; private set; }
+	public IDictionary<IClient, string> Votes { get; private set; }
 
 	public override string Name { get; } = "Map Selection";
-	public override int Duration => Game.MapSelectionTime;
+	public override int Duration => TTTGame.MapSelectionTime;
 
 	public const string MapsFile = "maps.txt";
 
@@ -19,11 +19,11 @@ public partial class MapSelectionState : BaseState
 	{
 		if ( Votes.Count == 0 )
 		{
-			Global.ChangeLevel( Rand.FromList( Game.Current.MapVoteIdents as List<string> ) ?? Game.DefaultMap );
+			Game.ChangeLevel( Game.Random.FromList( TTTGame.Current.MapVoteIdents as List<string> ) ?? TTTGame.DefaultMap );
 			return;
 		}
 
-		Global.ChangeLevel
+		Game.ChangeLevel
 		(
 			Votes.GroupBy( x => x.Value )
 			.OrderBy( x => x.Count() )
@@ -39,7 +39,7 @@ public partial class MapSelectionState : BaseState
 	[ConCmd.Server]
 	public static void SetVote( string map )
 	{
-		if ( Game.Current.State is not MapSelectionState state )
+		if ( TTTGame.Current.State is not MapSelectionState state )
 			return;
 
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -56,7 +56,7 @@ public partial class MapSelectionState : BaseState
 			maps = await GetRemoteMapIdents();
 
 		maps.Shuffle();
-		Game.Current.MapVoteIdents = maps;
+		TTTGame.Current.MapVoteIdents = maps;
 	}
 
 	private static async Task<List<string>> GetLocalMapIdents()
@@ -85,7 +85,7 @@ public partial class MapSelectionState : BaseState
 	private static async Task<List<string>> GetRemoteMapIdents()
 	{
 		// TODO: Wait for https://github.com/sboxgame/issues/issues/2605 to be fixed.
-		var queryResult = await Package.FindAsync( $"type:map game:{Global.GameIdent.Replace( "#local", "" )}", take: 99 );
+		var queryResult = await Package.FindAsync( $"type:map game:{Game.Server.GameIdent.Replace( "#local", "" )}", take: 99 );
 		return queryResult.Packages.Select( ( p ) => p.FullIdent ).ToList();
 	}
 }

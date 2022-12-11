@@ -13,7 +13,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 
 	protected override void OnActivate()
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		_entity = Entity;
@@ -22,7 +22,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 
 	protected override void OnDeactivate()
 	{
-		if ( !Host.IsServer || !_entity.IsValid() )
+		if ( !Game.IsServer || !_entity.IsValid() )
 			return;
 
 		_entity.Tags.Remove( Tag );

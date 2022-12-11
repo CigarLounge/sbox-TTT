@@ -53,6 +53,6 @@ public class Crosshair : Panel
 
 	public override void Tick()
 	{
-		this.Enabled( Local.Pawn.IsAlive() );
+		this.Enabled( Game.LocalPawn.IsAlive() );
 	}
 }

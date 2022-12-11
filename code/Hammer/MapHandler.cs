@@ -9,7 +9,7 @@ public static class MapHandler
 	[Event.Entity.PostSpawn]
 	public static void EntityPostSpawn()
 	{
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			return;
 
 		foreach ( var ent in Entity.All )
@@ -21,7 +21,7 @@ public static class MapHandler
 
 	public static void Cleanup()
 	{
-		Map.Reset( GameManager.DefaultCleanupFilter );
+		Game.ResetMap( System.Array.Empty<Entity>() );
 		Decal.Clear( true, true );
 	}
 }

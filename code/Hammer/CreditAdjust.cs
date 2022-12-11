@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -32,7 +32,7 @@ public partial class CreditAdjust : Entity
 	[Input]
 	public void ExchangeCredits( Entity activator )
 	{
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		if ( activator is not Player player )

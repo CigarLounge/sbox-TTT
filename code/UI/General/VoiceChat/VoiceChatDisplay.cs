@@ -11,15 +11,15 @@ public class VoiceChatDisplay : Panel
 
 	public VoiceChatDisplay() => Instance = this;
 
-	public void OnVoicePlayed( Client client )
+	public void OnVoicePlayed( IClient client )
 	{
 		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.SteamId ) ?? new VoiceChatEntry( this, client );
-		entry.Update( client.VoiceLevel );
+		entry.Update( client.Voice.CurrentLevel );
 	}
 
 	public override void Tick()
 	{
 		if ( Voice.IsRecording )
-			OnVoicePlayed( Local.Client );
+			OnVoicePlayed( Game.LocalClient );
 	}
 }

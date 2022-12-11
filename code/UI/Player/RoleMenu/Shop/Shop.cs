@@ -14,7 +14,7 @@ public partial class Shop : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		Credits.Text = $" {player.Credits} credits";

@@ -20,7 +20,7 @@ public partial class DNAMenu : Panel
 
 	public override void Tick()
 	{
-		if ( !IsVisible || Local.Pawn is not Player player )
+		if ( !IsVisible || Game.LocalPawn is not Player player )
 			return;
 
 		_dnaScanner ??= player.Inventory.Find<DNAScanner>();

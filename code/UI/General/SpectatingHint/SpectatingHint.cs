@@ -14,7 +14,7 @@ public class SpectatingHint : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		this.Enabled( !player.IsAlive() );

@@ -12,7 +12,7 @@ public abstract class Perk : EntityComponent<Player>
 		Info = GameResource.GetInfo<PerkInfo>( GetType() );
 	}
 
-	public virtual void Simulate( Client client ) { }
+	public virtual void Simulate( IClient client ) { }
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

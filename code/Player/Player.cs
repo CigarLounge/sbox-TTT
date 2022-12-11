@@ -18,20 +18,6 @@ public partial class Player : AnimatedEntity
 	public Angles ViewAngles { get; set; }
 	public Angles OriginalViewAngles { get; private set; }
 
-	public CameraMode Camera
-	{
-		get => Components.Get<CameraMode>();
-		set
-		{
-			var current = Camera;
-			if ( current == value )
-				return;
-
-			Components.RemoveAny<CameraMode>();
-			Components.Add( value );
-		}
-	}
-
 	public Vector3 EyePosition
 	{
 		get => Transform.PointToWorld( EyeLocalPosition );
@@ -82,7 +68,7 @@ public partial class Player : AnimatedEntity
 
 	public const float DropVelocity = 300;
 
-	public Player( Client client ) : this()
+	public Player( IClient client ) : this()
 	{
 		client.Pawn = this;
 		SteamId = client.SteamId;
@@ -119,7 +105,6 @@ public partial class Player : AnimatedEntity
 		EnableLagCompensation = true;
 		EnableShadowInFirstPerson = true;
 		EnableTouch = false;
-		Camera = new FreeSpectateCamera();
 	}
 
 	public override void ClientSpawn()
@@ -131,7 +116,7 @@ public partial class Player : AnimatedEntity
 
 	public void Respawn()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		LifeState = LifeState.Respawnable;
 
@@ -143,14 +128,13 @@ public partial class Player : AnimatedEntity
 		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
-		WaterLevel = 0;
 		Credits = 0;
 
 		if ( !IsForcedSpectator )
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
-			Client.VoiceStereo = Game.ProximityChat;
+			Client.Voice.WantsStereo = TTTGame.ProximityChat;
 			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
@@ -159,7 +143,7 @@ public partial class Player : AnimatedEntity
 			EnableTouch = true;
 
 			Controller = new WalkController();
-			Camera = new FirstPersonCamera();
+			CurrentCamera = new TTTCamera();
 
 			CreateHull();
 			CreateFlashlight();
@@ -167,7 +151,7 @@ public partial class Player : AnimatedEntity
 			ResetInterpolation();
 
 			Event.Run( GameEvent.Player.Spawned, this );
-			Game.Current.State.OnPlayerSpawned( this );
+			TTTGame.Current.State.OnPlayerSpawned( this );
 		}
 		else
 		{
@@ -181,7 +165,7 @@ public partial class Player : AnimatedEntity
 
 	private void ClientRespawn()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		DeleteFlashlight();
 		ResetConfirmationData();
@@ -204,7 +188,7 @@ public partial class Player : AnimatedEntity
 		Event.Run( GameEvent.Player.Spawned, this );
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		SimulateAnimation( GetActiveController() );
 
@@ -225,7 +209,7 @@ public partial class Player : AnimatedEntity
 			SimulatePerks();
 		}
 
-		if ( IsClient )
+		if ( Game.IsClient )
 		{
 			ActivateRoleButton();
 
@@ -251,13 +235,13 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	public override void FrameSimulate( Client client )
+	public override void FrameSimulate( IClient client )
 	{
 		Camera.ZNear = 1f;
 		Camera.ZFar = 25000.0f;
 		Camera.Rotation = ViewAngles.ToRotation();
 		Camera.Position = EyePosition;
-		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Local.UserPreference.FieldOfView );
+		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.FirstPersonViewer = this;
 		Camera.Main.SetViewModelCamera( Camera.FieldOfView, 0.01f, 100.0f );
 	}
@@ -299,7 +283,7 @@ public partial class Player : AnimatedEntity
 		if ( !this.IsAlive() )
 			return;
 
-		if ( !IsClient )
+		if ( !Game.IsClient )
 			return;
 
 		if ( _timeSinceLastFootstep < 0.2f )
@@ -365,12 +349,12 @@ public partial class Player : AnimatedEntity
 		animHelper.AimAngle = rotation;
 		animHelper.FootShuffle = shuffle;
 		animHelper.DuckLevel = MathX.Lerp( animHelper.DuckLevel, controller.HasTag( "ducked" ) ? 1 : 0, Time.Delta * 10.0f );
-		animHelper.VoiceLevel = (Host.IsClient && Client.IsValid()) ? Client.TimeSinceLastVoice < 0.5f ? Client.VoiceLevel : 0.0f : 0.0f;
+		animHelper.VoiceLevel = (Game.IsClient && Client.IsValid()) ? Client.Voice.LastHeard < 0.5f ? Client.Voice.CurrentLevel : 0.0f : 0.0f;
 		animHelper.IsGrounded = GroundEntity != null;
 		animHelper.IsSitting = controller.HasTag( "sitting" );
 		animHelper.IsNoclipping = controller.HasTag( "noclip" );
 		animHelper.IsClimbing = controller.HasTag( "climbing" );
-		animHelper.IsSwimming = WaterLevel >= 0.5f;
+		animHelper.IsSwimming = this.GetWaterLevel() >= 0.5f;
 		animHelper.IsWeaponLowered = false;
 
 		if ( controller.HasEvent( "jump" ) )
@@ -399,7 +383,7 @@ public partial class Player : AnimatedEntity
 
 	public override void StartTouch( Entity other )
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		switch ( other )
@@ -496,7 +480,7 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnDestroy()
 	{
-		if ( IsServer )
+		if ( Game.IsServer )
 			RemoveCorpse();
 
 		DeleteFlashlight();

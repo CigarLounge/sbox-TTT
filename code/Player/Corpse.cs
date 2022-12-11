@@ -1,4 +1,6 @@
 using Sandbox;
+using Sandbox.Diagnostics;
+using Sandbox.Physics;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,7 +44,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public Corpse( Player player )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		#region Copy Player
 		Player = player;
@@ -88,12 +90,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		#endregion
 
-		if ( Player.LastDamage.Flags.HasFlag( DamageFlags.Bullet ) && Player.LastAttacker is Player killer )
-		{
-			var dna = new DNA( killer );
-			Components.Add( dna );
-			TimeUntilDNADecay = dna.TimeUntilDecayed;
-		}
+		// if ( Player.LastDamage.Flags.HasFlag( DamageFlags.Bullet ) && Player.LastAttacker is Player killer )
+		// {
+		// 	var dna = new DNA( killer );
+		// 	Components.Add( dna );
+		// 	TimeUntilDNADecay = dna.TimeUntilDecayed;
+		// }
 
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )
@@ -135,7 +137,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
 	public void Search( Player searcher, bool covert = false, bool retrieveCredits = true )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 		Assert.NotNull( searcher );
 
 		var creditsRetrieved = 0;
@@ -205,7 +207,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public void SendKillInfo( To to )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		foreach ( var client in to )
 		{
@@ -246,7 +248,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		UI.InfoFeed.AddEntry
 		(
-			Local.Pawn as Player,
+			Game.LocalPawn as Player,
 			$"found {creditsRetrieved} credits!"
 		);
 	}
@@ -315,7 +317,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
-	bool IEntityHint.CanHint( Player player ) => Game.Current.State is InProgress or PostRound;
+	bool IEntityHint.CanHint( Player player ) => TTTGame.Current.State is InProgress or PostRound;
 
 	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
 
@@ -334,7 +336,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( user is not Player player )
 			return false;
 
-		if ( Game.Current.State is WaitingState or PreRound )
+		if ( TTTGame.Current.State is WaitingState or PreRound )
 			return false;
 
 		Search( player, Input.Down( InputButton.Run ) );
@@ -344,7 +346,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public bool CanSearch()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		var searchButton = GetSearchButton();
 
@@ -356,9 +358,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public static InputButton GetSearchButton()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
 		if ( player.ActiveCarriable is not Binoculars binoculars )
 			return InputButton.Use;

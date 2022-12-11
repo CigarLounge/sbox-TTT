@@ -48,7 +48,7 @@ public partial class Player
 
 	protected void CreateFlashlight()
 	{
-		if ( Host.IsServer )
+		if ( Game.IsServer )
 		{
 			_worldLight = CreateLight();
 			_worldLight.EnableHideInFirstPerson = true;

@@ -25,9 +25,9 @@ public class ScoreboardEntry : Panel
 	private Panel DropdownPanel { get; set; }
 
 	public PlayerStatus PlayerStatus;
-	private readonly Client _client;
+	private readonly IClient _client;
 
-	public ScoreboardEntry( Panel parent, Client client ) : base( parent )
+	public ScoreboardEntry( Panel parent, IClient client ) : base( parent )
 	{
 		_client = client;
 	}
@@ -47,7 +47,7 @@ public class ScoreboardEntry : Panel
 		Ping.Text = _client.IsBot ? "BOT" : _client.Ping.ToString();
 		Score.Text = player.Score.ToString();
 
-		SetClass( "me", _client == Local.Client );
+		SetClass( "me", _client == Game.LocalClient );
 
 		if ( player.Role is not NoneRole and not Innocent )
 			Style.BackgroundColor = player.Role.Color.WithAlpha( 0.15f );

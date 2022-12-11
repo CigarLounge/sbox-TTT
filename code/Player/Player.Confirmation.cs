@@ -68,7 +68,7 @@ public partial class Player
 
 	public void RemoveCorpse()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		Corpse?.Delete();
 		Corpse = null;
@@ -76,14 +76,14 @@ public partial class Player
 
 	protected void BecomeCorpse()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		Corpse = new Corpse( this );
 	}
 
 	public void ConfirmDeath( Player confirmer = null )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( this.IsAlive() || IsSpectator )
 		{
@@ -108,7 +108,7 @@ public partial class Player
 	/// </summary>
 	public void Reveal()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( IsSpectator )
 			return;
@@ -133,7 +133,7 @@ public partial class Player
 	/// </summary>
 	public void UpdateMissingInAction()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( !IsMissingInAction )
 		{
@@ -149,7 +149,7 @@ public partial class Player
 
 	public void UpdateStatus( To to )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		ClientSetStatus( to, Status );
 	}
@@ -182,7 +182,7 @@ public partial class Player
 	}
 
 	[GameEvent.Client.Joined]
-	private void SyncClient( Client client )
+	private void SyncClient( IClient client )
 	{
 		if ( IsRoleKnown )
 			ClientSetRole( To.Single( client ), Role.Info );

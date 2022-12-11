@@ -36,12 +36,12 @@ public partial class Player
 	/// </summary>
 	public ColorGroup TagGroup { get; set; }
 
-	public bool CanHearSpectators => (!this.IsAlive() || Game.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
+	public bool CanHearSpectators => (!this.IsAlive() || TTTGame.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
 	public bool CanHearAlivePlayers => MuteFilter != MuteFilter.AlivePlayers && MuteFilter != MuteFilter.All;
 
 	public static void ToggleMute()
 	{
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
 		if ( ++player.MuteFilter > MuteFilter.All )
 			player.MuteFilter = MuteFilter.None;

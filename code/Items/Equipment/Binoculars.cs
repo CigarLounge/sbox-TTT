@@ -30,7 +30,7 @@ public partial class Binoculars : Carriable
 		ZoomLevel = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			ChangeZoomLevel();
@@ -53,7 +53,7 @@ public partial class Binoculars : Carriable
 
 		_corpse = trace.Entity as Corpse;
 
-		if ( !IsServer || !_corpse.IsValid() )
+		if ( !Game.IsServer || !_corpse.IsValid() )
 			return;
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
@@ -86,7 +86,7 @@ public partial class Binoculars : Carriable
 			return;
 		}
 
-		if ( IsClient )
+		if ( Game.IsClient )
 			PlaySound( Strings.ScopeInSound );
 
 		ZoomLevel++;

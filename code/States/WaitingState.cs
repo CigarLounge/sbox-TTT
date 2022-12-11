@@ -8,8 +8,8 @@ public class WaitingState : BaseState
 
 	public override void OnSecond()
 	{
-		if ( Host.IsServer && Utils.HasMinimumPlayers() )
-			Game.Current.ForceStateChange( new PreRound() );
+		if ( Game.IsServer && Utils.HasMinimumPlayers() )
+			TTTGame.Current.ForceStateChange( new PreRound() );
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -28,13 +28,13 @@ public class WaitingState : BaseState
 
 	protected override void OnStart()
 	{
-		if ( Game.Current.TotalRoundsPlayed != 0 )
+		if ( TTTGame.Current.TotalRoundsPlayed != 0 )
 			MapHandler.Cleanup();
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 			player.Respawn();

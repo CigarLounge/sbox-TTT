@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class Game
+public partial class TTTGame
 {
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
@@ -80,12 +80,12 @@ public partial class Game
 
 	public static void UpdateVoiceChat( bool _, bool newValue )
 	{
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
-			if ( !client.Pawn.IsAlive() )
+			if ( !client.Pawn.AsEntity().IsAlive() )
 				continue;
 
-			client.VoiceStereo = newValue;
+			client.Voice.WantsStereo = newValue;
 		}
 	}
 	#endregion

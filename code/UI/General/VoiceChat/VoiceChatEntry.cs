@@ -15,14 +15,14 @@ public class VoiceChatEntry : Panel
 
 	private readonly WorldPanel _worldPanel;
 	private readonly RolePlate _rolePlate;
-	private readonly Client _client;
+	private readonly IClient _client;
 	private float _voiceLevel = 0.5f;
 	private float _targetVoiceLevel = 0;
 	private readonly float _voiceTimeout = 0.1f;
 
 	RealTimeSince _timeSincePlayed;
 
-	public VoiceChatEntry( Panel parent, Client client ) : base( parent )
+	public VoiceChatEntry( Panel parent, IClient client ) : base( parent )
 	{
 		Parent = parent;
 

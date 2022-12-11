@@ -28,19 +28,19 @@ public partial class HomePage : Panel
 	{
 		base.Tick();
 
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
 		ForceSpectatorButton.Text = $"Force Spectator Mode - {(player.IsForcedSpectator ? "Enabled" : "Disabled")}";
-		RockTheVoteButton.SetClass( "inactive", Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) );
+		RockTheVoteButton.SetClass( "inactive", Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) );
 	}
 
 	public void RockTheVote()
 	{
-		Game.RockTheVote();
+		TTTGame.RockTheVote();
 	}
 
 	public void ToggleForceSpectator()
 	{
-		Game.ToggleForceSpectator();
+		TTTGame.ToggleForceSpectator();
 	}
 }

@@ -42,7 +42,7 @@ public class QuickChat : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		if ( Input.Pressed( InputButton.Zoom ) )
@@ -80,7 +80,7 @@ public class QuickChat : Panel
 
 	public static string GetTarget()
 	{
-		if ( Local.Pawn is not Player localPlayer )
+		if ( Game.LocalPawn is not Player localPlayer )
 			return null;
 
 		switch ( localPlayer.HoveredEntity )

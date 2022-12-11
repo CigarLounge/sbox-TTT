@@ -19,7 +19,7 @@ public partial class PostRound : BaseState
 	public WinType WinType { get; private set; }
 
 	public override string Name { get; } = "Post";
-	public override int Duration => Game.PostRoundTime;
+	public override int Duration => TTTGame.PostRoundTime;
 
 	public PostRound() { }
 
@@ -33,7 +33,7 @@ public partial class PostRound : BaseState
 
 	public static void Load( Team winningTeam, WinType winType )
 	{
-		Game.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
+		TTTGame.Current.ForceStateChange( new PostRound( winningTeam, winType ) );
 	}
 
 	public override void OnPlayerKilled( Player player )
@@ -53,7 +53,7 @@ public partial class PostRound : BaseState
 
 	protected override void OnStart()
 	{
-		Game.Current.TotalRoundsPlayed++;
+		TTTGame.Current.TotalRoundsPlayed++;
 		Event.Run( GameEvent.Round.End, WinningTeam, WinType );
 	}
 
@@ -61,9 +61,9 @@ public partial class PostRound : BaseState
 	{
 		bool shouldChangeMap;
 
-		shouldChangeMap = Game.Current.TotalRoundsPlayed >= Game.RoundLimit;
-		shouldChangeMap |= Game.Current.RTVCount >= MathF.Round( Client.All.Count * Game.RTVThreshold );
+		shouldChangeMap = TTTGame.Current.TotalRoundsPlayed >= TTTGame.RoundLimit;
+		shouldChangeMap |= TTTGame.Current.RTVCount >= MathF.Round( Game.Clients.Count * TTTGame.RTVThreshold );
 
-		Game.Current.ChangeState( shouldChangeMap ? new MapSelectionState() : new PreRound() );
+		TTTGame.Current.ChangeState( shouldChangeMap ? new MapSelectionState() : new PreRound() );
 	}
 }

@@ -22,8 +22,7 @@ public class FlareGun : Weapon
 		// TODO: Use proper burning once FP implements it.
 		var burnDamage = DamageInfo.Generic( 25 )
 			.WithAttacker( Owner )
-			.WithWeapon( this )
-			.WithFlag( DamageFlags.Burn );
+			.WithWeapon( this );
 
 		trace.Entity.TakeDamage( burnDamage );
 

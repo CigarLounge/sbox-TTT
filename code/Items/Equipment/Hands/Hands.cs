@@ -36,9 +36,9 @@ public partial class Hands : Carriable
 	private const float PushForce = 350f;
 	private readonly Vector3 _maxPickupSize = new( 26, 22, 50 );
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
@@ -129,7 +129,7 @@ public partial class Hands : Carriable
 	{
 		base.OnCarryStart( player );
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		GrabPoint = new ModelEntity( "models/hands/grabpoint.vmdl" );
@@ -141,7 +141,7 @@ public partial class Hands : Carriable
 	{
 		base.OnCarryStart( player );
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		_grabbedEntity?.Drop();
@@ -157,7 +157,7 @@ public partial class Hands : Carriable
 
 	public override void SimulateAnimator( CitizenAnimationHelper anim )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( IsHoldingEntity || IsPushing )

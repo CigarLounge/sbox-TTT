@@ -95,7 +95,7 @@ public static class Karma
 	[GameEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
-		if ( Game.Current.State is not PreRound )
+		if ( TTTGame.Current.State is not PreRound )
 			return;
 
 		player.TimeUntilClean = 0;
@@ -116,10 +116,10 @@ public static class Karma
 	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		var attacker = player.LastAttacker as Player;
@@ -154,10 +154,10 @@ public static class Karma
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( TTTGame.Current.State is not InProgress )
 			return;
 
 		var attacker = player.LastAttacker as Player;
@@ -208,10 +208,10 @@ public static class Karma
 	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 
@@ -229,13 +229,13 @@ public static class Karma
 	}
 
 	[GameEvent.Client.Joined]
-	private static void InitClientKarma( Client client )
+	private static void InitClientKarma( IClient client )
 	{
 		client.SetValue( Strings.Karma, SavedPlayerValues.TryGetValue( client.SteamId, out var value ) ? value : StartValue );
 	}
 
 	[GameEvent.Client.Disconnected]
-	private static void SaveKarma( Client client )
+	private static void SaveKarma( IClient client )
 	{
 		SavedPlayerValues[client.SteamId] = (client.Pawn as Player).ActiveKarma;
 	}

@@ -22,14 +22,14 @@ public class Perks : IEnumerable<Perk>
 
 	public void Add( Perk perk )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		Owner.Components.Add( perk );
 	}
 
 	public void Remove( Perk perk )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		Owner.Components.Remove( perk );
 	}

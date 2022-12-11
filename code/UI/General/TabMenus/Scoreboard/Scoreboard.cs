@@ -8,7 +8,7 @@ namespace TTT.UI;
 [UseTemplate]
 public class Scoreboard : Panel
 {
-	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
+	private readonly Dictionary<IClient, ScoreboardEntry> _entries = new();
 	private readonly Dictionary<PlayerStatus, ScoreboardGroup> _scoreboardGroups = new();
 
 	private Panel Container { get; init; }
@@ -26,7 +26,7 @@ public class Scoreboard : Panel
 		AddScoreboardGroup( PlayerStatus.Spectator );
 	}
 
-	public void AddClient( Client client )
+	public void AddClient( IClient client )
 	{
 		var scoreboardGroup = GetScoreboardGroup( client );
 		var scoreboardEntry = scoreboardGroup.AddEntry( client );
@@ -34,7 +34,7 @@ public class Scoreboard : Panel
 		var pawn = client.Pawn.AsEntity();
 		if ( !pawn.IsLocalPawn && pawn.IsAlive() )
 		{
-			scoreboardEntry.AddEventListener( "onclick", () => scoreboardEntry.OnClick() );
+			scoreboardEntry.AddEventListener( "onclick", scoreboardEntry.OnClick );
 			scoreboardEntry.Style.Cursor = "pointer";
 		}
 
@@ -43,7 +43,7 @@ public class Scoreboard : Panel
 		_entries.Add( client, scoreboardEntry );
 	}
 
-	private void UpdateClient( Client client )
+	private void UpdateClient( IClient client )
 	{
 		if ( client is null )
 			return;
@@ -66,7 +66,7 @@ public class Scoreboard : Panel
 			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
 	}
 
-	private void RemoveClient( Client client )
+	private void RemoveClient( IClient client )
 	{
 		if ( !_entries.TryGetValue( client, out var panel ) )
 			return;
@@ -87,13 +87,13 @@ public class Scoreboard : Panel
 		if ( !IsVisible )
 			return;
 
-		foreach ( var client in Client.All.Except( _entries.Keys ) )
+		foreach ( var client in Game.Clients.Except( _entries.Keys ) )
 		{
 			AddClient( client );
 			UpdateClient( client );
 		}
 
-		foreach ( var client in _entries.Keys.Except( Client.All ) )
+		foreach ( var client in _entries.Keys.Except( Game.Clients ) )
 		{
 			if ( _entries.TryGetValue( client, out var row ) )
 			{
@@ -102,7 +102,7 @@ public class Scoreboard : Panel
 			}
 		}
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 			UpdateClient( client );
 	}
 
@@ -113,7 +113,7 @@ public class Scoreboard : Panel
 		return scoreboardGroup;
 	}
 
-	private ScoreboardGroup GetScoreboardGroup( Client client )
+	private ScoreboardGroup GetScoreboardGroup( IClient client )
 	{
 		var player = client.Pawn as Player;
 

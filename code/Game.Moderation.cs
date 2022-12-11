@@ -11,7 +11,7 @@ public struct BannedClient
 	public DateTime Duration { get; set; }
 }
 
-public partial class Game : GameManager
+public partial class TTTGame : GameManager
 {
 	public static readonly List<BannedClient> BannedClients = new();
 	public const string BanFilePath = "bans.json";
@@ -48,7 +48,7 @@ public partial class Game : GameManager
 	{
 		var steamId = long.Parse( rawSteamId );
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			if ( client.SteamId != steamId )
 				continue;
@@ -91,7 +91,7 @@ public partial class Game : GameManager
 	{
 		var steamId = long.Parse( rawSteamId );
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			if ( client.SteamId == steamId )
 				continue;

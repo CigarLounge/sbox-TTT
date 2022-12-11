@@ -19,7 +19,7 @@ public partial class Player
 
 	public void DressPlayer()
 	{
-		ClothingContainer.Clothing = Game.AvatarClothing ? _avatarClothes : _currentPreset;
+		ClothingContainer.Clothing = TTTGame.AvatarClothing ? _avatarClothes : _currentPreset;
 
 		ClothingContainer.DressEntity( this );
 	}
@@ -28,6 +28,6 @@ public partial class Player
 	[Event.Entity.PostCleanup]
 	private static void ChangeClothingPreset()
 	{
-		_currentPreset = Rand.FromList( ClothingPresets );
+		_currentPreset = Game.Random.FromList( ClothingPresets );
 	}
 }

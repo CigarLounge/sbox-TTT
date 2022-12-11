@@ -6,7 +6,7 @@ namespace TTT;
 
 public static class TeamExtensions
 {
-	private static readonly Dictionary<Team, HashSet<Client>> _clients = new();
+	private static readonly Dictionary<Team, HashSet<IClient>> _clients = new();
 	private static readonly Dictionary<Team, ColorGroup> _properties = new();
 
 	static TeamExtensions()
@@ -16,9 +16,9 @@ public static class TeamExtensions
 		Team.Innocents.SetProperties( "Innocents", Color.FromBytes( 26, 196, 77 ) );
 		Team.Traitors.SetProperties( "Traitors", Color.FromBytes( 223, 40, 52 ) );
 
-		_clients.Add( Team.None, new HashSet<Client>() );
-		_clients.Add( Team.Innocents, new HashSet<Client>() );
-		_clients.Add( Team.Traitors, new HashSet<Client>() );
+		_clients.Add( Team.None, new HashSet<IClient>() );
+		_clients.Add( Team.Innocents, new HashSet<IClient>() );
+		_clients.Add( Team.Traitors, new HashSet<IClient>() );
 	}
 
 	public static string GetTitle( this Team team )
@@ -52,7 +52,7 @@ public static class TeamExtensions
 
 	public static To ToAliveClients( this Team team )
 	{
-		return To.Multiple( _clients[team].Where( x => x.Pawn.IsAlive() ) );
+		return To.Multiple( _clients[team].Where( x => x.Pawn.AsEntity().IsAlive() ) );
 	}
 
 	[GameEvent.Player.RoleChanged]

@@ -22,7 +22,7 @@ public class CorpseHint : EntityHintPanel
 	{
 		base.Tick();
 
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		Title.Text = _corpse.Player?.SteamName ?? "Unidentified body";

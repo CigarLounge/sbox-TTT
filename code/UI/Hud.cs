@@ -8,6 +8,6 @@ public class Hud : RootPanel
 {
 	public Hud()
 	{
-		Local.Hud = this;
+		Game.RootPanel = this;
 	}
 }
