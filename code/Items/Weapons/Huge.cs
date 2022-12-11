@@ -22,7 +22,7 @@ public class Huge : Weapon
 		ViewModelEntity?.SetBodyGroup( BulletsBodyGroup, Math.Min( AmmoClip, MaxBulletsChoice ) );
 	}
 
-	protected override void CreateViewModel()
+	public override void CreateViewModel()
 	{
 		base.CreateViewModel();
 

@@ -21,7 +21,7 @@ public class PossessionNameplate : WorldPanel
 	{
 		var tx = Transform;
 		tx.Position = _prop.WorldSpaceBounds.Center + (Vector3.Up * _prop.Model.RenderBounds.Maxs);
-		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
+		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		Transform = tx;
 	}

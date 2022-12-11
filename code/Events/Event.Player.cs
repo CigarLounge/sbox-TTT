@@ -79,5 +79,18 @@ public static partial class GameEvent
 		{
 			public TookDamageAttribute() : base( TookDamage ) { }
 		}
+
+		public const string SpectatorChanged = "ttt.player.spectator-changed";
+
+		/// <summary>
+		/// Occurs when we change our spectator target.
+		/// <para><strong>Parameters:</strong></para>
+		/// <para>The <see cref="TTT.Player"/> the old spectator target.</para>
+		/// <para>The <see cref="TTT.Player"/> the new spectator target.</para>
+		/// </summary>
+		public class SpectatorChangedAttribute : EventAttribute
+		{
+			public SpectatorChangedAttribute() : base( SpectatorChanged ) { }
+		}
 	}
 }

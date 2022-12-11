@@ -18,7 +18,7 @@ public class TTTCamera : BaseCamera
 			var oldTarget = _target;
 			_target = value;
 
-			Event.Run( "boomer.spectator.changedtarget", oldTarget, _target );
+			Event.Run( GameEvent.Player.SpectatorChanged, oldTarget, _target );
 		}
 	}
 

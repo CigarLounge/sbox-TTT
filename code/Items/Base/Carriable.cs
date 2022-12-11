@@ -178,7 +178,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// Create the viewmodel. You can override this in your base classes if you want
 	/// to create a certain viewmodel entity.
 	/// </summary>
-	protected virtual void CreateViewModel()
+	public virtual void CreateViewModel()
 	{
 		Game.AssertClient();
 

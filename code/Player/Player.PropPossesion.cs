@@ -33,8 +33,9 @@ public partial class Player
 
 		Prop = null;
 
-		if ( !this.IsAlive() )
-			Camera = new FreeSpectateCamera();
+		// TODO Fix.
+		// if ( !this.IsAlive() )
+		// 	Camera = new FreeSpectateCamera();
 	}
 
 	[ConCmd.Server]
@@ -53,6 +54,7 @@ public partial class Player
 		prop.Owner = player;
 		prop.Components.GetOrCreate<PropPossession>();
 		player.Prop = prop;
-		player.Camera = new FollowEntityCamera( prop );
+		// TODO: Fix.
+		// player.Camera = new FollowEntityCamera( prop );
 	}
 }
