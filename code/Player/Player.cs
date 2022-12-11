@@ -205,6 +205,8 @@ public partial class Player : AnimatedEntity
 
 		if ( this.IsAlive() )
 		{
+			Controller?.SetActivePlayer( this );
+			Controller?.Simulate();
 			SimulateFlashlight();
 			SimulatePerks();
 		}
@@ -233,9 +235,6 @@ public partial class Player : AnimatedEntity
 			CheckLastSeenPlayer();
 			CheckPlayerDropCarriable();
 		}
-
-		Controller?.SetActivePlayer( this );
-		Controller?.Simulate();
 	}
 
 	public override void FrameSimulate( IClient client )
@@ -247,6 +246,7 @@ public partial class Player : AnimatedEntity
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.FirstPersonViewer = this;
 		Camera.Main.SetViewModelCamera( Camera.FieldOfView, 0.01f, 100.0f );
+		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
 	}
 

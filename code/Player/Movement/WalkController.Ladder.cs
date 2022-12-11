@@ -56,6 +56,6 @@ public partial class WalkController
 		var cross = _ladderNormal * normalDot;
 		Player.Velocity = velocity - cross + (-normalDot * _ladderNormal.Cross( Vector3.Up.Cross( _ladderNormal ).Normal ));
 
-		TryPlayerMove();
+		Move();
 	}
 }

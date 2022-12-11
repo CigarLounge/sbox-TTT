@@ -1,57 +1,54 @@
 using System;
 using System.Collections.Generic;
 using Sandbox;
-using Sandbox.Diagnostics;
 
 namespace TTT;
 
 public partial class WalkController : BaseNetworkable
 {
-	public virtual bool EnableSprinting => true;
-	public virtual float SprintSpeed { get; set; } = 320f;
-	public virtual float WalkSpeed { get; set; } = 150f;
+	internal HashSet<string> _events;
+	internal HashSet<string> _tags;
 
-	public float Acceleration { get; set; } = 10f;
-	public float AirAcceleration { get; set; } = 50f;
-	public float FallSoundZ { get; set; } = -30f;
-	public float GroundFriction { get; set; } = 4f;
-	public float StopSpeed { get; set; } = 100f;
-	public float Size { get; set; } = 20f;
-	public float DistEpsilon { get; set; } = 0.03125f;
-	public float GroundAngle { get; set; } = 46f;
-	public float Bounce { get; set; } = 0f;
-	public float MoveFriction { get; set; } = 1f;
-	public float StepSize { get; set; } = 18f;
-	public float MaxNonJumpVelocity { get; set; } = 140f;
-	public float BodyGirth { get; set; } = 32f;
-	public float BodyHeight { get; set; } = 72f;
-	public float EyeHeight { get; set; } = 64f;
-	public float Gravity { get; set; } = 800f;
-	public float AirControl { get; set; } = 30f;
+	[Net] public float WalkSpeed { get; set; } = 110f;
+	[Net] public float DefaultSpeed { get; set; } = 230f;
+	[Net] public float Acceleration { get; set; } = 8.0f;
+	[Net] public float AirAcceleration { get; set; } = 65f;
+	[Net] public float FallSoundZ { get; set; } = -30.0f;
+	[Net] public float GroundFriction { get; set; } = 5.0f;
+	[Net] public float StopSpeed { get; set; } = 105f;
+	[Net] public float Size { get; set; } = 20.0f;
+	[Net] public float DistEpsilon { get; set; } = 0.03125f;
+	[Net] public float GroundAngle { get; set; } = 46.0f;
+	[Net] public float Bounce { get; set; } = 0.0f;
+	[Net] public float MoveFriction { get; set; } = 1.0f;
+	[Net] public float StepSize { get; set; } = 18.0f;
+	[Net] public float MaxNonJumpVelocity { get; set; } = 140.0f;
+	[Net] public float BodyGirth { get; set; } = 32.0f;
+	[Net] public float BodyHeight { get; set; } = 72.0f;
+	[Net] public float EyeHeight { get; set; } = 64.0f;
+	[Net] public float Gravity { get; set; } = 800.0f;
+	[Net] public float AirControl { get; set; } = 30.0f;
+	[Net] public bool AutoJump { get; set; } = false;
+	[Net, Predicted] public bool Momentum { get; set; }
+	[Net, Predicted] public TimeSince TimeSinceWaterJump { get; set; }
 	public bool Swimming { get; set; } = false;
-	public bool AutoJump { get; set; } = false;
+	public Vector3 WishVelocity { get; private set; }
 
-	protected float SurfaceFriction { get; set; }
-	protected bool IsTouchingLadder { get; set; }
-	protected Vector3 LadderNormal { get; set; }
-	protected Vector3 PreVelocity { get; set; }
-	protected Vector3 Mins { get; set; }
-	protected Vector3 Maxs { get; set; }
+	public Player Player;
+	public Duck Duck;
+	public Unstuck Unstuck;
 
-	protected HashSet<string> Events { get; set; } = new();
-	protected HashSet<string> Tags { get; set; } = new();
+	protected Vector3 GroundNormal { get; set; }
 
-	public Vector3 GroundNormal { get; set; }
-	public Vector3 WishVelocity { get; set; }
-
-	public Player Player { get; private set; }
-	public Duck Duck { get; private set; }
-
-	private int StuckTries { get; set; } = 0;
+	private const float FallDamageThreshold = 650f;
+	private const float FallDamageScale = 0.33f;
+	private Vector3 _lastBaseVelocity;
+	private float _surfaceFriction;
 
 	public WalkController()
 	{
 		Duck = new Duck( this );
+		Unstuck = new Unstuck( this );
 	}
 
 	public void SetActivePlayer( Player player )
@@ -59,165 +56,62 @@ public partial class WalkController : BaseNetworkable
 		Player = player;
 	}
 
-	public void ClearGroundEntity()
-	{
-		if ( Player.GroundEntity == null )
-			return;
-
-		Player.GroundEntity = null;
-		GroundNormal = Vector3.Up;
-		SurfaceFriction = 1f;
-	}
-
 	public bool HasEvent( string eventName )
 	{
-		if ( Events == null ) return false;
-		return Events.Contains( eventName );
+		if ( _events == null )
+			return false;
+		return _events.Contains( eventName );
 	}
 
 	public bool HasTag( string tagName )
 	{
-		if ( Tags == null ) return false;
-		return Tags.Contains( tagName );
-	}
-
-	public void AddEvent( string eventName )
-	{
-		if ( Events == null )
-			Events = new HashSet<string>();
-
-		if ( Events.Contains( eventName ) )
-			return;
-
-		Events.Add( eventName );
+		if ( _tags == null )
+			return false;
+		return _tags.Contains( tagName );
 	}
 
 	public void SetTag( string tagName )
 	{
-		Tags ??= new HashSet<string>();
+		_tags ??= new HashSet<string>();
 
-		if ( Tags.Contains( tagName ) )
+		if ( _tags.Contains( tagName ) )
 			return;
 
-		Tags.Add( tagName );
+		_tags.Add( tagName );
 	}
 
-	public virtual void FrameSimulate()
+	public void AddEvent( string eventName )
 	{
-		Assert.NotNull( Player );
+		_events ??= new HashSet<string>();
 
+		if ( _events.Contains( eventName ) )
+			return;
+
+		_events.Add( eventName );
+	}
+
+	public void FrameSimulate()
+	{
 		Player.EyeRotation = Player.ViewAngles.ToRotation();
 	}
 
-	public virtual void Simulate()
+	public void Simulate()
 	{
-		Assert.NotNull( Player );
-
-		Events?.Clear();
-		Tags?.Clear();
-
-		Player.EyeLocalPosition = Vector3.Up * (EyeHeight * Player.Scale);
-		UpdateBBox();
-
-		Player.EyeLocalPosition += TraceOffset;
-
-		// If we're a bot, spin us around 180 degrees.
-		if ( Player.Client.IsBot )
-			Player.EyeRotation = Player.ViewAngles.WithYaw( Player.ViewAngles.yaw + 180f ).ToRotation();
-		else
-			Player.EyeRotation = Player.ViewAngles.ToRotation();
-
-		if ( CheckStuckAndFix() )
-			return;
-
-		CheckLadder();
-
-		Swimming = Player.GetWaterLevel() > 0.6f;
-
-		if ( !Swimming && !IsTouchingLadder )
-		{
-			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
-			Player.Velocity += new Vector3( 0, 0, Player.BaseVelocity.z ) * Time.Delta;
-			Player.BaseVelocity = Player.BaseVelocity.WithZ( 0 );
-		}
-
-		HandleJumping();
-
-		var startOnGround = Player.GroundEntity.IsValid();
-
-		if ( startOnGround )
-		{
-			Player.Velocity = Player.Velocity.WithZ( 0 );
-
-			if ( Player.GroundEntity.IsValid() )
-			{
-				ApplyFriction( GroundFriction * SurfaceFriction );
-			}
-		}
-
-		WishVelocity = new Vector3( Player.InputDirection.x, Player.InputDirection.y, 0 );
-		var inSpeed = WishVelocity.Length.Clamp( 0, 1 );
-		WishVelocity *= Player.EyeRotation;
-
-		if ( !Swimming && !IsTouchingLadder )
-		{
-			WishVelocity = WishVelocity.WithZ( 0 );
-		}
-
-		WishVelocity = WishVelocity.Normal * inSpeed;
-		WishVelocity *= GetWishSpeed();
-
-		Duck.PreTick();
-
-		var stayOnGround = false;
-
-		OnPreTickMove();
-
-		if ( Swimming )
-		{
-			ApplyFriction( 1 );
-			WaterMove();
-		}
-		else if ( IsTouchingLadder )
-		{
-			LadderMove();
-		}
-		else if ( Player.GroundEntity.IsValid() )
-		{
-			stayOnGround = true;
-			WalkMove();
-		}
-		else
-		{
-			AirMove();
-		}
-
-		CategorizePosition( stayOnGround );
-
-		if ( !Swimming && !IsTouchingLadder )
-		{
-			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
-		}
-
-		if ( Player.GroundEntity.IsValid() )
-		{
-			Player.Velocity = Player.Velocity.WithZ( 0 );
-		}
+		_lastBaseVelocity = Player.BaseVelocity;
+		ApplyMomentum();
+		BaseSimulate();
 	}
 
-	public virtual float GetWishSpeed()
+	private float GetWishSpeed()
 	{
 		var ws = Duck.GetWishSpeed();
-		if ( ws >= 0 ) return ws;
+		if ( ws >= 0 )
+			return ws;
 
-		if ( EnableSprinting && Input.Down( InputButton.Run ) )
-		{
-			return SprintSpeed;
-		}
-		if ( Input.Down( InputButton.Walk ) )
-			return WalkSpeed * 0.5f;
+		if ( Input.Down( InputButton.Run ) )
+			return WalkSpeed;
 
-		return WalkSpeed;
+		return DefaultSpeed;
 	}
 
 	private void WalkMove()
@@ -263,127 +157,22 @@ public partial class WalkController : BaseNetworkable
 
 	private void StepMove()
 	{
-		var startPos = Player.Position;
-		var startVel = Player.Velocity;
+		var mover = new MoveHelper( Player.Position, Player.Velocity );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
+		mover.MaxStandableAngle = GroundAngle;
 
-		TryPlayerMove();
+		mover.TryMoveWithStep( Time.Delta, StepSize );
 
-		var withoutStepPos = Player.Position;
-		var withoutStepVel = Player.Velocity;
-
-		Player.Position = startPos;
-		Player.Velocity = startVel;
-
-		var trace = TraceBBox( Player.Position, Player.Position + Vector3.Up * (StepSize + DistEpsilon) );
-		if ( !trace.StartedSolid ) Player.Position = trace.EndPosition;
-
-		TryPlayerMove();
-
-		trace = TraceBBox( Player.Position, Player.Position + Vector3.Down * (StepSize + DistEpsilon * 2) );
-
-		if ( !trace.Hit || Vector3.GetAngle( Vector3.Up, trace.Normal ) > GroundAngle )
-		{
-			Player.Position = withoutStepPos;
-			Player.Velocity = withoutStepVel;
-			return;
-		}
-
-
-		if ( !trace.StartedSolid )
-			Player.Position = trace.EndPosition;
-
-		var withStepPos = Player.Position;
-
-		var withoutStep = (withoutStepPos - startPos).WithZ( 0 ).Length;
-		var withStep = (withStepPos - startPos).WithZ( 0 ).Length;
-
-		if ( withoutStep > withStep )
-		{
-			Player.Position = withoutStepPos;
-			Player.Velocity = withoutStepVel;
-
-			return;
-		}
+		Player.Position = mover.Position;
+		Player.Velocity = mover.Velocity;
 	}
 
-	/// <summary>
-	/// Add our wish direction and speed onto our velocity.
-	/// </summary>
-	public virtual void Accelerate( Vector3 wishDir, float wishSpeed, float speedLimit, float acceleration )
-	{
-		if ( speedLimit > 0 && wishSpeed > speedLimit )
-			wishSpeed = speedLimit;
-
-		var currentSpeed = Player.Velocity.Dot( wishDir );
-		var addSpeed = wishSpeed - currentSpeed;
-
-		if ( addSpeed <= 0 )
-			return;
-
-		var accelSpeed = acceleration * Time.Delta * wishSpeed * SurfaceFriction;
-
-		if ( accelSpeed > addSpeed )
-			accelSpeed = addSpeed;
-
-		Player.Velocity += wishDir * accelSpeed;
-	}
-
-	/// <summary>
-	/// Remove ground friction from velocity.
-	/// </summary>
-	public virtual void ApplyFriction( float frictionAmount = 1.0f )
-	{
-		var speed = Player.Velocity.Length;
-		if ( speed < 0.1f ) return;
-
-		var control = (speed < StopSpeed) ? StopSpeed : speed;
-		var dropAmount = control * Time.Delta * frictionAmount;
-		var newSpeed = speed - dropAmount;
-
-		if ( newSpeed < 0 ) newSpeed = 0;
-
-		if ( newSpeed != speed )
-		{
-			newSpeed /= speed;
-			Player.Velocity *= newSpeed;
-		}
-	}
-
-	public virtual void AirMove()
-	{
-		var wishdir = WishVelocity.Normal;
-		var wishspeed = WishVelocity.Length;
-
-		Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
-
-		Player.Velocity += Player.BaseVelocity;
-
-		TryPlayerMove();
-
-		Player.Velocity -= Player.BaseVelocity;
-	}
-
-	public virtual void WaterMove()
-	{
-		var wishDir = WishVelocity.Normal;
-		var wishSpeed = WishVelocity.Length;
-
-		wishSpeed *= 0.8f;
-
-		Accelerate( wishDir, wishSpeed, 100, Acceleration );
-
-		Player.Velocity += Player.BaseVelocity;
-
-		TryPlayerMove();
-
-		Player.Velocity -= Player.BaseVelocity;
-	}
-
-	public virtual void TryPlayerMove()
+	private void Move()
 	{
 		var mover = new MoveHelper( Player.Position, Player.Velocity );
-		mover.Trace = mover.Trace.Size( Mins, Maxs ).Ignore( Player );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
 		mover.MaxStandableAngle = GroundAngle;
+
 		mover.TryMove( Time.Delta );
 
 		Player.Position = mover.Position;
@@ -391,167 +180,473 @@ public partial class WalkController : BaseNetworkable
 	}
 
 	/// <summary>
-	/// Check for a new ground entity.
+	/// Add our wish direction and speed onto our velocity
 	/// </summary>
-	public virtual void UpdateGroundEntity( TraceResult tr )
+	private void Accelerate( Vector3 wishdir, float wishspeed, float speedLimit, float acceleration )
 	{
-		GroundNormal = tr.Normal;
+		// This gets overridden because some games (CSPort) want to allow dead (observer) players
+		// to be able to move around.
+		// if ( !CanAccelerate() )
+		//     return;
 
-		SurfaceFriction = tr.Surface.Friction * 1.25f;
-		if ( SurfaceFriction > 1 ) SurfaceFriction = 1;
+		if ( speedLimit > 0 && wishspeed > speedLimit )
+			wishspeed = speedLimit;
 
-		Player.GroundEntity = tr.Entity;
+		// See if we are changing direction a bit
+		var currentspeed = Player.Velocity.Dot( wishdir );
 
-		if ( Player.GroundEntity.IsValid() )
-		{
-			Player.BaseVelocity = Player.GroundEntity.Velocity;
-		}
+		// Reduce wishspeed by the amount of veer.
+		var addspeed = wishspeed - currentspeed;
+
+		// If not going to add any speed, done.
+		if ( addspeed <= 0 )
+			return;
+
+		// Determine amount of acceleration.
+		var accelspeed = acceleration * Time.Delta * wishspeed * _surfaceFriction;
+
+		// Cap at addspeed
+		if ( accelspeed > addspeed )
+			accelspeed = addspeed;
+
+		Player.Velocity += wishdir * accelspeed;
 	}
 
 	/// <summary>
-	/// Try to keep a walking player on the ground when running down slopes, etc.
+	/// Remove ground friction from velocity
 	/// </summary>
-	public virtual void StayOnGround()
+	private void ApplyFriction( float frictionAmount = 1.0f )
 	{
-		var start = Player.Position + Vector3.Up * 2;
-		var end = Player.Position + Vector3.Down * StepSize;
-		var trace = TraceBBox( Player.Position, start );
+		// If we are in water jump cycle, don't apply friction
+		//if ( player->m_flWaterJumpTime )
+		//   return;
 
-		start = trace.EndPosition;
-		trace = TraceBBox( start, end );
+		// Not on ground - no friction
 
-		if ( trace.Fraction <= 0 ) return;
-		if ( trace.Fraction >= 1 ) return;
-		if ( trace.StartedSolid ) return;
-		if ( Vector3.GetAngle( Vector3.Up, trace.Normal ) > GroundAngle ) return;
 
-		Player.Position = trace.EndPosition;
-	}
+		// Calculate speed
+		var speed = Player.Velocity.Length;
+		if ( speed < 0.1f )
+			return;
 
-	public virtual void OnPreTickMove() { }
-	public virtual void AddJumpVelocity() { }
+		// Bleed off some speed, but if we have less than the bleed
+		//  threshold, bleed the threshold amount.
+		var control = (speed < StopSpeed) ? StopSpeed : speed;
 
-	public virtual void HandleJumping()
-	{
-		if ( AutoJump ? Input.Down( InputButton.Jump ) : Input.Pressed( InputButton.Jump ) )
+		// Add the amount to the drop amount.
+		var drop = control * Time.Delta * frictionAmount;
+
+		// scale the velocity
+		var newspeed = speed - drop;
+		if ( newspeed < 0 )
+			newspeed = 0;
+
+		if ( newspeed != speed )
 		{
-			CheckJumpButton();
+			newspeed /= speed;
+			Player.Velocity *= newspeed;
 		}
+
+		// mv->m_outWishVel -= (1.f-newspeed) * mv->m_vecVelocity;
 	}
 
-	public virtual void OnPostCategorizePosition( bool stayOnGround, TraceResult trace ) { }
-
-	protected void CheckJumpButton()
+	private void CheckJumpButton()
 	{
 		if ( Swimming )
 		{
 			ClearGroundEntity();
-			Player.Velocity = Player.Velocity.WithZ( 100f );
 
+			Player.Velocity = Player.Velocity.WithZ( 100 );
 			return;
 		}
 
-		if ( !Player.GroundEntity.IsValid() )
+		if ( Player.GroundEntity == null )
 			return;
 
 		ClearGroundEntity();
 
-		var flGroundFactor = 1f;
+		PreventBhop();
+
+		var flGroundFactor = 1.0f;
+
 		var flMul = 268.3281572999747f * 1.2f;
-		var startZ = Player.Velocity.z;
+		var startz = Player.Velocity.z;
 
 		if ( Duck.IsActive )
 			flMul *= 0.8f;
 
-		Player.Velocity = Player.Velocity.WithZ( startZ + flMul * flGroundFactor );
-		Player.Velocity -= new Vector3( 0f, 0f, Gravity * 0.5f ) * Time.Delta;
+		Player.Velocity = Player.Velocity.WithZ( startz + flMul * flGroundFactor );
+		Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 
-		AddJumpVelocity();
 		AddEvent( "jump" );
 	}
 
-	private bool CheckStuckAndFix()
+	private void AirMove()
 	{
-		var result = TraceBBox( Player.Position, Player.Position );
+		_surfaceFriction = 1f;
 
-		if ( !result.StartedSolid )
-		{
-			StuckTries = 0;
-			return false;
-		}
+		var wishdir = WishVelocity.Normal;
+		var wishspeed = WishVelocity.Length;
 
-		if ( Game.IsClient ) return true;
+		Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
 
-		var attemptsPerTick = 20;
+		Player.Velocity += Player.BaseVelocity;
 
-		for ( var i = 0; i < attemptsPerTick; i++ )
-		{
-			var pos = Player.Position + Vector3.Random.Normal * (StuckTries / 2.0f);
+		Move();
 
-			if ( i == 0 )
-			{
-				pos = Player.Position + Vector3.Up * 5;
-			}
-
-			result = TraceBBox( pos, pos );
-
-			if ( !result.StartedSolid )
-			{
-				Player.Position = pos;
-				return false;
-			}
-		}
-
-		StuckTries++;
-		return true;
+		Player.Velocity -= Player.BaseVelocity;
 	}
 
-	private void CategorizePosition( bool stayOnGround )
+	private void WaterMove()
 	{
-		SurfaceFriction = 1.0f;
+		var wishvel = WishVelocity;
+
+		if ( Input.Down( InputButton.Jump ) )
+		{
+			wishvel[2] += DefaultSpeed;
+		}
+		else if ( wishvel.IsNearlyZero() )
+		{
+			wishvel[2] -= 60;
+		}
+		else
+		{
+			var upwardMovememnt = Player.InputDirection.x * (Player.Rotation * Vector3.Forward).z * 2;
+			upwardMovememnt = Math.Clamp( upwardMovememnt, 0f, DefaultSpeed );
+			wishvel[2] += Player.InputDirection.z + upwardMovememnt;
+		}
+
+		var speed = Player.Velocity.Length;
+		var wishspeed = Math.Min( wishvel.Length, DefaultSpeed ) * 0.8f;
+		var wishdir = wishvel.Normal;
+
+		if ( speed > 0 )
+		{
+			var newspeed = speed - Time.Delta * speed * GroundFriction * _surfaceFriction;
+			if ( newspeed < 0.1f )
+				newspeed = 0;
+
+			Player.Velocity *= newspeed / speed;
+		}
+
+		if ( wishspeed >= 0.1f )
+			Accelerate( wishdir, wishspeed, 100, Acceleration );
+
+		Player.Velocity += Player.BaseVelocity;
+
+		Move();
+
+		Player.Velocity -= Player.BaseVelocity;
+	}
+
+	private void CategorizePosition( bool bStayOnGround )
+	{
+		_surfaceFriction = 1.0f;
+
+		// Doing this before we move may introduce a potential latency in water detection, but
+		// doing it after can get us stuck on the bottom in water if the amount we move up
+		// is less than the 1 pixel 'threshold' we're about to snap to.	Also, we'll call
+		// this several times per frame, so we really need to avoid sticking to the bottom of
+		// water on each call, and the converse case will correct itself if called twice.
+		//CheckWater();
 
 		var point = Player.Position - Vector3.Up * 2;
-		var bumpOrigin = Player.Position;
-		var isMovingUpFast = Player.Velocity.z > MaxNonJumpVelocity;
-		var moveToEndPos = false;
+		var vBumpOrigin = Player.Position;
 
-		if ( Player.GroundEntity.IsValid() )
+		//
+		//  Shooting up really fast.  Definitely not on ground trimed until ladder shit
+		//
+		var bMovingUpRapidly = Player.Velocity.z + _lastBaseVelocity.z > MaxNonJumpVelocity;
+		var bMoveToEndPos = false;
+
+		if ( Player.GroundEntity != null ) // and not underwater
 		{
-			moveToEndPos = true;
+			bMoveToEndPos = true;
 			point.z -= StepSize;
 		}
-		else if ( stayOnGround )
+		else if ( bStayOnGround )
 		{
-			moveToEndPos = true;
+			bMoveToEndPos = true;
 			point.z -= StepSize;
 		}
 
-		if ( isMovingUpFast || Swimming )
+		if ( bMovingUpRapidly || Swimming ) // or ladder and moving up
 		{
 			ClearGroundEntity();
 			return;
 		}
 
-		var pm = TraceBBox( bumpOrigin, point, 4.0f );
+		var pm = TraceBBox( vBumpOrigin, point, 4.0f );
 
 		if ( pm.Entity == null || Vector3.GetAngle( Vector3.Up, pm.Normal ) > GroundAngle )
 		{
 			ClearGroundEntity();
-			moveToEndPos = false;
+			bMoveToEndPos = false;
 
-			if ( Player.Velocity.z > 0 )
-				SurfaceFriction = 0.25f;
+			if ( Player.Velocity.z + _lastBaseVelocity.z > 0 )
+				_surfaceFriction = 0.25f;
 		}
 		else
 		{
 			UpdateGroundEntity( pm );
 		}
 
-		if ( moveToEndPos && !pm.StartedSolid && pm.Fraction > 0.0f && pm.Fraction < 1.0f )
+		if ( bMoveToEndPos && !pm.StartedSolid && pm.Fraction > 0.0f && pm.Fraction < 1.0f )
 		{
 			Player.Position = pm.EndPosition;
 		}
+	}
 
-		OnPostCategorizePosition( stayOnGround, pm );
+	private void ApplyMomentum()
+	{
+		if ( !Momentum )
+		{
+			Player.Velocity += (0.2f + (Time.Delta * 0.5f)) * Player.BaseVelocity;
+			Player.BaseVelocity = Vector3.Zero;
+		}
+
+		Momentum = false;
+	}
+
+	private void BaseSimulate()
+	{
+		Player.EyeLocalPosition = Vector3.Up * (EyeHeight * Player.Scale);
+		UpdateBBox();
+
+		Player.EyeLocalPosition += TraceOffset;
+		Player.EyeRotation = Player.ViewAngles.ToRotation();
+
+		if ( Unstuck.TestAndFix() )
+			return;
+
+		CheckLadder();
+		Swimming = Player.GetWaterLevel() > 0.6f;
+
+		if ( !Swimming && !_isTouchingLadder )
+		{
+			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
+			Player.Velocity += new Vector3( 0, 0, Player.BaseVelocity.z ) * Time.Delta;
+
+			Player.BaseVelocity = Player.BaseVelocity.WithZ( 0 );
+		}
+
+		if ( AutoJump ? Input.Down( InputButton.Jump ) : Input.Pressed( InputButton.Jump ) )
+			CheckJumpButton();
+
+		var bStartOnGround = Player.GroundEntity != null;
+		if ( bStartOnGround )
+		{
+			Player.Velocity = Player.Velocity.WithZ( 0 );
+
+			if ( Player.GroundEntity != null )
+				ApplyFriction( GroundFriction * _surfaceFriction * 1 );
+		}
+
+		//
+		// Work out wish velocity.. just take input, rotate it to view, clamp to -1, 1
+		//
+		WishVelocity = new Vector3( Player.InputDirection.x.Clamp( -1f, 1f ), Player.InputDirection.y.Clamp( -1f, 1f ), 0 );
+		var inSpeed = WishVelocity.Length.Clamp( 0, 1 );
+
+		if ( !Swimming )
+			WishVelocity *= Player.ViewAngles.WithPitch( 0 ).ToRotation();
+		else
+			WishVelocity *= Player.ViewAngles.ToRotation();
+
+
+		if ( !Swimming && !_isTouchingLadder )
+			WishVelocity = WishVelocity.WithZ( 0 );
+
+		WishVelocity = WishVelocity.Normal * inSpeed;
+		WishVelocity *= GetWishSpeed();
+
+		Duck.PreTick();
+
+		var bStayOnGround = false;
+		if ( Swimming )
+		{
+			if ( Player.GetWaterLevel().AlmostEqual( 0.6f, .05f ) )
+				CheckWaterJump();
+
+			WaterMove();
+		}
+		else if ( _isTouchingLadder )
+		{
+			SetTag( "climbing" );
+			LadderMove();
+		}
+		else if ( Player.GroundEntity != null )
+		{
+			bStayOnGround = true;
+			WalkMove();
+		}
+		else
+		{
+			AirMove();
+		}
+
+		CategorizePosition( bStayOnGround );
+
+		if ( !Swimming && !_isTouchingLadder )
+			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
+
+		if ( Player.GroundEntity != null )
+			Player.Velocity = Player.Velocity.WithZ( 0 );
+
+		var fallVelocity = -Player.Velocity.z;
+		if ( Player.GroundEntity is null || fallVelocity <= 0 )
+			return;
+
+		if ( fallVelocity > FallDamageThreshold )
+		{
+			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
+
+			if ( Game.IsServer )
+			{
+				Player.TakeDamage( new DamageInfo
+				{
+					Attacker = Player,
+					// Flags = DamageFlags.Fall,
+					Force = Vector3.Down * Player.Velocity.Length,
+					Damage = damage,
+				} );
+			}
+
+			Player.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
+		}
+	}
+
+	/// <summary>
+	/// We have a new ground entity
+	/// </summary>
+	private void UpdateGroundEntity( TraceResult tr )
+	{
+		GroundNormal = tr.Normal;
+
+		// VALVE HACKHACK: Scale this to fudge the relationship between vphysics friction values and player friction values.
+		// A value of 0.8f feels pretty normal for vphysics, whereas 1.0f is normal for players.
+		// This scaling trivially makes them equivalent.  REVISIT if this affects low friction surfaces too much.
+		_surfaceFriction = tr.Surface.Friction * 1.25f;
+		if ( _surfaceFriction > 1 )
+			_surfaceFriction = 1;
+
+		Player.GroundEntity = tr.Entity;
+
+		if ( Player.GroundEntity != null )
+			Player.BaseVelocity = Player.GroundEntity.Velocity;
+	}
+
+	/// <summary>
+	/// We're no longer on the ground, remove it
+	/// </summary>
+	private void ClearGroundEntity()
+	{
+		if ( Player.GroundEntity == null )
+			return;
+
+		Player.GroundEntity = null;
+		GroundNormal = Vector3.Up;
+		_surfaceFriction = 1.0f;
+	}
+
+	private void CheckWaterJump()
+	{
+		if ( !Input.Down( InputButton.Jump ) )
+			return;
+
+		if ( TimeSinceWaterJump < 2f )
+			return;
+
+		if ( Player.Velocity.z < -180 )
+			return;
+
+		var fwd = Player.Rotation * Vector3.Forward;
+		var flatvelocity = Player.Velocity.WithZ( 0 );
+		var curspeed = flatvelocity.Length;
+		flatvelocity = flatvelocity.Normal;
+		var flatforward = fwd.WithZ( 0 ).Normal;
+
+		// Are we backing into water from steps or something?  If so, don't pop forward
+		if ( !curspeed.AlmostEqual( 0f ) && (Vector3.Dot( flatvelocity, flatforward ) < 0f) )
+			return;
+
+		var vecstart = Player.Position + (_mins + _maxs) * .5f;
+		var vecend = vecstart + flatforward * 24f;
+
+		var tr = TraceBBox( vecstart, vecend, 0f );
+		if ( tr.Fraction < 1.0f )
+		{
+			const float WATERJUMP_HEIGHT = 900f;
+			vecstart.z += Player.Position.z + EyeHeight + WATERJUMP_HEIGHT;
+
+			vecend = vecstart + flatforward * 24f;
+
+			tr = TraceBBox( vecstart, vecend );
+			if ( tr.Fraction == 1.0f )
+			{
+				vecstart = vecend;
+				vecend.z -= 1024f;
+				tr = TraceBBox( vecstart, vecend );
+				if ( (tr.Fraction < 1.0f) && (tr.Normal.z >= 0.7f) )
+				{
+					Player.Velocity = Player.Velocity.WithZ( 356f );
+					TimeSinceWaterJump = 0f;
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Try to keep a walking player on the ground when running down slopes etc
+	/// </summary>
+	private void StayOnGround()
+	{
+		var start = Player.Position + Vector3.Up * 2;
+		var end = Player.Position + Vector3.Down * StepSize;
+
+		// See how far up we can go without getting stuck
+		var trace = TraceBBox( Player.Position, start );
+		start = trace.EndPosition;
+
+		// Now trace down from a known safe position
+		trace = TraceBBox( start, end );
+
+		if ( trace.Fraction <= 0 )
+			return;
+		if ( trace.Fraction >= 1 )
+			return;
+		if ( trace.StartedSolid )
+			return;
+
+		if ( Vector3.GetAngle( Vector3.Up, trace.Normal ) > GroundAngle )
+			return;
+
+		// This is incredibly hacky. The real problem is that trace returning that strange value we can't network over.
+		// float flDelta = fabs( mv->GetAbsOrigin().z - trace.m_vEndPos.z );
+		// if ( flDelta > 0.5f * DIST_EPSILON )
+
+		Player.Position = trace.EndPosition;
+	}
+
+	/// <summary>
+	/// Translated code from CS:GO
+	/// </summary>
+	private void PreventBhop()
+	{
+		// Speed at which bunny jumping is limited
+		var maxscaledspeed = 1.1f * DefaultSpeed;
+		if ( maxscaledspeed <= 0.0f )
+			return;
+
+		// Current player speed
+		var spd = Player.Velocity.Length;
+
+		if ( spd <= maxscaledspeed )
+			return;
+
+		// Apply this cropping fraction to velocity
+		var fraction = maxscaledspeed / spd;
+
+		Player.Velocity *= fraction;
 	}
 }
