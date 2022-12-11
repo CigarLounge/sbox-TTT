@@ -410,6 +410,9 @@ public partial class WalkController : BaseNetworkable
 
 	private void BaseSimulate()
 	{
+		_tags?.Clear();
+		_events?.Clear();
+
 		Player.EyeLocalPosition = Vector3.Up * (EyeHeight * Player.Scale);
 		UpdateBBox();
 
