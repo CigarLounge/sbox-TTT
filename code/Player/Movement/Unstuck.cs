@@ -15,7 +15,7 @@ public class Unstuck
 
 	public virtual bool TestAndFix()
 	{
-		var result = Controller.TraceBBox( Controller.Position, Controller.Position );
+		var result = Controller.TraceBBox( Controller.Player.Position, Controller.Player.Position );
 
 		// Not stuck, we cool
 		if ( !result.StartedSolid )
@@ -28,7 +28,7 @@ public class Unstuck
 		{
 			if ( BasePlayerController.Debug )
 			{
-				DebugOverlay.Text( $"[stuck in {result.Entity}]", Controller.Position, Color.Red );
+				DebugOverlay.Text( $"[stuck in {result.Entity}]", Controller.Player.Position, Color.Red );
 				DebugOverlay.Box( result.Entity, Color.Red );
 			}
 		}
@@ -44,11 +44,11 @@ public class Unstuck
 
 		for ( var i = 0; i < AttemptsPerTick; i++ )
 		{
-			var pos = Controller.Position + Vector3.Random.Normal * (((float)_stuckTries) / 2.0f);
+			var pos = Controller.Player.Position + Vector3.Random.Normal * (((float)_stuckTries) / 2.0f);
 
 			// First try the up direction for moving platforms
 			if ( i == 0 )
-				pos = Controller.Position + Vector3.Up * 5;
+				pos = Controller.Player.Position + Vector3.Up * 5;
 
 			result = Controller.TraceBBox( pos, pos );
 
@@ -56,17 +56,17 @@ public class Unstuck
 			{
 				if ( BasePlayerController.Debug )
 				{
-					DebugOverlay.Text( $"unstuck after {_stuckTries} tries ({_stuckTries * AttemptsPerTick} tests)", Controller.Position, Color.Green, 5.0f );
-					DebugOverlay.Line( pos, Controller.Position, Color.Green, 5.0f, false );
+					DebugOverlay.Text( $"unstuck after {_stuckTries} tries ({_stuckTries * AttemptsPerTick} tests)", Controller.Player.Position, Color.Green, 5.0f );
+					DebugOverlay.Line( pos, Controller.Player.Position, Color.Green, 5.0f, false );
 				}
 
-				Controller.Position = pos;
+				Controller.Player.Position = pos;
 				return false;
 			}
 			else
 			{
 				if ( BasePlayerController.Debug )
-					DebugOverlay.Line( pos, Controller.Position, Color.Yellow, 0.5f, false );
+					DebugOverlay.Line( pos, Controller.Player.Position, Color.Yellow, 0.5f, false );
 			}
 		}
 

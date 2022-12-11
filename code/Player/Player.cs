@@ -190,7 +190,7 @@ public partial class Player : AnimatedEntity
 
 	public override void Simulate( IClient client )
 	{
-		SimulateAnimation( GetActiveController() );
+		SimulateAnimation( Controller );
 
 		if ( Input.Pressed( InputButton.Menu ) )
 		{
@@ -233,6 +233,9 @@ public partial class Player : AnimatedEntity
 			CheckLastSeenPlayer();
 			CheckPlayerDropCarriable();
 		}
+
+		Controller?.SetActivePlayer( this );
+		Controller?.Simulate();
 	}
 
 	public override void FrameSimulate( IClient client )
@@ -244,6 +247,7 @@ public partial class Player : AnimatedEntity
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.FirstPersonViewer = this;
 		Camera.Main.SetViewModelCamera( Camera.FieldOfView, 0.01f, 100.0f );
+		Controller?.FrameSimulate();
 	}
 
 	/// <summary>
@@ -269,8 +273,6 @@ public partial class Player : AnimatedEntity
 		ViewAngles = viewAngles.Normal;
 
 		ActiveCarriable?.BuildInput();
-
-		GetActiveController()?.BuildInput();
 	}
 
 	TimeSince _timeSinceLastFootstep;
@@ -311,17 +313,9 @@ public partial class Player : AnimatedEntity
 
 	#region Controller
 	[Net, Predicted]
-	public PawnController Controller { get; set; }
+	public WalkController Controller { get; set; }
 
-	[Net, Predicted]
-	public PawnController DevController { get; set; }
-
-	public PawnController GetActiveController()
-	{
-		return DevController ?? Controller;
-	}
-
-	private void SimulateAnimation( PawnController controller )
+	private void SimulateAnimation( WalkController controller )
 	{
 		if ( controller == null )
 			return;
@@ -344,7 +338,7 @@ public partial class Player : AnimatedEntity
 		var animHelper = new CitizenAnimationHelper( this );
 
 		animHelper.WithWishVelocity( controller.WishVelocity );
-		animHelper.WithVelocity( controller.Velocity );
+		animHelper.WithVelocity( Velocity );
 		animHelper.WithLookAt( EyePosition + EyeRotation.Forward * 100.0f, 1.0f, 1.0f, 0.5f );
 		animHelper.AimAngle = rotation;
 		animHelper.FootShuffle = shuffle;
