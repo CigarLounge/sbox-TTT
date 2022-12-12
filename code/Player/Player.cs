@@ -144,7 +144,7 @@ public partial class Player : AnimatedEntity
 			EnableTouch = true;
 
 			Controller = new WalkController();
-			CurrentCamera = new TTTCamera();
+			CurrentCamera = new Camera();
 
 			CreateHull();
 			CreateFlashlight();
@@ -240,15 +240,9 @@ public partial class Player : AnimatedEntity
 
 	public override void FrameSimulate( IClient client )
 	{
-		Camera.ZNear = 1f;
-		Camera.ZFar = 25000.0f;
-		Camera.Rotation = ViewAngles.ToRotation();
-		Camera.Position = EyePosition;
-		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
-		Camera.FirstPersonViewer = this;
-		Camera.Main.SetViewModelCamera( Camera.FieldOfView, 0.01f, 100.0f );
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
+		CurrentCamera?.FrameSimulate();
 	}
 
 	/// <summary>
@@ -274,6 +268,7 @@ public partial class Player : AnimatedEntity
 		ViewAngles = viewAngles.Normal;
 
 		ActiveCarriable?.BuildInput();
+		CurrentCamera?.BuildInput();
 	}
 
 	TimeSince _timeSinceLastFootstep;

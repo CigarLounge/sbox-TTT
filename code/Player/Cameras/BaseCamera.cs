@@ -5,5 +5,5 @@ namespace TTT;
 public abstract partial class BaseCamera : BaseNetworkable
 {
 	public abstract void BuildInput();
-	public abstract void Update();
+	public abstract void FrameSimulate();
 }

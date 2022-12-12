@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTT;
 
-public class TTTCamera : BaseCamera
+public class Camera : BaseCamera
 {
 	private static Player _target;
 	public static Player Target
@@ -34,7 +34,7 @@ public class TTTCamera : BaseCamera
 	{
 	}
 
-	public override void Update()
+	public override void FrameSimulate()
 	{
 		if ( Game.LocalPawn is Player player )
 			Target = player;
@@ -46,13 +46,13 @@ public class TTTCamera : BaseCamera
 		if ( !target.IsValid() )
 			return;
 
-		Camera.Position = target.EyePosition;
+		Sandbox.Camera.Position = target.EyePosition;
 
 		if ( IsLocal )
-			Camera.Rotation = target.EyeRotation;
+			Sandbox.Camera.Rotation = target.EyeRotation;
 		else
-			Camera.Rotation = Rotation.Slerp( Camera.Rotation, target.EyeRotation, Time.Delta * 20f );
+			Sandbox.Camera.Rotation = Rotation.Slerp( Sandbox.Camera.Rotation, target.EyeRotation, Time.Delta * 20f );
 
-		Camera.FirstPersonViewer = target;
+		Sandbox.Camera.FirstPersonViewer = target;
 	}
 }

@@ -3,7 +3,7 @@ using Sandbox;
 
 namespace TTT;
 
-public class SpectatorCamera : TTTCamera
+public class SpectatorCamera : Camera
 {
 	public bool IsFree { get; set; } = false;
 
@@ -44,7 +44,7 @@ public class SpectatorCamera : TTTCamera
 	{
 		// Force eye rotation to avoid lerping when switching targets
 		if ( Target.IsValid() )
-			Camera.Rotation = Target.EyeRotation;
+			Sandbox.Camera.Rotation = Target.EyeRotation;
 	}
 
 	protected void ToggleFree()
@@ -54,16 +54,16 @@ public class SpectatorCamera : TTTCamera
 		if ( IsFree )
 		{
 			if ( Target.IsValid() )
-				Camera.Position = Target.EyePosition;
+				Sandbox.Camera.Position = Target.EyePosition;
 
 			vm?.Delete();
 			cachedCarriable = null;
-			Camera.FirstPersonViewer = null;
+			Sandbox.Camera.FirstPersonViewer = null;
 		}
 		else
 		{
 			ResetInterpolation();
-			Camera.FirstPersonViewer = Target;
+			Sandbox.Camera.FirstPersonViewer = Target;
 		}
 	}
 
@@ -133,7 +133,7 @@ public class SpectatorCamera : TTTCamera
 		UpdateViewModel( curWeapon );
 	}
 
-	public override void Update()
+	public override void FrameSimulate()
 	{
 		if ( !Target.IsValid() )
 		{
@@ -142,9 +142,9 @@ public class SpectatorCamera : TTTCamera
 
 		if ( IsFree )
 		{
-			var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Camera.Rotation * MoveMultiplier;
-			Camera.Position += mv;
-			Camera.Rotation = Rotation.From( _lookAngles );
+			var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Sandbox.Camera.Rotation * MoveMultiplier;
+			Sandbox.Camera.Position += mv;
+			Sandbox.Camera.Rotation = Rotation.From( _lookAngles );
 		}
 		else
 		{
@@ -156,6 +156,6 @@ public class SpectatorCamera : TTTCamera
 			}
 		}
 
-		base.Update();
+		base.FrameSimulate();
 	}
 }

@@ -37,7 +37,7 @@ public class RolePlate : EntityComponent<Player>
 
 		var tx = Entity.GetBoneTransform( "head" );
 		tx.Position += Vector3.Up * 20f;
-		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
+		tx.Rotation = Sandbox.Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		_worldPanel.Transform = tx;
 	}

@@ -20,7 +20,7 @@ public class Scout : Weapon
 		base.ActiveStart( player );
 
 		IsScoped = false;
-		_defaultFOV = Camera.FieldOfView;
+		_defaultFOV = Sandbox.Camera.FieldOfView;
 	}
 
 	public override void Simulate( IClient client )
@@ -56,7 +56,7 @@ public class Scout : Weapon
 	{
 		base.DestroyHudElements();
 
-		Camera.FieldOfView = _defaultFOV;
+		Sandbox.Camera.FieldOfView = _defaultFOV;
 		_sniperScopePanel.Delete( true );
 	}
 
@@ -72,6 +72,6 @@ public class Scout : Weapon
 		ViewModelEntity.EnableDrawing = !IsScoped;
 		HandsModelEntity.EnableDrawing = !IsScoped;
 
-		Camera.FieldOfView = isScoped ? 10f : _defaultFOV;
+		Sandbox.Camera.FieldOfView = isScoped ? 10f : _defaultFOV;
 	}
 }
