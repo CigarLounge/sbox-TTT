@@ -73,6 +73,7 @@ public partial class Knife : Carriable
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
+			.WithTag( Strings.Tags.Slash )
 			.WithWeapon( this );
 
 		if ( trace.Entity is Player otherPlayer )
@@ -177,6 +178,7 @@ public partial class Knife : Carriable
 					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
 					.WithAttacker( _thrower )
+					.WithTag( Strings.Tags.Slash )
 					.WithWeapon( this );
 
 				player.DistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();

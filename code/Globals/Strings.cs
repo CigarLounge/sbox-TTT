@@ -14,9 +14,7 @@ public static class Strings
 
 	public static class Tags
 	{
-		public const string Generic = "generic";
 		public const string Bullet = "bullet";
-		public const string Buckshot = "buckshot";
 		public const string Drown = "drown";
 		public const string Slash = "slash";
 		public const string Burn = "burn";

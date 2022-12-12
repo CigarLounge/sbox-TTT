@@ -136,6 +136,7 @@ public partial class Teleporter : Carriable
 
 		var damageInfo = DamageInfo.Generic( Player.MaxHealth )
 			.WithAttacker( Owner )
+			.WithTag( Strings.Tags.Explode )
 			.WithWeapon( this );
 
 		foreach ( var entity in FindInBox( bbox ) )
