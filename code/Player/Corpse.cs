@@ -90,12 +90,12 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		#endregion
 
-		// if ( Player.LastDamage.Flags.HasFlag( DamageFlags.Bullet ) && Player.LastAttacker is Player killer )
-		// {
-		// 	var dna = new DNA( killer );
-		// 	Components.Add( dna );
-		// 	TimeUntilDNADecay = dna.TimeUntilDecayed;
-		// }
+		if ( Player.LastDamage.HasTag( DamageTags.Bullet) && Player.LastAttacker is Player killer )
+		{
+			var dna = new DNA( killer );
+			Components.Add( dna );
+			TimeUntilDNADecay = dna.TimeUntilDecayed;
+		}
 
 		var c4Note = player.Components.Get<C4Note>();
 		if ( c4Note is not null )

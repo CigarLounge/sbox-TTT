@@ -95,9 +95,9 @@ public static class EventLogger
 
 		if ( player.KilledByPlayer )
 			LogEvent( EventType.PlayerKill, _timeSinceStart, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
-		// TODO: Handle fall damage with tag.
-		// else if ( player.LastDamage.Flags == DamageFlags.Fall )
-		// 	LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
+
+		else if ( player.LastDamage.HasTag( DamageTags.Fall ) )
+			LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
 	}
 
 	[GameEvent.Player.CorpseFound]

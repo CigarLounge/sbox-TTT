@@ -1,5 +1,8 @@
 using Sandbox;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -179,23 +182,23 @@ public partial class Player
 		if ( !this.IsAlive() )
 			return;
 
-		// if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.Flags.HasFlag( DamageFlags.PhysicsImpact ) )
-		// 	return;
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.HasTag( DamageTags.PhysicsImpact ) )
+			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
-			// if ( !info.Flags.HasFlag( DamageFlags.Slash ) )
-			// 	info.Damage *= attacker.DamageFactor;
+			if ( !info.HasTag( DamageTags.Slash ) )
+				info.Damage *= attacker.DamageFactor;
 		}
 
-		// if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
-		// 	info.Damage *= GetBulletDamageMultipliers( ref info );
+		if ( info.HasTag( DamageTags.Bullet ) )
+			info.Damage *= GetBulletDamageMultipliers( ref info );
 
-		// if ( info.Flags.HasFlag( DamageFlags.Blast ) )
-		// 	Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
+		if ( info.HasTag( DamageTags.Blast ) )
+			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
 
@@ -218,18 +221,17 @@ public partial class Player
 	public void SendDamageInfo( To to )
 	{
 		Game.AssertServer();
-
-		// SendDamageInfo
-		// (
-		// 	to,
-		// 	LastAttacker,
-		// 	LastAttackerWeapon,
-		// 	LastAttackerWeaponInfo,
-		// 	LastDamage.Damage,
-		// 	LastDamage.Flags,
-		// 	LastDamage.Position,
-		// 	DistanceToAttacker
-		// );
+		SendDamageInfo
+		(
+			to,
+			LastAttacker,
+			LastAttackerWeapon,
+			LastAttackerWeaponInfo,
+			LastDamage.Damage,
+			LastDamage.Tags.ToArray(),
+			LastDamage.Position,
+			DistanceToAttacker
+		);
 	}
 
 	private float GetBulletDamageMultipliers( ref DamageInfo info )
@@ -267,24 +269,28 @@ public partial class Player
 		Audio.SetEffect( "flashbang", strength, velocity: 20.0f, fadeOut: 4.0f * strength );
 	}
 
-	// [ClientRpc]
-	// private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, Vector3 p, float dTA )
-	// {
-	// 	var info = DamageInfo.Generic( d )
-	// 		.WithAttacker( a )
-	// 		.WithWeapon( w )
-	// 		// .WithFlag( dF )
-	// 		.WithPosition( p );
+	[ClientRpc]
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
+	{
+		var info = DamageInfo.Generic( d )
+			.WithAttacker( a )
+			.WithWeapon( w )
+		   .WithPosition( p );
 
-	// 	DistanceToAttacker = dTA;
-	// 	LastAttacker = a;
-	// 	LastAttackerWeapon = w;
-	// 	LastAttackerWeaponInfo = wI;
-	// 	LastDamage = info;
+		info.Tags = new HashSet<string>( tags );
+		Log.Info( "DamageTags:" );
+		foreach ( var t in info.Tags )
+			Log.Info( t );
 
-	// 	if ( IsLocalPawn )
-	// 		Event.Run( GameEvent.Player.TookDamage, this );
-	// }
+		DistanceToAttacker = dTA;
+		LastAttacker = a;
+		LastAttackerWeapon = w;
+		LastAttackerWeaponInfo = wI;
+		LastDamage = info;
+
+		if ( IsLocalPawn )
+			Event.Run( GameEvent.Player.TookDamage, this );
+	}
 
 	[ClientRpc]
 	public static void ClientOnKilled( Player player )
