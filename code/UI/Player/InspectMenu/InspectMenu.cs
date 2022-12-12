@@ -43,8 +43,8 @@ public partial class InspectMenu : Panel
 
 		_timeSinceDeath = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/time.png" );
 
-		// var (name, deathImageText, deathActiveText) = GetCauseOfDeathStrings();
-		// AddInspectEntry( deathImageText, deathActiveText, $"/ui/inspectmenu/{name}.png" );
+		var (name, deathImageText, deathActiveText) = GetCauseOfDeathStrings();
+		AddInspectEntry( deathImageText, deathActiveText, $"/ui/inspectmenu/{name}.png" );
 
 		if ( player.LastAttackerWeaponInfo is not null )
 			AddInspectEntry( $"{player.LastAttackerWeaponInfo.Title}",
@@ -100,24 +100,25 @@ public partial class InspectMenu : Panel
 		return entry;
 	}
 
-	//private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
-	//{
-	//	return _corpse.Player.LastDamage.Tags switch
-	//	{
-	//		DamageTags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
-	//		DamageTags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
-	//		DamageTags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
-	//		DamageTags.Buckshot => ("Bullet", "Bullet", "This corpse was shot to death."),
-	//		DamageTags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
-	//		DamageTags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
-	//		DamageTags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
-	//		DamageTags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
-	//		DamageTags.Blast => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
-	//		DamageTags.PhysicsImpact => ("Prop", "Prop", "A wild flying prop caused this death."),
-	//		DamageTags.Drown => ("Drown", "Drown", "This player drowned to death."),
-	//		_ => ("Unknown", "Unknown", "The cause of death is unknown.")
-	//	};
-	//}
+	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
+	{
+		var causeOfDeath = ("Unknown", "Unknown", "The cause of death is unknown.");
+		foreach ( var tag in _corpse.Player.LastDamage.Tags )
+		{
+			return tag switch
+			{
+				Strings.Tags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
+				Strings.Tags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
+				Strings.Tags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
+				Strings.Tags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
+				Strings.Tags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
+				Strings.Tags.Explode => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
+				Strings.Tags.Drown => ("Drown", "Drown", "This player drowned to death."),
+				_ => ("Unknown", "Unknown", "The cause of death is unknown.")
+			};
+		}
+		return causeOfDeath;
+	}
 
 	public override void Tick()
 	{

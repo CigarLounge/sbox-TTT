@@ -8,7 +8,6 @@ namespace TTT;
 /// </summary>
 public partial class IgnoreDamage : EntityComponent<ModelEntity>
 {
-	public const string Tag = "ignoredamage";
 	private ModelEntity _entity;
 
 	protected override void OnActivate()
@@ -17,7 +16,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 			return;
 
 		_entity = Entity;
-		_entity.Tags.Add( Tag );
+		_entity.Tags.Add( Strings.Tags.IgnoreDamage );
 	}
 
 	protected override void OnDeactivate()
@@ -25,7 +24,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 		if ( !Game.IsServer || !_entity.IsValid() )
 			return;
 
-		_entity.Tags.Remove( Tag );
+		_entity.Tags.Remove( Strings.Tags.IgnoreDamage );
 	}
 
 	[Event.Tick.Server]

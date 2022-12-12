@@ -182,7 +182,7 @@ public partial class Player
 		if ( !this.IsAlive() )
 			return;
 
-		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.HasTag( DamageTags.PhysicsImpact ) )
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( Strings.Tags.IgnoreDamage ) )
 			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
@@ -190,14 +190,14 @@ public partial class Player
 			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
-			if ( !info.HasTag( DamageTags.Slash ) )
+			if ( !info.HasTag( Strings.Tags.Slash ) )
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.HasTag( DamageTags.Bullet ) )
+		if ( info.HasTag( Strings.Tags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( ref info );
 
-		if ( info.HasTag( DamageTags.Blast ) )
+		if ( info.HasTag( Strings.Tags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
@@ -278,9 +278,6 @@ public partial class Player
 		   .WithPosition( p );
 
 		info.Tags = new HashSet<string>( tags );
-		Log.Info( "DamageTags:" );
-		foreach ( var t in info.Tags )
-			Log.Info( t );
 
 		DistanceToAttacker = dTA;
 		LastAttacker = a;
