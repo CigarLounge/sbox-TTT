@@ -509,10 +509,9 @@ public partial class WalkController : BaseNetworkable
 				Player.TakeDamage( new DamageInfo
 				{
 					Attacker = Player,
-					// Flags = DamageFlags.Fall,
 					Force = Vector3.Down * Player.Velocity.Length,
 					Damage = damage,
-				} );
+				}.WithTag( DamageTags.Fall ) );
 			}
 
 			Player.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
