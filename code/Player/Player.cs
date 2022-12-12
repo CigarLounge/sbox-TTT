@@ -89,6 +89,7 @@ public partial class Player : AnimatedEntity
 	{
 		base.Spawn();
 
+		Tags.Add( "ignorereset" );
 		Tags.Add( "player" );
 		Tags.Add( "solid" );
 
