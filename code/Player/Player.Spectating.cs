@@ -42,11 +42,7 @@ public partial class Player
 		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
-
-		CurrentCamera = new SpectatorCamera();
-
-		// if ( Camera is not ISpectateCamera )
-		// 	Camera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeSpectateCamera();
+		CurrentCamera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new PlayerCamera(); ;
 	}
 
 	private void ChangeSpectateCamera()

@@ -19,7 +19,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveStart( player );
 
-		_defaultFOV = Sandbox.Camera.FieldOfView;
+		_defaultFOV = Camera.FieldOfView;
 	}
 
 	public override void ActiveEnd( Player player, bool dropped )
@@ -72,7 +72,7 @@ public partial class Binoculars : Carriable
 	{
 		base.DestroyHudElements();
 
-		Sandbox.Camera.FieldOfView = _defaultFOV;
+		Camera.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
@@ -81,7 +81,7 @@ public partial class Binoculars : Carriable
 		{
 			_corpse = null;
 			ZoomLevel = 0;
-			Sandbox.Camera.FieldOfView = _defaultFOV;
+			Camera.FieldOfView = _defaultFOV;
 
 			return;
 		}
@@ -90,6 +90,6 @@ public partial class Binoculars : Carriable
 			PlaySound( Strings.ScopeInSound );
 
 		ZoomLevel++;
-		Sandbox.Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
+		Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}
 }

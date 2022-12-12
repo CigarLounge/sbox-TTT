@@ -144,7 +144,7 @@ public partial class Player : AnimatedEntity
 			EnableTouch = true;
 
 			Controller = new WalkController();
-			CurrentCamera = new Camera();
+			CurrentCamera = new PlayerCamera();
 
 			CreateHull();
 			CreateFlashlight();

@@ -4,7 +4,7 @@ using Sandbox;
 
 namespace TTT;
 
-public class Camera : BaseCamera
+public class PlayerCamera : BaseCamera
 {
 	private static Player _target;
 	public static Player Target
@@ -46,13 +46,13 @@ public class Camera : BaseCamera
 		if ( !target.IsValid() )
 			return;
 
-		Sandbox.Camera.Position = target.EyePosition;
+		Camera.Position = target.EyePosition;
 
 		if ( IsLocal )
-			Sandbox.Camera.Rotation = target.EyeRotation;
+			Camera.Rotation = target.EyeRotation;
 		else
-			Sandbox.Camera.Rotation = Rotation.Slerp( Sandbox.Camera.Rotation, target.EyeRotation, Time.Delta * 20f );
+			Camera.Rotation = Rotation.Slerp( Camera.Rotation, target.EyeRotation, Time.Delta * 20f );
 
-		Sandbox.Camera.FirstPersonViewer = target;
+		Camera.FirstPersonViewer = target;
 	}
 }

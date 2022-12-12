@@ -80,7 +80,7 @@ public class VoiceChatEntry : Panel
 		var tx = player.GetBoneTransform( "head" );
 		var rolePlateOffset = _rolePlate is not null ? 27f : 20f;
 		tx.Position += Vector3.Up * rolePlateOffset + (Vector3.Up * _voiceLevel);
-		tx.Rotation = Sandbox.Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
+		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_worldPanel.Transform = tx;
 	}
 }

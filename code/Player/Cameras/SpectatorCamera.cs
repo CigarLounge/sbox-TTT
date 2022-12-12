@@ -3,7 +3,7 @@ using Sandbox;
 
 namespace TTT;
 
-public class SpectatorCamera : Camera
+public class SpectatorCamera : PlayerCamera
 {
 	public bool IsFree { get; set; } = false;
 
@@ -44,7 +44,7 @@ public class SpectatorCamera : Camera
 	{
 		// Force eye rotation to avoid lerping when switching targets
 		if ( Target.IsValid() )
-			Sandbox.Camera.Rotation = Target.EyeRotation;
+			Camera.Rotation = Target.EyeRotation;
 	}
 
 	protected void ToggleFree()
@@ -54,16 +54,16 @@ public class SpectatorCamera : Camera
 		if ( IsFree )
 		{
 			if ( Target.IsValid() )
-				Sandbox.Camera.Position = Target.EyePosition;
+				Camera.Position = Target.EyePosition;
 
 			vm?.Delete();
 			cachedCarriable = null;
-			Sandbox.Camera.FirstPersonViewer = null;
+			Camera.FirstPersonViewer = null;
 		}
 		else
 		{
 			ResetInterpolation();
-			Sandbox.Camera.FirstPersonViewer = Target;
+			Camera.FirstPersonViewer = Target;
 		}
 	}
 
@@ -142,9 +142,9 @@ public class SpectatorCamera : Camera
 
 		if ( IsFree )
 		{
-			var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Sandbox.Camera.Rotation * MoveMultiplier;
-			Sandbox.Camera.Position += mv;
-			Sandbox.Camera.Rotation = Rotation.From( _lookAngles );
+			var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Camera.Rotation * MoveMultiplier;
+			Camera.Position += mv;
+			Camera.Rotation = Rotation.From( _lookAngles );
 		}
 		else
 		{
@@ -155,7 +155,5 @@ public class SpectatorCamera : Camera
 				UpdateViewModel( curWeapon );
 			}
 		}
-
-		base.FrameSimulate();
 	}
 }

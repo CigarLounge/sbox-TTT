@@ -23,8 +23,8 @@ public class ViewModel : BaseViewModel
 		if ( !Game.LocalPawn.IsValid() )
 			return;
 
-		var inPos = Sandbox.Camera.Position;
-		var inRot = Sandbox.Camera.Rotation;
+		var inPos = Camera.Position;
+		var inRot = Camera.Rotation;
 
 		if ( !_activated )
 		{
