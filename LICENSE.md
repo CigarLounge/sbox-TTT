@@ -40,7 +40,6 @@ As stated above all distributions of sbox-TTT must be free and as an addon for F
 If you run sbox-TTT on a server and let other users communicate with 
 	it there, your server must also affix the following notice in 
 	plain view for the end-users to see: 
-    Built with sbox-TTT created by Matthew Zegar & Kosta Novosel. 
     Contribute to sbox-TTT at github.com/CigarLounge/sbox-TTT.
 
 Cigar Lounge, in its sole discretion, can revoke your permission 
