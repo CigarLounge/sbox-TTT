@@ -6,7 +6,7 @@ public partial class FreeCamera : BaseCamera
 {
 	private const int BaseMoveSpeed = 300;
 	private float _moveSpeed = 1f;
-	private Angles _lookAngles;
+	private Angles _lookAngles = Camera.Rotation.Angles();
 	private Vector3 _moveInput;
 
 	public override void BuildInput()
