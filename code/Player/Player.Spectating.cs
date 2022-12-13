@@ -32,7 +32,7 @@ public partial class Player
 		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
-		CurrentCamera = new FollowEntityCamera( Corpse );
+		CurrentCamera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeCamera();
 	}
 
 	private void ChangeSpectateCamera()
@@ -57,7 +57,7 @@ public partial class Player
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		player.CurrentCamera = new FollowEntityCamera( player.Corpse );
+		// player.CurrentCamera = new FollowEntityCamera( player.Corpse );
 
 		// if ( player.IsLocalPawn )
 		// {

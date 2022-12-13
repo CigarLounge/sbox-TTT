@@ -24,8 +24,6 @@ public class PlayerCamera : BaseCamera
 	}
 	private static Player _spectatedPlayer;
 
-	public override void BuildInput() { }
-
 	public override void FrameSimulate( Player player )
 	{
 		Camera.Position = Target.EyePosition;

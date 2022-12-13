@@ -191,6 +191,7 @@ public partial class Player : AnimatedEntity
 
 	public override void Simulate( IClient client )
 	{
+		CurrentCamera?.Simulate( this );
 		SimulateAnimation( Controller );
 
 		if ( Input.Pressed( InputButton.Menu ) )

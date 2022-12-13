@@ -4,6 +4,7 @@ namespace TTT;
 
 public abstract partial class BaseCamera : BaseNetworkable
 {
-	public abstract void BuildInput();
-	public abstract void FrameSimulate( Player player );
+	public virtual void BuildInput() { }
+	public virtual void FrameSimulate( Player player ) { }
+	public virtual void Simulate( Player player ) { }
 }

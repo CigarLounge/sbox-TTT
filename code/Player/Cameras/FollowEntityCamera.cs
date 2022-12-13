@@ -5,15 +5,17 @@ namespace TTT;
 public partial class FollowEntityCamera : BaseCamera
 {
 	[Net, Local]
-	public Entity TargetEntity { get; private set; }
-
+	private Entity TargetEntity { get; set; }
 	private Vector3 _focusPoint = Camera.Position;
 
 	public FollowEntityCamera() { }
 
 	public FollowEntityCamera( Entity entity ) => TargetEntity = entity;
 
-	public override void BuildInput() { }
+	public override void Simulate( Player player )
+	{
+
+	}
 
 	public override void FrameSimulate( Player player )
 	{
