@@ -36,7 +36,7 @@ public class InventorySelection : Panel
 
 	public override void Tick()
 	{
-		var player = (Game.LocalPawn as Player).CurrentPlayer;
+		var player = PlayerCamera.Target;
 
 		foreach ( var carriable in player.Inventory )
 		{

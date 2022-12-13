@@ -5,23 +5,13 @@ namespace TTT;
 
 public partial class Player
 {
-	[Net, Predicted]
+	[Net]
 	public BaseCamera CurrentCamera { get; set; }
 
 	[Net, Local]
 	public bool IsForcedSpectator { get; private set; } = false;
 
-	private Player _spectatedPlayer;
-	public Player CurrentPlayer
-	{
-		get => _spectatedPlayer ?? this;
-		set
-		{
-			_spectatedPlayer = value == this ? null : value;
-		}
-	}
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
-	public bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
 
 	public void ToggleForcedSpectator()
 	{
@@ -42,7 +32,7 @@ public partial class Player
 		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
-		CurrentCamera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new PlayerCamera(); ;
+		CurrentCamera = new FollowEntityCamera( Corpse );
 	}
 
 	private void ChangeSpectateCamera()
@@ -65,12 +55,9 @@ public partial class Player
 	}
 
 	[GameEvent.Player.Killed]
-	private static async void OnPlayerKilled( Player player )
+	private static void OnPlayerKilled( Player player )
 	{
-		if ( Game.IsServer )
-			return;
-
-		player.CurrentCamera = new SpectatorCamera();
+		player.CurrentCamera = new FollowEntityCamera( player.Corpse );
 
 		// if ( player.IsLocalPawn )
 		// {

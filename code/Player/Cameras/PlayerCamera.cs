@@ -1,58 +1,35 @@
-using System.Collections.Generic;
-using System.Linq;
 using Sandbox;
 
 namespace TTT;
 
 public class PlayerCamera : BaseCamera
 {
-	private static Player _target;
+	public static bool IsSpectatingPlayer => _spectatedPlayer.IsValid();
+
+	/// <summary>
+	/// The current Target we are viewing, can be either the LocalPawn or another player.
+	/// </summary>
 	public static Player Target
 	{
-		get => _target;
+		get => _spectatedPlayer ?? Game.LocalPawn as Player;
 		set
 		{
-			if ( _target == value )
+			if ( value == _spectatedPlayer )
 				return;
 
-			var oldTarget = _target;
-			_target = value;
-
-			Event.Run( GameEvent.Player.SpectatorChanged, oldTarget, _target );
+			var oldSpectatedPlayer = _spectatedPlayer;
+			_spectatedPlayer = value == Game.LocalPawn ? null : value;
+			Event.Run( GameEvent.Player.SpectatorChanged, oldSpectatedPlayer, _spectatedPlayer );
 		}
 	}
+	private static Player _spectatedPlayer;
 
-	public static bool IsSpectator => Target.IsValid() && !Target.IsLocalPawn;
-	public static bool IsLocal => !IsSpectator;
+	public override void BuildInput() { }
 
-	public virtual IEnumerable<Player> GetPlayers()
+	public override void FrameSimulate( Player player )
 	{
-		return Entity.All.OfType<Player>();
-	}
-
-	public override void BuildInput()
-	{
-	}
-
-	public override void FrameSimulate()
-	{
-		if ( Game.LocalPawn is Player player )
-			Target = player;
-
-		if ( !Target.IsValid() )
-			Target = GetPlayers().FirstOrDefault();
-
-		var target = Target;
-		if ( !target.IsValid() )
-			return;
-
-		Camera.Position = target.EyePosition;
-
-		if ( IsLocal )
-			Camera.Rotation = target.EyeRotation;
-		else
-			Camera.Rotation = Rotation.Slerp( Camera.Rotation, target.EyeRotation, Time.Delta * 20f );
-
-		Camera.FirstPersonViewer = target;
+		Camera.Position = Target.EyePosition;
+		Camera.Rotation = Target.EyeRotation;
+		Camera.FirstPersonViewer = Target;
 	}
 }

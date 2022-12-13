@@ -242,7 +242,7 @@ public partial class Player : AnimatedEntity
 	{
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
-		CurrentCamera?.FrameSimulate();
+		CurrentCamera?.FrameSimulate( this );
 	}
 
 	/// <summary>

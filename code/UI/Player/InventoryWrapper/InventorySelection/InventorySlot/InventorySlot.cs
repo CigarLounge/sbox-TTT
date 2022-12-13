@@ -25,8 +25,7 @@ public class InventorySlot : Panel
 	{
 		base.Tick();
 
-		var player = Game.LocalPawn as Player;
-		SlotLabel.Style.BackgroundColor = player.CurrentPlayer.Role?.Color;
+		SlotLabel.Style.BackgroundColor = PlayerCamera.Target.Role?.Color;
 	}
 
 	public void UpdateSlotText( string slotText )

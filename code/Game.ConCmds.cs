@@ -97,7 +97,7 @@ public partial class GameManager
 			Log.Error( $"{mapIdent} does not exist as a s&box map!" );
 	}
 
-	[ConCmd.Server( Name = "ttt_forcespec" )]
+	[ConCmd.Server( Name = "ttt_force_spectator" )]
 	public static void ToggleForceSpectator()
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;

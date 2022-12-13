@@ -1,4 +1,3 @@
-using Sandbox;
 using Sandbox.UI;
 using System.Collections.Generic;
 
@@ -13,7 +12,7 @@ public class PerkDisplay : Panel
 	{
 		base.Tick();
 
-		var player = (Game.LocalPawn as Player).CurrentPlayer;
+		var player = PlayerCamera.Target;
 
 		foreach ( var perk in player.Perks )
 		{
