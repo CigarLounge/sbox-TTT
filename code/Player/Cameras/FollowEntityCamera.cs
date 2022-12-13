@@ -12,11 +12,6 @@ public partial class FollowEntityCamera : BaseCamera
 
 	public FollowEntityCamera( Entity entity ) => TargetEntity = entity;
 
-	public override void Simulate( Player player )
-	{
-
-	}
-
 	public override void FrameSimulate( Player player )
 	{
 		_focusPoint = Vector3.Lerp( _focusPoint, TargetEntity.Position, Time.Delta * 5.0f );

@@ -269,7 +269,6 @@ public partial class Player : AnimatedEntity
 		ViewAngles = viewAngles.Normal;
 
 		ActiveCarriable?.BuildInput();
-		CurrentCamera?.BuildInput();
 	}
 
 	TimeSince _timeSinceLastFootstep;

@@ -9,7 +9,7 @@ public partial class FreeCamera : BaseCamera
 	private Angles _lookAngles;
 	private Vector3 _moveInput;
 
-	public override void BuildInput()
+	public override void Simulate( Player player )
 	{
 		_moveSpeed = 1f;
 
