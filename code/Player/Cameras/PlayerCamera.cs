@@ -55,10 +55,11 @@ public class PlayerCamera : BaseCamera
 
 	private void SwapSpectatedPlayer( bool nextPlayer )
 	{
-		_spectatedPlayerIndex += nextPlayer ? 1 : -1;
 		var alivePlayers = Utils.GetAlivePlayers();
 		if ( alivePlayers.IsNullOrEmpty() )
 			return;
+
+		_spectatedPlayerIndex += nextPlayer ? 1 : -1;
 
 		if ( _spectatedPlayerIndex >= alivePlayers.Count )
 			_spectatedPlayerIndex = 0;
