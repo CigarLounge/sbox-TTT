@@ -35,7 +35,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// <summary>
 	/// Return the entity we should be spawning particles from.
 	/// </summary>
-	public virtual ModelEntity EffectEntity => (ViewModelEntity.IsValid() && IsFirstPersonMode) ? ViewModelEntity : this;
+	public virtual ModelEntity EffectEntity => ViewModelEntity.IsValid() && && Owner.IsValid() && Owner.IsLocalPawn ? ViewModelEntity : this;
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
@@ -226,7 +226,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.OnDestroy();
 
-		if ( IsFirstPersonMode )
+		if ( Owner.IsValid() && Owner.IsLocalPawn )
 		{
 			DestroyViewModel();
 			DestroyHudElements();

@@ -76,7 +76,7 @@ public partial class Player
 		if ( !_viewLight.IsValid() )
 			return;
 
-		_viewLight.Enabled = FlashlightEnabled & IsFirstPersonMode;
+		_viewLight.Enabled = FlashlightEnabled && IsLocalPawn;
 
 		if ( !_viewLight.Enabled )
 			return;

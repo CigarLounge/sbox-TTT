@@ -30,7 +30,7 @@ public class RolePlate : EntityComponent<Player>
 	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
-		_worldPanel.Enabled( !Entity.IsFirstPersonMode && Entity.IsAlive() );
+		_worldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive() );
 
 		if ( !_worldPanel.IsEnabled() )
 			return;
