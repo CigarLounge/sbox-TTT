@@ -35,7 +35,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// <summary>
 	/// Return the entity we should be spawning particles from.
 	/// </summary>
-	public virtual ModelEntity EffectEntity => ViewModelEntity.IsValid() && && Owner.IsValid() && Owner.IsLocalPawn ? ViewModelEntity : this;
+	public virtual ModelEntity EffectEntity => ViewModelEntity.IsValid() && Owner.IsValid() && Owner.IsLocalPawn ? ViewModelEntity : this;
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
