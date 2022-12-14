@@ -69,7 +69,7 @@ public class PlayerCamera : BaseCamera
 		}
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
-		Camera.Main.SetViewModelCamera( Camera.FieldOfView );
+		Camera.Main.SetViewModelCamera( 95f );
 	}
 
 	private void SwapSpectatedPlayer( bool nextPlayer )

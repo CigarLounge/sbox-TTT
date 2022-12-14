@@ -9,6 +9,8 @@ public partial class FreeCamera : BaseCamera
 	private Angles _lookAngles = Camera.Rotation.Angles();
 	private Vector3 _moveInput;
 
+	public FreeCamera() => PlayerCamera.Target = null;
+
 	public override void BuildInput( Player player )
 	{
 		_moveSpeed = 1f;
@@ -43,7 +45,6 @@ public partial class FreeCamera : BaseCamera
 		Camera.Position += mv;
 		Camera.Rotation = Rotation.From( _lookAngles );
 		Camera.FirstPersonViewer = null;
-		PlayerCamera.Target = null;
 	}
 
 	private void FindSpectateTarget( Player player )
