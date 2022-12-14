@@ -19,6 +19,7 @@ public partial class Player
 	[Net]
 	public string SteamName { get; set; }
 
+	[Net, Local]
 	public Corpse Corpse { get; set; }
 	/// <summary>
 	/// The player who confirmed this player's death.

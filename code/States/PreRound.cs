@@ -56,7 +56,7 @@ public class PreRound : BaseState
 			if ( player.IsForcedSpectator )
 			{
 				player.Status = PlayerStatus.Spectator;
-				player.MakeSpectator( false );
+				player.MakeSpectator();
 				spectators.Add( player );
 
 				continue;

@@ -144,7 +144,6 @@ public partial class Player : AnimatedEntity
 			EnableTouch = true;
 
 			Controller = new WalkController();
-			CurrentCamera = new PlayerCamera();
 
 			CreateHull();
 			CreateFlashlight();
@@ -158,7 +157,7 @@ public partial class Player : AnimatedEntity
 		{
 			Status = PlayerStatus.Spectator;
 			UpdateStatus( To.Everyone );
-			MakeSpectator( false );
+			MakeSpectator();
 		}
 
 		ClientRespawn( this );
@@ -184,6 +183,8 @@ public partial class Player : AnimatedEntity
 		if ( IsSpectator )
 			return;
 
+		CurrentCamera = new PlayerCamera();
+
 		CreateFlashlight();
 
 		Event.Run( GameEvent.Player.Spawned, this );
@@ -191,7 +192,6 @@ public partial class Player : AnimatedEntity
 
 	public override void Simulate( IClient client )
 	{
-		CurrentCamera?.Simulate( this );
 		SimulateAnimation( Controller );
 
 		if ( Input.Pressed( InputButton.Menu ) )
@@ -265,7 +265,7 @@ public partial class Player : AnimatedEntity
 		ViewAngles = viewAngles.Normal;
 
 		ActiveCarriable?.BuildInput();
-		CurrentCamera?.BuildInput();
+		CurrentCamera?.BuildInput( this );
 	}
 
 	TimeSince _timeSinceLastFootstep;

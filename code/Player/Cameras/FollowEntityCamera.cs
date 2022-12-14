@@ -4,17 +4,17 @@ namespace TTT;
 
 public partial class FollowEntityCamera : BaseCamera
 {
-	[Net, Local]
 	private Entity TargetEntity { get; set; }
 	private Vector3 _focusPoint = Camera.Position;
 
-	public FollowEntityCamera() { }
-
 	public FollowEntityCamera( Entity entity ) => TargetEntity = entity;
 
-	public override void Simulate( Player player )
+	public override void BuildInput( Player player )
 	{
-		if ( !TargetEntity.IsValid() )
+		if ( player.IsAlive() )
+			return;
+
+		if ( TargetEntity is Corpse && Input.Down( InputButton.Jump ) )
 			player.CurrentCamera = new FreeCamera();
 	}
 
@@ -32,5 +32,20 @@ public partial class FollowEntityCamera : BaseCamera
 		Camera.Rotation = player.ViewAngles.ToRotation();
 		Camera.Position = tr.EndPosition;
 		Camera.FirstPersonViewer = null;
+	}
+
+	[GameEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
+	{
+		if ( Game.IsServer )
+			return;
+
+		if ( player.IsForcedSpectator )
+		{
+			player.CurrentCamera = new FreeCamera();
+			return;
+		}
+
+		player.CurrentCamera = new FollowEntityCamera( player.Corpse );
 	}
 }

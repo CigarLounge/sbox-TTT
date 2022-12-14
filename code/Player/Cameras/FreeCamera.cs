@@ -9,7 +9,7 @@ public partial class FreeCamera : BaseCamera
 	private Angles _lookAngles = Camera.Rotation.Angles();
 	private Vector3 _moveInput;
 
-	public override void BuildInput()
+	public override void BuildInput( Player player )
 	{
 		_moveSpeed = 1f;
 
@@ -18,6 +18,17 @@ public partial class FreeCamera : BaseCamera
 
 		if ( Input.Down( InputButton.Duck ) )
 			_moveSpeed = 0.2f;
+
+		if ( Input.Down( InputButton.Jump ) )
+		{
+			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
+			if ( alivePlayer.IsValid() )
+			{
+				PlayerCamera.Target = alivePlayer;
+				player.CurrentCamera = new PlayerCamera();
+				return;
+			}
+		}
 
 		_moveInput = Input.AnalogMove;
 		_lookAngles += Input.AnalogLook;

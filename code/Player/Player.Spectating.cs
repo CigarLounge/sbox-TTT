@@ -6,11 +6,9 @@ namespace TTT;
 public partial class Player
 {
 	[Net, Local]
-	public BaseCamera CurrentCamera { get; set; }
-
-	[Net, Local]
 	public bool IsForcedSpectator { get; private set; } = false;
 
+	public BaseCamera CurrentCamera { get; set; }
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 
 	public void ToggleForcedSpectator()
@@ -23,7 +21,7 @@ public partial class Player
 		this.Kill();
 	}
 
-	public void MakeSpectator( bool useRagdollCamera = true )
+	public void MakeSpectator()
 	{
 		Client.Voice.WantsStereo = true;
 		Controller = null;
@@ -32,6 +30,5 @@ public partial class Player
 		EnableTouch = false;
 		Health = 0f;
 		LifeState = LifeState.Dead;
-		CurrentCamera = useRagdollCamera ? new FollowEntityCamera( Corpse ) : new FreeCamera();
 	}
 }
