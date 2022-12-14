@@ -24,8 +24,7 @@ public partial class FreeCamera : BaseCamera
 			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
 			if ( alivePlayer.IsValid() )
 			{
-				PlayerCamera.Target = alivePlayer;
-				player.CurrentCamera = new PlayerCamera();
+				player.CurrentCamera = new PlayerCamera( alivePlayer );
 				return;
 			}
 		}

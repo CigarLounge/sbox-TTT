@@ -24,10 +24,14 @@ public class PlayerCamera : BaseCamera
 	}
 	private static Player _spectatedPlayer;
 
+	public PlayerCamera() { }
+
+	public PlayerCamera( Player targetPlayer ) => Target = targetPlayer;
+
 	public override void FrameSimulate( Player player )
 	{
 		Camera.Position = Target.EyePosition;
-		Camera.Rotation = Target.EyeRotation;
+		Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
 		Camera.FirstPersonViewer = Target;
 	}
 }
