@@ -11,12 +11,6 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		if ( !Camera.FirstPersonViewer.IsValid() )
-		{
-			DeleteHint();
-			return;
-		}
-
 		var hint = FindHintableEntity();
 		if ( hint is null || !hint.CanHint( PlayerCamera.Target ) )
 		{

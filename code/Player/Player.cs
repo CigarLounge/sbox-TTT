@@ -265,6 +265,7 @@ public partial class Player : AnimatedEntity
 		viewAngles.roll = 0f;
 		ViewAngles = viewAngles.Normal;
 
+		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
 		CurrentCamera?.BuildInput( this );
 	}

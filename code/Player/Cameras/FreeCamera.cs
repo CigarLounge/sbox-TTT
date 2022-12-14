@@ -29,6 +29,9 @@ public partial class FreeCamera : BaseCamera
 			}
 		}
 
+		if ( Input.Pressed( InputButton.Use ) )
+			FindSpectateTarget( player );
+
 		_moveInput = Input.AnalogMove;
 		_lookAngles += Input.AnalogLook;
 		_lookAngles.roll = 0;
@@ -40,5 +43,13 @@ public partial class FreeCamera : BaseCamera
 		Camera.Position += mv;
 		Camera.Rotation = Rotation.From( _lookAngles );
 		Camera.FirstPersonViewer = null;
+	}
+
+	private void FindSpectateTarget( Player player )
+	{
+		if ( player.HoveredEntity is Prop prop && prop.PhysicsBody is not null )
+			Player.Possess( prop.NetworkIdent );
+		else if ( player.HoveredEntity is Player hoveredPlayer )
+			player.CurrentCamera = new PlayerCamera( hoveredPlayer );
 	}
 }

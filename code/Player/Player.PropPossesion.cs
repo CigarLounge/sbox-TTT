@@ -22,6 +22,9 @@ public partial class Player
 	[Event.Entity.PreCleanup]
 	public void CancelPossession()
 	{
+		if ( !this.IsAlive() && IsLocalPawn )
+			CurrentCamera = new FreeCamera();
+
 		if ( !Game.IsServer )
 			return;
 
@@ -32,10 +35,6 @@ public partial class Player
 		}
 
 		Prop = null;
-
-		// TODO Fix.
-		// if ( !this.IsAlive() )
-		// 	Camera = new FreeSpectateCamera();
 	}
 
 	[ConCmd.Server]
@@ -54,7 +53,12 @@ public partial class Player
 		prop.Owner = player;
 		prop.Components.GetOrCreate<PropPossession>();
 		player.Prop = prop;
-		// TODO: Fix.
-		// player.Camera = new FollowEntityCamera( prop );
+		player.OnPropPossess();
+	}
+
+	[ClientRpc]
+	private void OnPropPossess()
+	{
+		CurrentCamera = new FollowEntityCamera( Prop );
 	}
 }
