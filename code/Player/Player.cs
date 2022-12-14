@@ -183,7 +183,8 @@ public partial class Player : AnimatedEntity
 		if ( IsSpectator )
 			return;
 
-		CurrentCamera = new PlayerCamera();
+		if ( IsLocalPawn )
+			CurrentCamera = new PlayerCamera( this );
 
 		CreateFlashlight();
 

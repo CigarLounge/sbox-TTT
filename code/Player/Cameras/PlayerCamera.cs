@@ -28,10 +28,21 @@ public class PlayerCamera : BaseCamera
 
 	public PlayerCamera( Player targetPlayer ) => Target = targetPlayer;
 
+	public override void BuildInput( Player player )
+	{
+		if ( player.IsAlive() )
+			return;
+
+		if ( Input.Pressed( InputButton.Jump ) )
+			player.CurrentCamera = new FreeCamera();
+	}
+
 	public override void FrameSimulate( Player player )
 	{
 		Camera.Position = Target.EyePosition;
 		Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
+		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
+		Camera.Main.SetViewModelCamera( Camera.FieldOfView );
 		Camera.FirstPersonViewer = Target;
 	}
 }

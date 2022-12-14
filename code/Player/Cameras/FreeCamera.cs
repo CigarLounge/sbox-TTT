@@ -19,7 +19,7 @@ public partial class FreeCamera : BaseCamera
 		if ( Input.Down( InputButton.Duck ) )
 			_moveSpeed = 0.2f;
 
-		if ( Input.Down( InputButton.Jump ) )
+		if ( Input.Pressed( InputButton.Jump ) )
 		{
 			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
 			if ( alivePlayer.IsValid() )
