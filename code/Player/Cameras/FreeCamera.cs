@@ -43,6 +43,7 @@ public partial class FreeCamera : BaseCamera
 		Camera.Position += mv;
 		Camera.Rotation = Rotation.From( _lookAngles );
 		Camera.FirstPersonViewer = null;
+		PlayerCamera.Target = null;
 	}
 
 	private void FindSpectateTarget( Player player )

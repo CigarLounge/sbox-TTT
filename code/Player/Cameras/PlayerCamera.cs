@@ -17,12 +17,12 @@ public class PlayerCamera : BaseCamera
 			if ( value == _spectatedPlayer )
 				return;
 
-			var oldSpectatedPlayer = _spectatedPlayer;
 			_spectatedPlayer = value == Game.LocalPawn ? null : value;
-			Event.Run( GameEvent.Player.SpectatorChanged, oldSpectatedPlayer, _spectatedPlayer );
 		}
 	}
 	private static Player _spectatedPlayer;
+
+	private bool _isThirdPerson = false;
 	private int _spectatedPlayerIndex = 0;
 
 	public PlayerCamera() { }
@@ -35,7 +35,12 @@ public class PlayerCamera : BaseCamera
 			return;
 
 		if ( Input.Pressed( InputButton.Jump ) )
-			player.CurrentCamera = new FreeCamera();
+		{
+			if ( !_isThirdPerson )
+				_isThirdPerson = true;
+			else
+				player.CurrentCamera = new FreeCamera();
+		}
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			SwapSpectatedPlayer( false );
@@ -46,11 +51,25 @@ public class PlayerCamera : BaseCamera
 
 	public override void FrameSimulate( Player player )
 	{
-		Camera.Position = Target.EyePosition;
-		Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
+		if ( _isThirdPerson )
+		{
+			var tr = Trace.Ray( Target.Position, Target.Position + player.ViewAngles.ToRotation().Forward * -130 + Vector3.Up * player.EyeLocalPosition )
+				.WorldOnly()
+				.Run();
+
+			Camera.Rotation = player.ViewAngles.ToRotation();
+			Camera.Position = tr.EndPosition;
+			Camera.FirstPersonViewer = null;
+		}
+		else
+		{
+			Camera.Position = Target.EyePosition;
+			Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
+			Camera.FirstPersonViewer = Target;
+		}
+
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.Main.SetViewModelCamera( Camera.FieldOfView );
-		Camera.FirstPersonViewer = Target;
 	}
 
 	private void SwapSpectatedPlayer( bool nextPlayer )
