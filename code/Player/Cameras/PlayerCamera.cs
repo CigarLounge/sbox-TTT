@@ -23,6 +23,7 @@ public class PlayerCamera : BaseCamera
 		}
 	}
 	private static Player _spectatedPlayer;
+	private int _spectatedPlayerIndex = 0;
 
 	public PlayerCamera() { }
 
@@ -35,6 +36,12 @@ public class PlayerCamera : BaseCamera
 
 		if ( Input.Pressed( InputButton.Jump ) )
 			player.CurrentCamera = new FreeCamera();
+
+		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+			SwapSpectatedPlayer( false );
+
+		if ( Input.Pressed( InputButton.SecondaryAttack ) )
+			SwapSpectatedPlayer( true );
 	}
 
 	public override void FrameSimulate( Player player )
@@ -44,5 +51,20 @@ public class PlayerCamera : BaseCamera
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.Main.SetViewModelCamera( Camera.FieldOfView );
 		Camera.FirstPersonViewer = Target;
+	}
+
+	private void SwapSpectatedPlayer( bool nextPlayer )
+	{
+		_spectatedPlayerIndex += nextPlayer ? 1 : -1;
+		var alivePlayers = Utils.GetAlivePlayers();
+		if ( alivePlayers.IsNullOrEmpty() )
+			return;
+
+		if ( _spectatedPlayerIndex >= alivePlayers.Count )
+			_spectatedPlayerIndex = 0;
+		else if ( _spectatedPlayerIndex < 0 )
+			_spectatedPlayerIndex = alivePlayers.Count - 1;
+
+		Target = alivePlayers[_spectatedPlayerIndex];
 	}
 }
