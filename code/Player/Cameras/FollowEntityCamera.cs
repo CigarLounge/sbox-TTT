@@ -2,47 +2,50 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FollowEntityCamera : CameraMode, ISpectateCamera
+public partial class FollowEntityCamera : BaseCamera
 {
-	[Net, Local]
-	public Entity FollowedEntity { get; private set; }
+	private Entity TargetEntity { get; set; }
+	private Vector3 _focusPoint = Camera.Position;
 
-	private Player _owner;
-	private Vector3 _focusPoint;
+	public FollowEntityCamera( Entity entity ) => TargetEntity = entity;
 
-	public FollowEntityCamera() { }
-
-	public FollowEntityCamera( Entity followedEntity ) => FollowedEntity = followedEntity;
-
-	public override void Activated()
+	public override void BuildInput( Player player )
 	{
-		base.Activated();
-
-		_owner = Entity as Player;
-		_focusPoint = CurrentView.Position - GetViewOffset();
-
-		Position = CurrentView.Position;
-		Rotation = CurrentView.Rotation;
-	}
-
-	public override void Update()
-	{
-		if ( !FollowedEntity.IsValid() )
+		if ( player.IsAlive() )
 			return;
 
-		Rotation = _owner.ViewAngles.ToRotation();
+		if ( TargetEntity is Corpse && Input.Down( InputButton.Jump ) )
+			player.CurrentCamera = new FreeCamera();
+	}
 
-		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.Position, 50f * RealTime.Delta );
+	public override void FrameSimulate( Player player )
+	{
+		if ( !TargetEntity.IsValid() )
+			return;
 
-		var trace = Trace.Ray( _focusPoint, _focusPoint + GetViewOffset() )
+		_focusPoint = Vector3.Lerp( _focusPoint, TargetEntity.Position, Time.Delta * 5.0f );
+
+		var tr = Trace.Ray( _focusPoint, _focusPoint + player.ViewAngles.ToRotation().Forward * -130 )
 			.WorldOnly()
 			.Run();
 
-		Position = trace.EndPosition;
+		Camera.Rotation = player.ViewAngles.ToRotation();
+		Camera.Position = tr.EndPosition;
+		Camera.FirstPersonViewer = null;
 	}
 
-	public virtual Vector3 GetViewOffset()
+	[GameEvent.Player.Killed]
+	private static void OnPlayerKilled( Player player )
 	{
-		return _owner.ViewAngles.ToRotation().Forward * -130 + Vector3.Up * 20;
+		if ( Game.IsServer )
+			return;
+
+		if ( player.IsForcedSpectator )
+		{
+			player.CurrentCamera = new FreeCamera();
+			return;
+		}
+
+		player.CurrentCamera = new FollowEntityCamera( player.Corpse );
 	}
 }

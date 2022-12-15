@@ -16,7 +16,6 @@
   ],
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "TTT",
   "Metadata": {
     "MapList": [],
     "MinPlayers": 1,

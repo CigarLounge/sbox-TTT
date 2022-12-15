@@ -11,7 +11,7 @@ public partial class Player
 
 	public void ClearButtons()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		foreach ( var logicButtonPoint in RoleButtonPoints )
 		{
@@ -40,7 +40,7 @@ public partial class Player
 
 	public void ActivateRoleButton()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( FocusedButton is null || !Input.Pressed( InputButton.Use ) )
 			return;

@@ -15,14 +15,14 @@ public class VoiceChatEntry : Panel
 
 	private readonly WorldPanel _worldPanel;
 	private readonly RolePlate _rolePlate;
-	private readonly Client _client;
+	private readonly IClient _client;
 	private float _voiceLevel = 0.5f;
 	private float _targetVoiceLevel = 0;
 	private readonly float _voiceTimeout = 0.1f;
 
 	RealTimeSince _timeSincePlayed;
 
-	public VoiceChatEntry( Panel parent, Client client ) : base( parent )
+	public VoiceChatEntry( Panel parent, IClient client ) : base( parent )
 	{
 		Parent = parent;
 
@@ -36,9 +36,9 @@ public class VoiceChatEntry : Panel
 		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
 		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
 		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
-		_worldPanel.Enabled( !_client.Pawn.IsFirstPersonMode );
+		_worldPanel.Enabled( !_client.Pawn.AsEntity().IsLocalPawn );
 
-		_rolePlate = client.Pawn.Components.Get<RolePlate>();
+		_rolePlate = client.Pawn.AsEntity().Components.Get<RolePlate>();
 	}
 
 	public void Update( float level )
@@ -48,7 +48,7 @@ public class VoiceChatEntry : Panel
 		Name.Text = Friend.Name;
 
 		if ( _client.IsValid() )
-			SetClass( "dead", !_client.Pawn.IsAlive() );
+			SetClass( "dead", !_client.Pawn.AsEntity().IsAlive() );
 	}
 
 	public override void Tick()
@@ -80,7 +80,7 @@ public class VoiceChatEntry : Panel
 		var tx = player.GetBoneTransform( "head" );
 		var rolePlateOffset = _rolePlate is not null ? 27f : 20f;
 		tx.Position += Vector3.Up * rolePlateOffset + (Vector3.Up * _voiceLevel);
-		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
+		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_worldPanel.Transform = tx;
 	}
 }

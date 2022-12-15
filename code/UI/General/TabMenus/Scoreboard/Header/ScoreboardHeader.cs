@@ -12,14 +12,14 @@ public class ScoreboardHeader : Panel
 
 	public ScoreboardHeader()
 	{
-		CurrentMap.Text = Global.MapName;
+		CurrentMap.Text = Game.Server.MapIdent;
 	}
 
 	public override void Tick()
 	{
-		PlayerCount.Text = $"{Client.All.Count} / {ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 )} Players";
+		PlayerCount.Text = $"{Game.Clients.Count} / {ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 )} Players";
 
-		var roundsRemaining = Game.RoundLimit - Game.Current.TotalRoundsPlayed;
+		var roundsRemaining = GameManager.RoundLimit - GameManager.Current.TotalRoundsPlayed;
 		var suffix = roundsRemaining == 1 ? "round" : "rounds";
 		MapChange.Text = $"Map will change in {roundsRemaining} {suffix}";
 	}

@@ -14,7 +14,7 @@ public class SpectatingHint : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		this.Enabled( !player.IsAlive() );
@@ -23,7 +23,7 @@ public class SpectatingHint : Panel
 
 		var isPossessingProp = player.Prop.IsValid();
 
-		FindTargetHint.Enabled( !isPossessingProp && !player.IsSpectatingPlayer );
+		FindTargetHint.Enabled( !isPossessingProp && !PlayerCamera.IsSpectatingPlayer );
 
 		if ( isPossessingProp )
 		{
@@ -36,11 +36,11 @@ public class SpectatingHint : Panel
 			SpectatingHintLabel.SetText( "to change spectating camera mode" );
 		}
 
-		SwapSpectatingPlayerPanel.EnableFade( player.IsSpectatingPlayer );
-		if ( player.IsSpectatingPlayer )
+		SwapSpectatingPlayerPanel.EnableFade( PlayerCamera.IsSpectatingPlayer );
+		if ( PlayerCamera.IsSpectatingPlayer )
 		{
-			PlayerName.Text = player.CurrentPlayer?.Client?.Name;
-			PlayerName.Style.FontColor = player.CurrentPlayer?.Role?.Color;
+			PlayerName.Text = PlayerCamera.Target?.Client?.Name;
+			PlayerName.Style.FontColor = PlayerCamera.Target?.Role?.Color;
 		}
 	}
 }

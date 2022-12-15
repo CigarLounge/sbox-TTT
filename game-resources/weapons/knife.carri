@@ -7,7 +7,7 @@
 		CanDrop = true
 		ViewModelPath = resource:"models/weapons/v_knife.vmdl"
 		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = "Fists"
+		HoldType = "Punch"
 		WorldModelPath = resource:"models/weapons/w_knife.vmdl"
 		DeployTime = 0.6
 		IsLimited = true

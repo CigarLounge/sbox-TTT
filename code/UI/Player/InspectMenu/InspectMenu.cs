@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.UI;
 using System.Collections.Generic;
 
@@ -101,21 +102,22 @@ public partial class InspectMenu : Panel
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _corpse.Player.LastDamage.Flags switch
+		var causeOfDeath = ("Unknown", "Unknown", "The cause of death is unknown.");
+		foreach ( var tag in _corpse.Player.LastDamage.Tags )
 		{
-			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
-			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
-			DamageFlags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
-			DamageFlags.Buckshot => ("Bullet", "Bullet", "This corpse was shot to death."),
-			DamageFlags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
-			DamageFlags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
-			DamageFlags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
-			DamageFlags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
-			DamageFlags.Blast => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
-			DamageFlags.PhysicsImpact => ("Prop", "Prop", "A wild flying prop caused this death."),
-			DamageFlags.Drown => ("Drown", "Drown", "This player drowned to death."),
-			_ => ("Unknown", "Unknown", "The cause of death is unknown.")
-		};
+			return tag switch
+			{
+				Strings.Tags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
+				Strings.Tags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
+				Strings.Tags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
+				Strings.Tags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
+				Strings.Tags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
+				Strings.Tags.Explode => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
+				Strings.Tags.Drown => ("Drown", "Drown", "This player drowned to death."),
+				_ => ("Unknown", "Unknown", "The cause of death is unknown.")
+			};
+		}
+		return causeOfDeath;
 	}
 
 	public override void Tick()
@@ -123,7 +125,7 @@ public partial class InspectMenu : Panel
 		var player = _corpse.Player;
 
 		CallDetectiveButton.Enabled( player.IsConfirmedDead );
-		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
+		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Game.LocalPawn.IsAlive() );
 
 		var timeSinceDeath = player.TimeSinceDeath.Relative.TimerString();
 		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );

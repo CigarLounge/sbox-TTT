@@ -38,7 +38,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 			return;
 		}
-		else if ( !Host.IsServer )
+		else if ( !Game.IsServer )
 		{
 			if ( ShouldCreateRolePlate( player ) )
 				player.Components.Create<UI.RolePlate>();
@@ -59,7 +59,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 			if ( Info.ShopItems.Any() )
 				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
 		}
-		else if ( !Host.IsServer )
+		else if ( !Game.IsServer )
 		{
 			player.Components.RemoveAny<UI.RolePlate>();
 		}
@@ -72,7 +72,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 	protected List<RoleButton> GetRoleButtons()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		return Entity.All
 				.OfType<RoleButton>()

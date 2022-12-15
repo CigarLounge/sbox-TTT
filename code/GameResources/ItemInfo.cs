@@ -25,7 +25,7 @@ public abstract class ItemInfo : GameResource
 	{
 		base.PostLoad();
 
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 }

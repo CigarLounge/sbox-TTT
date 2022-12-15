@@ -45,7 +45,7 @@ public partial class Teleporter : Carriable
 		_particle?.Destroy( true );
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( IsTeleporting )
 		{
@@ -53,7 +53,7 @@ public partial class Teleporter : Carriable
 
 			if ( TimeSinceStartedTeleporting >= TeleportTime / 2 )
 			{
-				if ( IsServer && !_hasReachedLocation )
+				if ( Game.IsServer && !_hasReachedLocation )
 					Teleport();
 
 				if ( TimeSinceStartedTeleporting >= TeleportTime )
@@ -110,7 +110,7 @@ public partial class Teleporter : Carriable
 		TimeSinceAction = 0;
 		_teleportLocation = trace.EndPosition;
 
-		if ( IsClient && Prediction.FirstTime )
+		if ( Game.IsClient && Prediction.FirstTime )
 			UI.InfoFeed.AddEntry( "Teleport location set." );
 	}
 
@@ -135,11 +135,11 @@ public partial class Teleporter : Carriable
 		var bbox = Owner.CollisionBounds + Owner.Position;
 
 		var damageInfo = DamageInfo.Generic( Player.MaxHealth )
-			.WithFlag( DamageFlags.Beam )
 			.WithAttacker( Owner )
+			.WithTag( Strings.Tags.Explode )
 			.WithWeapon( this );
 
-		foreach ( var entity in Entity.FindInBox( bbox ) )
+		foreach ( var entity in FindInBox( bbox ) )
 		{
 			if ( entity is Player && entity != Owner )
 				entity.TakeDamage( damageInfo );

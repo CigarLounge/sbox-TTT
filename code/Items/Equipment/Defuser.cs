@@ -7,7 +7,7 @@ namespace TTT;
 [Title( "Defuser" )]
 public class Defuser : Carriable
 {
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( !Input.Pressed( InputButton.PrimaryAttack ) )
 			return;

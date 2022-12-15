@@ -30,14 +30,14 @@ public class RolePlate : EntityComponent<Player>
 	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
-		_worldPanel.Enabled( !Entity.IsFirstPersonMode && Entity.IsAlive() );
+		_worldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive() );
 
 		if ( !_worldPanel.IsEnabled() )
 			return;
 
 		var tx = Entity.GetBoneTransform( "head" );
 		tx.Position += Vector3.Up * 20f;
-		tx.Rotation = CurrentView.Rotation.RotateAroundAxis( Vector3.Up, 180f );
+		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
 		_worldPanel.Transform = tx;
 	}

@@ -41,7 +41,7 @@ public partial class WalkController
 		var tr = Trace.Ray( start + TraceOffset, end + TraceOffset )
 					.Size( mins, maxs )
 					.WithAnyTags( "solid", "playerclip", "passbullets", "player" )
-					.Ignore( Pawn )
+					.Ignore( Player )
 					.Run();
 
 		tr.EndPosition -= TraceOffset;
@@ -70,10 +70,10 @@ public partial class WalkController
 	{
 		var girth = BodyGirth * 0.5f;
 
-		var mins = new Vector3( -girth, -girth, 0 ) * Pawn.Scale;
-		var maxs = new Vector3( +girth, +girth, BodyHeight ) * Pawn.Scale;
+		var mins = new Vector3( -girth, -girth, 0 ) * Player.Scale;
+		var maxs = new Vector3( +girth, +girth, BodyHeight ) * Player.Scale;
 
-		Duck.UpdateBBox( ref mins, ref maxs, Pawn.Scale );
+		Duck.UpdateBBox( ref mins, ref maxs, Player.Scale );
 
 		SetBBox( mins, maxs );
 	}

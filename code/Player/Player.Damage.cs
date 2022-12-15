@@ -1,5 +1,8 @@
 using Sandbox;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -127,7 +130,7 @@ public partial class Player
 
 	public override void OnKilled()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
@@ -153,14 +156,14 @@ public partial class Player
 		DeleteItems();
 
 		Event.Run( GameEvent.Player.Killed, this );
-		Game.Current.State.OnPlayerKilled( this );
+		GameManager.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
 	}
 
 	private void ClientOnKilled()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( IsLocalPawn )
 		{
@@ -174,27 +177,27 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( !this.IsAlive() )
 			return;
 
-		if ( info.Attacker is Prop && info.Attacker.Tags.Has( IgnoreDamage.Tag ) && info.Flags.HasFlag( DamageFlags.PhysicsImpact ) )
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( Strings.Tags.IgnoreDamage ) )
 			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-			if ( Game.Current.State is not InProgress and not PostRound )
+			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
-			if ( !info.Flags.HasFlag( DamageFlags.Slash ) )
+			if ( !info.HasTag( Strings.Tags.Slash ) )
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
+		if ( info.HasTag( Strings.Tags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( ref info );
 
-		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
+		if ( info.HasTag( Strings.Tags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
@@ -217,8 +220,7 @@ public partial class Player
 
 	public void SendDamageInfo( To to )
 	{
-		Host.AssertServer();
-
+		Game.AssertServer();
 		SendDamageInfo
 		(
 			to,
@@ -226,7 +228,7 @@ public partial class Player
 			LastAttackerWeapon,
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
-			LastDamage.Flags,
+			LastDamage.Tags.ToArray(),
 			LastDamage.Position,
 			DistanceToAttacker
 		);
@@ -268,13 +270,14 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, Vector3 p, float dTA )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
 	{
 		var info = DamageInfo.Generic( d )
 			.WithAttacker( a )
 			.WithWeapon( w )
-			.WithFlag( dF )
 			.WithPosition( p );
+
+		info.Tags = new HashSet<string>( tags );
 
 		DistanceToAttacker = dTA;
 		LastAttacker = a;

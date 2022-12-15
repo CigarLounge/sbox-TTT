@@ -33,7 +33,7 @@ public partial class Player
 	{
 		var iType = (int)type;
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return false;
 
 		if ( Ammo is null )
@@ -51,7 +51,7 @@ public partial class Player
 
 	public bool GiveAll( int amount )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return false;
 
 		if ( Ammo is null )
@@ -67,7 +67,7 @@ public partial class Player
 
 	public int GiveAmmo( AmmoType type, int amount )
 	{
-		if ( !Host.IsServer || Ammo is null )
+		if ( !Game.IsServer || Ammo is null )
 			return 0;
 
 		var ammoPickedUp = Math.Min( amount, _ammoCap[(int)type] - AmmoCount( type ) );

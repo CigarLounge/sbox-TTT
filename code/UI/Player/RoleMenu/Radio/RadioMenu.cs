@@ -26,14 +26,14 @@ public partial class RadioMenu : Panel
 		{
 			Add.Button( sound.Key, "box-shadow background-color-gradient", () =>
 			{
-				RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Rand.Int( 0, sound.Value.Count - 1 )] );
+				RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Game.Random.Int( 0, sound.Value.Count - 1 )] );
 			} );
 		}
 	}
 
 	private RadioEntity FetchRadio()
 	{
-		var radioComponent = Local.Pawn.Components.Get<RadioComponent>();
+		var radioComponent = Game.LocalPawn.Components.Get<RadioComponent>();
 		return radioComponent.Radio;
 	}
 }

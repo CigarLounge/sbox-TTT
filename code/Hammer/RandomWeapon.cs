@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 using System;
 using System.Collections.Generic;
 
@@ -46,7 +46,7 @@ public class RandomWeapon : Entity
 		if ( weaponTypes.IsNullOrEmpty() )
 			return;
 
-		var weapon = TypeLibrary.Create<Weapon>( Rand.FromList( weaponTypes ) );
+		var weapon = TypeLibrary.Create<Weapon>( Game.Random.FromList( weaponTypes ) );
 		if ( weapon is null )
 			return;
 
@@ -69,7 +69,7 @@ public class RandomWeapon : Entity
 		if ( !_cachedWeaponTypes.IsNullOrEmpty() )
 			return;
 
-		var weapons = TypeLibrary.GetDescriptions<Weapon>();
+		var weapons = TypeLibrary.GetTypes<Weapon>();
 		foreach ( var weaponDesc in weapons )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( weaponDesc.TargetType );

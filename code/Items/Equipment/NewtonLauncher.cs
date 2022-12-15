@@ -34,7 +34,7 @@ public partial class NewtonLauncher : Weapon
 		IsCharging = false;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( TimeSincePrimaryAttack < Info.PrimaryRate )
 			return;

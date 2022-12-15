@@ -12,7 +12,7 @@ public class PossessionMeter : Panel
 	public PossessionMeter( PropPossession possession )
 	{
 		_possession = possession;
-		Local.Hud.AddChild( this );
+		Game.RootPanel.AddChild( this );
 	}
 
 	public override void Tick()

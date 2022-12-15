@@ -39,13 +39,13 @@ public class PlayerInfo : Panel
 
 	public override void Tick()
 	{
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
-		this.Enabled( player.CurrentPlayer.IsValid() && player.CurrentPlayer.IsAlive() );
+		this.Enabled( PlayerCamera.Target.IsAlive() );
 		if ( !this.IsEnabled() )
 			return;
 
-		if ( player.CurrentPlayer.Role is NoneRole )
+		if ( PlayerCamera.Target.Role is NoneRole )
 		{
 			RoleContainer.Enabled( false );
 			HealthContainer.Style.BorderTopLeftRadius = 4;
@@ -54,13 +54,13 @@ public class PlayerInfo : Panel
 		else
 		{
 			RoleContainer.Enabled( true );
-			RoleContainer.Style.BackgroundColor = player.CurrentPlayer.Role.Color;
-			Role.Text = player.CurrentPlayer.Role.Title;
+			RoleContainer.Style.BackgroundColor = PlayerCamera.Target.Role.Color;
+			Role.Text = PlayerCamera.Target.Role.Title;
 
 			HealthContainer.Style.BorderTopLeftRadius = 0;
 			HealthContainer.Style.BorderBottomLeftRadius = 0;
 		}
 
-		Health.Text = $"✚ {player.CurrentPlayer.Health.CeilToInt()}";
+		Health.Text = $"✚ {PlayerCamera.Target.Health.CeilToInt()}";
 	}
 }

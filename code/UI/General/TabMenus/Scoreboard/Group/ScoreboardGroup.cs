@@ -19,7 +19,7 @@ public class ScoreboardGroup : Panel
 		AddClass( GroupStatus.ToStringFast() );
 	}
 
-	public ScoreboardEntry AddEntry( Client client )
+	public ScoreboardEntry AddEntry( IClient client )
 	{
 		var scoreboardEntry = new ScoreboardEntry( Content, client )
 		{

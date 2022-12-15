@@ -11,14 +11,8 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		if ( !CurrentPlayer.IsFirstPersonMode )
-		{
-			DeleteHint();
-			return;
-		}
-
 		var hint = FindHintableEntity();
-		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
+		if ( hint is null || !hint.CanHint( PlayerCamera.Target ) )
 		{
 			DeleteHint();
 			return;
@@ -26,13 +20,13 @@ public partial class Player
 
 		if ( hint == _currentHint )
 		{
-			hint.Tick( CurrentPlayer );
+			hint.Tick( PlayerCamera.Target );
 			return;
 		}
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( CurrentPlayer );
+		_currentHintPanel = hint.DisplayHint( PlayerCamera.Target );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
 
@@ -50,8 +44,8 @@ public partial class Player
 
 	private IEntityHint FindHintableEntity()
 	{
-		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
-			.Ignore( CurrentPlayer )
+		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
+			.Ignore( PlayerCamera.Target )
 			.WithAnyTags( "solid", "interactable" )
 			.UseHitboxes()
 			.Run();

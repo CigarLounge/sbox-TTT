@@ -23,7 +23,7 @@ public abstract partial class Grenade : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			ViewModelEntity?.SetAnimParameter( "fire", true );
@@ -39,7 +39,7 @@ public abstract partial class Grenade : Carriable
 
 	protected void Throw()
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		using ( Prediction.Off() )

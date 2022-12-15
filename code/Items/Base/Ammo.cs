@@ -52,7 +52,7 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	public static Ammo Create( AmmoType ammoType, int count = 0 )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		var ammo = ammoType switch
 		{

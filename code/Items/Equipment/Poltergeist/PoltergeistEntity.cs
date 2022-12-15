@@ -34,7 +34,7 @@ public partial class PoltergeistEntity : ModelEntity
 		// in the direction of the player?
 		if ( Parent.IsValid() )
 		{
-			var randDirection = Rand.Float( -BounceForce, BounceForce );
+			var randDirection = Game.Random.Float( -BounceForce, BounceForce );
 			Parent.Velocity = new Vector3( randDirection, randDirection, randDirection );
 		}
 

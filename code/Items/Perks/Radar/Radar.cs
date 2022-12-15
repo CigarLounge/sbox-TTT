@@ -28,11 +28,11 @@ public partial class Radar : Perk
 	{
 		base.OnDeactivate();
 
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			UI.WorldPoints.Instance.DeletePoints<UI.RadarPoint>();
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( !TimeUntilExecution )
 			return;
@@ -43,7 +43,7 @@ public partial class Radar : Perk
 
 	private void UpdatePositions()
 	{
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 		{
 			ClearRadarPoints();
 
@@ -100,7 +100,7 @@ public partial class Radar : Perk
 	[ClientRpc]
 	public static void SendPlayerRadarPositions( RadarPointData[] points )
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		var radar = player.Perks.Find<Radar>();

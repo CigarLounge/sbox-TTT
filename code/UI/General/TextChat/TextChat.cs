@@ -43,7 +43,7 @@ public partial class TextChat : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
@@ -92,7 +92,7 @@ public partial class TextChat : Panel
 
 		if ( Input.Text == Strings.RTVCommand )
 		{
-			if ( Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) )
+			if ( Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) )
 			{
 				AddInfo( "You have already rocked the vote!" );
 				return;
@@ -110,13 +110,13 @@ public partial class TextChat : Panel
 
 		if ( message == Strings.RTVCommand )
 		{
-			Game.RockTheVote();
+			GameManager.RockTheVote();
 			return;
 		}
 
 		if ( !player.IsAlive() )
 		{
-			var clients = Game.Current.State is InProgress ? Utils.GetDeadClients() : Client.All;
+			var clients = GameManager.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
 			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
@@ -157,7 +157,7 @@ public partial class TextChat : Panel
 
 	private void OnTabPressed()
 	{
-		if ( Local.Pawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
 			return;
 
 		if ( player.Role.CanTeamChat )

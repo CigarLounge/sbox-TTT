@@ -15,10 +15,10 @@ public class PostRoundPopup : Panel
 	[GameEvent.Round.End]
 	private static void DisplayWinner( Team winningTeam, WinType winType )
 	{
-		if ( !Host.IsClient )
+		if ( !Game.IsClient )
 			return;
 
-		Local.Hud.AddChild( new PostRoundPopup() );
+		Game.RootPanel.AddChild( new PostRoundPopup() );
 
 		Instance.Header.Text = winningTeam == Team.None ? "IT'S A TIE!" : $"THE {winningTeam.GetTitle()} WIN!";
 		Instance.Header.Style.FontColor = winningTeam.GetColor();

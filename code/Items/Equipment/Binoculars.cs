@@ -19,7 +19,7 @@ public partial class Binoculars : Carriable
 	{
 		base.ActiveStart( player );
 
-		_defaultFOV = Owner.Camera.FieldOfView;
+		_defaultFOV = Camera.FieldOfView;
 	}
 
 	public override void ActiveEnd( Player player, bool dropped )
@@ -30,7 +30,7 @@ public partial class Binoculars : Carriable
 		ZoomLevel = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Pressed( InputButton.SecondaryAttack ) )
 			ChangeZoomLevel();
@@ -53,7 +53,7 @@ public partial class Binoculars : Carriable
 
 		_corpse = trace.Entity as Corpse;
 
-		if ( !IsServer || !_corpse.IsValid() )
+		if ( !Game.IsServer || !_corpse.IsValid() )
 			return;
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
@@ -72,7 +72,7 @@ public partial class Binoculars : Carriable
 	{
 		base.DestroyHudElements();
 
-		(Owner ?? PreviousOwner).Camera.FieldOfView = _defaultFOV;
+		Camera.FieldOfView = _defaultFOV;
 	}
 
 	private void ChangeZoomLevel()
@@ -81,15 +81,15 @@ public partial class Binoculars : Carriable
 		{
 			_corpse = null;
 			ZoomLevel = 0;
-			Owner.Camera.FieldOfView = _defaultFOV;
+			Camera.FieldOfView = _defaultFOV;
 
 			return;
 		}
 
-		if ( IsClient )
+		if ( Game.IsClient )
 			PlaySound( Strings.ScopeInSound );
 
 		ZoomLevel++;
-		Owner.Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
+		Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
 	}
 }

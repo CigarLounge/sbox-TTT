@@ -35,7 +35,7 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	private Vector2 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil );
+	private Vector2 RecoilOnShoot => new( Game.Random.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil );
 	private Vector2 CurrentRecoil { get; set; } = Vector2.Zero;
 
 	public override void Spawn()
@@ -56,7 +56,7 @@ public abstract partial class Weapon : Carriable
 		TimeSinceReload = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( CanReload() )
 		{
@@ -213,7 +213,7 @@ public abstract partial class Weapon : Carriable
 	protected virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
 		// Seed rand using the tick, so bullet cones match on client and server
-		Rand.SetSeed( Time.Tick );
+		Game.SetRandomSeed( Time.Tick );
 
 		while ( bulletCount-- > 0 )
 		{
@@ -234,7 +234,7 @@ public abstract partial class Weapon : Carriable
 					tracer?.SetPosition( 1, trace.EndPosition );
 				}
 
-				if ( !IsServer )
+				if ( !Game.IsServer )
 					continue;
 
 				if ( !trace.Entity.IsValid() )
@@ -250,6 +250,7 @@ public abstract partial class Weapon : Carriable
 					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
+						.WithTag( Strings.Tags.Bullet )
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
@@ -320,7 +321,7 @@ public abstract partial class Weapon : Carriable
 		if ( Info.AmmoType == AmmoType.None || AmmoClip <= 0 )
 			return;
 
-		if ( IsServer )
+		if ( Game.IsServer )
 			Ammo.Drop( Owner, Info.AmmoType, AmmoClip );
 
 		AmmoClip = 0;

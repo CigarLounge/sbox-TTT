@@ -15,6 +15,6 @@ public class C4Hint : EntityHintPanel
 	public override void Tick()
 	{
 		SubText.Text = _c4.IsArmed ? "to attempt defuse." : "to arm.";
-		DefuserPanel.Enabled( _c4.IsArmed && (Local.Pawn as Player).ActiveCarriable is Defuser );
+		DefuserPanel.Enabled( _c4.IsArmed && (Game.LocalPawn as Player).ActiveCarriable is Defuser );
 	}
 }

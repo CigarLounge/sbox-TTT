@@ -19,7 +19,7 @@ public class DNAMarker : Panel
 	{
 		base.Tick();
 
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 		Distance.Text = $"{player.Position.Distance( _targetPosition ).SourceUnitsToMeters():n0}m";
 
 		var screenPos = _targetPosition.ToScreen();

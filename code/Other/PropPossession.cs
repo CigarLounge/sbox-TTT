@@ -65,11 +65,12 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		MaxPunches = (int)Math.Min( Math.Max( 0, _player.ActiveKarma / 100 ), 13 );
 
-		if ( Host.IsClient && !Local.Pawn.IsAlive() )
+		if ( Game.IsClient && !Game.LocalPawn.IsAlive() )
+		{
 			_nameplate = new( Entity );
-
-		if ( Entity.IsLocalPawn )
 			_meter = new( this );
+			_player.CurrentCamera = new FollowEntityCamera( Entity );
+		}
 	}
 
 	protected override void OnDeactivate()
@@ -78,6 +79,9 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		if ( !_player.Prop.IsValid() )
 			_player.CancelPossession();
+
+		if ( !_player.IsAlive() )
+			_player.CurrentCamera = new FreeCamera();
 
 		_nameplate?.Delete( true );
 		_meter?.Delete( true );
