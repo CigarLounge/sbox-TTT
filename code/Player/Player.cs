@@ -359,8 +359,6 @@ public partial class Player : AnimatedEntity
 			animHelper.HoldType = CitizenAnimationHelper.HoldTypes.None;
 			animHelper.AimBodyWeight = 0.5f;
 		}
-
-		_lastActiveCarriable = ActiveCarriable;
 	}
 	#endregion
 

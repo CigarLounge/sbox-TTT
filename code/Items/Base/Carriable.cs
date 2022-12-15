@@ -226,11 +226,8 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.OnDestroy();
 
-		if ( Owner.IsValid() && Owner.IsLocalPawn )
-		{
-			DestroyViewModel();
-			DestroyHudElements();
-		}
+		DestroyViewModel();
+		DestroyHudElements();
 	}
 
 	bool IEntityHint.CanHint( Player player ) => Owner is null;
