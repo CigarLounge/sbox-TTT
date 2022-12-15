@@ -275,7 +275,7 @@ public partial class Player
 		var info = DamageInfo.Generic( d )
 			.WithAttacker( a )
 			.WithWeapon( w )
-		   .WithPosition( p );
+			.WithPosition( p );
 
 		info.Tags = new HashSet<string>( tags );
 
