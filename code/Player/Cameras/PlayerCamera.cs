@@ -25,8 +25,6 @@ public class PlayerCamera : BaseCamera
 	private bool _isThirdPerson = false;
 	private int _spectatedPlayerIndex = 0;
 
-	public PlayerCamera() { }
-
 	public PlayerCamera( Player targetPlayer ) => Target = targetPlayer;
 
 	public override void BuildInput( Player player )
@@ -67,6 +65,11 @@ public class PlayerCamera : BaseCamera
 			Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
 			Camera.FirstPersonViewer = Target;
 		}
+
+		// TODO: We need some way to override the FieldOfView from a carriable.
+		// We also need to constantly update the field of view here incase the player changes their settings.
+		if ( Target.ActiveCarriable is Scout || Target.ActiveCarriable is Binoculars )
+			return;
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );
 		Camera.Main.SetViewModelCamera( 95f );
