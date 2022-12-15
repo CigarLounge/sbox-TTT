@@ -3,8 +3,7 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class Crosshair : Panel
+public partial class Crosshair : Panel
 {
 	public const string FilePath = "crosshair.json";
 
