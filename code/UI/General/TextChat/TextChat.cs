@@ -4,7 +4,6 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class TextChat : Panel
 {
 	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
@@ -12,8 +11,8 @@ public partial class TextChat : Panel
 
 	public static TextChat Instance { get; private set; }
 
-	private Panel EntryCanvas { get; init; }
-	private TabTextEntry Input { get; init; }
+	private Panel EntryCanvas { get; set; }
+	private TabTextEntry Input { get; set; }
 
 	public bool IsOpen
 	{
@@ -30,16 +29,18 @@ public partial class TextChat : Panel
 		}
 	}
 
-	public TextChat()
-	{
-		Instance = this;
+	public TextChat() => Instance = this;
 
-		EntryCanvas.PreferScrollToBottom = true;
-		EntryCanvas.TryScrollToBottom();
+	protected override void OnAfterTreeRender( bool firstTime )
+	{
+		if ( !firstTime )
+			return;
 
 		Input.AddEventListener( "onsubmit", Submit );
 		Input.AddEventListener( "onblur", () => IsOpen = false );
 		Input.OnTabPressed += OnTabPressed;
+		EntryCanvas.TryScrollToBottom();
+		EntryCanvas.PreferScrollToBottom = true;
 	}
 
 	public override void Tick()

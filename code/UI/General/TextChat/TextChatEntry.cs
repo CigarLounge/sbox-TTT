@@ -9,9 +9,7 @@ public partial class TextChatEntry : Panel
 	public string Message;
 	public Color? NameColor;
 
-	private RealTimeSince _timeSinceCreation;
-
-	public TextChatEntry() => _timeSinceCreation = 0;
+	private RealTimeSince _timeSinceCreation = 0;
 
 	public override void Tick()
 	{
