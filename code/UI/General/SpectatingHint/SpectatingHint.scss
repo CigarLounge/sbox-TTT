@@ -1,5 +1,4 @@
-SpectatingHint
-{
+SpectatingHint {
     position: absolute;
     left: 50%;
     bottom: 25px;
@@ -9,20 +8,13 @@ SpectatingHint
     font-weight: 500;
     align-items: center;
 
-    .name
-    {
+    .name {
         font-size: 30px;
         font-weight: 600;
     }
 
-    .swap-panel
-    {
-        align-items: center; 
+    .swap-panel {
+        align-items: center;
         flex-direction: column;
-    }
-
-    inputglyph
-    {
-        margin: 5px;
     }
 }

@@ -1,56 +1,42 @@
 @import "/ui/Hud.scss";
 
-corpsehint
-{
+corpsehint {
     flex-direction: column;
     align-items: center;
 
-    .title
-    {
+    .title {
         font-weight: 600;
         font-size: 18px;
 
-        &.unidentified
-        {
+        &.unidentified {
             color: $tertiary;
         }
     }
 
-    .actions
-    {
+    .actions {
         flex-direction: column;
         align-items: center;
 
-        .credit-hint
-        {
+        .credit-hint {
             color: $tertiary;
             transition: all 0.1s ease-in;
 
-            &:outro
-            {
+            &:outro {
                 height: 0;
                 opacity: 0;
             }
         }
 
-        label
-        {
+        label {
             font-size: 15px;
-        }
-
-        inputglyph
-        {
-            margin: 5px;
         }
     }
 
-    .covert-panel
-    {
+    .covert-panel {
         align-items: center;
         transition: all 0.1s ease-in;
 
-        &:outro
-        {
+        &:outro {
             height: 0;
             opacity: 0;
         }
