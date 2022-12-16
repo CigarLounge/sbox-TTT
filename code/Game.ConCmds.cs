@@ -51,6 +51,16 @@ public partial class GameManager
 		player.Credits += credits;
 	}
 
+	[ConCmd.Admin( Name = "ttt_givedamage" )]
+	public static void GiveDamage( float damage )
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.TakeDamage( DamageInfo.Generic( damage ) );
+	}
+
 	[ConCmd.Admin( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{

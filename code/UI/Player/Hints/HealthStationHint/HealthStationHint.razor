@@ -1,0 +1,30 @@
+@namespace TTT.UI
+
+<root class="centered-vertical-75 text-shadow">
+    <text class="text-color-tertiary" style="font-weight: 600; justify-content: center;">
+        <text>@((int)_healthStation.StoredHealth)</text>
+        <text>Charges Remaining</text>
+    </text>
+    <div>
+        <text>Hold</text>
+        <inputglyph button="Use" />
+        <text>to receive health.</text>
+    </div>
+</root>
+
+<style>
+    HealthStationHint {
+        flex-direction: column;
+        text-align: center;
+        justify-content: space-between;
+
+        text {
+            font-size: 17px;
+        }
+
+        div {
+            align-items: center;
+            justify-content: center;
+        }
+    }
+</style>
