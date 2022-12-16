@@ -1,12 +1,22 @@
+@using Sandbox;
+@using TTT;
+
 @namespace TTT.UI
 
 <root class="opacity-heavy text-shadow">
-    <div @ref=RoleContainer class="role-container">
-        <text @ref=Role />
-    </div>
+    @if (!PlayerCamera.Target.IsValid() || !PlayerCamera.Target.IsAlive())
+        return;
 
-    <div @ref=HealthContainer class="health-container background-color-gradient">
-        <text @ref=Health />
+    @if (PlayerCamera.Target.Role is not NoneRole)
+    {
+        <div class="role-container" style="background-color: @PlayerCamera.Target.Role.Color.Hex">
+            <text>@PlayerCamera.Target.Role.Title</text>
+        </div>
+    }
+
+    <div @ref=HealthContainer
+        class="health-container background-color-gradient @(PlayerCamera.Target.Role is not NoneRole ? "left-flat" : "")">
+        <text>✚ @PlayerCamera.Target.Health.CeilToInt()</text>
     </div>
 </root>
 
