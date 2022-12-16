@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class Nameplate : EntityHintPanel
+public class Nameplate : Panel
 {
 	public readonly Player _player;
 

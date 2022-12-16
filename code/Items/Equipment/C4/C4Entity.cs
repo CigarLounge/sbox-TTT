@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -161,7 +162,7 @@ public partial class C4Entity : Prop, IEntityHint
 			UI.FullScreenHintMenu.Instance?.Open( new UI.C4ArmMenu( this ) );
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
+	Panel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
 
 	[Event.Tick.Server]
 	private void ServerTick()

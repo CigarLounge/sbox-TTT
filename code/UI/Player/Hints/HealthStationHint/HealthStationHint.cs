@@ -3,7 +3,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class HealthStationHint : EntityHintPanel
+public class HealthStationHint : Panel
 {
 	private readonly HealthStationEntity _healthStation;
 	private Label Charges { get; set; }

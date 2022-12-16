@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class C4ArmMenu : EntityHintPanel
+public class C4ArmMenu : Panel
 {
 	public int Timer { get; set; } = 45;
 

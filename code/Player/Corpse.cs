@@ -1,6 +1,7 @@
 using Sandbox;
 using Sandbox.Diagnostics;
 using Sandbox.Physics;
+using Sandbox.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -319,7 +320,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IEntityHint.CanHint( Player player ) => GameManager.Current.State is InProgress or PostRound;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
+	Panel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{

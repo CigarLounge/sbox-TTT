@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 
 namespace TTT;
 
@@ -17,9 +18,9 @@ public interface IEntityHint
 	/// <summary>
 	/// The hint we should display.
 	/// </summary>
-	UI.EntityHintPanel DisplayHint( Player player )
+	Panel DisplayHint( Player player )
 	{
-		return new UI.Hint( DisplayInfo.For( (Entity)this ).Name );
+		return new UI.Hint() { HintText = DisplayInfo.For( (Entity)this ).Name };
 	}
 
 	/// <summary>

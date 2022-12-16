@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class C4Hint : EntityHintPanel
+public class C4Hint : Panel
 {
 	private readonly C4Entity _c4;
 	private Label SubText { get; init; }

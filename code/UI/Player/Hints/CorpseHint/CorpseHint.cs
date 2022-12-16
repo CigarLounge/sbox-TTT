@@ -4,7 +4,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class CorpseHint : EntityHintPanel
+public class CorpseHint : Panel
 {
 	private readonly Corpse _corpse;
 

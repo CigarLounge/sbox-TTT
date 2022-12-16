@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 
 namespace TTT;
 
@@ -6,7 +7,7 @@ public partial class Player
 {
 	public const float MaxHintDistance = 5000f;
 
-	private static UI.EntityHintPanel _currentHintPanel;
+	private static Panel _currentHintPanel;
 	private static IEntityHint _currentHint;
 
 	private void DisplayEntityHints()

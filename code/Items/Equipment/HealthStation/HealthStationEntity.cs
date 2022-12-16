@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using System;
 
 namespace TTT;
@@ -88,7 +89,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		StoredHealth -= healAmount;
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );
+	Panel IEntityHint.DisplayHint( Player player ) => new UI.HealthStationHint( this );
 
 	bool IUse.OnUse( Entity user )
 	{

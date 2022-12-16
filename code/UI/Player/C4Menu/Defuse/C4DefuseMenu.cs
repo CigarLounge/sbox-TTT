@@ -5,7 +5,7 @@ using Sandbox.UI;
 namespace TTT.UI;
 
 [UseTemplate]
-public class C4DefuseMenu : EntityHintPanel
+public class C4DefuseMenu : Panel
 {
 	private readonly C4Entity _c4;
 
