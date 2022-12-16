@@ -1,3 +1,4 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
@@ -68,17 +69,9 @@ public partial class TextChat : Panel
 		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, string classes = "" )
+	public void AddEntry( string name, string message, Color? color = null )
 	{
-		var entry = new TextChatEntry( name, message );
-		if ( !classes.IsNullOrEmpty() )
-			entry.AddClass( classes );
-		EntryCanvas.AddChild( entry );
-	}
-
-	public void AddEntry( string name, string message, Color? color )
-	{
-		var entry = new TextChatEntry( name, message, color );
+		var entry = new TextChatEntry() { Name = name, Message = message, NameColor = color ?? Color.FromBytes( 253, 196, 24 ) };
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -152,7 +145,7 @@ public partial class TextChat : Panel
 	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
 	public static void AddInfo( string message )
 	{
-		Instance?.AddEntry( message, "", "info" );
+		Instance?.AddEntry( message, "" );
 	}
 
 	private void OnTabPressed()
@@ -165,3 +158,18 @@ public partial class TextChat : Panel
 	}
 }
 
+public partial class TabTextEntry : TextEntry
+{
+	public event Action OnTabPressed;
+
+	public override void OnButtonTyped( string button, KeyModifiers km )
+	{
+		if ( button == "tab" )
+		{
+			OnTabPressed?.Invoke();
+			return;
+		}
+
+		base.OnButtonTyped( button, km );
+	}
+}
