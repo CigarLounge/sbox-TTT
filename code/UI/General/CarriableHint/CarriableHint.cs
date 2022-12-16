@@ -15,8 +15,5 @@ public partial class CarriableHint : Panel
 		_secondaryAttackHint = player?.ActiveCarriable?.SecondaryAttackHint;
 	}
 
-	protected override int BuildHash()
-	{
-		return HashCode.Combine( _primaryAttackHint, _secondaryAttackHint );
-	}
+	protected override int BuildHash() => HashCode.Combine( _primaryAttackHint, _secondaryAttackHint );
 }
