@@ -1,0 +1,43 @@
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root class="label-holder text-shadow">
+    @if (!_player.IsValid())
+        return;
+
+    <label class="name">@(_player.Client?.Name ?? "")</label>
+    <label class="health-status" style="color: @(_healthGroup.Color.Hex)">@_healthGroup.Title</label>
+    <label class="karma-status" style="color: @(_karmaGroup.Color.Hex)">@_karmaGroup.Title</label>
+
+    @if (_player.Role is not NoneRole && _player.Role is not Innocent)
+    {
+        <label class="role" style="color: @(_player.Role.Color.Hex)">@_player.Role.Title</label>
+    }
+
+    <label class="tag" style="color: @_player.TagGroup.Color.Hex">@_player.TagGroup.Title</label>
+</root>
+
+<style>
+    Nameplate {
+        position: absolute;
+        left: 50%;
+        top: 55%;
+        transform: translateX(-50%) translateY(-50%);
+        transition: opacity 0.15s ease-out;
+        display: flex;
+        flex-direction: column;
+        font-weight: 600;
+        align-items: center;
+
+        .name {
+            font-size: 14px;
+        }
+
+        .health-status,
+        .karma-status,
+        .tag {
+            font-size: 12px;
+        }
+    }
+</style>
