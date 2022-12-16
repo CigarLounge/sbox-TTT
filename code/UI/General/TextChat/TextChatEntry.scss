@@ -1,6 +1,6 @@
 @import "/ui/Hud.scss";
 
-TextChatEntry 
+TextChatEntry
 {
     border-radius: 4px;
     flex-shrink: 0;
@@ -9,12 +9,12 @@ TextChatEntry
     transition: opacity .15s linear;
     text-shadow: 1px 1px 1px black;
 
-    &.faded 
+    &.faded
     {
         opacity: 0;
     }
 
-    .name 
+    .name
     {
         font-weight: bold;
         margin-right: 10px;
@@ -22,18 +22,18 @@ TextChatEntry
         letter-spacing: 1px;
     }
 
-    .message 
+    .message
     {
         align-items: center;
         flex-grow: 1;
         font-weight: 300;
     }
 
-    &.info 
+    &.info
     {
-        .name 
+        .name
         {
-            color: $info;
+            color: $tertiary;
         }
     }
 }

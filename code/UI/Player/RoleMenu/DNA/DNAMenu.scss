@@ -15,7 +15,7 @@ DNAMenu
         overflow: scroll;
         width: 60%;
         margin-right: 10px;
-        
+
         .empty
         {
             width: 100%;
@@ -38,7 +38,7 @@ DNAMenu
         {
             font-size: 50px;
             font-weight: 600;
-            color: $info;
+            color: $tertiary;
         }
 
         .charge-status
@@ -59,7 +59,7 @@ DNAMenu
         }
     }
 
-    DNASample 
+    DNASample
     {
         padding: 5px;
         margin: 5px;
@@ -72,7 +72,7 @@ DNAMenu
         .delete-button
         {
             font-size: 23px;
-            color: $info;
+            color: $tertiary;
             cursor: pointer;
             margin-right: 5px;
 
@@ -83,13 +83,13 @@ DNAMenu
 
             &:active
             {
-                transform: scale( 0.9 );
+                transform: scale(0.9);
             }
         }
 
         &.selected
         {
-            border-color: $info;
+            border-color: $tertiary;
         }
     }
 }

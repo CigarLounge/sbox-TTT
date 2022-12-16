@@ -32,25 +32,25 @@ ShopItem
 
         .price
         {
-            color: $info;
+            color: $tertiary;
             font-weight: bold;
             font-size: 14px;
             bottom: 5px;
         }
     }
 
-    &:hover 
+    &:hover
     {
         transform: scale(1.05);
         cursor: pointer;
     }
 
-    &:active 
+    &:active
     {
         transform: scale(1);
     }
 
-    &.cannot-purchase 
+    &.cannot-purchase
     {
         opacity: 0.5;
         transform: scale(1);

@@ -5,7 +5,7 @@ $spectator: #fcdb38;
 
 $primary: #303030;
 $secondary: #1a1a1a;
-$info: #fdc418;
+$tertiary: #fdc418;
 
 $button-primary: #ffffff !default;
 $button-primary-fg: #ffffff !default;
@@ -115,9 +115,9 @@ hud
     height: 100%;
 }
 
-.text-color-info
+.text-color-tertiary
 {
-    color: $info;
+    color: $tertiary;
 }
 
 .background-color-gradient
@@ -133,4 +133,9 @@ hud
 .background-color-secondary
 {
     background-color: $secondary;
+}
+
+.background-color-tertiary
+{
+    background-color: $tertiary;
 }

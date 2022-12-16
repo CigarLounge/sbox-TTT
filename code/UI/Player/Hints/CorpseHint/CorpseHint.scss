@@ -12,7 +12,7 @@ corpsehint
 
         &.unidentified
         {
-            color: $info;
+            color: $tertiary;
         }
     }
 
@@ -23,7 +23,7 @@ corpsehint
 
         .credit-hint
         {
-            color: $info;
+            color: $tertiary;
             transition: all 0.1s ease-in;
 
             &:outro

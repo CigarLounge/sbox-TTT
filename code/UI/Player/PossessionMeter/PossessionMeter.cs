@@ -3,10 +3,9 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class PossessionMeter : Panel
+public partial class PossessionMeter : Panel
 {
-	private Panel PercentagePanel { get; init; }
+	private Panel PercentagePanel { get; set; }
 	private readonly PropPossession _possession;
 
 	public PossessionMeter( PropPossession possession )

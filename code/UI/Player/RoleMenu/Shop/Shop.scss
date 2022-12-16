@@ -1,6 +1,6 @@
 @import "/ui/Hud.scss";
 
-Shop 
+Shop
 {
     width: 100%;
     align-items: center;
@@ -11,7 +11,7 @@ Shop
 
     .credits
     {
-        color: $info;
+        color: $tertiary;
     }
 
     .item-container
@@ -29,7 +29,7 @@ Shop
         transition: opacity 0.25s ease-out;
         opacity: 0;
 
-        &.fade-in 
+        &.fade-in
         {
             opacity: 1;
         }
