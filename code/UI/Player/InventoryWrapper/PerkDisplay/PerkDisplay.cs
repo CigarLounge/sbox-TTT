@@ -3,20 +3,15 @@ using System.Collections.Generic;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class PerkDisplay : Panel
+public partial class PerkDisplay : Panel
 {
 	private readonly Dictionary<Perk, PerkSlot> _entries = new();
 
 	public override void Tick()
 	{
-		base.Tick();
-
-		var player = PlayerCamera.Target;
-
-		foreach ( var perk in player.Perks )
+		foreach ( var perk in PlayerCamera.Target.Perks )
 		{
-			if ( !_entries.ContainsKey( perk ) && player.IsRoleKnown )
+			if ( !_entries.ContainsKey( perk ) && PlayerCamera.Target.IsRoleKnown )
 			{
 				_entries[perk] = AddPerkSlot( perk );
 			}
@@ -27,7 +22,7 @@ public class PerkDisplay : Panel
 			var perk = keyValue.Key;
 			var slot = keyValue.Value;
 
-			if ( !player.Perks.Contains( perk ) )
+			if ( !PlayerCamera.Target.Perks.Contains( perk ) )
 			{
 				_entries.Remove( perk );
 				slot?.Delete();
