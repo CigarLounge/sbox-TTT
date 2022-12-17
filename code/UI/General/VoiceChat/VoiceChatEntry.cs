@@ -5,15 +5,11 @@ using System;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class VoiceChatEntry : Panel
+public partial class VoiceChatEntry : Panel
 {
 	public Friend Friend;
 
-	private Label Name { get; init; }
-	private Image Avatar { get; init; }
-
-	private readonly WorldPanel _worldPanel;
+	private readonly WorldPanel _indicator;
 	private readonly RolePlate _rolePlate;
 	private readonly IClient _client;
 	private float _voiceLevel = 0.5f;
@@ -22,22 +18,12 @@ public class VoiceChatEntry : Panel
 
 	RealTimeSince _timeSincePlayed;
 
-	public VoiceChatEntry( Panel parent, IClient client ) : base( parent )
+	public VoiceChatEntry( IClient client )
 	{
-		Parent = parent;
-
 		_client = client;
 		Friend = new( client.SteamId );
 
-		Avatar.SetTexture( $"avatar:{client.SteamId}" );
-		Name.Text = Friend.Name;
-
-		_worldPanel = new WorldPanel();
-		_worldPanel.StyleSheet.Load( "/UI/General/VoiceChat/VoiceChatEntry.scss" );
-		_worldPanel.Add.Image( classname: "voice-icon" ).SetTexture( "ui/voicechat.png" );
-		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
-		_worldPanel.Enabled( !_client.Pawn.AsEntity().IsLocalPawn );
-
+		_indicator = new VoiceChatIndicator( _client );
 		_rolePlate = client.Pawn.AsEntity().Components.Get<RolePlate>();
 	}
 
@@ -45,7 +31,6 @@ public class VoiceChatEntry : Panel
 	{
 		_timeSincePlayed = 0;
 		_targetVoiceLevel = level;
-		Name.Text = Friend.Name;
 
 		if ( _client.IsValid() )
 			SetClass( "dead", !_client.Pawn.AsEntity().IsAlive() );
@@ -61,26 +46,26 @@ public class VoiceChatEntry : Panel
 
 		if ( timeoutInv <= 0 )
 		{
-			_worldPanel?.Delete();
+			_indicator?.Delete();
 			Delete();
 			return;
 		}
 
 		_voiceLevel = _voiceLevel.LerpTo( _targetVoiceLevel, Time.Delta * 40.0f );
 
-		if ( !_worldPanel.IsValid() || _client.Pawn is not Player player || !player.IsAlive() )
+		if ( !_indicator.IsValid() || _client.Pawn is not Player player || !player.IsAlive() )
 		{
-			_worldPanel?.Delete();
+			_indicator?.Delete();
 			return;
 		}
 
-		if ( !_worldPanel.IsEnabled() )
+		if ( !_indicator.IsEnabled() )
 			return;
 
 		var tx = player.GetBoneTransform( "head" );
 		var rolePlateOffset = _rolePlate is not null ? 27f : 20f;
 		tx.Position += Vector3.Up * rolePlateOffset + (Vector3.Up * _voiceLevel);
 		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
-		_worldPanel.Transform = tx;
+		_indicator.Transform = tx;
 	}
 }

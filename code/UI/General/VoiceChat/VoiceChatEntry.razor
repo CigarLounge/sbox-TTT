@@ -1,0 +1,43 @@
+@namespace TTT.UI
+
+<root class="rounded opacity-heavy text-shadow background-color-gradient">
+    <img src="avatar:@_client.SteamId" class="avatar" />
+    <text class="name">@_client.Name</text>
+</root>
+
+<style>
+    VoiceChatEntry {
+        flex-direction: row;
+        padding: 8px 8px;
+        margin-bottom: 5px;
+        align-items: center;
+        overflow: hidden;
+        transition: all 0.05s ease-out;
+
+        &:intro {
+            opacity: 0;
+            left: 10px;
+        }
+
+        &:outro {
+            opacity: 0;
+            left: 10px;
+        }
+
+        .avatar {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+        }
+
+        .name {
+            font-size: 16px;
+            margin-left: 10px;
+            font-weight: 500;
+        }
+
+        &.dead {
+            background: linear-gradient(#fcc82d, #c59813);
+        }
+    }
+</style>
