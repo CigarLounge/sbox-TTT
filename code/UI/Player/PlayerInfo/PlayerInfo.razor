@@ -10,7 +10,9 @@
     @if (PlayerCamera.Target.Role is not NoneRole)
     {
         <div class="role-container" style="background-color: @PlayerCamera.Target.Role.Color.Hex">
-            <text>@PlayerCamera.Target.Role.Title</text>
+            <text>
+                <text>@PlayerCamera.Target.Role.Title</text>
+            </text>
         </div>
     }
 
