@@ -76,7 +76,7 @@ public partial class InfoFeed : Panel
 	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
-		if ( Game.IsServer )
+		if ( Game.IsClient )
 		{
 			AddPlayerToPlayerEntry
 			(
