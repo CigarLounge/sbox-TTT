@@ -18,11 +18,7 @@ public partial class Radar : Perk
 	private readonly Color _defaultRadarColor = TeamExtensions.GetColor( Team.Innocents );
 	private readonly Vector3 _radarPointOffset = Vector3.Up * 45;
 
-	public Radar()
-	{
-		// We should execute as soon as the perk is equipped.
-		TimeUntilExecution = 0;
-	}
+	public Radar() => TimeUntilExecution = 0;
 
 	protected override void OnDeactivate()
 	{

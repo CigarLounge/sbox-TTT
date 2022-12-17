@@ -1,0 +1,33 @@
+@using Sandbox.UI;
+
+@namespace TTT.UI
+
+@if (_screenPos.z <= 0f)
+{
+    return;
+}
+
+<root style="left: @Length.Fraction( _screenPos.x ); 
+             top: @Length.Fraction( _screenPos.y ); 
+             background-color: @_radarData.Color.Hex;
+             box-shadow: 0 0 2px 1px black">
+    <text class=" distance-label text-shadow">@_distance</text>
+</root>
+
+<style>
+    RadarPoint {
+        position: absolute;
+        width: 8px;
+        border-radius: 100%;
+        padding: 4px;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+
+        .distance-label {
+            position: absolute;
+            top: 8px;
+            font-weight: bold;
+        }
+    }
+</style>

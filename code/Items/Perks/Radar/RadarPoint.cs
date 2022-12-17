@@ -1,48 +1,29 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RadarPoint : Panel
+public partial class RadarPoint : Panel
 {
-	private readonly Vector3 _position;
-	private Label Distance { get; set; }
+	private readonly RadarPointData _radarData;
+	private string _distance;
+	private Vector3 _screenPos;
 
 	public RadarPoint( RadarPointData data )
 	{
 		if ( WorldPoints.Instance is null )
 			return;
 
-		_position = data.Position;
+		_radarData = data;
 		WorldPoints.Instance.AddChild( this );
-
-		Style.BackgroundColor = data.Color;
-		Style.BoxShadow = new ShadowList()
-		{
-			new Shadow
-			{
-				Color = data.Color,
-				Blur = 5
-			}
-		};
 	}
 
 	public override void Tick()
 	{
-		base.Tick();
-
-		var player = Game.LocalPawn as Player;
-
-		Distance.Text = $"{player.Position.Distance( _position ).SourceUnitsToMeters():n0}m";
-
-		var screenPos = _position.ToScreen();
-		this.Enabled( screenPos.z > 0f );
-
-		if ( !this.IsEnabled() )
-			return;
-
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		_distance = $"{(Game.LocalPawn as Player).Position.Distance( _radarData.Position ).SourceUnitsToMeters():n0}m";
+		_screenPos = _radarData.Position.ToScreen();
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _distance, _screenPos );
 }
