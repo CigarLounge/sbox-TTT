@@ -1,0 +1,47 @@
+@using TTT;
+
+@namespace TTT.UI
+
+<root class="background-color-secondary">
+    <text @ref=SlotNumber class="slot-number" style="background-color: @(PlayerCamera.Target.Role.Color.Hex)">
+        <text>@((int)Carriable.Info.Slot + 1)</text>
+    </text>
+    <text>@Carriable.Info.Title</text>
+    <text class="slot-text">@Carriable.SlotText</text>
+</root>
+
+<style>
+    InventorySlot {
+        height: 35px;
+        font-size: 20px;
+        opacity: 0.5;
+        align-items: center;
+        transition: opacity 0.1s ease-out;
+        transition: height 0.1s ease-in;
+
+        .slot-number {
+            height: 100%;
+            margin-right: 8px;
+            width: 34px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .slot-text {
+            position: absolute;
+            right: 8px;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+
+        &:outro,
+        &:intro {
+            height: 0;
+            opacity: 0;
+        }
+    }
+</style>

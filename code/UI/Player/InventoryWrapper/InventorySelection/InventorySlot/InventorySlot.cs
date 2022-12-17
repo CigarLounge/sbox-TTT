@@ -1,35 +1,11 @@
-using Sandbox;
+using System;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class InventorySlot : Panel
+public partial class InventorySlot : Panel
 {
-	public Carriable Carriable { get; init; }
-	public Label SlotLabel { get; set; }
-	private Label SlotTitle { get; set; }
-	private Label SlotText { get; set; }
-
-	public InventorySlot( Panel parent, Carriable carriable ) : base( parent )
-	{
-		Parent = parent;
-		Carriable = carriable;
-
-		SlotLabel.Text = ((int)carriable.Info.Slot + 1).ToString();
-		SlotTitle.Text = carriable.Info.Title;
-		SlotText.Text = Carriable.SlotText;
-	}
-
-	public override void Tick()
-	{
-		base.Tick();
-
-		SlotLabel.Style.BackgroundColor = PlayerCamera.Target.Role?.Color;
-	}
-
-	public void UpdateSlotText( string slotText )
-	{
-		SlotText.Text = slotText;
-	}
+	public Carriable Carriable { get; set; }
+	public Panel SlotNumber { get; set; }
+	protected override int BuildHash() => HashCode.Combine( Carriable.SlotText, PlayerCamera.Target.Role.Color );
 }

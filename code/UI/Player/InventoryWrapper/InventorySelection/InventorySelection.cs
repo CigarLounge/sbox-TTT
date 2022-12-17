@@ -57,16 +57,14 @@ public class InventorySelection : Panel
 
 			var isFirst = slot == Children.First() as InventorySlot;
 			slot.SetClass( "rounded-top", isFirst );
-			slot.SlotLabel.SetClass( "rounded-top-left", isFirst );
+			slot.SlotNumber?.SetClass( "rounded-top-left", isFirst );
 
 			var isLast = slot == Children.Last() as InventorySlot;
 			slot.SetClass( "rounded-bottom", isLast );
-			slot.SlotLabel.SetClass( "rounded-bottom-left", isLast );
+			slot.SlotNumber?.SetClass( "rounded-bottom-left", isLast );
 
 			slot.SetClass( "active", slot.Carriable.IsActiveCarriable );
 			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveCarriable );
-
-			slot.UpdateSlotText( slot.Carriable.SlotText );
 		}
 
 		SortChildren( ( p1, p2 ) =>
@@ -85,7 +83,7 @@ public class InventorySelection : Panel
 
 	private InventorySlot AddInventorySlot( Carriable carriable )
 	{
-		var inventorySlot = new InventorySlot( this, carriable );
+		var inventorySlot = new InventorySlot() { Parent = this, Carriable = carriable };
 		AddChild( inventorySlot );
 		return inventorySlot;
 	}

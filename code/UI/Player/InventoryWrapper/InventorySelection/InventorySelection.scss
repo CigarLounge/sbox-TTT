@@ -1,22 +1,18 @@
-InventorySelection 
-{
+InventorySelection {
     min-width: 300px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
 
-    &.hide 
-    {
+    &.hide {
         display: none;
     }
 
-    .rounded-top-left
-    {
+    .rounded-top-left {
         border-top-left-radius: 4px;
     }
 
-    .rounded-bottom-left
-    {
+    .rounded-bottom-left {
         border-bottom-left-radius: 4px;
     }
 }
