@@ -76,13 +76,16 @@ public partial class InfoFeed : Panel
 	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
-		AddPlayerToPlayerEntry
-		(
-			player.Corpse.Finder,
-			player,
-			"found the body of",
-			$"({player.Role.Title})"
-		);
+		if ( Game.IsServer )
+		{
+			AddPlayerToPlayerEntry
+			(
+				player.Corpse.Finder,
+				player,
+				"found the body of",
+				$"({player.Role.Title})"
+			);
+		}
 	}
 
 	[GameEvent.Round.Start]
