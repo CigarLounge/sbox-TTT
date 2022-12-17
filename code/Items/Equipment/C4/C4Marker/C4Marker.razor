@@ -1,0 +1,46 @@
+@using System;
+@using Sandbox.UI;
+
+@namespace TTT.UI
+
+@if (_screenPos.z <= 0f)
+{
+    return;
+}
+
+<root style="left: @Length.Fraction( _screenPos.x ); top: @Length.Fraction( _screenPos.y )">
+    <img class="c4-image" />
+    <text class="timer-label text-shadow">@_timer</text>
+</root>
+
+<style>
+    C4Marker {
+        position: absolute;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0.75);
+        transition: opacity 0.05s ease-in;
+
+        .c4-image {
+            position: absolute;
+            background-image: url("/ui/c4-icon.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 40px;
+            height: 40px;
+        }
+
+        .timer-label {
+            position: absolute;
+            top: 15px;
+            font-weight: bold;
+            justify-content: center;
+        }
+
+        &:intro,
+        &:outro {
+            opacity: 0;
+        }
+    }
+</style>

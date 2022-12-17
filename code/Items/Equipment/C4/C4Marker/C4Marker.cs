@@ -4,12 +4,11 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class C4Marker : Panel
+public partial class C4Marker : Panel
 {
+	private Vector3 _screenPos;
+	private string _timer;
 	private readonly C4Entity _c4;
-
-	private Label Timer { get; init; }
 
 	public C4Marker( C4Entity c4 )
 	{
@@ -19,22 +18,15 @@ public class C4Marker : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		if ( !_c4.IsValid() || !_c4.IsArmed )
 		{
 			Delete();
 			return;
 		}
 
-		var screenPos = _c4.Position.ToScreen();
-		this.Enabled( screenPos.z > 0f );
-
-		if ( !this.IsEnabled() )
-			return;
-
-		Timer.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		_screenPos = _c4.Position.ToScreen();
+		_timer = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _timer, _screenPos );
 }
