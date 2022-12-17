@@ -1,0 +1,21 @@
+@inherits Sandbox.UI.WorldPanel;
+
+@namespace TTT.UI
+
+<root>
+    <text class="name text-shadow">@_prop.Owner.Client.Name</text>
+</root>
+
+<style>
+    PossessionNameplate {
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+
+        .name {
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+        }
+    }
+</style>

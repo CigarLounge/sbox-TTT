@@ -3,17 +3,14 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class PossessionNameplate : WorldPanel
+public partial class PossessionNameplate : WorldPanel
 {
-	private Label PlayerName { get; init; }
 	private readonly Prop _prop;
 
 	public PossessionNameplate( Prop prop )
 	{
-		PlayerName.SetText( prop.Owner.Client.Name );
-		SceneObject.Flags.ViewModelLayer = true;
 		_prop = prop;
+		SceneObject.Flags.ViewModelLayer = true;
 	}
 
 	[Event.Client.Frame]
