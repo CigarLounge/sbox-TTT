@@ -13,7 +13,7 @@ public partial class Player
 	/// </summary>
 	private static List<Clothing> _currentPreset;
 	/// <summary>
-	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(Client)"/> again.
+	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(IClient)"/> again.
 	/// </summary>
 	private readonly List<Clothing> _avatarClothes;
 
