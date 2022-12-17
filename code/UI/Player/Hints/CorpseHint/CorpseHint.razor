@@ -1,0 +1,58 @@
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root class="centered-vertical-75 text-shadow">
+    <text class="header" style="color: @(_corpse.Player.IsValid() ? _corpse.Player.Role.Color.Hex : "#fdc418")">
+        @(_corpse.Player?.SteamName ?? "Unidentified body")
+    </text>
+    @if (_corpse.CanSearch()) 
+    {
+        <div class="actions">
+            @if (Game.LocalPawn is TTT.Player player && player.Role.CanRetrieveCredits && player.IsAlive() && _corpse.HasCredits) {
+                <text>
+                    <text class="text-color-tertiary">Search to receive unspent credits.</text>
+                </text>
+            }
+            <div style="margin-bottom: 5px; align-items: center;">
+                <text>Press</text>
+                <inputglyph button="@Corpse.GetSearchButton()" />
+                <text>@(_corpse.Player.IsValid() ? _corpse.Player.IsConfirmedDead ? "to search." : "to confirm." : "to identify.")</text>
+            </div>
+            @if (!_corpse.Player.IsValid() || !_corpse.Player.IsConfirmedDead) {
+                <div class="covert-panel">
+                    <text>Press</text>
+                    <inputglyph button="Run" />
+                    <text>+</text>
+                    <inputglyph button="@Corpse.GetSearchButton()" />
+                    <text>to search covertly.</text>
+                </div>
+            }
+        </div>
+    }
+</root>
+
+<style>
+    corpsehint {
+        flex-direction: column;
+        align-items: center;
+
+        .header {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .actions {
+            flex-direction: column;
+            align-items: center;
+
+            label {
+                font-size: 15px;
+            }
+        }
+
+        .covert-panel {
+            align-items: center;
+        }
+    }
+</style>
