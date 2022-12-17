@@ -4,8 +4,7 @@ using System.Linq;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class VoiceChatDisplay : Panel
+public partial class VoiceChatDisplay : Panel
 {
 	public static VoiceChatDisplay Instance { get; private set; }
 
