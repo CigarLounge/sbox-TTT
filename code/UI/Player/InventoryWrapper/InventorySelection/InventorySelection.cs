@@ -6,8 +6,7 @@ using System.Linq;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class InventorySelection : Panel
+public partial class InventorySelection : Panel
 {
 	private readonly Dictionary<Carriable, InventorySlot> _entries = new();
 
