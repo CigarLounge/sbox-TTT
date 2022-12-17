@@ -1,27 +1,20 @@
+using System;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class PerkSlot : Panel
+public partial class PerkSlot : Panel
 {
-	private readonly Perk _perk;
 	private Image Icon { get; set; }
-	private Label IconText { get; set; }
-	private Label IconName { get; set; }
+	private readonly Perk _perk;
 
-	public PerkSlot( Perk perk )
+	public PerkSlot( Perk perk ) => _perk = perk;
+	protected override int BuildHash() => HashCode.Combine( _perk.SlotText );
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		_perk = perk;
-		Icon.SetTexture( perk.Info.Icon );
-		IconName.Text = perk.Info.Title;
-	}
+		if ( !firstTime )
+			return;
 
-	public override void Tick()
-	{
-		base.Tick();
-
-		IconText.Text = _perk.SlotText;
-		IconText.Enabled( !_perk.SlotText.IsNullOrEmpty() );
+		Icon.SetTexture( _perk.Info.Icon );
 	}
 }
