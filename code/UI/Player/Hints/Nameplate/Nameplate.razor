@@ -6,16 +6,18 @@
     @if (!_player.IsValid())
         return;
 
-    <label class="name">@(_player.Client?.Name ?? "")</label>
-    <label class="health-status" style="color: @(_healthGroup.Color.Hex)">@_healthGroup.Title</label>
-    <label class="karma-status" style="color: @(_karmaGroup.Color.Hex)">@_karmaGroup.Title</label>
+    <text class="name">@(_player.Client?.Name ?? "")</text>
+    <text class="health-status" style="color: @(_healthGroup.Color.Hex)">@_healthGroup.Title</text>
+    <text class="karma-status" style="color: @(_karmaGroup.Color.Hex)">@_karmaGroup.Title</text>
 
     @if (_player.Role is not NoneRole && _player.Role is not Innocent)
     {
-        <label class="role" style="color: @(_player.Role.Color.Hex)">@_player.Role.Title</label>
+        <text>
+            <text class="role" style="color: @_player.Role.Color.Hex">@_player.Role.Title</text>
+        </text>
     }
 
-    <label class="tag" style="color: @_player.TagGroup.Color.Hex">@_player.TagGroup.Title</label>
+    <text class="tag" style="color: @_player.TagGroup.Color.Hex">@_player.TagGroup.Title</text>
 </root>
 
 <style>
