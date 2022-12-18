@@ -27,7 +27,7 @@ public partial class TabMenus : Panel
 
 		var settingsButtons = new Panel();
 		settingsButtons.Add.ButtonWithIcon( "Scoreboard", "people", string.Empty, SwapToScoreboard );
-		_settingsMenu = new GeneralMenu( this, settingsButtons );
+		_settingsMenu = new GeneralMenu() { Parent = this, Buttons = settingsButtons };
 
 		_scoreboard.EnableFade( true );
 		_settingsMenu.EnableFade( false );
