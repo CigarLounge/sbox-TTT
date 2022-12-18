@@ -15,13 +15,15 @@
     </div>
     <div class="timer-wrapper">
         <text>
-            @{
+            <text>
+                @{
                 var isWaiting = TTT.GameManager.Current.State is WaitingState;
                 var isInProgress = TTT.GameManager.Current.State is InProgress;
 
                 @(isWaiting ? @$"{Utils.MinimumPlayerCount()} / {TTT.GameManager.MinPlayers}" : 
                   isInProgress ? (TTT.GameManager.Current.State as InProgress).FakeTimeFormatted : TTT.GameManager.Current.State.TimeLeftFormatted)
             }
+            </text>
         </text>
         @{
             var isTraitor = (Game.LocalPawn as TTT.Player).Team == Team.Traitors;
