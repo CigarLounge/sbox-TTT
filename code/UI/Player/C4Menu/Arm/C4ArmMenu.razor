@@ -1,0 +1,59 @@
+@using Sandbox.UI;
+@using System;
+
+@namespace TTT.UI
+
+<root class="text-shadow">
+    <div class="container background-color-gradient rounded">
+        <text class="header">C4 Arm</text>
+        <text class="timer text-color-tertiary">
+            @TimeSpan.FromSeconds( @Timer ).ToString( "mm':'ss" )
+        </text>
+        <Slider min="45" max="600" Value:bind="@Timer"></Slider>
+        <text class="wires">
+            @($"{C4Entity.GetBadWireCount( @Timer )} of the 6 wires will cause instant detonation during defusal")
+        </text>
+        <div style="justify-content: center;">
+            <button @onclick=@Arm icon="touch_app">Arm</button>
+            <button @onclick=@Pickup icon="pan_tool">Pick up</button>
+            <button @onclick=@Destroy icon="delete">Destroy</button>
+        </div>
+    </div>
+</root>
+
+<style>
+    C4ArmMenu {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        transition: transform 0.25s ease-out;
+        pointer-events: all;
+        justify-content: center;
+        z-index: 2;
+
+        .container {
+            align-self: center;
+            flex-direction: column;
+            width: 20%;
+            padding: 15px;
+            opacity: 1.2;
+
+            .header {
+                font-size: 50px;
+                font-weight: 500;
+                align-self: center;
+            }
+
+            .wires {
+                padding: 10 0 10 0;
+            }
+
+            .timer {
+                align-self: center;
+                font-size: 45px;
+                font-weight: 500;
+            }
+        }
+    }
+</style>
