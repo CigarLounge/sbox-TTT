@@ -20,7 +20,7 @@
                 var isInProgress = TTT.GameManager.Current.State is InProgress;
 
                 @(isWaiting ? @$"{Utils.MinimumPlayerCount()} / {TTT.GameManager.MinPlayers}" : 
-                  isInProgress ? (TTT.GameManager.Current.State as InProgress).FakeTimeFormatted :@$"{TTT.GameManager.Current.State.TimeLeftFormatted}")
+                  isInProgress ? (TTT.GameManager.Current.State as InProgress).FakeTimeFormatted : TTT.GameManager.Current.State.TimeLeftFormatted)
             }
         </text>
         @{
