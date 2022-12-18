@@ -16,11 +16,6 @@ public partial class HomePage : Panel
 		GeneralMenu.Instance.AddPage( new KeyBindingsPage() );
 	}
 
-	public void GoToCrosshairPage()
-	{
-		GeneralMenu.Instance.AddPage( new CrosshairPage() );
-	}
-
 	public void RockTheVote()
 	{
 		GameManager.RockTheVote();
