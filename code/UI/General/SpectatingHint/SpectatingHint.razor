@@ -1,0 +1,69 @@
+@using System;
+@using Sandbox;
+@using TTT;
+
+@namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player player || player.IsAlive()) {
+    return;
+}
+
+<root>
+    <div class="text-shadow" style="align-items: center; flex-direction: column;">
+        @if (PlayerCamera.IsSpectatingPlayer) {
+            <div class="swap-panel">
+            <text class="name" style="color: @PlayerCamera.Target?.Role?.Color.Hex">@PlayerCamera.Target?.Client?.Name</text>
+            <div style="align-items: center;">
+                <text>Press</text>
+                <inputglyph button="PrimaryAttack" />
+                <text>or</text>
+                <inputglyph button="SecondaryAttack" />
+                <text>to swap active player</text>
+            </div>
+        </div>
+        }
+
+        @if (!player.Prop.IsValid() && !PlayerCamera.IsSpectatingPlayer) {
+            <div style="align-items: center;">
+                <text>Press</text>
+                <inputglyph button="Use" />
+                <text>to spectate a player or possess a prop</text>
+            </div>
+        }
+
+        <div style="align-items: center;">
+            <text>Press</text>
+            <inputglyph button="@(player.Prop.IsValid() ? "Duck" : "Jump")" />
+            <text>@(player.Prop.IsValid() ? "to no longer possess the prop" : "to change spectating camera mode")</text>
+        </div>
+    </div>
+</root>
+
+@code {
+    protected override int BuildHash() => HashCode.Combine( Game.LocalPawn.IsAlive(), 
+                                                            (Game.LocalPawn as TTT.Player).Prop,
+                                                            PlayerCamera.IsSpectatingPlayer);
+}
+
+<style>
+    SpectatingHint {
+    position: absolute;
+    left: 50%;
+    bottom: 25px;
+    transform: translateX(-50%);
+    flex-direction: column;
+    font-size: 17px;
+    font-weight: 500;
+    align-items: center;
+
+    .name {
+        font-size: 30px;
+        font-weight: 600;
+    }
+
+    .swap-panel {
+        align-items: center;
+        flex-direction: column;
+    }
+}
+</style>
