@@ -1,0 +1,32 @@
+@namespace TTT.UI
+
+<root @onclick=@Defuse>
+    <text class="number"></text>
+    <div class="line" style="background-color: @Color.Hex; height: @(IsCut ? 40 : 80)" />
+</root>
+
+<style>
+    Wire {
+        transition: transform 0.1s ease-in-out;
+        min-height: 80px;
+        flex-direction: column;
+        width: 14px;
+
+        .number {
+            text-align: center;
+        }
+
+        .line {
+            width: 13px;
+            box-shadow: 0px 0px 10px black;
+        }
+
+        &:hover {
+            transform: scale(1.2);
+        }
+
+        &:active {
+            transform: scale(1.1);
+        }
+    }
+</style>

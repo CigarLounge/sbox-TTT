@@ -1,23 +1,24 @@
+using System;
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class Wire : Panel
+public partial class Wire : Panel
 {
-	private Label Number { get; set; }
-	private Panel Line { get; set; }
-	private readonly int _height = 80;
+	public C4Entity C4 { get; set; }
+	public int Number { get; set; }
+	public Color Color { get; set; }
+	private bool IsCut { get; set; }
 
-	public Wire( int num, Color color )
-	{
-		Number.Text = $"{num}";
-		Line.Style.BackgroundColor = color;
-		Line.Style.Height = _height;
-	}
+	protected override int BuildHash() => HashCode.Combine( IsCut );
 
-	public void Cut()
+	private void Defuse()
 	{
-		Line.Style.Height = _height / 2;
+		if ( C4.IsValid() && C4.IsArmed )
+		{
+			IsCut = true;
+			C4Entity.Defuse( Number, C4.NetworkIdent );
+		}
 	}
 }

@@ -1,7 +1,6 @@
 @import "/ui/Hud.scss";
 
-TabMenus 
-{  
+TabMenus {
     pointer-events: all;
     width: 100%;
     height: 100%;
@@ -10,13 +9,11 @@ TabMenus
     bottom: -25px;
     z-index: 1;
 
-    &.show
-    {
+    &.show {
         opacity: 1;
     }
 
-    .fade-in 
-    {
+    .fade-in {
         bottom: 25px;
         opacity: 0.985;
     }
