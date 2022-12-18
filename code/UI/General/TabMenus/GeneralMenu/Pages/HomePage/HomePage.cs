@@ -1,14 +1,11 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class HomePage : Panel
 {
-	private Button ForceSpectatorButton { get; init; }
-	private Button RockTheVoteButton { get; init; }
-
 	public void GoToRoundSummaryPage()
 	{
 		GeneralMenu.Instance.AddPage( new RoundSummaryPage() );
@@ -24,16 +21,6 @@ public partial class HomePage : Panel
 		GeneralMenu.Instance.AddPage( new CrosshairPage() );
 	}
 
-	public override void Tick()
-	{
-		base.Tick();
-
-		var player = Game.LocalPawn as Player;
-
-		ForceSpectatorButton.Text = $"Force Spectator Mode - {(player.IsForcedSpectator ? "Enabled" : "Disabled")}";
-		RockTheVoteButton.SetClass( "inactive", Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) );
-	}
-
 	public void RockTheVote()
 	{
 		GameManager.RockTheVote();
@@ -42,5 +29,10 @@ public partial class HomePage : Panel
 	public void ToggleForceSpectator()
 	{
 		GameManager.ToggleForceSpectator();
+	}
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( (Game.LocalPawn as Player).IsForcedSpectator, Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) );
 	}
 }

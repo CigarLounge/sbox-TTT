@@ -1,0 +1,26 @@
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root>
+    <button icon="leaderboard" @onclick=@GoToRoundSummaryPage>Round Summary</button>
+    <br />
+    <button icon="videocam" @onclick=@ToggleForceSpectator>Force Spectator Mode - @((Game.LocalPawn as
+        TTT.Player).IsForcedSpectator ? "Enabled" : "Disabled")</button>
+    <br />
+    <button icon="how_to_vote" @onclick=@RockTheVote
+        class="@(Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) ? "inactive" : "")">Rock The Vote</button>
+    <br />
+    <!-- <button icon="adjust" onclick="GoToCrosshairPage()">Crosshair Customization</button>
+    <br /> -->
+    <button icon="keyboard" @onclick=@GoToKeyBindingsPage>Keybindings</button>
+    <br />
+</root>
+
+<style>
+    HomePage {
+        flex-direction: column;
+        overflow: scroll;
+        width: 100%;
+    }
+</style>
