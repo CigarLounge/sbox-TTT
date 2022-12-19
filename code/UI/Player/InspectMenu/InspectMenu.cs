@@ -93,9 +93,9 @@ public partial class InspectMenu : Panel
 		}
 	}
 
-	private InspectEntry AddInspectEntry( string iconText, string activeText, string imagePath )
+	private InspectEntry AddInspectEntry( string iconText, string activeText, string iconPath )
 	{
-		var entry = new InspectEntry( IconsContainer, iconText, activeText, imagePath );
+		var entry = new InspectEntry() { Parent = IconsContainer, IconText = iconText, ActiveText = activeText, IconPath = iconPath };
 		_inspectionEntries.Add( entry );
 		return entry;
 	}
@@ -128,13 +128,13 @@ public partial class InspectMenu : Panel
 		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Game.LocalPawn.IsAlive() );
 
 		var timeSinceDeath = player.TimeSinceDeath.Relative.TimerString();
-		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
+		_timeSinceDeath.IconText = $"{timeSinceDeath}";
 		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 		if ( _dna.IsEnabled() )
 		{
-			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+			_dna.IconText = $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}";
 			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
 

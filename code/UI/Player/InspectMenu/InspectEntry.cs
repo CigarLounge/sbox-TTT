@@ -1,25 +1,14 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class InspectEntry : Panel
+public partial class InspectEntry : Panel
 {
 	public string ActiveText { get; set; }
-	private Image InspectIcon { get; init; }
-	private Label IconText { get; init; }
-
-	public InspectEntry( Panel parent, string iconText, string activeText, string imagePath )
-	{
-		Parent = parent;
-		IconText.Text = iconText;
-		ActiveText = activeText;
-		InspectIcon.Style.BackgroundImage = Texture.Load( FileSystem.Mounted, imagePath, false ) ?? Texture.Load( FileSystem.Mounted, $"/ui/none.png" );
-	}
-
-	public void SetImageText( string text )
-	{
-		IconText.Text = text;
-	}
+	public string IconText { get; set; }
+	public string IconPath { get; set; }
+	protected override int BuildHash() => HashCode.Combine( IconText );
+	private string Icon => Texture.Load( FileSystem.Mounted, IconPath, false ) is not null ? IconPath : $"/ui/none.png";
 }
