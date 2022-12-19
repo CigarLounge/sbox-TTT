@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class QuickChat : Panel
+public partial class QuickChat : Panel
 {
 	public static QuickChat Instance { get; private set; }
 
@@ -29,15 +28,16 @@ public class QuickChat : Panel
 		"Anyone still alive?"
 	};
 
-	public QuickChat()
+	public QuickChat() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
 
 		var i = 0;
 		foreach ( Label label in Children )
-		{
 			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
-		}
 	}
 
 	public override void Tick()
