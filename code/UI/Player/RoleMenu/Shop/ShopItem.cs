@@ -4,10 +4,8 @@ namespace TTT.UI;
 
 public partial class ShopItem : Panel
 {
-	public ItemInfo ItemInfo { get; private set; }
-	public bool CanPurchase { get; private set; }
-
-	public ShopItem( ItemInfo item ) => ItemInfo = item;
+	public ItemInfo ItemInfo { get; set; }
+	public bool CanPurchase { get; set; }
 	public void UpdateAvailability( bool canPurchase ) => CanPurchase = canPurchase;
 	protected override int BuildHash() => HashCode.Combine( CanPurchase );
 }
