@@ -35,15 +35,15 @@ public partial class RoleButtonMarker : Panel
 			return;
 		}
 
-		_screenPos = _roleButton.WorldSpaceBounds.Center.ToScreen();
-		Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( _roleButton.Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
-
 		if ( !this.IsEnabled() )
 		{
 			if ( Player.FocusedButton == _roleButton )
 				Player.FocusedButton = null;
 			return;
 		}
+
+		_screenPos = _roleButton.WorldSpaceBounds.Center.ToScreen();
+		Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( _roleButton.Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
 
 		if ( IsLookingAtRoleButton() && player.Position.Distance( _roleButton.Position ) <= _maxViewDistance )
 			Player.FocusedButton ??= _roleButton;
