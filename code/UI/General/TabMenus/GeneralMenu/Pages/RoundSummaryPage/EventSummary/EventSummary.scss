@@ -1,9 +1,9 @@
 @import "/ui/Hud.scss";
 
-EventSummary
-{
-    .header
-    {
+EventSummary {
+    height: 55%;
+
+    .header {
         margin-top: 3px;
         background-color: #aaaaaa15;
         padding: 3 8 3 8;
@@ -12,50 +12,41 @@ EventSummary
         flex-shrink: 0;
     }
 
-    .events
-    {
+    .events {
         flex-direction: column;
         overflow: scroll;
         height: 85%;
 
-        .event
-        {
+        .event {
             width: 100%;
             padding: 8px;
             flex-shrink: 0;
 
-            .icon
-            {
+            .icon {
                 width: 10%;
             }
 
-            .time
-            {
+            .time {
                 width: 10%;
             }
 
-            .desc
-            {
+            .desc {
                 width: 80%;
             }
 
-            &:nth-child( odd )
-            {
+            &:nth-child(odd) {
                 background-color: #0a0a0a66;
             }
-        
-            &:nth-child( even )
-            {
+
+            &:nth-child(even) {
                 background-color: #4b4b4b15;
             }
-        
-            &.me:nth-child(1)
-            {
+
+            &.me:nth-child(1) {
                 background-color: #f2b42d1a;
             }
-        
-            &:last-child
-            {
+
+            &:last-child {
                 border-bottom-left-radius: 4px;
                 border-bottom-right-radius: 4px;
             }
