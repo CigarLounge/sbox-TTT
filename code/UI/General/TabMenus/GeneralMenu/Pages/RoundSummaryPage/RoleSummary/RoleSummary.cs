@@ -3,19 +3,22 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RoleSummary : Panel
+public partial class RoleSummary : Panel
 {
 	public static RoleSummary Instance;
 
-	private Panel Empty { get; init; }
-	private Panel Innocents { get; init; }
-	private Panel Detectives { get; init; }
-	private Panel Traitors { get; init; }
+	private Panel Empty { get; set; }
+	private Panel Innocents { get; set; }
+	private Panel Detectives { get; set; }
+	private Panel Traitors { get; set; }
 
-	public RoleSummary()
+	public RoleSummary() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
+
 		Init();
 	}
 

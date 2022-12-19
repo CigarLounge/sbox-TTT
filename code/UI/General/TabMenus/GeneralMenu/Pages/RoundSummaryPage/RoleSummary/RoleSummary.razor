@@ -1,0 +1,22 @@
+@namespace TTT.UI
+
+<root>
+    <br />
+    <div @ref="Empty" class="disabled empty">
+        <text>No previous round history found... consider playing a round!</text>
+    </div>
+    <div @ref="Innocents" style="width: 50%; max-height: 95%;" />
+    <div style="width: 10px;" />
+    <div style="flex-direction: column; width: 50%; max-height: 95%;">
+        <div @ref="Detectives" />
+        <div @ref="Traitors" />
+    </div>
+</root>
+
+<style>
+    RoleSummary {
+        .empty {
+            min-width: 100%;
+        }
+    }
+</style>
