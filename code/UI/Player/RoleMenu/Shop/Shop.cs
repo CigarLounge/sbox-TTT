@@ -35,7 +35,7 @@ public partial class Shop : Panel
 		shopItem.AddEventListener( "onmouseout", () => { _selectedItem = null; } );
 		shopItem.AddEventListener( "onclick", () =>
 		{
-			if ( shopItem.IsDisabled )
+			if ( !shopItem.CanPurchase )
 				return;
 
 			Player.PurchaseItem( itemInfo.ResourceId );

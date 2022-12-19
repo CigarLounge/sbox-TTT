@@ -44,7 +44,7 @@ public partial class InspectMenu : Panel
 		if ( player.LastAttackerWeaponInfo is not null )
 			AddInspectEntry( $"{player.LastAttackerWeaponInfo.Title}",
 			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
-			player.LastAttackerWeaponInfo.Icon.ResourcePath );
+			player.LastAttackerWeaponInfo.IconPath );
 
 		if ( player.KilledWithHeadShot )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
@@ -78,7 +78,7 @@ public partial class InspectMenu : Panel
 		if ( !_corpse.Perks.IsNullOrEmpty() )
 		{
 			foreach ( var perk in _corpse.Perks )
-				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.Icon.ResourcePath );
+				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.IconPath );
 		}
 
 		foreach ( var entry in _inspectionEntries )
