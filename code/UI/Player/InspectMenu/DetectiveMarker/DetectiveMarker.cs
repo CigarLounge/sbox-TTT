@@ -1,13 +1,14 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class DetectiveMarker : Panel
+public partial class DetectiveMarker : Panel
 {
 	public readonly Vector3 CorpseLocation;
-	private Label Distance { get; set; }
+	private string _distance;
+	private Vector3 _screenPos;
 	private TimeSince _timeSinceCreation;
 
 	public DetectiveMarker( Vector3 corpseLocation )
@@ -19,26 +20,17 @@ public class DetectiveMarker : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
 		if ( _timeSinceCreation >= 30 )
 		{
 			Delete();
 			return;
 		}
 
-		var player = Game.LocalPawn as Player;
-		Distance.Text = $"{player.Position.Distance( CorpseLocation ).SourceUnitsToMeters():n0}m";
-
-		var screenPos = CorpseLocation.ToScreen();
-		this.Enabled( screenPos.z > 0f );
-
-		if ( !this.IsEnabled() )
-			return;
-
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		_distance = $"{(Game.LocalPawn as Player).Position.Distance( CorpseLocation ).SourceUnitsToMeters():n0}m";
+		_screenPos = CorpseLocation.ToScreen();
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _distance, _screenPos );
 
 	[GameEvent.Player.Killed]
 	private void OnPlayerKilled( Player player )
