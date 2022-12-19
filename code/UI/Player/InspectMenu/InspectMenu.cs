@@ -1,11 +1,11 @@
 using Sandbox;
 using Sandbox.Diagnostics;
 using Sandbox.UI;
+using System;
 using System.Collections.Generic;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class InspectMenu : Panel
 {
 	private readonly Corpse _corpse;
@@ -15,24 +15,19 @@ public partial class InspectMenu : Panel
 	private InspectEntry _timeSinceDeath;
 	private InspectEntry _dna;
 
-	private Image PlayerAvatar { get; init; }
-	private Label RoleName { get; init; }
-	private Label PlayerName { get; init; }
-	private Panel IconsContainer { get; init; }
-	private Button CallDetectiveButton { get; init; }
-	private Label ActiveText { get; init; }
+	private Panel IconsContainer { get; set; }
+	private string _activeIconText;
 
 	public InspectMenu( Corpse corpse )
 	{
 		Assert.NotNull( corpse );
-
 		_corpse = corpse;
-		var player = corpse.Player;
+	}
 
-		PlayerAvatar.SetTexture( $"avatar:{player.SteamId}" );
-		PlayerName.Text = player.SteamName;
-		RoleName.Text = player.Role.Title;
-		RoleName.Style.FontColor = player.Role.Color;
+	protected override void OnAfterTreeRender( bool firstTime )
+	{
+		if ( !firstTime )
+			return;
 
 		SetupInspectIcons();
 	}
@@ -122,12 +117,7 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		var player = _corpse.Player;
-
-		CallDetectiveButton.Enabled( player.IsConfirmedDead );
-		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Game.LocalPawn.IsAlive() );
-
-		var timeSinceDeath = player.TimeSinceDeath.Relative.TimerString();
+		var timeSinceDeath = _corpse.Player.TimeSinceDeath.Relative.TimerString();
 		_timeSinceDeath.IconText = $"{timeSinceDeath}";
 		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
@@ -138,12 +128,10 @@ public partial class InspectMenu : Panel
 			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
 
-		var isShowing = _selectedInspectEntry is not null;
-		ActiveText.SetClass( "fade-in", isShowing );
-
-		if ( isShowing )
-			ActiveText.Text = _selectedInspectEntry.ActiveText;
+		_activeIconText = _selectedInspectEntry?.ActiveText;
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive() );
 
 	// Called from UI panel
 	public void CallDetective()

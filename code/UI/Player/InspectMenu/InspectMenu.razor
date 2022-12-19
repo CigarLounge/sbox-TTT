@@ -1,0 +1,102 @@
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root class="text-shadow">
+    <div class="inspect-container">
+        <div style="flex-direction: column">
+            <div class="header-panel">
+                <img src="avatar:@_corpse.Player.SteamId" class="avatar-image box-shadow" />
+                <text class="role-label" style="color: @_corpse.Player.Role.Color.Hex">@_corpse.Player.Role.Title</text>
+                <text class="player-label">@_corpse.Player.SteamName</text>
+            </div>
+            <div>
+                @if (_corpse.Player.IsConfirmedDead && Game.LocalPawn.IsAlive())
+                {
+                    <button 
+                        @onclick=@CallDetective icon="search" 
+                        class="call-detective @(_corpse.HasCalledDetective ? "inactive" : "")">
+                        @("Call Detective")
+                    </button>
+                }
+            </div>
+        </div>
+        <div @ref="IconsContainer" class="icons-container"></div>
+        <text class="active-text @(_selectedInspectEntry is not null ? "fade-in" : "")">
+            @_activeIconText
+        </text>
+    </div>
+</root>
+
+<style>
+    InspectMenu {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: all;
+        text-align: center;
+        z-index: 2;
+
+        .inspect-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.25s ease-out;
+
+            .header-panel {
+                flex-direction: row;
+                align-items: center;
+
+                .avatar-image {
+                    width: 80px;
+                    height: 80px;
+                    margin: 10px;
+                    border-radius: 4px;
+                }
+
+                .role-label {
+                    font-size: 50px;
+                    font-weight: 500;
+                    margin: 10px;
+                }
+
+                .player-label {
+                    font-size: 50px;
+                    font-weight: 500;
+                    margin: 10px;
+                }
+            }
+
+            .call-detective {
+                position: absolute;
+                top: -10px;
+            }
+
+            .icons-container {
+                max-width: 50%;
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                margin: 25px;
+            }
+
+            .active-text {
+                height: 1px;
+                width: 25%;
+                margin: 25px;
+                font-size: 18px;
+                transition: opacity 0.25s ease-out;
+                opacity: 0;
+                justify-content: center;
+
+                &.fade-in {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+</style>
