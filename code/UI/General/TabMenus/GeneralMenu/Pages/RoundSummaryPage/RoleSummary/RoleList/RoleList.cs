@@ -6,19 +6,18 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RoleList : Panel
+public partial class RoleList : Panel
 {
-	private Panel Header { get; init; }
-	private Label Role { get; init; }
-	private Panel PlayersContainer { get; init; }
+	public Role Role { get; set; }
+	public List<Player> Players { get; set; }
+	private Panel PlayersContainer { get; set; }
 
-	public RoleList( Role role, List<Player> players )
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Header.Style.BackgroundColor = role.Color;
-		Role.Text = $"{role.Title} - {players.Count}";
+		if ( !firstTime )
+			return;
 
-		foreach ( var player in players )
+		foreach ( var player in Players )
 			AddPlayer( player );
 	}
 
