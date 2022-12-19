@@ -4,34 +4,24 @@ using System;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RoleButtonPoint : Panel
+public partial class RoleButtonMarker : Panel
 {
 	private const int CenterPercent = 50;
 	private readonly float _minViewDistance = 512;
 	private readonly float _maxViewDistance = 1024;
-	private readonly float _focusSize = 2.5f;
+	private readonly float _focusSize = 2f;
 
-	private Label Pointer { get; set; }
-	private Label Description { get; set; }
 	private readonly RoleButton _roleButton;
+	private readonly RoleInfo _roleInfo;
+	private Vector3 _screenPos;
 
-	public RoleButtonPoint( RoleButton roleButton )
+	public RoleButtonMarker( RoleButton roleButton )
 	{
 		_roleButton = roleButton;
+		_roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.RoleName );
 		_maxViewDistance = roleButton.Radius;
 		_minViewDistance = Math.Min( _minViewDistance, _maxViewDistance / 2 );
-
 		Game.RootPanel.AddChild( this );
-
-		var roleInfo = GameResource.GetInfo<RoleInfo>( _roleButton.RoleName );
-		if ( roleInfo is not null )
-		{
-			Pointer.Style.TextStrokeColor = roleInfo.Color;
-			Pointer.Style.TextStrokeWidth = 2f;
-		}
-
-		Description.Text = roleButton.Description;
 	}
 
 	public override void Tick()
@@ -45,13 +35,7 @@ public class RoleButtonPoint : Panel
 			return;
 		}
 
-		var screenPos = _roleButton.Position.ToScreen();
-
-		this.Enabled( screenPos.z > 0f );
-		this.Enabled( !_roleButton.IsDisabled );
-
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		_screenPos = _roleButton.WorldSpaceBounds.Center.ToScreen();
 		Style.Opacity = Math.Clamp( 1f - (player.Position.Distance( _roleButton.Position ) - _minViewDistance) / (_maxViewDistance - _minViewDistance), 0f, 1f );
 
 		if ( !this.IsEnabled() )
@@ -61,8 +45,6 @@ public class RoleButtonPoint : Panel
 			return;
 		}
 
-		SetClass( "focus", Player.FocusedButton == _roleButton );
-
 		if ( IsLookingAtRoleButton() && player.Position.Distance( _roleButton.Position ) <= _maxViewDistance )
 			Player.FocusedButton ??= _roleButton;
 		else if ( Player.FocusedButton == _roleButton )
@@ -71,7 +53,12 @@ public class RoleButtonPoint : Panel
 
 	public bool IsLookingAtRoleButton()
 	{
+		if ( Style.Left is null || Style.Top is null )
+			return false;
+
 		return Style.Left.Value.Value > CenterPercent - _focusSize && Style.Left.Value.Value < CenterPercent + _focusSize
 			&& Style.Top.Value.Value > CenterPercent - _focusSize * Screen.Aspect && Style.Top.Value.Value < CenterPercent + _focusSize * Screen.Aspect;
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _screenPos, _roleButton.IsDisabled );
 }

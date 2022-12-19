@@ -57,7 +57,7 @@ public class Scout : Weapon
 		base.DestroyHudElements();
 
 		Camera.FieldOfView = _defaultFOV;
-		_sniperScopePanel.Delete( true );
+		_sniperScopePanel?.Delete( true );
 	}
 
 	private void SetScoped( bool isScoped )

@@ -1,0 +1,46 @@
+@using Sandbox.UI;
+
+@namespace TTT.UI
+
+@if (_screenPos.z <= 0f || _roleButton.IsDisabled)
+{
+    return;
+}
+
+<root class="@(Player.FocusedButton == _roleButton ? "focus" : "")"
+    style="left: @Length.Fraction( _screenPos.x ); top: @Length.Fraction( _screenPos.y )">
+    <text class="pointer" style="text-stroke: 2px @_roleInfo.Color.Hex" />
+    <text class="text-shadow">@_roleButton.Description</text>
+</root>
+
+<style>
+    RoleButtonMarker {
+        position: absolute;
+        margin-left: -15px;
+        margin-top: -15px;
+        opacity: 0.5;
+        font-size: 14px;
+        transform: scale(0.95);
+        align-items: center;
+
+        .pointer {
+            font-family: MaterialIcons;
+            font-size: 38px;
+            content: "swipe_up";
+        }
+
+        .pointer,
+        text {
+            opacity: 0.3;
+        }
+
+        &.focus {
+            transform: scale(1);
+
+            .pointer,
+            text {
+                opacity: 1;
+            }
+        }
+    }
+</style>

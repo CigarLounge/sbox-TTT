@@ -34,7 +34,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 			Player.RoleButtons = GetRoleButtons();
 
 			foreach ( var roleButton in Player.RoleButtons )
-				Player.RoleButtonPoints.Add( new UI.RoleButtonPoint( roleButton ) );
+				Player.RoleButtonMarkers.Add( new UI.RoleButtonMarker( roleButton ) );
 
 			return;
 		}

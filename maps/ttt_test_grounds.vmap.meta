@@ -2,5 +2,6 @@
   "cloud_packages": [],
   "game_packages": [
     "matt.ttt"
-  ]
+  ],
+  "addon_packages": []
 }
