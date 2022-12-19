@@ -8,15 +8,12 @@ namespace TTT.UI;
 
 public partial class InspectMenu : Panel
 {
+	private Panel IconsContainer { get; set; }
 	private readonly Corpse _corpse;
 	private InspectEntry _selectedInspectEntry;
-
 	private readonly List<InspectEntry> _inspectionEntries = new();
 	private InspectEntry _timeSinceDeath;
 	private InspectEntry _dna;
-
-	private Panel IconsContainer { get; set; }
-	private string _activeIconText;
 
 	public InspectMenu( Corpse corpse )
 	{
@@ -127,11 +124,12 @@ public partial class InspectMenu : Panel
 			_dna.IconText = $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}";
 			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
-
-		_activeIconText = _selectedInspectEntry?.ActiveText;
 	}
 
-	protected override int BuildHash() => HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive() );
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive(), _selectedInspectEntry );
+	}
 
 	// Called from UI panel
 	public void CallDetective()

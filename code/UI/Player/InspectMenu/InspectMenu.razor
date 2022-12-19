@@ -23,7 +23,7 @@
         </div>
         <div @ref="IconsContainer" class="icons-container"></div>
         <text class="active-text @(_selectedInspectEntry is not null ? "fade-in" : "")">
-            @_activeIconText
+            @_selectedInspectEntry?.ActiveText
         </text>
     </div>
 </root>
