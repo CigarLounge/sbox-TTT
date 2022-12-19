@@ -4,17 +4,20 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class EventSummary : Panel
+public partial class EventSummary : Panel
 {
 	public static EventSummary Instance;
 
-	private Panel Header { get; init; }
-	private Panel Events { get; init; }
+	private Panel Header { get; set; }
+	private Panel Events { get; set; }
 
-	public EventSummary()
+	public EventSummary() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
+
 		Init();
 	}
 
