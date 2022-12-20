@@ -1,0 +1,74 @@
+@using System.Linq;
+
+@namespace TTT.UI
+
+@if (!Players.Any())
+{
+    return;
+}
+
+<root class="text-shadow @Status.ToStringFast()">
+    <div class="header opacity-medium rounded-top">
+        <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast()</text>
+        <text class="stat">Karma</text>
+        <text class="stat">Score</text>
+        <text class="stat">Ping</text>
+    </div>
+    <div style="flex-direction: column;">
+        @foreach (var player in Players)
+        {
+            <ScoreboardEntry @Player=@player />
+        }
+    </div>
+</root>
+
+<style>
+    ScoreboardGroup {
+        display: flex;
+        flex-direction: column;
+        margin-top: 15px;
+        flex-shrink: 0;
+        flex-grow: 0;
+
+        .header {
+            height: 25px;
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            align-items: center;
+            padding: 8px;
+        }
+
+        .stat {
+            width: 125px;
+        }
+
+        &.alive {
+            .header {
+                background-color: #17ad44;
+            }
+        }
+
+        &.missing {
+            .header {
+                background-color: #50754f;
+            }
+        }
+
+        &.dead {
+            .header {
+                background-color: #c65b3a;
+            }
+        }
+
+        &.spectator {
+            .header {
+                background-color: #fcdb38;
+            }
+        }
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+</style>

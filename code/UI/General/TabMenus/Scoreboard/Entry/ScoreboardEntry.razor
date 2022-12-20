@@ -3,23 +3,18 @@
 
 @namespace TTT.UI
 
-@if (Client.Pawn is not TTT.Player player)
-{
-    return;
-}
-
 @{
-    var backgroundColor = player.Role is not NoneRole and not Innocent
-            ? $"background-color: {player.Role.Color.WithAlpha(0.10f).Hex}"
+    var backgroundColor = Player.Role is not NoneRole and not Innocent
+            ? $"background-color: {Player.Role.Color.WithAlpha(0.10f).Hex}"
             : $"background-color: #4b4b4b15";
-    <root @onclick=@OnClick class="text-shadow @(Client == Game.LocalClient ? "local" : "")" style="@backgroundColor">
+    <root @onclick=@OnClick class="text-shadow @(Player == Game.LocalPawn ? "local" : "")" style="@backgroundColor">
         <div class="entry">
-            <img src="avatar:@Client.SteamId" class="avatar rounded" />
-            <text class="name-label">@Client.Name</text>
+            <img src="avatar:@Player.SteamId" class="avatar rounded" />
+            <text class="name-label">@Player.SteamName</text>
             <text @ref="Tag" class="tag-label"></text>
-            <text class="stat">@MathF.Round( player.BaseKarma ).ToString()</text>
-            <text class="stat">@player.Score.ToString()</text>
-            <text class="stat">@(Client.IsBot ? "BOT" : Client.Ping.ToString())</text>
+            <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
+            <text class="stat">@Player.Score.ToString()</text>
+            <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
         </div>
     </root>
 }

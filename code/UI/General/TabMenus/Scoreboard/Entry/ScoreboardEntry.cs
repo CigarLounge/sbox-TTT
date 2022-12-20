@@ -7,8 +7,7 @@ namespace TTT.UI;
 
 public partial class ScoreboardEntry : Panel
 {
-	public PlayerStatus PlayerStatus;
-	public IClient Client { get; set; }
+	public Player Player { get; set; }
 
 	private static readonly ColorGroup[] _tagGroups = new ColorGroup[]
 	{
@@ -40,15 +39,14 @@ public partial class ScoreboardEntry : Panel
 
 	protected override int BuildHash()
 	{
-		var player = Client.Pawn as Player;
-		return !player.IsValid() ? -1 :
-				HashCode.Combine(
-					player.BaseKarma,
-					player.Score,
-					player.Role,
-					Client.IsBot,
-					Client.Ping
-				);
+		return HashCode.Combine
+		(
+			Player.BaseKarma,
+			Player.Score,
+			Player.Role,
+			Player.Client.IsBot,
+			Player.Client.Ping
+		);
 	}
 
 	private void SetTag( ColorGroup tagGroup )
@@ -61,15 +59,15 @@ public partial class ScoreboardEntry : Panel
 
 		Tag.Text = tagGroup.Title;
 		Tag.Style.FontColor = tagGroup.Color;
-		(Client.Pawn as Player).TagGroup = tagGroup;
+		Player.TagGroup = tagGroup;
 	}
 
 	private void ResetTag()
 	{
 		Tag.Text = string.Empty;
 
-		if ( Client.IsValid() && Client.Pawn.IsValid() )
-			(Client.Pawn as Player).TagGroup = default;
+		if ( Player.IsValid() )
+			Player.TagGroup = default;
 	}
 
 	[Event.Entity.PostCleanup]
