@@ -30,16 +30,7 @@ public class Scoreboard : Panel
 	{
 		var scoreboardGroup = GetScoreboardGroup( client );
 		var scoreboardEntry = scoreboardGroup.AddEntry( client );
-
-		var pawn = client.Pawn.AsEntity();
-		if ( !pawn.IsLocalPawn && pawn.IsAlive() )
-		{
-			scoreboardEntry.AddEventListener( "onclick", scoreboardEntry.OnClick );
-			scoreboardEntry.Style.Cursor = "pointer";
-		}
-
 		scoreboardGroup.GroupMembers++;
-
 		_entries.Add( client, scoreboardEntry );
 	}
 
@@ -56,10 +47,6 @@ public class Scoreboard : Panel
 		{
 			RemoveClient( client );
 			AddClient( client );
-		}
-		else
-		{
-			panel.Update();
 		}
 
 		foreach ( var value in _scoreboardGroups.Values )

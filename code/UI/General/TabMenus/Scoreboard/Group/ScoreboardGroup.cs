@@ -21,12 +21,12 @@ public class ScoreboardGroup : Panel
 
 	public ScoreboardEntry AddEntry( IClient client )
 	{
-		var scoreboardEntry = new ScoreboardEntry( Content, client )
+		var scoreboardEntry = new ScoreboardEntry()
 		{
+			Parent = Content,
+			Client = client,
 			PlayerStatus = GroupStatus
 		};
-
-		scoreboardEntry.Update();
 
 		return scoreboardEntry;
 	}
