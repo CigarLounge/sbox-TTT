@@ -11,7 +11,7 @@
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
             <text class="name">@Player.SteamName</text>
-            <text @ref="Tag"></text>
+            <text @ref=Tag />
             <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
             <text class="stat">@Player.Score.ToString()</text>
             <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
@@ -50,6 +50,7 @@
             .stat {
                 width: 125px;
                 font-weight: 700;
+                justify-content: center;
             }
 
             &:last-child {

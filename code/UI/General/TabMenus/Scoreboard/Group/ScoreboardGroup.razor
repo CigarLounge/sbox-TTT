@@ -9,7 +9,7 @@
 
 <root class="text-shadow @Status.ToStringFast()">
     <div class="header opacity-medium rounded-top">
-        <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast()</text>
+        <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast() - @Players.Count</text>
         <text class="stat">Karma</text>
         <text class="stat">Score</text>
         <text class="stat">Ping</text>
@@ -41,6 +41,7 @@
 
         .stat {
             width: 125px;
+            justify-content: center;
         }
 
         &.alive {
