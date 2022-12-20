@@ -41,6 +41,7 @@ public partial class ScoreboardEntry : Panel
 	{
 		return HashCode.Combine
 		(
+			Player.SteamId,
 			Player.BaseKarma,
 			Player.Score,
 			Player.Role,

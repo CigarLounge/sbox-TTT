@@ -14,12 +14,10 @@
         <text class="stat">Score</text>
         <text class="stat">Ping</text>
     </div>
-    <div style="flex-direction: column;">
-        @foreach (var player in Players)
-        {
-            <ScoreboardEntry @Player=@player />
-        }
-    </div>
+    @foreach (var player in Players)
+    {
+        <ScoreboardEntry @Player=@player />
+    }
 </root>
 
 <style>
