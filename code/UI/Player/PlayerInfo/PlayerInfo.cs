@@ -1,4 +1,5 @@
 using System;
+using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
@@ -10,12 +11,13 @@ public partial class PlayerInfo : Panel
 	protected override int BuildHash() => HashCode.Combine( PlayerCamera.Target.Role, PlayerCamera.Target.Health );
 
 	[GameEvent.Player.TookDamage]
-	private void OnHit( Player _ )
+	private async void OnHit( Player _ )
 	{
 		if ( !this.IsEnabled() )
 			return;
 
-		HealthContainer.AddClass( "hit" );
-		Utils.DelayAction( 0.2f, () => { HealthContainer.RemoveClass( "hit" ); } );
+		AddClass( "hit" );
+		await GameTask.Delay( 200 );
+		RemoveClass( "hit" );
 	}
 }
