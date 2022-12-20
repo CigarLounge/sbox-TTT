@@ -10,8 +10,8 @@
     <root @onclick=@OnClick class="text-shadow @(Player == Game.LocalPawn ? "local" : "")" style="@backgroundColor">
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
-            <text class="name-label">@Player.SteamName</text>
-            <text @ref="Tag" class="tag-label"></text>
+            <text class="name">@Player.SteamName</text>
+            <text @ref="Tag"></text>
             <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
             <text class="stat">@Player.Score.ToString()</text>
             <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
@@ -40,7 +40,7 @@
                 width: 25px;
             }
 
-            .name-label {
+            .name {
                 margin-left: 8px;
                 font-size: 16px;
                 font-weight: 600;
