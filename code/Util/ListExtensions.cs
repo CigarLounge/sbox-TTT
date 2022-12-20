@@ -20,4 +20,15 @@ public static class ListExtensions
 			(list[n], list[k]) = (list[k], list[n]);
 		}
 	}
+
+	// TODO: Move, just here for debugging purposes.
+	public static int HashCombine<T>( this IEnumerable<T> e, Func<T, decimal> selector )
+	{
+		var result = 0;
+
+		foreach ( var el in e )
+			result = HashCode.Combine( result, selector.Invoke( el ) );
+
+		return result;
+	}
 }

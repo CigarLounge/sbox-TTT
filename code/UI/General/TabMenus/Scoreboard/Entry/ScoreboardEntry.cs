@@ -39,15 +39,7 @@ public partial class ScoreboardEntry : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine
-		(
-			Player.SteamId,
-			Player.BaseKarma,
-			Player.Score,
-			Player.Role,
-			Player.Client.IsBot,
-			Player.Client.Ping
-		);
+		return Player?.NetworkIdent ?? 0;
 	}
 
 	private void SetTag( ColorGroup tagGroup )
