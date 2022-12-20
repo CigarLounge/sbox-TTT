@@ -6,6 +6,7 @@ namespace TTT.UI;
 
 public partial class Scoreboard : Panel
 {
+	public Panel Buttons { get; set; }
 	private Panel GroupPanel { get; set; }
 	private readonly Dictionary<PlayerStatus, ScoreboardGroup> _statusGroups = new();
 	private readonly Dictionary<Player, ScoreboardGroup> _clientGroups = new();
@@ -17,6 +18,8 @@ public partial class Scoreboard : Panel
 
 		foreach ( var group in GroupPanel.ChildrenOfType<ScoreboardGroup>() )
 			_statusGroups.Add( group.Status, group );
+
+		AddChild( Buttons );
 	}
 
 	public override void Tick()
