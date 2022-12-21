@@ -1,3 +1,5 @@
+@using TTT;
+
 @namespace TTT.UI
 
 @if (_data is null)
@@ -6,14 +8,14 @@
 }
 
 <root>
-    <div class="container" style="background-image: url(@_data.Thumb)">
+    <div class="container" style="background-image: url(@_data.Thumb)" @onclick=@VoteMap>
         <div class="info">
             <div class="orgavatar text-shadow" style="background-image: url(@_data.Org.Thumb)"></div>
             <text class="title text-shadow">@_data.Title</text>
             <text class="orgname text-shadow">@_data.Org.Title</text>
         </div>
         <text class="votes text-shadow">
-            <text>@VoteCount</text>
+            <text>@Votes</text>
         </text>
     </div>
 </root>

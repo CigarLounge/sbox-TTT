@@ -20,4 +20,4 @@ You can checkout devblog update videos on my [YouTube channel](https://www.youtu
 ## [License](https://github.com/CigarLounge/sbox-TTT/blob/main/LICENSE.md)
 
 ## Special Thanks
-- [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from.
+[Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from.

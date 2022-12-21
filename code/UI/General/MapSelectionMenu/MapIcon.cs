@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
@@ -7,12 +8,12 @@ namespace TTT.UI;
 
 public partial class MapIcon : Panel
 {
-	public string Ident { get; private set; }
-	public string VoteCount { get; set; } = "0";
+	public string Ident { get; set; }
+	public int Votes { get; set; }
 
 	private Package _data;
 
-	public MapIcon( string fullIdent ) => Ident = fullIdent;
+	protected void VoteMap() => MapSelectionState.SetVote( Ident );
 
 	protected override async Task OnParametersSetAsync()
 	{
@@ -27,5 +28,5 @@ public partial class MapIcon : Panel
 		StateHasChanged();
 	}
 
-	protected override int BuildHash() => HashCode.Combine( VoteCount );
+	protected override int BuildHash() => HashCode.Combine( Votes );
 }

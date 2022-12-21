@@ -33,7 +33,7 @@ public partial class MapSelectionState : BaseState
 
 	protected override void OnStart()
 	{
-		UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapVotePanel() );
+		UI.FullScreenHintMenu.Instance?.ForceOpen( new UI.MapSelectionMenu() );
 	}
 
 	[ConCmd.Server]
