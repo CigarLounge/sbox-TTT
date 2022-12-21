@@ -2,7 +2,7 @@
 @namespace TTT.UI
 
 <root>
-    @_timer
+    @(_c4.IsArmed ? _c4.TimeUntilExplode.Relative.TimerString() : "00:00")
 </root>
 
 <style>

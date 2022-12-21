@@ -7,7 +7,6 @@ namespace TTT.UI;
 public partial class C4Marker : Panel
 {
 	private Vector3 _screenPos;
-	private string _timer;
 	private readonly C4Entity _c4;
 
 	public C4Marker( C4Entity c4 )
@@ -25,8 +24,7 @@ public partial class C4Marker : Panel
 		}
 
 		_screenPos = _c4.Position.ToScreen();
-		_timer = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 	}
 
-	protected override int BuildHash() => HashCode.Combine( _timer, _screenPos );
+	protected override int BuildHash() => HashCode.Combine( TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" ), _screenPos );
 }

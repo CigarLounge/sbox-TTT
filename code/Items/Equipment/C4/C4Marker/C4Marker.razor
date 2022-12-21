@@ -10,7 +10,7 @@
 
 <root style="left: @Length.Fraction( _screenPos.x ); top: @Length.Fraction( _screenPos.y )">
     <img class="c4-image" />
-    <text class="timer-label text-shadow">@_timer</text>
+    <text class="timer-label text-shadow">@TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" )</text>
 </root>
 
 <style>
