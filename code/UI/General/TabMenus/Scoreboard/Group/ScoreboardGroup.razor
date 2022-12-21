@@ -2,22 +2,18 @@
 
 @namespace TTT.UI
 
-@if (!Players.Any())
+@if (Players == 0)
 {
     return;
 }
 
 <root class="text-shadow @Status.ToStringFast()">
     <div class="header opacity-medium rounded-top">
-        <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast() - @Players.Count</text>
+        <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast()</text>
         <text class="stat">Karma</text>
         <text class="stat">Score</text>
         <text class="stat">Ping</text>
     </div>
-    @foreach (var player in Players)
-    {
-        <ScoreboardEntry @Player=@player />
-    }
 </root>
 
 <style>

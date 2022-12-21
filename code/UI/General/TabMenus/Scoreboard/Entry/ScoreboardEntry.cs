@@ -8,6 +8,7 @@ namespace TTT.UI;
 public partial class ScoreboardEntry : Panel
 {
 	public Player Player { get; set; }
+	public PlayerStatus Status { get; set; }
 
 	private static readonly ColorGroup[] _tagGroups = new ColorGroup[]
 	{
@@ -39,7 +40,15 @@ public partial class ScoreboardEntry : Panel
 
 	protected override int BuildHash()
 	{
-		return Player?.NetworkIdent ?? 0;
+		return HashCode.Combine(
+			Player,
+			Player.Role,
+			Player.SteamId,
+			Player.SteamName,
+			Player.BaseKarma,
+			Player.Score,
+			Player.Client.Ping
+		);
 	}
 
 	private void SetTag( ColorGroup tagGroup )
