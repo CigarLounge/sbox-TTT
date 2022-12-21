@@ -1,0 +1,36 @@
+@namespace TTT.UI
+
+<root>
+    <button icon="cancel" class="delete-button" style="text-color-tertiary" @onclick=@(() => DeleteSample(DNA.Id)) />
+    <button @onclick=@(() => SetActiveSample(DNA.Id))>@($"#{DNA.Id} - {DNA.SourceName}")</button>
+</root>
+
+<style>
+    DNASample {
+        padding: 5px;
+        margin: 5px;
+        align-items: center;
+        text-shadow: 1px 1px 1px black;
+        border-radius: 4px;
+        flex-shrink: 0;
+        border-width: 2px;
+
+        .delete-button {
+            font-size: 23px;
+            cursor: pointer;
+            margin-right: 5px;
+
+            &:hover {
+                color: #c59913;
+            }
+
+            &:active {
+                transform: scale(0.9);
+            }
+        }
+
+        &.selected {
+            border-color: #fdc418;
+        }
+    }
+</style>
