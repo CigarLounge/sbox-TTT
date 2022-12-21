@@ -30,31 +30,33 @@ public partial class Scoreboard : Panel
 
 		// Add any players to the scoreboard if they aren't there yet.
 		foreach ( var client in Game.Clients.Except( _entries.Keys ) )
-			AddEntry( client.Pawn as Player );
+			AddEntry( client );
 
 		// Remove any players from the scoreboard if they've disconnected.
 		foreach ( var client in _entries.Keys.Except( Game.Clients ) )
-			RemoveEntry( client.Pawn as Player );
+			RemoveEntry( client );
 
 		foreach ( var client in Game.Clients )
 		{
-			if ( !_entries.ContainsKey( client ) )
+			if ( client.Pawn is not Player player || !_entries.ContainsKey( client ) )
 				continue;
 
-			var player = client.Pawn as Player;
 			var group = _statusGroups[player.Status];
 			var entry = _entries[player.Client];
 
 			if ( group.Status != entry.Status )
 			{
-				RemoveEntry( player );
-				AddEntry( player );
+				RemoveEntry( client );
+				AddEntry( client );
 			}
 		}
 	}
 
-	private void AddEntry( Player player )
+	private void AddEntry( IClient client )
 	{
+		if ( client.Pawn is not Player player )
+			return;
+
 		var group = _statusGroups[player.Status];
 		var entry = new ScoreboardEntry() { Player = player, Status = player.Status };
 
@@ -64,17 +66,17 @@ public partial class Scoreboard : Panel
 		_entries.Add( player.Client, entry );
 	}
 
-	private void RemoveEntry( Player player )
+	private void RemoveEntry( IClient client )
 	{
-		if ( !_entries.ContainsKey( player.Client ) )
+		if ( !_entries.ContainsKey( client.Client ) )
 			return;
 
-		var entry = _entries[player.Client];
+		var entry = _entries[client.Client];
 		var group = _statusGroups[entry.Status];
 
 		group.Players -= 1;
 
 		entry.Delete();
-		_entries.Remove( player.Client );
+		_entries.Remove( client.Client );
 	}
 }
