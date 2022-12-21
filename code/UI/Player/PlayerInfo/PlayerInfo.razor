@@ -4,21 +4,21 @@
 @namespace TTT.UI
 
 <root class="opacity-heavy text-shadow">
-    @if (!PlayerCamera.Target.IsValid() || !PlayerCamera.Target.IsAlive())
+    @if (!CameraMode.Target.IsValid() || !CameraMode.Target.IsAlive())
         return;
 
-    @if (PlayerCamera.Target.Role is not NoneRole)
+    @if (CameraMode.Target.Role is not NoneRole)
     {
-        <div class="role-container" style="background-color: @PlayerCamera.Target.Role.Color.Hex">
+        <div class="role-container" style="background-color: @CameraMode.Target.Role.Color.Hex">
             <text>
-                <text>@PlayerCamera.Target.Role.Title</text>
+                <text>@CameraMode.Target.Role.Title</text>
             </text>
         </div>
     }
 
     <div @ref=HealthContainer
-        class="health-container background-color-gradient @(PlayerCamera.Target.Role is not NoneRole ? "left-flat" : "")">
-        <text>✚ @PlayerCamera.Target.Health.CeilToInt()</text>
+        class="health-container background-color-gradient @(CameraMode.Target.Role is not NoneRole ? "left-flat" : "")">
+        <text>✚ @CameraMode.Target.Health.CeilToInt()</text>
     </div>
 </root>
 

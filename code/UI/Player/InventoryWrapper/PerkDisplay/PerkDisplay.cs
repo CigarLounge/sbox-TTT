@@ -9,9 +9,9 @@ public partial class PerkDisplay : Panel
 
 	public override void Tick()
 	{
-		foreach ( var perk in PlayerCamera.Target.Perks )
+		foreach ( var perk in CameraMode.Target.Perks )
 		{
-			if ( !_entries.ContainsKey( perk ) && PlayerCamera.Target.IsRoleKnown )
+			if ( !_entries.ContainsKey( perk ) && CameraMode.Target.IsRoleKnown )
 			{
 				_entries[perk] = AddPerkSlot( perk );
 			}
@@ -22,7 +22,7 @@ public partial class PerkDisplay : Panel
 			var perk = keyValue.Key;
 			var slot = keyValue.Value;
 
-			if ( !PlayerCamera.Target.Perks.Contains( perk ) )
+			if ( !CameraMode.Target.Perks.Contains( perk ) )
 			{
 				_entries.Remove( perk );
 				slot?.Delete();

@@ -8,7 +8,7 @@ public partial class PlayerInfo : Panel
 {
 	private Panel HealthContainer { get; set; }
 
-	protected override int BuildHash() => HashCode.Combine( PlayerCamera.Target.Role, PlayerCamera.Target.Health );
+	protected override int BuildHash() => HashCode.Combine( CameraMode.Target.Role, CameraMode.Target.Health );
 
 	[GameEvent.Player.TookDamage]
 	private async void OnHit( Player _ )

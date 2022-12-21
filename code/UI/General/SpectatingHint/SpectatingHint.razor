@@ -4,26 +4,30 @@
 
 @namespace TTT.UI
 
-@if (Game.LocalPawn is not TTT.Player player || player.IsAlive()) {
+@if (Game.LocalPawn is not TTT.Player player || player.IsAlive())
+{
     return;
 }
 
 <root>
     <div class="text-shadow" style="align-items: center; flex-direction: column;">
-        @if (PlayerCamera.IsSpectatingPlayer) {
+        @if (CameraMode.IsSpectatingPlayer)
+        {
             <div class="swap-panel">
-            <text class="name" style="color: @PlayerCamera.Target?.Role?.Color.Hex">@PlayerCamera.Target?.Client?.Name</text>
-            <div style="align-items: center;">
-                <text>Press</text>
-                <inputglyph button="PrimaryAttack" />
-                <text>or</text>
-                <inputglyph button="SecondaryAttack" />
-                <text>to swap active player</text>
+                <text class="name"
+                style="color: @CameraMode.Target?.Role?.Color.Hex">@CameraMode.Target?.Client?.Name</text>
+                <div style="align-items: center;">
+                    <text>Press</text>
+                    <inputglyph button="PrimaryAttack" />
+                    <text>or</text>
+                    <inputglyph button="SecondaryAttack" />
+                    <text>to swap active player</text>
+                </div>
             </div>
-        </div>
         }
 
-        @if (!player.Prop.IsValid() && !PlayerCamera.IsSpectatingPlayer) {
+        @if (!player.Prop.IsValid() && !CameraMode.IsSpectatingPlayer)
+        {
             <div style="align-items: center;">
                 <text>Press</text>
                 <inputglyph button="Use" />
@@ -40,30 +44,34 @@
 </root>
 
 @code {
-    protected override int BuildHash() => HashCode.Combine( Game.LocalPawn.IsAlive(), 
-                                                            (Game.LocalPawn as TTT.Player).Prop,
-                                                            PlayerCamera.IsSpectatingPlayer);
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(Game.LocalPawn.IsAlive(),
+        (Game.LocalPawn as TTT.Player).Prop,
+        CameraMode.IsSpectatingPlayer,
+        CameraMode.Target);
+    }
 }
 
 <style>
     SpectatingHint {
-    position: absolute;
-    left: 50%;
-    bottom: 25px;
-    transform: translateX(-50%);
-    flex-direction: column;
-    font-size: 17px;
-    font-weight: 500;
-    align-items: center;
-
-    .name {
-        font-size: 30px;
-        font-weight: 600;
-    }
-
-    .swap-panel {
-        align-items: center;
+        position: absolute;
+        left: 50%;
+        bottom: 25px;
+        transform: translateX(-50%);
         flex-direction: column;
+        font-size: 17px;
+        font-weight: 500;
+        align-items: center;
+
+        .name {
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .swap-panel {
+            align-items: center;
+            flex-direction: column;
+        }
     }
-}
 </style>

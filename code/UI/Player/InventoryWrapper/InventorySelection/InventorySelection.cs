@@ -35,7 +35,7 @@ public partial class InventorySelection : Panel
 
 	public override void Tick()
 	{
-		var player = PlayerCamera.Target;
+		var player = CameraMode.Target;
 
 		foreach ( var carriable in player.Inventory )
 		{

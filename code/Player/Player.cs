@@ -184,7 +184,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		if ( IsLocalPawn )
-			CurrentCamera = new PlayerCamera( this );
+			CurrentCamera = new FirstPersonCamera( this );
 
 		CreateFlashlight();
 

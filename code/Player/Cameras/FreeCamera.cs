@@ -2,14 +2,14 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FreeCamera : BaseCamera
+public partial class FreeCamera : CameraMode
 {
 	private const int BaseMoveSpeed = 300;
 	private float _moveSpeed = 1f;
 	private Angles _lookAngles = Camera.Rotation.Angles();
 	private Vector3 _moveInput;
 
-	public FreeCamera() => PlayerCamera.Target = null;
+	public FreeCamera() => Target = null;
 
 	public override void BuildInput( Player player )
 	{
@@ -25,10 +25,7 @@ public partial class FreeCamera : BaseCamera
 		{
 			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
 			if ( alivePlayer.IsValid() )
-			{
-				player.CurrentCamera = new PlayerCamera( alivePlayer );
-				return;
-			}
+				player.CurrentCamera = new FollowEntityCamera( alivePlayer );
 		}
 
 		if ( Input.Pressed( InputButton.Use ) )
@@ -52,6 +49,6 @@ public partial class FreeCamera : BaseCamera
 		if ( player.HoveredEntity is Prop prop && prop.PhysicsBody is not null )
 			Player.Possess( prop.NetworkIdent );
 		else if ( player.HoveredEntity is Player hoveredPlayer )
-			player.CurrentCamera = new PlayerCamera( hoveredPlayer );
+			player.CurrentCamera = new FirstPersonCamera( hoveredPlayer );
 	}
 }
