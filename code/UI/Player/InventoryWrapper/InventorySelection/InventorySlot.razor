@@ -1,3 +1,4 @@
+@using System;
 @using TTT;
 
 @namespace TTT.UI
@@ -14,6 +15,16 @@
     <text>@Carriable.Info.Title</text>
     <text class="slot-text">@Carriable.SlotText</text>
 </root>
+
+@code {
+    public Carriable Carriable { get; set; }
+    public bool IsFirst { get; set; } = false;
+    public bool IsLast { get; set; } = false;
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(Carriable.SlotText, CameraMode.Target.Role.Color, Carriable.IsActiveCarriable, IsFirst, IsLast);
+    }
+}
 
 <style>
     InventorySlot {
