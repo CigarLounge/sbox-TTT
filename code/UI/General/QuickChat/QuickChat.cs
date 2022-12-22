@@ -81,8 +81,8 @@ public partial class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			Log.Info( JsonSerializer.Serialize( GetChild( keyboardIndexPressed - 1 ) ) );
-			// TextChat.SendQuickChat( JsonSerializer.Serialize( GetChild( keyboardIndexPressed - 1 ) ) );
+			var entry = GetChild( keyboardIndexPressed - 1 ) as QuickChatEntry;
+			TextChat.SendQuickChat( entry.Prefix, entry.TargetInfo.Name, entry.Postfix, entry.TargetInfo.IsPlayerName );
 			_timeSinceLastMessage = 0;
 		}
 
