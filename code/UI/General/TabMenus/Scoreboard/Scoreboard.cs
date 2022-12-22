@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
@@ -11,14 +10,13 @@ public partial class Scoreboard : Panel
 	public Panel Buttons { get; set; }
 	private Panel GroupPanel { get; set; }
 
-	private IEnumerable<Player> PlayersSortedByStatus()
+	private PriorityQueue<Player, PlayerStatus> PlayersByStatus()
 	{
-		var players = new List<Player>();
+		var players = new PriorityQueue<Player, PlayerStatus>();
 		foreach ( var client in Game.Clients )
 			if ( client.Pawn is Player player )
-				players.Add( player );
-
-		return players.OrderBy( player => player.Status );
+				players.Enqueue( player, player.Status );
+		return players;
 	}
 
 	protected override void OnAfterTreeRender( bool firstTime )

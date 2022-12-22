@@ -8,10 +8,12 @@
     <div @ref=GroupPanel class="background-color-secondary rounded-bottom groups">
         @{
             var groups = new HashSet<PlayerStatus>();
-            var players = PlayersSortedByStatus();
+            var players = PlayersByStatus();
 
-            foreach (var player in players)
+            while (players.Count > 0)
             {
+                var player = players.Dequeue();
+
                 if (!groups.Contains(player.Status))
                 {
                     groups.Add(player.Status);
