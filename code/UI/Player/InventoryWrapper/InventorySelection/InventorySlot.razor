@@ -2,8 +2,13 @@
 
 @namespace TTT.UI
 
-<root class="background-color-secondary">
-    <text @ref=SlotNumber class="slot-number" style="background-color: @(CameraMode.Target.Role.Color.Hex)">
+<root class="background-color-secondary 
+    @(IsFirst ? "rounded-top" : "") 
+    @(IsLast ? "rounded-bottom" : "") 
+    @(Carriable.IsActiveCarriable ? "active" : "")">
+    <text class="slot-number     
+        @(IsFirst ? "rounded-top-left" : "") 
+        @(IsLast ? "rounded-bottom-left" : "")" style="background-color: @(CameraMode.Target.Role.Color.Hex)">
         <text>@((int)Carriable.Info.Slot + 1)</text>
     </text>
     <text>@Carriable.Info.Title</text>
@@ -27,6 +32,14 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+
+            .rounded-top-left {
+                border-top-left-radius: 4px;
+            }
+
+            .rounded-bottom-left {
+                border-bottom-left-radius: 4px;
+            }
         }
 
         .slot-text {
