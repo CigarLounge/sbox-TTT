@@ -1,6 +1,23 @@
+@using System;
+
 @namespace TTT.UI
 
-<root />
+<root>
+    @foreach (var perk in CameraMode.Target.Perks)
+    {
+        if (CameraMode.Target.IsRoleKnown)
+        {
+            <PerkSlot Perk=@perk />
+        }
+    }
+</root>
+
+@code {
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(CameraMode.Target.Perks.HashCombine(perk => perk.GetHashCode()));
+    }
+}
 
 <style>
     PerkDisplay {

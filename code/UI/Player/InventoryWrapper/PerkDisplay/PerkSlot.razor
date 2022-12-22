@@ -1,20 +1,27 @@
+@using System;
+
 @namespace TTT.UI
 
 <root>
     <div class="background-color-secondary rounded opacity-heavy">
-        <img src=@_perk.Info.IconPath class="icon-panel" />
+        <img src=@Perk.Info.IconPath class="icon-panel" />
     </div>
-    <text class="name text-shadow">@_perk.Info.Title</text>
+    <text class="name text-shadow">@Perk.Info.Title</text>
 
-    @if (!_perk.SlotText.IsNullOrEmpty())
+    @if (!Perk.SlotText.IsNullOrEmpty())
     {
         <text>
             <text class="active-text rounded text-shadow background-color-secondary">
-                <text>@_perk.SlotText</text>
+                <text>@Perk.SlotText</text>
             </text>
         </text>
     }
 </root>
+
+@code {
+    public Perk Perk { get; set; }
+    protected override int BuildHash() => HashCode.Combine(Perk.SlotText);
+}
 
 <style>
     PerkSlot {

@@ -1,12 +1,26 @@
+@using System.Collections.Generic;
+@using Sandbox;
+
 @namespace TTT.UI
 
 <root>
     <ScoreboardInfo />
     <div @ref=GroupPanel class="background-color-secondary rounded-bottom groups">
-        <ScoreboardGroup @Status=@PlayerStatus.Alive />
-        <ScoreboardGroup @Status=@PlayerStatus.MissingInAction />
-        <ScoreboardGroup @Status=@PlayerStatus.ConfirmedDead />
-        <ScoreboardGroup @Status=@PlayerStatus.Spectator />
+        @{
+            var groups = new HashSet<PlayerStatus>();
+            var players = PlayersSortedByStatus();
+
+            foreach (var player in players)
+            {
+                if (!groups.Contains(player.Status))
+                {
+                    groups.Add(player.Status);
+                    <ScoreboardGroup Status=@player.Status />
+                }
+
+                <ScoreboardEntry Player=@player />
+            }
+        }
     </div>
 </root>
 

@@ -8,8 +8,6 @@ namespace TTT.UI;
 
 public partial class InventorySelection : Panel
 {
-	private readonly Dictionary<Carriable, InventorySlot> _entries = new();
-
 	private static readonly InputButton[] _slotInputButtons = new[]
 	{
 			InputButton.Slot0,
@@ -31,60 +29,6 @@ public partial class InventorySelection : Panel
 				return i;
 
 		return -1;
-	}
-
-	public override void Tick()
-	{
-		var player = CameraMode.Target;
-
-		foreach ( var carriable in player.Inventory )
-		{
-			if ( !_entries.ContainsKey( carriable ) && (carriable.Info.Spawnable || player.IsRoleKnown) )
-				_entries[carriable] = AddInventorySlot( carriable );
-		}
-
-		var activeChild = player.ActiveCarriable;
-		var activeItemTitle = activeChild is not null ? activeChild.Info.Title : string.Empty;
-
-		foreach ( var slot in _entries.Values )
-		{
-			if ( !player.Inventory.Contains( slot.Carriable ) )
-			{
-				_entries.Remove( slot.Carriable );
-				slot?.Delete();
-			}
-
-			var isFirst = slot == Children.First() as InventorySlot;
-			slot.SetClass( "rounded-top", isFirst );
-			slot.SlotNumber?.SetClass( "rounded-top-left", isFirst );
-
-			var isLast = slot == Children.Last() as InventorySlot;
-			slot.SetClass( "rounded-bottom", isLast );
-			slot.SlotNumber?.SetClass( "rounded-bottom-left", isLast );
-
-			slot.SetClass( "active", slot.Carriable.IsActiveCarriable );
-			slot.SetClass( "opacity-heavy", slot.Carriable.IsActiveCarriable );
-		}
-
-		SortChildren( ( p1, p2 ) =>
-		{
-			var s1 = p1 as InventorySlot;
-			var s2 = p2 as InventorySlot;
-
-			var result = s1.Carriable.Info.Slot.CompareTo( s2.Carriable.Info.Slot );
-			return result != 0
-				? result
-				: string.Compare( s1.Carriable.Info.Title, s2.Carriable.Info.Title, StringComparison.Ordinal );
-		} );
-
-		this.Enabled( Children.Any() );
-	}
-
-	private InventorySlot AddInventorySlot( Carriable carriable )
-	{
-		var inventorySlot = new InventorySlot() { Parent = this, Carriable = carriable };
-		AddChild( inventorySlot );
-		return inventorySlot;
 	}
 
 	[Event.Client.BuildInput]
@@ -166,5 +110,10 @@ public partial class InventorySelection : Panel
 	private int ClampSlotIndex( int index, int maxIndex )
 	{
 		return index > maxIndex ? 0 : index < 0 ? maxIndex : index;
+	}
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( CameraMode.Target.Inventory.HashCombine( carriable => carriable.NetworkIdent ) );
 	}
 }
