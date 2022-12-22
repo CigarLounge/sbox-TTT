@@ -1,112 +1,66 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
-using System.Collections.Generic;
+using System;
 
 namespace TTT.UI;
 
 public partial class QuickChat : Panel
 {
+	public class TargetInfo
+	{
+		public string Name { get; set; } = NoTarget;
+		public bool IsPlayerName { get; set; } = false;
+	}
+
 	public static QuickChat Instance { get; private set; }
 
+	public bool IsShowing { get; private set; } = false;
+
 	private const string NoTarget = "nobody";
-	private string _target;
-	private bool _isShowing = false;
+	private TargetInfo _target = new();
 	private RealTimeSince _timeWithNoTarget;
 	private RealTimeSince _timeSinceLastMessage;
-	private readonly List<Label> _labels = new();
-	private static readonly List<string> _messages = new()
-	{
-		"I'm with {0}.",
-		"I see {0}.",
-		"Yes.",
-		"No.",
-		"{0} is a Traitor!",
-		"{0} acts suspicious.",
-		"{0} is Innocent.",
-		"Help!",
-		"Anyone still alive?"
-	};
 
 	public QuickChat() => Instance = this;
 
-	protected override void OnAfterTreeRender( bool firstTime )
-	{
-		if ( !firstTime )
-			return;
-
-		var i = 0;
-		foreach ( Label label in Children )
-			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
-	}
-
 	public override void Tick()
 	{
-		if ( Game.LocalPawn is not Player player )
-			return;
-
 		if ( Input.Pressed( InputButton.Zoom ) )
-			_isShowing = !_isShowing;
-
-		this.Enabled( player.IsAlive() && _isShowing );
+			IsShowing = !IsShowing;
 
 		var newTarget = GetTarget();
-
-		if ( newTarget != NoTarget )
+		if ( newTarget.Name == NoTarget && !newTarget.IsPlayerName )
 			_timeWithNoTarget = 0;
-		else if ( _timeWithNoTarget <= 3 )
-			return;
-
-		if ( newTarget == _target )
+		else if ( _timeWithNoTarget <= 1 )
 			return;
 
 		_target = newTarget;
-		for ( var i = 0; i <= 6; i++ )
-		{
-			if ( i == 2 || i == 3 )
-				continue;
-
-			_labels[i].Text = string.Format( _messages[i], _target );
-
-			if ( i < 4 )
-				continue;
-
-			if ( !ShouldCapitalize( _target ) )
-				continue;
-
-			_labels[i].Text = _labels[i].Text.FirstCharToUpper();
-		}
 	}
 
-	public static string GetTarget()
+	public static TargetInfo GetTarget()
 	{
 		if ( Game.LocalPawn is not Player localPlayer )
-			return null;
+			return new TargetInfo();
 
 		switch ( localPlayer.HoveredEntity )
 		{
 			case Corpse corpse:
 			{
 				if ( corpse.Player is null )
-					return "an unidentified body";
+					return new TargetInfo() { Name = "an unidentified body", IsPlayerName = false };
 				else
-					return $"{corpse.Player.SteamName}'s corpse";
+					return new TargetInfo() { Name = $"{corpse.Player.SteamName}'s corpse", IsPlayerName = false };
 			}
 			case Player player:
 			{
 				if ( player.CanHint( localPlayer ) )
-					return player.SteamName;
+					return new TargetInfo() { Name = player.SteamName, IsPlayerName = true };
 				else
-					return "someone in disguise";
+					return new TargetInfo() { Name = "someone in disguise", IsPlayerName = false };
 			}
 		}
 
-		return NoTarget;
-	}
-
-	private static bool ShouldCapitalize( string target )
-	{
-		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
+		return new TargetInfo();
 	}
 
 	[Event.Client.BuildInput]
@@ -121,10 +75,15 @@ public partial class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			TextChat.SendChat( _labels[keyboardIndexPressed - 1].Text );
+			// TextChat.SendChat( _labels[keyboardIndexPressed - 1].Text );
 			_timeSinceLastMessage = 0;
 		}
 
-		_isShowing = false;
+		IsShowing = false;
+	}
+
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( IsShowing, Game.LocalPawn.IsAlive(), _target.Name, _target.IsPlayerName );
 	}
 }
