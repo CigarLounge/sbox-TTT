@@ -8,8 +8,16 @@
     return;
 }
 
-<root class="text-shadow">
-    <text><text class="index">1.</text>I'm with <text>@_target.Name</text></text>
+<root>
+    <QuickChatEntry Index=1 TargetInfo=@_target Prefix="I'm with" Postfix="." />
+    <QuickChatEntry Index=2 TargetInfo=@_target Prefix="I see" Postfix="." />
+    <QuickChatEntry Index=3 Prefix="Yes." />
+    <QuickChatEntry Index=4 Prefix="No." />
+    <QuickChatEntry Index=5 TargetInfo=@_target Postfix="is a Traitor!" />
+    <QuickChatEntry Index=6 TargetInfo=@_target Postfix="acts suspicious." />
+    <QuickChatEntry Index=7 TargetInfo=@_target Postfix="is Innocent." />
+    <QuickChatEntry Index=8 Prefix="Help!" />
+    <QuickChatEntry Index=9 Prefix="Anyone still alive?" />
 </root>
 
 <style>
@@ -20,12 +28,8 @@
         transform: translateY(-50%);
         flex-direction: column;
         z-index: 101;
-        font-size: 17px;
-
-        .message {
-            margin-left: 10px;
-            font-weight: normal;
-        }
+        font-size: 18px;
+        align-items: flex-start;
 
         .index {
             font-weight: bold;

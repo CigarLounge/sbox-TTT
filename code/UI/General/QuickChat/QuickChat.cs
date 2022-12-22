@@ -1,6 +1,7 @@
 using Sandbox;
 using Sandbox.UI;
 using System;
+using System.Text.Json;
 
 namespace TTT.UI;
 
@@ -16,7 +17,7 @@ public partial class QuickChat : Panel
 
 	public bool IsShowing { get; private set; } = false;
 
-	private const string NoTarget = "nobody";
+	private const string NoTarget = "Nobody";
 	private TargetInfo _target = new();
 	private RealTimeSince _timeWithNoTarget;
 	private RealTimeSince _timeSinceLastMessage;
@@ -29,15 +30,20 @@ public partial class QuickChat : Panel
 			IsShowing = !IsShowing;
 
 		var newTarget = GetTarget();
-		if ( newTarget.Name == NoTarget && !newTarget.IsPlayerName )
+
+		var hasTarget = newTarget.Name != NoTarget || newTarget.IsPlayerName;
+		if ( hasTarget )
 			_timeWithNoTarget = 0;
 		else if ( _timeWithNoTarget <= 1 )
+			return;
+
+		if ( newTarget == _target )
 			return;
 
 		_target = newTarget;
 	}
 
-	public static TargetInfo GetTarget()
+	private TargetInfo GetTarget()
 	{
 		if ( Game.LocalPawn is not Player localPlayer )
 			return new TargetInfo();
@@ -75,7 +81,8 @@ public partial class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			// TextChat.SendChat( _labels[keyboardIndexPressed - 1].Text );
+			Log.Info( JsonSerializer.Serialize( GetChild( keyboardIndexPressed - 1 ) ) );
+			// TextChat.SendQuickChat( JsonSerializer.Serialize( GetChild( keyboardIndexPressed - 1 ) ) );
 			_timeSinceLastMessage = 0;
 		}
 
@@ -84,6 +91,6 @@ public partial class QuickChat : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( IsShowing, Game.LocalPawn.IsAlive(), _target.Name, _target.IsPlayerName );
+		return HashCode.Combine( IsShowing, Game.LocalPawn.IsAlive(), _target, _target.Name, _target.IsPlayerName );
 	}
 }
