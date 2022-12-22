@@ -16,7 +16,7 @@
             foreach (var dna in _dnaScanner.DNACollected)
             {
                 var isSelected = _dnaScanner?.SelectedId == dna.Id;
-                <DNASample @DNA=@dna class="@(isSelected ? "selected" : "")" />
+                <DNASample DNA=@dna class="@(isSelected ? "selected" : "")" />
             }
         }
         else

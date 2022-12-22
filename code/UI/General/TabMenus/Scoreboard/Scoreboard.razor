@@ -3,10 +3,10 @@
 <root>
     <ScoreboardInfo />
     <div @ref=GroupPanel class="background-color-secondary rounded-bottom groups">
-        <ScoreboardGroup @Status=@PlayerStatus.Alive />
-        <ScoreboardGroup @Status=@PlayerStatus.MissingInAction />
-        <ScoreboardGroup @Status=@PlayerStatus.ConfirmedDead />
-        <ScoreboardGroup @Status=@PlayerStatus.Spectator />
+        <ScoreboardGroup Status=@PlayerStatus.Alive />
+        <ScoreboardGroup Status=@PlayerStatus.MissingInAction />
+        <ScoreboardGroup Status=@PlayerStatus.ConfirmedDead />
+        <ScoreboardGroup Status=@PlayerStatus.Spectator />
     </div>
 </root>
 
