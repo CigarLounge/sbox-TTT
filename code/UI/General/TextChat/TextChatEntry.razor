@@ -1,9 +1,27 @@
+@using Sandbox;
+
 @namespace TTT.UI
 
 <root>
-    <text class="name" style="color: @(NameColor.GetValueOrDefault().Hex)">@Name</text>
-    <text class="message">@Message</text>
+    <text class="name" style="color: @(NameColor.Hex)">@Name</text>
+    <text>@Message</text>
 </root>
+
+@code {
+    public string Name;
+    public string Message;
+    public Color NameColor;
+
+    private RealTimeSince _timeSinceCreation = 0;
+
+    public override void Tick()
+    {
+        if (_timeSinceCreation < 8)
+            return;
+
+        AddClass("faded");
+    }
+}
 
 <style>
     TextChatEntry {
@@ -22,12 +40,6 @@
             font-weight: bold;
             margin-right: 10px;
             letter-spacing: 1px;
-        }
-
-        .message {
-            align-items: center;
-            flex-grow: 1;
-            font-weight: 300;
         }
     }
 </style>

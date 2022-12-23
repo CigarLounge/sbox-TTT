@@ -1,6 +1,8 @@
 using System;
+using System.Text.Json;
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -70,9 +72,9 @@ public partial class TextChat : Panel
 		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, Color? color = null )
+	public void AddChatEntry( string name, string message, Color color )
 	{
-		var entry = new TextChatEntry() { Name = name, Message = message, NameColor = color ?? Color.FromBytes( 253, 196, 24 ) };
+		var entry = new TextChatEntry() { Name = name, Message = message, NameColor = color };
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -88,16 +90,16 @@ public partial class TextChat : Panel
 		{
 			if ( Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) )
 			{
-				AddInfo( "You have already rocked the vote!" );
+				DisplayInfoMessage( "You have already rocked the vote!" );
 				return;
 			}
 		}
 
-		SendChat( Input.Text );
+		SendChatMessage( Input.Text );
 	}
 
 	[ConCmd.Server]
-	public static void SendChat( string message )
+	public static void SendChatMessage( string message )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
@@ -111,54 +113,69 @@ public partial class TextChat : Panel
 		if ( !player.IsAlive() )
 		{
 			var clients = GameManager.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
-			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
+			DisplayChatMessage( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
 
 		if ( player.CurrentChannel == Channel.All )
 		{
 			player.LastWords = message;
-			AddChat( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
+			DisplayChatMessage( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
 		}
 		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
 		{
-			AddChat( player.Team.ToClients(), player.Client.Name, message, player.CurrentChannel, player.Role.Info.ResourceId );
+			DisplayChatMessage( player.Team.ToClients(), player.Client.Name, message, player.CurrentChannel, player.Role.Info.ResourceId );
 		}
 	}
 
-	[ConCmd.Server]
-	public static void SendQuickChat( string prefix, string name, string postfix, bool isPlayerName )
-	{
-		if ( ConsoleSystem.Caller.Pawn is not Player player )
-			return;
-
-		if ( !player.IsAlive() )
-			return;
-
-
-	}
-
-	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
-	public static void AddChat( string name, string message, Channel channel, int roleId = -1 )
+	[ClientRpc]
+	public static void DisplayChatMessage( string name, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
 		{
 			case Channel.All:
-				Instance?.AddEntry( name, message, roleId != -1 ? ResourceLibrary.Get<RoleInfo>( roleId ).Color : _allChatColor );
+				Instance?.AddChatEntry( name, message, roleId != -1 ? ResourceLibrary.Get<RoleInfo>( roleId ).Color : _allChatColor );
 				return;
 			case Channel.Team:
-				Instance?.AddEntry( $"(TEAM) {name}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color );
+				Instance?.AddChatEntry( $"(TEAM) {name}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color );
 				return;
 			case Channel.Spectator:
-				Instance?.AddEntry( name, message, _spectatorChatColor );
+				Instance?.AddChatEntry( name, message, _spectatorChatColor );
 				return;
 		}
 	}
 
-	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
-	public static void AddInfo( string message )
+	[ClientRpc]
+	public static void DisplayInfoMessage( string message )
 	{
-		Instance?.AddEntry( message, "" );
+		Instance?.AddChatEntry( message, string.Empty, Color.FromBytes( 253, 196, 24 ) );
+	}
+
+	[ConCmd.Server]
+	public static void SendQuickChat( string prefix, string suffix, string message, string colorJson )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player || !player.IsAlive() )
+			return;
+
+		DisplayQuickChatMessage(
+			To.Everyone,
+			player.SteamName,
+			player.IsRoleKnown ? player.Role.Info.ResourceId : -1,
+			prefix,
+			suffix,
+			message,
+			JsonSerializer.Deserialize<Color>( colorJson )
+		);
+	}
+
+	[ClientRpc]
+	public static void DisplayQuickChatMessage( string name, int roleId, string prefix, string suffix, string message, Color messageColor )
+	{
+		var entry = new TextChatEntry() { Name = name, NameColor = roleId != -1 ? ResourceLibrary.Get<RoleInfo>( roleId ).Color : _allChatColor };
+		entry.Add.Label( prefix );
+		entry.Add.Label( message ).Style.FontColor = messageColor;
+		entry.Add.Label( suffix );
+		Instance.EntryCanvas.AddChild( entry );
 	}
 
 	private void OnTabPressed()

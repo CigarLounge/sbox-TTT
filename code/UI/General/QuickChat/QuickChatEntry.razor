@@ -5,21 +5,21 @@
 <root class="text-shadow">
     <text style="index">@Index.</text>
     <text>@Prefix</text>
-    @if (TargetInfo is not null)
+    @if (Target is not null)
     {
         <text>
-            <text class="@(!TargetInfo.IsPlayerName ? " text-color-tertiary" : "" )">@TargetInfo.Name</text>
+            <text style="color: @(Target.QuickChatColor.Hex)">@Target.QuickChatMessage</text>
         </text>
     }
-    <text>@Postfix</text>
+    <text>@Suffix</text>
 </root>
 
 @code {
-    public QuickChat.TargetInfo TargetInfo { get; set; }
+    public IQuickChatTarget Target { get; set; }
     public string Index { get; set; }
     public string Prefix { get; set; } = "";
-    public string Postfix { get; set; } = "";
-    protected override int BuildHash() => HashCode.Combine(TargetInfo?.Name, TargetInfo?.IsPlayerName);
+    public string Suffix { get; set; } = "";
+    protected override int BuildHash() => HashCode.Combine(Target, Target?.QuickChatMessage, Target?.QuickChatColor);
 }
 
 <style>
