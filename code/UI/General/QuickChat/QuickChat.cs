@@ -48,11 +48,13 @@ public partial class QuickChat : Panel
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			var entry = GetChild( keyboardIndexPressed - 1 ) as QuickChatEntry;
-			if ( entry.Target is null )
-				TextChat.SendChatMessage( entry.Prefix + entry.Suffix );
-			else
-				TextChat.SendQuickChat( entry.Prefix, entry.Suffix, entry.Target.Message, JsonSerializer.Serialize( entry.Target.MessageColor ) );
+			if ( GetChild( keyboardIndexPressed - 1 ) is QuickChatEntry entry )
+			{
+				if ( entry.Target is null )
+					TextChat.SendChatMessage( entry.Prefix + entry.Suffix );
+				else
+					TextChat.SendQuickChat( entry.Prefix, entry.Suffix, entry.Target.Message, JsonSerializer.Serialize( entry.Target.MessageColor ) );
+			}
 
 			_timeSinceLastMessage = 0;
 		}
