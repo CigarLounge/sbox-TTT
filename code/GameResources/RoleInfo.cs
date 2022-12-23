@@ -68,7 +68,7 @@ public class RoleInfo : GameResource
 			ShopItems.Add( itemInfo );
 		}
 
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 

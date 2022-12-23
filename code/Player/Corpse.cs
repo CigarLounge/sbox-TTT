@@ -1,4 +1,7 @@
 using Sandbox;
+using Sandbox.Diagnostics;
+using Sandbox.Physics;
+using Sandbox.UI;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,6 +27,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public Player Finder { get; private set; }
 	public TimeUntil TimeUntilDNADecay { get; private set; }
 	public string C4Note { get; private set; }
+	public string LastWords { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 	public Player[] KillList { get; private set; }
 
@@ -41,7 +45,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public Corpse( Player player )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		#region Copy Player
 		Player = player;
@@ -52,7 +56,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		this.CopyBonesFrom( player );
 		this.SetRagdollVelocityFrom( player );
-		ApplyForceToBone( Player.LastDamage.Force, Player.GetHitboxBone( Player.LastDamage.HitboxIndex ) );
+		ApplyForceToBone( Player.LastDamage.Force, Player.LastDamage.BoneIndex );
 		CopyBodyGroups( player );
 		#endregion
 
@@ -76,7 +80,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			clothing.CopyBodyGroups( modelEntity );
 			clothing.CopyMaterialGroup( modelEntity );
 
-			if ( clothing.Model.ResourcePath == Detective.Hat.Model && Player.KilledWithHeadShot )
+			if ( clothing.Model?.ResourcePath == Detective.Hat.Model && Player.KilledWithHeadShot )
 			{
 				clothing.Tags.Add( "interactable" );
 				clothing.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
@@ -87,7 +91,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		#endregion
 
-		if ( Player.LastDamage.Flags.HasFlag( DamageFlags.Bullet ) && Player.LastAttacker is Player killer )
+		if ( Player.LastDamage.HasTag( Strings.Tags.Bullet ) && Player.LastAttacker is Player killer )
 		{
 			var dna = new DNA( killer );
 			Components.Add( dna );
@@ -102,6 +106,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		for ( var i = 0; i < Player.Perks.Count; i++ )
 			Perks[i] = Player.Perks[i].Info;
 
+		LastWords = player.LastWords;
 		KillList = Player.PlayersKilled.ToArray();
 
 		_playersWithKillInfo.Add( player.NetworkIdent );
@@ -112,6 +117,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		base.Spawn();
 
 		Tags.Add( "interactable" );
+		Tags.Add( "corpse" );
 
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;
@@ -132,7 +138,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	/// <param name="retrieveCredits">Should the searcher retrieve credits.</param>
 	public void Search( Player searcher, bool covert = false, bool retrieveCredits = true )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 		Assert.NotNull( searcher );
 
 		var creditsRetrieved = 0;
@@ -202,7 +208,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public void SendKillInfo( To to )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		foreach ( var client in to )
 		{
@@ -213,7 +219,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 			Player.SendDamageInfo( To.Single( client ) );
 
-			SendMiscInfo( To.Single( client ), KillList, Perks, C4Note, TimeUntilDNADecay );
+			SendMiscInfo( To.Single( client ), KillList, Perks, C4Note, LastWords, TimeUntilDNADecay );
 
 			if ( client.Pawn is Player player && player.Role is Detective )
 				SendDetectiveInfo( To.Single( client ), Player.LastSeenPlayer );
@@ -221,7 +227,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	}
 
 	[ClientRpc]
-	private void ClientCorpseFound( Player finder, bool wasPreviouslyFound = false )
+	public void ClientCorpseFound( Player finder, bool wasPreviouslyFound = false )
 	{
 		IsFound = true;
 		Finder = finder;
@@ -243,19 +249,20 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		UI.InfoFeed.AddEntry
 		(
-			Local.Pawn as Player,
+			Game.LocalPawn as Player,
 			$"found {creditsRetrieved} credits!"
 		);
 	}
 
 	[ClientRpc]
-	private void SendMiscInfo( Player[] killList, PerkInfo[] perks, string c4Note, TimeUntil dnaDecay )
+	private void SendMiscInfo( Player[] killList, PerkInfo[] perks, string c4Note, string lastWords, TimeUntil dnaDecay )
 	{
 		if ( killList is not null )
 			Player.PlayersKilled = killList.ToList();
 
 		Perks = perks;
 		C4Note = c4Note;
+		LastWords = lastWords;
 		TimeUntilDNADecay = dnaDecay;
 	}
 
@@ -311,9 +318,9 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
 
-	bool IEntityHint.CanHint( Player player ) => Game.Current.State is InProgress or PostRound;
+	bool IEntityHint.CanHint( Player player ) => GameManager.Current.State is InProgress or PostRound;
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
+	Panel IEntityHint.DisplayHint( Player player ) => new UI.CorpseHint( this );
 
 	void IEntityHint.Tick( Player player )
 	{
@@ -330,7 +337,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( user is not Player player )
 			return false;
 
-		if ( Game.Current.State is WaitingState or PreRound )
+		if ( GameManager.Current.State is WaitingState or PreRound )
 			return false;
 
 		Search( player, Input.Down( InputButton.Run ) );
@@ -340,21 +347,21 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	public bool CanSearch()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		var searchButton = GetSearchButton();
 
 		if ( searchButton == InputButton.PrimaryAttack )
 			return true;
 
-		return Position.Distance( CurrentView.Position ) <= Player.UseDistance;
+		return Position.Distance( Camera.Position ) <= Player.UseDistance;
 	}
 
 	public static InputButton GetSearchButton()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
-		var player = Local.Pawn as Player;
+		var player = Game.LocalPawn as Player;
 
 		if ( player.ActiveCarriable is not Binoculars binoculars )
 			return InputButton.Use;

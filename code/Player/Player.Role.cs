@@ -24,7 +24,7 @@ public partial class Player
 			_playersWhoKnowTheRole.Clear();
 
 			// Always send the role to this player's client
-			if ( IsServer )
+			if ( Game.IsServer )
 				SendRole( To.Single( this ) );
 
 			_role.OnSelect( this );
@@ -48,7 +48,7 @@ public partial class Player
 			if ( _isRoleKnown == value )
 				return;
 
-			if ( IsServer && value )
+			if ( Game.IsServer && value )
 				SendRole( To.Everyone );
 
 			_isRoleKnown = value;
@@ -61,7 +61,7 @@ public partial class Player
 	/// <param name="to">The target. </param>
 	public void SendRole( To to )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		foreach ( var client in to )
 		{

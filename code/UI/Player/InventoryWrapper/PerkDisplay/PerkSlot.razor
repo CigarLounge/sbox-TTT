@@ -1,0 +1,73 @@
+@using System;
+
+@namespace TTT.UI
+
+<root>
+    <div class="background-color-secondary rounded opacity-heavy">
+        <img src=@Perk.Info.IconPath class="icon-panel" />
+    </div>
+    <text class="name text-shadow">@Perk.Info.Title</text>
+
+    @if (!Perk.SlotText.IsNullOrEmpty())
+    {
+        <text>
+            <text class="active-text rounded text-shadow background-color-secondary">
+                <text>@Perk.SlotText</text>
+            </text>
+        </text>
+    }
+</root>
+
+@code {
+    public Perk Perk { get; set; }
+    protected override int BuildHash() => HashCode.Combine(Perk.SlotText);
+}
+
+<style>
+    PerkSlot {
+        flex-direction: column;
+        align-items: center;
+        margin: 10 0;
+        transition: opacity 0.1s ease-out;
+        transition: left 0.1s ease-out;
+
+        .name {
+            position: absolute;
+            top: -10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .active-text {
+            position: absolute;
+            text-align: center;
+            top: 77px;
+            font-size: 14px;
+            padding: 0 5px 0 5px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .icon-panel {
+            width: 80px;
+            height: 80px;
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+            opacity: 0.9;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 4px;
+        }
+
+        &:outro {
+            opacity: 0;
+        }
+
+        &:intro {
+            left: 25px;
+        }
+    }
+</style>

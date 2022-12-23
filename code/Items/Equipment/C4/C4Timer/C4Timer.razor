@@ -1,0 +1,18 @@
+@inherits Sandbox.UI.WorldPanel
+@namespace TTT.UI
+
+<root>
+    @(_c4.IsArmed ? _c4.TimeUntilExplode.Relative.TimerString() : "00:00")
+</root>
+
+<style>
+    C4Timer {
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+        color: red;
+        font-size: 22px;
+        font-family: 'Poppins';
+        font-weight: bold;
+    }
+</style>

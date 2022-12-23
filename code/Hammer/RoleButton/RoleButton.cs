@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -21,7 +21,7 @@ public partial class RoleButton : Entity
 
 	[Description( "Maximum radius a player can see and activate a button. Buttons are fully opaque within 512 units." )]
 	[Net, Property]
-	public int Radius { get; private set; } = 1024;
+	public int Radius { get; private set; } = 100;
 
 	[Description( "Delay in seconds until button will reactive once triggered. Hammer doesn't like using decimal values, so this only takes integers." )]
 	[Property]

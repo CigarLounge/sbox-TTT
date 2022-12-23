@@ -31,7 +31,17 @@ public class Duck : BaseNetworkable
 		if ( IsActive )
 		{
 			Controller.SetTag( "ducked" );
-			Controller.EyeLocalPosition *= 0.5f;
+
+			var positionScale = 0.5f;
+			var lookDownDot = Controller.Player.EyeRotation.Forward.Dot( Vector3.Down );
+
+			if ( lookDownDot > 0.5f )
+			{
+				var f = lookDownDot - 0.5f;
+				positionScale += f.Remap( 0f, 0.5f, 0f, 0.1f );
+			}
+
+			Controller.Player.EyeLocalPosition *= positionScale;
 		}
 	}
 
@@ -58,7 +68,7 @@ public class Duck : BaseNetworkable
 
 	private void TryUnDuck()
 	{
-		var pm = Controller.TraceBBox( Controller.Position, Controller.Position, _originalMins, _originalMaxs );
+		var pm = Controller.TraceBBox( Controller.Player.Position, Controller.Player.Position, _originalMins, _originalMaxs );
 		if ( pm.StartedSolid )
 			return;
 

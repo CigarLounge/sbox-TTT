@@ -1,9 +1,9 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class RoleMenu : Panel
 {
 	public static RoleMenu Instance;
@@ -12,46 +12,16 @@ public partial class RoleMenu : Panel
 	public const string ShopTab = "Shop";
 	public const string DNATab = "DNA";
 
-	private Label RoleHeader { get; set; }
 	private CustomTabContainer TabContainer { get; set; }
 
 	public RoleMenu() => Instance = this;
 
-	public void AddShopTab()
-	{
-		TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart", true );
-	}
+	public void AddShopTab() => TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart", true );
+	public void AddRadioTab() => TabContainer.AddTab( new RadioMenu(), RadioTab, "radio" );
+	public void AddDNATab() => TabContainer.AddTab( new DNAMenu(), DNATab, "fingerprint" );
+	public void RemoveTab( string tabName ) => TabContainer.RemoveTab( tabName );
 
-	public void AddRadioTab()
-	{
-		TabContainer.AddTab( new RadioMenu(), RadioTab, "radio" );
-	}
+	public override void Tick() => SetClass( "fade-in", Input.Down( InputButton.View ) && TabContainer.Tabs.Count > 0 );
 
-	public void AddDNATab()
-	{
-		TabContainer.AddTab( new DNAMenu(), DNATab, "fingerprint" );
-	}
-
-	public void RemoveTab( string tabName )
-	{
-		TabContainer.RemoveTab( tabName );
-	}
-
-	public override void Tick()
-	{
-		var player = Local.Pawn as Player;
-		if ( !player.IsAlive() || TabContainer.Tabs.Count == 0 || Game.Current.State is not InProgress )
-		{
-			SetClass( "fade-in", false );
-			return;
-		}
-
-		SetClass( "fade-in", Input.Down( InputButton.View ) );
-
-		if ( !IsVisible )
-			return;
-
-		RoleHeader.Text = player.Role.Title;
-		RoleHeader.Style.FontColor = player.Role.Color;
-	}
+	protected override int BuildHash() => HashCode.Combine( (Game.LocalPawn as Player).Role );
 }

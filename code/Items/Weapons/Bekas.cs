@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -32,7 +32,7 @@ public partial class Bekas : Weapon
 		return TimeSincePrimaryAttack > (1 / rate);
 	}
 
-	public override void Simulate( Client owner )
+	public override void Simulate( IClient owner )
 	{
 		base.Simulate( owner );
 

@@ -7,7 +7,7 @@ namespace TTT;
 public class PreRound : BaseState
 {
 	public override string Name { get; } = "Preparing";
-	public override int Duration => Game.Current.TotalRoundsPlayed == 0 ? Game.PreRoundTime * 2 : Game.PreRoundTime;
+	public override int Duration => GameManager.Current.TotalRoundsPlayed == 0 ? GameManager.PreRoundTime * 2 : GameManager.PreRoundTime;
 
 	public override void OnPlayerSpawned( Player player )
 	{
@@ -34,10 +34,10 @@ public class PreRound : BaseState
 	{
 		MapHandler.Cleanup();
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 			player.Respawn();
@@ -49,14 +49,14 @@ public class PreRound : BaseState
 		List<Player> players = new();
 		List<Player> spectators = new();
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			var player = client.Pawn as Player;
 
 			if ( player.IsForcedSpectator )
 			{
 				player.Status = PlayerStatus.Spectator;
-				player.MakeSpectator( false );
+				player.MakeSpectator();
 				spectators.Add( player );
 
 				continue;
@@ -72,7 +72,7 @@ public class PreRound : BaseState
 
 		AssignRoles( players );
 
-		Game.Current.ChangeState( new InProgress
+		GameManager.Current.ChangeState( new InProgress
 		{
 			AlivePlayers = players,
 			Spectators = spectators,

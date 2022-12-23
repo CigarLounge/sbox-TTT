@@ -1,5 +1,8 @@
 using Sandbox;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -53,15 +56,29 @@ public partial class Player
 		set => base.Health = Math.Clamp( value, 0, MaxHealth );
 	}
 
+	public new Entity LastAttacker
+	{
+		get => base.LastAttacker;
+		set
+		{
+			// If anyone uses a prop to kill someone.
+			if ( value is Prop prop && prop.LastAttacker is Player propAttacker )
+				base.LastAttacker = propAttacker;
+			else
+				base.LastAttacker = value;
+		}
+	}
+
 	/// <summary>
 	/// Whether or not they were killed by another Player.
+	/// This includes if the Player used a prop to kill them.
 	/// </summary>
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 
 	/// <summary>
 	/// Whether or not the player was killed with a head shot.
 	/// </summary>
-	public bool KilledWithHeadShot => (HitboxGroup)GetHitboxGroup( LastDamage.HitboxIndex ) == HitboxGroup.Head;
+	public bool KilledWithHeadShot => LastDamage.Hitbox.HasTag( "head" );
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -113,7 +130,7 @@ public partial class Player
 
 	public override void OnKilled()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
@@ -139,14 +156,14 @@ public partial class Player
 		DeleteItems();
 
 		Event.Run( GameEvent.Player.Killed, this );
-		Game.Current.State.OnPlayerKilled( this );
+		GameManager.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
 	}
 
 	private void ClientOnKilled()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( IsLocalPawn )
 		{
@@ -160,24 +177,27 @@ public partial class Player
 
 	public override void TakeDamage( DamageInfo info )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( !this.IsAlive() )
 			return;
 
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( Strings.Tags.IgnoreDamage ) )
+			return;
+
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
-			if ( Game.Current.State is not InProgress and not PostRound )
+			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
-			if ( !info.Flags.HasFlag( DamageFlags.Slash ) )
+			if ( !info.HasTag( Strings.Tags.Slash ) )
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.Flags.HasFlag( DamageFlags.Bullet ) )
+		if ( info.HasTag( Strings.Tags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( ref info );
 
-		if ( info.Flags.HasFlag( DamageFlags.Blast ) )
+		if ( info.HasTag( Strings.Tags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );
@@ -200,8 +220,7 @@ public partial class Player
 
 	public void SendDamageInfo( To to )
 	{
-		Host.AssertServer();
-
+		Game.AssertServer();
 		SendDamageInfo
 		(
 			to,
@@ -209,8 +228,7 @@ public partial class Player
 			LastAttackerWeapon,
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
-			LastDamage.Flags,
-			LastDamage.HitboxIndex,
+			LastDamage.Tags.ToArray(),
 			LastDamage.Position,
 			DistanceToAttacker
 		);
@@ -223,16 +241,15 @@ public partial class Player
 		if ( Perks.Has<Armor>() )
 			damageMultiplier *= Armor.ReductionPercentage;
 
-		var hitboxGroup = (HitboxGroup)GetHitboxGroup( info.HitboxIndex );
-
-		if ( hitboxGroup == HitboxGroup.Head )
+		if ( info.Hitbox.HasTag( "head" ) )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
-
 			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;
 		}
-		else if ( hitboxGroup >= HitboxGroup.LeftArm && hitboxGroup <= HitboxGroup.Gear )
+		else if ( info.Hitbox.HasAnyTags( "arm", "hand" ) )
+		{
 			damageMultiplier *= 0.55f;
+		}
 
 		return damageMultiplier;
 	}
@@ -253,14 +270,14 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, DamageFlags dF, int hI, Vector3 p, float dTA )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
 	{
 		var info = DamageInfo.Generic( d )
 			.WithAttacker( a )
 			.WithWeapon( w )
-			.WithFlag( dF )
-			.WithHitbox( hI )
 			.WithPosition( p );
+
+		info.Tags = new HashSet<string>( tags );
 
 		DistanceToAttacker = dTA;
 		LastAttacker = a;

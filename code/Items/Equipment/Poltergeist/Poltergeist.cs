@@ -10,7 +10,7 @@ public class Poltergeist : Weapon
 {
 	private TraceResult _trace;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		base.Simulate( client );
 

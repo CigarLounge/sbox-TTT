@@ -33,7 +33,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool Add( Carriable carriable, bool makeActive = false )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( !carriable.IsValid() )
 			return false;
@@ -54,7 +54,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool CanAdd( Carriable carriable )
 	{
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			return carriable.Parent == Owner;
 
 		if ( !HasFreeSlot( carriable.Info.Slot ) )
@@ -86,7 +86,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public void OnUse( Carriable carriable )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( !carriable.CanCarry( Owner ) )
 			return;
@@ -138,7 +138,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool Drop( Carriable carriable )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return false;
 
 		if ( !Contains( carriable ) )
@@ -154,7 +154,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public Carriable DropActive()
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return null;
 
 		if ( Drop( Active ) )
@@ -169,7 +169,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public void DropAll()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		foreach ( var carriable in _list.ToArray() )
 			Drop( carriable );
@@ -181,7 +181,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public void DeleteContents()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		foreach ( var carriable in _list.ToArray() )
 			carriable.Delete();
@@ -224,7 +224,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public T DropEntity<T>( Deployable<T> self ) where T : ModelEntity, new()
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		var carriable = self as Carriable;
 		if ( !carriable.IsValid() || !Contains( carriable ) )

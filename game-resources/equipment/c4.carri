@@ -12,7 +12,7 @@
 		DeployTime = 0
 		IsLimited = true
 		Price = 100
-		IconPath = ""
+		IconPath = resource:"ui/none.png"
 		Description = "Powerful timed explosive."
 		ClassName = "ttt_equipment_c4"
 	}

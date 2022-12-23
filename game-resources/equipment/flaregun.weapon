@@ -33,7 +33,7 @@
 		DeployTime = 0.6
 		IsLimited = true
 		Price = 100
-		IconPath = null
+		IconPath = resource:"ui/none.png"
 		Description = "Can be used to burn corpses so that they are never found. Limited ammo."
 		ClassName = "ttt_equipment_flaregun"
 	}

@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
 
-public partial class WalkController : PawnController
+public partial class WalkController : BaseNetworkable
 {
+	internal HashSet<string> _events;
+	internal HashSet<string> _tags;
+
 	[Net] public float WalkSpeed { get; set; } = 110f;
 	[Net] public float DefaultSpeed { get; set; } = 230f;
 	[Net] public float Acceleration { get; set; } = 8.0f;
@@ -28,9 +32,13 @@ public partial class WalkController : PawnController
 	[Net, Predicted] public bool Momentum { get; set; }
 	[Net, Predicted] public TimeSince TimeSinceWaterJump { get; set; }
 	public bool Swimming { get; set; } = false;
+	public Vector3 WishVelocity { get; private set; }
 
+	public Player Player;
 	public Duck Duck;
 	public Unstuck Unstuck;
+
+	protected Vector3 GroundNormal { get; set; }
 
 	private const float FallDamageThreshold = 650f;
 	private const float FallDamageScale = 0.33f;
@@ -43,16 +51,53 @@ public partial class WalkController : PawnController
 		Unstuck = new Unstuck( this );
 	}
 
-	public override void FrameSimulate()
+	public void SetActivePlayer( Player player )
 	{
-		base.FrameSimulate();
-
-		EyeRotation = Input.Rotation;
+		Player = player;
 	}
 
-	public override void Simulate()
+	public bool HasEvent( string eventName )
 	{
-		_lastBaseVelocity = BaseVelocity;
+		if ( _events == null )
+			return false;
+		return _events.Contains( eventName );
+	}
+
+	public bool HasTag( string tagName )
+	{
+		if ( _tags == null )
+			return false;
+		return _tags.Contains( tagName );
+	}
+
+	public void SetTag( string tagName )
+	{
+		_tags ??= new HashSet<string>();
+
+		if ( _tags.Contains( tagName ) )
+			return;
+
+		_tags.Add( tagName );
+	}
+
+	public void AddEvent( string eventName )
+	{
+		_events ??= new HashSet<string>();
+
+		if ( _events.Contains( eventName ) )
+			return;
+
+		_events.Add( eventName );
+	}
+
+	public void FrameSimulate()
+	{
+		Player.EyeRotation = Player.ViewAngles.ToRotation();
+	}
+
+	public void Simulate()
+	{
+		_lastBaseVelocity = Player.BaseVelocity;
 		ApplyMomentum();
 		BaseSimulate();
 	}
@@ -77,25 +122,25 @@ public partial class WalkController : PawnController
 		WishVelocity = WishVelocity.WithZ( 0 );
 		WishVelocity = WishVelocity.Normal * wishspeed;
 
-		Velocity = Velocity.WithZ( 0 );
+		Player.Velocity = Player.Velocity.WithZ( 0 );
 		Accelerate( wishdir, wishspeed, 0, Acceleration );
-		Velocity = Velocity.WithZ( 0 );
-		Velocity += BaseVelocity;
+		Player.Velocity = Player.Velocity.WithZ( 0 );
+		Player.Velocity += Player.BaseVelocity;
 
 		try
 		{
-			if ( Velocity.Length < 1.0f )
+			if ( Player.Velocity.Length < 1.0f )
 			{
-				Velocity = Vector3.Zero;
+				Player.Velocity = Vector3.Zero;
 				return;
 			}
 
-			var dest = (Position + Velocity * Time.Delta).WithZ( Position.z );
-			var pm = TraceBBox( Position, dest );
+			var dest = (Player.Position + Player.Velocity * Time.Delta).WithZ( Player.Position.z );
+			var pm = TraceBBox( Player.Position, dest );
 
 			if ( pm.Fraction == 1 )
 			{
-				Position = pm.EndPosition;
+				Player.Position = pm.EndPosition;
 				StayOnGround();
 				return;
 			}
@@ -104,7 +149,7 @@ public partial class WalkController : PawnController
 		}
 		finally
 		{
-			Velocity -= BaseVelocity;
+			Player.Velocity -= Player.BaseVelocity;
 		}
 
 		StayOnGround();
@@ -112,26 +157,26 @@ public partial class WalkController : PawnController
 
 	private void StepMove()
 	{
-		var mover = new MoveHelper( Position, Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Pawn );
+		var mover = new MoveHelper( Player.Position, Player.Velocity );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
 		mover.MaxStandableAngle = GroundAngle;
 
 		mover.TryMoveWithStep( Time.Delta, StepSize );
 
-		Position = mover.Position;
-		Velocity = mover.Velocity;
+		Player.Position = mover.Position;
+		Player.Velocity = mover.Velocity;
 	}
 
 	private void Move()
 	{
-		var mover = new MoveHelper( Position, Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Pawn );
+		var mover = new MoveHelper( Player.Position, Player.Velocity );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
 		mover.MaxStandableAngle = GroundAngle;
 
 		mover.TryMove( Time.Delta );
 
-		Position = mover.Position;
-		Velocity = mover.Velocity;
+		Player.Position = mover.Position;
+		Player.Velocity = mover.Velocity;
 	}
 
 	/// <summary>
@@ -148,7 +193,7 @@ public partial class WalkController : PawnController
 			wishspeed = speedLimit;
 
 		// See if we are changing direction a bit
-		var currentspeed = Velocity.Dot( wishdir );
+		var currentspeed = Player.Velocity.Dot( wishdir );
 
 		// Reduce wishspeed by the amount of veer.
 		var addspeed = wishspeed - currentspeed;
@@ -164,7 +209,7 @@ public partial class WalkController : PawnController
 		if ( accelspeed > addspeed )
 			accelspeed = addspeed;
 
-		Velocity += wishdir * accelspeed;
+		Player.Velocity += wishdir * accelspeed;
 	}
 
 	/// <summary>
@@ -180,7 +225,7 @@ public partial class WalkController : PawnController
 
 
 		// Calculate speed
-		var speed = Velocity.Length;
+		var speed = Player.Velocity.Length;
 		if ( speed < 0.1f )
 			return;
 
@@ -199,7 +244,7 @@ public partial class WalkController : PawnController
 		if ( newspeed != speed )
 		{
 			newspeed /= speed;
-			Velocity *= newspeed;
+			Player.Velocity *= newspeed;
 		}
 
 		// mv->m_outWishVel -= (1.f-newspeed) * mv->m_vecVelocity;
@@ -211,11 +256,11 @@ public partial class WalkController : PawnController
 		{
 			ClearGroundEntity();
 
-			Velocity = Velocity.WithZ( 100 );
+			Player.Velocity = Player.Velocity.WithZ( 100 );
 			return;
 		}
 
-		if ( GroundEntity == null )
+		if ( Player.GroundEntity == null )
 			return;
 
 		ClearGroundEntity();
@@ -225,13 +270,13 @@ public partial class WalkController : PawnController
 		var flGroundFactor = 1.0f;
 
 		var flMul = 268.3281572999747f * 1.2f;
-		var startz = Velocity.z;
+		var startz = Player.Velocity.z;
 
 		if ( Duck.IsActive )
 			flMul *= 0.8f;
 
-		Velocity = Velocity.WithZ( startz + flMul * flGroundFactor );
-		Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
+		Player.Velocity = Player.Velocity.WithZ( startz + flMul * flGroundFactor );
+		Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 
 		AddEvent( "jump" );
 	}
@@ -245,11 +290,11 @@ public partial class WalkController : PawnController
 
 		Accelerate( wishdir, wishspeed, AirControl, AirAcceleration );
 
-		Velocity += BaseVelocity;
+		Player.Velocity += Player.BaseVelocity;
 
 		Move();
 
-		Velocity -= BaseVelocity;
+		Player.Velocity -= Player.BaseVelocity;
 	}
 
 	private void WaterMove()
@@ -266,12 +311,12 @@ public partial class WalkController : PawnController
 		}
 		else
 		{
-			var upwardMovememnt = Input.Forward * (Rotation * Vector3.Forward).z * 2;
+			var upwardMovememnt = Player.InputDirection.x * (Player.Rotation * Vector3.Forward).z * 2;
 			upwardMovememnt = Math.Clamp( upwardMovememnt, 0f, DefaultSpeed );
-			wishvel[2] += Input.Up + upwardMovememnt;
+			wishvel[2] += Player.InputDirection.z + upwardMovememnt;
 		}
 
-		var speed = Velocity.Length;
+		var speed = Player.Velocity.Length;
 		var wishspeed = Math.Min( wishvel.Length, DefaultSpeed ) * 0.8f;
 		var wishdir = wishvel.Normal;
 
@@ -281,17 +326,17 @@ public partial class WalkController : PawnController
 			if ( newspeed < 0.1f )
 				newspeed = 0;
 
-			Velocity *= newspeed / speed;
+			Player.Velocity *= newspeed / speed;
 		}
 
 		if ( wishspeed >= 0.1f )
 			Accelerate( wishdir, wishspeed, 100, Acceleration );
 
-		Velocity += BaseVelocity;
+		Player.Velocity += Player.BaseVelocity;
 
 		Move();
 
-		Velocity -= BaseVelocity;
+		Player.Velocity -= Player.BaseVelocity;
 	}
 
 	private void CategorizePosition( bool bStayOnGround )
@@ -305,16 +350,16 @@ public partial class WalkController : PawnController
 		// water on each call, and the converse case will correct itself if called twice.
 		//CheckWater();
 
-		var point = Position - Vector3.Up * 2;
-		var vBumpOrigin = Position;
+		var point = Player.Position - Vector3.Up * 2;
+		var vBumpOrigin = Player.Position;
 
 		//
 		//  Shooting up really fast.  Definitely not on ground trimed until ladder shit
 		//
-		var bMovingUpRapidly = Velocity.z + _lastBaseVelocity.z > MaxNonJumpVelocity;
+		var bMovingUpRapidly = Player.Velocity.z + _lastBaseVelocity.z > MaxNonJumpVelocity;
 		var bMoveToEndPos = false;
 
-		if ( GroundEntity != null ) // and not underwater
+		if ( Player.GroundEntity != null ) // and not underwater
 		{
 			bMoveToEndPos = true;
 			point.z -= StepSize;
@@ -338,7 +383,7 @@ public partial class WalkController : PawnController
 			ClearGroundEntity();
 			bMoveToEndPos = false;
 
-			if ( Velocity.z + _lastBaseVelocity.z > 0 )
+			if ( Player.Velocity.z + _lastBaseVelocity.z > 0 )
 				_surfaceFriction = 0.25f;
 		}
 		else
@@ -348,7 +393,7 @@ public partial class WalkController : PawnController
 
 		if ( bMoveToEndPos && !pm.StartedSolid && pm.Fraction > 0.0f && pm.Fraction < 1.0f )
 		{
-			Position = pm.EndPosition;
+			Player.Position = pm.EndPosition;
 		}
 	}
 
@@ -356,8 +401,8 @@ public partial class WalkController : PawnController
 	{
 		if ( !Momentum )
 		{
-			Velocity += (0.2f + (Time.Delta * 0.5f)) * BaseVelocity;
-			BaseVelocity = Vector3.Zero;
+			Player.Velocity += (0.2f + (Time.Delta * 0.5f)) * Player.BaseVelocity;
+			Player.BaseVelocity = Vector3.Zero;
 		}
 
 		Momentum = false;
@@ -365,45 +410,51 @@ public partial class WalkController : PawnController
 
 	private void BaseSimulate()
 	{
-		EyeLocalPosition = Vector3.Up * (EyeHeight * Pawn.Scale);
+		_tags?.Clear();
+		_events?.Clear();
+
+		Player.EyeLocalPosition = Vector3.Up * (EyeHeight * Player.Scale);
 		UpdateBBox();
 
-		EyeLocalPosition += TraceOffset;
-		EyeRotation = Input.Rotation;
+		Player.EyeLocalPosition += TraceOffset;
+		Player.EyeRotation = Player.ViewAngles.ToRotation();
 
 		if ( Unstuck.TestAndFix() )
 			return;
 
 		CheckLadder();
-		Swimming = Pawn.WaterLevel > 0.6f;
+		Swimming = Player.GetWaterLevel() > 0.6f;
 
 		if ( !Swimming && !_isTouchingLadder )
 		{
-			Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
-			Velocity += new Vector3( 0, 0, BaseVelocity.z ) * Time.Delta;
+			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
+			Player.Velocity += new Vector3( 0, 0, Player.BaseVelocity.z ) * Time.Delta;
 
-			BaseVelocity = BaseVelocity.WithZ( 0 );
+			Player.BaseVelocity = Player.BaseVelocity.WithZ( 0 );
 		}
 
 		if ( AutoJump ? Input.Down( InputButton.Jump ) : Input.Pressed( InputButton.Jump ) )
 			CheckJumpButton();
 
-		var bStartOnGround = GroundEntity != null;
+		var bStartOnGround = Player.GroundEntity != null;
 		if ( bStartOnGround )
 		{
-			Velocity = Velocity.WithZ( 0 );
+			Player.Velocity = Player.Velocity.WithZ( 0 );
 
-			if ( GroundEntity != null )
+			if ( Player.GroundEntity != null )
 				ApplyFriction( GroundFriction * _surfaceFriction * 1 );
 		}
 
-		WishVelocity = new Vector3( Input.Forward, Input.Left, 0 );
+		//
+		// Work out wish velocity.. just take input, rotate it to view, clamp to -1, 1
+		//
+		WishVelocity = new Vector3( Player.InputDirection.x.Clamp( -1f, 1f ), Player.InputDirection.y.Clamp( -1f, 1f ), 0 );
 		var inSpeed = WishVelocity.Length.Clamp( 0, 1 );
 
 		if ( !Swimming )
-			WishVelocity *= Input.Rotation.Angles().WithPitch( 0 ).ToRotation();
+			WishVelocity *= Player.ViewAngles.WithPitch( 0 ).ToRotation();
 		else
-			WishVelocity *= Input.Rotation.Angles().ToRotation();
+			WishVelocity *= Player.ViewAngles.ToRotation();
 
 
 		if ( !Swimming && !_isTouchingLadder )
@@ -417,7 +468,7 @@ public partial class WalkController : PawnController
 		var bStayOnGround = false;
 		if ( Swimming )
 		{
-			if ( Pawn.WaterLevel.AlmostEqual( 0.6f, .05f ) )
+			if ( Player.GetWaterLevel().AlmostEqual( 0.6f, .05f ) )
 				CheckWaterJump();
 
 			WaterMove();
@@ -427,7 +478,7 @@ public partial class WalkController : PawnController
 			SetTag( "climbing" );
 			LadderMove();
 		}
-		else if ( GroundEntity != null )
+		else if ( Player.GroundEntity != null )
 		{
 			bStayOnGround = true;
 			WalkMove();
@@ -440,31 +491,31 @@ public partial class WalkController : PawnController
 		CategorizePosition( bStayOnGround );
 
 		if ( !Swimming && !_isTouchingLadder )
-			Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
+			Player.Velocity -= new Vector3( 0, 0, Gravity * 0.5f ) * Time.Delta;
 
-		if ( GroundEntity != null )
-			Velocity = Velocity.WithZ( 0 );
+		if ( Player.GroundEntity != null )
+			Player.Velocity = Player.Velocity.WithZ( 0 );
 
-		var fallVelocity = -Pawn.Velocity.z;
-		if ( GroundEntity is null || fallVelocity <= 0 )
+		var fallVelocity = -Player.Velocity.z;
+		if ( Player.GroundEntity is null || fallVelocity <= 0 )
 			return;
 
 		if ( fallVelocity > FallDamageThreshold )
 		{
 			var damage = (MathF.Abs( fallVelocity ) - FallDamageThreshold) * FallDamageScale;
 
-			if ( Host.IsServer )
+			if ( Game.IsServer )
 			{
-				Pawn.TakeDamage( new DamageInfo
+				Player.TakeDamage( new DamageInfo
 				{
-					Attacker = Pawn,
-					Flags = DamageFlags.Fall,
-					Force = Vector3.Down * Velocity.Length,
+					Attacker = Player,
+					Force = Vector3.Down * Player.Velocity.Length,
 					Damage = damage,
+					Tags = { Strings.Tags.Fall }
 				} );
 			}
 
-			Pawn.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
+			Player.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
 		}
 	}
 
@@ -482,10 +533,10 @@ public partial class WalkController : PawnController
 		if ( _surfaceFriction > 1 )
 			_surfaceFriction = 1;
 
-		GroundEntity = tr.Entity;
+		Player.GroundEntity = tr.Entity;
 
-		if ( GroundEntity != null )
-			BaseVelocity = GroundEntity.Velocity;
+		if ( Player.GroundEntity != null )
+			Player.BaseVelocity = Player.GroundEntity.Velocity;
 	}
 
 	/// <summary>
@@ -493,10 +544,10 @@ public partial class WalkController : PawnController
 	/// </summary>
 	private void ClearGroundEntity()
 	{
-		if ( GroundEntity == null )
+		if ( Player.GroundEntity == null )
 			return;
 
-		GroundEntity = null;
+		Player.GroundEntity = null;
 		GroundNormal = Vector3.Up;
 		_surfaceFriction = 1.0f;
 	}
@@ -509,11 +560,11 @@ public partial class WalkController : PawnController
 		if ( TimeSinceWaterJump < 2f )
 			return;
 
-		if ( Velocity.z < -180 )
+		if ( Player.Velocity.z < -180 )
 			return;
 
-		var fwd = Rotation * Vector3.Forward;
-		var flatvelocity = Velocity.WithZ( 0 );
+		var fwd = Player.Rotation * Vector3.Forward;
+		var flatvelocity = Player.Velocity.WithZ( 0 );
 		var curspeed = flatvelocity.Length;
 		flatvelocity = flatvelocity.Normal;
 		var flatforward = fwd.WithZ( 0 ).Normal;
@@ -522,14 +573,14 @@ public partial class WalkController : PawnController
 		if ( !curspeed.AlmostEqual( 0f ) && (Vector3.Dot( flatvelocity, flatforward ) < 0f) )
 			return;
 
-		var vecstart = Position + (_mins + _maxs) * .5f;
+		var vecstart = Player.Position + (_mins + _maxs) * .5f;
 		var vecend = vecstart + flatforward * 24f;
 
 		var tr = TraceBBox( vecstart, vecend, 0f );
 		if ( tr.Fraction < 1.0f )
 		{
 			const float WATERJUMP_HEIGHT = 900f;
-			vecstart.z += Position.z + EyeHeight + WATERJUMP_HEIGHT;
+			vecstart.z += Player.Position.z + EyeHeight + WATERJUMP_HEIGHT;
 
 			vecend = vecstart + flatforward * 24f;
 
@@ -541,7 +592,7 @@ public partial class WalkController : PawnController
 				tr = TraceBBox( vecstart, vecend );
 				if ( (tr.Fraction < 1.0f) && (tr.Normal.z >= 0.7f) )
 				{
-					Velocity = Velocity.WithZ( 356f );
+					Player.Velocity = Player.Velocity.WithZ( 356f );
 					TimeSinceWaterJump = 0f;
 				}
 			}
@@ -553,11 +604,11 @@ public partial class WalkController : PawnController
 	/// </summary>
 	private void StayOnGround()
 	{
-		var start = Position + Vector3.Up * 2;
-		var end = Position + Vector3.Down * StepSize;
+		var start = Player.Position + Vector3.Up * 2;
+		var end = Player.Position + Vector3.Down * StepSize;
 
 		// See how far up we can go without getting stuck
-		var trace = TraceBBox( Position, start );
+		var trace = TraceBBox( Player.Position, start );
 		start = trace.EndPosition;
 
 		// Now trace down from a known safe position
@@ -577,7 +628,7 @@ public partial class WalkController : PawnController
 		// float flDelta = fabs( mv->GetAbsOrigin().z - trace.m_vEndPos.z );
 		// if ( flDelta > 0.5f * DIST_EPSILON )
 
-		Position = trace.EndPosition;
+		Player.Position = trace.EndPosition;
 	}
 
 	/// <summary>
@@ -591,7 +642,7 @@ public partial class WalkController : PawnController
 			return;
 
 		// Current player speed
-		var spd = Velocity.Length;
+		var spd = Player.Velocity.Length;
 
 		if ( spd <= maxscaledspeed )
 			return;
@@ -599,6 +650,6 @@ public partial class WalkController : PawnController
 		// Apply this cropping fraction to velocity
 		var fraction = maxscaledspeed / spd;
 
-		Velocity *= fraction;
+		Player.Velocity *= fraction;
 	}
 }

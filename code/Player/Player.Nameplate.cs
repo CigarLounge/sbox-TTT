@@ -1,3 +1,5 @@
+using Sandbox.UI;
+
 namespace TTT;
 
 public partial class Player : IEntityHint
@@ -10,7 +12,7 @@ public partial class Player : IEntityHint
 		return !disguiser?.IsActive ?? true;
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player )
+	Panel IEntityHint.DisplayHint( Player player )
 	{
 		return new UI.Nameplate( this );
 	}

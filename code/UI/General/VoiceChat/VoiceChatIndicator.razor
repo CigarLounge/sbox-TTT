@@ -1,0 +1,32 @@
+@using Sandbox;
+@using TTT.UI;
+
+@inherits Sandbox.UI.WorldPanel;
+
+@namespace TTT.UI
+
+<root>
+    <img src="ui/voicechat.png" class="voice-icon" />
+</root>
+
+@code {
+    public VoiceChatIndicator(IClient client)
+    {
+        this.SceneObject.Flags.ViewModelLayer = true;
+        this.Enabled(!client.Pawn.AsEntity().IsLocalPawn);
+    }
+}
+
+<style>
+    VoiceChatIndicator {
+        justify-content: center;
+        align-items: center;
+
+        .voice-icon {
+            background-size: contain;
+            width: 64px;
+            height: 64px;
+            font-size: 500px;
+        }
+    }
+</style>

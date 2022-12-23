@@ -1,37 +1,30 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using Sandbox.UI;
+using System;
 using System.Collections.Generic;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class InspectMenu : Panel
 {
+	private Panel IconsContainer { get; set; }
 	private readonly Corpse _corpse;
 	private InspectEntry _selectedInspectEntry;
-
 	private readonly List<InspectEntry> _inspectionEntries = new();
 	private InspectEntry _timeSinceDeath;
 	private InspectEntry _dna;
 
-	private Image PlayerAvatar { get; init; }
-	private Label RoleName { get; init; }
-	private Label PlayerName { get; init; }
-	private Panel IconsContainer { get; init; }
-	private Button CallDetectiveButton { get; init; }
-	private Label ActiveText { get; init; }
-
 	public InspectMenu( Corpse corpse )
 	{
 		Assert.NotNull( corpse );
-
 		_corpse = corpse;
-		var player = corpse.Player;
+	}
 
-		PlayerAvatar.SetTexture( $"avatar:{player.SteamId}" );
-		PlayerName.Text = player.SteamName;
-		RoleName.Text = player.Role.Title;
-		RoleName.Style.FontColor = player.Role.Color;
+	protected override void OnAfterTreeRender( bool firstTime )
+	{
+		if ( !firstTime )
+			return;
 
 		SetupInspectIcons();
 	}
@@ -48,7 +41,7 @@ public partial class InspectMenu : Panel
 		if ( player.LastAttackerWeaponInfo is not null )
 			AddInspectEntry( $"{player.LastAttackerWeaponInfo.Title}",
 			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
-			player.LastAttackerWeaponInfo.Icon.ResourcePath );
+			player.LastAttackerWeaponInfo.IconPath );
 
 		if ( player.KilledWithHeadShot )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
@@ -74,10 +67,15 @@ public partial class InspectMenu : Panel
 			$"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.",
 			"/ui/inspectmenu/c4note.png" );
 
+		if ( !_corpse.LastWords.IsNullOrEmpty() )
+			AddInspectEntry( "Last Words",
+			$"Their last words were... \"{_corpse.LastWords}\"",
+			"/ui/inspectmenu/lastwords.png" );
+
 		if ( !_corpse.Perks.IsNullOrEmpty() )
 		{
 			foreach ( var perk in _corpse.Perks )
-				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.Icon.ResourcePath );
+				AddInspectEntry( perk.Title, $"They were carrying {perk.Title}.", perk.IconPath );
 		}
 
 		foreach ( var entry in _inspectionEntries )
@@ -87,55 +85,50 @@ public partial class InspectMenu : Panel
 		}
 	}
 
-	private InspectEntry AddInspectEntry( string iconText, string activeText, string imagePath )
+	private InspectEntry AddInspectEntry( string iconText, string activeText, string iconPath )
 	{
-		var entry = new InspectEntry( IconsContainer, iconText, activeText, imagePath );
+		var entry = new InspectEntry() { Parent = IconsContainer, IconText = iconText, ActiveText = activeText, IconPath = iconPath };
 		_inspectionEntries.Add( entry );
 		return entry;
 	}
 
 	private (string name, string imageText, string activeText) GetCauseOfDeathStrings()
 	{
-		return _corpse.Player.LastDamage.Flags switch
+		var causeOfDeath = ("Unknown", "Unknown", "The cause of death is unknown.");
+		foreach ( var tag in _corpse.Player.LastDamage.Tags )
 		{
-			DamageFlags.Generic => ("Unknown", "Unknown", "The cause of death is unknown."),
-			DamageFlags.Crush => ("Crushed", "Crushed", "This corpse was crushed to death."),
-			DamageFlags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
-			DamageFlags.Buckshot => ("Bullet", "Bullet", "This corpse was shot to death."),
-			DamageFlags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
-			DamageFlags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
-			DamageFlags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
-			DamageFlags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
-			DamageFlags.Blast => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
-			DamageFlags.PhysicsImpact => ("Prop", "Prop", "A wild flying prop caused this death."),
-			DamageFlags.Drown => ("Drown", "Drown", "This player drowned to death."),
-			_ => ("Unknown", "Unknown", "The cause of death is unknown.")
-		};
+			return tag switch
+			{
+				Strings.Tags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
+				Strings.Tags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
+				Strings.Tags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
+				Strings.Tags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
+				Strings.Tags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
+				Strings.Tags.Explode => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
+				Strings.Tags.Drown => ("Drown", "Drown", "This player drowned to death."),
+				_ => ("Unknown", "Unknown", "The cause of death is unknown.")
+			};
+		}
+		return causeOfDeath;
 	}
 
 	public override void Tick()
 	{
-		var player = _corpse.Player;
-
-		CallDetectiveButton.Enabled( player.IsConfirmedDead );
-		CallDetectiveButton.SetClass( "inactive", _corpse.HasCalledDetective || !Local.Pawn.IsAlive() );
-
-		var timeSinceDeath = player.TimeSinceDeath.Relative.TimerString();
-		_timeSinceDeath.SetImageText( $"{timeSinceDeath}" );
+		var timeSinceDeath = _corpse.Player.TimeSinceDeath.Relative.TimerString();
+		_timeSinceDeath.IconText = $"{timeSinceDeath}";
 		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 		if ( _dna.IsEnabled() )
 		{
-			_dna.SetImageText( $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}" );
+			_dna.IconText = $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}";
 			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
 		}
+	}
 
-		var isShowing = _selectedInspectEntry is not null;
-		ActiveText.SetClass( "fade-in", isShowing );
-
-		if ( isShowing )
-			ActiveText.Text = _selectedInspectEntry.ActiveText;
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive(), _selectedInspectEntry );
 	}
 
 	// Called from UI panel
@@ -155,7 +148,7 @@ public partial class InspectMenu : Panel
 		if ( !enemy.IsValid() || enemy is not Corpse corpse )
 			return;
 
-		ChatBox.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
+		TextChat.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
 		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
 	}
 

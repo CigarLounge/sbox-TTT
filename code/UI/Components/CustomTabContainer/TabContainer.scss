@@ -1,8 +1,7 @@
 tabcontainer, customtabcontainer
 {
-    flex-grow: 1;
+    height: 100%;
     flex-direction: column;
-    flex-shrink: 0;
 
     > .sheets
     {
@@ -57,15 +56,16 @@ tabcontainer, customtabcontainer
     {
         .button
         {
-            padding: 10px 15px 10px 0px;
+            padding: 10px 25px 0px 0px;
             min-height: 0px;
             opacity: 0.1;
             font-size: 25px;
             color: white;
             font-weight: normal;
             font-family: Poppins;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             text-shadow: 1px 1px 1px black;
+            height: 40px;
     
             .iconpanel
             {

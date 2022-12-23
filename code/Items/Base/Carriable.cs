@@ -13,16 +13,6 @@ public enum SlotType
 	Grenade,
 }
 
-public enum HoldType
-{
-	None,
-	Pistol,
-	Rifle,
-	Shotgun,
-	Carry,
-	Fists
-}
-
 [Title( "Carriable" ), Icon( "luggage" )]
 public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 {
@@ -45,7 +35,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// <summary>
 	/// Return the entity we should be spawning particles from.
 	/// </summary>
-	public virtual ModelEntity EffectEntity => (ViewModelEntity.IsValid() && IsFirstPersonMode) ? ViewModelEntity : this;
+	public virtual ModelEntity EffectEntity => ViewModelEntity.IsValid() && Owner.IsValid() && Owner.IsLocalPawn ? ViewModelEntity : this;
 
 	/// <summary>
 	/// The text that will show up in the inventory slot.
@@ -96,11 +86,6 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		EnableDrawing = true;
 
-		var animator = player.Animator;
-
-		if ( animator is not null )
-			SimulateAnimator( animator );
-
 		if ( IsLocalPawn )
 		{
 			CreateViewModel();
@@ -111,7 +96,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 		TimeSinceDeployed = 0;
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( !Components.GetAll<DNA>().Any( ( dna ) => dna.TargetPlayer == Owner ) )
@@ -123,20 +108,18 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		if ( !dropped )
 			EnableDrawing = false;
 
-		if ( IsClient )
+		if ( Game.IsClient )
 		{
 			DestroyViewModel();
 			DestroyHudElements();
 		}
 	}
 
-	public override void Simulate( Client client ) { }
+	public override void Simulate( IClient client ) { }
 
-	public override void FrameSimulate( Client client ) { }
+	public override void FrameSimulate( IClient client ) { }
 
-	public virtual void RenderHud( in Vector2 screenSize ) { }
-
-	public override void BuildInput( InputBuilder input ) { }
+	public override void BuildInput() { }
 
 	public virtual bool CanCarry( Player carrier )
 	{
@@ -152,10 +135,10 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual void OnCarryStart( Player carrier )
 	{
 		// Bandaid fix for: https://github.com/Facepunch/sbox-issues/issues/1702
-		if ( IsClient )
+		if ( Game.IsClient )
 			Info ??= GameResource.GetInfo<CarriableInfo>( GetType() );
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Owner = carrier;
@@ -167,7 +150,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		PreviousOwner = dropper;
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Owner = null;
@@ -176,20 +159,28 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		TimeSinceDropped = 0;
 	}
 
-	public virtual void SimulateAnimator( PawnAnimator animator )
+	public override Sound PlaySound( string soundName, string attachment )
 	{
-		animator.SetAnimParameter( "holdtype", (int)Info.HoldType );
-		animator.SetAnimParameter( "aim_body_weight", 1.0f );
-		animator.SetAnimParameter( "holdtype_handedness", 0 );
+		if ( Owner.IsValid() )
+			return Owner.PlaySound( soundName, attachment );
+
+		return base.PlaySound( soundName, attachment );
+	}
+
+	public virtual void SimulateAnimator( CitizenAnimationHelper anim )
+	{
+		anim.HoldType = Info.HoldType;
+		anim.AimBodyWeight = 1.0f;
+		anim.Handedness = 0;
 	}
 
 	/// <summary>
 	/// Create the viewmodel. You can override this in your base classes if you want
 	/// to create a certain viewmodel entity.
 	/// </summary>
-	protected virtual void CreateViewModel()
+	public virtual void CreateViewModel()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( Info.ViewModel is not null )
 		{
@@ -235,11 +226,8 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	{
 		base.OnDestroy();
 
-		if ( IsFirstPersonMode )
-		{
-			DestroyViewModel();
-			DestroyHudElements();
-		}
+		DestroyViewModel();
+		DestroyHudElements();
 	}
 
 	bool IEntityHint.CanHint( Player player ) => Owner is null;

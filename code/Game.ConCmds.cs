@@ -1,9 +1,9 @@
-using System;
 using Sandbox;
+using System;
 
 namespace TTT;
 
-public partial class Game
+public partial class GameManager
 {
 	[ConCmd.Admin( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
 	public static void RespawnPlayer( int id = 0 )
@@ -51,10 +51,20 @@ public partial class Game
 		player.Credits += credits;
 	}
 
+	[ConCmd.Admin( Name = "ttt_givedamage" )]
+	public static void GiveDamage( float damage )
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.TakeDamage( DamageInfo.Generic( damage ) );
+	}
+
 	[ConCmd.Admin( Name = "ttt_setrole" )]
 	public static void SetRole( string roleName )
 	{
-		if ( Game.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -71,13 +81,33 @@ public partial class Game
 		player.SetRole( roleInfo );
 	}
 
+	[ConCmd.Admin( Name = "ttt_setkarma" )]
+	public static void SetKarma( int karma )
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.ActiveKarma = karma;
+	}
+
 	[ConCmd.Admin( Name = "ttt_force_restart" )]
 	public static void ForceRestart()
 	{
-		Game.Current.ChangeState( new PreRound() );
+		GameManager.Current.ChangeState( new PreRound() );
 	}
 
-	[ConCmd.Server( Name = "ttt_forcespec" )]
+	[ConCmd.Admin( Name = "ttt_change_map" )]
+	public static async void ChangeMap( string mapIdent )
+	{
+		var package = await Package.Fetch( mapIdent, true );
+		if ( package is not null && package.PackageType == Package.Type.Map )
+			Game.ChangeLevel( mapIdent );
+		else
+			Log.Error( $"{mapIdent} does not exist as a s&box map!" );
+	}
+
+	[ConCmd.Server( Name = "ttt_force_spectator" )]
 	public static void ToggleForceSpectator()
 	{
 		var player = ConsoleSystem.Caller.Pawn as Player;
@@ -98,8 +128,18 @@ public partial class Game
 			return;
 
 		client.SetValue( Strings.HasRockedTheVote, true );
-		Game.Current.RTVCount += 1;
+		GameManager.Current.RTVCount += 1;
 
-		UI.ChatBox.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({Game.Current.RTVCount}/{MathF.Round( Client.All.Count * Game.RTVThreshold )})" );
+		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({GameManager.Current.RTVCount}/{MathF.Round( Game.Clients.Count * GameManager.RTVThreshold )})" );
+	}
+
+	[ConCmd.Server( Name = "kill" )]
+	public static void Kill()
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		if ( !player.IsValid() )
+			return;
+
+		player.Kill();
 	}
 }

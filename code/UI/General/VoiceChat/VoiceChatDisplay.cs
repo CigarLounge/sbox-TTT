@@ -4,23 +4,21 @@ using System.Linq;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class VoiceChatDisplay : Panel
+public partial class VoiceChatDisplay : Panel
 {
 	public static VoiceChatDisplay Instance { get; private set; }
 
 	public VoiceChatDisplay() => Instance = this;
 
-	public void OnVoicePlayed( Client client )
+	public void OnVoicePlayed( IClient client )
 	{
-		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.PlayerId ) ?? new VoiceChatEntry( this, client );
-		entry.Update( client.VoiceLevel );
+		var entry = ChildrenOfType<VoiceChatEntry>().FirstOrDefault( x => x.Friend.Id == client.SteamId ) ?? new VoiceChatEntry( client ) { Parent = this };
+		entry.Update( client.Voice.CurrentLevel );
 	}
 
-	[Event.BuildInput]
-	private void BuildInput( InputBuilder input )
+	public override void Tick()
 	{
-		if ( input.Down( InputButton.Voice ) )
-			OnVoicePlayed( Local.Client );
+		if ( Voice.IsRecording )
+			OnVoicePlayed( Game.LocalClient );
 	}
 }

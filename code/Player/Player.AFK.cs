@@ -22,8 +22,8 @@ public partial class Player
 			return;
 		}
 
-		var isAnyKeyPressed = Buttons.Any( button => Input.Down( button ) );
-		var isMouseMoving = Input.MouseDelta != Vector3.Zero;
+		var isAnyKeyPressed = Buttons.Any( Input.Down );
+		var isMouseMoving = Input.MouseDelta != Vector2.Zero;
 
 		if ( isAnyKeyPressed || isMouseMoving )
 		{
@@ -31,16 +31,16 @@ public partial class Player
 			return;
 		}
 
-		if ( _timeSinceLastAction > Game.AFKTimer )
+		if ( _timeSinceLastAction > GameManager.AFKTimer )
 		{
-			if ( Game.KickAFKPlayers )
+			if ( GameManager.KickAFKPlayers )
 			{
-				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was kicked from the server for being AFK." );
+				Log.Warning( $"Player ID: {Client.SteamId}, Name: {Client.Name} was kicked from the server for being AFK." );
 				Client.Kick();
 			}
 			else
 			{
-				Log.Warning( $"Player ID: {Client.PlayerId}, Name: {Client.Name} was moved to spectating for being AFK." );
+				Log.Warning( $"Player ID: {Client.SteamId}, Name: {Client.Name} was moved to spectating for being AFK." );
 				ToggleForcedSpectator();
 			}
 		}

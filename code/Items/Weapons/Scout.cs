@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -20,12 +20,12 @@ public class Scout : Weapon
 		base.ActiveStart( player );
 
 		IsScoped = false;
-		_defaultFOV = player.Camera.FieldOfView;
+		_defaultFOV = Camera.FieldOfView;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
-		if ( IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Game.IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
 		{
 			if ( Prediction.FirstTime )
 			{
@@ -37,30 +37,27 @@ public class Scout : Weapon
 		base.Simulate( client );
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		if ( IsScoped )
-			input.ViewAngles = Angles.Lerp( input.OriginalViewAngles, input.ViewAngles, 0.1f );
+		base.BuildInput();
 
-		base.BuildInput( input );
+		if ( IsScoped )
+			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.1f );
 	}
 
 	protected override void CreateHudElements()
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" )
-		{
-			Parent = Local.Hud
-		};
+		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Game.RootPanel };
 	}
 
 	protected override void DestroyHudElements()
 	{
 		base.DestroyHudElements();
 
-		(Owner ?? PreviousOwner).Camera.FieldOfView = _defaultFOV;
-		_sniperScopePanel.Delete( true );
+		Camera.FieldOfView = _defaultFOV;
+		_sniperScopePanel?.Delete( true );
 	}
 
 	private void SetScoped( bool isScoped )
@@ -75,6 +72,6 @@ public class Scout : Weapon
 		ViewModelEntity.EnableDrawing = !IsScoped;
 		HandsModelEntity.EnableDrawing = !IsScoped;
 
-		Owner.Camera.FieldOfView = isScoped ? 10f : _defaultFOV;
+		Camera.FieldOfView = isScoped ? 10f : _defaultFOV;
 	}
 }

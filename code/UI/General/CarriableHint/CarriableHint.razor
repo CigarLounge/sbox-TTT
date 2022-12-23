@@ -1,0 +1,31 @@
+@namespace TTT.UI
+
+<root>
+    <div class="text-shadow">
+        @if (!_primaryAttackHint.IsNullOrEmpty())
+        {
+            <div style="align-items: center; padding: 5px;">
+                <inputglyph button="PrimaryAttack" />
+                <text>@_primaryAttackHint</text>
+            </div>
+        }
+        @if (!_secondaryAttackHint.IsNullOrEmpty())
+        {
+            <div style="align-items: center; padding: 5px;">
+                <inputglyph button="SecondaryAttack" />
+                <text>@_secondaryAttackHint</text>
+            </div>
+        }
+    </div>
+</root>
+
+<style>
+    CarriableHint {
+        position: absolute;
+        left: 50%;
+        bottom: 25px;
+        transform: translateX(-50%);
+        font-size: 17px;
+        font-weight: 500;
+    }
+</style>

@@ -1,0 +1,62 @@
+@namespace TTT.UI
+
+<root class="text-shadow">
+    <div class="container background-color-gradient rounded">
+        <text class="header">C4 Defuse</text>
+        <text class="timer text-color-tertiary">@_timer</text>
+        <div class="wires">
+            @for (int i = 0; i < C4Entity.Wires.Count; i++)
+            {
+                var wireNumber = i + 1;
+                <div>
+                    <Wire C4=@_c4 Number=@wireNumber Color=@C4Entity.Wires[i] />
+                </div>
+            }
+        </div>
+        <div style="justify-content: center;">
+            <button @onclick=@Pickup icon="pan_tool" class="@(_c4.IsArmed ? "inactive" : "")">Pick up</button>
+            <button @onclick=@Destroy icon="delete" class="@(_c4.IsArmed ? "inactive" : "")">Destroy</button>
+        </div>
+    </div>
+    <text style="align-self: center; padding: 5px;">@(_isOwner ? "It's your C4, any wire will defuse it" : "")</text>
+</root>
+
+<style>
+    C4DefuseMenu {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+        transition: transform 0.25s ease-out;
+        pointer-events: all;
+        justify-content: center;
+        align-self: center;
+        z-index: 2;
+
+        .container {
+            align-self: center;
+            flex-direction: column;
+            width: 20%;
+            padding: 15px;
+            opacity: 1.2;
+
+            .header {
+                align-self: center;
+                font-size: 50px;
+                font-weight: 500;
+            }
+
+            .wires {
+                justify-content: space-around;
+                padding: 10px;
+                min-height: 123px;
+            }
+
+            .timer {
+                align-self: center;
+                font-size: 45px;
+                font-weight: 500;
+            }
+        }
+    }
+</style>

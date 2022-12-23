@@ -8,12 +8,12 @@
 		FireMode = "Semi"
 		BulletsPerFire = 1
 		ClipSize = 10
-		Damage = 27
+		Damage = 23
 		DamageFallOffStart = 0
 		DamageFallOffEnd = 0
 		HeadshotMultiplier = 2.2
-		Spread = 0.03
-		PrimaryRate = 6
+		Spread = 0.033
+		PrimaryRate = 4.5
 		SecondaryRate = 0
 		ReserveAmmo = 20
 		ReloadTime = 1.5

@@ -20,9 +20,6 @@ public class EventInfo
 	public EventType EventType { get; set; }
 	public float Time { get; set; }
 	public string Description { get; set; }
-
-	public static byte[] Serialize( EventInfo[] data ) => Encoding.UTF8.GetBytes( JsonSerializer.Serialize( data ) );
-	public static EventInfo[] Deserialize( byte[] bytes ) => JsonSerializer.Deserialize<EventInfo[]>( bytes );
 }
 
 public static class EventLogger
@@ -48,7 +45,7 @@ public static class EventLogger
 	[GameEvent.Round.Start]
 	private static void OnRoundStart()
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		Events.Clear();
@@ -60,52 +57,52 @@ public static class EventLogger
 	[GameEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		LogEvent( EventType.Round, _timeSinceStart, $"The {winningTeam.GetTitle()} won the round!" );
 		WriteEvents();
 
-		UI.GeneralMenu.SendSummaryData( EventInfo.Serialize( Events.ToArray() ) );
+		UI.GeneralMenu.SendSummaryData( Events.Serialize() );
 	}
 
 	[GameEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		var info = player.LastDamage;
 		var attacker = info.Attacker;
 
 		if ( attacker is Player && attacker != player )
-			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{attacker.Client.Name} did {info.Damage} damage to {player.SteamName}" );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{attacker.Client.Name} did {Math.Round( info.Damage )} damage to {player.SteamName}" );
 		else
-			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{player.SteamName} took {info.Damage} damage." );
+			LogEvent( EventType.PlayerTookDamage, _timeSinceStart, $"{player.SteamName} took {Math.Round( info.Damage )} damage." );
 	}
 
 	[GameEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		if ( Game.Current.State is not InProgress )
+		if ( GameManager.Current.State is not InProgress )
 			return;
 
 		if ( player.KilledByPlayer )
 			LogEvent( EventType.PlayerKill, _timeSinceStart, $"{player.LastAttacker.Client.Name} killed {player.SteamName}" );
-		else if ( player.LastDamage.Flags == DamageFlags.Fall )
+		else if ( player.LastDamage.HasTag( Strings.Tags.Fall ) )
 			LogEvent( EventType.PlayerSuicide, _timeSinceStart, $"{player.SteamName} fell to their death." );
 	}
 
 	[GameEvent.Player.CorpseFound]
 	private static void OnCorpseFound( Player player )
 	{
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		LogEvent( EventType.PlayerCorpseFound, _timeSinceStart, $"{player.Corpse.Finder.SteamName} found the corpse of {player.SteamName}" );
@@ -113,13 +110,13 @@ public static class EventLogger
 
 	private static void WriteEvents()
 	{
-		if ( !Game.LoggerEnabled )
+		if ( !GameManager.LoggerEnabled )
 			return;
 
 		if ( !FileSystem.Data.DirectoryExists( LogFolder ) )
 			FileSystem.Data.CreateDirectory( LogFolder );
 
-		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Global.MapName}";
+		var mapFolderPath = $"{LogFolder}/{DateTime.Now:yyyy-MM-dd} {Game.Server.MapIdent}";
 		if ( !FileSystem.Data.DirectoryExists( mapFolderPath ) )
 			FileSystem.Data.CreateDirectory( mapFolderPath );
 
@@ -129,7 +126,7 @@ public static class EventLogger
 
 	private static string GetEventSummary()
 	{
-		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Global.MapName}\n";
+		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Game.Server.MapIdent}\n";
 
 		for ( var i = 0; i < Events.Count; ++i )
 			summary += $"{Events[i].Time.TimerString()} - {Events[i].Description}\n";

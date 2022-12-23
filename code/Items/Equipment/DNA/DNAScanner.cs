@@ -34,7 +34,7 @@ public partial class DNAScanner : Carriable
 	private const float ChargePerSecond = 2.2f;
 	private UI.DNAMarker _dnaMarker;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
 			FetchDNA();
@@ -64,7 +64,7 @@ public partial class DNAScanner : Carriable
 
 	public void Scan()
 	{
-		if ( !IsServer || IsCharging )
+		if ( !Game.IsServer || IsCharging )
 			return;
 
 		var selectedDNA = FindSelectedDNA( SelectedId );
@@ -86,7 +86,7 @@ public partial class DNAScanner : Carriable
 
 	public void RemoveDNA( DNA dna )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		if ( dna.Id == SelectedId )
 		{
@@ -99,7 +99,7 @@ public partial class DNAScanner : Carriable
 
 	private void FetchDNA()
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
@@ -185,7 +185,7 @@ public partial class DNA : EntityComponent
 	// Waiting on https://github.com/Facepunch/sbox-issues/issues/1719
 	[Net]
 	public int Id { get; private set; }
-	private static int _internalId = Rand.Int( 0, 500 );
+	private static int _internalId = Game.Random.Int( 0, 500 );
 
 	[Net]
 	public string SourceName { get; private set; }
@@ -202,7 +202,7 @@ public partial class DNA : EntityComponent
 
 	protected override void OnActivate()
 	{
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			return;
 
 		Id = _internalId++;
@@ -242,6 +242,6 @@ public partial class DNA : EntityComponent
 	[GameEvent.Round.Start]
 	private void OnRolesAssigned()
 	{
-		_internalId = Rand.Int( 0, 500 );
+		_internalId = Game.Random.Int( 0, 500 );
 	}
 }

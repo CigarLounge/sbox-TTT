@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 
 namespace TTT;
 
@@ -6,19 +7,13 @@ public partial class Player
 {
 	public const float MaxHintDistance = 5000f;
 
-	private static UI.EntityHintPanel _currentHintPanel;
+	private static Panel _currentHintPanel;
 	private static IEntityHint _currentHint;
 
 	private void DisplayEntityHints()
 	{
-		if ( !CurrentPlayer.IsFirstPersonMode )
-		{
-			DeleteHint();
-			return;
-		}
-
 		var hint = FindHintableEntity();
-		if ( hint is null || !hint.CanHint( CurrentPlayer ) )
+		if ( hint is null || !hint.CanHint( CameraMode.Target ) )
 		{
 			DeleteHint();
 			return;
@@ -26,13 +21,13 @@ public partial class Player
 
 		if ( hint == _currentHint )
 		{
-			hint.Tick( CurrentPlayer );
+			hint.Tick( CameraMode.Target );
 			return;
 		}
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( CurrentPlayer );
+		_currentHintPanel = hint.DisplayHint( CameraMode.Target );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
 
@@ -50,8 +45,8 @@ public partial class Player
 
 	private IEntityHint FindHintableEntity()
 	{
-		var trace = Trace.Ray( CurrentView.Position, CurrentView.Position + CurrentView.Rotation.Forward * MaxHintDistance )
-			.Ignore( CurrentPlayer )
+		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
+			.Ignore( CameraMode.Target )
 			.WithAnyTags( "solid", "interactable" )
 			.UseHitboxes()
 			.Run();

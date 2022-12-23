@@ -11,7 +11,8 @@ public partial class PropPossession : EntityComponent<Prop>
 	[Net, Local]
 	public int Punches { get; private set; }
 
-	public const int MaxPunches = 8;
+	[Net, Local]
+	public int MaxPunches { get; private set; }
 	private const float PunchRechargeTime = 1f;
 
 	private Player _player;
@@ -33,7 +34,7 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		var mass = Math.Min( 150f, physicsBody.Mass );
 		var force = 110f * 75f;
-		var aim = Vector3.Forward * Input.Rotation;
+		var aim = Vector3.Forward * _player.ViewAngles.ToRotation();
 		var mf = mass * force;
 
 		_timeUntilNextPunch = 0.15f;
@@ -43,13 +44,13 @@ public partial class PropPossession : EntityComponent<Prop>
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunch = 0.2f;
 		}
-		else if ( Input.Forward != 0f )
+		else if ( _player.InputDirection.x != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, Input.Forward * aim * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.x * aim * mf );
 		}
-		else if ( Input.Left != 0f )
+		else if ( _player.InputDirection.y != 0f )
 		{
-			physicsBody.ApplyAngularImpulse( new Vector3( 0, 0, Input.Left * 200f * 10f ) );
+			physicsBody.ApplyAngularImpulse( new Vector3( 0, 0, _player.InputDirection.y * 200f * 10f ) );
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf / 3f ) );
 		}
 
@@ -62,11 +63,14 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		_player = Entity.Owner as Player;
 
-		if ( Host.IsClient && !Local.Pawn.IsAlive() )
-			_nameplate = new( Entity );
+		MaxPunches = (int)Math.Min( Math.Max( 0, _player.ActiveKarma / 100 ), 13 );
 
-		if ( Entity.IsLocalPawn )
+		if ( Game.IsClient && !Game.LocalPawn.IsAlive() )
+		{
+			_nameplate = new( Entity );
 			_meter = new( this );
+			_player.CurrentCamera = new FollowEntityCamera( Entity );
+		}
 	}
 
 	protected override void OnDeactivate()
@@ -75,6 +79,9 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		if ( !_player.Prop.IsValid() )
 			_player.CancelPossession();
+
+		if ( !_player.IsAlive() )
+			_player.CurrentCamera = new FreeCamera();
 
 		_nameplate?.Delete( true );
 		_meter?.Delete( true );

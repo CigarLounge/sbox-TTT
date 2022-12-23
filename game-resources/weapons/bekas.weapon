@@ -12,8 +12,8 @@
 		DamageFallOffStart = 0
 		DamageFallOffEnd = 0
 		HeadshotMultiplier = 1.2
-		Spread = 0.2
-		PrimaryRate = 1.2
+		Spread = 0.17
+		PrimaryRate = 1.1
 		SecondaryRate = 0
 		ReserveAmmo = 0
 		ReloadTime = 0.45
@@ -30,7 +30,7 @@
 		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
 		HoldType = "Shotgun"
 		WorldModelPath = resource:"models/weapons/w_bekas.vmdl"
-		DeployTime = 0.6
+		DeployTime = 1
 		IsLimited = false
 		Price = 0
 		IconPath = resource:"ui/weapons/bekas.png"

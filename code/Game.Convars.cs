@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class Game
+public partial class GameManager
 {
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
@@ -31,14 +31,6 @@ public partial class Game
 	public static bool PreventWin { get; set; }
 	#endregion
 
-	#region Karma
-	[ConVar.Server( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
-	public static bool KarmaEnabled { get; set; } = true;
-
-	[ConVar.Server( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
-	public static bool KarmaLowAutoKick { get; set; } = true;
-	#endregion
-
 	#region Map
 	[ConVar.Server( "ttt_default_map", Help = "The default map to swap to if no maps are found.", Saved = true )]
 	public static string DefaultMap { get; set; } = "facepunch.flatgrass";
@@ -48,6 +40,11 @@ public partial class Game
 
 	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played.", Saved = true )]
 	public static int RoundLimit { get; set; } = 6;
+	#endregion
+
+	#region Weapons
+	[ConVar.Replicated( "ttt_knife_backstabs", Help = "When enabled the knife will only one shot from the back." )]
+	public static bool KnifeBackstabs { get; set; } = true;
 	#endregion
 
 	#region Minimum Players
@@ -81,14 +78,14 @@ public partial class Game
 	[ConVar.Replicated( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
 	public static bool ProximityChat { get; set; }
 
-	public static void UpdateVoiceChat( bool oldValue, bool newValue )
+	public static void UpdateVoiceChat( bool _, bool newValue )
 	{
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
-			if ( !client.Pawn.IsAlive() )
+			if ( !client.Pawn.AsEntity().IsAlive() )
 				continue;
 
-			client.VoiceStereo = newValue;
+			client.Voice.WantsStereo = newValue;
 		}
 	}
 	#endregion

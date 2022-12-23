@@ -5,8 +5,7 @@ using System.Collections.Generic;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class QuickChat : Panel
+public partial class QuickChat : Panel
 {
 	public static QuickChat Instance { get; private set; }
 
@@ -29,20 +28,21 @@ public class QuickChat : Panel
 		"Anyone still alive?"
 	};
 
-	public QuickChat()
+	public QuickChat() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
 
 		var i = 0;
 		foreach ( Label label in Children )
-		{
 			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
-		}
 	}
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		if ( Input.Pressed( InputButton.Zoom ) )
@@ -80,7 +80,7 @@ public class QuickChat : Panel
 
 	public static string GetTarget()
 	{
-		if ( Local.Pawn is not Player localPlayer )
+		if ( Game.LocalPawn is not Player localPlayer )
 			return null;
 
 		switch ( localPlayer.HoveredEntity )
@@ -109,19 +109,19 @@ public class QuickChat : Panel
 		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
 	}
 
-	[Event.BuildInput]
-	private void BuildInput( InputBuilder input )
+	[Event.Client.BuildInput]
+	private void BuildInput()
 	{
 		if ( !this.IsEnabled() )
 			return;
 
-		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed( input );
+		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed();
 		if ( keyboardIndexPressed <= 0 ) // Only accept keyboard numbers 1-9
 			return;
 
 		if ( _timeSinceLastMessage > 1 )
 		{
-			ChatBox.SendChat( _labels[keyboardIndexPressed - 1].Text );
+			TextChat.SendChat( _labels[keyboardIndexPressed - 1].Text );
 			_timeSinceLastMessage = 0;
 		}
 

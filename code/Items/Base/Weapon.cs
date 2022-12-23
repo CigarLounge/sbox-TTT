@@ -1,6 +1,7 @@
 using Sandbox;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -34,8 +35,8 @@ public abstract partial class Weapon : Carriable
 
 	public new WeaponInfo Info => (WeaponInfo)base.Info;
 	public override string SlotText => $"{AmmoClip} + {ReserveAmmo + Owner?.AmmoCount( Info.AmmoType )}";
-	private Vector3 RecoilOnShoot => new( Rand.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil, 0 );
-	private Vector3 CurrentRecoil { get; set; } = Vector3.Zero;
+	private Vector2 RecoilOnShoot => new( Game.Random.Float( -Info.HorizontalRecoilRange, Info.HorizontalRecoilRange ), Info.VerticalRecoil );
+	private Vector2 CurrentRecoil { get; set; } = Vector2.Zero;
 
 	public override void Spawn()
 	{
@@ -55,7 +56,7 @@ public abstract partial class Weapon : Carriable
 		TimeSinceReload = 0;
 	}
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( CanReload() )
 		{
@@ -90,19 +91,22 @@ public abstract partial class Weapon : Carriable
 			OnReloadFinish();
 	}
 
-	public override void BuildInput( InputBuilder input )
+	public override void BuildInput()
 	{
-		base.BuildInput( input );
+		base.BuildInput();
 
-		var oldPitch = input.ViewAngles.pitch;
-		var oldYaw = input.ViewAngles.yaw;
+		var oldPitch = Owner.ViewAngles.pitch;
+		var oldYaw = Owner.ViewAngles.yaw;
 
-		input.ViewAngles.pitch -= CurrentRecoil.y * Time.Delta;
-		input.ViewAngles.yaw -= CurrentRecoil.x * Time.Delta;
+		var recoil = Owner.ViewAngles;
+		recoil.pitch -= CurrentRecoil.y * Time.Delta;
+		recoil.yaw -= CurrentRecoil.x * Time.Delta;
+
+		Owner.ViewAngles = recoil;
 
 		CurrentRecoil -= CurrentRecoil
-			.WithY( (oldPitch - input.ViewAngles.pitch) * Info.RecoilRecoveryScale )
-			.WithX( (oldYaw - input.ViewAngles.yaw) * Info.RecoilRecoveryScale );
+			.WithY( (oldPitch - Owner.ViewAngles.pitch) * Info.RecoilRecoveryScale )
+			.WithX( (oldYaw - Owner.ViewAngles.yaw) * Info.RecoilRecoveryScale );
 	}
 
 	protected virtual bool CanPrimaryAttack()
@@ -147,7 +151,7 @@ public abstract partial class Weapon : Carriable
 		ShootEffects();
 		PlaySound( Info.FireSound );
 
-		ShootBullet( Info.Spread, 1.5f, Info.Damage, 3.0f, Info.BulletsPerFire );
+		ShootBullet( Info.Spread, 1.5f, Info.Damage, 2.0f, Info.BulletsPerFire );
 	}
 
 	protected virtual void AttackSecondary() { }
@@ -209,7 +213,7 @@ public abstract partial class Weapon : Carriable
 	protected virtual void ShootBullet( float spread, float force, float damage, float bulletSize, int bulletCount )
 	{
 		// Seed rand using the tick, so bullet cones match on client and server
-		Rand.SetSeed( Time.Tick );
+		Game.SetRandomSeed( Time.Tick );
 
 		while ( bulletCount-- > 0 )
 		{
@@ -230,7 +234,7 @@ public abstract partial class Weapon : Carriable
 					tracer?.SetPosition( 1, trace.EndPosition );
 				}
 
-				if ( !IsServer )
+				if ( !Game.IsServer )
 					continue;
 
 				if ( !trace.Entity.IsValid() )
@@ -246,6 +250,7 @@ public abstract partial class Weapon : Carriable
 					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
+						.WithTag( Strings.Tags.Bullet )
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
@@ -269,6 +274,8 @@ public abstract partial class Weapon : Carriable
 	/// </summary>
 	protected IEnumerable<TraceResult> TraceBullet( Vector3 start, Vector3 end, float radius = 2.0f )
 	{
+		var traceResults = new List<TraceResult>();
+
 		var underWater = Trace.TestPoint( start, "water" );
 
 		var trace = Trace.Ray( start, end )
@@ -286,11 +293,27 @@ public abstract partial class Weapon : Carriable
 		var tr = trace.Run();
 
 		if ( tr.Hit )
-			yield return tr;
+			traceResults.Add( tr );
 
 		//
-		// Another trace, bullet going through thin material, penetrating water surface?
+		// Let people shoot through glass
 		//
+		var hitGlass = Array.Find( tr.Tags, ( tag ) => tag == "glass" ) is not null;
+		if ( hitGlass )
+		{
+			trace = Trace.Ray( tr.EndPosition, end )
+				.UseHitboxes()
+				.WithAnyTags( "solid", "player", "glass", "interactable" )
+				.Ignore( tr.Entity )
+				.Size( radius );
+
+			tr = trace.Run();
+
+			if ( tr.Hit )
+				traceResults.Add( tr );
+		}
+
+		return traceResults;
 	}
 
 	protected void DropAmmo()
@@ -298,7 +321,7 @@ public abstract partial class Weapon : Carriable
 		if ( Info.AmmoType == AmmoType.None || AmmoClip <= 0 )
 			return;
 
-		if ( IsServer )
+		if ( Game.IsServer )
 			Ammo.Drop( Owner, Info.AmmoType, AmmoClip );
 
 		AmmoClip = 0;

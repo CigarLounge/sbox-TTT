@@ -1,0 +1,92 @@
+@using TTT;
+
+@namespace TTT.UI
+
+@if (_data is null)
+{
+    return;
+}
+
+<root>
+    <div class="container" style="background-image: url(@_data.Thumb)" @onclick=@VoteMap>
+        <div class="info">
+            <div class="orgavatar text-shadow" style="background-image: url(@_data.Org.Thumb)"></div>
+            <text class="title text-shadow">@_data.Title</text>
+            <text class="orgname text-shadow">@_data.Org.Title</text>
+        </div>
+        <text class="votes text-shadow">
+            <text>@Votes</text>
+        </text>
+    </div>
+</root>
+
+<style>
+    MapIcon {
+        aspect-ratio: 1;
+        padding: 5px;
+        width: 25%;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.02);
+            opacity: 1;
+        }
+
+        &:active {
+            transform: scale(1.0);
+        }
+
+        .container {
+            background-position: center;
+            background-size: contain;
+            width: 100%;
+            height: 100%;
+
+            .votes {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background-color: rgba(black, 0.9);
+                padding: 10px 15px;
+                border-radius: 3px;
+                font-weight: bold;
+                font-size: 22px;
+                height: 50px;
+                min-width: 75px;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .info {
+                flex-direction: column;
+                padding: 5px;
+                border-radius: 3px;
+
+                .orgavatar {
+                    position: absolute;
+                    left: 5px;
+                    top: 10px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 4px;
+                    background-color: black;
+                    background-position: center;
+                    background-size: cover;
+                }
+
+                .title {
+                    font-weight: bold;
+                    margin-left: 50px;
+                    font-size: 20px;
+                }
+
+                .orgname {
+                    font-weight: bold;
+                    margin-left: 50px;
+                    font-size: 13px;
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+</style>

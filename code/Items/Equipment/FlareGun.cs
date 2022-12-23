@@ -9,11 +9,10 @@ public class FlareGun : Weapon
 {
 	public override string SlotText => AmmoClip.ToString();
 
-	public override void SimulateAnimator( PawnAnimator animator )
+	public override void SimulateAnimator( CitizenAnimationHelper anim )
 	{
-		base.SimulateAnimator( animator );
-
-		animator.SetAnimParameter( "holdtype_handedness", 2 );
+		base.SimulateAnimator( anim );
+		anim.Handedness = CitizenAnimationHelper.Hand.Right;
 	}
 
 	protected override void OnHit( TraceResult trace )
@@ -23,8 +22,8 @@ public class FlareGun : Weapon
 		// TODO: Use proper burning once FP implements it.
 		var burnDamage = DamageInfo.Generic( 25 )
 			.WithAttacker( Owner )
-			.WithWeapon( this )
-			.WithFlag( DamageFlags.Burn );
+			.WithTag( Strings.Tags.Burn )
+			.WithWeapon( this );
 
 		trace.Entity.TakeDamage( burnDamage );
 

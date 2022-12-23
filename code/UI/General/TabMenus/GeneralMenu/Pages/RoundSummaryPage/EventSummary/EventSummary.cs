@@ -4,17 +4,20 @@ using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class EventSummary : Panel
+public partial class EventSummary : Panel
 {
 	public static EventSummary Instance;
 
-	private Panel Header { get; init; }
-	private Panel Events { get; init; }
+	private Panel Header { get; set; }
+	private Panel Events { get; set; }
 
-	public EventSummary()
+	public EventSummary() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
+
 		Init();
 	}
 
@@ -23,8 +26,8 @@ public class EventSummary : Panel
 		Events.DeleteChildren();
 
 		if ( GeneralMenu.Instance is not null && !GeneralMenu.Instance.LastEventSummaryData.Events.IsNullOrEmpty() )
-			for ( var i = 0; i < GeneralMenu.Instance.LastEventSummaryData.Events.Length; ++i )
-				AddEvent( GeneralMenu.Instance.LastEventSummaryData.Events[i] );
+			foreach ( var summaryEvent in GeneralMenu.Instance.LastEventSummaryData.Events )
+				AddEvent( summaryEvent );
 
 		Header.Enabled( Events.Children.Any() );
 	}

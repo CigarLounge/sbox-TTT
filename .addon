@@ -3,6 +3,7 @@
   "Type": "game",
   "Org": "matt",
   "Ident": "ttt",
+  "Tags": "ttt social",
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
@@ -15,7 +16,6 @@
   ],
   "HasCode": true,
   "CodePath": "code",
-  "RootNamespace": "TTT",
   "Metadata": {
     "MapList": [],
     "MinPlayers": 1,
@@ -33,7 +33,8 @@
         "water": "Trigger",
         "interactable": "Unset",
         "player": "Unset",
-        "glass": "Unset"
+        "glass": "Unset",
+        "debris": "Ignore"
       },
       "Pairs": [
         {
@@ -96,6 +97,21 @@
         {
           "a": "water",
           "b": "glass"
+        },
+        {
+          "a": "solid",
+          "b": "debris",
+          "r": "Collide"
+        },
+        {
+          "a": "player",
+          "b": "debris",
+          "r": "Ignore"
+        },
+        {
+          "a": "glass",
+          "b": "debris",
+          "r": "Trigger"
         }
       ]
     },
@@ -114,7 +130,60 @@
         "ConVarName": "ttt_proximity_chat",
         "DisplayName": "Proximity Chat",
         "DefaultValue": "false"
+      },
+      "ttt_backstabs_enabled": {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_backstabs_enabled",
+        "DisplayName": "Enable Backstabs",
+        "DefaultValue": "true"
       }
+    },
+    "ParentPackage": "",
+    "GeneralExtensions": true,
+    "TargettedExtensions": true,
+    "ExtensionApiVersion": 1001,
+    "PackageSettings": [
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_proximity_chat",
+        "DisplayName": "Proxmity Chat",
+        "DefaultValue": "false",
+        "Description": "When enabled voice chat will be heard in a proxmity instead of globally.",
+        "Group": ""
+      },
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_avatar_clothing",
+        "DisplayName": "Avatar Clothing",
+        "DefaultValue": "false",
+        "Description": "When enabled players will use their Terry clothing instead of the predefined TTT clothing.",
+        "Group": ""
+      },
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_knife_backstabs",
+        "DisplayName": "Knife Backstabs",
+        "DefaultValue": "true",
+        "Description": "When enabled knives will only one shot if done in the back.",
+        "Group": ""
+      }
+    ],
+    "DefaultLeaderboards": null,
+    "Summary": "A vanilla TTT experience with quality of life improvements",
+    "Description": "An attempt to create a vanilla TTT experience with quality of life improvements thrown in.\n\n\uD83D\uDCE3 Socials\nhttps://discord.gg/rrsrakF8N3\nhttps://cigarlounge.github.io/\n\n\uD83D\uDEA7 2022-11-20 \uD83D\uDEA7\n- Prop possession punches based on karma\n- Glass wallbanging\n\n\uD83D\uDEA7 2022-10-26 \uD83D\uDEA7\n- Addon support\n\n\uD83D\uDEA7 2022-09-07 \uD83D\uDEA7\n- Prop kill punishing\n- Fixed hand prop interaction\n\n\uD83D\uDEA7 2022-08-23 \uD83D\uDEA7\n- Player muting\n- Player voice chat indicator\n\n",
+    "ReplaceTags": "ttt social mafia",
+    "Public": true,
+    "ControlModes": {
+      "Keyboard": true
+    },
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;"
     }
   }
 }

@@ -1,0 +1,56 @@
+@using Sandbox;
+
+@namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player player)
+{
+    return;
+}
+
+<div>
+    <div class="container">
+        <div class="header text-shadow">
+            <text class="title" style="color: @player.Role.Color.Hex">
+                @player.Role.Title
+            </text>
+            <text class="title">Menu</text>
+        </div>
+        <customtabcontainer @ref="TabContainer" />
+    </div>
+</div>
+
+<style>
+    RoleMenu {
+        left: 0;
+        right: 0;
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        pointer-events: all;
+        z-index: 2;
+        height: 100%;
+        width: 100%;
+        opacity: 0;
+        transition: all 0.15s ease-out;
+        background-color: black;
+
+        .container {
+            justify-content: center;
+            align-self: center;
+            max-width: 700px;
+            height: 50%;
+            flex-direction: column;
+
+            .header {
+                justify-content: center;
+
+                .title {
+                    font-size: 50px;
+                    text-align: center;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+</style>

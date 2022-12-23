@@ -23,11 +23,11 @@ public partial class TabMenus : Panel
 		scoreboardButtons.Add.ButtonWithIcon( "Menu", "menu_open", string.Empty, SwapToMenu );
 		scoreboardButtons.Add.ButtonWithIcon( "Round Summary", "leaderboard", string.Empty, SwapToRoundSummary );
 		_muteButton = scoreboardButtons.Add.ButtonWithIcon( "Mute Alive Players", "volume_up", string.Empty, Player.ToggleMute );
-		_scoreboard = new Scoreboard( this, scoreboardButtons );
+		_scoreboard = new Scoreboard() { Parent = this, Buttons = scoreboardButtons };
 
 		var settingsButtons = new Panel();
 		settingsButtons.Add.ButtonWithIcon( "Scoreboard", "people", string.Empty, SwapToScoreboard );
-		_settingsMenu = new GeneralMenu( this, settingsButtons );
+		_settingsMenu = new GeneralMenu() { Parent = this, Buttons = settingsButtons };
 
 		_scoreboard.EnableFade( true );
 		_settingsMenu.EnableFade( false );
@@ -54,12 +54,10 @@ public partial class TabMenus : Panel
 
 	public override void Tick()
 	{
-		if ( Local.Client.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
-		_muteButton.Enabled( !player.IsAlive() );
-		if ( !_muteButton.IsEnabled() )
-			return;
+		_muteButton.SetClass( "inactive", player.IsAlive() );
 
 		switch ( player.MuteFilter )
 		{
@@ -82,9 +80,9 @@ public partial class TabMenus : Panel
 		}
 	}
 
-	[Event.BuildInput]
-	private void MenuInput( InputBuilder input )
+	[Event.Client.BuildInput]
+	private void BuildInput()
 	{
-		SetClass( "show", input.Down( InputButton.Score ) );
+		SetClass( "show", Input.Down( InputButton.Score ) );
 	}
 }

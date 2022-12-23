@@ -1,10 +1,11 @@
+using Editor;
 using Sandbox;
 
 namespace TTT;
 
 [Category( "Weapons" )]
 [ClassName( "ttt_weapon_knife" )]
-[HideInEditor]
+[HammerEntity]
 [Title( "Knife" )]
 public partial class Knife : Carriable
 {
@@ -20,7 +21,7 @@ public partial class Knife : Carriable
 	private Rotation _throwRotation = Rotation.From( new Angles( 90, 0, 0 ) );
 	private float _gravityModifier;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( TimeSinceStab < 1f )
 			return;
@@ -30,7 +31,7 @@ public partial class Knife : Carriable
 			using ( LagCompensation() )
 			{
 				TimeSinceStab = 0;
-				MeleeAttack( 100f, 100f, 8f );
+				StabAttack( 35f, 8f );
 			}
 		}
 		else if ( Input.Released( InputButton.SecondaryAttack ) )
@@ -47,7 +48,7 @@ public partial class Knife : Carriable
 		return !_isThrown && base.CanCarry( carrier );
 	}
 
-	private void MeleeAttack( float damage, float range, float radius )
+	private void StabAttack( float range, float radius )
 	{
 		Owner.SetAnimParameter( "b_attack", true );
 		SwingEffects();
@@ -56,7 +57,6 @@ public partial class Knife : Carriable
 		var endPosition = Owner.EyePosition + Owner.EyeRotation.Forward * range;
 
 		var trace = Trace.Ray( Owner.EyePosition, endPosition )
-			.UseHitboxes( true )
 			.Ignore( Owner )
 			.Radius( radius )
 			.Run();
@@ -66,25 +66,46 @@ public partial class Knife : Carriable
 
 		trace.Surface.DoBulletImpact( trace );
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( damage )
+		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
-			.WithWeapon( this )
-			.WithFlag( DamageFlags.Slash );
+			.WithTag( Strings.Tags.Slash )
+			.WithWeapon( this );
 
-		if ( trace.Entity is Player player )
+		if ( trace.Entity is Player otherPlayer )
 		{
-			player.DistanceToAttacker = 0;
+			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
-			Owner.Inventory.DropActive();
-			Delete();
+
+			if ( GameManager.KnifeBackstabs )
+			{
+				// TF2 magic
+				// Discard all z values to simplify to 2D.
+				var toTarget = (otherPlayer.WorldSpaceBounds.Center - Owner.WorldSpaceBounds.Center).WithZ( 0 ).Normal;
+				var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
+				var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
+
+				var behindDot = Vector3.Dot( toTarget, targetForward );
+				var facingDot = Vector3.Dot( toTarget, ownerForward );
+				var viewDot = Vector3.Dot( targetForward, ownerForward );
+
+				var isBackstab = behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f;
+				if ( isBackstab )
+					damageInfo.Damage *= 2;
+			}
 		}
 
 		trace.Entity.TakeDamage( damageInfo );
+
+		if ( trace.Entity is Player && !trace.Entity.IsAlive() )
+		{
+			Owner.Inventory.DropActive();
+			Delete();
+		}
 	}
 
 	private void Throw()
@@ -98,7 +119,7 @@ public partial class Knife : Carriable
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( IsActiveCarriable )
@@ -156,8 +177,8 @@ public partial class Knife : Carriable
 				var damageInfo = DamageInfo.Generic( 100f )
 					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
-					.WithFlag( DamageFlags.Slash )
 					.WithAttacker( _thrower )
+					.WithTag( Strings.Tags.Slash )
 					.WithWeapon( this );
 
 				player.DistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();

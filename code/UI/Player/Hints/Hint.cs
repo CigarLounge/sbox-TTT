@@ -2,32 +2,18 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public abstract class EntityHintPanel : Panel
-{
-}
-
 public class HintDisplay : Panel
 {
 	public static HintDisplay Instance { get; set; }
 
-	public HintDisplay() : base()
+	public HintDisplay()
 	{
 		Instance = this;
-
 		AddClass( "fullscreen" );
 	}
 }
 
-[UseTemplate]
-public class Hint : EntityHintPanel
+public partial class Hint : Panel
 {
-	private Label HintLabel { get; init; }
-
-	public Hint( string text )
-	{
-		HintLabel.Text = text;
-		this.Enabled( false );
-	}
-
-	public void SetText( string text ) => HintLabel.Text = text;
+	public string HintText { get; set; }
 }

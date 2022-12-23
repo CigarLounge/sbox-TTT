@@ -5,7 +5,7 @@ $spectator: #fcdb38;
 
 $primary: #303030;
 $secondary: #1a1a1a;
-$info: #fdc418;
+$tertiary: #fdc418;
 
 $button-primary: #ffffff !default;
 $button-primary-fg: #ffffff !default;
@@ -24,8 +24,7 @@ $button-size: 45px;
 @import "/ui/components/coloreditor/coloreditor.scss";
 @import "/ui/components/linebreak/linebreak.scss";
 
-hud
-{
+hud {
     font-family: Poppins;
     flex-shrink: 0;
     color: #fafafa;
@@ -33,104 +32,90 @@ hud
 }
 
 .iconpanel,
-.icon
-{
+.icon {
     font-size: 21px;
     font-family: MaterialIcons;
 }
 
-.disabled
-{
+.disabled {
     display: none;
     pointer-events: none;
 }
 
-.fade-in
-{
+.fade-in {
     opacity: 0.75;
 }
 
-.fade-out
-{
+.fade-out {
     opacity: 0;
 }
 
-.rounded
-{
+.rounded {
     border-radius: 4px;
 }
 
-.rounded-top
-{
+.rounded-top {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
-.rounded-bottom
-{
+.rounded-bottom {
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
 }
 
-.opacity-medium
-{
+.opacity-medium {
     opacity: 0.75;
 }
 
-.opacity-heavy
-{
+.opacity-heavy {
     opacity: 0.9;
 }
 
-.centered
-{
+.centered {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.centered-vertical-75
-{
+.centered-vertical-75 {
     position: absolute;
     left: 50%;
     top: 75%;
     transform: translateX(-50%) translateY(-50%);
 }
 
-.text-shadow
-{
+.text-shadow {
     text-shadow: 1px 1px 1px black;
 }
 
-.box-shadow
-{
+.box-shadow {
     box-shadow: 0px 0px 10px black;
 }
 
-.fullscreen
-{
+.fullscreen {
     position: absolute;
     width: 100%;
     height: 100%;
 }
 
-.text-color-info
-{
-    color: $info;
+.text-color-tertiary {
+    color: $tertiary;
 }
 
-.background-color-gradient
-{
+.background-color-gradient {
     background: linear-gradient($primary, $secondary);
 }
 
-.background-color-primary
-{
+.background-color-primary {
     background-color: $primary;
 }
 
-.background-color-secondary
-{
+.background-color-secondary {
     background-color: $secondary;
+}
+
+.background-color-tertiary {
+    background-color: $tertiary;
 }
