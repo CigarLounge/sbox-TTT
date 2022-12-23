@@ -330,7 +330,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IQuickChatTarget, IUse
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
-	string IQuickChatTarget.QuickChatMessage => Player is null ? "an unidentified body" : $"{Player.SteamName}'s corpse";
+	string IQuickChatTarget.Message => Player is null ? "an unidentified body" : $"{Player.SteamName}'s corpse";
 
 	bool IUse.OnUse( Entity user ) => true;
 

@@ -7,6 +7,6 @@ namespace TTT;
 /// </summary>
 public interface IQuickChatTarget
 {
-	string QuickChatMessage => DisplayInfo.For( (Entity)this ).Name;
-	Color QuickChatColor => Color.FromBytes( 253, 196, 24 );
+	string Message => DisplayInfo.For( (Entity)this ).Name;
+	Color MessageColor => Color.FromBytes( 253, 196, 24 );
 }

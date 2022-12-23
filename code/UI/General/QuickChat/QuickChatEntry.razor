@@ -6,8 +6,7 @@
     <div class="index" style="width: 30px;"><text>@Index.</text></div>
     <div>
         <text>@Prefix
-            <span
-                style="color: @(Target is not null ? Target.QuickChatColor.Hex : "transparent")">@Target?.QuickChatMessage</span>
+            <span style="color: @(Target is not null ? Target.MessageColor.Hex : "transparent")">@Target?.Message</span>
             <text>@Suffix</text>
         </text>
     </div>
@@ -18,7 +17,7 @@
     public string Index { get; set; }
     public string Prefix { get; set; } = "";
     public string Suffix { get; set; } = "";
-    protected override int BuildHash() => HashCode.Combine(Target, Target?.QuickChatMessage, Target?.QuickChatColor);
+    protected override int BuildHash() => HashCode.Combine(Target, Target?.Message, Target?.MessageColor);
 }
 
 <style>

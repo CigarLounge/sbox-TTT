@@ -9,7 +9,7 @@ public partial class QuickChat : Panel
 {
 	public class NoTarget : IQuickChatTarget
 	{
-		public string QuickChatMessage => "Nobody";
+		public string Message => "Nobody";
 	}
 
 	public static bool IsShowing { get; private set; } = false;
@@ -52,7 +52,7 @@ public partial class QuickChat : Panel
 			if ( entry.Target is null )
 				TextChat.SendChatMessage( entry.Prefix + entry.Suffix );
 			else
-				TextChat.SendQuickChat( entry.Prefix, entry.Suffix, entry.Target.QuickChatMessage, JsonSerializer.Serialize( entry.Target.QuickChatColor ) );
+				TextChat.SendQuickChat( entry.Prefix, entry.Suffix, entry.Target.Message, JsonSerializer.Serialize( entry.Target.MessageColor ) );
 
 			_timeSinceLastMessage = 0;
 		}
@@ -62,6 +62,6 @@ public partial class QuickChat : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( IsShowing, Game.LocalPawn.IsAlive(), _target, _target?.QuickChatMessage, _target?.QuickChatColor );
+		return HashCode.Combine( IsShowing, Game.LocalPawn.IsAlive(), _target, _target?.Message, _target?.MessageColor );
 	}
 }
