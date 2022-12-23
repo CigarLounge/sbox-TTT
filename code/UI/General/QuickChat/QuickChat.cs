@@ -7,26 +7,25 @@ namespace TTT.UI;
 
 public partial class QuickChat : Panel
 {
-	public static QuickChat Instance { get; private set; }
+	public class NoTarget : IQuickChatTarget
+	{
+		public string QuickChatMessage => "Nobody";
+	}
 
-	public bool IsShowing { get; private set; } = false;
+	public static bool IsShowing { get; private set; } = false;
 
-	private const string NoTarget = "Nobody";
 	private IQuickChatTarget _target;
 	private RealTimeSince _timeSinceLastTarget;
 	private RealTimeSince _timeSinceLastMessage;
-
-	public QuickChat() => Instance = this;
 
 	public override void Tick()
 	{
 		if ( Input.Pressed( InputButton.Zoom ) )
 			IsShowing = !IsShowing;
 
-		var newTarget = (Game.LocalPawn as Player)?.HoveredEntity as IQuickChatTarget;
+		var newTarget = (Game.LocalPawn as Player)?.HoveredEntity as IQuickChatTarget ?? new NoTarget();
 
-		// TODO: Redo this logic.
-		if ( newTarget is not null )
+		if ( newTarget is not NoTarget )
 			_timeSinceLastTarget = 0;
 		else if ( _timeSinceLastTarget <= 1 )
 			return;

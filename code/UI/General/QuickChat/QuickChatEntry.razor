@@ -3,15 +3,14 @@
 @namespace TTT.UI
 
 <root class="text-shadow">
-    <text style="index">@Index.</text>
-    <text>@Prefix</text>
-    @if (Target is not null)
-    {
-        <text>
-            <text style="color: @(Target.QuickChatColor.Hex)">@Target.QuickChatMessage</text>
+    <div class="index" style="width: 30px;"><text>@Index.</text></div>
+    <div>
+        <text>@Prefix
+            <span
+                style="color: @(Target is not null ? Target.QuickChatColor.Hex : "transparent")">@Target?.QuickChatMessage</span>
+            <text>@Suffix</text>
         </text>
-    }
-    <text>@Suffix</text>
+    </div>
 </root>
 
 @code {
@@ -26,6 +25,7 @@
     QuickChatEntry {
         .index {
             font-weight: bold;
+            justify-content: flex-start;
         }
     }
 </style>

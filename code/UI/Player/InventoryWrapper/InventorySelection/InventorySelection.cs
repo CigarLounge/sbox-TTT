@@ -40,7 +40,7 @@ public partial class InventorySelection : Panel
 		if ( !Children.Any() )
 			return;
 
-		if ( QuickChat.Instance.IsShowing )
+		if ( QuickChat.IsShowing )
 			return;
 
 		var childrenList = Children.ToList();

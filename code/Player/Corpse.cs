@@ -10,7 +10,7 @@ namespace TTT;
 [ClassName( "ttt_entity_corpse" )]
 [HideInEditor]
 [Title( "Player corpse" )]
-public partial class Corpse : ModelEntity, IEntityHint, IUse
+public partial class Corpse : ModelEntity, IEntityHint, IQuickChatTarget, IUse
 {
 	[Net]
 	public bool HasCredits { get; private set; }
@@ -329,6 +329,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		else if ( !Player.LastDamage.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
+
+	string IQuickChatTarget.QuickChatMessage => Player is null ? "an unidentified body" : $"{Player.SteamName}'s corpse";
 
 	bool IUse.OnUse( Entity user ) => true;
 
