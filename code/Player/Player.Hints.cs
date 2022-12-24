@@ -58,17 +58,14 @@ public partial class Player
 
 		HoveredEntity = trace.Entity;
 
-		if ( HoveredEntity is IEntityHint newHint )
+		if ( HoveredEntity is IEntityHint newHint && trace.Distance <= newHint.HintDistance )
 		{
-			if ( trace.Distance <= newHint.HintDistance )
+			if ( newHint.ShowGlow )
 			{
-				if ( newHint.ShowGlow )
-				{
-					var glow = HoveredEntity.Components.GetOrCreate<Glow>();
-					glow.Width = 0.25f;
-					glow.Color = Role.Color;
-					glow.Enabled = true;
-				}
+				var glow = HoveredEntity.Components.GetOrCreate<Glow>();
+				glow.Width = 0.25f;
+				glow.Color = Role.Color;
+				glow.Enabled = true;
 			}
 
 			return newHint;
