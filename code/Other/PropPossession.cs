@@ -16,7 +16,7 @@ public partial class PropPossession : EntityComponent<Prop>
 	private const float PunchRechargeTime = 1f;
 
 	private Player _player;
-	private UI.PossessionMeter _meter;
+	private UI.PunchOMeter _meter;
 	private UI.PossessionNameplate _nameplate;
 	private TimeUntil _timeUntilNextPunch = 0;
 	private TimeUntil _timeUntilRecharge = 0;
@@ -34,7 +34,6 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		var mass = Math.Min( 150f, physicsBody.Mass );
 		var force = 110f * 75f;
-		var aim = Vector3.Forward * _player.ViewAngles.ToRotation();
 		var mf = mass * force;
 
 		_timeUntilNextPunch = 0.15f;

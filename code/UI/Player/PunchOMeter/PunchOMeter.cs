@@ -4,11 +4,11 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-public partial class PossessionMeter : Panel
+public partial class PunchOMeter : Panel
 {
 	private readonly PropPossession _possession;
 
-	public PossessionMeter( PropPossession possession )
+	public PunchOMeter( PropPossession possession )
 	{
 		_possession = possession;
 		Game.RootPanel.AddChild( this );
