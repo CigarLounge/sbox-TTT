@@ -33,6 +33,14 @@ public partial class Player
 		_currentHintPanel.Enabled( true );
 
 		_currentHint = hint;
+
+		if ( _currentHint is Entity ent && _currentHint.ShowGlow )
+		{
+			var glow = ent.Components.GetOrCreate<Glow>();
+			glow.Width = 0.25f;
+			glow.Color = Role.Color;
+			glow.Enabled = true;
+		}
 	}
 
 	private static void DeleteHint()
@@ -40,6 +48,10 @@ public partial class Player
 		_currentHintPanel?.Delete( true );
 		_currentHintPanel = null;
 		UI.FullScreenHintMenu.Instance?.Close();
+
+		if ( _currentHint is Entity ent && _currentHint.ShowGlow )
+			if ( ent.Components.TryGet<Glow>( out var activeGlow ) )
+				activeGlow.Enabled = false;
 
 		_currentHint = null;
 	}
@@ -52,24 +64,10 @@ public partial class Player
 			.UseHitboxes()
 			.Run();
 
-		if ( HoveredEntity is IEntityHint oldHint && oldHint.ShowGlow )
-			if ( HoveredEntity.Components.TryGet<Glow>( out var activeGlow ) )
-				activeGlow.Enabled = false;
-
 		HoveredEntity = trace.Entity;
 
-		if ( HoveredEntity is IEntityHint newHint && trace.Distance <= newHint.HintDistance )
-		{
-			if ( newHint.ShowGlow )
-			{
-				var glow = HoveredEntity.Components.GetOrCreate<Glow>();
-				glow.Width = 0.25f;
-				glow.Color = Role.Color;
-				glow.Enabled = true;
-			}
-
-			return newHint;
-		}
+		if ( HoveredEntity is IEntityHint hint && trace.Distance <= hint.HintDistance )
+			return hint;
 
 		return null;
 	}
