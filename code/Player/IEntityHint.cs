@@ -11,6 +11,11 @@ public interface IEntityHint
 	float HintDistance => Player.UseDistance;
 
 	/// <summary>
+	/// Whether or not the entity should show a glow outline.
+	/// </summary>
+	bool ShowGlow => true;
+
+	/// <summary>
 	/// Whether or not we can show the UI hint.
 	/// </summary>
 	bool CanHint( Player player ) => true;

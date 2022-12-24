@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Component;
 using Sandbox.UI;
 
 namespace TTT;
@@ -51,10 +52,27 @@ public partial class Player
 			.UseHitboxes()
 			.Run();
 
+		if ( HoveredEntity is IEntityHint oldHint && oldHint.ShowGlow )
+			if ( HoveredEntity.Components.TryGet<Glow>( out var activeGlow ) )
+				activeGlow.Enabled = false;
+
 		HoveredEntity = trace.Entity;
 
-		if ( HoveredEntity is IEntityHint hint && trace.Distance <= hint.HintDistance )
-			return hint;
+		if ( HoveredEntity is IEntityHint newHint )
+		{
+			if ( trace.Distance <= newHint.HintDistance )
+			{
+				if ( newHint.ShowGlow )
+				{
+					var glow = HoveredEntity.Components.GetOrCreate<Glow>();
+					glow.Width = 0.25f;
+					glow.Color = Role.Color;
+					glow.Enabled = true;
+				}
+			}
+
+			return newHint;
+		}
 
 		return null;
 	}
