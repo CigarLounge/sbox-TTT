@@ -46,12 +46,11 @@ public partial class PropPossession : EntityComponent<Prop>
 		}
 		else if ( _player.InputDirection.x != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.x * aim * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.x * (Vector3.Forward * _player.ViewAngles.ToRotation()) * mf );
 		}
 		else if ( _player.InputDirection.y != 0f )
 		{
-			physicsBody.ApplyAngularImpulse( new Vector3( 0, 0, _player.InputDirection.y * 200f * 10f ) );
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf / 3f ) );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.y * (Vector3.Left * _player.ViewAngles.ToRotation()) * mf );
 		}
 
 		Punches = Math.Max( Punches - 1, 0 );
