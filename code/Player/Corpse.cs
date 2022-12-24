@@ -330,19 +330,15 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 
-	bool IUse.OnUse( Entity user ) => true;
+	bool IUse.OnUse( Entity user )
+	{
+		Search( user as Player, Input.Down( InputButton.Run ) );
+		return false;
+	}
 
 	bool IUse.IsUsable( Entity user )
 	{
-		if ( user is not Player player )
-			return false;
-
-		if ( GameManager.Current.State is WaitingState or PreRound )
-			return false;
-
-		Search( player, Input.Down( InputButton.Run ) );
-
-		return true;
+		return GameManager.Current.State is InProgress || GameManager.Current.State is PostRound;
 	}
 
 	public bool CanSearch()
