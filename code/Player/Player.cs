@@ -93,7 +93,28 @@ public partial class Player : AnimatedEntity
 		Tags.Add( "player" );
 		Tags.Add( "solid" );
 
-		SetModel( GameManager.HumanAvatar ? "models/humans/male.vmdl" : "models/citizen/citizen.vmdl" );
+		if ( GameManager.HumanAvatar )
+		{
+			SetModel( "models/humans/male.vmdl" );
+
+			var useLightSkinTone = Game.Random.Int( 0, 1 ) == 1;
+			if ( useLightSkinTone )
+				SetMaterialGroup( "skin1" );
+
+			var head = new AnimatedEntity();
+			head.Model = Model.Load( useLightSkinTone ? "models/humans/heads/adam/adam.vmdl" : "models/humans/heads/frank/frank.vmdl" );
+			head.EnableHideInFirstPerson = true;
+			head.EnableShadowInFirstPerson = true;
+			head.SetParent( this, true );
+		}
+		else
+		{
+			SetModel( "models/citizen/citizen.vmdl" );
+			ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
+			ClothingContainer.DressEntity( this );
+		}
+
+
 		Role = new NoneRole();
 
 		Health = 0;
@@ -147,7 +168,7 @@ public partial class Player : AnimatedEntity
 
 			CreateHull();
 			CreateFlashlight();
-			DressPlayer();
+			//DressPlayer();
 			ResetInterpolation();
 
 			Event.Run( GameEvent.Player.Spawned, this );
