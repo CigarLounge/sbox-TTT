@@ -303,7 +303,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	private void ApplyForceToBone( Vector3 force, int forceBone )
 	{
-		PhysicsGroup.AddVelocity( force );
+		PhysicsGroup?.AddVelocity( force );
 
 		if ( forceBone < 0 )
 			return;
@@ -313,7 +313,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( corpse is not null )
 			corpse.ApplyForce( force * 1000 );
 		else
-			PhysicsGroup.AddVelocity( force );
+			PhysicsGroup?.AddVelocity( force );
 	}
 
 	float IEntityHint.HintDistance => Player.MaxHintDistance;
