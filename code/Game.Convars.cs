@@ -90,6 +90,11 @@ public partial class GameManager
 	}
 	#endregion
 
+	#region Player Model
 	[ConVar.Server( "ttt_avatar_clothing" )]
 	public static bool AvatarClothing { get; set; }
+
+	[ConVar.Server( "ttt_human_avatar" )]
+	public static bool HumanAvatar { get; set; }
+	#endregion
 }

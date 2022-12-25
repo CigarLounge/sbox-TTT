@@ -19,8 +19,10 @@ public partial class Player
 
 	public void DressPlayer()
 	{
-		ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
+		if ( GameManager.HumanAvatar )
+			return;
 
+		ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
 		ClothingContainer.DressEntity( this );
 	}
 

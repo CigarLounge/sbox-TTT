@@ -170,6 +170,15 @@
         "DefaultValue": "true",
         "Description": "When enabled knives will only one shot if done in the back.",
         "Group": ""
+      },
+      {
+        "DisplayType": "Boolean",
+        "Choices": [],
+        "ConVarName": "ttt_human_avatar",
+        "DisplayName": "Human Avatar",
+        "DefaultValue": "false",
+        "Description": "If enabled, will use the human avatar provided by FacePunch instead.",
+        "Group": ""
       }
     ],
     "DefaultLeaderboards": null,

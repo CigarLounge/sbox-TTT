@@ -93,7 +93,7 @@ public partial class Player : AnimatedEntity
 		Tags.Add( "player" );
 		Tags.Add( "solid" );
 
-		SetModel( "models/citizen/citizen.vmdl" );
+		SetModel( GameManager.HumanAvatar ? "models/humans/male.vmdl" : "models/citizen/citizen.vmdl" );
 		Role = new NoneRole();
 
 		Health = 0;
