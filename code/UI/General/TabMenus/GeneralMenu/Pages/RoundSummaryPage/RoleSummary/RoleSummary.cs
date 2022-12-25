@@ -3,19 +3,22 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class RoleSummary : Panel
+public partial class RoleSummary : Panel
 {
 	public static RoleSummary Instance;
 
-	private Panel Empty { get; init; }
-	private Panel Innocents { get; init; }
-	private Panel Detectives { get; init; }
-	private Panel Traitors { get; init; }
+	private Panel Empty { get; set; }
+	private Panel Innocents { get; set; }
+	private Panel Detectives { get; set; }
+	private Panel Traitors { get; set; }
 
-	public RoleSummary()
+	public RoleSummary() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Instance = this;
+		if ( !firstTime )
+			return;
+
 		Init();
 	}
 
@@ -28,13 +31,13 @@ public class RoleSummary : Panel
 		if ( GeneralMenu.Instance is not null )
 		{
 			if ( !GeneralMenu.Instance.LastRoleSummaryData.Innocents.IsNullOrEmpty() )
-				Innocents.AddChild( new RoleList( new Innocent(), GeneralMenu.Instance.LastRoleSummaryData.Innocents ) );
+				Innocents.AddChild( new RoleList() { Role = new Innocent(), Players = GeneralMenu.Instance.LastRoleSummaryData.Innocents } );
 
 			if ( !GeneralMenu.Instance.LastRoleSummaryData.Detectives.IsNullOrEmpty() )
-				Detectives.AddChild( new RoleList( new Detective(), GeneralMenu.Instance.LastRoleSummaryData.Detectives ) );
+				Detectives.AddChild( new RoleList() { Role = new Detective(), Players = GeneralMenu.Instance.LastRoleSummaryData.Detectives } );
 
 			if ( !GeneralMenu.Instance.LastRoleSummaryData.Traitors.IsNullOrEmpty() )
-				Traitors.AddChild( new RoleList( new Traitor(), GeneralMenu.Instance.LastRoleSummaryData.Traitors ) );
+				Traitors.AddChild( new RoleList() { Role = new Traitor(), Players = GeneralMenu.Instance.LastRoleSummaryData.Traitors } );
 		}
 
 		Empty.Enabled( !Innocents.Children.Any() && !Detectives.Children.Any() && !Traitors.Children.Any() );

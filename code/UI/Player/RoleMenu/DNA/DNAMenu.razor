@@ -1,0 +1,82 @@
+@using Sandbox.UI;
+@using Sandbox;
+@using System.Linq;
+
+@namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player player || !_dnaScanner.IsValid())
+{
+    return;
+}
+
+<root>
+    <div class="sample-container rounded background-color-gradient box-shadow">
+        @if (_dnaScanner.DNACollected.Any())
+        {
+            foreach (var dna in _dnaScanner.DNACollected)
+            {
+                var isSelected = _dnaScanner?.SelectedId == dna.Id;
+                <DNASample DNA=@dna class="@(isSelected ? "selected" : "")" />
+            }
+        }
+        else
+        {
+            <div class="empty">
+                <text>No DNA samples collected.</text>
+            </div>
+        }
+    </div>
+    <div class="info-container rounded background-color-gradient box-shadow">
+        <text class="charge text-color-tertiary">@_dnaScanner.SlotText</text>
+        <text class="charge-status">@(_dnaScanner.IsCharging ? "CHARGING" : "READY")</text>
+        <Checkbox Value:bind=@AutoScan>Auto-scan</Checkbox>
+    </div>
+</root>
+
+<style>
+    DNAMenu {
+        width: 100%;
+        justify-content: center;
+        padding: 20px;
+
+        .sample-container {
+            height: 325px;
+            max-height: 325px;
+            flex-direction: column;
+            overflow: scroll;
+            width: 60%;
+            margin-right: 10px;
+
+            .empty {
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+            }
+        }
+
+        .info-container {
+            padding: 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 325px;
+
+            .charge {
+                font-size: 50px;
+                font-weight: 600;
+            }
+
+            .charge-status {
+                margin-bottom: 30px;
+                font-weight: 600;
+            }
+
+            .scan-button {
+                justify-content: center;
+                height: 30px;
+            }
+        }
+    }
+</style>

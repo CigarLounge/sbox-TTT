@@ -1,12 +1,13 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class DNAMarker : Panel
+public partial class DNAMarker : Panel
 {
-	private Label Distance { get; init; }
+	private string _distance;
+	private Vector3 _screenPos;
 	private readonly Vector3 _targetPosition;
 
 	public DNAMarker( Vector3 position )
@@ -17,18 +18,9 @@ public class DNAMarker : Panel
 
 	public override void Tick()
 	{
-		base.Tick();
-
-		var player = Local.Pawn as Player;
-		Distance.Text = $"{player.Position.Distance( _targetPosition ).SourceUnitsToMeters():n0}m";
-
-		var screenPos = _targetPosition.ToScreen();
-		this.Enabled( screenPos.z > 0f );
-
-		if ( !this.IsEnabled() )
-			return;
-
-		Style.Left = Length.Fraction( screenPos.x );
-		Style.Top = Length.Fraction( screenPos.y );
+		_distance = $"{(Game.LocalPawn as Player).Position.Distance( _targetPosition ).SourceUnitsToMeters():n0}m";
+		_screenPos = _targetPosition.ToScreen();
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _distance, _screenPos );
 }

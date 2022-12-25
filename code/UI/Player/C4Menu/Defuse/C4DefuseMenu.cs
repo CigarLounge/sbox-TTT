@@ -4,59 +4,22 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class C4DefuseMenu : EntityHintPanel
+public partial class C4DefuseMenu : Panel
 {
 	private readonly C4Entity _c4;
+	private string _timer;
+	private bool _isOwner => Game.LocalPawn == _c4.Owner;
 
-	private Label TimerDisplay { get; set; }
-	private Panel Wires { get; set; }
-	private Button PickupBtn { get; set; }
-	private Button DestroyBtn { get; set; }
-	private Label Disclaimer { get; set; }
-
-	public C4DefuseMenu( C4Entity c4 )
-	{
-		_c4 = c4;
-
-		for ( var i = 0; i < C4Entity.Wires.Count; ++i )
-		{
-			var wireNumber = i + 1;
-			var wire = new Wire( wireNumber, C4Entity.Wires[i] );
-			wire.AddEventListener( "onclick", () =>
-			{
-				wire.Cut();
-				Defuse( wireNumber );
-			} );
-
-			Wires.AddChild( wire );
-		}
-	}
+	public C4DefuseMenu( C4Entity c4 ) => _c4 = c4;
 
 	public override void Tick()
 	{
-		PickupBtn.SetClass( "inactive", _c4.IsArmed );
-		DestroyBtn.SetClass( "inactive", _c4.IsArmed );
-
-		Disclaimer.Text = (Local.Pawn as Player) == _c4.Owner ? "It's your C4, any wire will defuse it" : string.Empty;
-
 		if ( _c4.IsArmed )
-			TimerDisplay.Text = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
+			_timer = TimeSpan.FromSeconds( _c4.TimeUntilExplode ).ToString( "mm':'ss" );
 	}
 
-	public void Defuse( int wire )
-	{
-		if ( _c4.IsArmed )
-			C4Entity.Defuse( wire, _c4.NetworkIdent );
-	}
+	public void Pickup() => C4Entity.Pickup( _c4.NetworkIdent );
+	public void Destroy() => C4Entity.DeleteC4( _c4.NetworkIdent );
 
-	public void Pickup()
-	{
-		C4Entity.Pickup( _c4.NetworkIdent );
-	}
-
-	public void Destroy()
-	{
-		C4Entity.DeleteC4( _c4.NetworkIdent );
-	}
+	protected override int BuildHash() => HashCode.Combine( _timer, _c4.IsArmed, _isOwner );
 }

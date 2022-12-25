@@ -6,20 +6,20 @@ namespace TTT;
 public partial class Player
 {
 	public static List<RoleButton> RoleButtons { get; set; } = new();
-	public static List<UI.RoleButtonPoint> RoleButtonPoints { get; set; } = new();
+	public static List<UI.RoleButtonMarker> RoleButtonMarkers { get; set; } = new();
 	public static RoleButton FocusedButton { get; set; }
 
 	public void ClearButtons()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
-		foreach ( var logicButtonPoint in RoleButtonPoints )
+		foreach ( var logicButtonPoint in RoleButtonMarkers )
 		{
 			logicButtonPoint.Delete( true );
 		}
 
 		RoleButtons.Clear();
-		RoleButtonPoints.Clear();
+		RoleButtonMarkers.Clear();
 		FocusedButton = null;
 	}
 
@@ -40,7 +40,7 @@ public partial class Player
 
 	public void ActivateRoleButton()
 	{
-		Host.AssertClient();
+		Game.AssertClient();
 
 		if ( FocusedButton is null || !Input.Pressed( InputButton.Use ) )
 			return;

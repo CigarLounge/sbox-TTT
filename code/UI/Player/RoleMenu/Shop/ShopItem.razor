@@ -1,0 +1,62 @@
+@namespace TTT.UI
+
+<root class="text-shadow @(!CanPurchase ? "cannot-purchase" : "")">
+    <div class="background-color-gradient rounded box-shadow">
+        <img src=@ItemInfo.IconPath class="icon" />
+    </div>
+    <div class="info">
+        <text class="title">@ItemInfo.Title</text>
+        <text class="price text-color-tertiary">@ItemInfo.Price</text>
+    </div>
+</root>
+
+<style>
+    ShopItem {
+        flex-direction: column;
+        align-items: center;
+        width: 20%;
+        transition: transform 0.1s ease-in;
+        margin: 0 0 15 0;
+
+        .icon {
+            aspect-ratio: 1;
+            background-repeat: no-repeat;
+            background-size: contain;
+            width: 90px;
+            margin: 5px;
+        }
+
+        .info {
+            flex-direction: column;
+            align-items: center;
+            bottom: -1px;
+
+            .title {
+                text-align: center;
+                font-weight: 600;
+                font-size: 12px;
+            }
+
+            .price {
+                font-weight: bold;
+                font-size: 14px;
+                bottom: 5px;
+            }
+        }
+
+        &:hover {
+            transform: scale(1.05);
+            cursor: pointer;
+        }
+
+        &:active {
+            transform: scale(1);
+        }
+
+        &.cannot-purchase {
+            opacity: 0.5;
+            transform: scale(1);
+            cursor: default;
+        }
+    }
+</style>

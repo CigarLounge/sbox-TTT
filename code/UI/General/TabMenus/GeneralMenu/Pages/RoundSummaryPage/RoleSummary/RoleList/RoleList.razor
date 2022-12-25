@@ -1,0 +1,96 @@
+@namespace TTT.UI
+
+<root class="text-shadow">
+    <div class="header" style="background-color: @Role.Color.Hex">
+        <text class="role">@($"{Role.Title} - {Players.Count}")</text>
+        <text class="karma">Karma</text>
+        <text class="score">Score</text>
+    </div>
+    <div @ref="PlayersContainer" class="player-container" />
+</root>
+
+<style>
+    RoleList {
+        width: 100%;
+        flex-direction: column;
+        padding-bottom: 5px;
+        flex-grow: 1;
+
+        .header {
+            border-radius: 4 4 0 0;
+            flex-shrink: 0;
+            font-weight: 600;
+            align-items: center;
+            padding: 3 8 3 8;
+
+            .role {
+                flex-grow: 1;
+            }
+
+            .karma {
+                width: 90px;
+                text-align: right;
+            }
+
+            .score {
+                text-align: right;
+            }
+        }
+
+        .player-container {
+            flex-direction: column;
+            overflow: scroll;
+        }
+
+        .player {
+            height: 40px;
+            align-items: center;
+            font-weight: 500;
+            display: flex;
+            flex-shrink: 0;
+            padding: 3 8 3 8;
+
+            .avatar {
+                height: 25px;
+                width: 25px;
+                border-radius: 4px;
+            }
+
+            .name-label {
+                margin-left: 8px;
+                max-width: 240px;
+            }
+
+            .karma-label {
+                width: 90px;
+                text-align: right;
+            }
+
+            .score-label {
+                width: 90px;
+                text-align: right;
+            }
+
+            .spacer {
+                flex-grow: 1;
+            }
+
+            &:nth-child(odd) {
+                background-color: #0a0a0a66;
+            }
+
+            &:nth-child(even) {
+                background-color: #4b4b4b15;
+            }
+
+            &.me:nth-child(1) {
+                background-color: #f2b42d1a;
+            }
+
+            &:last-child {
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+        }
+    }
+</style>

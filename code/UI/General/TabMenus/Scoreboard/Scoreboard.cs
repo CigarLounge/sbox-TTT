@@ -1,121 +1,34 @@
+using System;
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class Scoreboard : Panel
+public partial class Scoreboard : Panel
 {
-	private readonly Dictionary<Client, ScoreboardEntry> _entries = new();
-	private readonly Dictionary<PlayerStatus, ScoreboardGroup> _scoreboardGroups = new();
+	public Panel Buttons { get; set; }
+	private Panel GroupPanel { get; set; }
 
-	private Panel Container { get; init; }
-	private Panel Content { get; init; }
-
-	public Scoreboard( Panel parent, Panel buttons ) : base()
+	private PriorityQueue<Player, PlayerStatus> PlayersByStatus()
 	{
-		Parent = parent;
-
-		Container.AddChild( buttons );
-
-		AddScoreboardGroup( PlayerStatus.Alive );
-		AddScoreboardGroup( PlayerStatus.MissingInAction );
-		AddScoreboardGroup( PlayerStatus.ConfirmedDead );
-		AddScoreboardGroup( PlayerStatus.Spectator );
+		var players = new PriorityQueue<Player, PlayerStatus>();
+		foreach ( var client in Game.Clients )
+			if ( client.Pawn is Player player )
+				players.Enqueue( player, player.Status );
+		return players;
 	}
 
-	public void AddClient( Client client )
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		var scoreboardGroup = GetScoreboardGroup( client );
-		var scoreboardEntry = scoreboardGroup.AddEntry( client );
-
-		if ( !client.Pawn.IsLocalPawn && client.Pawn.IsAlive() )
-		{
-			scoreboardEntry.AddEventListener( "onclick", () => scoreboardEntry.OnClick() );
-			scoreboardEntry.Style.Cursor = "pointer";
-		}
-
-		scoreboardGroup.GroupMembers++;
-
-		_entries.Add( client, scoreboardEntry );
-	}
-
-	private void UpdateClient( Client client )
-	{
-		if ( client is null )
+		if ( !firstTime )
 			return;
 
-		if ( !_entries.TryGetValue( client, out var panel ) )
-			return;
-
-		var scoreboardGroup = GetScoreboardGroup( client );
-		if ( scoreboardGroup.GroupStatus != panel.PlayerStatus )
-		{
-			RemoveClient( client );
-			AddClient( client );
-		}
-		else
-		{
-			panel.Update();
-		}
-
-		foreach ( var value in _scoreboardGroups.Values )
-			value.Style.Display = value.GroupMembers == 0 ? DisplayMode.None : DisplayMode.Flex;
+		AddChild( Buttons );
 	}
 
-	private void RemoveClient( Client client )
+	protected override int BuildHash()
 	{
-		if ( !_entries.TryGetValue( client, out var panel ) )
-			return;
-
-		_scoreboardGroups.TryGetValue( panel.PlayerStatus, out var scoreboardGroup );
-
-		if ( scoreboardGroup is not null )
-			scoreboardGroup.GroupMembers--;
-
-		panel.Delete();
-		_entries.Remove( client );
-	}
-
-	public override void Tick()
-	{
-		base.Tick();
-
-		if ( !IsVisible )
-			return;
-
-		foreach ( var client in Client.All.Except( _entries.Keys ) )
-		{
-			AddClient( client );
-			UpdateClient( client );
-		}
-
-		foreach ( var client in _entries.Keys.Except( Client.All ) )
-		{
-			if ( _entries.TryGetValue( client, out var row ) )
-			{
-				row?.Delete();
-				RemoveClient( client );
-			}
-		}
-
-		foreach ( var client in Client.All )
-			UpdateClient( client );
-	}
-
-	private ScoreboardGroup AddScoreboardGroup( PlayerStatus someState )
-	{
-		var scoreboardGroup = new ScoreboardGroup( Content, someState );
-		_scoreboardGroups.Add( someState, scoreboardGroup );
-		return scoreboardGroup;
-	}
-
-	private ScoreboardGroup GetScoreboardGroup( Client client )
-	{
-		var player = client.Pawn as Player;
-
-		return _scoreboardGroups[player.Status];
+		return HashCode.Combine( Game.Clients.HashCombine( client => HashCode.Combine( client.SteamId, (int)(client.Pawn as Player)?.Status ) ) );
 	}
 }

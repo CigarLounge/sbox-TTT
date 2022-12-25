@@ -1,0 +1,41 @@
+@using Sandbox;
+@using TTT;
+
+@namespace TTT.UI
+
+<root class="centered-vertical-75 text-shadow">
+    <text class="title">C4</text>
+    <div class="actions">
+        <div style="margin-bottom: 5px; align-items: center;">
+            <text>Press</text>
+            <inputglyph button="Use" />
+            <text>@(_c4.IsArmed ? "to attempt defuse." : "to arm.")</text>
+        </div>
+
+        @if (_c4.IsArmed && _hasDefuser)
+        {
+            <div style="align-items: center;">
+                <text>Press</text>
+                <inputglyph button="PrimaryAttack" />
+                <text>to defuse.</text>
+            </div>
+        }
+    </div>
+</root>
+
+<style>
+    C4Hint {
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .actions {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>

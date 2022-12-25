@@ -15,11 +15,11 @@ public partial class Disguiser : Perk
 	private readonly float _lockOutSeconds = 1f;
 	private bool _isLocked = false;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( Input.Down( InputButton.Grenade ) && !_isLocked )
 		{
-			if ( Host.IsServer )
+			if ( Game.IsServer )
 			{
 				IsActive = !IsActive;
 				_isLocked = true;

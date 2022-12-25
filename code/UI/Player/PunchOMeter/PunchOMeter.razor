@@ -1,0 +1,42 @@
+@using Sandbox.UI;
+
+@namespace TTT.UI
+
+<root class="background-color-gradient opacity-heavy rounded text-shadow fade-out">
+    <div class="possession-progress background-color-tertiary"
+        style="width: @(Length.Fraction((float)_possession.Punches / _possession.MaxPunches))" />
+    <text>PUNCH-O-METER</text>
+</root>
+
+<style>
+    PunchOMeter {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        border-radius: 4px;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+
+        text {
+            padding: 8px 35px 8px 35px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .possession-progress {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 25%;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.2s ease-in;
+        }
+
+        &:intro,
+        &:outro {
+            opacity: 0;
+        }
+    }
+</style>

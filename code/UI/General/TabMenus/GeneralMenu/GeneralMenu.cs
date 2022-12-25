@@ -2,31 +2,30 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class GeneralMenu : Panel
 {
 	public static GeneralMenu Instance;
-
-	public Panel ActivePage { get; private set; }
+	public Panel Buttons { get; set; }
 
 	/// <summary>
 	/// "Children" is used as a "stack" where the last element in the list
 	/// is the page that is currently showing.
 	/// </summary>
 	private Panel Pages { get; set; }
-
+	private Panel ActivePage { get; set; }
 	private bool HasPreviousPages { get => Pages.ChildrenCount > 1; }
-
 	private Button BackButton { get; set; }
 	private Button HomeButton { get; set; }
 
-	public GeneralMenu( Panel parent, Panel buttons )
+	public GeneralMenu() => Instance = this;
+
+	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		Parent = parent;
-		Instance = this;
+		if ( !firstTime )
+			return;
 
 		AddPage( new HomePage() );
-		AddChild( buttons );
+		AddChild( Buttons );
 	}
 
 	/// <summary>

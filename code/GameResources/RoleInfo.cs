@@ -20,14 +20,14 @@ public class RoleInfo : GameResource
 	[Description( "The amount of credits the player spawns with." )]
 	public int DefaultCredits { get; set; }
 
-	[Category( "Shop" ), ResourceType( "weapon" )]
-	public List<string> Weapons { get; set; } = new();
+	[Category( "Shop" )]
+	public HashSet<WeaponInfo> Weapons { get; set; } = new();
 
-	[Category( "Shop" ), ResourceType( "carri" )]
-	public List<string> Carriables { get; set; } = new();
+	[Category( "Shop" )]
+	public HashSet<CarriableInfo> Carriables { get; set; } = new();
 
-	[Category( "Shop" ), ResourceType( "perk" )]
-	public List<string> Perks { get; set; } = new();
+	[Category( "Shop" )]
+	public HashSet<PerkInfo> Perks { get; set; } = new();
 
 	public bool CanRetrieveCredits { get; set; }
 
@@ -58,17 +58,11 @@ public class RoleInfo : GameResource
 		if ( ResourceLibrary is null )
 			return;
 
-		var itemPaths = Weapons.Concat( Carriables ).Concat( Perks );
-		foreach ( var itemPath in itemPaths )
-		{
-			var itemInfo = ResourceLibrary.Get<ItemInfo>( itemPath );
-			if ( itemInfo is null )
-				continue;
+		ShopItems.UnionWith( Weapons );
+		ShopItems.UnionWith( Carriables );
+		ShopItems.UnionWith( Perks );
 
-			ShopItems.Add( itemInfo );
-		}
-
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 

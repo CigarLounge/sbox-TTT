@@ -48,7 +48,7 @@ public partial class Player
 
 	protected void CreateFlashlight()
 	{
-		if ( Host.IsServer )
+		if ( Game.IsServer )
 		{
 			_worldLight = CreateLight();
 			_worldLight.EnableHideInFirstPerson = true;
@@ -70,13 +70,13 @@ public partial class Player
 		_viewLight = null;
 	}
 
-	[Event.Frame]
+	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
 		if ( !_viewLight.IsValid() )
 			return;
 
-		_viewLight.Enabled = FlashlightEnabled & IsFirstPersonMode;
+		_viewLight.Enabled = FlashlightEnabled && IsLocalPawn;
 
 		if ( !_viewLight.Enabled )
 			return;

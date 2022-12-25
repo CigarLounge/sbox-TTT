@@ -14,10 +14,10 @@ public class Traitor : Role
 	{
 		base.OnSelect( player );
 
-		if ( !Host.IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			if ( client == player.Client )
 				continue;
@@ -37,7 +37,7 @@ public class Traitor : Role
 
 	protected override bool ShouldCreateRolePlate( Player player )
 	{
-		var local = Local.Pawn as Player;
+		var local = Game.LocalPawn as Player;
 
 		return local.Team == Team;
 	}

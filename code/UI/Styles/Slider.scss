@@ -6,7 +6,7 @@
 	align-items: center;
 	padding-right: $form-control-height;
 
-	> .thumb
+	>.thumb
 	{
 		background-color: rgb(209, 209, 209);
 		position: absolute;
@@ -24,13 +24,13 @@
 
 	&:active
 	{
-		> .thumb	
+		>.thumb
 		{
 			background-color: rgb(209, 209, 209);
 		}
 	}
 
-	> .track
+	>.track
 	{
 		position: absolute;
 		left: 10px;
@@ -39,10 +39,10 @@
 		background-color: rgb(61, 61, 61);
 		border-radius: 4px;
 
-		> .inner
+		>.inner
 		{
 			border-radius: 4px;
-			background-color: $info;
+			background-color: $tertiary;
 			width: 200px;
 			height: 10px;
 			transition: all 0.2s ease-out;
@@ -55,13 +55,13 @@
 {
 	min-height: 30px;
 
-	> .slider
+	>.slider
 	{
 		flex-grow: 1;
 		flex-shrink: 0;
 	}
 
-	> .textentry:not( .one.two )
+	>.textentry:not(.one.two)
 	{
 		flex-grow: 0;
 		flex-shrink: 0;
@@ -73,7 +73,7 @@
 		margin-left: 10px;
 		border-color: transparent;
 		text-align: center;
-		background-color: rgba( black, 0.5 );
+		background-color: rgba(black, 0.5);
 		color: $button-primary;
 	}
 }
@@ -88,20 +88,20 @@
 	height: 200px;
 	background-color: red;
 
-	> .thumb
+	>.thumb
 	{
 		position: absolute;
 		width: 12px;
 		height: 12px;
 		border-radius: 1000px;
 		transition: all 0.2s ease-out;
-		transform: translateX( -50% ) translateY( -50% );
-		border: 2px solid rgba( white, 1 );
+		transform: translateX(-50%) translateY(-50%);
+		border: 2px solid rgba(white, 1);
 	}
 
 	&:active
 	{
-		> .thumb
+		>.thumb
 		{
 			width: 40px;
 			height: 40px;

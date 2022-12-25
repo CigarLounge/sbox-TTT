@@ -1,0 +1,71 @@
+@using System;
+@using TTT;
+
+@namespace TTT.UI
+
+<root class="background-color-secondary 
+    @(IsFirst ? "rounded-top" : "") 
+    @(IsLast ? "rounded-bottom" : "") 
+    @(Carriable.IsActiveCarriable ? "active" : "")">
+    <text class="slot-number     
+        @(IsFirst ? "rounded-top-left" : "") 
+        @(IsLast ? "rounded-bottom-left" : "")" style="background-color: @(CameraMode.Target.Role.Color.Hex)">
+        <text>@((int)Carriable.Info.Slot + 1)</text>
+    </text>
+    <text>@Carriable.Info.Title</text>
+    <text class="slot-text">@Carriable.SlotText</text>
+</root>
+
+@code {
+    public Carriable Carriable { get; set; }
+    public bool IsFirst { get; set; } = false;
+    public bool IsLast { get; set; } = false;
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(Carriable.SlotText, CameraMode.Target.Role.Color, Carriable.IsActiveCarriable, IsFirst, IsLast);
+    }
+}
+
+<style>
+    InventorySlot {
+        height: 35px;
+        font-size: 20px;
+        opacity: 0.5;
+        align-items: center;
+        transition: opacity 0.1s ease-out;
+        transition: height 0.1s ease-in;
+
+        .slot-number {
+            height: 100%;
+            margin-right: 8px;
+            width: 34px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+
+            .rounded-top-left {
+                border-top-left-radius: 4px;
+            }
+
+            .rounded-bottom-left {
+                border-bottom-left-radius: 4px;
+            }
+        }
+
+        .slot-text {
+            position: absolute;
+            right: 8px;
+        }
+
+        &.active {
+            opacity: 1;
+        }
+
+        &:outro,
+        &:intro {
+            height: 0;
+            opacity: 0;
+        }
+    }
+</style>

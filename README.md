@@ -8,21 +8,6 @@
 
 TTT is a mafia-esque multiplayer game created using s&box. It's aimed to be the spiritual successor of [TTT](https://ttt.badking.net/) but developed for [s&box](https://sbox.facepunch.com/news). The goal of this project is to replicate the vanilla TTT experience with some quality of life thrown in (and cigars 🚬).
 
-## Credits
-
-### Team
-- [Matthew Zegar](https://github.com/matekdev)
-- [Kosta Novosel](https://github.com/kolexxx)
-
-### Direct Contributors
-- [Pukes](https://github.com/imPukes) - Equipment models
-
-### Community Shoutouts
-- Facepunch's open-source gamemodes
-
-### Special Thanks
-- [Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from.
-
 # Discord
 Need to chat with the devs? Join our [discord](https://discord.gg/rrsrakF8N3).
 
@@ -33,3 +18,6 @@ You can checkout devblog update videos on my [YouTube channel](https://www.youtu
 ## [Contributing](https://github.com/CigarLounge/sbox-TTT/wiki/Contributing)
 
 ## [License](https://github.com/CigarLounge/sbox-TTT/blob/main/LICENSE.md)
+
+## Special Thanks
+[Thanks to Bad King Urgrain for creating "Trouble in Terrorist Town"](https://ttt.badking.net/) for [Garry's Mod](https://gmod.facepunch.com/) for which sbox-TTT takes inspiration from.

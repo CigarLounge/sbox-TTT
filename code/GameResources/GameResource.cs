@@ -20,7 +20,7 @@ public abstract class GameResource : Sandbox.GameResource
 		if ( type is null )
 			return null;
 
-		return GetInfo<T>( TypeLibrary.GetDescription( type ).ClassName );
+		return GetInfo<T>( TypeLibrary.GetType( type ).ClassName );
 	}
 
 	public static T GetInfo<T>( string className ) where T : GameResource
@@ -47,7 +47,7 @@ public abstract class GameResource : Sandbox.GameResource
 			return;
 		}
 
-		var typeDescription = TypeLibrary.GetDescription<object>( ClassName );
+		var typeDescription = TypeLibrary.GetType<object>( ClassName );
 		if ( typeDescription is null )
 			return;
 

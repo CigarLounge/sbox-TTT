@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Physics;
 
 namespace TTT;
 
@@ -19,7 +20,7 @@ public class GrabbableCorpse : IGrabbable
 		_owner = player;
 		_corpse = corpse;
 
-		_handPhysicsBody = new( Map.Physics );
+		_handPhysicsBody = new( Game.PhysicsWorld );
 		_handPhysicsBody.BodyType = PhysicsBodyType.Keyframed;
 
 		var attachment = player.GetAttachment( Hands.MiddleHandsAttachment )!.Value;

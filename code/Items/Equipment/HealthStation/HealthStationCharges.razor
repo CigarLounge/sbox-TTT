@@ -1,0 +1,28 @@
+@using System;
+@inherits Sandbox.UI.WorldPanel
+@namespace TTT.UI
+
+<root>
+    <text>
+        <text>@((int)_healthStation.StoredHealth)</text>
+    </text>
+</root>
+
+@code {
+    private readonly HealthStationEntity _healthStation;
+    public HealthStationCharges(HealthStationEntity healthStation) => _healthStation = healthStation;
+    public override void Tick() => SceneObject.Transform = _healthStation.GetAttachment("charges") ?? default;
+    protected override int BuildHash() => HashCode.Combine(_healthStation.StoredHealth);
+}
+
+<style>
+    HealthStationCharges {
+        text-align: center;
+        color: #2f6a7f;
+        font-size: 18px;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Poppins';
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,54 @@
+@using TTT;
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root class="background-color-gradient rounded-top text-shadow">
+    <div class="terry-image"></div>
+    <div class="server-information">
+        <text style="font-size: 25px; font-weight: bolder;">TTT</text>
+        <text style="font-weight: 500;">Contribute at github.com/CigarLounge/sbox-TTT</text>
+    </div>
+    <div class="server-data">
+        <text>@($"{Game.Clients.Count} / {ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 )} Players")</text>
+        <text>@Game.Server.MapIdent</text>
+        <text>
+            @{
+                var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
+                var suffix = roundsRemaining == 1 ? "round" : "rounds";
+                <text>@($"Map will change in {roundsRemaining} {suffix}")</text>
+            }
+        </text>
+    </div>
+</root>
+
+<style>
+    ScoreboardInfo {
+        flex-direction: row;
+        max-height: 100px;
+        justify-content: space-between;
+        padding: 30 16 0 16;
+
+        .terry-image {
+            position: absolute;
+            top: -54px;
+            background-image: url("/ui/scoreboard-terry.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            width: 180px;
+            height: 150px;
+        }
+
+        .server-information {
+            flex-grow: 1;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .server-data {
+            flex-direction: column;
+            font-weight: 500;
+            align-items: flex-end;
+        }
+    }
+</style>

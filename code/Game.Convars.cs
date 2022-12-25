@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class Game
+public partial class GameManager
 {
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
@@ -78,14 +78,14 @@ public partial class Game
 	[ConVar.Replicated( "ttt_proximity_chat", Saved = true ), Change( nameof( UpdateVoiceChat ) )]
 	public static bool ProximityChat { get; set; }
 
-	public static void UpdateVoiceChat( bool oldValue, bool newValue )
+	public static void UpdateVoiceChat( bool _, bool newValue )
 	{
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
-			if ( !client.Pawn.IsAlive() )
+			if ( !client.Pawn.AsEntity().IsAlive() )
 				continue;
 
-			client.VoiceStereo = newValue;
+			client.Voice.WantsStereo = newValue;
 		}
 	}
 	#endregion

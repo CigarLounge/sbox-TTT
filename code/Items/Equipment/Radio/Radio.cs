@@ -25,7 +25,7 @@ public partial class RadioComponent : EntityComponent<Player>
 	{
 		base.OnActivate();
 
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			UI.RoleMenu.Instance.AddRadioTab();
 	}
 
@@ -33,7 +33,7 @@ public partial class RadioComponent : EntityComponent<Player>
 	{
 		base.OnDeactivate();
 
-		if ( Host.IsClient )
+		if ( Game.IsClient )
 			UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.RadioTab );
 	}
 }

@@ -2,8 +2,7 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class FullScreenHintMenu : Panel
+public partial class FullScreenHintMenu : Panel
 {
 	public static FullScreenHintMenu Instance;
 	public bool IsOpen { get => ActivePanel is not null; }

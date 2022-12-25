@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -115,7 +116,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explosion( float radius )
 	{
-		foreach ( var client in Client.All )
+		foreach ( var client in Game.Clients )
 		{
 			if ( client.Pawn is not Player player || !player.IsAlive() )
 				continue;
@@ -129,7 +130,7 @@ public partial class C4Entity : Prop, IEntityHint
 			// var damage = 100 - MathF.Pow( Math.Max( 0, dist - 540 ), 2 ) * 0.00226757f;
 			var damage = 125 - MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * 0.01033057f;
 
-			var damageInfo = DamageInfo.Explosion( Position, diff.Normal * damage, damage )
+			var damageInfo = DamageInfo.FromExplosion( Position, diff.Normal * damage, damage )
 				.WithAttacker( Owner )
 				.WithWeapon( this );
 
@@ -161,7 +162,7 @@ public partial class C4Entity : Prop, IEntityHint
 			UI.FullScreenHintMenu.Instance?.Open( new UI.C4ArmMenu( this ) );
 	}
 
-	UI.EntityHintPanel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
+	Panel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
 
 	[Event.Tick.Server]
 	private void ServerTick()

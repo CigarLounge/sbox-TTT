@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.UI;
 
 namespace TTT;
 
@@ -10,6 +11,11 @@ public interface IEntityHint
 	float HintDistance => Player.UseDistance;
 
 	/// <summary>
+	/// Whether or not the entity should show a glow outline.
+	/// </summary>
+	bool ShowGlow => true;
+
+	/// <summary>
 	/// Whether or not we can show the UI hint.
 	/// </summary>
 	bool CanHint( Player player ) => true;
@@ -17,9 +23,9 @@ public interface IEntityHint
 	/// <summary>
 	/// The hint we should display.
 	/// </summary>
-	UI.EntityHintPanel DisplayHint( Player player )
+	Panel DisplayHint( Player player )
 	{
-		return new UI.Hint( DisplayInfo.For( (Entity)this ).Name );
+		return new UI.Hint() { HintText = DisplayInfo.For( (Entity)this ).Name };
 	}
 
 	/// <summary>

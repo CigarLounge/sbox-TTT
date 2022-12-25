@@ -1,9 +1,9 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
 public partial class TextChat : Panel
 {
 	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
@@ -11,8 +11,8 @@ public partial class TextChat : Panel
 
 	public static TextChat Instance { get; private set; }
 
-	private Panel EntryCanvas { get; init; }
-	private TabTextEntry Input { get; init; }
+	private Panel EntryCanvas { get; set; }
+	private TabTextEntry Input { get; set; }
 
 	public bool IsOpen
 	{
@@ -29,21 +29,23 @@ public partial class TextChat : Panel
 		}
 	}
 
-	public TextChat()
-	{
-		Instance = this;
+	public TextChat() => Instance = this;
 
-		EntryCanvas.PreferScrollToBottom = true;
-		EntryCanvas.TryScrollToBottom();
+	protected override void OnAfterTreeRender( bool firstTime )
+	{
+		if ( !firstTime )
+			return;
 
 		Input.AddEventListener( "onsubmit", Submit );
 		Input.AddEventListener( "onblur", () => IsOpen = false );
 		Input.OnTabPressed += OnTabPressed;
+		EntryCanvas.TryScrollToBottom();
+		EntryCanvas.PreferScrollToBottom = true;
 	}
 
 	public override void Tick()
 	{
-		if ( Local.Pawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
@@ -68,17 +70,9 @@ public partial class TextChat : Panel
 		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, string classes = "" )
+	public void AddEntry( string name, string message, Color? color = null )
 	{
-		var entry = new TextChatEntry( name, message );
-		if ( !classes.IsNullOrEmpty() )
-			entry.AddClass( classes );
-		EntryCanvas.AddChild( entry );
-	}
-
-	public void AddEntry( string name, string message, Color? color )
-	{
-		var entry = new TextChatEntry( name, message, color );
+		var entry = new TextChatEntry() { Name = name, Message = message, NameColor = color ?? Color.FromBytes( 253, 196, 24 ) };
 		EntryCanvas.AddChild( entry );
 	}
 
@@ -92,7 +86,7 @@ public partial class TextChat : Panel
 
 		if ( Input.Text == Strings.RTVCommand )
 		{
-			if ( Local.Client.GetValue<bool>( Strings.HasRockedTheVote ) )
+			if ( Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) )
 			{
 				AddInfo( "You have already rocked the vote!" );
 				return;
@@ -110,13 +104,13 @@ public partial class TextChat : Panel
 
 		if ( message == Strings.RTVCommand )
 		{
-			Game.RockTheVote();
+			GameManager.RockTheVote();
 			return;
 		}
 
 		if ( !player.IsAlive() )
 		{
-			var clients = Game.Current.State is InProgress ? Utils.GetDeadClients() : Client.All;
+			var clients = GameManager.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
 			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
@@ -152,12 +146,12 @@ public partial class TextChat : Panel
 	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
 	public static void AddInfo( string message )
 	{
-		Instance?.AddEntry( message, "", "info" );
+		Instance?.AddEntry( message, "" );
 	}
 
 	private void OnTabPressed()
 	{
-		if ( Local.Pawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
 			return;
 
 		if ( player.Role.CanTeamChat )
@@ -165,3 +159,18 @@ public partial class TextChat : Panel
 	}
 }
 
+public partial class TabTextEntry : TextEntry
+{
+	public event Action OnTabPressed;
+
+	public override void OnButtonTyped( string button, KeyModifiers km )
+	{
+		if ( button == "tab" )
+		{
+			OnTabPressed?.Invoke();
+			return;
+		}
+
+		base.OnButtonTyped( button, km );
+	}
+}

@@ -3,8 +3,7 @@ using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class Crosshair : Panel
+public partial class Crosshair : Panel
 {
 	public const string FilePath = "crosshair.json";
 
@@ -53,6 +52,6 @@ public class Crosshair : Panel
 
 	public override void Tick()
 	{
-		this.Enabled( Local.Pawn.IsAlive() );
+		this.Enabled( Game.LocalPawn.IsAlive() );
 	}
 }

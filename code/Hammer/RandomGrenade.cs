@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ public class RandomGrenade : Entity
 		if ( _cachedGrenadeTypes.IsNullOrEmpty() )
 			return;
 
-		var grenade = TypeLibrary.Create<Grenade>( Rand.FromList( _cachedGrenadeTypes ) );
+		var grenade = TypeLibrary.Create<Grenade>( Game.Random.FromList( _cachedGrenadeTypes ) );
 		if ( grenade is null )
 			return;
 
@@ -35,7 +35,7 @@ public class RandomGrenade : Entity
 		if ( !_cachedGrenadeTypes.IsNullOrEmpty() )
 			return;
 
-		var grenades = TypeLibrary.GetDescriptions<Grenade>();
+		var grenades = TypeLibrary.GetTypes<Grenade>();
 		foreach ( var grenadeDesc in grenades )
 		{
 			var grenadeInfo = GameResource.GetInfo<CarriableInfo>( grenadeDesc.TargetType );

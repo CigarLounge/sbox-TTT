@@ -1,0 +1,92 @@
+@using System;
+@using Sandbox;
+@using TTT;
+
+@namespace TTT.UI
+
+@if (TTT.GameManager.Current.State is null)
+{
+    return;
+}
+
+<root class="background-color-gradient opacity-heavy rounded text-shadow">
+    <div class="round-name-wrapper">
+        <text class="text-color-tertiary">@TTT.GameManager.Current.State.Name</text>
+    </div>
+    <div class="timer-wrapper">
+        <text>
+            <text>
+            @{
+                var isWaiting = TTT.GameManager.Current.State is WaitingState;
+                var isInProgress = TTT.GameManager.Current.State is InProgress;
+
+                @(isWaiting ? @$"{Utils.MinimumPlayerCount()} / {TTT.GameManager.MinPlayers}" : 
+                  isInProgress ? (TTT.GameManager.Current.State as InProgress).FakeTimeFormatted : TTT.GameManager.Current.State.TimeLeftFormatted)
+            }
+            </text>
+        </text>
+        @{
+            var isTraitor = (Game.LocalPawn as TTT.Player).Team == Team.Traitors;
+            var showSubTimer =  TTT.GameManager.Current.State is InProgress inProgress &&
+                                (
+                                    (isTraitor && inProgress.TimeLeft != inProgress.FakeTime) ||
+                                    (!isTraitor && (int)inProgress.FakeTime < 0)
+                                );
+
+            <text>
+                <text class="sub-text text-color-tertiary @(showSubTimer ? "show" : "")">
+                    @(isTraitor ? @TTT.GameManager.Current.State.TimeLeftFormatted : "OVERTIME")
+                </text>
+            </text>
+        }
+    </div>
+</root>
+
+@code {
+    protected override int BuildHash() => HashCode.Combine( TTT.GameManager.Current.State, TTT.GameManager.Current.State.TimeLeftFormatted );
+}
+
+<style>
+    RoundTimer {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+
+        .round-name-wrapper {
+            min-width: 175px;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 24px;
+            padding: 8px;
+            text-transform: uppercase;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .timer-wrapper {
+            min-width: 120px;
+            border-radius: 0 4px 4px 0;
+            padding: 8px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #1e1e1ea2;
+            justify-content: center;
+
+            .sub-text {
+                position: absolute;
+                font-size: 16px;
+                opacity: 0;
+                transition: all 0.2s ease-in;
+
+                &.show {
+                    opacity: 1;
+                    bottom: -12px;
+                }
+            }
+        }
+    }
+</style>

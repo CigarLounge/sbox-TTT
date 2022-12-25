@@ -20,9 +20,4 @@ public static class PanelExtensions
 	{
 		return panel.Style.Display != DisplayMode.None;
 	}
-
-	public static void SetTexture( this Image image, Texture texture )
-	{
-		image.Style.BackgroundImage = texture ?? Texture.Load( FileSystem.Mounted, "/ui/none.png" );
-	}
 }

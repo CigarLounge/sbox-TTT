@@ -1,20 +1,20 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
 
 namespace TTT.UI;
 
-[UseTemplate]
-public class C4Hint : EntityHintPanel
+public partial class C4Hint : Panel
 {
+	private bool _hasDefuser = false;
 	private readonly C4Entity _c4;
-	private Label SubText { get; init; }
-	private Panel DefuserPanel { get; init; }
 
 	public C4Hint( C4Entity c4 ) => _c4 = c4;
 
 	public override void Tick()
 	{
-		SubText.Text = _c4.IsArmed ? "to attempt defuse." : "to arm.";
-		DefuserPanel.Enabled( _c4.IsArmed && (Local.Pawn as Player).ActiveCarriable is Defuser );
+		_hasDefuser = Game.LocalPawn is Player player && player.ActiveCarriable is Defuser;
 	}
+
+	protected override int BuildHash() => HashCode.Combine( _c4.IsArmed, _hasDefuser );
 }

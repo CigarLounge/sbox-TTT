@@ -15,14 +15,14 @@ public partial class Player
 			return;
 		}
 
-		if ( Input.Pressed( InputButton.Jump ) || Input.Forward != 0f || Input.Left != 0f )
+		if ( Input.Pressed( InputButton.Jump ) || InputDirection.x != 0f || InputDirection.y != 0f )
 			Prop.Components.Get<PropPossession>().Punch();
 	}
 
 	[Event.Entity.PreCleanup]
 	public void CancelPossession()
 	{
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( Prop.IsValid() )
@@ -32,9 +32,6 @@ public partial class Player
 		}
 
 		Prop = null;
-
-		if ( !this.IsAlive() )
-			Camera = new FreeSpectateCamera();
 	}
 
 	[ConCmd.Server]
@@ -53,6 +50,5 @@ public partial class Player
 		prop.Owner = player;
 		prop.Components.GetOrCreate<PropPossession>();
 		player.Prop = prop;
-		player.Camera = new FollowEntityCamera( prop );
 	}
 }

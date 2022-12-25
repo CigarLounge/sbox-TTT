@@ -1,0 +1,55 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using System.Linq;
+
+@namespace TTT.UI
+
+@if (CameraMode.Target.Inventory.Count == 0)
+{
+    return;
+}
+
+<root class="opacity-heavy text-shadow">
+    @foreach (var carriable in CameraMode.Target.Inventory)
+    {
+        <InventorySlot Carriable=@carriable />
+    }
+
+    @{
+        SortChildren((p1, p2) =>
+            {
+                var s1 = p1 as InventorySlot;
+                var s2 = p2 as InventorySlot;
+
+                var result = s1.Carriable.Info.Slot.CompareTo(s2.Carriable.Info.Slot);
+                return result != 0
+        ? result
+        : string.Compare(s1.Carriable.Info.Title, s2.Carriable.Info.Title, StringComparison.Ordinal);
+            });
+
+        (Children.First() as InventorySlot).IsFirst = true;
+        (Children.Last() as InventorySlot).IsLast = true;
+    }
+</root>
+
+<style>
+    InventorySelection {
+        min-width: 300px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        &.hide {
+            display: none;
+        }
+
+        .rounded-top-left {
+            border-top-left-radius: 4px;
+        }
+
+        .rounded-bottom-left {
+            border-bottom-left-radius: 4px;
+        }
+    }
+</style>

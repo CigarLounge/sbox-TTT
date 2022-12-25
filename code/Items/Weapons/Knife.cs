@@ -1,5 +1,5 @@
+using Editor;
 using Sandbox;
-using SandboxEditor;
 
 namespace TTT;
 
@@ -21,7 +21,7 @@ public partial class Knife : Carriable
 	private Rotation _throwRotation = Rotation.From( new Angles( 90, 0, 0 ) );
 	private float _gravityModifier;
 
-	public override void Simulate( Client client )
+	public override void Simulate( IClient client )
 	{
 		if ( TimeSinceStab < 1f )
 			return;
@@ -66,22 +66,22 @@ public partial class Knife : Carriable
 
 		trace.Surface.DoBulletImpact( trace );
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( Game.KnifeBackstabs ? 50 : 100 )
+		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
 			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
-			.WithWeapon( this )
-			.WithFlag( DamageFlags.Slash );
+			.WithTag( Strings.Tags.Slash )
+			.WithWeapon( this );
 
 		if ( trace.Entity is Player otherPlayer )
 		{
 			otherPlayer.DistanceToAttacker = 0;
 			PlaySound( FleshHit );
 
-			if ( Game.KnifeBackstabs )
+			if ( GameManager.KnifeBackstabs )
 			{
 				// TF2 magic
 				// Discard all z values to simplify to 2D.
@@ -119,7 +119,7 @@ public partial class Knife : Carriable
 		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
 
-		if ( !IsServer )
+		if ( !Game.IsServer )
 			return;
 
 		if ( IsActiveCarriable )
@@ -177,8 +177,8 @@ public partial class Knife : Carriable
 				var damageInfo = DamageInfo.Generic( 100f )
 					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
-					.WithFlag( DamageFlags.Slash )
 					.WithAttacker( _thrower )
+					.WithTag( Strings.Tags.Slash )
 					.WithWeapon( this );
 
 				player.DistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();

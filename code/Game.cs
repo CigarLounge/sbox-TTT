@@ -1,11 +1,12 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using System.Collections.Generic;
 
 namespace TTT;
 
-public partial class Game : Sandbox.Game
+public partial class GameManager : Sandbox.GameManager
 {
-	public static new Game Current { get; private set; }
+	public static new GameManager Current { get; private set; }
 
 	[Net, Change]
 	public BaseState State { get; private set; }
@@ -19,14 +20,14 @@ public partial class Game : Sandbox.Game
 
 	public int RTVCount { get; set; }
 
-	public Game()
+	public GameManager()
 	{
 		Current = this;
 
-		if ( IsClient )
+		if ( Game.IsClient )
 			_ = new UI.Hud();
 
-		if ( Host.IsDedicatedServer )
+		if ( Game.IsDedicatedServer )
 			LoadBannedClients();
 
 		LoadResources();
@@ -38,7 +39,7 @@ public partial class Game : Sandbox.Game
 	/// <param name="state"> The state to change to if minimum players is met.</param>
 	public void ChangeState( BaseState state )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 		Assert.NotNull( state );
 
 		ForceStateChange( Utils.HasMinimumPlayers() ? state : new WaitingState() );
@@ -50,7 +51,7 @@ public partial class Game : Sandbox.Game
 	/// <param name="state"> The state to change to.</param>
 	public void ForceStateChange( BaseState state )
 	{
-		Host.AssertServer();
+		Game.AssertServer();
 
 		State?.Finish();
 		State = state;
@@ -62,7 +63,7 @@ public partial class Game : Sandbox.Game
 		// Do nothing. Base implementation just adds to a kill feed and prints to console.
 	}
 
-	public override void ClientJoined( Client client )
+	public override void ClientJoined( IClient client )
 	{
 		Event.Run( GameEvent.Client.Joined, client );
 
@@ -73,7 +74,7 @@ public partial class Game : Sandbox.Game
 		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has joined" );
 	}
 
-	public override void ClientDisconnect( Client client, NetworkDisconnectionReason reason )
+	public override void ClientDisconnect( IClient client, NetworkDisconnectionReason reason )
 	{
 		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
@@ -82,13 +83,14 @@ public partial class Game : Sandbox.Game
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
-		if ( client.Pawn.IsValid() && client.Pawn.IsAlive() )
+		var ent = client.Pawn.AsEntity();
+		if ( ent.IsValid() && ent.IsAlive() )
 			client.Pawn.Delete();
 
 		client.Pawn = null;
 	}
 
-	public override bool CanHearPlayerVoice( Client source, Client dest )
+	public override bool CanHearPlayerVoice( IClient source, IClient dest )
 	{
 		if ( source.Pawn is not Player sourcePlayer || dest.Pawn is not Player destPlayer )
 			return false;
@@ -105,7 +107,7 @@ public partial class Game : Sandbox.Game
 		return true;
 	}
 
-	public override void OnVoicePlayed( Client client )
+	public override void OnVoicePlayed( IClient client )
 	{
 		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client );
 	}
@@ -117,7 +119,7 @@ public partial class Game : Sandbox.Game
 
 	public override void Shutdown()
 	{
-		if ( Host.IsDedicatedServer )
+		if ( Game.IsDedicatedServer )
 			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
