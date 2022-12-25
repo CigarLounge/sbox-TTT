@@ -17,10 +17,14 @@ public partial class Player
 	/// </summary>
 	private readonly List<Clothing> _avatarClothes;
 
-	//public void DressPlayer()
-	//{
+	public void DressPlayer()
+	{
+		if ( GameManager.HumanAvatar )
+			return;
 
-	//}
+		ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
+		ClothingContainer.DressEntity( this );
+	}
 
 	[Event.Entity.PostSpawn]
 	[Event.Entity.PostCleanup]

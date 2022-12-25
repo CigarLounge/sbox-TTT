@@ -28,24 +28,24 @@
 	</ItemGroup>
 
   <PropertyGroup>
-	<OutputPath>..\..\../.vs/output/</OutputPath>
-	<DocumentationFile>..\..\../.vs/output/ttt.xml</DocumentationFile>
+	<OutputPath>S:\SteamLibrary\steamapps\common\sbox/.vs/output/</OutputPath>
+	<DocumentationFile>S:\SteamLibrary\steamapps\common\sbox/.vs/output/ttt.xml</DocumentationFile>
 	<RootNamespace>Sandbox</RootNamespace>
 	<Nullable>disable</Nullable>
   </PropertyGroup>
 
 	<ItemGroup>
-		<Analyzer Include="..\..\..\bin\managed\Sandbox.Generator.dll"/>
-		<Reference Include="..\..\..\bin\managed/Sandbox.System.dll" />
-		<Reference Include="..\..\..\bin\managed/Sandbox.Engine.dll" />
-		<Reference Include="..\..\..\bin\managed/Sandbox.Game.dll" />
-		<Reference Include="..\..\..\bin\managed/Sandbox.Event.dll" />
-		<Reference Include="..\..\..\bin\managed/Sandbox.Bind.dll" />
-		<Reference Include="..\..\..\bin\managed/Sandbox.Reflection.dll" />
+		<Analyzer Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Game.dll" />
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Event.dll" />
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Bind.dll" />
+		<Reference Include="S:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Reflection.dll" />
 	</ItemGroup>
 
   <ItemGroup>
-		<ProjectReference Include="C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\base\code\base.csproj" />
+		<ProjectReference Include="S:\SteamLibrary\steamapps\common\sbox\addons\base\code\base.csproj" />
 
   </ItemGroup>
 

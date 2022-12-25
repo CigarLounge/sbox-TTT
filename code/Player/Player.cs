@@ -110,8 +110,6 @@ public partial class Player : AnimatedEntity
 		else
 		{
 			SetModel( "models/citizen/citizen.vmdl" );
-			ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
-			ClothingContainer.DressEntity( this );
 		}
 
 
@@ -168,7 +166,7 @@ public partial class Player : AnimatedEntity
 
 			CreateHull();
 			CreateFlashlight();
-			//DressPlayer();
+			DressPlayer();
 			ResetInterpolation();
 
 			Event.Run( GameEvent.Player.Spawned, this );
