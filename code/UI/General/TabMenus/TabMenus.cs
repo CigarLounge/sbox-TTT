@@ -83,6 +83,12 @@ public partial class TabMenus : Panel
 	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
+		if ( Input.Released( InputButton.Score ) )
+		{
+			Input.MouseDelta = Vector2.Zero;
+			Mouse.Position = Screen.Size / 2;
+		}
+
 		SetClass( "show", Input.Down( InputButton.Score ) );
 	}
 }
