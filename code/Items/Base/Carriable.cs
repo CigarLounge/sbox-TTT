@@ -157,6 +157,9 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		EnableDrawing = true;
 		EnableAllCollisions = true;
 		TimeSinceDropped = 0;
+
+		// Set to the dropper's EyePosition to prevent the dropped item from clipping through the world.
+		Position = dropper.EyePosition;
 	}
 
 	public override Sound PlaySound( string soundName, string attachment )
