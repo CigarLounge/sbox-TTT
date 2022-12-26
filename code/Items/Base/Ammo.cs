@@ -77,9 +77,9 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 	public static Ammo Drop( Player dropper, AmmoType ammoType, int count )
 	{
 		var ammoCrate = Create( ammoType, count );
-		ammoCrate.Position = dropper.EyePosition + dropper.EyeRotation.Forward * 40;
+		ammoCrate.Position = dropper.WorldSpaceBounds.Center;
 		ammoCrate.Rotation = dropper.EyeRotation;
-		ammoCrate.PhysicsGroup.Velocity = dropper.Velocity + dropper.EyeRotation.Forward * Player.DropVelocity;
+		ammoCrate.PhysicsGroup.Velocity = dropper.GetDropVelocity();
 		ammoCrate._dropper = dropper;
 		ammoCrate._timeSinceDropped = 0;
 

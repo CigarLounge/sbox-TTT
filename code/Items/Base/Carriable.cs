@@ -157,6 +157,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 		EnableDrawing = true;
 		EnableAllCollisions = true;
 		TimeSinceDropped = 0;
+		Position = dropper.WorldSpaceBounds.Center;
 	}
 
 	public override Sound PlaySound( string soundName, string attachment )

@@ -26,7 +26,6 @@ public sealed class Inventory : IEnumerable<Carriable>
 	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	private readonly int[] _weaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
 
-	private const float DropPositionOffset = 3f;
 	private const float DropVelocity = 500f;
 
 	public Inventory( Player player ) => Owner = player;
@@ -236,11 +235,13 @@ public sealed class Inventory : IEnumerable<Carriable>
 		var droppedEntity = new T
 		{
 			Owner = Owner,
-			Position = Owner.EyePosition + Owner.EyeRotation.Forward * DropPositionOffset,
+			Position = Owner.EyePosition,
 			Rotation = Owner.EyeRotation,
-			Velocity = Owner.EyeRotation.Forward * DropVelocity,
-			PhysicsEnabled = true
+			Velocity = Owner.GetDropVelocity( false ),
+			PhysicsEnabled = true,
 		};
+		droppedEntity.Tags.Add( "interactable" );
+		droppedEntity.Tags.Remove( "solid" );
 
 		return droppedEntity;
 	}
