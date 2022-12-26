@@ -127,12 +127,12 @@ public partial class Knife : Carriable
 		else
 			Owner.Inventory.Drop( this );
 
-		Position = trace.EndPosition;
-		Rotation = PreviousOwner.EyeRotation * _throwRotation;
-		Velocity = PreviousOwner.EyeRotation.Forward * (1250f + PreviousOwner.Velocity.Length);
-
 		EnableTouch = false;
 		PhysicsEnabled = false;
+
+		Position = trace.EndPosition;
+		Rotation = PreviousOwner.EyeRotation * _throwRotation;
+		Velocity = PreviousOwner.EyeRotation.Forward * (600f + PreviousOwner.Velocity.Length);
 	}
 
 	[ClientRpc]
