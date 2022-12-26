@@ -3,10 +3,12 @@
 
 @namespace TTT.UI
 
-<root class="opacity-heavy text-shadow">
-    @if (!CameraMode.Target.IsValid() || !CameraMode.Target.IsAlive())
-        return;
+@if (!CameraMode.Target.IsValid() || !CameraMode.Target.IsAlive())
+{
+    return;
+}
 
+<root class="opacity-heavy text-shadow">
     @if (CameraMode.Target.Role is not NoneRole)
     {
         <div class="role-container" style="background-color: @CameraMode.Target.Role.Color.Hex">
