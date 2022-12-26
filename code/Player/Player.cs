@@ -66,8 +66,6 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public int RoundScore { get; set; }
 
-	public const float DropVelocity = 300;
-
 	public Player( IClient client ) : this()
 	{
 		client.Pawn = this;
@@ -425,6 +423,15 @@ public partial class Player : AnimatedEntity
 		next?.ActiveStart( this );
 	}
 
+	/// <summary>
+	/// Get the resulting velocity of what we should be dropping items with.
+	/// </summary>
+	/// <param name="throwUpwards">If the resulting velocity has an upwards arc.</param>
+	public Vector3 GetDropVelocity( bool throwUpwards = true )
+	{
+		return Velocity + (EyeRotation.Forward + (throwUpwards ? EyeRotation.Up : Vector3.Zero)) * 200;
+	}
+
 	private void CheckPlayerDropCarriable()
 	{
 		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
@@ -432,7 +439,7 @@ public partial class Player : AnimatedEntity
 			var droppedEntity = Inventory.DropActive();
 			if ( droppedEntity is not null )
 				if ( droppedEntity.PhysicsGroup is not null )
-					droppedEntity.PhysicsGroup.Velocity = Velocity + (EyeRotation.Forward + EyeRotation.Up) * DropVelocity;
+					droppedEntity.PhysicsGroup.Velocity = GetDropVelocity();
 		}
 	}
 	#endregion

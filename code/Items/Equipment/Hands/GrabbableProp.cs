@@ -74,7 +74,7 @@ public class GrabbableProp : IGrabbable
 
 		var droppedEntity = Drop();
 		if ( droppedEntity.IsValid() )
-			droppedEntity.Velocity = _owner.Velocity + _owner.EyeRotation.Forward * Player.DropVelocity;
+			droppedEntity.Velocity = _owner.GetDropVelocity();
 
 		_owner.SetAnimParameter( "b_attack", true );
 		Utils.DelayAction( 0.6f, () => _isThrowing = false );
