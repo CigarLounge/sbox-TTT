@@ -1,5 +1,7 @@
+using System;
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.Utility;
 
 namespace TTT.UI;
 
@@ -47,11 +49,31 @@ public partial class Crosshair : Panel
 
 	public static Properties GetActiveConfig()
 	{
-		return FileSystem.Data.ReadJson<Properties>( FilePath ) ?? Instance?.Config ?? new Properties( true, true, true, 0, 5, 0, Color.White );
+		return FileSystem.Data.ReadJson<Properties>( FilePath ) ?? Instance?.Config ?? new Properties( true, true, true, 0, 4, 0, Color.White );
 	}
 
-	public override void Tick()
+	public override void DrawBackground( ref RenderState state )
 	{
-		this.Enabled( Game.LocalPawn.IsAlive() );
+		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
+			return;
+
+		var center = Screen.Size / 2;
+
+		var shootEase = 0f;
+		if ( Config.IsDynamic && player.ActiveCarriable is Weapon weapon )
+			shootEase = Easing.EaseIn( ((float)weapon.TimeSincePrimaryAttack).LerpInverse( 0.2f, 0.0f ) * 5 );
+
+		var startingOffset = Config.Gap + shootEase;
+		var endingOffset = startingOffset + Config.Size;
+
+		if ( Config.ShowDot )
+			Draw.Line( Config.Color, Config.Thickness, center + Vector2.Up * Config.Thickness / 2, Config.Thickness, center - Vector2.Up * Config.Thickness / 2 );
+
+		if ( Config.ShowTop )
+			Draw.Line( Config.Color, Config.Thickness, center - Vector2.Up * startingOffset, Config.Thickness, center - Vector2.Up * endingOffset );
+
+		Draw.Line( Config.Color, Config.Thickness, center + Vector2.Up * startingOffset, Config.Thickness, center + Vector2.Up * endingOffset );
+		Draw.Line( Config.Color, Config.Thickness, center + Vector2.Left * startingOffset, Config.Thickness, center + Vector2.Left * endingOffset );
+		Draw.Line( Config.Color, Config.Thickness, center - Vector2.Left * startingOffset, Config.Thickness, center - Vector2.Left * endingOffset );
 	}
 }

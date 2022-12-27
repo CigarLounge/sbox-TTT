@@ -1,0 +1,58 @@
+@using Sandbox.UI;
+
+@namespace TTT.UI
+
+<root>
+    <div>
+        <div style="flex-shrink: 0; width: 60%; flex-direction: column;">
+            <text>Dynamic</text>
+            <Checkbox Value:bind=@IsDynamic />
+            <br />
+
+            <text>Show Dot</text>
+            <Checkbox Value:bind=@ShowDot />
+            <br />
+
+            <text>Show Top</text>
+            <Checkbox Value:bind=@ShowTop />
+            <br />
+
+            <text>Size</text>
+            <Slider min="0" max="100" Value:bind=@Size />
+            <br />
+
+            <text>Thickness</text>
+            <Slider min="0" max="100" Value:bind=@Thickness />
+            <br />
+
+            <text>Gap</text>
+            <Slider min="0" max="100" Value:bind=@Gap />
+            <br />
+
+            <button icon="save" @onclick=@SaveCrosshairData>Save Crosshair</button>
+            <br />
+        </div>
+
+        <div style="width: 40%; justify-content: center;">
+            <ColorEditor Value:bind=@CurrentColor />
+        </div>
+    </div>
+</root>
+
+<style>
+    CrosshairPage {
+        flex-direction: column;
+        width: 100%;
+
+        text {
+            font-weight: 300;
+            font-size: 18px;
+        }
+
+        text,
+        slider,
+        ColorEditor {
+            flex-shrink: 0;
+        }
+    }
+</style>

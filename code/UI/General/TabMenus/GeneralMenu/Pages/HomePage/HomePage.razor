@@ -11,8 +11,8 @@
     <button icon="how_to_vote" @onclick=@RockTheVote
         class="@(Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) ? "inactive" : "")">Rock The Vote</button>
     <br />
-    @* <button icon="adjust" @onclick=@GoToCrosshairPage>Crosshair Customization</button>
-        <br /> *@
+    <button icon="adjust" @onclick=@GoToCrosshairPage>Crosshair Customization</button>
+    <br />
     <button icon="keyboard" @onclick=@GoToKeyBindingsPage>Keybindings</button>
     <br />
 </root>
