@@ -1,3 +1,5 @@
+@using System;
+
 @namespace TTT.UI
 
 <root class="text-shadow @(!CanPurchase ? "cannot-purchase" : "")">
@@ -9,6 +11,12 @@
         <text class="price text-color-tertiary">@ItemInfo.Price</text>
     </div>
 </root>
+
+@code {
+    public ItemInfo ItemInfo { get; set; }
+	public bool CanPurchase { get; set; }
+	protected override int BuildHash() => HashCode.Combine( CanPurchase );
+}
 
 <style>
     ShopItem {
