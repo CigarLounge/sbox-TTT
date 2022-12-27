@@ -2,6 +2,8 @@
 
 <root>
     <text class="help">You can change your bindings in the s&box options menu or through console.</text>
+    <br />
+
     <text class="h1">Movement</text>
     <div>
         <text>Forward:</text>
@@ -110,8 +112,7 @@
 </root>
 
 <style>
-    KeyBindingsPage
-    {
+    KeyBindingsPage {
         flex-direction: column;
         justify-content: flex-start;
         overflow: scroll;
@@ -119,33 +120,33 @@
         color: white;
         flex-shrink: 0;
 
-        .h1
-        {
+        .h1 {
             color: white;
             font-weight: bold;
             text-decoration: underline;
             margin-bottom: 5px;
             margin-bottom: 40px;
 
-            &.label
-            {
+            label {
                 font-size: 25px;
             }
         }
 
-        .help
-        {
+        .help {
             margin-bottom: 20px;
         }
 
-        div
-        {
+        div {
             padding-top: 5px;
             align-items: center;
             flex-shrink: 0;
 
-            inputglyph, text
-            {
+            inputglyph {
+                margin: 0px;
+            }
+
+            inputglyph,
+            text {
                 flex-shrink: 0;
                 margin-right: 10px;
             }
