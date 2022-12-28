@@ -47,10 +47,6 @@ public class RoleInfo : GameResource
 	[JsonIgnore]
 	public HashSet<ItemInfo> ShopItems { get; private set; } = new();
 
-	[HideInEditor]
-	[JsonIgnore]
-	public Texture Icon { get; private set; }
-
 	protected override void PostLoad()
 	{
 		base.PostLoad();
@@ -61,9 +57,6 @@ public class RoleInfo : GameResource
 		ShopItems.UnionWith( Weapons );
 		ShopItems.UnionWith( Carriables );
 		ShopItems.UnionWith( Perks );
-
-		if ( Game.IsClient )
-			Icon = Texture.Load( FileSystem.Mounted, IconPath );
 	}
 
 	public struct KarmaConfig

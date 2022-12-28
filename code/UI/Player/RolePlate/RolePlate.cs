@@ -1,44 +1,39 @@
 using Sandbox;
-using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
-public class RolePlate : EntityComponent<Player>
+public partial class RolePlate : EntityComponent<Player>
 {
-	private WorldPanel _worldPanel;
+	private RolePlateWorldPanel _roleWorldPanel;
 
 	protected override void OnActivate()
 	{
 		base.OnActivate();
 
-		_worldPanel = new WorldPanel();
-
-		_worldPanel.StyleSheet.Load( "/UI/Player/RolePlate/RolePlate.scss" );
-		_worldPanel.Add.Image( classname: "icon" ).Texture = Entity.Role.Info.Icon;
-		_worldPanel.SceneObject.Flags.ViewModelLayer = true;
+		_roleWorldPanel = new RolePlateWorldPanel() { Icon = Entity.Role.Info.IconPath };
+		_roleWorldPanel.SceneObject.Flags.ViewModelLayer = true;
 	}
 
 	protected override void OnDeactivate()
 	{
 		base.OnDeactivate();
 
-		_worldPanel?.Delete();
-		_worldPanel = null;
+		_roleWorldPanel?.Delete();
+		_roleWorldPanel = null;
 	}
 
 	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
-		_worldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive() );
+		_roleWorldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive() );
 
-		if ( !_worldPanel.IsEnabled() )
+		if ( !_roleWorldPanel.IsEnabled() )
 			return;
 
 		var tx = Entity.GetBoneTransform( "head" );
 		tx.Position += Vector3.Up * 20f;
 		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 
-		_worldPanel.Transform = tx;
+		_roleWorldPanel.Transform = tx;
 	}
 }

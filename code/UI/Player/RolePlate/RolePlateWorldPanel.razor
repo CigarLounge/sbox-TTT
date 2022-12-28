@@ -1,0 +1,22 @@
+@inherits Sandbox.UI.WorldPanel
+@namespace TTT.UI
+
+<root>
+    <img src=@Icon />
+</root>
+
+@code {
+    public string Icon { get; set; }
+}
+
+<style>
+    RolePlateWorldPanel {
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 64px;
+            height: 64px;
+        }
+    }
+</style>
