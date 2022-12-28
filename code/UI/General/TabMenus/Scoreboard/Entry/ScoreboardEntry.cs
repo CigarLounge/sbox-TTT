@@ -63,7 +63,8 @@ public partial class ScoreboardEntry : Panel
 
 	private void ResetTag()
 	{
-		Tag.Text = string.Empty;
+		if ( Tag != null )
+			Tag.Text = string.Empty;
 
 		if ( Player.IsValid() )
 			Player.TagGroup = default;

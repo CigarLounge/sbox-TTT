@@ -1,55 +1,19 @@
-using System.Linq;
+using System.Collections.Generic;
+using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
+using System;
 
 namespace TTT.UI;
 
 public partial class EventSummary : Panel
 {
-	public static EventSummary Instance;
+	private static List<EventInfo> _events = new();
 
-	private Panel Header { get; set; }
-	private Panel Events { get; set; }
-
-	public EventSummary() => Instance = this;
-
-	protected override void OnAfterTreeRender( bool firstTime )
+	[ClientRpc]
+	public static void SendData( byte[] eventBytes )
 	{
-		if ( !firstTime )
-			return;
-
-		Init();
+		_events = eventBytes.Deserialize<List<EventInfo>>();
 	}
 
-	public void Init()
-	{
-		Events.DeleteChildren();
-
-		if ( GeneralMenu.Instance is not null && !GeneralMenu.Instance.LastEventSummaryData.Events.IsNullOrEmpty() )
-			foreach ( var summaryEvent in GeneralMenu.Instance.LastEventSummaryData.Events )
-				AddEvent( summaryEvent );
-
-		Header.Enabled( Events.Children.Any() );
-	}
-
-	private void AddEvent( EventInfo eventInfo )
-	{
-		var container = Events.Add.Panel( "event" );
-		container.Add.Label( GetIcon( eventInfo.EventType ), "icon" );
-		container.Add.Label( eventInfo.Time.TimerString(), "time" );
-		container.Add.Label( eventInfo.Description, "desc" );
-	}
-
-	private static string GetIcon( EventType eventType )
-	{
-		return eventType switch
-		{
-			EventType.Round => "flag",
-			EventType.PlayerTookDamage => "error",
-			EventType.PlayerKill => "group",
-			EventType.PlayerSuicide => "person",
-			EventType.PlayerCorpseFound => "search",
-			_ => string.Empty,
-		};
-	}
+	protected override int BuildHash() => HashCode.Combine( _events.HashCombine( e => e.GetHashCode() ) );
 }

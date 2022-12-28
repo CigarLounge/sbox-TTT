@@ -1,20 +1,44 @@
+@using System.Collections.Generic;
+@using System;
+@using TTT;
+
 @namespace TTT.UI
 
+@if (Players.IsNullOrEmpty())
+{
+    return;
+}
+
 <root class="text-shadow">
-    <div class="header" style="background-color: @Role.Color.Hex">
+    <div class="header" style="background-color: @(@Role.Color.Hex)">
         <text class="role">@($"{Role.Title} - {Players.Count}")</text>
         <text class="karma">Karma</text>
         <text class="score">Score</text>
     </div>
-    <div @ref="PlayersContainer" class="player-container" />
+    <div style="flex-direction: column; overflow: scroll;">
+        @foreach (var player in Players)
+        {
+            <div class="player">
+                <img src="avatar:@player.SteamId" class="avatar" />
+                <text class="name">@player.SteamName</text>
+                <div style="flex-grow: 1;" />
+                <text class="karma">@(Math.Round(player.BaseKarma))</text>
+                <text class="score">@player.Score</text>
+            </div>
+        }
+    </div>
 </root>
+
+@code {
+    public Role Role { get; set; }
+    public List<TTT.Player> Players { get; set; }
+}
 
 <style>
     RoleList {
-        width: 100%;
         flex-direction: column;
-        padding-bottom: 5px;
-        flex-grow: 1;
+        width: 100%;
+        padding: 10px;
 
         .header {
             border-radius: 4 4 0 0;
@@ -28,18 +52,14 @@
             }
 
             .karma {
-                width: 90px;
+                width: 70px;
                 text-align: right;
             }
 
             .score {
+                width: 70px;
                 text-align: right;
             }
-        }
-
-        .player-container {
-            flex-direction: column;
-            overflow: scroll;
         }
 
         .player {
@@ -56,23 +76,18 @@
                 border-radius: 4px;
             }
 
-            .name-label {
+            .name {
                 margin-left: 8px;
-                max-width: 240px;
             }
 
-            .karma-label {
-                width: 90px;
+            .karma {
+                width: 70px;
                 text-align: right;
             }
 
-            .score-label {
-                width: 90px;
+            .score {
+                width: 70px;
                 text-align: right;
-            }
-
-            .spacer {
-                flex-grow: 1;
             }
 
             &:nth-child(odd) {

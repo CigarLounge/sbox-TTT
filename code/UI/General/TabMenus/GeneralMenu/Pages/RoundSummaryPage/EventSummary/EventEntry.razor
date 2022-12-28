@@ -1,0 +1,63 @@
+@namespace TTT.UI
+
+<root>
+    <text class="icon" text=@GetIcon(EventType) />
+    <text class="time">@Time</text>
+    <text class="desc">@Description</text>
+</root>
+
+@code {
+    public EventType EventType { get; set; }
+    public string Time { get; set; }
+    public string Description { get; set; }
+
+    private string GetIcon(EventType eventType)
+    {
+        return eventType switch
+        {
+            EventType.Round => "flag",
+            EventType.PlayerTookDamage => "error",
+            EventType.PlayerKill => "group",
+            EventType.PlayerSuicide => "person",
+            EventType.PlayerCorpseFound => "search",
+            _ => string.Empty,
+        };
+    }
+}
+
+<style>
+    EventEntry {
+        width: 100%;
+        padding: 8px;
+        flex-shrink: 0;
+
+        .icon {
+            width: 10%;
+        }
+
+        .time {
+            width: 10%;
+        }
+
+        .desc {
+            width: 80%;
+        }
+
+        &:nth-child(odd) {
+            background-color: #0a0a0a66;
+        }
+
+        &:nth-child(even) {
+            background-color: #4b4b4b15;
+        }
+
+        &.me:nth-child(1) {
+            background-color: #f2b42d1a;
+        }
+
+        &:last-child {
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+    }
+</style>

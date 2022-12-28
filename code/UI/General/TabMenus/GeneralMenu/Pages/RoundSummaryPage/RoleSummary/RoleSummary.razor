@@ -1,22 +1,19 @@
+@using System;
+@using System.Linq;
+@using TTT;
+
 @namespace TTT.UI
 
 <root>
-    <br />
-    <div @ref="Empty" class="disabled empty">
-        <text>No previous round history found... consider playing a round!</text>
+    <div style="width: 50%">
+        <RoleList Players=@_innocents Role=@(new TTT.Innocent()) />
     </div>
-    <div @ref="Innocents" style="width: 50%; max-height: 95%;" />
-    <div style="width: 10px;" />
-    <div style="flex-direction: column; width: 50%; max-height: 95%;">
-        <div @ref="Detectives" />
-        <div @ref="Traitors" />
+    <div style="flex-direction: column; width: 50%">
+        <RoleList Players=@_detectives Role=@(new TTT.Detective()) />
+        <RoleList Players=@_traitors Role=@(new TTT.Traitor()) />
     </div>
 </root>
 
 <style>
-    RoleSummary {
-        .empty {
-            min-width: 100%;
-        }
-    }
+    RoleSummary {}
 </style>
