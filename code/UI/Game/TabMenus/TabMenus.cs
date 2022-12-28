@@ -16,7 +16,7 @@ public partial class TabMenus : Panel
 	{
 		Instance = this;
 
-		StyleSheet.Load( "/UI/General/TabMenus/TabMenus.scss" );
+		StyleSheet.Load( "/UI/Game/TabMenus/TabMenus.scss" );
 
 		var scoreboardButtons = new Panel();
 		scoreboardButtons.AddClass( "spacing" );
