@@ -38,7 +38,7 @@
     RoleList {
         flex-direction: column;
         width: 100%;
-        padding: 10px;
+        padding: 5px;
 
         .header {
             border-radius: 4 4 0 0;
@@ -51,11 +51,7 @@
                 flex-grow: 1;
             }
 
-            .karma {
-                width: 70px;
-                text-align: right;
-            }
-
+            .karma,
             .score {
                 width: 70px;
                 text-align: right;
@@ -69,6 +65,7 @@
             display: flex;
             flex-shrink: 0;
             padding: 3 8 3 8;
+            background-color: #0a0a0a66;
 
             .avatar {
                 height: 25px;
@@ -80,26 +77,10 @@
                 margin-left: 8px;
             }
 
+            .score,
             .karma {
                 width: 70px;
                 text-align: right;
-            }
-
-            .score {
-                width: 70px;
-                text-align: right;
-            }
-
-            &:nth-child(odd) {
-                background-color: #0a0a0a66;
-            }
-
-            &:nth-child(even) {
-                background-color: #4b4b4b15;
-            }
-
-            &.me:nth-child(1) {
-                background-color: #f2b42d1a;
             }
 
             &:last-child {

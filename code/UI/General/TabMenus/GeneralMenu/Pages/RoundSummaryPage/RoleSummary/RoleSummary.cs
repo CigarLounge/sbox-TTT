@@ -20,9 +20,9 @@ public partial class RoleSummary : Panel
 	[ClientRpc]
 	public static void SendData()
 	{
-		_innocents = Role.GetPlayers<Innocent>().ToList();
-		_detectives = Role.GetPlayers<Detective>().ToList();
-		_traitors = Role.GetPlayers<Traitor>().ToList();
+		_innocents = Role.GetPlayers<Innocent>().OrderByDescending( p => p.Score ).ToList();
+		_detectives = Role.GetPlayers<Detective>().OrderByDescending( p => p.Score ).ToList();
+		_traitors = Role.GetPlayers<Traitor>().OrderByDescending( p => p.Score ).ToList();
 
 		Instance?.StateHasChanged();
 	}
