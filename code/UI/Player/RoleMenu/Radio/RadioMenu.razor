@@ -1,0 +1,52 @@
+@using System.Collections.Generic;
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root>
+    @foreach (var sound in _sounds)
+    {
+        <button
+        @onclick=@(() => RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Game.Random.Int(0,sound.Value.Count - 1 )] ))
+        class="box-shadow background-color-gradient">
+            @sound.Key
+        </button>
+    }
+</root>
+
+@code {
+    // TODO: Let's hook up some of the other sounds like death, fire, explore, etc.
+    private readonly Dictionary<string, List<string>> _sounds = new()
+    {
+        { "Pistol", new List<string>() { "p250_fire-1" } },
+        { "SMG", new List<string>() { "mp5_fire-1" } },
+        { "Rifle", new List<string>() { "m4_fire-1" } },
+        { "Sniper", new List<string>() { "spr_fire-1" } },
+        { "Shotgun", new List<string>() { "bekas_fire-1" } },
+        { "Silenced", new List<string>() { "vertec_fire_silenced-1" } },
+    };
+
+    private RadioEntity FetchRadio()
+    {
+        var radioComponent = Game.LocalPawn.Components.Get<RadioComponent>();
+        return radioComponent.Radio;
+    }
+}
+
+<style>
+    RadioMenu {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+
+        button {
+            font-size: 25px;
+            padding: 20px;
+            min-width: 215px;
+            min-height: 100px;
+            justify-content: center;
+            margin: 5px;
+            opacity: 0.95;
+        }
+    }
+</style>
