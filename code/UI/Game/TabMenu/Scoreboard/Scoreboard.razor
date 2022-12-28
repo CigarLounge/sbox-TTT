@@ -28,12 +28,6 @@
 
 <style>
     Scoreboard {
-        height: 100%;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-self: center;
-        width: 45%;
         flex-direction: column;
         transition: bottom 0.2s ease-out;
 
@@ -42,6 +36,10 @@
             padding: 8 8 12 8;
             max-height: 77%;
             overflow: scroll;
+        }
+
+        &:intro {
+            bottom: 25px;
         }
     }
 </style>

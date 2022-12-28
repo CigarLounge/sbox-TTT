@@ -1,0 +1,84 @@
+@using System;
+@using Sandbox;
+
+@namespace TTT.UI
+
+<root class="@(Input.Down(InputButton.Score) ? "show" : "")">
+    <div class="container">
+        @if (_isScoreboard)
+        {
+            <Scoreboard />
+        }
+        else
+        {
+            <GeneralMenu />
+        }
+        <div>
+            <button icon=@(_isScoreboard ? "menu_open" : "people") @onclick=@(() => _isScoreboard =
+                !_isScoreboard)>@(_isScoreboard ? "Menu" : "Scoreboard")
+            </button>
+            @if (_isScoreboard)
+            {
+                <button icon=@("people") @onclick=@SwapToRoundSummary>Round Summary</button>
+            }
+            @if (Game.LocalPawn is TTT.Player player && !player.IsAlive())
+            {
+                var muteButton = GetMuteButton();
+                <button icon=@(muteButton.icon) @onclick=@TTT.Player.ToggleMute>@muteButton.text</button>
+            }
+        </div>
+    </div>
+</root>
+
+@code {
+    private bool _isScoreboard = true;
+
+    private (string text, string icon) GetMuteButton()
+    {
+        var player = Game.LocalPawn as TTT.Player;
+        switch (player.MuteFilter)
+        {
+            case MuteFilter.None: return ("Mute Alive Players", "volume_up");
+            case MuteFilter.AlivePlayers: return ("Mute Spectators", "volume_off");
+            case MuteFilter.Spectators: return ("Mute All Players", "volume_off");
+            case MuteFilter.All: return ("Unmute Players", "volume_off");
+            default: return (string.Empty, string.Empty);
+        }
+    }
+
+    private async void SwapToRoundSummary()
+    {
+        _isScoreboard = false;
+        await GameTask.Delay(1); // Need a delay here while the transition occurs.
+        GeneralMenu.Instance.GoToPage(new RoundSummaryPage());
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(_isScoreboard, Game.LocalPawn.IsAlive(), Input.Down(InputButton.Score), (Game.LocalPawn as
+        TTT.Player).MuteFilter);
+    }
+}
+
+<style>
+    TabMenu {
+        pointer-events: all;
+        width: 100%;
+        height: 100%;
+        bottom: -25px;
+        opacity: 0;
+        z-index: 1;
+        justify-content: center;
+
+        .container {
+            width: 45%;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0.985;
+        }
+
+        &.show {
+            opacity: 1;
+        }
+    }
+</style>

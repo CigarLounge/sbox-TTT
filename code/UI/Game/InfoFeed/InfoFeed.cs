@@ -96,9 +96,6 @@ public partial class InfoFeed : Panel
 		if ( Game.LocalPawn is not Player player )
 			return;
 
-		if ( !TabMenus.Instance.IsVisible )
-			TabMenus.Instance.SwapToScoreboard();
-
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
 

@@ -24,7 +24,7 @@ public partial class Scoreboard : Panel
 		if ( !firstTime )
 			return;
 
-		AddChild( Buttons );
+		// AddChild( Buttons );
 	}
 
 	protected override int BuildHash()

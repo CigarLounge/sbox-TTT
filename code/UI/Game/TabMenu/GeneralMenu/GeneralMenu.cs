@@ -25,7 +25,7 @@ public partial class GeneralMenu : Panel
 			return;
 
 		AddPage( new HomePage() );
-		AddChild( Buttons );
+		// AddChild( Buttons );
 	}
 
 	/// <summary>
