@@ -7,15 +7,25 @@
     var backgroundColor = Player.Role is not NoneRole and not Innocent
             ? $"background-color: {Player.Role.Color.WithAlpha(0.10f).Hex}"
             : $"background-color: #4b4b4b15";
-    <root @onclick=@OnClick class="text-shadow @(Player == Game.LocalPawn ? "local" : "")" style="@backgroundColor">
+    <root @onclick=@(() => {_isExpanded = !_isExpanded;}) class="text-shadow @(Player == Game.LocalPawn ? "local" : "")"
+        style="@backgroundColor">
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
             <text class="name">@Player.SteamName</text>
-            <text @ref=Tag />
+            <text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
             <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
             <text class="stat">@Player.Score.ToString()</text>
             <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
         </div>
+        @if (_isExpanded)
+        {
+            <div class="dropdown">
+                @foreach (var tag in _tagGroups)
+                {
+                    <button @onclick=@(() => {SetTag(tag);}) style="font-color: @tag.Color.Hex">@tag.Title</button>
+                }
+            </div>
+        }
     </root>
 }
 
@@ -62,25 +72,9 @@
 
         .dropdown {
             justify-content: center;
-            transition: height 0.1s ease-out;
+            transition: height 0.1s east-in-out;
             transition: opacity 0.01s ease-out;
             height: 40px;
-
-            .friend {
-                color: #01f901;
-            }
-
-            .suspect {
-                color: #b3b314;
-            }
-
-            .kill {
-                color: #f30302;
-            }
-
-            .missing {
-                color: #82be82;
-            }
 
             &:intro,
             &:outro {

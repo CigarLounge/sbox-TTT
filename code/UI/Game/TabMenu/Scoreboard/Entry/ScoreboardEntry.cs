@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System;
 
 namespace TTT.UI;
@@ -17,25 +16,7 @@ public partial class ScoreboardEntry : Panel
 		new ColorGroup("Kill", Color.FromBytes(255, 0, 0))
 	};
 
-	private Label Tag { get; set; }
-	private Panel DropdownPanel { get; set; }
-
-	public void OnClick()
-	{
-		if ( DropdownPanel is not null )
-		{
-			DropdownPanel.Delete();
-			DropdownPanel = null;
-			return;
-		}
-
-		DropdownPanel = new Panel( this, "dropdown" );
-		foreach ( var tagGroup in _tagGroups )
-		{
-			var tagButton = DropdownPanel.Add.Button( tagGroup.Title, () => { SetTag( tagGroup ); } );
-			tagButton.Style.FontColor = tagGroup.Color;
-		}
-	}
+	private bool _isExpanded = false;
 
 	protected override int BuildHash()
 	{
@@ -44,28 +25,25 @@ public partial class ScoreboardEntry : Panel
 			Player.SteamId,
 			Player.BaseKarma,
 			Player.Score,
-			Player.Client.Ping
+			Player.Client.Ping,
+			Player.TagGroup,
+			_isExpanded
 		);
 	}
 
 	private void SetTag( ColorGroup tagGroup )
 	{
-		if ( tagGroup.Title == Tag.Text )
+		if ( tagGroup.Title == Player.TagGroup.Title )
 		{
 			ResetTag();
 			return;
 		}
 
-		Tag.Text = tagGroup.Title;
-		Tag.Style.FontColor = tagGroup.Color;
 		Player.TagGroup = tagGroup;
 	}
 
 	private void ResetTag()
 	{
-		if ( Tag != null )
-			Tag.Text = string.Empty;
-
 		if ( Player.IsValid() )
 			Player.TagGroup = default;
 	}
