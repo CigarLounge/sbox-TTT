@@ -5,7 +5,6 @@ namespace TTT.UI;
 public partial class GeneralMenu : Panel
 {
 	public static GeneralMenu Instance;
-	public Panel Buttons { get; set; }
 
 	/// <summary>
 	/// "Children" is used as a "stack" where the last element in the list
@@ -25,7 +24,6 @@ public partial class GeneralMenu : Panel
 			return;
 
 		AddPage( new HomePage() );
-		// AddChild( Buttons );
 	}
 
 	/// <summary>
