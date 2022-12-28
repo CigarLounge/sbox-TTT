@@ -49,7 +49,7 @@ public class Scout : Weapon
 	{
 		base.CreateHudElements();
 
-		_sniperScopePanel = new UI.Scope( "/ui/scout-scope.png" ) { Parent = Game.RootPanel };
+		_sniperScopePanel = new UI.Scope() { Parent = Game.RootPanel, ScopePath = "/ui/scout-scope.png" };
 	}
 
 	protected override void DestroyHudElements()

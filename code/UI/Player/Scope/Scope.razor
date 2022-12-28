@@ -1,0 +1,52 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using System;
+
+@namespace TTT.UI
+
+<root>
+    <div class="left" />
+    <img src=@ScopePath
+        style="
+            width: @(Length.Pixels(Screen.Height * ScaleFromScreen))px;
+            height: @(Length.Pixels(Screen.Height * ScaleFromScreen))px;" />
+    <div class=" right" />
+</root>
+
+@code {
+    public string ScopePath { get; set; }
+
+    public void Show()
+    {
+        Style.Opacity = 1f;
+    }
+
+    public void Hide()
+    {
+        Style.Opacity = 0f;
+    }
+
+    protected override int BuildHash() => HashCode.Combine(Screen.Height);
+}
+
+<style>
+    Scope {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 200;
+        opacity: 0;
+
+        .left {
+            background-color: black;
+            height: 100%;
+            flex-grow: 1;
+        }
+
+        .right {
+            background-color: black;
+            height: 100%;
+            flex-grow: 1;
+        }
+    }
+</style>
