@@ -11,12 +11,13 @@ public partial class CorpseHint : Panel
 
 	protected override int BuildHash()
 	{
+		var player = Game.LocalPawn as Player;
 		return HashCode.Combine(
 			_corpse,
 			_corpse.CanSearch(),
 			_corpse.Player.IsValid() ? _corpse.Player.IsConfirmedDead : _corpse.Player.IsValid(),
-			(Game.LocalPawn as Player).Role.CanRetrieveCredits,
-			(Game.LocalPawn as Player).IsAlive()
+			player.Role.CanRetrieveCredits,
+			player.IsAlive()
 		);
 	}
 }

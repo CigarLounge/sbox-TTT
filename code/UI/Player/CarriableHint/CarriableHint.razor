@@ -1,23 +1,39 @@
+@using System;
+@using Sandbox;
+
 @namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player player || player.ActiveCarriable is null)
+{
+    return;
+}
 
 <root>
     <div class="text-shadow">
-        @if (!_primaryAttackHint.IsNullOrEmpty())
+        @if (!player.ActiveCarriable.PrimaryAttackHint.IsNullOrEmpty())
         {
             <div style="align-items: center; padding: 5px;">
                 <inputglyph button="PrimaryAttack" />
-                <text>@_primaryAttackHint</text>
+                <text>@player.ActiveCarriable.PrimaryAttackHint</text>
             </div>
         }
-        @if (!_secondaryAttackHint.IsNullOrEmpty())
+        @if (!player.ActiveCarriable.SecondaryAttackHint.IsNullOrEmpty())
         {
             <div style="align-items: center; padding: 5px;">
                 <inputglyph button="SecondaryAttack" />
-                <text>@_secondaryAttackHint</text>
+                <text>@player.ActiveCarriable.SecondaryAttackHint</text>
             </div>
         }
     </div>
 </root>
+
+@code {
+    protected override int BuildHash()
+    {
+        var player = Game.LocalPawn as TTT.Player;
+        return HashCode.Combine(player.ActiveCarriable?.PrimaryAttackHint, player.ActiveCarriable?.SecondaryAttackHint);
+    }
+}
 
 <style>
     CarriableHint {

@@ -1,3 +1,4 @@
+@using System;
 @using Sandbox;
 
 @namespace TTT.UI
@@ -16,19 +17,27 @@
         @foreach (var itemInfo in (player.Role.ShopItems))
         {
             var canPurchase = player.CanPurchase(itemInfo);
-            <ShopItem 
-                ItemInfo=@itemInfo 
-                CanPurchase=@canPurchase 
-                @onclick=@(() => { 
-                    if (canPurchase)
-                        TTT.Player.PurchaseItem( itemInfo.ResourceId ); })
-                @onmouseover=@(() => _selectedItem = itemInfo)
-                @onmouseout=@(() => _selectedItem = null)
-            />
+            <ShopItem
+            ItemInfo=@itemInfo
+            CanPurchase=@canPurchase
+            @onclick=@(() => {
+            if (canPurchase) TTT.Player.PurchaseItem( itemInfo.ResourceId ); })
+            @onmouseover=@(() => _selectedItem = itemInfo)
+            @onmouseout=@(() => _selectedItem = null) />
         }
     </div>
     <text class="description @(_selectedItem is not null ? "fade-in" : "")">@_selectedItem?.Description</text>
 </root>
+
+@code {
+    private ItemInfo _selectedItem;
+
+    protected override int BuildHash()
+    {
+        var player = Game.LocalPawn as TTT.Player;
+        return HashCode.Combine(player.Credits, player.Role.ShopItems, _selectedItem);
+    }
+}
 
 <style>
     Shop {
