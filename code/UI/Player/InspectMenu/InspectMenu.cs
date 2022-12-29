@@ -156,12 +156,14 @@ public partial class InspectMenu : Panel
 	public static void SendDetectiveMarker( Vector3 corpseLocation )
 	{
 		TimeSince timeSinceCreated = 0;
-		_ = new WorldMarker
-		(
-			"/ui/d-call-icon.png",
-			() => $"{(Game.LocalPawn as Player).Position.Distance( corpseLocation ).SourceUnitsToMeters():n0}m",
-			() => corpseLocation,
-			() => timeSinceCreated > 30
+		WorldPoints.Instance.AddChild(
+			new WorldMarker
+			(
+				"/ui/d-call-icon.png",
+				() => $"{(Game.LocalPawn as Player).Position.Distance( corpseLocation ).SourceUnitsToMeters():n0}m",
+				() => corpseLocation,
+				() => timeSinceCreated > 30
+			)
 		);
 	}
 }

@@ -176,6 +176,7 @@ public partial class DNAScanner : Carriable
 			() => $"{(Game.LocalPawn as Player).Position.Distance( pos ).SourceUnitsToMeters():n0}m",
 			() => pos
 		);
+		UI.WorldPoints.Instance.AddChild( _marker );
 	}
 
 	[ClientRpc]

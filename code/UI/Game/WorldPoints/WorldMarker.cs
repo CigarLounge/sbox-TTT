@@ -24,8 +24,6 @@ public partial class WorldMarker : Panel
 		_getText = getText;
 		_deletePredicate = deletePredicate;
 		_getPosition = getPosition;
-
-		WorldPoints.Instance.AddChild( this );
 	}
 
 	public override void Tick()
