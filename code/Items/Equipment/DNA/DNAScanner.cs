@@ -170,7 +170,8 @@ public partial class DNAScanner : Carriable
 	{
 		PlaySound( "dna-beep" );
 		_marker?.Delete();
-		_marker = new UI.WorldMarker(
+		_marker = new UI.WorldMarker
+		(
 			"/ui/dna-icon.png",
 			() => $"{(Game.LocalPawn as Player).Position.Distance( pos ).SourceUnitsToMeters():n0}m",
 			() => pos
