@@ -155,13 +155,12 @@ public partial class InspectMenu : Panel
 	[ClientRpc]
 	public static void SendDetectiveMarker( Vector3 corpseLocation )
 	{
-		var activeDetectiveMarkers = WorldPoints.Instance.FindPoints<DetectiveMarker>();
-		foreach ( var marker in activeDetectiveMarkers )
-		{
-			if ( marker.CorpseLocation == corpseLocation )
-				return;
-		}
-
-		WorldPoints.Instance.AddChild( new DetectiveMarker( corpseLocation ) );
+		TimeSince timeSinceCreated = 0;
+		_ = new WorldMarker(
+			"/ui/d-call-icon.png",
+			() => $"{(Game.LocalPawn as Player).Position.Distance( corpseLocation ).SourceUnitsToMeters():n0}m",
+			() => corpseLocation,
+			() => timeSinceCreated > 30
+		);
 	}
 }

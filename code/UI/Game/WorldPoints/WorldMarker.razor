@@ -1,0 +1,36 @@
+@using Sandbox.UI;
+@using Sandbox;
+@using System;
+
+@namespace TTT.UI
+
+@if (_position.z <= 0f)
+{
+    return;
+}
+
+<root style="left: @Length.Fraction( _position.x ); top: @Length.Fraction( _position.y )">
+    <img src=@_iconPath />
+    <text class="text-shadow">@_text</text>
+</root>
+
+<style>
+    WorldMarker {
+        position: absolute;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+        }
+
+        text {
+            position: absolute;
+            top: 14px;
+            font-weight: bold;
+            font-size: 11px;
+        }
+    }
+</style>

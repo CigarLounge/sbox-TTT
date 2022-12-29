@@ -32,7 +32,7 @@ public partial class DNAScanner : Carriable
 
 	private const float MaxCharge = 100f;
 	private const float ChargePerSecond = 2.2f;
-	private UI.DNAMarker _dnaMarker;
+	private UI.WorldMarker _marker;
 
 	public override void Simulate( IClient client )
 	{
@@ -59,7 +59,7 @@ public partial class DNAScanner : Carriable
 			return;
 
 		UI.RoleMenu.Instance?.RemoveTab( UI.RoleMenu.DNATab );
-		_dnaMarker?.Delete();
+		_marker?.Delete();
 	}
 
 	public void Scan()
@@ -169,14 +169,18 @@ public partial class DNAScanner : Carriable
 	private void UpdateMarker( Vector3 pos )
 	{
 		PlaySound( "dna-beep" );
-		_dnaMarker?.Delete();
-		_dnaMarker = new UI.DNAMarker( pos );
+		_marker?.Delete();
+		_marker = new UI.WorldMarker(
+			"/ui/dna-icon.png",
+			() => $"{(Game.LocalPawn as Player).Position.Distance( pos ).SourceUnitsToMeters():n0}m",
+			() => pos
+		);
 	}
 
 	[ClientRpc]
 	private void DeleteMarker()
 	{
-		_dnaMarker?.Delete();
+		_marker?.Delete();
 	}
 }
 

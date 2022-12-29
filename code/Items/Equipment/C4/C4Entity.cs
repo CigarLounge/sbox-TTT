@@ -247,7 +247,12 @@ public partial class C4Entity : Prop, IEntityHint
 	[ClientRpc]
 	public static void SendC4Marker( C4Entity c4 )
 	{
-		UI.WorldPoints.Instance.AddChild( new UI.C4Marker( c4 ) );
+		UI.WorldPoints.Instance.AddChild(
+			new UI.WorldMarker( "/ui/c4-icon.png",
+			() => TimeSpan.FromSeconds( c4.TimeUntilExplode ).ToString( "mm':'ss" ),
+			() => c4.Position,
+			() => !c4.IsValid() || !c4.IsArmed )
+		);
 	}
 }
 
