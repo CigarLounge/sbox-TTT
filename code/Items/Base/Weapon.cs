@@ -252,7 +252,7 @@ public abstract partial class Weapon : Carriable
 						.WithAttacker( Owner )
 						.WithWeapon( this );
 
-					if ( Info.Silenced )
+					if ( Info.Silenced || damageInfo.IsHeadshot )
 						damageInfo.Tags.Add( "silent" );
 
 					trace.Entity.TakeDamage( damageInfo );
