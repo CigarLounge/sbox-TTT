@@ -141,8 +141,8 @@ public partial class Teleporter : Carriable
 
 		foreach ( var entity in FindInBox( bbox ) )
 		{
-			if ( entity is Player player && player != Owner )
-				player.TakeDamage( damageInfo );
+			if ( entity != Owner )
+				entity.TakeDamage( damageInfo );
 		}
 	}
 
