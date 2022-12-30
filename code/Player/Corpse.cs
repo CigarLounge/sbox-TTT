@@ -80,7 +80,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			clothing.CopyBodyGroups( modelEntity );
 			clothing.CopyMaterialGroup( modelEntity );
 
-			if ( clothing.Model?.ResourcePath == Detective.Hat.Model && Player.KilledWithHeadShot )
+			if ( clothing.Model?.ResourcePath == Detective.Hat.Model && Player.LastDamage.IsHeadshot )
 			{
 				clothing.Tags.Add( "interactable" );
 				clothing.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
@@ -326,7 +326,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( !Player.IsValid() || !player.IsLocalPawn || !Input.Down( GetSearchButton() ) || !CanSearch() )
 			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( !Player.LastDamage.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
+		else if ( !Player.LastDamage.Equals( default( ExtendedDamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
 			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 	}
 

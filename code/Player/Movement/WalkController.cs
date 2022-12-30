@@ -506,7 +506,7 @@ public partial class WalkController : BaseNetworkable
 
 			if ( Game.IsServer )
 			{
-				Player.TakeDamage( new DamageInfo
+				Player.TakeDamage( new ExtendedDamageInfo
 				{
 					Attacker = Player,
 					Force = Vector3.Down * Player.Velocity.Length,

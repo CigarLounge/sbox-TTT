@@ -40,15 +40,7 @@ public partial class Player
 	[Net]
 	public TimeSince TimeSinceDeath { get; private set; }
 
-	public float DistanceToAttacker { get; set; }
-
-	/// <summary>
-	/// It's always better to use this than <see cref="Entity.LastAttackerWeapon"/>
-	/// because the weapon may be invalid.
-	/// </summary>
-	public CarriableInfo LastAttackerWeaponInfo { get; private set; }
-
-	public DamageInfo LastDamage { get; private set; }
+	public ExtendedDamageInfo LastDamage { get; private set; }
 
 	public new float Health
 	{
@@ -74,11 +66,6 @@ public partial class Player
 	/// This includes if the Player used a prop to kill them.
 	/// </summary>
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
-
-	/// <summary>
-	/// Whether or not the player was killed with a head shot.
-	/// </summary>
-	public bool KilledWithHeadShot => LastDamage.Hitbox.HasTag( "head" );
 
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
@@ -155,6 +142,9 @@ public partial class Player
 		DeleteFlashlight();
 		DeleteItems();
 
+		if ( !LastDamage.IsSilent )
+			PlaySound( "player-death" );
+
 		Event.Run( GameEvent.Player.Killed, this );
 		GameManager.Current.State.OnPlayerKilled( this );
 
@@ -175,7 +165,7 @@ public partial class Player
 		Event.Run( GameEvent.Player.Killed, this );
 	}
 
-	public override void TakeDamage( DamageInfo info )
+	public void TakeDamage( ExtendedDamageInfo info )
 	{
 		Game.AssertServer();
 
@@ -204,7 +194,6 @@ public partial class Player
 
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
-		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
 		LastDamage = info;
 
 		Health -= info.Damage;
@@ -212,7 +201,7 @@ public partial class Player
 
 		SendDamageInfo( To.Single( this ) );
 
-		this.ProceduralHitReaction( info );
+		this.ProceduralHitReaction( info.ToDamageInfo() );
 
 		if ( Health <= 0f )
 			OnKilled();
@@ -221,27 +210,27 @@ public partial class Player
 	public void SendDamageInfo( To to )
 	{
 		Game.AssertServer();
+
 		SendDamageInfo
 		(
 			to,
 			LastAttacker,
-			LastAttackerWeapon,
-			LastAttackerWeaponInfo,
+			LastDamage.Weapon,
 			LastDamage.Damage,
 			LastDamage.Tags.ToArray(),
 			LastDamage.Position,
-			DistanceToAttacker
+			LastDamage.Origin
 		);
 	}
 
-	private float GetBulletDamageMultipliers( ref DamageInfo info )
+	private float GetBulletDamageMultipliers( ref ExtendedDamageInfo info )
 	{
 		var damageMultiplier = 1f;
 
 		if ( Perks.Has<Armor>() )
 			damageMultiplier *= Armor.ReductionPercentage;
 
-		if ( info.Hitbox.HasTag( "head" ) )
+		if ( info.IsHeadshot )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
 			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;
@@ -256,10 +245,8 @@ public partial class Player
 
 	private void ResetDamageData()
 	{
-		DistanceToAttacker = 0;
 		LastAttacker = null;
 		LastAttackerWeapon = null;
-		LastAttackerWeaponInfo = null;
 		LastDamage = default;
 	}
 
@@ -270,19 +257,18 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
+	private void SendDamageInfo( Entity a, Carriable w, float d, string[] tags, Vector3 p, Vector3 o )
 	{
-		var info = DamageInfo.Generic( d )
+		var info = ExtendedDamageInfo.Generic( 100f )
 			.WithAttacker( a )
 			.WithWeapon( w )
+			.WithOrigin( o )
 			.WithPosition( p );
 
 		info.Tags = new HashSet<string>( tags );
 
-		DistanceToAttacker = dTA;
 		LastAttacker = a;
 		LastAttackerWeapon = w;
-		LastAttackerWeaponInfo = wI;
 		LastDamage = info;
 
 		if ( IsLocalPawn )

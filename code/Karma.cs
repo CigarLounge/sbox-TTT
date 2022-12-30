@@ -136,10 +136,9 @@ public static class Karma
 		{
 			if ( !player.TimeUntilClean )
 				return;
-			/*
-			 * If ( WasAvoidable( attacker, victim ) )
-			 *		return;
-			 */
+
+			if ( player.LastDamage.IsAvoidable )
+				return;
 
 			var penalty = GetHurtPenalty( player.ActiveKarma, damage, attacker.Role.Karma.TeamHurtPenaltyMultiplier );
 			GivePenalty( attacker, penalty );
@@ -172,10 +171,9 @@ public static class Karma
 		{
 			if ( !player.TimeUntilClean )
 				return;
-			/*
-			 * If ( WasAvoidable( attacker, victim ) )
-			 *		return;
-			 */
+
+			if ( player.LastDamage.IsAvoidable )
+				return;
 
 			var penalty = GetKillPenalty( player.ActiveKarma, attacker.Role.Karma.TeamKillPenaltyMultiplier );
 			GivePenalty( attacker, penalty );

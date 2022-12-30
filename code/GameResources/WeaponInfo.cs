@@ -51,6 +51,10 @@ public class WeaponInfo : CarriableInfo
 	public int ReserveAmmo { get; set; } = 0;
 
 	[Category( "Stats" )]
+	[Description( "Player's won't scream when killed with this weapon." )]
+	public bool Silenced { get; set; } = false;
+
+	[Category( "Stats" )]
 	public float ReloadTime { get; set; } = 2f;
 
 	[Category( "Stats" )]

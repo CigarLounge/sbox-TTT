@@ -58,7 +58,7 @@ public partial class GameManager
 		if ( !player.IsValid() )
 			return;
 
-		player.TakeDamage( DamageInfo.Generic( damage ) );
+		player.TakeDamage( ExtendedDamageInfo.Generic( damage ) );
 	}
 
 	[ConCmd.Admin( Name = "ttt_setrole" )]
