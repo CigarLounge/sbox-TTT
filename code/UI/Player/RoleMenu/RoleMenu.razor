@@ -33,6 +33,12 @@
                 <button icon="radio" class="@(_currentTab == Tab.Radio ? "selected" : "")" @onclick=@(() => {_currentTab =
                 Tab.Radio;})>Radio</button>
             }
+
+            @if (_access[Tab.CreditTransfer].Invoke())
+            {
+                <button icon="swap_horiz" class="@(_currentTab == Tab.CreditTransfer ? "selected" : "")" @onclick=@(() => {_currentTab =
+                Tab.CreditTransfer;})>Credit Transfer</button>
+            }
         </div>
         <div class="content">
             @if (_currentTab == Tab.Shop)
@@ -46,6 +52,10 @@
             else if (_currentTab == Tab.Radio)
             {
                 <RadioMenu />
+            }
+            else if (_currentTab == Tab.CreditTransfer)
+            {
+                <CreditTransfer />
             }
         </div>
     </div>
@@ -62,7 +72,6 @@
         z-index: 2;
         transition: all 0.15s ease-out;
         background-color: black;
-        opacity: 0;
 
         .menu {
             justify-content: center;
@@ -70,11 +79,8 @@
             flex-direction: column;
 
             .header {
-                justify-content: center;
-
                 .title {
                     font-size: 50px;
-                    text-align: center;
                     font-weight: 500;
                 }
             }

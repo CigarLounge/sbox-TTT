@@ -24,6 +24,7 @@
 		]
 		CanRetrieveCredits = true
 		CanTeamChat = true
+		CanTransferCredits = true
 		CanAttachCorpses = false
 		RequiredKarma = 600
 		Karma = 

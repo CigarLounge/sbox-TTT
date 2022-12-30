@@ -1,0 +1,98 @@
+@using Sandbox
+@using System;
+
+@namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player localPlayer)
+{
+    return;
+}
+
+<root class="rounded background-color-gradient box-shadow text-shadow">
+    <div style="justify-content: center;">
+        <text><span class="text-color-tertiary">@localPlayer.Credits</span> credits are available to be sent to other players</text>
+    </div>
+    <div style="flex-direction: row;">
+        <div class="player-list">
+        @foreach (var client in Game.Clients)
+        {
+            if (client.Pawn is not TTT.Player player || !player.IsAlive() || player.Role != localPlayer.Role)
+            {
+                continue;
+            }
+
+            <div
+            class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")"
+            @onclick=@(() => {_selectedPlayer = player;})>
+                <img src="avatar:@player.SteamId" class="avatar" />
+                <text style="font-size: 18px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
+            </div>
+        }
+        </div>
+
+        <div class="send">
+            <button icon="outbox" class="credits-button @(_selectedPlayer is null ? "inactive" : "")">Send Credits</button>
+            <text style="font-color: lightgrey; text-align: center;">
+                @(_selectedPlayer is null ? "Select a player to send 100 credits" : $"{CreditAmount} credits will be sent to {_selectedPlayer.SteamName}")
+            </text>
+        </div>
+    </div>
+</root>
+
+<style>
+    CreditTransfer {
+        width: 100%;
+        flex-direction: column;
+
+        .player-list {
+            flex-direction: column;
+            overflow: scroll;
+            width: 60%;
+
+            .player {
+                padding: 5px;
+                border-width: 1px;
+                cursor: pointer;
+                transition: all 0.25s ease-out;
+                flex-shrink: 0;
+
+                .avatar {
+                    width: 25px;
+                    height: 25px;
+                    border-radius: 4px;
+                    margin-right: 4px;
+                }
+
+                &.selected {
+                    border-color: #fdc418;
+                }
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+
+        .send {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40%;
+            padding: 15px;
+
+            .credits-button {
+                font-size: 18px;
+                font-weight: 400;
+                font-color: #fdc418;
+
+                &:hover {
+                    font-color: #ebb515;
+                }
+
+                &:active {
+                    font-color: #fdc418;
+                }
+            }
+        }
+    }
+</style>

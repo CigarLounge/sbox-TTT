@@ -34,6 +34,8 @@ public class RoleInfo : GameResource
 	[Description( "This includes sending messages and voice chat." )]
 	public bool CanTeamChat { get; set; }
 
+	public bool CanTransferCredits { get; set; }
+
 	public bool CanAttachCorpses { get; set; }
 
 	[Description( "The minimum amount of karma a player has to have to be assigned this role." )]

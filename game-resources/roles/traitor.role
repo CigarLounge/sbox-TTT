@@ -28,6 +28,7 @@
 		]
 		CanRetrieveCredits = true
 		CanTeamChat = true
+		CanTransferCredits = true
 		CanAttachCorpses = true
 		RequiredKarma = 0
 		Karma = 
