@@ -28,9 +28,6 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	{
 		if ( player.IsLocalPawn )
 		{
-			if ( Info.ShopItems.Any() )
-				UI.RoleMenu.Instance.AddShopTab();
-
 			Player.RoleButtons = GetRoleButtons();
 
 			foreach ( var roleButton in Player.RoleButtons )
@@ -53,16 +50,9 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	public virtual void OnDeselect( Player player )
 	{
 		if ( player.IsLocalPawn )
-		{
 			player.ClearButtons();
-
-			if ( Info.ShopItems.Any() )
-				UI.RoleMenu.Instance.RemoveTab( UI.RoleMenu.ShopTab );
-		}
 		else if ( !Game.IsServer )
-		{
 			player.Components.RemoveAny<UI.RolePlate>();
-		}
 	}
 
 	protected virtual bool ShouldCreateRolePlate( Player player )

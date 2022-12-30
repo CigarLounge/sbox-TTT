@@ -8,38 +8,65 @@
 }
 
 <div>
-    <div class="container">
+    <div class="menu">
         <div class="header text-shadow">
             <text class="title" style="color: @player.Role.Color.Hex">
                 @player.Role.Title
             </text>
             <text class="title">Menu</text>
         </div>
-        <customtabcontainer @ref="TabContainer" />
+        <div class="tabs">
+            @if (_access[Tab.Shop].Invoke())
+            {
+                <button icon="shopping_cart" class="@(_currentTab == Tab.Shop ? "selected" : "")" @onclick=@(() => {_currentTab =
+                Tab.Shop;})>Shop</button>
+            }
+
+            @if (_access[Tab.DNA].Invoke())
+            {
+                <button icon="fingerprint" class="@(_currentTab == Tab.DNA ? "selected" : "")" @onclick=@(() => {_currentTab =
+                Tab.DNA;})>DNA</button>
+            }
+
+            @if (_access[Tab.Radio].Invoke())
+            {
+                <button icon="radio" class="@(_currentTab == Tab.Radio ? "selected" : "")" @onclick=@(() => {_currentTab =
+                Tab.Radio;})>Radio</button>
+            }
+        </div>
+        <div class="content">
+            @if (_currentTab == Tab.Shop)
+            {
+                <Shop />
+            }
+            else if (_currentTab == Tab.DNA)
+            {
+                <DNAMenu />
+            }
+            else if (_currentTab == Tab.Radio)
+            {
+                <RadioMenu />
+            }
+        </div>
     </div>
 </div>
 
 <style>
     RoleMenu {
-        left: 0;
-        right: 0;
         position: absolute;
-        display: flex;
+        height: 100%;
+        width: 100%;
         justify-content: center;
         align-self: center;
         pointer-events: all;
         z-index: 2;
-        height: 100%;
-        width: 100%;
-        opacity: 0;
         transition: all 0.15s ease-out;
         background-color: black;
+        opacity: 0;
 
-        .container {
+        .menu {
             justify-content: center;
             align-self: center;
-            max-width: 700px;
-            height: 50%;
             flex-direction: column;
 
             .header {
@@ -50,6 +77,22 @@
                     text-align: center;
                     font-weight: 500;
                 }
+            }
+
+            .tabs {
+                button {
+                    font-size: 20px;
+                    margin-right: 12px;
+
+                    &:not(.selected) {
+                        opacity: 0.3;
+                    }
+                }
+            }
+
+            .content {
+                width: 700px;
+                height: 400px;
             }
         }
     }

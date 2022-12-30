@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Sandbox;
 using Sandbox.UI;
 
@@ -6,22 +8,45 @@ namespace TTT.UI;
 
 public partial class RoleMenu : Panel
 {
-	public static RoleMenu Instance;
+	private enum Tab
+	{
+		Shop,
+		DNA,
+		Radio
+	}
 
-	public const string RadioTab = "Radio";
-	public const string ShopTab = "Shop";
-	public const string DNATab = "DNA";
+	// Tab => Condition that allows access to the tab.
+	private readonly Dictionary<Tab, Func<bool>> _access = new()
+	{
+		{Tab.Shop, () => (Game.LocalPawn as Player).Role.ShopItems.Any()},
+		{Tab.DNA, () => (Game.LocalPawn as Player).Inventory.Find<DNAScanner>() is not null},
+		{Tab.Radio, () => (Game.LocalPawn as Player).Components.Get<RadioComponent>() is not null}
+	};
+	private Tab _currentTab;
 
-	private CustomTabContainer TabContainer { get; set; }
+	// Determines if we have access to any tabs before we show the role menu.
+	// Also ensures that _currentTab is selecting a tab we have access to.
+	private bool HasTabAccess()
+	{
+		if ( _access[_currentTab].Invoke() )
+			return true;
 
-	public RoleMenu() => Instance = this;
+		foreach ( var tabEntry in _access )
+		{
+			if ( tabEntry.Value.Invoke() )
+			{
+				_currentTab = tabEntry.Key;
+				return true;
+			}
+		}
 
-	public void AddShopTab() => TabContainer.AddTab( new Shop(), ShopTab, "shopping_cart", true );
-	public void AddRadioTab() => TabContainer.AddTab( new RadioMenu(), RadioTab, "radio" );
-	public void AddDNATab() => TabContainer.AddTab( new DNAMenu(), DNATab, "fingerprint" );
-	public void RemoveTab( string tabName ) => TabContainer.RemoveTab( tabName );
+		return false;
+	}
 
-	public override void Tick() => SetClass( "fade-in", Input.Down( InputButton.View ) && TabContainer.Tabs.Count > 0 );
+	public override void Tick() => SetClass( "fade-in", Input.Down( InputButton.View ) && HasTabAccess() );
 
-	protected override int BuildHash() => HashCode.Combine( (Game.LocalPawn as Player).Role );
+	protected override int BuildHash()
+	{
+		return HashCode.Combine( (Game.LocalPawn as Player).Role, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
+	}
 }
