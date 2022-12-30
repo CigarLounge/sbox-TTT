@@ -1,6 +1,5 @@
 using Sandbox;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -142,7 +141,7 @@ public partial class Player
 		DeleteFlashlight();
 		DeleteItems();
 
-		if ( !LastDamage.IsSilent )
+		if ( !LastDamage.IsSilent() )
 			PlaySound( "player-death" );
 
 		Event.Run( GameEvent.Player.Killed, this );
@@ -230,7 +229,7 @@ public partial class Player
 		if ( Perks.Has<Armor>() )
 			damageMultiplier *= Armor.ReductionPercentage;
 
-		if ( info.IsHeadshot )
+		if ( info.IsHeadshot() )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
 			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;

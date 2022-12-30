@@ -50,19 +50,6 @@ public struct ExtendedDamageInfo
 	/// The hitbox (if any) that was hit.
 	/// </summary>
 	public Hitbox Hitbox { get; set; }
-	/// <summary>
-	/// Is this damage a headshot?
-	/// </summary>
-	public bool IsHeadshot => Hitbox.HasTag( "head" );
-	/// <summary>
-	/// If this damage ends up being lethal, should the player scream when killed?
-	/// </summary>
-	public bool IsSilent => HasTag( "silent" );
-	/// <summary>
-	/// If this damage was avoidable e.g. a traitor dying to a
-	/// teammate's C4, then no karma penalty will be given to the teammate.
-	/// </summary>
-	public bool IsAvoidable => HasTag( "avoidable" );
 
 	/// <summary>
 	/// Creates a new DamageInfo with the "bullet" tag.
@@ -229,5 +216,30 @@ public struct ExtendedDamageInfo
 			Hitbox = Hitbox,
 			BoneIndex = BoneIndex,
 		};
+	}
+}
+
+public static class ExtendedDamageInfoExtensions
+{
+	/// <summary>
+	/// Is this damage a headshot?
+	/// </summary>
+	public static bool IsHeadshot(this ExtendedDamageInfo info) => info.Hitbox.HasTag( "head" );
+	/// <summary>
+	/// If this damage ends up being lethal, should the player scream when killed?
+	/// </summary>
+	public static bool IsSilent( this ExtendedDamageInfo info ) => info.HasTag( "silent" );
+	/// <summary>
+	/// If this damage was avoidable e.g. a traitor dying to a
+	/// teammate's C4, then no karma penalty will be given to the teammate.
+	/// </summary>
+	public static bool IsAvoidable( this ExtendedDamageInfo info ) => info.HasTag( "avoidable" );
+
+	public static void TakeDamage( this Entity entity, ExtendedDamageInfo info )
+	{
+		if ( entity is Player player )
+			player.TakeDamage( info );
+		else
+			entity.TakeDamage( info.ToDamageInfo() );
 	}
 }

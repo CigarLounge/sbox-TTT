@@ -42,7 +42,7 @@ public partial class InspectMenu : Panel
 		if ( weaponInfo is not null )
 			AddInspectEntry( $"{weaponInfo.Title}", $"It appears a {weaponInfo.Title} was used to kill them.", weaponInfo.IconPath );
 
-		if ( player.LastDamage.IsHeadshot )
+		if ( player.LastDamage.IsHeadshot() )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
 
 		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
