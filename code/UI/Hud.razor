@@ -27,6 +27,11 @@
 
 @code
 {
+    /// <summary>
+    /// The player that we're currently displaying info about through UI elements.
+    /// </summary>
+    public static TTT.Player DisplayedPlayer => Spectating.Player ?? (TTT.Player)Game.LocalPawn;
+
     public Hud()
     {
         Game.RootPanel = this;

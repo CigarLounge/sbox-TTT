@@ -5,13 +5,13 @@
 
 @namespace TTT.UI
 
-@if (CameraMode.Target.Inventory.Count == 0)
+@if (Hud.DisplayedPlayer.Inventory.Count == 0)
 {
     return;
 }
 
 <root class="opacity-heavy text-shadow">
-    @foreach (var carriable in CameraMode.Target.Inventory)
+    @foreach (var carriable in Hud.DisplayedPlayer.Inventory)
     {
         <InventorySlot Carriable=@carriable />
     }

@@ -18,6 +18,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 		private set => Owner.ActiveCarriable = value;
 	}
 
+	public int Count => _list.Count;
 	private readonly List<Carriable> _list = new();
 	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	private readonly int[] _weaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };

@@ -121,7 +121,7 @@ public partial class Knife : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		if ( IsActiveCarriable )
+		if ( IsActive )
 			Owner.Inventory.DropActive();
 		else
 			Owner.Inventory.Drop( this );

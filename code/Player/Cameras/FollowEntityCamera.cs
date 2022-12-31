@@ -17,17 +17,20 @@ public class FollowEntityCamera : CameraMode
 		Camera.FirstPersonViewer = null;
 	}
 
-	public override void BuildInput( Player player )
+	public override void BuildInput()
 	{
 		if ( !_followedEntity.IsValid() )
-			player.CameraMode = new FreeCamera();
+		{
+			Current = new FreeCamera();
+			return;
+		}
 
-		if ( player.IsAlive() )
+		if ( Game.LocalPawn.IsAlive() )
 			return;
 
 		if ( _followedEntity is Corpse && Input.Pressed( InputButton.Jump ) )
 		{
-			player.CameraMode = new FreeCamera();
+			Current = new FreeCamera();
 			return;
 		}
 
@@ -35,7 +38,7 @@ public class FollowEntityCamera : CameraMode
 		{
 			if ( Input.Pressed( InputButton.Jump ) )
 			{
-				player.CameraMode = new FirstPersonCamera( Spectating.Player );
+				Current = new FirstPersonCamera( Spectating.Player );
 				return;
 			}
 

@@ -32,6 +32,6 @@ public static class Spectating
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( player == Player )
-			((Player)Game.LocalPawn).CameraMode = new FreeCamera();
+			CameraMode.Current = new FreeCamera();
 	}
 }

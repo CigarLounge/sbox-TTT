@@ -15,7 +15,7 @@ public class FreeCamera : CameraMode
 		Camera.FirstPersonViewer = null;
 	}
 
-	public override void BuildInput( Player player )
+	public override void BuildInput()
 	{
 		_moveSpeed = 1f;
 
@@ -30,11 +30,11 @@ public class FreeCamera : CameraMode
 			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
 
 			if ( alivePlayer.IsValid() )
-				player.CameraMode = new FollowEntityCamera( alivePlayer );
+				Current = new FollowEntityCamera( alivePlayer );
 		}
 
 		if ( Input.Pressed( InputButton.Use ) )
-			FindSpectateTarget( player );
+			FindSpectateTarget( (Player)Game.LocalPawn );
 
 		_moveInput = Input.AnalogMove;
 		_lookAngles += Input.AnalogLook;
@@ -54,6 +54,6 @@ public class FreeCamera : CameraMode
 		if ( player.HoveredEntity is Prop prop && prop.PhysicsBody is not null )
 			Player.Possess( prop.NetworkIdent );
 		else if ( player.HoveredEntity is Player hoveredPlayer )
-			player.CameraMode = new FirstPersonCamera( hoveredPlayer );
+			Current = new FirstPersonCamera( hoveredPlayer );
 	}
 }

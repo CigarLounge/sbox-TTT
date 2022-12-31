@@ -10,9 +10,7 @@ public partial class PlayerInfo : Panel
 
 	protected override int BuildHash()
 	{
-		var player = Spectating.Player ?? (Player)Game.LocalPawn;
-
-		return HashCode.Combine( player.Role, player.Health );
+		return HashCode.Combine( Hud.DisplayedPlayer.Role, Hud.DisplayedPlayer.Health );
 	}
 
 	[GameEvent.Player.TookDamage]

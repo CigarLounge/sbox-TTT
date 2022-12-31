@@ -6,72 +6,70 @@
 
 @if (Game.LocalPawn is not TTT.Player player || player.IsAlive())
 {
-    return;
+	return;
 }
 
 <root>
-    <div class="text-shadow" style="align-items: center; flex-direction: column;">
-        @if (CameraMode.IsSpectatingPlayer)
-        {
-            <div class="swap-panel">
-                <text class="name"
-                style="color: @CameraMode.Target?.Role?.Color.Hex">@CameraMode.Target?.Client?.Name</text>
-                <div style="align-items: center;">
-                    <text>Press</text>
-                    <inputglyph button="PrimaryAttack" />
-                    <text>or</text>
-                    <inputglyph button="SecondaryAttack" />
-                    <text>to swap active player</text>
-                </div>
-            </div>
-        }
+	<div class="text-shadow" style="align-items: center; flex-direction: column;">
+		@if (Spectating.Player.IsValid())
+		{
+			<div class="swap-panel">
+				<text class="name"
+				  style="color: @Hud.DisplayedPlayer?.Role?.Color.Hex">@Hud.DisplayedPlayer?.Client?.Name</text>
+				<div style="align-items: center;">
+					<text>Press</text>
+					<inputglyph button="PrimaryAttack" />
+					<text>or</text>
+					<inputglyph button="SecondaryAttack" />
+					<text>to swap active player</text>
+				</div>
+			</div>
+		}
 
-        @if (!player.Prop.IsValid() && !CameraMode.IsSpectatingPlayer)
-        {
-            <div style="align-items: center;">
-                <text>Press</text>
-                <inputglyph button="Use" />
-                <text>to spectate a player or possess a prop</text>
-            </div>
-        }
+		@if (!player.Prop.IsValid() && !Spectating.Player.IsValid())
+		{
+			<div style="align-items: center;">
+				<text>Press</text>
+				<inputglyph button="Use" />
+				<text>to spectate a player or possess a prop</text>
+			</div>
+		}
 
-        <div style="align-items: center;">
-            <text>Press</text>
-            <inputglyph button="@(player.Prop.IsValid() ? "Duck" : "Jump")" />
-            <text>@(player.Prop.IsValid() ? "to no longer possess the prop" : "to change spectating camera mode")</text>
-        </div>
-    </div>
+		<div style="align-items: center;">
+			<text>Press</text>
+			<inputglyph button="@(player.Prop.IsValid() ? "Duck" : "Jump")" />
+			<text>@(player.Prop.IsValid() ? "to no longer possess the prop" : "to change spectating camera mode")</text>
+		</div>
+	</div>
 </root>
 
-@code {
-    protected override int BuildHash()
-    {
-        return HashCode.Combine(Game.LocalPawn.IsAlive(),
-        (Game.LocalPawn as TTT.Player).Prop,
-        CameraMode.IsSpectatingPlayer,
-        CameraMode.Target);
-    }
+@code
+{
+	protected override int BuildHash()
+	{
+		return HashCode.Combine(Game.LocalPawn.IsAlive(), (Game.LocalPawn as TTT.Player).Prop, !Spectating.Player.IsValid(), Hud.DisplayedPlayer);
+	}
 }
 
 <style>
-    SpectatingHint {
-        position: absolute;
-        left: 50%;
-        bottom: 25px;
-        transform: translateX(-50%);
-        flex-direction: column;
-        font-size: 17px;
-        font-weight: 500;
-        align-items: center;
+	SpectatingHint {
+		position: absolute;
+		left: 50%;
+		bottom: 25px;
+		transform: translateX(-50%);
+		flex-direction: column;
+		font-size: 17px;
+		font-weight: 500;
+		align-items: center;
 
-        .name {
-            font-size: 30px;
-            font-weight: 600;
-        }
+		.name {
+		font-size: 30px;
+		font-weight: 600;
+		}
 
-        .swap-panel {
-            align-items: center;
-            flex-direction: column;
-        }
-    }
-</style>
+	.swap-panel {
+		align-items: center;
+		flex-direction: column;
+	}
+
+	}</style>
