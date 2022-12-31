@@ -1,5 +1,6 @@
 @using Sandbox
-@using System;
+@using System
+@using System.Linq
 
 @namespace TTT.UI
 
@@ -10,19 +11,28 @@
 
 <root class="text-shadow">
     <div class="player-list rounded background-color-gradient box-shadow">
-        @foreach (var client in Game.Clients)
-        {
-            if (client.Pawn is not TTT.Player player || !player.IsAlive() || player.Role != localPlayer.Role)
+        @{
+            var playersWithRole = Game.Clients.Where(c => c.Pawn is TTT.Player p && !p.IsLocalPawn && p.Role == localPlayer.Role && p.IsAlive());
+            if (playersWithRole.Any())
             {
-                continue;
-            }
+                @foreach (var client in playersWithRole)
+                {
+                    var player = client.Pawn as TTT.Player;
 
-            <div
-            class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")"
-            @onclick=@(() => {_selectedPlayer = player;})>
-                <img src="avatar:@player.SteamId" class="avatar" />
-                <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
-            </div>
+                    <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")" @onclick=@(() => {_selectedPlayer = player;})>
+                        <img src="avatar:@player.SteamId" class="avatar" />
+                        <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
+                    </div>
+                }
+            }
+            else
+            {
+                <text>
+                    <text class="empty">
+                        Nobody is available to receive credits from you, maybe this is for the better...
+                    </text>
+                </text>
+            }
         }
     </div>
     <div class="send rounded background-color-gradient box-shadow">
@@ -43,10 +53,17 @@
         .player-list {
             flex-direction: column;
             overflow: scroll;
-            justify-content: center;
             padding: 30px;
             width: 65%;
             margin-right: 10px;
+
+            .empty {
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+            }
 
             .player {
                 padding: 5px;

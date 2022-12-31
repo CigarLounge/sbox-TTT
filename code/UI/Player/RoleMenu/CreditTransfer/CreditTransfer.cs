@@ -29,6 +29,9 @@ public partial class CreditTransfer : Panel
 	protected override int BuildHash()
 	{
 		var player = Game.LocalPawn as Player;
-		return HashCode.Combine( player.Credits, _selectedPlayer?.SteamId );
+		return HashCode.Combine(
+			player.Credits,
+			_selectedPlayer?.SteamId
+		);
 	}
 }
