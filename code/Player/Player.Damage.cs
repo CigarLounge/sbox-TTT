@@ -130,7 +130,7 @@ public partial class Player
 		if ( KilledByPlayer )
 		{
 			LastAttacker.Client.AddInt( "kills" );
-			(LastAttacker as Player).PlayersKilled.Add( this );
+			((Player)LastAttacker).PlayersKilled.Add( this );
 		}
 
 		BecomeCorpse();
