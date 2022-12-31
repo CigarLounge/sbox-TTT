@@ -254,8 +254,10 @@ public partial class Player
 
 	private void ResetDamageData()
 	{
+		DistanceToAttacker = 0;
 		LastAttacker = null;
 		LastAttackerWeapon = null;
+		LastAttackerWeaponInfo = null;
 		LastDamage = default;
 	}
 
