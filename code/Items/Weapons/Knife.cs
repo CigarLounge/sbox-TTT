@@ -70,33 +70,19 @@ public partial class Knife : Carriable
 			return;
 
 		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
-			.WithPosition( trace.EndPosition )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
-			.WithTag( Strings.Tags.Slash )
+			.WithTags( Strings.Tags.Slash, "silent" )
 			.WithWeapon( this );
 
-		if ( trace.Entity is Player otherPlayer )
+		if ( trace.Entity is Player player )
 		{
-			otherPlayer.DistanceToAttacker = 0;
+			player.DistanceToAttacker = 0;
+
 			PlaySound( FleshHit );
 
-			if ( GameManager.KnifeBackstabs )
-			{
-				// TF2 magic
-				// Discard all z values to simplify to 2D.
-				var toTarget = (otherPlayer.WorldSpaceBounds.Center - Owner.WorldSpaceBounds.Center).WithZ( 0 ).Normal;
-				var ownerForward = Owner.EyeRotation.Forward.WithZ( 0 ).Normal;
-				var targetForward = otherPlayer.EyeRotation.Forward.WithZ( 0 ).Normal;
-
-				var behindDot = Vector3.Dot( toTarget, targetForward );
-				var facingDot = Vector3.Dot( toTarget, ownerForward );
-				var viewDot = Vector3.Dot( targetForward, ownerForward );
-
-				var isBackstab = behindDot > 0.0f && facingDot > 0.5f && viewDot > -0.3f;
-				if ( isBackstab )
-					damageInfo.Damage *= 2;
-			}
+			if ( GameManager.KnifeBackstabs && IsBehindAndFacingTarget( player ) )
+				damageInfo.Damage *= 2;
 		}
 
 		trace.Entity.TakeDamage( damageInfo );
@@ -106,6 +92,19 @@ public partial class Knife : Carriable
 			Owner.Inventory.DropActive();
 			Delete();
 		}
+	}
+
+	private bool IsBehindAndFacingTarget( Player target )
+	{
+		var toOwner = new Vector2( Owner.WorldSpaceBounds.Center - target.WorldSpaceBounds.Center ).Normal;
+		var ownerForward = new Vector2( Owner.EyeRotation.Forward ).Normal;
+		var targetForward = new Vector2( target.EyeRotation.Forward ).Normal;
+
+		var behindDot = Vector2.Dot( toOwner, targetForward );
+		var facingDot = Vector2.Dot( toOwner, ownerForward );
+		var viewDot = Vector2.Dot( targetForward, ownerForward );
+
+		return behindDot < 0.0f && facingDot < -0.5f && viewDot > -0.3f;
 	}
 
 	private void Throw()
@@ -175,13 +174,11 @@ public partial class Knife : Carriable
 				trace.Surface.DoBulletImpact( trace );
 
 				var damageInfo = DamageInfo.Generic( 100f )
-					.WithPosition( trace.EndPosition )
 					.UsingTraceResult( trace )
 					.WithAttacker( _thrower )
-					.WithTag( Strings.Tags.Slash )
+					.WithTags( Strings.Tags.Slash, "silent" )
 					.WithWeapon( this );
 
-				player.DistanceToAttacker = _thrownFrom.Distance( player.Position ).SourceUnitsToMeters();
 				player.TakeDamage( damageInfo );
 
 				Delete();
@@ -204,6 +201,7 @@ public partial class Knife : Carriable
 				Position = oldPosition - trace.Direction * 5;
 				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
 				PhysicsEnabled = true;
+
 				break;
 			}
 		}

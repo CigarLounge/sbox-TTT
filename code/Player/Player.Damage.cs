@@ -1,6 +1,5 @@
 using Sandbox;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -75,10 +74,6 @@ public partial class Player
 	/// </summary>
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 	/// <summary>
-	/// Whether or not the player was killed with a head shot.
-	/// </summary>
-	public bool KilledWithHeadShot => LastDamage.Hitbox.HasTag( "head" );
-	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
 	/// damage penalty. It is networked and shown on clients.
 	/// </summary>
@@ -150,6 +145,9 @@ public partial class Player
 		DeleteFlashlight();
 		DeleteItems();
 
+		if ( !LastDamage.IsSilent() )
+			PlaySound( "player_death" );
+
 		Event.Run( GameEvent.Player.Killed, this );
 		GameManager.Current.State.OnPlayerKilled( this );
 
@@ -216,11 +214,12 @@ public partial class Player
 	public void SendDamageInfo( To to )
 	{
 		Game.AssertServer();
+
 		SendDamageInfo
 		(
 			to,
 			LastAttacker,
-			LastAttackerWeapon,
+			LastDamage.Weapon,
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
 			LastDamage.Tags.ToArray(),
@@ -236,7 +235,7 @@ public partial class Player
 		if ( Perks.Has<Armor>() )
 			damageMultiplier *= Armor.ReductionPercentage;
 
-		if ( info.Hitbox.HasTag( "head" ) )
+		if ( info.IsHeadshot() )
 		{
 			var weaponInfo = GameResource.GetInfo<WeaponInfo>( info.Weapon.ClassName );
 			damageMultiplier *= weaponInfo?.HeadshotMultiplier ?? 2f;
@@ -267,7 +266,7 @@ public partial class Player
 	[ClientRpc]
 	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
 	{
-		var info = DamageInfo.Generic( d )
+		var info = DamageInfo.Generic( 100f )
 			.WithAttacker( a )
 			.WithWeapon( w )
 			.WithPosition( p );

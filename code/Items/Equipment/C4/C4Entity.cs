@@ -65,6 +65,7 @@ public partial class C4Entity : Prop, IEntityHint
 		possibleSafeWires.Shuffle();
 
 		var safeWireCount = Wires.Count - GetBadWireCount( timer );
+
 		for ( var i = 0; i < safeWireCount; ++i )
 			_safeWireNumbers.Add( possibleSafeWires[i] );
 
@@ -72,9 +73,10 @@ public partial class C4Entity : Prop, IEntityHint
 		IsArmed = true;
 
 		player.Components.Add( new C4Note( _safeWireNumbers.First() ) );
-		PlaySound( PlantSound );
 
+		PlaySound( PlantSound );
 		CloseC4ArmMenu();
+
 		if ( player.Team == Team.Traitors )
 			SendC4Marker( Team.Traitors.ToAliveClients(), this );
 	}
@@ -116,6 +118,8 @@ public partial class C4Entity : Prop, IEntityHint
 
 	private void Explosion( float radius )
 	{
+		var isTraitorC4 = ((Player)Owner).Team == Team.Traitors;
+
 		foreach ( var client in Game.Clients )
 		{
 			if ( client.Pawn is not Player player || !player.IsAlive() )
@@ -131,8 +135,10 @@ public partial class C4Entity : Prop, IEntityHint
 			var damage = 125 - MathF.Pow( Math.Max( 0, dist - 490 ), 2 ) * 0.01033057f;
 
 			var damageInfo = DamageInfo.FromExplosion( Position, diff.Normal * damage, damage )
-				.WithAttacker( Owner )
-				.WithWeapon( this );
+				.WithAttacker( base.Owner );
+
+			if ( isTraitorC4 && player.Team == Team.Traitors )
+				damageInfo.Tags.Add( "avoidable" );
 
 			player.TakeDamage( damageInfo );
 		}
