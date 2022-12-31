@@ -250,11 +250,15 @@ public abstract partial class Weapon : Carriable
 					var damageInfo = DamageInfo.FromBullet( trace.EndPosition, forward * 100f * force, damage )
 						.UsingTraceResult( trace )
 						.WithAttacker( Owner )
-						.WithTag( Strings.Tags.Bullet )
 						.WithWeapon( this );
 
 					if ( trace.Entity is Player player )
+					{
 						player.DistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
+
+						if ( Info.IsSilenced || damageInfo.IsHeadshot() )
+							damageInfo.Tags.Add( "silent" );
+					}
 
 					trace.Entity.TakeDamage( damageInfo );
 				}
