@@ -134,9 +134,6 @@ public partial class InProgress : BaseState
 
 		if ( TimeLeft )
 			OnTimeUp();
-
-		if ( IsRoundOver() == Team.None )
-			GameManager.Current.ForceStateChange( new WaitingState() );
 	}
 
 	private bool ChangeRoundIfOver()
