@@ -1,0 +1,21 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
+{
+	data = 
+	{
+		UI = false
+		Volume = "1.00,1.00,0"
+		Pitch = "1.00,1.00,0"
+		Decibels = 90
+		SelectionMode = "Random"
+		Sounds = 
+		[
+			resource:"sounds/no02_3.vsnd",
+			resource:"sounds/ba_no01.vsnd",
+			resource:"sounds/ba_pain07.vsnd",
+			resource:"sounds/ba_pain09.vsnd",
+			resource:"sounds/ba_pain06.vsnd",
+		]
+		MaximumDistance = 1870.0942
+		MinimumDistance = 93.504715
+	}
+}
