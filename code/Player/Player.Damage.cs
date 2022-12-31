@@ -39,7 +39,15 @@ public partial class Player
 	[Net]
 	public TimeSince TimeSinceDeath { get; private set; }
 
-	public ExtendedDamageInfo LastDamage { get; private set; }
+	public float DistanceToAttacker { get; set; }
+
+	/// <summary>
+	/// It's always better to use this than <see cref="Entity.LastAttackerWeapon"/>
+	/// because the weapon may be invalid.
+	/// </summary>
+	public CarriableInfo LastAttackerWeaponInfo { get; private set; }
+
+	public DamageInfo LastDamage { get; private set; }
 
 	public new float Health
 	{
@@ -164,7 +172,7 @@ public partial class Player
 		Event.Run( GameEvent.Player.Killed, this );
 	}
 
-	public void TakeDamage( ExtendedDamageInfo info )
+	public override void TakeDamage( DamageInfo info )
 	{
 		Game.AssertServer();
 
@@ -193,6 +201,7 @@ public partial class Player
 
 		LastAttacker = info.Attacker;
 		LastAttackerWeapon = info.Weapon;
+		LastAttackerWeaponInfo = (info.Weapon as Carriable)?.Info;
 		LastDamage = info;
 
 		Health -= info.Damage;
@@ -200,7 +209,7 @@ public partial class Player
 
 		SendDamageInfo( To.Single( this ) );
 
-		this.ProceduralHitReaction( info.ToDamageInfo() );
+		this.ProceduralHitReaction( info );
 
 		if ( Health <= 0f )
 			OnKilled();
@@ -215,14 +224,15 @@ public partial class Player
 			to,
 			LastAttacker,
 			LastDamage.Weapon,
+			LastAttackerWeaponInfo,
 			LastDamage.Damage,
 			LastDamage.Tags.ToArray(),
 			LastDamage.Position,
-			LastDamage.Origin
+			DistanceToAttacker
 		);
 	}
 
-	private float GetBulletDamageMultipliers( ref ExtendedDamageInfo info )
+	private float GetBulletDamageMultipliers( ref DamageInfo info )
 	{
 		var damageMultiplier = 1f;
 
@@ -256,18 +266,19 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Carriable w, float d, string[] tags, Vector3 p, Vector3 o )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
 	{
-		var info = ExtendedDamageInfo.Generic( 100f )
+		var info = DamageInfo.Generic( 100f )
 			.WithAttacker( a )
 			.WithWeapon( w )
-			.WithOrigin( o )
 			.WithPosition( p );
 
 		info.Tags = new HashSet<string>( tags );
 
+		DistanceToAttacker = dTA;
 		LastAttacker = a;
 		LastAttackerWeapon = w;
+		LastAttackerWeaponInfo = wI;
 		LastDamage = info;
 
 		if ( IsLocalPawn )

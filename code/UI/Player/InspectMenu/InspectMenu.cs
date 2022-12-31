@@ -38,7 +38,7 @@ public partial class InspectMenu : Panel
 		var (name, deathImageText, deathActiveText) = GetCauseOfDeathStrings();
 		AddInspectEntry( deathImageText, deathActiveText, $"/ui/inspectmenu/{name}.png" );
 
-		var weaponInfo = player.LastDamage.Weapon.Info;
+		var weaponInfo = player.LastAttackerWeaponInfo;
 		if ( weaponInfo is not null )
 			AddInspectEntry( $"{weaponInfo.Title}", $"It appears a {weaponInfo.Title} was used to kill them.", weaponInfo.IconPath );
 

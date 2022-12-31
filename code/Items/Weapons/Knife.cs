@@ -69,7 +69,7 @@ public partial class Knife : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		var damageInfo = ExtendedDamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
+		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
 			.WithTags( Strings.Tags.Slash, "silent" )
@@ -77,6 +77,8 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player player )
 		{
+			player.DistanceToAttacker = 0;
+
 			PlaySound( FleshHit );
 
 			if ( GameManager.KnifeBackstabs && IsBehindAndFacingTarget( player ) )
@@ -91,7 +93,6 @@ public partial class Knife : Carriable
 			Delete();
 		}
 	}
-
 
 	private bool IsBehindAndFacingTarget( Player target )
 	{
@@ -172,9 +173,8 @@ public partial class Knife : Carriable
 			{
 				trace.Surface.DoBulletImpact( trace );
 
-				var damageInfo = ExtendedDamageInfo.Generic( 100f )
+				var damageInfo = DamageInfo.Generic( 100f )
 					.UsingTraceResult( trace )
-					.WithOrigin( _thrownFrom )
 					.WithAttacker( _thrower )
 					.WithTags( Strings.Tags.Slash, "silent" )
 					.WithWeapon( this );

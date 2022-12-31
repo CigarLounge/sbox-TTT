@@ -134,7 +134,7 @@ public partial class Teleporter : Carriable
 		// TeleFrag players.
 		var bbox = Owner.CollisionBounds + Owner.Position;
 
-		var damageInfo = ExtendedDamageInfo.Generic( Player.MaxHealth )
+		var damageInfo = DamageInfo.Generic( Player.MaxHealth )
 			.WithAttacker( Owner )
 			.WithTag( Strings.Tags.Explode )
 			.WithWeapon( this );

@@ -20,7 +20,7 @@ public class FlareGun : Weapon
 		base.OnHit( trace );
 
 		// TODO: Use proper burning once FP implements it.
-		var burnDamage = ExtendedDamageInfo.Generic( 25 )
+		var burnDamage = DamageInfo.Generic( 25 )
 			.WithAttacker( Owner )
 			.WithTag( Strings.Tags.Burn )
 			.WithWeapon( this );
