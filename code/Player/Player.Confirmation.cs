@@ -86,20 +86,23 @@ public partial class Player
 	{
 		Game.AssertServer();
 
+#if DEBUG
 		if ( this.IsAlive() || IsSpectator )
 		{
-			Log.Warning( "Trying to confirm an alive player or spectator!" );
+			Log.Error( "Trying to confirm an alive player or spectator!" );
 			return;
 		}
 
 		if ( IsConfirmedDead )
 		{
-			Log.Warning( "This player is already confirmed dead!" );
+			Log.Error( "This player is already confirmed dead!" );
 			return;
 		}
+#endif
 
 		Confirmer = confirmer;
 		Status = PlayerStatus.ConfirmedDead;
+
 		ClientConfirmDeath( confirmer );
 	}
 
@@ -136,11 +139,13 @@ public partial class Player
 	{
 		Game.AssertServer();
 
+#if DEBUG
 		if ( !IsMissingInAction )
 		{
-			Log.Warning( $"{SteamName} is not MIA!" );
+			Log.Error( $"{SteamName} is not MIA!" );
 			return;
 		}
+#endif
 
 		UpdateStatus( Team.Traitors.ToClients() );
 

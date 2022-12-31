@@ -16,6 +16,7 @@
 		PrimaryRate = 4.5
 		SecondaryRate = 0
 		ReserveAmmo = 20
+		IsSilenced = true
 		ReloadTime = 1.5
 		VerticalRecoil = 50
 		HorizontalRecoilRange = 1.5

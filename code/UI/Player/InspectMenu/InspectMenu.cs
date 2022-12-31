@@ -38,12 +38,11 @@ public partial class InspectMenu : Panel
 		var (name, deathImageText, deathActiveText) = GetCauseOfDeathStrings();
 		AddInspectEntry( deathImageText, deathActiveText, $"/ui/inspectmenu/{name}.png" );
 
-		if ( player.LastAttackerWeaponInfo is not null )
-			AddInspectEntry( $"{player.LastAttackerWeaponInfo.Title}",
-			$"It appears a {player.LastAttackerWeaponInfo.Title} was used to kill them.",
-			player.LastAttackerWeaponInfo.IconPath );
+		var weaponInfo = player.LastAttackerWeaponInfo;
+		if ( weaponInfo is not null )
+			AddInspectEntry( $"{weaponInfo.Title}", $"It appears a {weaponInfo.Title} was used to kill them.", weaponInfo.IconPath );
 
-		if ( player.KilledWithHeadShot )
+		if ( player.LastDamage.IsHeadshot() )
 			AddInspectEntry( "Headshot", "The fatal wound was a headshot. No time to scream.", "/ui/inspectmenu/headshot.png" );
 
 		_dna = AddInspectEntry( string.Empty, string.Empty, "/ui/inspectmenu/dna.png" );
