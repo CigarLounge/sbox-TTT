@@ -49,6 +49,7 @@ public partial class RoleMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( (Game.LocalPawn as Player).Role, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
+		var player = Game.LocalPawn as Player;
+		return HashCode.Combine( player.IsAlive(), player.Role, player.Credits, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
 	}
 }

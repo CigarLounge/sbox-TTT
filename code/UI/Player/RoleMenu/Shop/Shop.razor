@@ -9,10 +9,6 @@
 }
 
 <root class="text-shadow">
-    <div style="font-size: 20px; margin: 0 0 10 0;">
-        <text>You have</text>
-        <text class="text-color-tertiary">@player.Credits credits</text>
-    </div>
     <div class="item-container">
         @foreach (var itemInfo in (player.Role.ShopItems))
         {
@@ -35,7 +31,7 @@
     protected override int BuildHash()
     {
         var player = Game.LocalPawn as TTT.Player;
-        return HashCode.Combine(player.Credits, player.Role.ShopItems, _selectedItem);
+        return HashCode.Combine(player.Role.ShopItems, _selectedItem);
     }
 }
 

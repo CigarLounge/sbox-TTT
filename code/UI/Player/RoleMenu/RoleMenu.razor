@@ -10,10 +10,8 @@
 <div>
     <div class="menu">
         <div class="header text-shadow">
-            <text class="title" style="color: @player.Role.Color.Hex">
-                @player.Role.Title
-            </text>
-            <text class="title">Menu</text>
+            <text class="title"><span style="color: @player.Role.Color.Hex">@player.Role.Title</span> Menu</text>
+            <text class="subtext"><span class="text-color-tertiary">@player.Credits credits</span> available</text>
         </div>
         <div class="tabs">
             @if (_access[Tab.Shop].Invoke())
@@ -79,13 +77,21 @@
             flex-direction: column;
 
             .header {
+                flex-direction: column;
+
                 .title {
                     font-size: 50px;
                     font-weight: 500;
                 }
+
+                .subtext {
+                    font-size: 20px;
+                }
             }
 
             .tabs {
+                padding: 5px;
+
                 button {
                     font-size: 20px;
                     margin-right: 12px;
