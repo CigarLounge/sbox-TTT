@@ -201,6 +201,7 @@ public partial class Knife : Carriable
 				Position = oldPosition - trace.Direction * 5;
 				Velocity = trace.Direction * 500f * PhysicsBody.Mass;
 				PhysicsEnabled = true;
+
 				break;
 			}
 		}
