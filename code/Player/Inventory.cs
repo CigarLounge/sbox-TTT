@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace TTT;
 
 /// <summary>
-/// A sublist of <see cref="Entity.Children"/> that contains entities 
+/// A subset of <see cref="Entity.Children"/> that contains entities 
 /// of type <see cref="Carriable"/>.
 /// </summary>
 public sealed class Inventory : IEnumerable<Carriable>
@@ -18,15 +18,9 @@ public sealed class Inventory : IEnumerable<Carriable>
 		private set => Owner.ActiveCarriable = value;
 	}
 
-	public Carriable this[int i] => _list[i];
-
-	public int Count => _list.Count;
 	private readonly List<Carriable> _list = new();
-
 	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
 	private readonly int[] _weaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
-
-	private const float DropVelocity = 500f;
 
 	public Inventory( Player player ) => Owner = player;
 
@@ -65,7 +59,10 @@ public sealed class Inventory : IEnumerable<Carriable>
 		return true;
 	}
 
-	public bool Contains( Carriable entity ) => _list.Contains( entity );
+	public bool Contains( Carriable entity )
+	{
+		return _list.Contains( entity );
+	}
 
 	public void Pickup( Carriable carriable )
 	{
@@ -119,6 +116,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 			return false;
 
 		Active = carriable;
+
 		return true;
 	}
 
@@ -132,7 +130,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 			return t;
 		}
 
-		return default;
+		return null;
 	}
 
 	public bool Drop( Carriable carriable )
@@ -240,6 +238,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 			Velocity = Owner.GetDropVelocity( false ),
 			PhysicsEnabled = true,
 		};
+
 		droppedEntity.Tags.Add( "interactable" );
 		droppedEntity.Tags.Remove( "solid" );
 

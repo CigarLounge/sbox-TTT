@@ -3,27 +3,34 @@
 @namespace TTT.UI
 
 <root>
-    @foreach (var perk in CameraMode.Target.Perks)
-    {
-        if (CameraMode.Target.IsRoleKnown)
-        {
-            <PerkSlot Perk=@perk />
-        }
-    }
+	@{
+		var player = Spectating.Player ?? (Player)Sandbox.Game.LocalPawn;
+
+		foreach (var perk in player.Perks)
+		{
+			if (player.IsRoleKnown)
+			{
+				<PerkSlot Perk=@perk />
+			}
+		}
+	}
 </root>
 
-@code {
-    protected override int BuildHash()
-    {
-        return HashCode.Combine(CameraMode.Target.Perks.HashCombine(perk => perk.GetHashCode()));
-    }
+@code
+{
+	protected override int BuildHash()
+	{
+		var player = Spectating.Player ?? (Player)Sandbox.Game.LocalPawn;
+
+		return HashCode.Combine(player.Perks.HashCombine(perk => perk.GetHashCode()));
+	}
 }
 
 <style>
-    PerkDisplay {
-        display: flex;
-        align-items: flex-end;
-        flex-direction: column-reverse;
-        margin-bottom: 15px;
-    }
+	PerkDisplay {
+		display: flex;
+		align-items: flex-end;
+		flex-direction: column-reverse;
+		margin-bottom: 15px;
+	}
 </style>

@@ -67,7 +67,7 @@ public partial class PropPossession : EntityComponent<Prop>
 		{
 			_nameplate = new( Entity );
 			_meter = new( this );
-			_player.CurrentCamera = new FollowEntityCamera( Entity );
+			_player.CameraMode = new FollowEntityCamera( Entity );
 		}
 	}
 
@@ -79,7 +79,7 @@ public partial class PropPossession : EntityComponent<Prop>
 			_player.CancelPossession();
 
 		if ( !_player.IsAlive() )
-			_player.CurrentCamera = new FreeCamera();
+			_player.CameraMode = new FreeCamera();
 
 		_nameplate?.Delete( true );
 		_meter?.Delete( true );

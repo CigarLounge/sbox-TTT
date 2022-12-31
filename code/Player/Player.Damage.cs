@@ -74,12 +74,10 @@ public partial class Player
 	/// This includes if the Player used a prop to kill them.
 	/// </summary>
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
-
 	/// <summary>
 	/// Whether or not the player was killed with a head shot.
 	/// </summary>
 	public bool KilledWithHeadShot => LastDamage.Hitbox.HasTag( "head" );
-
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
 	/// damage penalty. It is networked and shown on clients.
@@ -89,20 +87,17 @@ public partial class Player
 		get => Client.GetValue<float>( Strings.Karma );
 		set => Client.SetValue( Strings.Karma, value );
 	}
-
 	/// <summary>
 	/// The damage factor scales how much damage the player deals, so if it is 0.9
 	/// then the player only deals 90% of his original damage.
 	/// </summary>
 	public float DamageFactor { get; set; } = 1f;
-
 	/// <summary>
 	/// If a player damages another team member that is "clean" (no active timer),
 	/// they'll end up with time being tacked onto this timer. A player will receive a
 	/// karma bonus for remaining "clean" (having no active timer) at the end of the round.
 	/// </summary>
 	public TimeUntil TimeUntilClean { get; set; } = 0f;
-
 	/// <summary>
 	/// The active karma starts equal to the base karma, but is updated as the
 	/// player damages/kills others. When a player damages/kills another, the

@@ -8,7 +8,12 @@ public partial class PlayerInfo : Panel
 {
 	private Panel HealthContainer { get; set; }
 
-	protected override int BuildHash() => HashCode.Combine( CameraMode.Target.Role, CameraMode.Target.Health );
+	protected override int BuildHash()
+	{
+		var player = Spectating.Player ?? (Player)Game.LocalPawn;
+
+		return HashCode.Combine( player.Role, player.Health );
+	}
 
 	[GameEvent.Player.TookDamage]
 	private async void OnHit( Player _ )

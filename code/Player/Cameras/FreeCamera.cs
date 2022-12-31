@@ -2,14 +2,18 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FreeCamera : CameraMode
+public class FreeCamera : CameraMode
 {
 	private const int BaseMoveSpeed = 300;
 	private float _moveSpeed = 1f;
 	private Angles _lookAngles = Camera.Rotation.Angles();
 	private Vector3 _moveInput;
 
-	public FreeCamera() => Target = null;
+	public FreeCamera()
+	{
+		Spectating.Player = null;
+		Camera.FirstPersonViewer = null;
+	}
 
 	public override void BuildInput( Player player )
 	{
@@ -24,8 +28,9 @@ public partial class FreeCamera : CameraMode
 		if ( Input.Pressed( InputButton.Jump ) )
 		{
 			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
+
 			if ( alivePlayer.IsValid() )
-				player.CurrentCamera = new FollowEntityCamera( alivePlayer );
+				player.CameraMode = new FollowEntityCamera( alivePlayer );
 		}
 
 		if ( Input.Pressed( InputButton.Use ) )
@@ -39,9 +44,9 @@ public partial class FreeCamera : CameraMode
 	public override void FrameSimulate( Player player )
 	{
 		var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Camera.Rotation * _moveSpeed;
+
 		Camera.Position += mv;
 		Camera.Rotation = Rotation.From( _lookAngles );
-		Camera.FirstPersonViewer = null;
 	}
 
 	private void FindSpectateTarget( Player player )
@@ -49,6 +54,6 @@ public partial class FreeCamera : CameraMode
 		if ( player.HoveredEntity is Prop prop && prop.PhysicsBody is not null )
 			Player.Possess( prop.NetworkIdent );
 		else if ( player.HoveredEntity is Player hoveredPlayer )
-			player.CurrentCamera = new FirstPersonCamera( hoveredPlayer );
+			player.CameraMode = new FirstPersonCamera( hoveredPlayer );
 	}
 }

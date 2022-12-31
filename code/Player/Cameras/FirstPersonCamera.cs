@@ -4,38 +4,43 @@ namespace TTT;
 
 public class FirstPersonCamera : CameraMode
 {
-	public FirstPersonCamera( Player targetPlayer ) => Target = targetPlayer;
+	public FirstPersonCamera( Player viewer = null )
+	{
+		Spectating.Player = viewer;
+		Camera.FirstPersonViewer = viewer ?? Game.LocalPawn;
+	}
 
 	public override void BuildInput( Player player )
 	{
-		if ( !Target.IsValid() )
-			player.CurrentCamera = new FreeCamera();
-
 		if ( player.IsAlive() )
 			return;
 
+		if ( !Spectating.Player.IsValid() )
+			player.CameraMode = new FreeCamera();
+
 		if ( Input.Pressed( InputButton.Jump ) )
-			player.CurrentCamera = new FreeCamera();
+			player.CameraMode = new FreeCamera();
 
 		if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			SwapSpectatedPlayer( false );
+			Spectating.FindPlayer( false );
 
 		if ( Input.Pressed( InputButton.SecondaryAttack ) )
-			SwapSpectatedPlayer( true );
+			Spectating.FindPlayer( true );
 	}
 
 	public override void FrameSimulate( Player player )
 	{
-		if ( !Target.IsValid() )
+		var target = (Player)Camera.FirstPersonViewer;
+
+		if ( !target.IsValid() )
 			return;
 
-		Camera.Position = Target.EyePosition;
-		Camera.Rotation = IsSpectatingPlayer ? Rotation.Slerp( Camera.Rotation, Target.EyeLocalRotation, Time.Delta * 20f ) : Target.EyeRotation;
-		Camera.FirstPersonViewer = Target;
+		Camera.Position = target.EyePosition;
+		Camera.Rotation = target == Spectating.Player ? Rotation.Slerp( Camera.Rotation, target.EyeLocalRotation, Time.Delta * 20f ) : target.EyeRotation;
 
 		// TODO: We need some way to override the FieldOfView from a carriable.
 		// We also need to constantly update the field of view here incase the player changes their settings.
-		if ( Target.ActiveCarriable is Scout || Target.ActiveCarriable is Binoculars )
+		if ( target.ActiveCarriable is Scout || target.ActiveCarriable is Binoculars )
 			return;
 
 		Camera.FieldOfView = Screen.CreateVerticalFieldOfView( Game.Preferences.FieldOfView );

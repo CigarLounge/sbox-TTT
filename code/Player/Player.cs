@@ -182,7 +182,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		if ( IsLocalPawn )
-			CurrentCamera = new FirstPersonCamera( this );
+			CameraMode = new FirstPersonCamera( this );
 
 		CreateFlashlight();
 
@@ -238,7 +238,7 @@ public partial class Player : AnimatedEntity
 	{
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
-		CurrentCamera?.FrameSimulate( this );
+		CameraMode?.FrameSimulate( this );
 		ActiveCarriable?.FrameSimulate( client );
 	}
 
@@ -266,7 +266,7 @@ public partial class Player : AnimatedEntity
 
 		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
-		CurrentCamera?.BuildInput( this );
+		CameraMode?.BuildInput( this );
 	}
 
 	TimeSince _timeSinceLastFootstep;

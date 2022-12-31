@@ -8,7 +8,7 @@ public partial class Player
 	[Net, Local]
 	public bool IsForcedSpectator { get; private set; } = false;
 
-	public CameraMode CurrentCamera { get; set; }
+	public CameraMode CameraMode { get; set; }
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 
 	public void ToggleForcedSpectator()
