@@ -42,7 +42,8 @@ public partial class GameManager : Sandbox.GameManager
 		Game.AssertServer();
 		Assert.NotNull( state );
 
-		ForceStateChange( Utils.HasMinimumPlayers() ? state : new WaitingState() );
+		var HasMinimumPlayers = Utils.GetPlayersWhere( p => !p.IsForcedSpectator ).Count >= MinPlayers;
+		ForceStateChange( HasMinimumPlayers ? state : new WaitingState() );
 	}
 
 	/// <summary>

@@ -29,7 +29,7 @@ public abstract partial class CameraMode
 	/// </summary>
 	public static void SwapSpectatedPlayer( bool nextPlayer )
 	{
-		var alivePlayers = Utils.GetAlivePlayers();
+		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive() );
 		if ( alivePlayers.IsNullOrEmpty() )
 			return;
 

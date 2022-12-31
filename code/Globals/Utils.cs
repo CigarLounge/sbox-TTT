@@ -7,14 +7,7 @@ namespace TTT;
 
 public static class Utils
 {
-	public static List<Player> GetAlivePlayers() => GetPlayers( ( pl ) => pl.IsAlive() );
-	public static int MinimumPlayerCount() => GetPlayers( ( pl ) => !pl.IsForcedSpectator ).Count;
-	public static bool HasMinimumPlayers() => MinimumPlayerCount() >= GameManager.MinPlayers;
-
-	public static List<IClient> GetAliveClientsWithRole<T>() where T : Role => GetClients( ( pl ) => pl.IsAlive() && pl.Role is T );
-	public static List<IClient> GetDeadClients() => GetClients( ( pl ) => !pl.IsAlive() );
-
-	private static List<Player> GetPlayers( Func<Player, bool> predicate )
+	public static List<Player> GetPlayersWhere( Func<Player, bool> predicate )
 	{
 		List<Player> players = new();
 		foreach ( var client in Game.Clients )
@@ -24,7 +17,7 @@ public static class Utils
 		return players;
 	}
 
-	private static List<IClient> GetClients( Func<Player, bool> predicate )
+	public static List<IClient> GetClientsWhere( Func<Player, bool> predicate )
 	{
 		List<IClient> clients = new();
 		foreach ( var client in Game.Clients )

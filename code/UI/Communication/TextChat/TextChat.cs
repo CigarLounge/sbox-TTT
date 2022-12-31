@@ -110,7 +110,7 @@ public partial class TextChat : Panel
 
 		if ( !player.IsAlive() )
 		{
-			var clients = GameManager.Current.State is InProgress ? Utils.GetDeadClients() : Game.Clients;
+			var clients = GameManager.Current.State is InProgress ? Utils.GetClientsWhere( p => !p.IsAlive() ) : Game.Clients;
 			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}

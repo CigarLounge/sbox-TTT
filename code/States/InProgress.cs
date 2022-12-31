@@ -135,7 +135,7 @@ public partial class InProgress : BaseState
 		if ( TimeLeft )
 			OnTimeUp();
 
-		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
+		if ( IsRoundOver() == Team.None )
 			GameManager.Current.ForceStateChange( new WaitingState() );
 	}
 
@@ -154,13 +154,8 @@ public partial class InProgress : BaseState
 
 	private static void GivePlayersCredits<T>( int credits ) where T : Role
 	{
-		var clients = Utils.GetAliveClientsWithRole<T>();
-
-		clients.ForEach( ( cl ) =>
-		{
-			if ( cl.Pawn is Player p )
-				p.Credits += credits;
-		} );
+		var clients = Utils.GetClientsWhere( p => p.IsAlive() && p.Role is T );
+		clients.ForEach( c => (c.Pawn as Player).Credits += credits );
 
 		UI.InfoFeed.AddRoleEntry
 		(
