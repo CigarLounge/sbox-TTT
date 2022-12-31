@@ -4,7 +4,10 @@
 
 @namespace TTT.UI
 
-@if (TTT.GameManager.Current.State is null) return;
+@if (TTT.GameManager.Current.State is null)
+{
+    return;
+}
 
 <root class="background-color-gradient opacity-heavy rounded text-shadow">
     <div class="round-name-wrapper">

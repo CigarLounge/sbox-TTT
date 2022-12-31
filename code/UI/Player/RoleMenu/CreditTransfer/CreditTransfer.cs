@@ -13,25 +13,25 @@ public partial class CreditTransfer : Panel
 	[ConCmd.Server]
 	public static void SendCredits( string rawSteamId, int credits )
 	{
-		var steamId = long.Parse( rawSteamId );
-		var sendingPlayer = ConsoleSystem.Caller.Pawn as Player;
-		if ( !sendingPlayer.IsValid() )
+		if ( ConsoleSystem.Caller.Pawn is not Player sendingPlayer )
 			return;
 
-		var client = Game.Clients.FirstOrDefault( c => c.SteamId == steamId );
-		if ( client is not null && client.Pawn is Player player && player.IsAlive() )
-		{
-			sendingPlayer.Credits -= credits;
-			player.Credits += credits;
-		}
+		var steamId = long.Parse( rawSteamId );
+		var receivingPlayer = Utils.GetPlayersWhere( p => p.IsAlive() && p.Role == sendingPlayer.Role && p.SteamId == steamId ).FirstOrDefault();
+
+		if ( receivingPlayer is null )
+			return;
+
+		sendingPlayer.Credits -= credits;
+		receivingPlayer.Credits += credits;
 	}
 
 	protected override int BuildHash()
 	{
-		var player = Game.LocalPawn as Player;
 		return HashCode.Combine(
-			player.Credits,
-			_selectedPlayer?.SteamId
+			(Game.LocalPawn as Player)?.Credits,
+			_selectedPlayer?.SteamId,
+			Utils.GetPlayersWhere( p => p.IsAlive() ).HashCombine( p => p.Role.GetHashCode() )
 		);
 	}
 }

@@ -4,7 +4,7 @@
 
 @namespace TTT.UI
 
-@if (Game.LocalPawn is not TTT.Player localPlayer)
+@if (Game.LocalPawn is not TTT.Player localPlayer) 
 {
     return;
 }
@@ -12,13 +12,11 @@
 <root class="text-shadow">
     <div class="player-list rounded background-color-gradient box-shadow">
         @{
-            var playersWithRole = Game.Clients.Where(c => c.Pawn is TTT.Player p && !p.IsLocalPawn && p.Role == localPlayer.Role && p.IsAlive());
+            var playersWithRole = Utils.GetPlayersWhere(p => p.IsAlive() && !p.IsLocalPawn && p.Role == localPlayer.Role);
             if (playersWithRole.Any())
             {
-                @foreach (var client in playersWithRole)
+                @foreach (var player in playersWithRole)
                 {
-                    var player = client.Pawn as TTT.Player;
-
                     <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")" @onclick=@(() => {_selectedPlayer = player;})>
                         <img src="avatar:@player.SteamId" class="avatar" />
                         <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
@@ -38,8 +36,12 @@
     <div class="send rounded background-color-gradient box-shadow">
         @{
             var canSendCredits = _selectedPlayer is not null && localPlayer.Credits >= CreditAmount;
-            <button icon="outbox" class="credits-button @(!canSendCredits ? "inactive" : "")" @onclick=@(() =>
-            SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>Send Credits</button>
+            <button 
+                icon="outbox" 
+                class="credits-button @(!canSendCredits ? "inactive" : "")" 
+                @onclick=@(() =>SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>
+                Send Credits
+            </button>
         }
         <text style="font-color: lightgrey;">Select a player to send</text>
         <text class="text-color-tertiary">100 credits</text>
