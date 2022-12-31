@@ -150,7 +150,7 @@ public partial class Player
 		DeleteItems();
 
 		if ( !LastDamage.IsSilent() )
-			PlaySound( "player-death" );
+			PlaySound( "player_death" );
 
 		Event.Run( GameEvent.Player.Killed, this );
 		GameManager.Current.State.OnPlayerKilled( this );

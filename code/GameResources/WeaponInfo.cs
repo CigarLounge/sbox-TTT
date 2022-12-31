@@ -52,7 +52,7 @@ public class WeaponInfo : CarriableInfo
 
 	[Category( "Stats" )]
 	[Description( "Players won't scream when killed with this weapon." )]
-	public bool Silenced { get; set; } = false;
+	public bool IsSilenced { get; set; } = false;
 
 	[Category( "Stats" )]
 	public float ReloadTime { get; set; } = 2f;
