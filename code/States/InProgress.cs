@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -108,22 +109,6 @@ public partial class InProgress : BaseState
 		PostRound.Load( Team.Innocents, WinType.TimeUp );
 	}
 
-	private Team IsRoundOver()
-	{
-		List<Team> aliveTeams = new();
-
-		foreach ( var player in AlivePlayers )
-		{
-			if ( !aliveTeams.Contains( player.Team ) )
-				aliveTeams.Add( player.Team );
-		}
-
-		if ( aliveTeams.Count == 0 )
-			return Team.None;
-
-		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
-	}
-
 	public override void OnSecond()
 	{
 		if ( !Game.IsServer )
@@ -136,17 +121,16 @@ public partial class InProgress : BaseState
 			OnTimeUp();
 	}
 
-	private bool ChangeRoundIfOver()
+	private void ChangeRoundIfOver()
 	{
-		var result = IsRoundOver();
+		HashSet<Team> aliveTeams = new();
+		foreach ( var player in AlivePlayers )
+			aliveTeams.Add( player.Team );
 
-		if ( result != Team.None && !GameManager.PreventWin )
-		{
-			PostRound.Load( result, WinType.Elimination );
-			return true;
-		}
-
-		return false;
+		if ( aliveTeams.Count == 0 )
+			PostRound.Load( Team.None, WinType.Elimination );
+		else if ( aliveTeams.Count == 1 )
+			PostRound.Load( aliveTeams.FirstOrDefault(), WinType.Elimination );
 	}
 
 	private static void GivePlayersCredits<T>( int credits ) where T : Role

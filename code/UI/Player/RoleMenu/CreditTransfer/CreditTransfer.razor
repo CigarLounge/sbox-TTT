@@ -36,12 +36,7 @@
     <div class="send rounded background-color-gradient box-shadow">
         @{
             var canSendCredits = _selectedPlayer is not null && localPlayer.Credits >= CreditAmount;
-            <button 
-                icon="outbox" 
-                class="credits-button @(!canSendCredits ? "inactive" : "")" 
-                @onclick=@(() =>SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>
-                Send Credits
-            </button>
+            <button icon="outbox" class="credits-button @(!canSendCredits ? "inactive" : "")" @onclick=@(() => SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>Send Credits</button>
         }
         <text style="font-color: lightgrey;">Select a player to send</text>
         <text class="text-color-tertiary">100 credits</text>
