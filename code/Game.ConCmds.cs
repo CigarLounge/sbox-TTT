@@ -5,19 +5,6 @@ namespace TTT;
 
 public partial class GameManager
 {
-	[ConCmd.Admin( Name = "ttt_respawn", Help = "Respawns the current player or the player with the given id" )]
-	public static void RespawnPlayer( int id = 0 )
-	{
-		var player = id == 0 ? ConsoleSystem.Caller.Pawn as Player : Entity.FindByIndex( id ) as Player;
-		if ( !player.IsValid() )
-			return;
-
-		if ( player.IsForcedSpectator )
-			player.ToggleForcedSpectator();
-
-		player.Respawn();
-	}
-
 	[ConCmd.Admin( Name = "ttt_giveitem" )]
 	public static void GiveItem( string itemName )
 	{
@@ -105,16 +92,6 @@ public partial class GameManager
 			Game.ChangeLevel( mapIdent );
 		else
 			Log.Error( $"{mapIdent} does not exist as a s&box map!" );
-	}
-
-	[ConCmd.Server( Name = "ttt_force_spectator" )]
-	public static void ToggleForceSpectator()
-	{
-		var player = ConsoleSystem.Caller.Pawn as Player;
-		if ( !player.IsValid() )
-			return;
-
-		player.ToggleForcedSpectator();
 	}
 
 	[ConCmd.Server( Name = "ttt_rtv" )]

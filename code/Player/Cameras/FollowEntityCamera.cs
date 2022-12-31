@@ -2,53 +2,62 @@ using Sandbox;
 
 namespace TTT;
 
-public partial class FollowEntityCamera : CameraMode
+public class FollowEntityCamera : CameraMode
 {
-	private Entity FollowedEntity { get; set; }
+	private Entity _followedEntity;
 	private Vector3 _focusPoint = Camera.Position;
-	private readonly bool _isFollowingPlayer;
 
 	public FollowEntityCamera( Entity entity )
 	{
-		FollowedEntity = entity;
+		_followedEntity = entity;
 
-		_isFollowingPlayer = FollowedEntity is Player;
-		if ( _isFollowingPlayer )
-			Target = FollowedEntity as Player;
+		if ( _followedEntity is Player player )
+			Spectating.Player = player;
+
+		Camera.FirstPersonViewer = null;
 	}
 
-	public override void BuildInput( Player player )
+	public override void BuildInput()
 	{
-		if ( !FollowedEntity.IsValid() )
-			player.CurrentCamera = new FreeCamera();
+		if ( !_followedEntity.IsValid() )
+		{
+			Current = new FreeCamera();
+			return;
+		}
 
-		if ( player.IsAlive() )
+		if ( Game.LocalPawn.IsAlive() )
 			return;
 
-		if ( FollowedEntity is Corpse && Input.Pressed( InputButton.Jump ) )
-			player.CurrentCamera = new FreeCamera();
+		if ( _followedEntity is Corpse && Input.Pressed( InputButton.Jump ) )
+		{
+			Current = new FreeCamera();
+			return;
+		}
 
-		if ( _isFollowingPlayer )
+		if ( Spectating.Player.IsValid() )
 		{
 			if ( Input.Pressed( InputButton.Jump ) )
-				player.CurrentCamera = new FirstPersonCamera( Target );
+			{
+				Current = new FirstPersonCamera( Spectating.Player );
+				return;
+			}
 
 			if ( Input.Pressed( InputButton.PrimaryAttack ) )
-				SwapSpectatedPlayer( false );
+				Spectating.FindPlayer( false );
 
 			if ( Input.Pressed( InputButton.SecondaryAttack ) )
-				SwapSpectatedPlayer( true );
+				Spectating.FindPlayer( true );
 
-			FollowedEntity = Target;
+			_followedEntity = Spectating.Player;
 		}
 	}
 
 	public override void FrameSimulate( Player player )
 	{
-		if ( !FollowedEntity.IsValid() )
+		if ( !_followedEntity.IsValid() )
 			return;
 
-		_focusPoint = Vector3.Lerp( _focusPoint, FollowedEntity.WorldSpaceBounds.Center, Time.Delta * 5.0f );
+		_focusPoint = Vector3.Lerp( _focusPoint, _followedEntity.WorldSpaceBounds.Center, Time.Delta * 5.0f );
 
 		var tr = Trace.Ray( _focusPoint, _focusPoint + player.ViewAngles.ToRotation().Forward * -130 )
 			.WorldOnly()
@@ -56,21 +65,5 @@ public partial class FollowEntityCamera : CameraMode
 
 		Camera.Rotation = player.ViewAngles.ToRotation();
 		Camera.Position = tr.EndPosition;
-		Camera.FirstPersonViewer = null;
-	}
-
-	[GameEvent.Player.Killed]
-	private static void OnPlayerKilled( Player player )
-	{
-		if ( Game.IsServer )
-			return;
-
-		if ( player.IsForcedSpectator )
-		{
-			player.CurrentCamera = new FreeCamera();
-			return;
-		}
-
-		player.CurrentCamera = new FollowEntityCamera( player.Corpse );
 	}
 }

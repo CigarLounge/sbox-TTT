@@ -87,9 +87,7 @@ public partial class Player : AnimatedEntity
 	{
 		base.Spawn();
 
-		Tags.Add( "ignorereset" );
-		Tags.Add( "player" );
-		Tags.Add( "solid" );
+		Tags.Add( "ignorereset", "player", "solid" );
 
 		SetModel( "models/citizen/citizen.vmdl" );
 		Role = new NoneRole();
@@ -133,10 +131,10 @@ public partial class Player : AnimatedEntity
 		{
 			Health = MaxHealth;
 			Status = PlayerStatus.Alive;
-			Client.Voice.WantsStereo = GameManager.ProximityChat;
-			UpdateStatus( To.Everyone );
 			LifeState = LifeState.Alive;
 
+			UpdateStatus( To.Everyone );
+			
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableTouch = true;
@@ -175,6 +173,7 @@ public partial class Player : AnimatedEntity
 		{
 			CurrentChannel = Channel.All;
 			MuteFilter = MuteFilter.None;
+			
 			ClearButtons();
 		}
 
@@ -182,7 +181,7 @@ public partial class Player : AnimatedEntity
 			return;
 
 		if ( IsLocalPawn )
-			CurrentCamera = new FirstPersonCamera( this );
+			CameraMode.Current = new FirstPersonCamera();
 
 		CreateFlashlight();
 
@@ -218,8 +217,6 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			CheckAFK();
-
 			if ( !this.IsAlive() )
 			{
 				if ( Prop.IsValid() )
@@ -238,7 +235,6 @@ public partial class Player : AnimatedEntity
 	{
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
-		CurrentCamera?.FrameSimulate( this );
 		ActiveCarriable?.FrameSimulate( client );
 	}
 
@@ -247,6 +243,8 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public override void BuildInput()
 	{
+		CheckAFK();
+
 		OriginalViewAngles = ViewAngles;
 		InputDirection = Input.AnalogMove;
 
@@ -266,7 +264,6 @@ public partial class Player : AnimatedEntity
 
 		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
-		CurrentCamera?.BuildInput( this );
 	}
 
 	TimeSince _timeSinceLastFootstep;

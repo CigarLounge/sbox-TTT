@@ -3,26 +3,23 @@
 
 @namespace TTT.UI
 
-<root class="background-color-secondary 
-    @(IsFirst ? "rounded-top" : "") 
-    @(IsLast ? "rounded-bottom" : "") 
-    @(Carriable.IsActiveCarriable ? "active" : "")">
-    <text class="slot-number     
-        @(IsFirst ? "rounded-top-left" : "") 
-        @(IsLast ? "rounded-bottom-left" : "")" style="background-color: @(CameraMode.Target.Role.Color.Hex)">
+<root class="background-color-secondary @(IsFirst ? "rounded-top" : "") @(IsLast ? "rounded-bottom" : "") @(Carriable.IsActive ? "active" : "")">
+    <text class="slot-number @(IsFirst ? "rounded-top-left" : "")  @(IsLast ? "rounded-bottom-left" : "")" style="background-color: @(Hud.DisplayedPlayer.Role.Color.Hex)">
         <text>@((int)Carriable.Info.Slot + 1)</text>
     </text>
     <text>@Carriable.Info.Title</text>
     <text class="slot-text">@Carriable.SlotText</text>
 </root>
 
-@code {
+@code 
+{
     public Carriable Carriable { get; set; }
     public bool IsFirst { get; set; } = false;
     public bool IsLast { get; set; } = false;
+
     protected override int BuildHash()
     {
-        return HashCode.Combine(Carriable.SlotText, CameraMode.Target.Role.Color, Carriable.IsActiveCarriable, IsFirst, IsLast);
+        return HashCode.Combine(Carriable.SlotText, Hud.DisplayedPlayer.Role.Color, Carriable.IsActive, IsFirst, IsLast);
     }
 }
 

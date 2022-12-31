@@ -9,6 +9,9 @@ namespace TTT;
 [Title( "Knife" )]
 public partial class Knife : Carriable
 {
+	[ConVar.Replicated( "ttt_knife_backstabs", Help = "When enabled the knife will only one shot from the back." )]
+	public static bool Backstabs { get; set; } = true;
+
 	[Net, Local, Predicted]
 	public TimeSince TimeSinceStab { get; private set; }
 
@@ -69,7 +72,7 @@ public partial class Knife : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		var damageInfo = DamageInfo.Generic( GameManager.KnifeBackstabs ? 50 : 100 )
+		var damageInfo = DamageInfo.Generic( Backstabs ? 50 : 100 )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
 			.WithTags( Strings.Tags.Slash, "silent" )
@@ -81,7 +84,7 @@ public partial class Knife : Carriable
 
 			PlaySound( FleshHit );
 
-			if ( GameManager.KnifeBackstabs && IsBehindAndFacingTarget( player ) )
+			if ( Backstabs && IsBehindAndFacingTarget( player ) )
 				damageInfo.Damage *= 2;
 		}
 
@@ -121,7 +124,7 @@ public partial class Knife : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		if ( IsActiveCarriable )
+		if ( IsActive )
 			Owner.Inventory.DropActive();
 		else
 			Owner.Inventory.Drop( this );
