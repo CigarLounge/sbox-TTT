@@ -217,8 +217,6 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			CheckAFK();
-
 			if ( !this.IsAlive() )
 			{
 				if ( Prop.IsValid() )
@@ -245,6 +243,8 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public override void BuildInput()
 	{
+		CheckAFK();
+
 		OriginalViewAngles = ViewAngles;
 		InputDirection = Input.AnalogMove;
 
