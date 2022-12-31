@@ -5,20 +5,8 @@ namespace TTT;
 
 public partial class Player
 {
-	[Net, Local]
-	public bool IsForcedSpectator { get; private set; } = false;
-
+	public bool IsForcedSpectator => Client.GetClientData<bool>("forced_spectator");
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
-
-	public void ToggleForcedSpectator()
-	{
-		IsForcedSpectator = !IsForcedSpectator;
-
-		if ( !IsForcedSpectator || !this.IsAlive() )
-			return;
-
-		this.Kill();
-	}
 
 	public void MakeSpectator()
 	{

@@ -4,8 +4,30 @@ namespace TTT;
 
 public static class Spectating
 {
-	public static Player Player { get; internal set; }
+	/// <summary>
+	/// If this is true, we will only be spectating next round.
+	/// </summary>	
+	public static bool IsForced
+	{
+		get => forced_spectator;
+		internal set
+		{
+			forced_spectator = value;
 
+			if ( !value || !Game.LocalPawn.IsAlive() )
+				return;
+
+			GameManager.Kill();
+		}
+	}
+
+	/// <summary>
+	/// The player we're currently spectating.
+	/// </summary>
+	public static Player Player { get; set; }
+
+	// we have to have a backing property since Change doesn't work on clientdata for some reason.
+	[ConVar.ClientData] private static bool forced_spectator { get; set; }
 	private static int _spectatedPlayerIndex;
 
 	/// <summary>
