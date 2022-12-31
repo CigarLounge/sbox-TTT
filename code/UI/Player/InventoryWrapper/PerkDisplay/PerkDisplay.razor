@@ -2,17 +2,15 @@
 
 @namespace TTT.UI
 
-<root>
-	@{
-		var player = Spectating.Player ?? (Player)Sandbox.Game.LocalPawn;
+@if (!Hud.DisplayedPlayer.IsRoleKnown)
+{
+	return;
+}
 
-		foreach (var perk in player.Perks)
-		{
-			if (player.IsRoleKnown)
-			{
-				<PerkSlot Perk=@perk />
-			}
-		}
+<root>
+	@foreach (var perk in Hud.DisplayedPlayer.Perks)
+	{
+		<PerkSlot Perk=@perk />
 	}
 </root>
 
@@ -20,9 +18,7 @@
 {
 	protected override int BuildHash()
 	{
-		var player = Spectating.Player ?? (Player)Sandbox.Game.LocalPawn;
-
-		return HashCode.Combine(player.Perks.HashCombine(perk => perk.GetHashCode()));
+		return HashCode.Combine(Hud.DisplayedPlayer.Perks.HashCombine(perk => perk.GetHashCode()));
 	}
 }
 
