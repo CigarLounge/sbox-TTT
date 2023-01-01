@@ -5,18 +5,10 @@
 
 <root>
 	<button icon="leaderboard" @onclick=@GoToRoundSummaryPage>Round Summary</button>
-	<br />
 	<button icon="videocam" @onclick=@ToggleForcedSpectating>Force Spectator Mode - @(Spectating.IsForced ? "Enabled" : "Disabled")</button>
-	<br />
-	<button icon="how_to_vote" @onclick=@RockTheVote
-			class="@(Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) ? "inactive" : "")">
-		Rock The Vote
-	</button>
-	<br />
+	<button icon="how_to_vote" @onclick=@RockTheVote class="@(Game.LocalClient.HasRockedTheVote() ? "inactive" : "")">Rock The Vote</button>
 	<button icon="adjust" @onclick=@GoToCrosshairPage>Crosshair Customization</button>
-	<br />
 	<button icon="keyboard" @onclick=@GoToKeyBindingsPage>Keybindings</button>
-	<br />
 </root>
 
 @code
@@ -48,7 +40,7 @@
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine(Spectating.IsForced, Game.LocalClient.GetValue<bool>(Strings.HasRockedTheVote));
+		return HashCode.Combine(Spectating.IsForced, Game.LocalClient.HasRockedTheVote());
 	}
 }
 
@@ -57,5 +49,9 @@
 		flex-direction: column;
 		overflow: scroll;
 		width: 100%;
+
+		button {
+			margin-bottom: 10px;
+		}
 	}
 </style>

@@ -101,7 +101,7 @@ public partial class GameManager
 		if ( !client.IsValid() )
 			return;
 
-		if ( client.GetValue<bool>( Strings.HasRockedTheVote ) )
+		if ( client.HasRockedTheVote() )
 			return;
 
 		client.SetValue( Strings.HasRockedTheVote, true );
