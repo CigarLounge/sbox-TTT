@@ -48,7 +48,7 @@ public partial class InProgress : BaseState
 		Spectators.Add( player );
 
 		player.UpdateMissingInAction();
-		ChangeRoundIfOver();
+		CheckForResult();
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -67,7 +67,7 @@ public partial class InProgress : BaseState
 		AlivePlayers.Remove( player );
 		Spectators.Remove( player );
 
-		ChangeRoundIfOver();
+		CheckForResult();
 	}
 
 	protected override void OnStart()
@@ -121,7 +121,7 @@ public partial class InProgress : BaseState
 			OnTimeUp();
 	}
 
-	private void ChangeRoundIfOver()
+	private void CheckForResult()
 	{
 		HashSet<Team> aliveTeams = new();
 		foreach ( var player in AlivePlayers )
@@ -159,6 +159,6 @@ public partial class InProgress : BaseState
 			return;
 
 		if ( GameManager.Current.State is InProgress inProgress )
-			inProgress.ChangeRoundIfOver();
+			inProgress.CheckForResult();
 	}
 }

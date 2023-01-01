@@ -36,7 +36,7 @@ public static class Spectating
 	/// </summary>
 	public static void FindPlayer( bool nextPlayer )
 	{
-		var alivePlayers = Utils.GetAlivePlayers();
+		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive() );
 		if ( alivePlayers.IsNullOrEmpty() )
 			return;
 
