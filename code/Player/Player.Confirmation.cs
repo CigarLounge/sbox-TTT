@@ -14,21 +14,21 @@ public enum PlayerStatus
 public partial class Player
 {
 	[Net]
-	public long SteamId { get; set; }
+	public long SteamId { get; internal set; }
 
 	[Net]
-	public string SteamName { get; set; }
+	public string SteamName { get; internal set; }
 
 	[Net, Local]
-	public Corpse Corpse { get; set; }
+	public Corpse Corpse { get; internal set; }
 	/// <summary>
 	/// The player who confirmed this player's death.
 	/// </summary>
 	public Player Confirmer { get; private set; }
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
-	public Player LastSeenPlayer { get; set; }
-	public List<Player> PlayersKilled { get; set; } = new();
+	public Player LastSeenPlayer { get; internal set; }
+	public List<Player> PlayersKilled { get; internal set; } = new();
 
 	private string _lastWords;
 	private TimeSince _timeSinceLastWords;

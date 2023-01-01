@@ -42,18 +42,13 @@ public partial class GameManager
 	public static int RoundLimit { get; set; } = 6;
 	#endregion
 
-	#region Weapons
-	[ConVar.Replicated( "ttt_knife_backstabs", Help = "When enabled the knife will only one shot from the back." )]
-	public static bool KnifeBackstabs { get; set; } = true;
-	#endregion
-
 	#region Minimum Players
 	[ConVar.Replicated( "ttt_min_players", Help = "The minimum players to start the game.", Saved = true )]
 	public static int MinPlayers { get; set; } = 2;
 	#endregion
 
 	#region AFK Timers
-	[ConVar.Server( "ttt_afk_timer", Help = "The amount of time before a player is marked AFK.", Saved = true )]
+	[ConVar.Replicated( "ttt_afk_timer", Help = "The amount of time before a player is marked AFK.", Saved = true )]
 	public static int AFKTimer { get; set; } = 180;
 
 	[ConVar.Server( "ttt_afk_kick", Help = "Kick any players that get marked AFK.", Saved = true )]

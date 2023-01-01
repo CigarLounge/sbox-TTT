@@ -14,7 +14,7 @@ public partial class Player
 	private void DisplayEntityHints()
 	{
 		var hint = FindHintableEntity();
-		if ( hint is null || !hint.CanHint( CameraMode.Target ) )
+		if ( hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
 			return;
@@ -22,13 +22,13 @@ public partial class Player
 
 		if ( hint == _currentHint )
 		{
-			hint.Tick( CameraMode.Target );
+			hint.Tick( UI.Hud.DisplayedPlayer );
 			return;
 		}
 
 		DeleteHint();
 
-		_currentHintPanel = hint.DisplayHint( CameraMode.Target );
+		_currentHintPanel = hint.DisplayHint( UI.Hud.DisplayedPlayer );
 		_currentHintPanel.Parent = UI.HintDisplay.Instance;
 		_currentHintPanel.Enabled( true );
 
@@ -59,7 +59,7 @@ public partial class Player
 	private IEntityHint FindHintableEntity()
 	{
 		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
-			.Ignore( CameraMode.Target )
+			.Ignore( UI.Hud.DisplayedPlayer )
 			.WithAnyTags( "solid", "interactable" )
 			.UseHitboxes()
 			.Run();

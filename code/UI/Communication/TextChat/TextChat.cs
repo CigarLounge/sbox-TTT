@@ -86,7 +86,7 @@ public partial class TextChat : Panel
 
 		if ( Input.Text == Strings.RTVCommand )
 		{
-			if ( Game.LocalClient.GetValue<bool>( Strings.HasRockedTheVote ) )
+			if ( Game.LocalClient.HasRockedTheVote() )
 			{
 				AddInfo( "You have already rocked the vote!" );
 				return;

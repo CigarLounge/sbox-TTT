@@ -114,6 +114,6 @@ public partial class InventorySelection : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( CameraMode.Target.Inventory.HashCombine( carriable => carriable.NetworkIdent ) );
+		return HashCode.Combine( Hud.DisplayedPlayer.Inventory.HashCombine( carriable => carriable.NetworkIdent ) );
 	}
 }

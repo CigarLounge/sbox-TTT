@@ -127,7 +127,7 @@ public partial class InspectMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive(), _selectedInspectEntry );
+		return HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive(), _selectedInspectEntry?.ActiveText.ToString() );
 	}
 
 	// Called from UI panel
