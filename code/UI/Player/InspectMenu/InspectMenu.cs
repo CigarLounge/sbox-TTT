@@ -148,7 +148,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		TextChat.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
-		SendDetectiveMarker( To.Multiple( Utils.GetAliveClientsWithRole<Detective>() ), corpse.Position );
+		SendDetectiveMarker( To.Multiple( Utils.GetClientsWhere( p => p.IsAlive() && p.Role is Detective ) ), corpse.Position );
 	}
 
 	[ClientRpc]

@@ -12,7 +12,8 @@ public partial class RoleMenu : Panel
 	{
 		Shop,
 		DNA,
-		Radio
+		Radio,
+		CreditTransfer
 	}
 
 	// Tab => Condition that allows access to the tab.
@@ -20,7 +21,8 @@ public partial class RoleMenu : Panel
 	{
 		{Tab.Shop, () => (Game.LocalPawn as Player).Role.ShopItems.Any()},
 		{Tab.DNA, () => (Game.LocalPawn as Player).Inventory.Find<DNAScanner>() is not null},
-		{Tab.Radio, () => (Game.LocalPawn as Player).Components.Get<RadioComponent>() is not null}
+		{Tab.Radio, () => (Game.LocalPawn as Player).Components.Get<RadioComponent>() is not null},
+		{Tab.CreditTransfer, () => (Game.LocalPawn as Player).Role.ShopItems.Any()}
 	};
 	private Tab _currentTab;
 
@@ -47,6 +49,7 @@ public partial class RoleMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( (Game.LocalPawn as Player).Role, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
+		var player = Game.LocalPawn as Player;
+		return HashCode.Combine( player.IsAlive(), player.Role, player.Credits, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
 	}
 }

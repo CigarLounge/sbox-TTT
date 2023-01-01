@@ -1,5 +1,6 @@
 using Sandbox;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT;
 
@@ -47,7 +48,7 @@ public partial class InProgress : BaseState
 		Spectators.Add( player );
 
 		player.UpdateMissingInAction();
-		ChangeRoundIfOver();
+		CheckForResult();
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -66,7 +67,7 @@ public partial class InProgress : BaseState
 		AlivePlayers.Remove( player );
 		Spectators.Remove( player );
 
-		ChangeRoundIfOver();
+		CheckForResult();
 	}
 
 	protected override void OnStart()
@@ -108,22 +109,6 @@ public partial class InProgress : BaseState
 		PostRound.Load( Team.Innocents, WinType.TimeUp );
 	}
 
-	private Team IsRoundOver()
-	{
-		List<Team> aliveTeams = new();
-
-		foreach ( var player in AlivePlayers )
-		{
-			if ( !aliveTeams.Contains( player.Team ) )
-				aliveTeams.Add( player.Team );
-		}
-
-		if ( aliveTeams.Count == 0 )
-			return Team.None;
-
-		return aliveTeams.Count == 1 ? aliveTeams[0] : Team.None;
-	}
-
 	public override void OnSecond()
 	{
 		if ( !Game.IsServer )
@@ -134,33 +119,24 @@ public partial class InProgress : BaseState
 
 		if ( TimeLeft )
 			OnTimeUp();
-
-		if ( !Utils.HasMinimumPlayers() && IsRoundOver() == Team.None )
-			GameManager.Current.ForceStateChange( new WaitingState() );
 	}
 
-	private bool ChangeRoundIfOver()
+	private void CheckForResult()
 	{
-		var result = IsRoundOver();
+		HashSet<Team> aliveTeams = new();
+		foreach ( var player in AlivePlayers )
+			aliveTeams.Add( player.Team );
 
-		if ( result != Team.None && !GameManager.PreventWin )
-		{
-			PostRound.Load( result, WinType.Elimination );
-			return true;
-		}
-
-		return false;
+		if ( aliveTeams.Count == 0 )
+			PostRound.Load( Team.None, WinType.Elimination );
+		else if ( aliveTeams.Count == 1 )
+			PostRound.Load( aliveTeams.FirstOrDefault(), WinType.Elimination );
 	}
 
 	private static void GivePlayersCredits<T>( int credits ) where T : Role
 	{
-		var clients = Utils.GetAliveClientsWithRole<T>();
-
-		clients.ForEach( ( cl ) =>
-		{
-			if ( cl.Pawn is Player p )
-				p.Credits += credits;
-		} );
+		var clients = Utils.GetClientsWhere( p => p.IsAlive() && p.Role is T );
+		clients.ForEach( c => (c.Pawn as Player).Credits += credits );
 
 		UI.InfoFeed.AddRoleEntry
 		(
@@ -183,6 +159,6 @@ public partial class InProgress : BaseState
 			return;
 
 		if ( GameManager.Current.State is InProgress inProgress )
-			inProgress.ChangeRoundIfOver();
+			inProgress.CheckForResult();
 	}
 }

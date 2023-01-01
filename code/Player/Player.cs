@@ -134,7 +134,7 @@ public partial class Player : AnimatedEntity
 			LifeState = LifeState.Alive;
 
 			UpdateStatus( To.Everyone );
-			
+
 			EnableAllCollisions = true;
 			EnableDrawing = true;
 			EnableTouch = true;
@@ -173,7 +173,7 @@ public partial class Player : AnimatedEntity
 		{
 			CurrentChannel = Channel.All;
 			MuteFilter = MuteFilter.None;
-			
+
 			ClearButtons();
 		}
 

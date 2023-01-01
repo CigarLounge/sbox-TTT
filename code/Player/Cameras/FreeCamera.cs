@@ -27,8 +27,7 @@ public class FreeCamera : CameraMode
 
 		if ( Input.Pressed( InputButton.Jump ) )
 		{
-			var alivePlayer = Game.Random.FromList( Utils.GetAlivePlayers() );
-
+			var alivePlayer = Game.Random.FromList( Utils.GetPlayersWhere( p => p.IsAlive() ) );
 			if ( alivePlayer.IsValid() )
 				Current = new FollowEntityCamera( alivePlayer );
 		}

@@ -1,0 +1,112 @@
+@using Sandbox
+@using System
+@using System.Linq
+
+@namespace TTT.UI
+
+@if (Game.LocalPawn is not TTT.Player localPlayer) 
+{
+    return;
+}
+
+<root class="text-shadow">
+    <div class="player-list rounded background-color-gradient box-shadow">
+        @{
+            var playersWithRole = Utils.GetPlayersWhere(p => p.IsAlive() && !p.IsLocalPawn && p.Team == localPlayer.Team && p.Role.ShopItems.Any());
+            if (playersWithRole.Any())
+            {
+                @foreach (var player in playersWithRole)
+                {
+                    <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")" @onclick=@(() => {_selectedPlayer = player;})>
+                        <img src="avatar:@player.SteamId" class="avatar" />
+                        <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
+                    </div>
+                }
+            }
+            else
+            {
+                <text>
+                    <text class="empty">
+                        Nobody is available to receive credits from you, maybe this is for the better...
+                    </text>
+                </text>
+            }
+        }
+    </div>
+    <div class="send rounded background-color-gradient box-shadow">
+        @{
+            var canSendCredits = _selectedPlayer is not null && localPlayer.Credits >= CreditAmount;
+            <button icon="outbox" class="credits-button @(!canSendCredits ? "inactive" : "")" @onclick=@(() => SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>Send Credits</button>
+        }
+        <text style="font-color: lightgrey;">Select a player to send</text>
+        <text class="text-color-tertiary">100 credits</text>
+    </div>
+</root>
+
+<style>
+    CreditTransfer {
+        width: 100%;
+
+        .player-list {
+            flex-direction: column;
+            overflow: scroll;
+            padding: 30px;
+            width: 65%;
+            margin-right: 10px;
+
+            .empty {
+                width: 100%;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                font-size: 18px;
+            }
+
+            .player {
+                padding: 5px;
+                cursor: pointer;
+                transition: all 0.25s ease-out;
+                flex-shrink: 0;
+                justify-content: center;
+                align-items: center;
+
+                .avatar {
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 4px;
+                    margin-right: 4px;
+                }
+
+                &.selected {
+                    background-color: #1a1a1a;
+                }
+
+                &:hover {
+                    transform: scale(1.05);
+                }
+            }
+        }
+
+        .send {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            width: 35%;
+
+            .credits-button {
+                font-size: 18px;
+                font-weight: 400;
+                font-color: #fdc418;
+
+                &:hover {
+                    font-color: #ebb515;
+                }
+
+                &:active {
+                    font-color: #fdc418;
+                }
+            }
+        }
+    }
+</style>
