@@ -14,7 +14,6 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
 	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
 	public bool CanTeamChat => Info.CanTeamChat;
-	public bool CanTransferCredits => Info.CanTransferCredits;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
 	public RoleInfo.KarmaConfig Karma => Info.Karma;
