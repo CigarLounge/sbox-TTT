@@ -5,7 +5,7 @@ namespace TTT;
 
 public partial class Player
 {
-	public bool IsForcedSpectator => Client.GetClientData<bool>("forced_spectator");
+	public bool IsForcedSpectator => Client.GetClientData<bool>( "forced_spectator" );
 	public bool IsSpectator => Status == PlayerStatus.Spectator;
 
 	public void MakeSpectator()
