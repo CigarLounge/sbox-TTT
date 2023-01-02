@@ -30,7 +30,6 @@ public partial class Player
 			return;
 		}
 
-		// Since this is clientside, we should disconnect
 		if ( _timeSinceLastAction > GameManager.AFKTimer )
 			Spectating.IsForced = true;
 	}
