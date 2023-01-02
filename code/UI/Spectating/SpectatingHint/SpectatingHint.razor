@@ -47,7 +47,7 @@
 {
 	protected override int BuildHash()
 	{
-		return HashCode.Combine(Game.LocalPawn.IsAlive(), (Game.LocalPawn as TTT.Player).Prop, !Spectating.Player.IsValid(), Hud.DisplayedPlayer);
+		return HashCode.Combine(Hud.DisplayedPlayer.SteamId, Hud.DisplayedPlayer.IsAlive(), Hud.DisplayedPlayer.Prop);
 	}
 }
 
