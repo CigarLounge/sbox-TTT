@@ -12,7 +12,7 @@ public class FirstPersonCamera : CameraMode
 
 	public override void BuildInput()
 	{
-		if ( ((Player)Game.LocalPawn).Status == PlayerStatus.Alive )
+		if ( UI.Hud.DisplayedPlayer.IsLocalPawn )
 			return;
 
 		if ( !Spectating.Player.IsValid() || Input.Pressed( InputButton.Jump ) )
@@ -31,9 +31,6 @@ public class FirstPersonCamera : CameraMode
 	public override void FrameSimulate( Player player )
 	{
 		var target = UI.Hud.DisplayedPlayer;
-
-		if ( !target.IsValid() )
-			return;
 
 		Camera.Position = target.EyePosition;
 		Camera.Rotation = target == Spectating.Player ? Rotation.Slerp( Camera.Rotation, target.EyeLocalRotation, Time.Delta * 20f ) : target.EyeRotation;
