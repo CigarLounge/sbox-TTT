@@ -32,6 +32,9 @@ public class FirstPersonCamera : CameraMode
 	{
 		var target = UI.Hud.DisplayedPlayer;
 
+		if ( !target.IsValid() )
+			return;
+
 		Camera.Position = target.EyePosition;
 		Camera.Rotation = target == Spectating.Player ? Rotation.Slerp( Camera.Rotation, target.EyeLocalRotation, Time.Delta * 20f ) : target.EyeRotation;
 		Camera.FirstPersonViewer = target;
