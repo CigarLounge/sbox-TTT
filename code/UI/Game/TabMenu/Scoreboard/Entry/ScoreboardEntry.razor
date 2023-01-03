@@ -4,11 +4,7 @@
 @namespace TTT.UI
 
 @{
-    var backgroundColor = Player.Role is not NoneRole and not Innocent
-            ? $"background-color: {Player.Role.Color.WithAlpha(0.10f).Hex}"
-            : $"background-color: #4b4b4b15";
-    <root @onclick=@(() => {_isExpanded = !_isExpanded;}) class="text-shadow @(Player == Game.LocalPawn ? "local" : "")"
-        style="@backgroundColor">
+    <root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")">
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
             <text class="name">@Player.SteamName</text>
@@ -29,12 +25,17 @@
     </root>
 }
 
+@code {
+    private string GetBackgroundColor()
+	{
+		return Player.Role is not NoneRole and not Innocent ? Player.Role.Color.WithAlpha( 0.10f ).Hex : "#4b4b4b15";
+	}
+}
+
 <style>
     ScoreboardEntry {
-        display: flex;
         flex-direction: column;
         flex-shrink: 0;
-        cursor: pointer;
 
         .entry {
             width: 100%;
@@ -85,6 +86,12 @@
 
         .local {
             background-color: #f2b42d1a;
+            cursor: default;
+        }
+
+        &:not(.local) {
+            cursor: pointer;
+            background-color: @GetBackgroundColor();
         }
     }
 </style>
