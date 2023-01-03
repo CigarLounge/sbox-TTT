@@ -30,3 +30,5 @@ models/**/*.png
 # vscode
 .vscode
 */.vs/*
+
+*/config/applicationhost.config
