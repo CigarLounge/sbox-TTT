@@ -22,6 +22,10 @@ public partial class InventorySelection : Panel
 			InputButton.Slot9
 	};
 
+	/// <summary>
+	/// Returns numeral keyboard input, ranging from 1 to 9 of the current key that being pressed.
+	/// </summary>
+	/// <returns>int numberKey</returns>
 	public static int GetKeyboardNumberPressed()
 	{
 		for ( var i = 0; i < _slotInputButtons.Length; i++ )
@@ -50,7 +54,7 @@ public partial class InventorySelection : Panel
 		var keyboardIndexPressed = GetKeyboardNumberPressed();
 
 		if ( keyboardIndexPressed != -1 )
-		{
+		{	
 			List<Carriable> weaponsOfSlotTypeSelected = new();
 			var activeCarriableOfSlotTypeIndex = -1;
 
@@ -60,6 +64,7 @@ public partial class InventorySelection : Panel
 				{
 					if ( (int)slot.Carriable.Info.Slot == keyboardIndexPressed - 1 )
 					{
+						
 						// Using the keyboard index the user pressed, find all carriables that
 						// have the same slot type as the index.
 						// Ex. "3" pressed, find all carriables with slot type "3".
@@ -79,6 +84,7 @@ public partial class InventorySelection : Panel
 			{
 				// The user isn't holding an active carriable, or is holding a weapon that has a different
 				// hold type than the one selected using the keyboard. We can just select the first weapon.
+				
 				player.ActiveChildInput = weaponsOfSlotTypeSelected.FirstOrDefault();
 			}
 			else
@@ -102,6 +108,12 @@ public partial class InventorySelection : Panel
 	}
 
 	// Keyboard selection can only increment the index by 1.
+	/// <summary>
+	/// Increments the classic weapon selection index by one, from the according category (1 for melee, 2 handguns etc)
+	/// </summary>
+	/// <param name="index"></param>
+	/// <param name="count"></param>
+	/// <returns></returns>
 	private int GetNextWeaponIndex( int index, int count )
 	{
 		return ClampSlotIndex( index + 1, count - 1 );

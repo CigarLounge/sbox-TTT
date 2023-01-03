@@ -116,7 +116,7 @@ public partial class QuickChat : Panel
 			return;
 
 		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed();
-		if ( keyboardIndexPressed <= 0 ) // Only accept keyboard numbers 1-9
+		if ( keyboardIndexPressed <= 0 ) // moved the comment that was here into doc
 			return;
 
 		if ( _timeSinceLastMessage > 1 )

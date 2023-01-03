@@ -17,6 +17,7 @@ public partial class RoleMenu : Panel
 	}
 
 	// Tab => Condition that allows access to the tab.
+	//leaving this right now untouched
 	private readonly Dictionary<Tab, Func<bool>> _access = new()
 	{
 		{Tab.Shop, () => (Game.LocalPawn as Player).Role.ShopItems.Any()},
@@ -26,8 +27,13 @@ public partial class RoleMenu : Panel
 	};
 	private Tab _currentTab;
 
-	// Determines if we have access to any tabs before we show the role menu.
-	// Also ensures that _currentTab is selecting a tab we have access to.
+	
+
+	/// <summary>
+	/// Determines if we have access to any tabs priot to the role menu showing up,
+	/// ensures that _currentTab is selecting a tab we have access to.
+	/// </summary>
+	/// <returns>bool hasAccess</returns>
 	private bool HasTabAccess()
 	{
 		if ( _access[_currentTab].Invoke() )
