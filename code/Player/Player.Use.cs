@@ -90,6 +90,7 @@ public partial class Player
 			return null;
 
 		_traceDistance = trace.Distance;
+
 		return trace.Entity;
 	}
 
@@ -106,6 +107,7 @@ public partial class Player
 		foreach ( var body in entity.PhysicsGroup.Bodies )
 		{
 			var usablePoint = body.FindClosestPoint( EyePosition );
+
 			if ( EyePosition.Distance( usablePoint ) <= UseDistance )
 				return usablePoint;
 		}

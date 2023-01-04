@@ -14,6 +14,7 @@ public partial class Player
 	private void DisplayEntityHints()
 	{
 		var hint = FindHintableEntity();
+
 		if ( hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
@@ -34,9 +35,9 @@ public partial class Player
 
 		_currentHint = hint;
 
-		if ( _currentHint is Entity ent && _currentHint.ShowGlow )
+		if ( _currentHint is Entity entity && _currentHint.ShowGlow )
 		{
-			var glow = ent.Components.GetOrCreate<Glow>();
+			var glow = entity.Components.GetOrCreate<Glow>();
 			glow.Width = 0.25f;
 			glow.Color = Role.Color;
 			glow.Enabled = true;
@@ -49,24 +50,26 @@ public partial class Player
 		_currentHintPanel = null;
 		UI.FullScreenHintMenu.Instance?.Close();
 
-		if ( _currentHint is Entity ent && _currentHint.ShowGlow )
-			if ( ent.Components.TryGet<Glow>( out var activeGlow ) )
+		if ( _currentHint is Entity entity && _currentHint.ShowGlow )
+		{
+			if ( entity.Components.TryGet<Glow>( out var activeGlow ) )
 				activeGlow.Enabled = false;
-
+		}
+		
 		_currentHint = null;
 	}
 
 	private IEntityHint FindHintableEntity()
 	{
-		var trace = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
+		var tr = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
 			.Ignore( UI.Hud.DisplayedPlayer )
 			.WithAnyTags( "solid", "interactable" )
 			.UseHitboxes()
 			.Run();
 
-		HoveredEntity = trace.Entity;
+		HoveredEntity = tr.Entity;
 
-		if ( HoveredEntity is IEntityHint hint && trace.Distance <= hint.HintDistance )
+		if ( HoveredEntity is IEntityHint hint && tr.Distance <= hint.HintDistance )
 			return hint;
 
 		return null;

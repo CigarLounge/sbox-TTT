@@ -66,10 +66,12 @@ public partial class Player
 		foreach ( var client in to )
 		{
 			var id = client.Pawn.NetworkIdent;
+
 			if ( _playersWhoKnowTheRole.Contains( id ) )
 				continue;
 
 			_playersWhoKnowTheRole.Add( id );
+
 			ClientSetRole( To.Single( client ), Role.Info );
 		}
 	}
@@ -83,6 +85,7 @@ public partial class Player
 	private void ClientSetRole( RoleInfo roleInfo )
 	{
 		SetRole( roleInfo );
+
 		IsRoleKnown = true;
 	}
 }

@@ -4,13 +4,13 @@ namespace TTT;
 
 public partial class Player : IEntityHint
 {
-	public bool ShowGlow => false;
-
 	public float HintDistance => MaxHintDistance;
+	public bool ShowGlow => false;
 
 	public bool CanHint( Player player )
 	{
 		var disguiser = Perks.Find<Disguiser>();
+
 		return !disguiser?.IsActive ?? true;
 	}
 

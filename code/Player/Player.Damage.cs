@@ -17,21 +17,6 @@ public struct ColorGroup
 	}
 }
 
-public enum HitboxGroup
-{
-	None = -1,
-	Generic = 0,
-	Head = 1,
-	Chest = 2,
-	Stomach = 3,
-	LeftArm = 4,
-	RightArm = 5,
-	LeftLeg = 6,
-	RightLeg = 7,
-	Gear = 10,
-	Special = 11,
-}
-
 public partial class Player
 {
 	public const float MaxHealth = 100f;
@@ -115,6 +100,7 @@ public partial class Player
 			return _healthGroupList[^1];
 
 		var index = (int)((health - 1f) / (MaxHealth / _healthGroupList.Length));
+
 		return _healthGroupList[index];
 	}
 
@@ -125,13 +111,9 @@ public partial class Player
 		LifeState = LifeState.Dead;
 		Status = PlayerStatus.MissingInAction;
 		TimeSinceDeath = 0;
-		Client.AddInt( "deaths" );
 
 		if ( KilledByPlayer )
-		{
-			LastAttacker.Client.AddInt( "kills" );
 			((Player)LastAttacker).PlayersKilled.Add( this );
-		}
 
 		BecomeCorpse();
 		RemoveAllDecals();
@@ -192,7 +174,7 @@ public partial class Player
 		}
 
 		if ( info.HasTag( Strings.Tags.Bullet ) )
-			info.Damage *= GetBulletDamageMultipliers( ref info );
+			info.Damage *= GetBulletDamageMultipliers( info );
 
 		if ( info.HasTag( Strings.Tags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
@@ -232,7 +214,7 @@ public partial class Player
 		);
 	}
 
-	private float GetBulletDamageMultipliers( ref DamageInfo info )
+	private float GetBulletDamageMultipliers( DamageInfo info )
 	{
 		var damageMultiplier = 1f;
 

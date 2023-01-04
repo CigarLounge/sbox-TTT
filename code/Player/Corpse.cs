@@ -12,9 +12,7 @@ namespace TTT;
 [Title( "Player corpse" )]
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
-	[Net]
-	public bool HasCredits { get; private set; }
-
+	[Net] public bool HasCredits { get; private set; }
 	public Player Player { get; set; }
 	/// <summary>
 	/// Whether or not this corpse has been found by a player
@@ -30,10 +28,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public string LastWords { get; private set; }
 	public PerkInfo[] Perks { get; private set; }
 	public Player[] KillList { get; private set; }
-
-	// Clientside only
 	public bool HasCalledDetective { get; set; } = false;
-
 	public List<Particles> Ropes { get; private set; } = new();
 	public List<PhysicsJoint> RopeJoints { get; private set; } = new();
 
@@ -116,8 +111,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		base.Spawn();
 
-		Tags.Add( "interactable" );
-		Tags.Add( "corpse" );
+		Tags.Add( "interactable", "corpse" );
 
 		PhysicsEnabled = true;
 		UsePhysicsCollision = true;

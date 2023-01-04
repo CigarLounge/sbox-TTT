@@ -109,6 +109,7 @@ public partial class InfoFeed : Panel
 	private void OnRoundEnd( Team _, WinType _1 )
 	{
 		this.Enabled( false );
+
 		DeleteChildren();
 	}
 }
