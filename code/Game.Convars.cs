@@ -74,7 +74,7 @@ public partial class GameManager
 	{
 		foreach ( var client in Game.Clients )
 		{
-			if ( !client.Pawn.AsEntity().IsAlive() )
+			if ( client.Pawn is not Player player || !player.IsAlive )
 				continue;
 
 			client.Voice.WantsStereo = newValue;

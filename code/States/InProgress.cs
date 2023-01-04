@@ -41,7 +41,7 @@ public partial class InProgress : BaseState
 
 		if ( player.Role is Traitor )
 			GivePlayersCredits<Detective>( GameManager.DetectiveTraitorDeathReward );
-		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive() && p.Team == Team.Traitors )
+		else if ( player.Role is Detective && player.LastAttacker is Player p && p.IsAlive && p.Team == Team.Traitors )
 			GiveTraitorCredits( p );
 
 		AlivePlayers.Remove( player );
@@ -135,7 +135,7 @@ public partial class InProgress : BaseState
 
 	private static void GivePlayersCredits<T>( int credits ) where T : Role
 	{
-		var clients = Utils.GetClientsWhere( p => p.IsAlive() && p.Role is T );
+		var clients = Utils.GetClientsWhere( p => p.IsAlive && p.Role is T );
 		clients.ForEach( c => (c.Pawn as Player).Credits += credits );
 
 		UI.InfoFeed.AddRoleEntry

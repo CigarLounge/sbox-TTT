@@ -33,7 +33,7 @@ public partial class VoiceChatEntry : Panel
 		_targetVoiceLevel = level;
 
 		if ( _client.IsValid() )
-			SetClass( "dead", !_client.Pawn.AsEntity().IsAlive() );
+			SetClass( "dead", _client.Pawn is Player player && !player.IsAlive );
 	}
 
 	public override void Tick()
@@ -53,7 +53,7 @@ public partial class VoiceChatEntry : Panel
 
 		_voiceLevel = _voiceLevel.LerpTo( _targetVoiceLevel, Time.Delta * 40.0f );
 
-		if ( !_indicator.IsValid() || _client.Pawn is not Player player || !player.IsAlive() )
+		if ( !_indicator.IsValid() || _client.Pawn is not Player player || !player.IsAlive )
 		{
 			_indicator?.Delete();
 			return;

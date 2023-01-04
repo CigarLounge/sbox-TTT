@@ -2,6 +2,11 @@
 
 @namespace TTT.UI
 
+@if (Game.LocalPawn is not TTT.Player player)
+{
+    return;
+}
+
 <root class="text-shadow">
     <div class="inspect-container">
         <div style="flex-direction: column">
@@ -11,7 +16,7 @@
                 <text class="player-label">@_corpse.Player.SteamName</text>
             </div>
             <div>
-                @if (_corpse.Player.IsConfirmedDead && Game.LocalPawn.IsAlive())
+                @if (_corpse.Player.IsConfirmedDead && player.IsAlive)
                 {
                     <button 
                         @onclick=@CallDetective icon="search" 

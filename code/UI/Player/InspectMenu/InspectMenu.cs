@@ -127,7 +127,7 @@ public partial class InspectMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( _corpse.HasCalledDetective, Game.LocalPawn.IsAlive(), _selectedInspectEntry?.ActiveText.ToString() );
+		return HashCode.Combine( _corpse.HasCalledDetective, (Game.LocalPawn as Player)?.IsAlive, _selectedInspectEntry?.ActiveText.ToString() );
 	}
 
 	// Called from UI panel
@@ -148,7 +148,7 @@ public partial class InspectMenu : Panel
 			return;
 
 		TextChat.AddInfo( To.Everyone, $"{ConsoleSystem.Caller.Name} called a Detective to the body of {corpse.Player.SteamName}." );
-		SendDetectiveMarker( To.Multiple( Utils.GetClientsWhere( p => p.IsAlive() && p.Role is Detective ) ), corpse.Position );
+		SendDetectiveMarker( To.Multiple( Utils.GetClientsWhere( p => p.IsAlive && p.Role is Detective ) ), corpse.Position );
 	}
 
 	[ClientRpc]

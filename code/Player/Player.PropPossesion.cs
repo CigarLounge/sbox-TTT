@@ -40,7 +40,7 @@ public partial class Player
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
-		if ( player.IsAlive() || player.Prop.IsValid() )
+		if ( player.IsAlive || player.Prop.IsValid() )
 			return;
 
 		var target = FindByIndex( propNetworkIdent );

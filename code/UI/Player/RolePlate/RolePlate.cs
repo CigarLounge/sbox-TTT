@@ -25,7 +25,7 @@ public partial class RolePlate : EntityComponent<Player>
 	[Event.Client.Frame]
 	private void FrameUpdate()
 	{
-		_roleWorldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive() );
+		_roleWorldPanel.Enabled( !Entity.IsLocalPawn && Entity.IsAlive );
 
 		if ( !_roleWorldPanel.IsEnabled() )
 			return;

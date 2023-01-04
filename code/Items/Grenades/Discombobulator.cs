@@ -24,12 +24,12 @@ public class Discombobulator : Grenade
 		var radius = 400f;
 		var pushForce = 1024f;
 
-		foreach ( var entity in Entity.FindInSphere( Position, radius ) )
+		foreach ( var entity in FindInSphere( Position, radius ) )
 		{
 			if ( entity is not ModelEntity target || !target.IsValid() )
 				continue;
 
-			if ( !target.IsAlive() )
+			if ( target.LifeState == LifeState.Dead )
 				continue;
 
 			if ( !target.PhysicsBody.IsValid() )

@@ -54,7 +54,7 @@ public partial class Crosshair : Panel
 
 	public override void DrawBackground( ref RenderState state )
 	{
-		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive )
 			return;
 
 		var center = Screen.Size / 2;

@@ -48,7 +48,7 @@ public partial class QuickChat : Panel
 		if ( Input.Pressed( InputButton.Zoom ) )
 			_isShowing = !_isShowing;
 
-		this.Enabled( player.IsAlive() && _isShowing );
+		this.Enabled( player.IsAlive && _isShowing );
 
 		var newTarget = GetTarget();
 
