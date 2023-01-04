@@ -122,7 +122,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 		foreach ( var client in Game.Clients )
 		{
-			if ( client.Pawn is not Player player || !player.IsAlive() )
+			if ( client.Pawn is not Player player || !player.IsAlive )
 				continue;
 
 			var dist = Vector3.DistanceBetween( Position, player.Position );
@@ -153,7 +153,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !player.IsLocalPawn || !player.IsAlive() || !Input.Down( InputButton.Use ) )
+		if ( !player.IsLocalPawn || !player.IsAlive || !Input.Down( InputButton.Use ) )
 		{
 			UI.FullScreenHintMenu.Instance?.Close();
 			return;

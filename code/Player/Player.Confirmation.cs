@@ -25,6 +25,7 @@ public partial class Player
 	/// The player who confirmed this player's death.
 	/// </summary>
 	public Player Confirmer { get; private set; }
+	public bool IsAlive => Status == PlayerStatus.Alive;
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
 	public Player LastSeenPlayer { get; internal set; }
@@ -43,7 +44,7 @@ public partial class Player
 		}
 		set
 		{
-			if ( !this.IsAlive() )
+			if ( !IsAlive )
 				return;
 
 			_timeSinceLastWords = 0;
@@ -87,7 +88,7 @@ public partial class Player
 		Game.AssertServer();
 
 #if DEBUG
-		if ( this.IsAlive() || IsSpectator )
+		if ( IsAlive || IsSpectator )
 		{
 			Log.Error( "Trying to confirm an alive player or spectator!" );
 			return;

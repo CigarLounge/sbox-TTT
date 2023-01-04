@@ -14,7 +14,7 @@ public static class Spectating
 		{
 			forced_spectator = value;
 
-			if ( !value || !Game.LocalPawn.IsAlive() )
+			if ( !value || (Game.LocalPawn is Player player && !player.IsAlive) )
 				return;
 
 			GameManager.Kill();
@@ -36,7 +36,7 @@ public static class Spectating
 	/// </summary>
 	public static void FindPlayer( bool nextPlayer )
 	{
-		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive() );
+		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive );
 		if ( alivePlayers.IsNullOrEmpty() )
 			return;
 

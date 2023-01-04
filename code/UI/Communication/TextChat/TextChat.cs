@@ -108,9 +108,9 @@ public partial class TextChat : Panel
 			return;
 		}
 
-		if ( !player.IsAlive() )
+		if ( !player.IsAlive )
 		{
-			var clients = GameManager.Current.State is InProgress ? Utils.GetClientsWhere( p => !p.IsAlive() ) : Game.Clients;
+			var clients = GameManager.Current.State is InProgress ? Utils.GetClientsWhere( p => !p.IsAlive ) : Game.Clients;
 			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
 			return;
 		}
@@ -151,7 +151,7 @@ public partial class TextChat : Panel
 
 	private void OnTabPressed()
 	{
-		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive )
 			return;
 
 		if ( player.Role.CanTeamChat )

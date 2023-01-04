@@ -17,7 +17,7 @@ public partial class CreditTransfer : Panel
 			return;
 
 		var steamId = long.Parse( rawSteamId );
-		var receivingPlayer = Utils.GetPlayersWhere( p => p.IsAlive() && p.Team == sendingPlayer.Team && p.SteamId == steamId ).FirstOrDefault();
+		var receivingPlayer = Utils.GetPlayersWhere( p => p.IsAlive && p.Team == sendingPlayer.Team && p.SteamId == steamId ).FirstOrDefault();
 
 		if ( receivingPlayer is null )
 			return;
@@ -31,7 +31,7 @@ public partial class CreditTransfer : Panel
 		return HashCode.Combine(
 			(Game.LocalPawn as Player)?.Credits,
 			_selectedPlayer?.SteamId,
-			Utils.GetPlayersWhere( p => p.IsAlive() ).HashCombine( p => p.Role.GetHashCode() )
+			Utils.GetPlayersWhere( p => p.IsAlive ).HashCombine( p => p.Role.GetHashCode() )
 		);
 	}
 }

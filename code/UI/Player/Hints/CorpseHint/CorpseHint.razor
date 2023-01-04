@@ -9,7 +9,7 @@
     @if (_corpse.CanSearch()) 
     {
         <div class="actions">
-            @if (Game.LocalPawn is TTT.Player player && player.Role.CanRetrieveCredits && player.IsAlive() && _corpse.HasCredits) {
+            @if (Game.LocalPawn is TTT.Player player && player.Role.CanRetrieveCredits && player.IsAlive && _corpse.HasCredits) {
                 <text>
                     <text class="text-color-tertiary">Search to receive unspent credits.</text>
                 </text>

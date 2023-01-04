@@ -203,7 +203,7 @@ public partial class Player : AnimatedEntity
 
 		SimulateActiveCarriable();
 
-		if ( this.IsAlive() )
+		if ( IsAlive )
 		{
 			Controller?.SetActivePlayer( this );
 			Controller?.Simulate();
@@ -217,7 +217,7 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			if ( !this.IsAlive() )
+			if ( !IsAlive )
 			{
 				if ( Prop.IsValid() )
 					SimulatePossession();
@@ -273,7 +273,7 @@ public partial class Player : AnimatedEntity
 	/// </summary>
 	public override void OnAnimEventFootstep( Vector3 pos, int foot, float volume )
 	{
-		if ( !this.IsAlive() )
+		if ( !IsAlive )
 			return;
 
 		if ( !Game.IsClient )

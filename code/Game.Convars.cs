@@ -48,11 +48,8 @@ public partial class GameManager
 	#endregion
 
 	#region AFK Timers
-	[ConVar.Replicated( "ttt_afk_timer", Help = "The amount of time before a player is marked AFK.", Saved = true )]
+	[ConVar.Replicated( "ttt_afk_timer", Help = "The amount of time before a player is forced to being a spectator.", Saved = true )]
 	public static int AFKTimer { get; set; } = 180;
-
-	[ConVar.Server( "ttt_afk_kick", Help = "Kick any players that get marked AFK.", Saved = true )]
-	public static bool KickAFKPlayers { get; set; }
 	#endregion
 
 	#region Credits
@@ -77,7 +74,7 @@ public partial class GameManager
 	{
 		foreach ( var client in Game.Clients )
 		{
-			if ( !client.Pawn.AsEntity().IsAlive() )
+			if ( client.Pawn is not Player player || !player.IsAlive )
 				continue;
 
 			client.Voice.WantsStereo = newValue;

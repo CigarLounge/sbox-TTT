@@ -34,7 +34,7 @@ public partial class InventorySelection : Panel
 	[Event.Client.BuildInput]
 	private void BuildInput()
 	{
-		if ( Game.LocalPawn is not Player player || !player.IsAlive() )
+		if ( Game.LocalPawn is not Player player || !player.IsAlive )
 			return;
 
 		if ( !Children.Any() )

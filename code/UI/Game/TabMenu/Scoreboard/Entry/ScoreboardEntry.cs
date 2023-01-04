@@ -27,6 +27,7 @@ public partial class ScoreboardEntry : Panel
 			Player.Score,
 			Player.Client.Ping,
 			Player.TagGroup,
+			Player.IsLocalPawn,
 			_isExpanded
 		);
 	}

@@ -100,8 +100,8 @@ public partial class GameManager : Sandbox.GameManager
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.
-		var ent = client.Pawn.AsEntity();
-		if ( ent.IsValid() && ent.IsAlive() )
+		var player = client.Pawn as Player;
+		if ( player.IsValid() && player.IsAlive )
 			client.Pawn.Delete();
 
 		client.Pawn = null;
@@ -115,10 +115,10 @@ public partial class GameManager : Sandbox.GameManager
 		if ( destPlayer.MuteFilter == MuteFilter.All )
 			return false;
 
-		if ( !sourcePlayer.IsAlive() && !destPlayer.CanHearSpectators )
+		if ( !sourcePlayer.IsAlive && !destPlayer.CanHearSpectators )
 			return false;
 
-		if ( sourcePlayer.IsAlive() && !destPlayer.CanHearAlivePlayers )
+		if ( sourcePlayer.IsAlive && !destPlayer.CanHearAlivePlayers )
 			return false;
 
 		return true;

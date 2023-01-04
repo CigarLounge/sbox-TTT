@@ -12,7 +12,7 @@
 <root class="text-shadow">
     <div class="player-list rounded background-color-gradient box-shadow">
         @{
-            var playersWithRole = Utils.GetPlayersWhere(p => p.IsAlive() && !p.IsLocalPawn && p.Team == localPlayer.Team && p.Role.ShopItems.Any());
+            var playersWithRole = Utils.GetPlayersWhere(p => p.IsAlive && !p.IsLocalPawn && p.Team == localPlayer.Team && p.Role.ShopItems.Any());
             if (playersWithRole.Any())
             {
                 @foreach (var player in playersWithRole)

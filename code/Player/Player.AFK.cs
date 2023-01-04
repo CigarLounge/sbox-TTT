@@ -15,7 +15,7 @@ public partial class Player
 		if ( Client.IsBot )
 			return;
 
-		if ( !this.IsAlive() )
+		if ( !IsAlive )
 		{
 			_timeSinceLastAction = 0;
 			return;
@@ -30,7 +30,6 @@ public partial class Player
 			return;
 		}
 
-		// Since this is clientside, we should disconnect
 		if ( _timeSinceLastAction > GameManager.AFKTimer )
 			Spectating.IsForced = true;
 	}

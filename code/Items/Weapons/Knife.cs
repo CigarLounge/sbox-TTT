@@ -90,7 +90,7 @@ public partial class Knife : Carriable
 
 		trace.Entity.TakeDamage( damageInfo );
 
-		if ( trace.Entity is Player && !trace.Entity.IsAlive() )
+		if ( trace.Entity is Player target && !target.IsAlive )
 		{
 			Owner.Inventory.DropActive();
 			Delete();
