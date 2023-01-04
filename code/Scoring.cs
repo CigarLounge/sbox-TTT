@@ -53,7 +53,7 @@ public static class Scoring
 		{
 			var player = client.Pawn as Player;
 
-			if ( !player.IsAlive() )
+			if ( !player.IsAlive )
 			{
 				deadPlayersCount[(int)player.Team]++;
 				continue;

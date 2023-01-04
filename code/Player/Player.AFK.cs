@@ -15,7 +15,7 @@ public partial class Player
 		if ( Client.IsBot )
 			return;
 
-		if ( !this.IsAlive() )
+		if ( !this.IsAlive )
 		{
 			_timeSinceLastAction = 0;
 			return;

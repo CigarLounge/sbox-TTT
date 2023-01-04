@@ -52,7 +52,7 @@ public static class TeamExtensions
 
 	public static To ToAliveClients( this Team team )
 	{
-		return To.Multiple( _clients[team].Where( x => x.Pawn.AsEntity().IsAlive() ) );
+		return To.Multiple( _clients[team].Where( x => x.Pawn is Player player && player.IsAlive ) );
 	}
 
 	[GameEvent.Player.RoleChanged]

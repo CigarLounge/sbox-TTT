@@ -176,7 +176,7 @@ public partial class Player
 	{
 		Game.AssertServer();
 
-		if ( !this.IsAlive() )
+		if ( !this.IsAlive )
 			return;
 
 		if ( info.Attacker is Prop && info.Attacker.Tags.Has( Strings.Tags.IgnoreDamage ) )

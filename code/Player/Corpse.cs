@@ -142,7 +142,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Assert.NotNull( searcher );
 
 		var creditsRetrieved = 0;
-		retrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive();
+		retrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive;
 
 		if ( retrieveCredits && HasCredits )
 		{
@@ -157,7 +157,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		SendKillInfo( To.Single( searcher ) );
 
 		// Dead players will always covert search.
-		covert |= !searcher.IsAlive();
+		covert |= !searcher.IsAlive;
 
 		if ( !covert )
 		{

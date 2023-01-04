@@ -21,7 +21,7 @@
             {
                 <button icon=@("people") @onclick=@SwapToRoundSummary>Round Summary</button>
             }
-            @if (Game.LocalPawn is TTT.Player player && !player.IsAlive())
+            @if (Game.LocalPawn is TTT.Player player && !player.IsAlive)
             {
                 var muteButton = GetMuteButton();
                 <button icon=@(muteButton.icon) @onclick=@TTT.Player.ToggleMute>@muteButton.text</button>
@@ -55,8 +55,13 @@
 
     protected override int BuildHash()
     {
-        return HashCode.Combine(_isScoreboard, Game.LocalPawn.IsAlive(), Input.Down(InputButton.Score), (Game.LocalPawn as
-        TTT.Player).MuteFilter);
+        var player = Game.LocalPawn as TTT.Player;
+        return HashCode.Combine(
+            _isScoreboard, 
+            player?.IsAlive, 
+            player?.MuteFilter,
+            Input.Down(InputButton.Score)
+        );
     }
 }
 

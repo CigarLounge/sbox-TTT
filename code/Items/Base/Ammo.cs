@@ -109,6 +109,6 @@ public abstract partial class Ammo : Prop, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user.IsAlive() && user is Player;
+		return user is Player player && player.IsAlive;
 	}
 }

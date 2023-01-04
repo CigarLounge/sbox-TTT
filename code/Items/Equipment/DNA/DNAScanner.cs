@@ -233,7 +233,7 @@ public partial class DNA : EntityComponent
 		if ( decoyComponent is not null && decoyComponent.Decoy.IsValid() )
 			return decoyComponent.Decoy;
 
-		return TargetPlayer.IsAlive() ? TargetPlayer : TargetPlayer.Corpse;
+		return TargetPlayer.IsAlive ? TargetPlayer : TargetPlayer.Corpse;
 	}
 
 	[GameEvent.Round.Start]

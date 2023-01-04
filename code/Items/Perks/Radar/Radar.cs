@@ -60,7 +60,7 @@ public partial class Radar : Perk
 				if ( player.Client == Entity.Client )
 					continue;
 
-				if ( !player.IsAlive() )
+				if ( !player.IsAlive )
 					continue;
 
 				if ( !player.CanHint( Entity ) )

@@ -25,9 +25,6 @@ public class FollowEntityCamera : CameraMode
 			return;
 		}
 
-		if ( Game.LocalPawn.IsAlive() )
-			return;
-
 		if ( _followedEntity is Corpse && Input.Pressed( InputButton.Jump ) )
 		{
 			Current = new FreeCamera();
