@@ -63,7 +63,7 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		MaxPunches = (int)Math.Min( Math.Max( 0, _player.ActiveKarma / 100 ), 13 );
 
-		if ( Game.IsClient && !_player.IsAlive )
+		if ( Game.IsClient && Game.LocalPawn is Player player && !player.IsAlive )
 		{
 			_nameplate = new( Entity );
 			_meter = new( this );

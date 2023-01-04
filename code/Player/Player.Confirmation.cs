@@ -44,7 +44,7 @@ public partial class Player
 		}
 		set
 		{
-			if ( !this.IsAlive )
+			if ( !IsAlive )
 				return;
 
 			_timeSinceLastWords = 0;
@@ -88,7 +88,7 @@ public partial class Player
 		Game.AssertServer();
 
 #if DEBUG
-		if ( this.IsAlive || IsSpectator )
+		if ( IsAlive || IsSpectator )
 		{
 			Log.Error( "Trying to confirm an alive player or spectator!" );
 			return;
