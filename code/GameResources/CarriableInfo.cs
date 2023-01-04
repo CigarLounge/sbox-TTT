@@ -22,7 +22,7 @@ public class CarriableInfo : ItemInfo
 	public string HandsModelPath { get; set; } = "";
 
 	[Category( "WorldModels" )]
-	public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.None;
+	public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = 0;
 
 	[Title( "World Model" ), Category( "WorldModels" ), ResourceType( "vmdl" )]
 	public string WorldModelPath { get; set; } = "";
