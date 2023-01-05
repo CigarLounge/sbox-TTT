@@ -49,9 +49,9 @@ public class FollowEntityCamera : CameraMode
 		}
 	}
 
-	public override void FrameSimulate( Player player )
+	public override void FrameSimulate( IClient client )
 	{
-		if ( !_followedEntity.IsValid() )
+		if ( client.Pawn is not Player player || !_followedEntity.IsValid() )
 			return;
 
 		_focusPoint = Vector3.Lerp( _focusPoint, _followedEntity.WorldSpaceBounds.Center, Time.Delta * 5.0f );

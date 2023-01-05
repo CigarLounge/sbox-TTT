@@ -28,7 +28,7 @@ public class FirstPersonCamera : CameraMode
 			Spectating.FindPlayer( true );
 	}
 
-	public override void FrameSimulate( Player player )
+	public override void FrameSimulate( IClient client )
 	{
 		var target = UI.Hud.DisplayedPlayer;
 

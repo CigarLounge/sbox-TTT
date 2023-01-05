@@ -240,7 +240,6 @@ public partial class Player : AnimatedEntity
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
 		ActiveCarriable?.FrameSimulate( client );
-		CameraMode.Current?.FrameSimulate( this );
 	}
 
 	/// <summary>
@@ -269,7 +268,6 @@ public partial class Player : AnimatedEntity
 
 		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
-		CameraMode.Current?.BuildInput();
 	}
 
 	TimeSince _timeSinceLastFootstep;

@@ -40,7 +40,7 @@ public class FreeCamera : CameraMode
 		_lookAngles.roll = 0;
 	}
 
-	public override void FrameSimulate( Player player )
+	public override void FrameSimulate( IClient client )
 	{
 		var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Camera.Rotation * _moveSpeed;
 
