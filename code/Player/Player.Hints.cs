@@ -55,7 +55,7 @@ public partial class Player
 			if ( entity.Components.TryGet<Glow>( out var activeGlow ) )
 				activeGlow.Enabled = false;
 		}
-		
+
 		_currentHint = null;
 	}
 
