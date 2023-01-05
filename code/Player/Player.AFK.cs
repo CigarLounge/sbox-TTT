@@ -31,6 +31,9 @@ public partial class Player
 		}
 
 		if ( _timeSinceLastAction > GameManager.AFKTimer )
+		{
 			Spectating.IsForced = true;
+			Input.StopProcessing = true;
+		}
 	}
 }
