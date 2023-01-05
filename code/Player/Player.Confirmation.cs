@@ -68,21 +68,6 @@ public partial class Player
 		}
 	}
 
-	public void RemoveCorpse()
-	{
-		Game.AssertServer();
-
-		Corpse?.Delete();
-		Corpse = null;
-	}
-
-	protected void BecomeCorpse()
-	{
-		Game.AssertServer();
-
-		Corpse = new Corpse( this );
-	}
-
 	public void ConfirmDeath( Player confirmer = null )
 	{
 		Game.AssertServer();

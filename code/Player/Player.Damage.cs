@@ -115,7 +115,7 @@ public partial class Player
 		if ( KilledByPlayer )
 			((Player)LastAttacker).PlayersKilled.Add( this );
 
-		BecomeCorpse();
+		Corpse = new Corpse( this );
 		RemoveAllDecals();
 		StopUsing();
 
