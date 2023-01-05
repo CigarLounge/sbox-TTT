@@ -1,6 +1,4 @@
 @using System;
-@using Sandbox;
-@using Sandbox.UI;
 @using System.Linq;
 
 @namespace TTT.UI
@@ -26,10 +24,7 @@
                 return result != 0
         ? result
         : string.Compare(s1.Carriable.Info.Title, s2.Carriable.Info.Title, StringComparison.Ordinal);
-            });
-
-        (Children.First() as InventorySlot).IsFirst = true;
-        (Children.Last() as InventorySlot).IsLast = true;
+        });
     }
 </root>
 
@@ -42,14 +37,6 @@
 
         &.hide {
             display: none;
-        }
-
-        .rounded-top-left {
-            border-top-left-radius: 4px;
-        }
-
-        .rounded-bottom-left {
-            border-bottom-left-radius: 4px;
         }
     }
 </style>
