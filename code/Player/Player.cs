@@ -109,6 +109,9 @@ public partial class Player : AnimatedEntity
 		base.ClientSpawn();
 
 		Role = new NoneRole();
+
+		if ( IsLocalPawn )
+			CameraMode.Current = new FreeCamera();
 	}
 
 	public void Respawn()
@@ -168,12 +171,13 @@ public partial class Player : AnimatedEntity
 		ResetDamageData();
 
 		if ( !IsLocalPawn )
+		{
 			Role = new NoneRole();
+		}
 		else
 		{
 			CurrentChannel = Channel.All;
 			MuteFilter = MuteFilter.None;
-
 			ClearButtons();
 		}
 
@@ -236,6 +240,7 @@ public partial class Player : AnimatedEntity
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
 		ActiveCarriable?.FrameSimulate( client );
+		CameraMode.Current?.FrameSimulate( this );
 	}
 
 	/// <summary>
@@ -264,6 +269,7 @@ public partial class Player : AnimatedEntity
 
 		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
+		CameraMode.Current?.BuildInput();
 	}
 
 	TimeSince _timeSinceLastFootstep;

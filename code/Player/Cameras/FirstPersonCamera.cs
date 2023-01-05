@@ -36,7 +36,7 @@ public class FirstPersonCamera : CameraMode
 			return;
 
 		Camera.Position = target.EyePosition;
-		Camera.Rotation = target == Spectating.Player ? Rotation.Slerp( Camera.Rotation, target.EyeLocalRotation, Time.Delta * 20f ) : target.EyeRotation;
+		Camera.Rotation = target == Spectating.Player ? Rotation.Slerp( Camera.Rotation, target.EyeRotation, Time.Delta * 20f ) : target.EyeRotation;
 		Camera.FirstPersonViewer = target;
 
 		// TODO: We need some way to override the FieldOfView from a carriable.
