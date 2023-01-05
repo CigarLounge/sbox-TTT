@@ -10,7 +10,7 @@ public partial class PlayerInfo : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( Hud.DisplayedPlayer.SteamId, Hud.DisplayedPlayer.Role, Hud.DisplayedPlayer.Health );
+		return HashCode.Combine( Hud.DisplayedPlayer.IsAlive, Hud.DisplayedPlayer.SteamId, Hud.DisplayedPlayer.Role, Hud.DisplayedPlayer.Health );
 	}
 
 	[GameEvent.Player.TookDamage]

@@ -12,7 +12,7 @@ public partial class Player
 
 	private void CheckAFK()
 	{
-		if ( Client.IsBot )
+		if ( Client.IsBot || Spectating.IsForced )
 			return;
 
 		if ( !IsAlive )
