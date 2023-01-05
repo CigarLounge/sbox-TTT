@@ -41,8 +41,7 @@ public class FollowEntityCamera : CameraMode
 
 			if ( Input.Pressed( InputButton.PrimaryAttack ) )
 				Spectating.FindPlayer( false );
-
-			if ( Input.Pressed( InputButton.SecondaryAttack ) )
+			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
 				Spectating.FindPlayer( true );
 
 			_followedEntity = Spectating.Player;

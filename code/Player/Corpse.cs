@@ -75,7 +75,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			clothing.CopyBodyGroups( modelEntity );
 			clothing.CopyMaterialGroup( modelEntity );
 
-			if ( clothing.Model?.ResourcePath == Detective.Hat.Model && Player.LastDamage.IsHeadshot() )
+			if ( Player.LastDamage.IsHeadshot() && clothing.Model?.ResourcePath == Detective.Hat.Model )
 			{
 				clothing.Tags.Add( "interactable" );
 				clothing.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );

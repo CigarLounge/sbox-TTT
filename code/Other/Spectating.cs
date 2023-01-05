@@ -4,6 +4,7 @@ namespace TTT;
 
 public static class Spectating
 {
+	[ConVar.ClientData] private static bool forced_spectator { get; set; }
 	/// <summary>
 	/// If this is true, we will only be spectating next round.
 	/// </summary>	
@@ -26,21 +27,20 @@ public static class Spectating
 	/// </summary>
 	public static Player Player { get; set; }
 
-	// we have to have a backing property since Change doesn't work on clientdata for some reason.
-	[ConVar.ClientData] private static bool forced_spectator { get; set; }
 	private static int _spectatedPlayerIndex;
 
 	/// <summary>
-	/// Swaps the camera target to another alive player.
-	/// <para><see cref="bool"/> determines if we go forwards or backwards.</para>
+	/// Cycles through player list to find a spectating target.
 	/// </summary>
-	public static void FindPlayer( bool nextPlayer )
+	/// <param name="forward">Determines if we cycle forwards or backwards</param>
+	public static void FindPlayer( bool forward )
 	{
 		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive );
+
 		if ( alivePlayers.IsNullOrEmpty() )
 			return;
 
-		_spectatedPlayerIndex += nextPlayer ? 1 : -1;
+		_spectatedPlayerIndex += forward ? 1 : -1;
 
 		if ( _spectatedPlayerIndex >= alivePlayers.Count )
 			_spectatedPlayerIndex = 0;

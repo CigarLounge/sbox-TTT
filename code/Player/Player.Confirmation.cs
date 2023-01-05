@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Diagnostics;
 using System.Collections.Generic;
 
 namespace TTT;
@@ -68,23 +69,15 @@ public partial class Player
 		}
 	}
 
+	/// <summary>
+	/// Sets the <see cref="Status"/> to <see cref="PlayerStatus.ConfirmedDead"/>
+	/// then syncs it to everyone.
+	/// </summary>
+	/// <param name="confirmer">The player who confirmed this player's death.</param>
 	public void ConfirmDeath( Player confirmer = null )
 	{
 		Game.AssertServer();
-
-#if DEBUG
-		if ( IsAlive || IsSpectator )
-		{
-			Log.Error( "Trying to confirm an alive player or spectator!" );
-			return;
-		}
-
-		if ( IsConfirmedDead )
-		{
-			Log.Error( "This player is already confirmed dead!" );
-			return;
-		}
-#endif
+		Assert.True( IsMissingInAction, $"{SteamName} is not MIA!" );
 
 		Confirmer = confirmer;
 		Status = PlayerStatus.ConfirmedDead;
@@ -99,9 +92,7 @@ public partial class Player
 	public void Reveal()
 	{
 		Game.AssertServer();
-
-		if ( IsSpectator )
-			return;
+		Assert.True( !IsSpectator );
 
 		IsRoleKnown = true;
 
@@ -117,21 +108,13 @@ public partial class Player
 	}
 
 	/// <summary>
-	/// If the player is <strong><see cref="PlayerStatus.MissingInAction"/></strong>,
-	/// update the status for the client owner 
-	/// and <strong><see cref="Team.Traitors"/></strong>.
+	/// If the player is <see cref="PlayerStatus.MissingInAction"/>,
+	/// update the status for the client owner and <see cref="Team.Traitors"/>.
 	/// </summary>
 	public void UpdateMissingInAction()
 	{
 		Game.AssertServer();
-
-#if DEBUG
-		if ( !IsMissingInAction )
-		{
-			Log.Error( $"{SteamName} is not MIA!" );
-			return;
-		}
-#endif
+		Assert.True( IsMissingInAction, $"{SteamName} is not MIA!" );
 
 		UpdateStatus( Team.Traitors.ToClients() );
 
