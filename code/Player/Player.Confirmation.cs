@@ -26,7 +26,8 @@ public partial class Player
 	/// The player who confirmed this player's death.
 	/// </summary>
 	public Player Confirmer { get; private set; }
-	public bool IsAlive => Status == PlayerStatus.Alive;
+	// TODO: While s&box networking is messed up status sometimes doesn't get updated, lets double check with life state as well...
+	public bool IsAlive => Status == PlayerStatus.Alive || LifeState == LifeState.Alive;
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
 	public Player LastSeenPlayer { get; internal set; }
