@@ -5,7 +5,18 @@ namespace TTT;
 public partial class WalkController
 {
 #if DEBUG
+
 	[Net] public bool NoclipEnabled { get; set; } = false;
+
+	[ConCmd.Admin( "noclip" )]
+	public static void Noclip()
+	{
+		var player = ConsoleSystem.Caller.Pawn as Player;
+		player.Controller.NoclipEnabled = !player.Controller.NoclipEnabled;
+
+		var status = player.Controller.NoclipEnabled ? "enabled" : "disabled";
+		Log.Info( $"Noclip: {status}" );
+	}
 
 	private void NoclipMove()
 	{

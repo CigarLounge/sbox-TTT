@@ -129,16 +129,4 @@ public partial class GameManager
 
 		player.Kill();
 	}
-
-#if DEBUG
-	[ConCmd.Admin( "noclip" )]
-	public static void Noclip()
-	{
-		var player = ConsoleSystem.Caller.Pawn as Player;
-		player.Controller.NoclipEnabled = !player.Controller.NoclipEnabled;
-
-		var status = player.Controller.NoclipEnabled ? "enabled" : "disabled";
-		Log.Info( $"Noclip: {status}" );
-	}
-#endif
 }
