@@ -17,13 +17,17 @@ public partial class CreditTransfer : Panel
 			return;
 
 		var steamId = long.Parse( rawSteamId );
-		var receivingPlayer = Utils.GetPlayersWhere( p => p.IsAlive && p.Team == sendingPlayer.Team && p.SteamId == steamId ).FirstOrDefault();
+		var receivingPlayer = Utils.GetPlayersWhere( p => p.SteamId == steamId ).FirstOrDefault();
 
 		if ( receivingPlayer is null )
 			return;
 
 		sendingPlayer.Credits -= credits;
 		receivingPlayer.Credits += credits;
+	}
+
+	private bool CanTransferCreditsTo(Player sendingPlayer, Player receivingPlayer) {
+		return sendingPlayer != receivingPlayer && receivingPlayer.IsAlive && sendingPlayer.Team == receivingPlayer.Team && receivingPlayer.Role.ShopItems.Any();
 	}
 
 	protected override int BuildHash()
