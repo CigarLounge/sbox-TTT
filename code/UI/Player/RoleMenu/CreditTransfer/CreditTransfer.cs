@@ -26,7 +26,8 @@ public partial class CreditTransfer : Panel
 		receivingPlayer.Credits += credits;
 	}
 
-	private bool CanTransferCreditsTo(Player sendingPlayer, Player receivingPlayer) {
+	private bool CanTransferCreditsTo( Player sendingPlayer, Player receivingPlayer )
+	{
 		return sendingPlayer != receivingPlayer && receivingPlayer.IsAlive && sendingPlayer.Team == receivingPlayer.Team && receivingPlayer.Role.ShopItems.Any();
 	}
 

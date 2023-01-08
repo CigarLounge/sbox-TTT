@@ -111,12 +111,13 @@ public partial class InProgress : BaseState
 			TimeLeft += 1f;
 
 		var result = CheckForElimination();
-		if (result != Team.None) {
+		if ( result != Team.None )
+		{
 			PostRound.Load( result, WinType.Elimination );
 			return;
 		}
 
-		if (TimeLeft)
+		if ( TimeLeft )
 			OnTimeUp();
 	}
 

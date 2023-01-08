@@ -54,7 +54,7 @@ public partial class Player : AnimatedEntity
 	/// The player earns score by killing players on opposite teams, confirming bodies
 	/// or surviving the round.
 	/// </summary>
-	[Net] 
+	[Net]
 	public int Score { get; set; }
 
 	/// <summary>
