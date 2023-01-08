@@ -26,7 +26,95 @@
                 }
             </div>
         </div>
-        <div @ref="IconsContainer" class="icons-container"></div>
+        <div @ref=IconsContainer class="icons-container">
+            @{
+                var timeSinceDeath = _corpse.Player.TimeSinceDeath.Relative.TimerString();
+                <InspectEntry 
+                IconPath="/ui/inspectmenu/time.png" 
+                IconText=@timeSinceDeath 
+                ActiveText=@($"They died roughly {timeSinceDeath} ago.") />
+
+                var (deathText, deathActiveText) = GetCauseOfDeathStrings();
+                <InspectEntry 
+                IconPath="/ui/none.png" 
+                IconText=@deathText 
+                ActiveText=@deathActiveText />
+
+                var weaponInfo = _corpse.Player.LastAttackerWeaponInfo;
+                if ( weaponInfo is not null ) 
+                {
+                    <InspectEntry 
+                    IconPath=@weaponInfo.IconPath 
+                    IconText=@($"{weaponInfo.Title}") 
+                    ActiveText=@($"It appears a {weaponInfo.Title} was used to kill them.") />
+                }
+
+                if (_corpse.Player.LastDamage.IsHeadshot()) 
+                {
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/headshot.png" 
+                    IconText="Headshot" 
+                    ActiveText="The fatal wound was a headshot. No time to scream." />
+                }
+
+                if (!_corpse.TimeUntilDNADecay)
+                {
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/dna.png" 
+                    IconText=@($"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}") 
+                    ActiveText=@($"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.") />
+                }
+
+                if (_corpse.Player.LastSeenPlayer.IsValid()) 
+                {
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/lastseen.png"
+                    IconText=@player.LastSeenPlayer.SteamName 
+                    ActiveText=@($"The last person they saw was {player.LastSeenPlayer.SteamName}... killer or coincidence?") />
+                }
+
+                if ( player.PlayersKilled.Count > 0 ) 
+                {
+                    var activeText = "You found a list of kills that confirms the death(s) of... ";
+                    for ( var i = 0; i < player.PlayersKilled.Count; ++i ) 
+                    {
+                        activeText += i == player.PlayersKilled.Count - 1 ? $"{player.PlayersKilled[i].SteamName}." : $"{player.PlayersKilled[i].SteamName}, ";
+                    }
+
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/killlist.png"
+                    IconText="Kill List" 
+                    ActiveText=@activeText />
+                }
+
+                if ( !_corpse.C4Note.IsNullOrEmpty() ) 
+                {
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/c4note.png"
+                    IconText="C4 Defuse Note"
+                    ActiveText=@($"You find a note stating that cutting wire {_corpse.C4Note} will safely disarm the C4.") />
+                }
+                
+                if ( !_corpse.LastWords.IsNullOrEmpty() ) 
+                {
+                    <InspectEntry 
+                    IconPath="/ui/inspectmenu/lastwords.png"
+                    IconText="Last Words"
+                    ActiveText=@($"Their last words were... \"{_corpse.LastWords}\"") />
+                }
+
+                if ( !_corpse.Perks.IsNullOrEmpty() ) 
+                {
+                    foreach ( var perk in _corpse.Perks ) 
+                    {
+                        <InspectEntry 
+                        IconPath=@perk.IconPath
+                        IconText=@perk.Title
+                        ActiveText=@($"They were carrying {perk.Title}.") />
+                    }
+                }
+            }
+        </div>
         <text class="active-text @(_selectedInspectEntry is not null ? "fade-in" : "")">
             @_selectedInspectEntry?.ActiveText
         </text>
