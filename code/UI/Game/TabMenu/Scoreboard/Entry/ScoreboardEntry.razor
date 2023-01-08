@@ -4,7 +4,9 @@
 @namespace TTT.UI
 
 @{
-    <root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")">
+    var backgroundColor = Player.Role is not NoneRole and not Innocent ? Player.Role.Color.WithAlpha( 0.10f ).Hex : "#4b4b4b15";
+    <root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")"
+        style="background-color: @backgroundColor">
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
             <text class="name">@Player.SteamName</text>
@@ -23,13 +25,6 @@
             </div>
         }
     </root>
-}
-
-@code {
-    private string GetBackgroundColor()
-	{
-		return Player.Role is not NoneRole and not Innocent ? Player.Role.Color.WithAlpha( 0.10f ).Hex : "#4b4b4b15";
-	}
 }
 
 <style>
@@ -85,13 +80,11 @@
         }
 
         .local {
-            background-color: #f2b42d1a;
             cursor: default;
         }
 
         &:not(.local) {
             cursor: pointer;
-            background-color: @GetBackgroundColor();
         }
     }
 </style>
