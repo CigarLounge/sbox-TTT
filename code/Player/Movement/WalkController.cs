@@ -513,7 +513,8 @@ public partial class WalkController : BaseNetworkable
 					Attacker = Player,
 					Force = Vector3.Down * Player.Velocity.Length,
 					Damage = damage,
-				}.WithTag( Strings.Tags.Fall ) );
+					Tags = new HashSet<string> { Strings.Tags.Fall }
+				} );
 			}
 
 			Player.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
