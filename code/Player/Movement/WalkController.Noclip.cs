@@ -5,7 +5,6 @@ namespace TTT;
 #if DEBUG
 public partial class WalkController
 {
-
 	[Net] public bool NoclipEnabled { get; set; } = false;
 
 	[ConCmd.Admin( "noclip" )]
