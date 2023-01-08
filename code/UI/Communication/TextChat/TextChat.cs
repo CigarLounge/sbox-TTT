@@ -84,7 +84,7 @@ public partial class TextChat : Panel
 		if ( Input.Text.Contains( '\n' ) || Input.Text.Contains( '\r' ) )
 			return;
 
-		if ( Input.Text == Strings.RTVCommand )
+		if ( Input.Text == "!rtv" )
 		{
 			if ( Game.LocalClient.HasRockedTheVote() )
 			{
@@ -102,7 +102,7 @@ public partial class TextChat : Panel
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
-		if ( message == Strings.RTVCommand )
+		if ( message == "!rtv" )
 		{
 			GameManager.RockTheVote();
 			return;

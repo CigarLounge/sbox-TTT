@@ -37,7 +37,7 @@ public partial class Player
 
 	private bool _isRoleKnown;
 	/// <summary>
-	/// Serverside, this means the role is publicly announced to everyone.
+	/// Serverside, this means the role is publicly announced to everyone.<br/>
 	/// Clientside, this means we know this player's actual role.
 	/// </summary>
 	public bool IsRoleKnown
@@ -58,7 +58,7 @@ public partial class Player
 	/// <summary>
 	/// Sends the role to the given target.
 	/// </summary>
-	/// <param name="to">The target. </param>
+	/// <param name="to">The target.</param>
 	public void SendRole( To to )
 	{
 		Game.AssertServer();

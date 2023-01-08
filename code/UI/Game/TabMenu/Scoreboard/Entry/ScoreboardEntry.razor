@@ -3,95 +3,99 @@
 
 @namespace TTT.UI
 
-@{
-    <root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")">
-        <div class="entry">
-            <img src="avatar:@Player.SteamId" class="avatar rounded" />
-            <text class="name">@Player.SteamName</text>
-            <text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
-            <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
-            <text class="stat">@Player.Score.ToString()</text>
-            <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
-        </div>
-        @if (_isExpanded)
-        {
-            <div class="dropdown">
-                @foreach (var tag in _tagGroups)
-                {
-                    <button @onclick=@(() => {SetTag(tag);}) style="font-color: @tag.Color.Hex">@tag.Title</button>
-                }
-            </div>
-        }
-    </root>
-}
-
-@code {
-    private string GetBackgroundColor()
+<root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")">
+	<div class="entry">
+		<img src="avatar:@Player.SteamId" class="avatar rounded" />
+		<text class="name">@Player.SteamName</text>
+		<text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
+		<text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
+		<text class="stat">@Player.Score.ToString()</text>
+		<text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
+	</div>
+	@if (_isExpanded)
 	{
-		return Player.Role is not NoneRole and not Innocent ? Player.Role.Color.WithAlpha( 0.10f ).Hex : "#4b4b4b15";
+		<div class="dropdown">
+			@foreach (var tag in _tagGroups)
+			{
+				<button @onclick=@(() => {SetTag(tag);}) style="font-color: @tag.Color.Hex">@tag.Title</button>
+			}
+		</div>
+	}
+</root>
+
+
+@code
+{
+	private string GetBackgroundColor()
+	{
+		return Player.Role is not NoneRole and not Innocent ? Player.Role.Color.WithAlpha(0.10f).Hex : "#4b4b4b15";
 	}
 }
 
 <style>
-    ScoreboardEntry {
-        flex-direction: column;
-        flex-shrink: 0;
+	ScoreboardEntry {
+		flex-direction: column;
+		flex-shrink: 0;
+		.entry
 
-        .entry {
-            width: 100%;
-            height: 38px;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 14px;
-            font-weight: 500;
-            padding: 8px;
-            height: 38px;
+	{
+		width: 100%;
+		height: 38px;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 14px;
+		font-weight: 500;
+		padding: 8px;
+		height: 38px;
+		.avatar
 
-            .avatar {
-                height: 25px;
-                width: 25px;
-            }
+	{
+		height: 25px;
+		width: 25px;
+	}
 
-            .name {
-                margin-left: 8px;
-                font-size: 16px;
-                font-weight: 600;
-                flex-grow: 1;
-            }
+	.name {
+		margin-left: 8px;
+		font-size: 16px;
+		font-weight: 600;
+		flex-grow: 1;
+	}
 
-            .stat {
-                width: 125px;
-                font-weight: 700;
-                justify-content: center;
-            }
+	.stat {
+		width: 125px;
+		font-weight: 700;
+		justify-content: center;
+	}
 
-            &:last-child {
-                border-bottom-left-radius: 4px;
-                border-bottom-right-radius: 4px;
-            }
-        }
+	&:last-child {
+		border-bottom-left-radius: 4px;
+		border-bottom-right-radius: 4px;
+	}
 
-        .dropdown {
-            justify-content: center;
-            transition: height 0.1s east-in-out;
-            transition: opacity 0.01s ease-out;
-            height: 40px;
+	}
 
-            &:intro,
-            &:outro {
-                opacity: 0;
-                height: 0px;
-            }
-        }
+	.dropdown {
+		justify-content: center;
+		transition: height 0.1s east-in-out;
+		transition: opacity 0.01s ease-out;
+		height: 40px;
+		&:intro, &:outro
 
-        .local {
-            background-color: #f2b42d1a;
-            cursor: default;
-        }
+	{
+		opacity: 0;
+		height: 0px;
+	}
 
-        &:not(.local) {
-            cursor: pointer;
-            background-color: @GetBackgroundColor();
-        }
-    }
-</style>
+	}
+
+	.local {
+		background-color: #f2b42d1a;
+		cursor: default;
+	}
+
+	&:not(.local) {
+		cursor: pointer;
+		background-color: @GetBackgroundColor();
+	}
+
+	}</style>
