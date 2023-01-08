@@ -42,6 +42,7 @@ public partial class WalkController : BaseNetworkable
 
 	private const float FallDamageThreshold = 650f;
 	private const float FallDamageScale = 0.33f;
+	private Vector3 _lastVelocity;
 	private Vector3 _lastBaseVelocity;
 	private float _surfaceFriction;
 
@@ -97,6 +98,7 @@ public partial class WalkController : BaseNetworkable
 
 	public void Simulate()
 	{
+		_lastVelocity = Player.Velocity;
 		_lastBaseVelocity = Player.BaseVelocity;
 		ApplyMomentum();
 		BaseSimulate();
@@ -496,7 +498,7 @@ public partial class WalkController : BaseNetworkable
 		if ( Player.GroundEntity != null )
 			Player.Velocity = Player.Velocity.WithZ( 0 );
 
-		var fallVelocity = -Player.Velocity.z;
+		var fallVelocity = -_lastVelocity.z;
 		if ( Player.GroundEntity is null || fallVelocity <= 0 )
 			return;
 
@@ -511,8 +513,7 @@ public partial class WalkController : BaseNetworkable
 					Attacker = Player,
 					Force = Vector3.Down * Player.Velocity.Length,
 					Damage = damage,
-					Tags = { Strings.Tags.Fall }
-				} );
+				}.WithTag( Strings.Tags.Fall ) );
 			}
 
 			Player.PlaySound( Strings.FallDamageSound ).SetVolume( (damage * 0.05f).Clamp( 0, 0.5f ) );
