@@ -9,7 +9,6 @@ public partial class WalkController : BaseNetworkable
 	internal HashSet<string> _events;
 	internal HashSet<string> _tags;
 
-
 	[Net] public float WalkSpeed { get; set; } = 110f;
 	[Net] public float DefaultSpeed { get; set; } = 230f;
 	[Net] public float Acceleration { get; set; } = 8.0f;
