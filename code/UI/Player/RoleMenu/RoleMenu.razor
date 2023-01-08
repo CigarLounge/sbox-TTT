@@ -7,7 +7,8 @@
     return;
 }
 
-<div>
+<root>
+    <div class="fullscreen-dark-background" />
     <div class="menu">
         <div class="header text-shadow">
             <text class="title"><span style="color: @player.Role.Color.Hex">@player.Role.Title</span> Menu</text>
@@ -57,7 +58,7 @@
             }
         </div>
     </div>
-</div>
+</root>
 
 <style>
     RoleMenu {
@@ -69,7 +70,6 @@
         pointer-events: all;
         z-index: 2;
         transition: all 0.15s ease-out;
-        background-color: black;
         opacity: 0;
 
         .menu {
