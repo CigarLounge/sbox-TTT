@@ -6,7 +6,7 @@ namespace TTT;
 
 public static class Karma
 {
-	[ConVar.Server( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
+	[ConVar.Replicated( "ttt_karma_enabled", Help = "Whether or not the karma system is enabled.", Saved = true )]
 	public static bool Enabled { get; set; } = true;
 
 	[ConVar.Server( "ttt_karma_low_autokick", Help = "Whether or not to kick a player with low karma.", Saved = true )]
@@ -224,12 +224,6 @@ public static class Karma
 	private static void Rebase( Player player )
 	{
 		player.BaseKarma = player.ActiveKarma;
-	}
-
-	[GameEvent.Client.Joined]
-	private static void InitClientKarma( IClient client )
-	{
-		client.SetValue( Strings.Karma, SavedPlayerValues.TryGetValue( client.SteamId, out var value ) ? value : StartValue );
 	}
 
 	[GameEvent.Client.Disconnected]

@@ -74,7 +74,7 @@ public partial class Player
 		if ( ammoPickedUp > 0 )
 		{
 			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );
-			PlaySound( Strings.AmmoPickupSound );
+			PlaySound( "pickup_ammo" );
 		}
 
 		return ammoPickedUp;

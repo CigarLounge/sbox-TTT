@@ -30,7 +30,7 @@ public class Scout : Weapon
 			if ( Prediction.FirstTime )
 			{
 				SetScoped( !IsScoped );
-				PlaySound( Strings.ScopeInSound );
+				PlaySound( "scope_in" );
 			}
 		}
 

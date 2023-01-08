@@ -1,8 +1,8 @@
+using Sandbox;
+using Sandbox.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox;
-using Sandbox.UI;
 
 namespace TTT.UI;
 
@@ -15,9 +15,9 @@ public partial class InfoFeed : Panel
 	private const int MaxMessagesDisplayed = 5;
 	private const float DisplayDuration = 5f;
 	private readonly Queue<InfoFeedEntry> _entryQueue = new();
-	private TimeUntil _timeUntilNextDisplay = 0f;
-	private TimeSince _timeSinceLastDisplayed = 0f;
-	private TimeUntil _timeUntilNextDelete = 0f;
+	private RealTimeUntil _timeUntilNextDisplay = 0f;
+	private RealTimeSince _timeSinceLastDisplayed = 0f;
+	private RealTimeUntil _timeUntilNextDelete = 0f;
 
 	public void AddToFeed( InfoFeedEntry entry )
 	{
@@ -29,7 +29,7 @@ public partial class InfoFeed : Panel
 		if ( _entryQueue.Any() && _timeUntilNextDisplay && ChildrenCount < MaxMessagesDisplayed )
 		{
 			var newEntry = _entryQueue.Dequeue();
-			Instance.AddChild( newEntry );
+			AddChild( newEntry );
 
 			_timeUntilNextDisplay = 1f;
 			_timeSinceLastDisplayed = 0f;
@@ -98,6 +98,9 @@ public partial class InfoFeed : Panel
 
 		AddEntry( "Roles have been assigned and the round has begun..." );
 		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
+
+		if ( !Karma.Enabled )
+			return;
 
 		var karma = MathF.Round( player.BaseKarma );
 		var df = MathF.Round( 100f - player.DamageFactor * 100f );

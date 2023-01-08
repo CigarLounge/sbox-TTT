@@ -16,7 +16,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 			return;
 
 		_entity = Entity;
-		_entity.Tags.Add( Strings.Tags.IgnoreDamage );
+		_entity.Tags.Add( DamageTags.IgnoreDamage );
 	}
 
 	protected override void OnDeactivate()
@@ -24,7 +24,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 		if ( !Game.IsServer || !_entity.IsValid() )
 			return;
 
-		_entity.Tags.Remove( Strings.Tags.IgnoreDamage );
+		_entity.Tags.Remove( DamageTags.IgnoreDamage );
 	}
 
 	[Event.Tick.Server]

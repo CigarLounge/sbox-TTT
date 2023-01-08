@@ -60,13 +60,10 @@ public partial class Player
 	public bool KilledByPlayer => LastAttacker is Player && LastAttacker != this;
 	/// <summary>
 	/// The base/start karma is determined once per round and determines the player's
-	/// damage penalty. It is networked and shown on clients.
+	/// damage factor. It is networked and shown on clients.
 	/// </summary>
-	public float BaseKarma
-	{
-		get => Client.GetValue<float>( Strings.Karma );
-		set => Client.SetValue( Strings.Karma, value );
-	}
+	[Net]
+	public float BaseKarma { get; set; }
 	/// <summary>
 	/// The damage factor scales how much damage the player deals, so if it is 0.9
 	/// then the player only deals 90% of his original damage.
@@ -161,7 +158,7 @@ public partial class Player
 		if ( !IsAlive )
 			return;
 
-		if ( info.Attacker is Prop && info.Attacker.Tags.Has( Strings.Tags.IgnoreDamage ) )
+		if ( info.Attacker is Prop && info.Attacker.Tags.Has( DamageTags.IgnoreDamage ) )
 			return;
 
 		if ( info.Attacker is Player attacker && attacker != this )
@@ -169,14 +166,14 @@ public partial class Player
 			if ( GameManager.Current.State is not InProgress and not PostRound )
 				return;
 
-			if ( !info.HasTag( Strings.Tags.Slash ) )
+			if ( !info.HasTag( DamageTags.Slash ) )
 				info.Damage *= attacker.DamageFactor;
 		}
 
-		if ( info.HasTag( Strings.Tags.Bullet ) )
+		if ( info.HasTag( DamageTags.Bullet ) )
 			info.Damage *= GetBulletDamageMultipliers( info );
 
-		if ( info.HasTag( Strings.Tags.Blast ) )
+		if ( info.HasTag( DamageTags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
 		info.Damage = Math.Min( Health, info.Damage );

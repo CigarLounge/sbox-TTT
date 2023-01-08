@@ -114,7 +114,7 @@ public partial class GameManager
 		if ( client.HasRockedTheVote() )
 			return;
 
-		client.SetValue( Strings.HasRockedTheVote, true );
+		client.SetValue( "!rtv", true );
 		GameManager.Current.RTVCount += 1;
 
 		UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({GameManager.Current.RTVCount}/{MathF.Round( Game.Clients.Count * GameManager.RTVThreshold )})" );

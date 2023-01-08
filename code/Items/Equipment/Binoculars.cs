@@ -87,7 +87,7 @@ public partial class Binoculars : Carriable
 		}
 
 		if ( Game.IsClient )
-			PlaySound( Strings.ScopeInSound );
+			PlaySound( "scope_in" );
 
 		ZoomLevel++;
 		Camera.FieldOfView = 40f / MathF.Pow( 2.5f, ZoomLevel );
