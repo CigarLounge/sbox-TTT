@@ -511,7 +511,7 @@ public partial class WalkController : BaseNetworkable
 				Player.TakeDamage( new DamageInfo
 				{
 					Attacker = Player,
-					Force = Vector3.Down * Player.Velocity.Length,
+					Force = _lastVelocity,
 					Damage = damage,
 					Tags = new HashSet<string> { Strings.Tags.Fall }
 				} );
