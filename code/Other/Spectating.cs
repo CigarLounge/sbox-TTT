@@ -32,7 +32,7 @@ public static class Spectating
 	/// <summary>
 	/// Cycles through player list to find a spectating target.
 	/// </summary>
-	/// <param name="forward">Determines if we cycle forwards or backwards</param>
+	/// <param name="forward">Determines if we cycle forwards or backwards.</param>
 	public static void FindPlayer( bool forward )
 	{
 		var alivePlayers = Utils.GetPlayersWhere( p => p.IsAlive );

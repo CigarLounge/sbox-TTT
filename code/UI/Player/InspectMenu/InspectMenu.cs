@@ -98,13 +98,13 @@ public partial class InspectMenu : Panel
 		{
 			return tag switch
 			{
-				Strings.Tags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
-				Strings.Tags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
-				Strings.Tags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
-				Strings.Tags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
-				Strings.Tags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
-				Strings.Tags.Explode => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
-				Strings.Tags.Drown => ("Drown", "Drown", "This player drowned to death."),
+				DamageTags.Bullet => ("Bullet", "Bullet", "This corpse was shot to death."),
+				DamageTags.Slash => ("Slash", "Slashed", "This corpse was cut to death."),
+				DamageTags.Burn => ("Burn", "Burned", "This corpse has burn marks all over."),
+				DamageTags.Vehicle => ("Vehicle", "Vehicle", "This corpse was hit by a vehicle."),
+				DamageTags.Fall => ("Fall", "Fell", "This corpse fell from a high height."),
+				DamageTags.Explode => ("Explode", "Explosion", "An explosion eviscerated this corpse."),
+				DamageTags.Drown => ("Drown", "Drown", "This player drowned to death."),
 				_ => ("Unknown", "Unknown", "The cause of death is unknown.")
 			};
 		}

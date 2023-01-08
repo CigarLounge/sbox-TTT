@@ -138,7 +138,7 @@ public partial class C4Entity : Prop, IEntityHint
 				.WithAttacker( base.Owner );
 
 			if ( isTraitorC4 && player.Team == Team.Traitors )
-				damageInfo.Tags.Add( "avoidable" );
+				damageInfo.Tags.Add( DamageTags.Avoidable );
 
 			player.TakeDamage( damageInfo );
 		}

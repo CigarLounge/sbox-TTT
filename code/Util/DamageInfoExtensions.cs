@@ -18,3 +18,18 @@ public static class DamageInfoExtensions
 	/// </summary>
 	public static bool IsAvoidable( this DamageInfo info ) => info.HasTag( "avoidable" );
 }
+
+public static class DamageTags
+{
+	public const string Avoidable = "avoidable";
+	public const string Silent = "silent";
+	public const string Bullet = "bullet";
+	public const string Drown = "drown";
+	public const string Slash = "slash";
+	public const string Burn = "burn";
+	public const string Blast = "blast";
+	public const string Vehicle = "vehicle";
+	public const string Fall = "fall";
+	public const string Explode = "explode";
+	public const string IgnoreDamage = "ignoredamage";
+}

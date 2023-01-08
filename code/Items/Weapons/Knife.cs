@@ -75,7 +75,7 @@ public partial class Knife : Carriable
 		var damageInfo = DamageInfo.Generic( Backstabs ? 50 : 100 )
 			.UsingTraceResult( trace )
 			.WithAttacker( Owner )
-			.WithTags( Strings.Tags.Slash, "silent" )
+			.WithTags( DamageTags.Slash, DamageTags.Silent )
 			.WithWeapon( this );
 
 		if ( trace.Entity is Player player )
@@ -179,7 +179,7 @@ public partial class Knife : Carriable
 				var damageInfo = DamageInfo.Generic( 100f )
 					.UsingTraceResult( trace )
 					.WithAttacker( _thrower )
-					.WithTags( Strings.Tags.Slash, "silent" )
+					.WithTags( DamageTags.Slash, DamageTags.Silent )
 					.WithWeapon( this );
 
 				player.TakeDamage( damageInfo );

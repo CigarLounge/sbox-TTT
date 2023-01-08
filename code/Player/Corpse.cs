@@ -86,7 +86,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		}
 		#endregion
 
-		if ( Player.LastDamage.HasTag( Strings.Tags.Bullet ) && Player.LastAttacker is Player killer )
+		if ( Player.LastDamage.HasTag( DamageTags.Bullet ) && Player.LastAttacker is Player killer )
 		{
 			var dna = new DNA( killer );
 			Components.Add( dna );
