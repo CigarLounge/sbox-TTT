@@ -117,10 +117,13 @@ public partial class Player
 		Game.AssertServer();
 		Assert.True( IsMissingInAction, $"{SteamName} is not MIA!" );
 
-		UpdateStatus( Team.Traitors.ToClients() );
+		foreach ( var client in Game.Clients )
+		{
+			var player = (Player)client.Pawn;
 
-		if ( Team != Team.Traitors )
-			UpdateStatus( To.Single( this ) );
+			if ( !player.IsAlive || player.Team == Team.Traitors )
+				UpdateStatus( To.Single( client ) );
+		}
 	}
 
 	public void UpdateStatus( To to )

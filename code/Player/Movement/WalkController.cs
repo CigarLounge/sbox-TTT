@@ -98,6 +98,13 @@ public partial class WalkController : BaseNetworkable
 
 	public void Simulate()
 	{
+#if DEBUG
+		if ( NoclipEnabled )
+		{
+			NoclipMove();
+			return;
+		}
+#endif
 		_lastVelocity = Player.Velocity;
 		_lastBaseVelocity = Player.BaseVelocity;
 		ApplyMomentum();
