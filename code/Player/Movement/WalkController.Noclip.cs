@@ -2,9 +2,9 @@ using Sandbox;
 
 namespace TTT;
 
+#if DEBUG
 public partial class WalkController
 {
-#if DEBUG
 
 	[Net] public bool NoclipEnabled { get; set; } = false;
 
@@ -51,5 +51,5 @@ public partial class WalkController
 
 		SetTag( "noclip" );
 	}
-#endif
 }
+#endif
