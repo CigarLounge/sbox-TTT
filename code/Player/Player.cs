@@ -54,11 +54,8 @@ public partial class Player : AnimatedEntity
 	/// The player earns score by killing players on opposite teams, confirming bodies
 	/// or surviving the round.
 	/// </summary>
-	public int Score
-	{
-		get => Client.GetInt( Strings.Score );
-		set => Client.SetInt( Strings.Score, value );
-	}
+	[Net] 
+	public int Score { get; set; }
 
 	/// <summary>
 	/// The score gained during a single round. This gets added to the actual score
@@ -71,6 +68,7 @@ public partial class Player : AnimatedEntity
 		client.Pawn = this;
 		SteamId = client.SteamId;
 		SteamName = client.Name;
+		BaseKarma = Karma.SavedPlayerValues.TryGetValue( client.SteamId, out var value ) ? value : Karma.StartValue;
 		ActiveKarma = BaseKarma;
 
 		ClothingContainer.LoadFromClient( client );
@@ -124,7 +122,6 @@ public partial class Player : AnimatedEntity
 		DeleteItems();
 		ResetConfirmationData();
 		ResetDamageData();
-		Client.SetValue( Strings.Spectator, IsForcedSpectator );
 		Role = new NoneRole();
 
 		Velocity = Vector3.Zero;
