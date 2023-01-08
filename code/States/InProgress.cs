@@ -48,7 +48,6 @@ public partial class InProgress : BaseState
 		Spectators.Add( player );
 
 		player.UpdateMissingInAction();
-		CheckForResult();
 	}
 
 	public override void OnPlayerJoin( Player player )
@@ -66,8 +65,6 @@ public partial class InProgress : BaseState
 
 		AlivePlayers.Remove( player );
 		Spectators.Remove( player );
-
-		CheckForResult();
 	}
 
 	protected override void OnStart()
@@ -104,11 +101,6 @@ public partial class InProgress : BaseState
 			player.GiveAmmo( AmmoType.Magnum, 20 );
 	}
 
-	protected override void OnTimeUp()
-	{
-		PostRound.Load( Team.Innocents, WinType.TimeUp );
-	}
-
 	public override void OnSecond()
 	{
 		if ( !Game.IsServer )
@@ -117,20 +109,28 @@ public partial class InProgress : BaseState
 		if ( GameManager.PreventWin )
 			TimeLeft += 1f;
 
-		if ( TimeLeft )
+		var result = CheckForElimination();
+		if (result != Team.None) {
+			PostRound.Load( result, WinType.Elimination );
+			return;
+		}
+
+		if (TimeLeft)
 			OnTimeUp();
 	}
 
-	private void CheckForResult()
+	protected override void OnTimeUp()
+	{
+		PostRound.Load( Team.Innocents, WinType.TimeUp );
+	}
+
+	private Team CheckForElimination()
 	{
 		HashSet<Team> aliveTeams = new();
 		foreach ( var player in AlivePlayers )
 			aliveTeams.Add( player.Team );
 
-		if ( aliveTeams.Count == 0 )
-			PostRound.Load( Team.None, WinType.Elimination );
-		else if ( aliveTeams.Count == 1 )
-			PostRound.Load( aliveTeams.FirstOrDefault(), WinType.Elimination );
+		return aliveTeams.Count == 0 ? Team.Traitors : aliveTeams.Count == 1 ? aliveTeams.First() : Team.None;
 	}
 
 	private static void GivePlayersCredits<T>( int credits ) where T : Role
@@ -150,15 +150,5 @@ public partial class InProgress : BaseState
 	{
 		traitor.Credits += GameManager.TraitorDetectiveKillReward;
 		UI.InfoFeed.AddEntry( To.Single( traitor.Client ), traitor, $"have received {GameManager.TraitorDetectiveKillReward} credits for killing a Detective" );
-	}
-
-	[GameEvent.Player.RoleChanged]
-	private static void OnPlayerRoleChange( Player player, Role oldRole )
-	{
-		if ( !Game.IsServer )
-			return;
-
-		if ( GameManager.Current.State is InProgress inProgress )
-			inProgress.CheckForResult();
 	}
 }
