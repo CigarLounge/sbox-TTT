@@ -176,6 +176,9 @@ public partial class Player
 		if ( info.HasTag( DamageTags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
+		if ( info.IsHeadshot() )
+			info.Tags.Add( "headshot" );
+
 		info.Damage = Math.Min( Health, info.Damage );
 
 		LastAttacker = info.Attacker;
@@ -247,19 +250,28 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
+	private void SendDamageInfo(
+		Entity attacker,
+		Entity weapon,
+		CarriableInfo weaponInfo,
+		float damage,
+		string[] tags,
+		Vector3 position,
+		float distance )
 	{
-		var info = DamageInfo.Generic( 100f )
-			.WithAttacker( a )
-			.WithWeapon( w )
-			.WithPosition( p );
+		var info = new DamageInfo
+		{
+			Attacker = attacker,
+			Weapon = weapon,
+			Damage = damage,
+			Tags = new HashSet<string>( tags ),
+			Position = position,
+		};
 
-		info.Tags = new HashSet<string>( tags );
-
-		DistanceToAttacker = dTA;
-		LastAttacker = a;
-		LastAttackerWeapon = w;
-		LastAttackerWeaponInfo = wI;
+		DistanceToAttacker = distance;
+		LastAttacker = attacker;
+		LastAttackerWeapon = weapon;
+		LastAttackerWeaponInfo = weaponInfo;
 		LastDamage = info;
 
 		if ( IsLocalPawn )
