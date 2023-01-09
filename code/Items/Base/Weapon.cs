@@ -256,6 +256,9 @@ public abstract partial class Weapon : Carriable
 					{
 						player.DistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
 
+						if ( damageInfo.Hitbox.HasTag( "head" ) )
+							damageInfo.Tags.Add( "headshot" );
+
 						if ( Info.IsSilenced || damageInfo.IsHeadshot() )
 							damageInfo.Tags.Add( "silent" );
 					}

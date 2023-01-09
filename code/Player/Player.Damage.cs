@@ -176,9 +176,6 @@ public partial class Player
 		if ( info.HasTag( DamageTags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
 
-		if ( info.Hitbox.HasTag("head") )
-			info.Tags.Add( "headshot" );
-
 		info.Damage = Math.Min( Health, info.Damage );
 
 		LastAttacker = info.Attacker;
