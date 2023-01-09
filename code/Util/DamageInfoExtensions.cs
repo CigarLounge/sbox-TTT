@@ -7,7 +7,7 @@ public static class DamageInfoExtensions
 	/// <summary>
 	/// Is this damage a headshot?
 	/// </summary>
-	public static bool IsHeadshot( this DamageInfo info ) => info.Hitbox.HasTag( "head" );
+	public static bool IsHeadshot( this DamageInfo info ) => info.HasTag( "headshot" );
 	/// <summary>
 	/// If this damage ends up being lethal, should the player scream when killed?
 	/// </summary>
