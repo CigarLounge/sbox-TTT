@@ -134,7 +134,7 @@ public partial class GameManager : Sandbox.GameManager
 
 	public override void PostLevelLoaded()
 	{
-		MapTimer = 60 * TimeLimitMinutes;
+		UpdateTimeLimitMinutes( 0, TimeLimitMinutes );
 		ForceStateChange( new WaitingState() );
 	}
 
