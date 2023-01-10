@@ -42,6 +42,9 @@ public partial class GameManager
 
 	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played.", Saved = true )]
 	public static int RoundLimit { get; set; } = 6;
+
+	[ConVar.Replicated( "ttt_time_limit_minutes", Help = "The maximum number of minutes per map." )]
+	public static int TimeLimitMinutes { get; set; } = 75;
 	#endregion
 
 	#region Minimum Players

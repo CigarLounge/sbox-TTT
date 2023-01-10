@@ -16,7 +16,9 @@
             @{
                 var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
                 var suffix = roundsRemaining == 1 ? "round" : "rounds";
-                <text>@($"Map will change in {roundsRemaining} {suffix}")</text>
+                var mapTimeLeft = System.TimeSpan.FromSeconds((TTT.GameManager.Current.MapTimer.Relative).Clamp(0,
+                float.MaxValue)).ToString(@"hh\:mm\:ss");
+                <text>@($"Map will change in {roundsRemaining} {suffix} or in {mapTimeLeft}")</text>
             }
         </text>
     </div>
