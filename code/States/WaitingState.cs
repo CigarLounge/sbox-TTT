@@ -8,7 +8,12 @@ public class WaitingState : BaseState
 
 	public override void OnSecond()
 	{
-		if ( Game.IsServer && Utils.GetPlayersWhere( p => !p.IsForcedSpectator ).Count >= GameManager.MinPlayers )
+		if ( !Game.IsServer )
+			return;
+
+		if ( GameManager.Current.TimeUntilMapSwitch )
+			GameManager.Current.ForceStateChange( new MapSelectionState() );
+		else if ( Utils.GetPlayersWhere( p => !p.IsForcedSpectator ).Count >= GameManager.MinPlayers )
 			GameManager.Current.ForceStateChange( new PreRound() );
 	}
 

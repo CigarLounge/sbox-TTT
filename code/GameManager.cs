@@ -18,10 +18,10 @@ public partial class GameManager : Sandbox.GameManager
 	[Net]
 	public int TotalRoundsPlayed { get; set; }
 
-	public int RTVCount { get; set; }
-
 	[Net]
-	public RealTimeUntil MapTimer { get; set; }
+	public TimeUntil TimeUntilMapSwitch { get; set; } = TimeLimit;
+
+	public int RTVCount { get; set; }
 
 	public GameManager()
 	{
@@ -134,7 +134,6 @@ public partial class GameManager : Sandbox.GameManager
 
 	public override void PostLevelLoaded()
 	{
-		MapTimer = 60 * TimeLimitMinutes;
 		ForceStateChange( new WaitingState() );
 	}
 

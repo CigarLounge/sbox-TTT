@@ -40,11 +40,16 @@ public partial class GameManager
 	[ConVar.Server( "ttt_rtv_threshold", Help = "The percentage of players needed to RTV.", Saved = true )]
 	public static float RTVThreshold { get; set; } = 0.66f;
 
-	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played.", Saved = true )]
+	[ConVar.Replicated( "ttt_round_limit", Help = "The maximum amount of rounds that can be played before a map vote is forced.", Saved = true )]
 	public static int RoundLimit { get; set; } = 6;
 
-	[ConVar.Replicated( "ttt_time_limit_minutes", Help = "The maximum number of minutes per map." )]
-	public static int TimeLimitMinutes { get; set; } = 75;
+	[ConVar.Replicated( "ttt_time_limit", Saved = true, Help = "The number of seconds before a map vote is forced." ), Change( nameof( UpdateTimeLimit ) )]
+	private static int TimeLimit { get; set; } = 4500;
+
+	public static void UpdateTimeLimit( int _, int newValue )
+	{
+		Current.TimeUntilMapSwitch = newValue;
+	}
 	#endregion
 
 	#region Minimum Players
