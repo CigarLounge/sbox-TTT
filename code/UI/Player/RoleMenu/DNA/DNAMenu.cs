@@ -7,7 +7,6 @@ namespace TTT.UI;
 
 public partial class DNAMenu : Panel
 {
-	private readonly Dictionary<DNA, DNASample> _entries = new();
 	private DNAScanner _dnaScanner;
 
 	private bool AutoScan { get; set; } = false;
@@ -41,6 +40,6 @@ public partial class DNAMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( _entries.Count, _dnaScanner?.IsCharging, _dnaScanner?.SlotText );
+		return HashCode.Combine( _dnaScanner?.IsCharging, _dnaScanner?.SlotText, _dnaScanner?.DNACollected?.HashCombine( d => d.Id ), _dnaScanner.SelectedId );
 	}
 }
