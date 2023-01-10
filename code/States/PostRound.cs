@@ -59,10 +59,13 @@ public partial class PostRound : BaseState
 
 	protected override void OnTimeUp()
 	{
-		var shouldChangeMap = GameManager.Current.TotalRoundsPlayed >= GameManager.RoundLimit ||
-							  GameManager.Current.TimeUntilMapSwitch ||
-							  GameManager.Current.RTVCount >= MathF.Round( Game.Clients.Count * GameManager.RTVThreshold );
+		GameManager.Current.ChangeState( ShouldSelectMap() ? new MapSelectionState() : new PreRound() );
+	}
 
-		GameManager.Current.ChangeState( shouldChangeMap ? new MapSelectionState() : new PreRound() );
+	private bool ShouldSelectMap()
+	{
+		return GameManager.Current.TotalRoundsPlayed >= GameManager.RoundLimit
+				|| GameManager.Current.TimeUntilMapSwitch
+				|| GameManager.Current.RTVCount >= MathF.Round( Game.Clients.Count * GameManager.RTVThreshold );
 	}
 }

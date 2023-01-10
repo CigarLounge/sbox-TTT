@@ -17,8 +17,9 @@
             @{
                 var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
                 var suffix = roundsRemaining == 1 ? "round" : "rounds";
+                var timeRemaining = TimeSpan.FromSeconds( TTT.GameManager.Current.TimeUntilMapSwitch.Relative ).ToString( @"hh\:mm\:ss" );
                 <text>
-                    @($"Map will change in {roundsRemaining} {suffix} or in {TTT.GameManager.Current.TimeUntilMapSwitch.Relative.TimerString()}")
+                    @($"Map will change in {roundsRemaining} {suffix} or in {timeRemaining}")
                 </text>
             }
         </text>
