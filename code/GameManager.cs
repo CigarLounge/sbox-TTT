@@ -19,7 +19,7 @@ public partial class GameManager : Sandbox.GameManager
 	public int TotalRoundsPlayed { get; set; }
 
 	[Net]
-	public TimeUntil TimeUntilMapSwitch { get; set; } = TimeLimit;
+	public RealTimeUntil TimeUntilMapSwitch { get; set; } = TimeLimit;
 
 	public int RTVCount { get; set; }
 
