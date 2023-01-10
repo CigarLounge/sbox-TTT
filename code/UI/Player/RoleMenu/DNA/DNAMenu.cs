@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
@@ -13,7 +12,7 @@ public partial class DNAMenu : Panel
 
 	public override void Tick()
 	{
-		if ( !IsVisible || Game.LocalPawn is not Player player )
+		if ( Game.LocalPawn is not Player player )
 			return;
 
 		_dnaScanner ??= player.Inventory.Find<DNAScanner>();
