@@ -107,8 +107,13 @@ public partial class InProgress : BaseState
 		if ( !Game.IsServer )
 			return;
 
+#if DEBUG
 		if ( GameManager.PreventWin )
+		{
 			TimeLeft += 1f;
+			return;
+		}
+#endif
 
 		var result = CheckForElimination();
 		if ( result != Team.None )

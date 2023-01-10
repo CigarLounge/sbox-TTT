@@ -4,6 +4,13 @@ namespace TTT;
 
 public partial class GameManager
 {
+#if DEBUG
+	#region Debug
+	[ConVar.Server( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
+	public static bool PreventWin { get; set; }
+	#endregion
+#endif
+
 	#region Logging
 	[ConVar.Server( "ttt_logger_enabled", Help = "Whether or not the logger will save event data to a file.", Saved = true )]
 	public static bool LoggerEnabled { get; set; }
@@ -24,11 +31,6 @@ public partial class GameManager
 
 	[ConVar.Server( "ttt_mapselection_time", Help = "The length of the map selection period.", Saved = true )]
 	public static int MapSelectionTime { get; set; } = 15;
-	#endregion
-
-	#region Debug
-	[ConVar.Server( "ttt_round_debug", Help = "Stop the in progress round from ending.", Saved = true )]
-	public static bool PreventWin { get; set; }
 	#endregion
 
 	#region Map
