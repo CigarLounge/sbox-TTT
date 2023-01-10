@@ -122,7 +122,7 @@ public partial class InProgress : BaseState
 			return;
 		}
 
-		if ( TimeLeft )
+		if ( TimeLeft || GameManager.Current.MapTimer )
 			OnTimeUp();
 	}
 

@@ -63,7 +63,7 @@ public abstract partial class BaseState : BaseNetworkable
 		if ( !Game.IsServer )
 			return;
 
-		if ( TimeLeft || GameManager.Current.MapTimer )
+		if ( TimeLeft )
 			OnTimeUp();
 	}
 
