@@ -3,14 +3,14 @@
 @namespace TTT.UI
 
 <root>
-    <div class="inner">
+    <div class="inner text-shadow">
         <div class="header">
             <div class="left">
-                <text class="title text-shadow">Map Vote</text>
-                <text class="subtitle text-shadow">Choose your next map</text>
+                <text class="title">Map Vote</text>
+                <text class="subtitle">Choose your next map</text>
             </div>
             <div class="right">
-                <text class="countdown text-shadow">@GameManager.Current.State.TimeLeftFormatted</text>
+                <text class="countdown">@GameManager.Current.State.TimeLeftFormatted</text>
             </div>
         </div>
         <div @ref="Maps" class="body">
@@ -19,14 +19,11 @@
                 <MapIcon Ident=@map />
             }
         </div>
-        <div class="footer">
-        </div>
     </div>
 </root>
 
 <style>
     MapSelectionMenu {
-        background-color: #111;
         position: absolute;
         left: -50px;
         right: -50px;

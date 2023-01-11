@@ -11,7 +11,7 @@
         <text style="font-weight: 500;">Contribute at github.com/CigarLounge/sbox-TTT</text>
     </div>
     <div class="server-data">
-        <text>@($"{Game.Clients.Count} / {ConsoleSystem.GetValue( "maxplayers" ).ToInt( 0 )} Players")</text>
+        <text>@($"{Game.Clients.Count} / {Game.Server.MaxPlayers} Players")</text>
         <text>@Game.Server.MapIdent</text>
         <text>
             @{
