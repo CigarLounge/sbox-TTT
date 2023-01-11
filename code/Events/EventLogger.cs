@@ -128,7 +128,7 @@ public static class EventLogger
 		var summary = $"{DateTime.Now:yyyy-MM-dd HH.mm.ss} - {Game.Server.MapIdent}\n";
 
 		for ( var i = 0; i < Events.Count; ++i )
-			summary += $"{Events[i].Time.TimerString()} - {Events[i].Description}\n";
+			summary += $"{Events[i].Time.TimerFormat()} - {Events[i].Description}\n";
 
 		return summary;
 	}

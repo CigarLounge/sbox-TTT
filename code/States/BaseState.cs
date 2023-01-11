@@ -12,7 +12,7 @@ public abstract partial class BaseState : BaseNetworkable
 
 	public virtual int Duration => 0;
 	public virtual string Name { get; }
-	public string TimeLeftFormatted => TimeLeft.Relative.TimerString();
+	public string TimeLeftFormatted => TimeLeft.Relative.TimerFormat();
 
 	private TimeUntil _nextSecondTime = 0f;
 

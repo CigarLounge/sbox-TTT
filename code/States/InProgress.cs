@@ -15,7 +15,7 @@ public partial class InProgress : BaseState
 	/// </summary>
 	[Net]
 	public TimeUntil FakeTime { get; private set; }
-	public string FakeTimeFormatted => FakeTime.Relative.TimerString();
+	public string FakeTimeFormatted => FakeTime.Relative.TimerFormat();
 
 	public override string Name { get; } = "In Progress";
 	public override int Duration => GameManager.InProgressTime;

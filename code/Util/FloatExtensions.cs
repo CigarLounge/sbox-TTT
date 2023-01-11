@@ -6,20 +6,20 @@ namespace TTT;
 public static class FloatExtensions
 {
 	/// <summary>
-	/// Returns an approximate value for meters given the Source engine units (for distances)
-	/// based on https://developer.valvesoftware.com/wiki/Dimensions
+	/// Converts source units to meters (approximate) https://developer.valvesoftware.com/wiki/Dimensions
 	/// </summary>
 	/// <param name="sourceUnits"></param>
-	/// <returns>sourceUnits in meters</returns>
+	/// <returns>source units coverted to meters</returns>
 	public static float SourceUnitsToMeters( this float sourceUnits ) => sourceUnits / 39.37f;
 
 	/// <summary>
-	/// Returns seconds in the format mm:ss
+	/// Returns a float as in timer format
 	/// </summary>
-	/// <param name="seconds"></param>
-	/// <returns>Seconds as a string in the format "mm:ss"</returns>
-	public static string TimerString( this float seconds )
+	/// <param name="seconds">The amount of seconds</param>
+	/// <param name="displayHours">If we should show hours in the formatted timer</param>
+	public static string TimerFormat( this float seconds, bool displayHours = false )
 	{
-		return (int)seconds < 0 ? $"+{TimeSpan.FromSeconds( seconds.CeilToInt() ):mm\\:ss}" : TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( @"mm\:ss" );
+		var timer = TimeSpan.FromSeconds( seconds.CeilToInt() ).ToString( displayHours ? @"hh\:mm\:ss" : @"mm\:ss" );
+		return (int)seconds < 0 ? $"+{timer}" : timer;
 	}
 }
