@@ -25,7 +25,7 @@
 		base.Tick();
 	}
 
-	[GameEvent.Role.AllRolesAssigned]
+	[GameEvent.Roles.Assigned]
 	static void OnRolesAssigned()
 	{
 		if (!Game.IsClient)

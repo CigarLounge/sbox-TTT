@@ -36,7 +36,7 @@ public static partial class GameEvent
 		/// Occurs when a player's role has changed.
 		/// <para><strong>Parameters:</strong></para>
 		/// <para>The <see cref="TTT.Player"/> whose role has changed. </para>
-		/// <para><see cref="Role"/> their old role. </para>
+		/// <para><see cref="Roles"/> their old role. </para>
 		/// </summary>
 		public class RoleChangedAttribute : EventAttribute
 		{
