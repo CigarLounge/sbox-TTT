@@ -16,7 +16,7 @@
         <div class="events">
             @foreach (var entry in _events)
             {
-                <EventEntry EventType=@entry.EventType Time=@entry.Time.TimerString() Description=@entry.Description />
+                <EventEntry EventType=@entry.EventType Time=@entry.Time.TimerFormat() Description=@entry.Description />
             }
         </div>
     </div>

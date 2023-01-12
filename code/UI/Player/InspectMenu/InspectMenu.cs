@@ -113,15 +113,15 @@ public partial class InspectMenu : Panel
 
 	public override void Tick()
 	{
-		var timeSinceDeath = _corpse.Player.TimeSinceDeath.Relative.TimerString();
+		var timeSinceDeath = _corpse.Player.TimeSinceDeath.Relative.TimerFormat();
 		_timeSinceDeath.IconText = $"{timeSinceDeath}";
 		_timeSinceDeath.ActiveText = $"They died roughly {timeSinceDeath} ago.";
 
 		_dna.Enabled( !_corpse.TimeUntilDNADecay );
 		if ( _dna.IsEnabled() )
 		{
-			_dna.IconText = $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerString()}";
-			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerString()}.";
+			_dna.IconText = $"DNA {_corpse.TimeUntilDNADecay.Relative.TimerFormat()}";
+			_dna.ActiveText = $"The DNA sample will decay in {_corpse.TimeUntilDNADecay.Relative.TimerFormat()}.";
 		}
 	}
 

@@ -1,5 +1,6 @@
 @using TTT;
 @using Sandbox;
+@using System;
 
 @namespace TTT.UI
 
@@ -16,11 +17,28 @@
             @{
                 var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
                 var suffix = roundsRemaining == 1 ? "round" : "rounds";
-                <text>@($"Map will change in {roundsRemaining} {suffix}")</text>
+                var timeLeft = TTT.GameManager.Current.TimeUntilMapSwitch.Relative;
+                var timer = timeLeft < 0 ? "00:00:00" : TimeSpan.FromSeconds( TTT.GameManager.Current.TimeUntilMapSwitch.Relative ).ToString( @"hh\:mm\:ss" );
+                <text>
+                    @($"Map will change in {roundsRemaining} {suffix} or in {timer}")
+                </text>
             }
         </text>
     </div>
 </root>
+
+@code {
+    protected override int BuildHash()
+	{
+		return HashCode.Combine( 
+            Game.Clients.Count,
+            Game.Server.MaxPlayers,
+            TTT.GameManager.RoundLimit,
+            TTT.GameManager.Current.TotalRoundsPlayed,
+            TTT.GameManager.Current.TimeUntilMapSwitch.ToString()
+        );
+	}
+}
 
 <style>
     ScoreboardInfo {
