@@ -50,15 +50,24 @@
 
 	<div class="inner" style="background-image: linear-gradient(@ply.Role.Color.Rgb, @Color.Gray.Darken(0.5f).Rgb)">
 		@{
-			var popupHeader = ply.Role.Team switch
+			var popupHeader = ply.Role switch
 			{
-				Team.Innocents => "You are an Innocent.",
-				Team.Traitors => "You are a Traitor!",
+				Innocent => "You are Innocent.",
+				Traitor => "You are a Traitor!",
+				Detective => "You are a Detective.",
+				_ => string.Empty
 			};
 
-			if (ply.Role is Detective _)
-				popupHeader = "You are a Detective.";
+			var popupText = ply.Role switch
+			{
+				Innocent => "But, be aware there are traitors among us.\nWho can you trust, and who is out to fill you with bullets?",
+				Traitor => "Work with your fellow traitors to kill the rest. Be careful to not get caught.",
+				Detective => "You have been given special resources to find the traitors.\nUse them to help the innocent survive, but be careful:" +
+				"the traitors will after you first and foremost",
+				_ => string.Empty
+			};
 		}
 		<label>@popupHeader</label>
+		<label>@popupText</label>
 	</div>
 </root>
