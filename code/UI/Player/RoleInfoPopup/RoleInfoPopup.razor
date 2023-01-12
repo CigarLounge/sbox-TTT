@@ -33,6 +33,15 @@
 
 		Game.RootPanel.AddChild(new RoleInfoPopup());
 	}
+
+	[GameEvent.Player.Killed]
+	void OnKilledEvent(TTT.Player ply)
+	{
+		if (!Game.IsClient)
+			return;
+
+		Delete();
+	}
 }
 
 <root>
