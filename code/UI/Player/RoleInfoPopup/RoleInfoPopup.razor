@@ -19,7 +19,7 @@
 
 	public override void Tick()
 	{
-		if (SinceCreated >= TTT.GameManager.StartupPopupDuration)
+		if (SinceCreated >= 10)
 			Delete();
 
 		base.Tick();
