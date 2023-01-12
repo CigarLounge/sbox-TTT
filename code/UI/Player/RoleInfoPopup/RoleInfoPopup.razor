@@ -1,0 +1,55 @@
+@using Sandbox
+@using Sandbox.UI
+@using TTT
+@namespace TTT.UI
+
+@inherits Panel
+@attribute [StyleSheet("UI/Player/RoleInfoPopup/RoleInfoPopup.scss")]
+
+@code
+{
+	static RoleInfoPopup? Instance;
+	RealTimeSince SinceCreated { get; set; } = 0;
+
+	public RoleInfoPopup()
+	{
+		Instance?.Delete();
+		Instance = this;
+	}
+
+	public override void Tick()
+	{
+		if (SinceCreated >= TTT.GameManager.StartupPopupDuration)
+			Delete();
+
+		base.Tick();
+	}
+
+	[GameEvent.Role.AllRolesAssigned]
+	static void OnRolesAssigned()
+	{
+		if (!Game.IsClient)
+			return;
+
+		Game.RootPanel.AddChild(new RoleInfoPopup());
+	}
+}
+
+<root>
+	@if (Game.LocalPawn is not TTT.Player ply)
+		return;
+
+	<div class="inner" style="background-image: linear-gradient(@ply.Role.Color.Rgb, @Color.Gray.Darken(0.5f).Rgb)">
+		@{
+			var popupHeader = ply.Role.Team switch
+			{
+				Team.Innocents => "You are an Innocent.",
+				Team.Traitors => "You are a Traitor!",
+			};
+
+			if (ply.Role is Detective _)
+				popupHeader = "You are a Detective.";
+		}
+		<label>@popupHeader</label>
+	</div>
+</root>

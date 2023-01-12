@@ -105,5 +105,7 @@ public class PreRound : BaseState
 
 			index++;
 		}
+
+		NetworkedEvent.Run( To.Everyone, GameEvent.Role.AllRolesAssigned );
 	}
 }

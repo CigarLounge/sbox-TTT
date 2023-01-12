@@ -92,6 +92,11 @@ public partial class GameManager
 	}
 	#endregion
 
+	#region UI
+	[ConVar.Client( "ttt_startpopup_duration", Max = 30, Min = 0 )]
+	public static float StartupPopupDuration { get; set; } = 17;
+	#endregion
+
 	[ConVar.Server( "ttt_avatar_clothing" )]
 	public static bool AvatarClothing { get; set; }
 }
