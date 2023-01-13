@@ -21,6 +21,8 @@ public abstract partial class BaseState : BaseNetworkable
 		if ( Game.IsServer && Duration > 0 )
 			TimeLeft = Duration;
 
+		Event.Run( GameEvent.State.Start, this );
+
 		OnStart();
 	}
 
@@ -28,6 +30,8 @@ public abstract partial class BaseState : BaseNetworkable
 	{
 		if ( Game.IsServer )
 			TimeLeft = 0f;
+
+		Event.Run( GameEvent.State.End, this );
 
 		OnFinish();
 	}

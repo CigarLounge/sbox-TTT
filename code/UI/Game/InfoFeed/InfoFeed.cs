@@ -85,27 +85,31 @@ public partial class InfoFeed : Panel
 		);
 	}
 
-	[GameEvent.Round.Start]
-	private void OnRoundStart()
+	[GameEvent.State.Start]
+	private void OnStateStart( BaseState state )
 	{
-		this.Enabled( true );
-
-		if ( GameManager.Current.State.HasStarted )
+		if ( state is not PreRound round )
 			return;
 
-		if ( Game.LocalPawn is not Player player )
-			return;
+		AddEntry( $"A new round begins in {round.Duration} seconds. Prepare yourself." );
 
-		AddEntry( "Roles have been assigned and the round has begun..." );
-		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
-
-		if ( !Karma.Enabled )
+		if ( !Karma.Enabled || Game.LocalPawn is not Player player )
 			return;
 
 		var karma = MathF.Round( player.BaseKarma );
 		var df = MathF.Round( 100f - player.DamageFactor * 100f );
 		var damageFactor = df == 0 ? $"Your karma is {karma}, you'll deal full damage this round." : $"Your karma is {karma}, you'll deal {df}% reduced damage this round.";
 		AddEntry( damageFactor );
+	}
+
+	[GameEvent.Round.Start]
+	private void OnRoundStart()
+	{
+		if ( Game.IsServer )
+			return;
+
+		AddEntry( "Roles have been assigned and the round has begun!" );
+		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
 	}
 
 	[GameEvent.Round.End]
