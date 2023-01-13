@@ -105,9 +105,6 @@ public partial class InfoFeed : Panel
 	[GameEvent.Round.Start]
 	private void OnRoundStart()
 	{
-		if ( Game.IsServer )
-			return;
-
 		AddEntry( "Roles have been assigned and the round has begun!" );
 		AddEntry( $"Traitors will receive an additional {GameManager.InProgressSecondsPerDeath} seconds per death." );
 	}
@@ -115,8 +112,6 @@ public partial class InfoFeed : Panel
 	[GameEvent.Round.End]
 	private void OnRoundEnd( Team _, WinType _1 )
 	{
-		this.Enabled( false );
-
 		DeleteChildren();
 	}
 }
