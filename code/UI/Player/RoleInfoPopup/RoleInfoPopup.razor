@@ -48,26 +48,40 @@
 	@if (Game.LocalPawn is not TTT.Player ply)
 		return;
 
-	<div class="inner" style="background-image: linear-gradient(@ply.Role.Color.Rgb, @Color.Gray.Darken(0.5f).Rgb)">
+	@{
+		Log.Info(ply.Role.Title);
+	}
+	<div class="inner" style="background-image: linear-gradient(@ply.Role.Color.Darken(0.7f).Rgb, @Color.Gray.Darken(0.5f).Rgb)">
 		@{
-			var popupHeader = ply.Role switch
-			{
-				Innocent => "You are Innocent.",
-				Traitor => "You are a Traitor!",
-				Detective => "You are a Detective.",
-				_ => string.Empty
-			};
+			var popupHeader = string.Empty;
+			var popupText = string.Empty;
+			var teamMembers = string.Empty;
 
-			var popupText = ply.Role switch
+			switch (ply.Role)
 			{
-				Innocent => "But, be aware there are traitors among us.\nWho can you trust, and who is out to fill you with bullets?",
-				Traitor => "Work with your fellow traitors to kill the rest. Be careful to not get caught.",
-				Detective => "You have been given special resources to find the traitors.\nUse them to help the innocent survive, but be careful:" +
-				"the traitors will after you first and foremost",
-				_ => string.Empty
-			};
+				case (Innocent):
+					popupHeader = "You are Innocent.";
+					popupText = "Watch your back, there are traitors in our ranks.";
+					break;
+
+				case (Traitor):
+					popupHeader = "You are a Traitor!";
+					var loneTraitor = false;
+					var loneTraitorText = "You're alone this time, take extra care to not get outed by the innocents.";
+					if (Game.Random.Int(10) == 1)
+						loneTraitorText = "You're alone and have no fellow traitors to rely on.\nLiving is no different than being dead if you're alone.";
+					popupText = loneTraitor ? loneTraitorText : "Work with your fellow traitors to kill the rest. Be careful to not get caught.";
+					break;
+
+				case (Detective):
+					popupHeader = "You are a Detective.";
+					popupText = "You have special resources to aid you in finding the traitors.\nHelp the innocent survive, but be careful:" +
+					"you will be a priority target for the traitors.";
+					break;
+			}
 		}
-		<label>@popupHeader</label>
+		<header>@popupHeader</header>
 		<label>@popupText</label>
+		<label>@teamMembers</label>
 	</div>
 </root>
