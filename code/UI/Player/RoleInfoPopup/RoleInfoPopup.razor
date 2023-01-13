@@ -1,5 +1,6 @@
 @using Sandbox
 @using Sandbox.UI
+@using System.Linq
 @using TTT
 
 @namespace TTT.UI
@@ -9,12 +10,30 @@
 	return;
 }
 
-<root>
-	<text>Info goes here...</text>
+<root class="background-color-gradient rounded opacity-heavy">
+	@if (player.Role.Info.ShopItems.Any())
+	{
+		<div class="shop-info">
+			<text>Press</text>
+			<inputglyph button="View" />
+			<text>to access the shop.</text>
+		</div>
+	}
 </root>
 
 <style>
 	RoleInfoPopup {
+		position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+		height: 10%;
+		width: 20%;
+		font-size: 17px;
+		justify-content: center;
 
+		.shop-info {
+			align-items: center;
+		}
 	}
 </style>

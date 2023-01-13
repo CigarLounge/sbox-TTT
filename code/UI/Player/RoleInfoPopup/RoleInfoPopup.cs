@@ -7,7 +7,7 @@ public partial class RoleInfoPopup : Panel
 {
 	private static RoleInfoPopup Instance { get; set; }
 
-	private TimeUntil _timeUntilDeletion = 10;
+	private TimeUntil _timeUntilDeletion = 10000; // Change back to 10.
 
 	public RoleInfoPopup()
 	{
