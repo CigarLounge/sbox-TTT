@@ -19,7 +19,7 @@ public partial class MapSelectionState : BaseState
 	{
 		if ( Votes.Count == 0 )
 		{
-			Game.ChangeLevel( Game.Random.FromList( GameManager.Current.MapVoteIdents as List<string> ) ?? GameManager.DefaultMap );
+			Game.ChangeLevel( Game.Random.FromList( GameManager.Current.MapVoteIdents.ToList() ) ?? GameManager.DefaultMap );
 			return;
 		}
 
