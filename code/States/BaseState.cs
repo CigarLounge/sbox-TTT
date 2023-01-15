@@ -74,11 +74,8 @@ public abstract partial class BaseState : BaseNetworkable
 	{
 		Game.AssertServer();
 
-		foreach ( var client in Game.Clients )
-		{
-			var player = client.Pawn as Player;
+		foreach ( var player in Utils.GetPlayersWhere( p => !p.IsSpectator ) )
 			player.Reveal();
-		}
 	}
 
 	protected async void StartRespawnTimer( Player player )
