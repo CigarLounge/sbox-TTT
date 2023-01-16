@@ -27,7 +27,7 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; private set; }
 	// TODO: Change to use lifestate once it gets networked properly.
-	public bool IsAlive => Health > 0;
+	public bool IsAlive => LifeState == LifeState.Alive;
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
 	public Player LastSeenPlayer { get; internal set; }
