@@ -31,7 +31,10 @@
     protected override int BuildHash()
     {
         var player = Game.LocalPawn as TTT.Player;
-        return HashCode.Combine(player.Role.ShopItems, _selectedItem);
+        return HashCode.Combine(
+            player.Role.ShopItems.HashCombine(itemInfo => HashCode.Combine(player.CanPurchase(itemInfo), itemInfo.GetHashCode())), 
+            _selectedItem
+        );
     }
 }
 
