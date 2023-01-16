@@ -27,6 +27,8 @@ public partial class Player
 	/// </summary>
 	public Player Confirmer { get; private set; }
 	// TODO: Change to use lifestate once it gets networked properly.
+	// Also replace the usage of player status inside of FirstPersonCamera.cs
+	// https://github.com/sboxgame/issues/issues/2099
 	public bool IsAlive => LifeState == LifeState.Alive;
 	public bool IsMissingInAction => Status == PlayerStatus.MissingInAction;
 	public bool IsConfirmedDead => Status == PlayerStatus.ConfirmedDead;
