@@ -15,7 +15,7 @@ public partial class PropPossession : EntityComponent<Prop>
 	public int MaxPunches { get; private set; }
 	private const float PunchRechargeTime = 1f;
 
-	private Player _possessingPlayer;
+	private Player _player;
 	private UI.PunchOMeter _meter;
 	private UI.PossessionNameplate _nameplate;
 	private TimeUntil _timeUntilNextPunch = 0;
@@ -42,13 +42,13 @@ public partial class PropPossession : EntityComponent<Prop>
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunch = 0.2f;
 		}
-		else if ( _possessingPlayer.InputDirection.x != 0f )
+		else if ( _player.InputDirection.x != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, _possessingPlayer.InputDirection.x * (Vector3.Forward * _possessingPlayer.ViewAngles.ToRotation()) * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.x * (Vector3.Forward * _player.ViewAngles.ToRotation()) * mf );
 		}
-		else if ( _possessingPlayer.InputDirection.y != 0f )
+		else if ( _player.InputDirection.y != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, _possessingPlayer.InputDirection.y * (Vector3.Left * _possessingPlayer.ViewAngles.ToRotation()) * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _player.InputDirection.y * (Vector3.Left * _player.ViewAngles.ToRotation()) * mf );
 		}
 
 		Punches = Math.Max( Punches - 1, 0 );
@@ -58,14 +58,14 @@ public partial class PropPossession : EntityComponent<Prop>
 	{
 		base.OnActivate();
 
-		_possessingPlayer = Entity.Owner as Player;
+		_player = Entity.Owner as Player;
 
-		MaxPunches = (int)Math.Min( Math.Max( 0, _possessingPlayer.ActiveKarma / 100 ), 13 );
+		MaxPunches = (int)Math.Min( Math.Max( 0, _player.ActiveKarma / 100 ), 13 );
 
-		if ( Game.LocalPawn is Player player && !player.IsAlive )
+		if ( Game.LocalPawn is Player localPlayer && !localPlayer.IsAlive )
 			_nameplate = new( Entity );
 
-		if ( _possessingPlayer.IsLocalPawn )
+		if ( _player.IsLocalPawn )
 		{
 			_meter = new( this );
 			CameraMode.Current = new FollowEntityCamera( Entity );
@@ -76,10 +76,10 @@ public partial class PropPossession : EntityComponent<Prop>
 	{
 		base.OnDeactivate();
 
-		if ( !_possessingPlayer.Prop.IsValid() )
-			_possessingPlayer.CancelPossession();
+		if ( !_player.Prop.IsValid() )
+			_player.CancelPossession();
 
-		if ( !_possessingPlayer.IsAlive )
+		if ( !_player.IsAlive )
 			CameraMode.Current = new FreeCamera();
 
 		_nameplate?.Delete( true );
