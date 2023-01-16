@@ -79,11 +79,13 @@ public partial class PropPossession : EntityComponent<Prop>
 		if ( !_player.Prop.IsValid() )
 			_player.CancelPossession();
 
-		if ( !_player.IsAlive )
-			CameraMode.Current = new FreeCamera();
-
 		_nameplate?.Delete( true );
-		_meter?.Delete( true );
+
+		if ( _player.IsLocalPawn )
+		{
+			_meter?.Delete( true );
+			CameraMode.Current = new FreeCamera();
+		}
 	}
 
 	// The player currently possessing this prop has spawned, we need to
