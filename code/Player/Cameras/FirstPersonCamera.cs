@@ -12,7 +12,8 @@ public class FirstPersonCamera : CameraMode
 
 	public override void BuildInput()
 	{
-		if ( Game.LocalPawn is Player player && player.IsAlive )
+		// TODO: Change to use .IsAlive once it gets networked properly.
+		if ( Game.LocalPawn is not Player player || player.Status == PlayerStatus.Alive )
 			return;
 
 		if ( !Spectating.Player.IsValid() || Input.Pressed( InputButton.Jump ) )
