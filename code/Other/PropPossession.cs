@@ -15,7 +15,7 @@ public partial class PropPossession : EntityComponent<Prop>
 	public int MaxPunches { get; private set; }
 	private const float PunchRechargeTime = 1f;
 
-	private Player _propOwner;
+	private Player _owner;
 	private UI.PunchOMeter _meter;
 	private UI.PossessionNameplate _nameplate;
 	private TimeUntil _timeUntilNextPunch = 0;
@@ -42,13 +42,13 @@ public partial class PropPossession : EntityComponent<Prop>
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunch = 0.2f;
 		}
-		else if ( _propOwner.InputDirection.x != 0f )
+		else if ( _owner.InputDirection.x != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, _propOwner.InputDirection.x * (Vector3.Forward * _propOwner.ViewAngles.ToRotation()) * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _owner.InputDirection.x * (Vector3.Forward * _owner.ViewAngles.ToRotation()) * mf );
 		}
-		else if ( _propOwner.InputDirection.y != 0f )
+		else if ( _owner.InputDirection.y != 0f )
 		{
-			physicsBody.ApplyForceAt( physicsBody.MassCenter, _propOwner.InputDirection.y * (Vector3.Left * _propOwner.ViewAngles.ToRotation()) * mf );
+			physicsBody.ApplyForceAt( physicsBody.MassCenter, _owner.InputDirection.y * (Vector3.Left * _owner.ViewAngles.ToRotation()) * mf );
 		}
 
 		Punches = Math.Max( Punches - 1, 0 );
@@ -58,14 +58,14 @@ public partial class PropPossession : EntityComponent<Prop>
 	{
 		base.OnActivate();
 
-		_propOwner = Entity.Owner as Player;
+		_owner = Entity.Owner as Player;
 
-		MaxPunches = (int)Math.Min( Math.Max( 0, _propOwner.ActiveKarma / 100 ), 13 );
+		MaxPunches = (int)Math.Min( Math.Max( 0, _owner.ActiveKarma / 100 ), 13 );
 
 		if ( Game.LocalPawn is Player localPlayer && !localPlayer.IsAlive )
 			_nameplate = new( Entity );
 
-		if ( _propOwner.IsLocalPawn )
+		if ( _owner.IsLocalPawn )
 		{
 			_meter = new( this );
 			CameraMode.Current = new FollowEntityCamera( Entity );
@@ -76,16 +76,16 @@ public partial class PropPossession : EntityComponent<Prop>
 	{
 		base.OnDeactivate();
 
-		if ( !_propOwner.Prop.IsValid() )
-			_propOwner.CancelPossession();
+		if ( !_owner.Prop.IsValid() )
+			_owner.CancelPossession();
 
 		_nameplate?.Delete( true );
 
-		if ( _propOwner.IsLocalPawn )
+		if ( _owner.IsLocalPawn )
 		{
 			_meter?.Delete( true );
 
-			if ( !_propOwner.IsAlive )
+			if ( !_owner.IsAlive )
 				CameraMode.Current = new FreeCamera();
 		}
 	}
