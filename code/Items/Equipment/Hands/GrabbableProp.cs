@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Physics;
 
 namespace TTT;
 
@@ -12,8 +13,9 @@ public class GrabbableProp : IGrabbable
 	private readonly Player _owner;
 	private bool _isThrowing = false;
 	private readonly bool _isInteractable = false;
+	private PhysicsJoint _weld;
 
-	public GrabbableProp( Player owner, Entity grabPoint, ModelEntity grabbedEntity )
+	public GrabbableProp( Player owner, ModelEntity grabPoint, ModelEntity grabbedEntity, int bone )
 	{
 		_owner = owner;
 
@@ -26,7 +28,7 @@ public class GrabbableProp : IGrabbable
 		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
-		GrabbedEntity.SetParent( grabPoint, Hands.MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+		_weld = grabPoint.GmodWeld( grabbedEntity, bone );
 	}
 
 	public void Update( Player player )
@@ -58,7 +60,8 @@ public class GrabbableProp : IGrabbable
 			grabbedEntity.LastAttacker = _owner;
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
-			grabbedEntity.SetParent( null );
+			_weld.Remove();
+			_weld = null;
 
 			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );

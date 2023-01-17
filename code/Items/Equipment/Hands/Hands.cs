@@ -25,7 +25,7 @@ public partial class Hands : Carriable
 	public override string PrimaryAttackHint => !CurrentPrimaryHint.IsNullOrEmpty() ? CurrentPrimaryHint : "Pickup";
 	public override string SecondaryAttackHint => !CurrentSecondaryHint.IsNullOrEmpty() ? CurrentSecondaryHint : "Push";
 
-	public Entity GrabPoint { get; private set; }
+	public ModelEntity GrabPoint { get; private set; }
 	public const string MiddleHandsAttachment = "middle_of_both_hands";
 
 	private bool IsHoldingEntity => _grabbedEntity is not null && _grabbedEntity.IsHolding;
@@ -55,6 +55,9 @@ public partial class Hands : Carriable
 			else
 				PushEntity();
 		}
+
+		GrabPoint.Position = Owner.EyePosition + Owner.EyeRotation.Forward * 70f;
+		GrabPoint.Rotation = Owner.EyeRotation;
 
 		if ( _grabbedEntity is null )
 			return;
@@ -116,11 +119,11 @@ public partial class Hands : Carriable
 				_grabbedEntity = new GrabbableCorpse( Owner, corpse );
 				break;
 			case Carriable: // Ignore any size requirements, any weapon can be picked up.
-				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity );
+				_grabbedEntity = new GrabbableProp( Owner, GrabPoint, trace.Entity as ModelEntity, trace.Bone );
 				break;
 			case ModelEntity model:
 				if ( CanPickup( model ) )
-					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model );
+					_grabbedEntity = new GrabbableProp( Owner, GrabPoint, model, trace.Bone );
 				break;
 		}
 	}
@@ -132,9 +135,13 @@ public partial class Hands : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		GrabPoint = new ModelEntity( "models/hands/grabpoint.vmdl" );
-		GrabPoint.EnableHideInFirstPerson = false;
-		GrabPoint.SetParent( player, MiddleHandsAttachment, new Transform( Vector3.Zero ) );
+		GrabPoint = new ModelEntity( "models/rust_props/small_junk/can.vmdl" );
+		GrabPoint.SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
+		GrabPoint.PhysicsBody.Mass = 200f;
+		GrabPoint.PhysicsBody.GravityEnabled = false;
+		GrabPoint.PhysicsBody.MotionEnabled = false;
+		GrabPoint.EnableAllCollisions = false;
+		GrabPoint.EnableDrawing = false;
 	}
 
 	public override void OnCarryDrop( Player player )
