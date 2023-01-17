@@ -110,7 +110,7 @@ public partial class Hands : Carriable
 			return;
 
 		// Cannot pickup items held by other players.
-		if ( trace.Entity.Parent.IsValid() )
+		if ( trace.Entity.Owner.IsValid() )
 			return;
 
 		switch ( trace.Entity )

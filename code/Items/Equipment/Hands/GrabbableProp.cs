@@ -14,21 +14,21 @@ public class GrabbableProp : IGrabbable
 	private bool _isThrowing = false;
 	private readonly bool _isInteractable = false;
 	private PhysicsJoint _weld;
+	private PhysicsJoint _nocollide;
 
 	public GrabbableProp( Player owner, ModelEntity grabPoint, ModelEntity grabbedEntity, int bone )
 	{
 		_owner = owner;
-
-		// We want to be able to shoot whatever entity the player is holding.
-		// Let's give it a tag that interacts with bullets and doesn't collide with players.
-		_isInteractable = grabbedEntity.Tags.Has( "interactable" );
-		if ( !_isInteractable )
-			grabbedEntity.Tags.Add( "interactable" );
-
 		GrabbedEntity = grabbedEntity;
 		GrabbedEntity.EnableTouch = false;
 		GrabbedEntity.EnableHideInFirstPerson = false;
 		_weld = grabPoint.GmodWeld( grabbedEntity, bone );
+		_weld.OnBreak += () => Drop();
+		_owner.HeldProp = GrabbedEntity;
+		GrabbedEntity.Owner = owner;
+		_nocollide = PhysicsJoint.CreateLength( new PhysicsPoint( owner.PhysicsBody ), new PhysicsPoint( GrabbedEntity.PhysicsBody ), 2000f );
+		_nocollide.Collisions = false;
+		grabbedEntity.Components.GetOrCreate<IgnoreDamage>();
 	}
 
 	public void Update( Player player )
@@ -53,21 +53,24 @@ public class GrabbableProp : IGrabbable
 		{
 			if ( !_isInteractable )
 			{
-				grabbedEntity.Tags.Remove( "interactable" );
-				grabbedEntity.Components.GetOrCreate<IgnoreDamage>();
+				grabbedEntity.Components.RemoveAny<IgnoreDamage>();
 			}
 
 			grabbedEntity.LastAttacker = _owner;
 			grabbedEntity.EnableHideInFirstPerson = true;
 			grabbedEntity.EnableTouch = true;
-			_weld.Remove();
+			grabbedEntity.Owner = null;
+			_weld?.Remove();
 			_weld = null;
+			_nocollide?.Remove();
+			_nocollide = null;
 
 			if ( grabbedEntity is Carriable carriable )
 				carriable.OnCarryDrop( _owner );
 		}
 
 		GrabbedEntity = null;
+		_owner.HeldProp = null;
 		return grabbedEntity;
 	}
 

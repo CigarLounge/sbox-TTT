@@ -23,6 +23,7 @@ public static class ModelEntityExtensions
 			Damping = 10f,
 			Frequency = 150f,
 		};
+		weld.Strength = 350000f;
 		return weld;
 	}
 }

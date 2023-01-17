@@ -26,16 +26,4 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 
 		_entity.Tags.Remove( DamageTags.IgnoreDamage );
 	}
-
-	[Event.Tick.Server]
-	private void OnServerTick()
-	{
-		if ( !_entity.IsValid() )
-			return;
-
-		// Once it no longer clips with any other entity remove the component.
-		// FindInBox includes the entity itself. therefore the Count() == 1.
-		if ( Sandbox.Entity.FindInBox( _entity.CollisionBounds + _entity.Position ).Count() == 1 )
-			_entity.Components.RemoveAny<IgnoreDamage>();
-	}
 }

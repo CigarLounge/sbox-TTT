@@ -57,6 +57,9 @@ public partial class Player : AnimatedEntity
 	[Net]
 	public int Score { get; set; }
 
+	[Net]
+	public ModelEntity HeldProp { get; set; }
+
 	/// <summary>
 	/// The score gained during a single round. This gets added to the actual score
 	/// at the end of a round.
@@ -73,6 +76,15 @@ public partial class Player : AnimatedEntity
 
 		ClothingContainer.LoadFromClient( client );
 		_avatarClothes = new( ClothingContainer.Clothing );
+	}
+
+	protected override void OnPhysicsCollision( CollisionEventData eventData )
+	{
+		var preMomentum = eventData.Other.PreVelocity * eventData.Other.PhysicsShape.Body.Mass;
+		var postMomentum = eventData.Other.PostVelocity * eventData.Other.PhysicsShape.Body.Mass;
+		var extraVelocity = (preMomentum - postMomentum) / PhysicsBody.Mass;
+		if ( !extraVelocity.IsNaN )
+			Velocity += extraVelocity;
 	}
 
 	public Player()
@@ -362,6 +374,7 @@ public partial class Player : AnimatedEntity
 	public void CreateHull()
 	{
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
+		PhysicsBody.Mass = 85;
 		EnableHitboxes = true;
 	}
 

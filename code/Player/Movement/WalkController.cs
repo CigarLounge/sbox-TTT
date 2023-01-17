@@ -167,7 +167,12 @@ public partial class WalkController : BaseNetworkable
 	private void StepMove()
 	{
 		var mover = new MoveHelper( Player.Position, Player.Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
+		mover.Trace = mover.Trace.Size( _mins, _maxs )
+			.Ignore( Player );
+
+		if ( Player.HeldProp != null )
+			mover.Trace = mover.Trace.Ignore( Player.HeldProp );
+
 		mover.MaxStandableAngle = GroundAngle;
 
 		mover.TryMoveWithStep( Time.Delta, StepSize );
@@ -179,7 +184,12 @@ public partial class WalkController : BaseNetworkable
 	private void Move()
 	{
 		var mover = new MoveHelper( Player.Position, Player.Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
+		mover.Trace = mover.Trace.Size( _mins, _maxs )
+			.Ignore( Player );
+
+		if ( Player.HeldProp != null )
+			mover.Trace = mover.Trace.Ignore( Player.HeldProp );
+
 		mover.MaxStandableAngle = GroundAngle;
 
 		mover.TryMove( Time.Delta );
