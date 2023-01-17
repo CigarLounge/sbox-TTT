@@ -26,4 +26,22 @@ public static class ModelEntityExtensions
 		weld.Strength = 350000f;
 		return weld;
 	}
+
+
+	public static bool IsStoodOnByPlayer( this ModelEntity ent )
+	{
+		if ( !ent.IsValid() )
+			return false;
+
+		foreach ( var client in Game.Clients )
+		{
+			if ( client.Pawn is not Player player || !player.IsAlive )
+				continue;
+
+			if ( player.GroundEntity == ent )
+				return true;
+		}
+
+		return false;
+	}
 }

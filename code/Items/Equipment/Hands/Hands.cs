@@ -184,7 +184,9 @@ public partial class Hands : Carriable
 			return false;
 
 		var size = entity.CollisionBounds.Size;
-		return size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z;
+		var canPickupSize = size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z;
+
+		return canPickupSize && !entity.IsStoodOnByPlayer();
 	}
 
 	[Event.Entity.PreCleanup]

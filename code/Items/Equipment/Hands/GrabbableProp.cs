@@ -42,7 +42,7 @@ public class GrabbableProp : IGrabbable
 			GrabbedEntity = null;
 		}
 
-		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() )
+		if ( !GrabbedEntity.IsValid() || !_owner.IsValid() || GrabbedEntity.IsStoodOnByPlayer() )
 			Drop();
 	}
 
