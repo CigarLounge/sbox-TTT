@@ -75,11 +75,6 @@ public partial class Player : AnimatedEntity
 		_avatarClothes = new( ClothingContainer.Clothing );
 	}
 
-	protected override void OnPhysicsCollision( CollisionEventData eventData )
-	{
-		// TODO: Maybe Touch can be moved here.
-	}
-
 	public Player()
 	{
 		Inventory = new( this );
@@ -390,12 +385,6 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
-	public override void Touch( Entity other )
-	{
-		if ( other.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
-			other.Components.Remove( pickedUp );
-	}
-
 	public void DeleteItems()
 	{
 		ClearAmmo();
@@ -480,6 +469,12 @@ public partial class Player : AnimatedEntity
 	protected override void OnComponentRemoved( EntityComponent component )
 	{
 		Perks?.OnComponentRemoved( component );
+	}
+
+	protected override void OnPhysicsCollision( CollisionEventData eventData )
+	{
+		if ( eventData.Other.Entity.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
+			eventData.Other.Entity.Components.Remove( pickedUp );
 	}
 
 	protected override void OnDestroy()
