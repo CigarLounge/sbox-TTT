@@ -13,7 +13,7 @@ public class PreRound : BaseState
 	{
 		base.OnPlayerSpawned( player );
 
-		player.Inventory.Add( new Hands() );
+		player.Inventory.Add( new Holster() );
 	}
 
 	public override void OnPlayerJoin( Player player )
