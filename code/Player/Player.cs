@@ -57,9 +57,6 @@ public partial class Player : AnimatedEntity
 	[Net]
 	public int Score { get; set; }
 
-	[Net]
-	public ModelEntity HeldProp { get; set; }
-
 	/// <summary>
 	/// The score gained during a single round. This gets added to the actual score
 	/// at the end of a round.
@@ -80,19 +77,7 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
-		var preMomentum = eventData.Other.PreVelocity * eventData.Other.PhysicsShape.Body.Mass;
-		var postMomentum = eventData.Other.PostVelocity * eventData.Other.PhysicsShape.Body.Mass;
-		var extraVelocity = (preMomentum - postMomentum) / PhysicsBody.Mass;
-
-		// If the player is grounded, don't give them downward velocity
-		// Otherwise, don't drop their downward velocity below the fall damage threshold
-		if ( GroundEntity != null )
-			extraVelocity = extraVelocity.WithZ( float.Max( 0f, extraVelocity.z ) );
-		else if ( Velocity.z + extraVelocity.z < -WalkController.FallDamageThreshold )
-			extraVelocity = extraVelocity.WithZ( float.Min( 0f, -WalkController.FallDamageThreshold - Velocity.z ) );
-
-		if ( !extraVelocity.IsNaN )
-			Velocity += extraVelocity;
+		// TODO: Maybe Touch can be moved here.
 	}
 
 	public Player()
@@ -382,7 +367,6 @@ public partial class Player : AnimatedEntity
 	public void CreateHull()
 	{
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
-		PhysicsBody.Mass = 300;
 		EnableHitboxes = true;
 	}
 

@@ -31,5 +31,4 @@ public static class DamageTags
 	public const string Vehicle = "vehicle";
 	public const string Fall = "fall";
 	public const string Explode = "explode";
-	public const string IgnoreDamage = "ignoredamage";
 }

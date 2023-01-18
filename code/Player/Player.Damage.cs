@@ -158,14 +158,6 @@ public partial class Player
 		if ( !IsAlive )
 			return;
 
-		if ( info.Attacker is Prop )
-		{
-			if ( info.Attacker.Tags.Has( DamageTags.IgnoreDamage ) )
-				return;
-
-			info.Damage *= .25f;
-		}
-
 		if ( info.Attacker is Player attacker && attacker != this )
 		{
 			if ( GameManager.Current.State is not InProgress and not PostRound )

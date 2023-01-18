@@ -40,7 +40,7 @@ public partial class WalkController : BaseNetworkable
 
 	protected Vector3 GroundNormal { get; set; }
 
-	public const float FallDamageThreshold = 650f;
+	private const float FallDamageThreshold = 650f;
 	private const float FallDamageScale = 0.33f;
 	private Vector3 _lastVelocity;
 	private Vector3 _lastBaseVelocity;
@@ -167,11 +167,7 @@ public partial class WalkController : BaseNetworkable
 	private void StepMove()
 	{
 		var mover = new MoveHelper( Player.Position, Player.Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs )
-			.Ignore( Player );
-
-		if ( Player.HeldProp != null )
-			mover.Trace = mover.Trace.Ignore( Player.HeldProp );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
 
 		mover.MaxStandableAngle = GroundAngle;
 
@@ -184,11 +180,7 @@ public partial class WalkController : BaseNetworkable
 	private void Move()
 	{
 		var mover = new MoveHelper( Player.Position, Player.Velocity );
-		mover.Trace = mover.Trace.Size( _mins, _maxs )
-			.Ignore( Player );
-
-		if ( Player.HeldProp != null )
-			mover.Trace = mover.Trace.Ignore( Player.HeldProp );
+		mover.Trace = mover.Trace.Size( _mins, _maxs ).Ignore( Player );
 
 		mover.MaxStandableAngle = GroundAngle;
 

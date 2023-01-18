@@ -38,15 +38,11 @@ public partial class WalkController
 			maxs = maxs.WithZ( maxs.z - liftFeet );
 		}
 
-		var trace = Trace.Ray( start + TraceOffset, end + TraceOffset )
-					.Size( mins, maxs )
-					.WithAnyTags( "solid", "playerclip", "passbullets", "player" )
-					.Ignore( Player );
-
-		if ( Player.HeldProp != null )
-			trace = trace.Ignore( Player.HeldProp );
-
-		var tr = trace.Run();
+		var tr = Trace.Ray( start + TraceOffset, end + TraceOffset )
+							.Size( mins, maxs )
+							.WithAnyTags( "solid", "playerclip", "passbullets", "player" )
+							.Ignore( Player )
+							.Run();
 
 		tr.EndPosition -= TraceOffset;
 		return tr;
