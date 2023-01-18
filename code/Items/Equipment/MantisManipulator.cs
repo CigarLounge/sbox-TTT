@@ -1,3 +1,4 @@
+using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -8,7 +9,11 @@ public partial class MantisManipulator : Carriable
 {
 	public class PickedUp : EntityComponent<Entity> { }
 
+	private const float MaxPickupMass = 205;
+	private readonly Vector3 _maxPickupSize = new( 25, 25, 25 );
+
 	private Entity GrabbedEntity { get; set; }
+
 
 	public override void Simulate( IClient client )
 	{
@@ -26,7 +31,7 @@ public partial class MantisManipulator : Carriable
 		{
 			if ( ShouldDrop( trace ) )
 			{
-				GrabbedEntity?.Components.RemoveAny<PickedUp>();
+				GrabbedEntity.Components.RemoveAny<PickedUp>();
 				GrabbedEntity = null;
 			}
 			else
@@ -49,11 +54,17 @@ public partial class MantisManipulator : Carriable
 
 	private bool CanPickup( Entity ent )
 	{
-		// TODO:
-		// Check if anyone is standing ontop of it.
-		// Check for size and width of the model.
-		return Input.Pressed( InputButton.SecondaryAttack )
-			&& ent is ModelEntity model
+		if ( !Input.Pressed( InputButton.SecondaryAttack ) || ent is not ModelEntity model )
+			return false;
+
+		// Make sure there is no player standing ontop of it.
+		foreach ( var entity in FindInBox( model.CollisionBounds * 2 + model.Position ) )
+			if ( entity is Player player && player.GroundEntity == ent )
+				return false;
+
+		var size = model.CollisionBounds.Size;
+		return model.PhysicsGroup.Mass < MaxPickupMass
+			&& size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z
 			&& model.PhysicsEnabled
 			&& model.Components.Get<PickedUp>() is null;
 	}
