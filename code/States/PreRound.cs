@@ -13,7 +13,7 @@ public class PreRound : BaseState
 	{
 		base.OnPlayerSpawned( player );
 
-		player.Inventory.Add( new Holster() );
+		player.Inventory.Add( new MantisManipulator() );
 	}
 
 	public override void OnPlayerJoin( Player player )

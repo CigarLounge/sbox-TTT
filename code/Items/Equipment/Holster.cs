@@ -2,11 +2,13 @@ using Sandbox;
 
 namespace TTT;
 
-[ClassName( "ttt_equipment_holster" )]
-[Title( "Holster" )]
-public partial class Holster : Carriable
+[ClassName( "ttt_equipment_mantis" )]
+[Title( "Mantis-Manipulator" )]
+public partial class MantisManipulator : Carriable
 {
-	private ModelEntity GrabbedEntity { get; set; }
+	public class PickedUp : EntityComponent<Entity> { }
+
+	private Entity GrabbedEntity { get; set; }
 
 	public override void Simulate( IClient client )
 	{
@@ -20,28 +22,47 @@ public partial class Holster : Carriable
 			.EntitiesOnly()
 			.Run();
 
-		DebugOverlay.TraceResult( trace );
-
 		if ( GrabbedEntity.IsValid() )
 		{
-			if ( Input.Pressed( InputButton.Use ) || trace.EndPosition.Distance( GrabbedEntity.Position ) > 75f )
+			if ( ShouldDrop( trace ) )
 			{
+				GrabbedEntity?.Components.RemoveAny<PickedUp>();
 				GrabbedEntity = null;
-				return;
+			}
+			else
+			{
+				var velocity = GrabbedEntity.Velocity;
+				Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance, ref velocity, 0.2f, Time.Delta );
+				GrabbedEntity.AngularVelocity = Angles.Zero;
+				GrabbedEntity.Velocity = velocity.ClampLength( 300f );
 			}
 
-			var velocity = GrabbedEntity.Velocity;
-			Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance / 2, ref velocity, 0.2f, Time.Delta * 2f );
-			GrabbedEntity.AngularVelocity = Angles.Zero;
-			GrabbedEntity.Velocity = velocity.ClampLength( 400f );
+			return;
 		}
 
-		if ( !Input.Pressed( InputButton.Use ) )
-			return;
+		if ( CanPickup( trace.Entity ) )
+		{
+			GrabbedEntity = trace.Entity;
+			GrabbedEntity.Components.GetOrCreate<PickedUp>();
+		}
+	}
 
-		if ( !trace.Hit || trace.Entity is not ModelEntity model || !model.PhysicsEnabled )
-			return;
+	private bool CanPickup( Entity ent )
+	{
+		// TODO:
+		// Check if anyone is standing ontop of it.
+		// Check for size and width of the model.
+		return Input.Pressed( InputButton.SecondaryAttack )
+			&& ent is ModelEntity model
+			&& model.PhysicsEnabled
+			&& model.Components.Get<PickedUp>() is null;
+	}
 
-		GrabbedEntity = model;
+	private bool ShouldDrop( TraceResult tr )
+	{
+		return Input.Pressed( InputButton.SecondaryAttack )
+		|| Input.Pressed( InputButton.PrimaryAttack )
+		|| tr.EndPosition.Distance( GrabbedEntity.Position ) > 70f
+		|| GrabbedEntity.Components.Get<PickedUp>() is null;
 	}
 }

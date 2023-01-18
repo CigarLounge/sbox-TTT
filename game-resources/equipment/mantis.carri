@@ -7,13 +7,13 @@
 		CanDrop = false
 		ViewModelPath = ""
 		HandsModelPath = ""
-		HoldType = "None"
+		HoldType = "Pistol"
 		WorldModelPath = ""
 		DeployTime = 0
 		IsLimited = false
 		Price = 0
 		IconPath = resource:"ui/none.png"
 		Description = ""
-		ClassName = "ttt_equipment_holster"
+		ClassName = "ttt_equipment_mantis"
 	}
 }

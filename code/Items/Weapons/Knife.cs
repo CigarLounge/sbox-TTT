@@ -20,7 +20,6 @@ public partial class Knife : Carriable
 
 	private bool _isThrown = false;
 	private Player _thrower;
-	private Vector3 _thrownFrom;
 	private Rotation _throwRotation = Rotation.From( new Angles( 90, 0, 0 ) );
 	private float _gravityModifier;
 
@@ -118,7 +117,6 @@ public partial class Knife : Carriable
 
 		_thrower = Owner;
 		_isThrown = true;
-		_thrownFrom = Owner.Position;
 		_gravityModifier = 0;
 
 		if ( !Game.IsServer )

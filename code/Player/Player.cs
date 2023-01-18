@@ -406,6 +406,12 @@ public partial class Player : AnimatedEntity
 		}
 	}
 
+	public override void Touch( Entity other )
+	{
+		if ( other.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
+			other.Components.Remove( pickedUp );
+	}
+
 	public void DeleteItems()
 	{
 		ClearAmmo();
