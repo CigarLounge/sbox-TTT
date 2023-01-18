@@ -83,6 +83,10 @@ public partial class Player : AnimatedEntity
 		var preMomentum = eventData.Other.PreVelocity * eventData.Other.PhysicsShape.Body.Mass;
 		var postMomentum = eventData.Other.PostVelocity * eventData.Other.PhysicsShape.Body.Mass;
 		var extraVelocity = (preMomentum - postMomentum) / PhysicsBody.Mass;
+
+		if ( GroundEntity != null )
+			extraVelocity = extraVelocity.WithZ( float.Max( 0f, extraVelocity.z ) );
+
 		if ( !extraVelocity.IsNaN )
 			Velocity += extraVelocity;
 	}
@@ -374,7 +378,7 @@ public partial class Player : AnimatedEntity
 	public void CreateHull()
 	{
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
-		PhysicsBody.Mass = 85;
+		PhysicsBody.Mass = 300;
 		EnableHitboxes = true;
 	}
 
