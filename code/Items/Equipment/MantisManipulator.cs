@@ -2,6 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
+// TODO: Give karma penalty for prop killing.
 [ClassName( "ttt_equipment_mantis" )]
 [Title( "Mantis-Manipulator" )]
 public partial class MantisManipulator : Carriable
@@ -29,17 +30,9 @@ public partial class MantisManipulator : Carriable
 		if ( GrabbedEntity.IsValid() )
 		{
 			if ( ShouldDrop( trace ) )
-			{
-				GrabbedEntity.Components.RemoveAny<PickedUp>();
-				GrabbedEntity = null;
-			}
+				Drop();
 			else
-			{
-				var velocity = GrabbedEntity.Velocity;
-				Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance, ref velocity, 0.2f, Time.Delta );
-				GrabbedEntity.AngularVelocity = Angles.Zero;
-				GrabbedEntity.Velocity = velocity.ClampLength( GameManager.PsychoMantis ? float.MaxValue : 300f );
-			}
+				MoveEntity();
 
 			return;
 		}
@@ -74,5 +67,19 @@ public partial class MantisManipulator : Carriable
 		|| Input.Pressed( InputButton.PrimaryAttack )
 		|| tr.EndPosition.Distance( GrabbedEntity.Position ) > 70f
 		|| GrabbedEntity.Components.Get<PickedUp>() is null;
+	}
+
+	private void Drop()
+	{
+		GrabbedEntity.Components.RemoveAny<PickedUp>();
+		GrabbedEntity = null;
+	}
+
+	private void MoveEntity()
+	{
+		var velocity = GrabbedEntity.Velocity;
+		Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance, ref velocity, 0.2f, Time.Delta );
+		GrabbedEntity.AngularVelocity = Angles.Zero;
+		GrabbedEntity.Velocity = velocity.ClampLength( GameManager.PsychoMantis ? float.MaxValue : 300f );
 	}
 }
