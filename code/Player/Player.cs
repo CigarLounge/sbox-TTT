@@ -84,8 +84,12 @@ public partial class Player : AnimatedEntity
 		var postMomentum = eventData.Other.PostVelocity * eventData.Other.PhysicsShape.Body.Mass;
 		var extraVelocity = (preMomentum - postMomentum) / PhysicsBody.Mass;
 
+		// If the player is grounded, don't give them downward velocity
+		// Otherwise, don't drop their downward velocity below the fall damage threshold
 		if ( GroundEntity != null )
 			extraVelocity = extraVelocity.WithZ( float.Max( 0f, extraVelocity.z ) );
+		else if ( Velocity.z + extraVelocity.z < -WalkController.FallDamageThreshold )
+			extraVelocity = extraVelocity.WithZ( float.Min( 0f, -WalkController.FallDamageThreshold - Velocity.z ) );
 
 		if ( !extraVelocity.IsNaN )
 			Velocity += extraVelocity;

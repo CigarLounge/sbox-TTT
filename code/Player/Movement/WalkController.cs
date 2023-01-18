@@ -40,7 +40,7 @@ public partial class WalkController : BaseNetworkable
 
 	protected Vector3 GroundNormal { get; set; }
 
-	private const float FallDamageThreshold = 650f;
+	public const float FallDamageThreshold = 650f;
 	private const float FallDamageScale = 0.33f;
 	private Vector3 _lastVelocity;
 	private Vector3 _lastBaseVelocity;
