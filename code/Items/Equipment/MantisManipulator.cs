@@ -3,17 +3,20 @@ using Sandbox;
 namespace TTT;
 
 // TODO: Give karma penalty for prop killing.
+// TODO: Ability to attach corpses for traitors.
 [ClassName( "ttt_equipment_mantis" )]
 [Title( "Mantis-Manipulator" )]
 public partial class MantisManipulator : Carriable
 {
 	public class PickedUp : EntityComponent<Entity> { }
 
-	private const float MaxPickupMass = 205;
-	private readonly Vector3 _maxPickupSize = new( 25, 25, 25 );
-
+	[Net, Local]
 	private Entity GrabbedEntity { get; set; }
 
+	public override string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : "Pickup";
+
+	private const float MaxPickupMass = 205;
+	private readonly Vector3 _maxPickupSize = new( 25, 25, 25 );
 
 	public override void Simulate( IClient client )
 	{
@@ -49,6 +52,10 @@ public partial class MantisManipulator : Carriable
 		if ( !Input.Pressed( InputButton.SecondaryAttack ) || ent is not ModelEntity model || !model.PhysicsEnabled )
 			return false;
 
+		// Bypass all restrictions in the following cases...
+		if ( ent is Ammo || ent is Carriable || ent is Corpse )
+			return true;
+
 		var size = model.CollisionBounds.Size;
 		if ( model.PhysicsGroup.Mass > MaxPickupMass || size.x > _maxPickupSize.x || size.y > _maxPickupSize.y || size.y > _maxPickupSize.z )
 			return false;
@@ -64,7 +71,6 @@ public partial class MantisManipulator : Carriable
 	private bool ShouldDrop( TraceResult tr )
 	{
 		return Input.Pressed( InputButton.SecondaryAttack )
-		|| Input.Pressed( InputButton.PrimaryAttack )
 		|| tr.EndPosition.Distance( GrabbedEntity.Position ) > 70f
 		|| GrabbedEntity.Components.Get<PickedUp>() is null;
 	}
