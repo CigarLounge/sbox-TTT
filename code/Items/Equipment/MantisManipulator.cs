@@ -34,7 +34,7 @@ public partial class MantisManipulator : Carriable
 				var velocity = GrabbedEntity.Velocity;
 				Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance, ref velocity, 0.2f, Time.Delta );
 				GrabbedEntity.AngularVelocity = Angles.Zero;
-				GrabbedEntity.Velocity = velocity.ClampLength( 300f );
+				GrabbedEntity.Velocity = velocity.ClampLength( GameManager.PsychoMantis ? float.MaxValue : 300f );
 			}
 
 			return;

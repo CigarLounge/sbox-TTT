@@ -92,6 +92,11 @@ public partial class GameManager
 	}
 	#endregion
 
+	#region Misc
 	[ConVar.Server( "ttt_avatar_clothing" )]
 	public static bool AvatarClothing { get; set; }
+
+	[ConVar.Server( "ttt_psycho_mantis", Help = "Allow people to prop kill.", Saved = true )]
+	public static bool PsychoMantis { get; set; } = false;
+	#endregion
 }
