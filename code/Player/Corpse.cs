@@ -13,6 +13,8 @@ namespace TTT;
 public partial class Corpse : ModelEntity, IEntityHint, IUse
 {
 	[Net] public bool HasCredits { get; private set; }
+	[Net] public bool IsAttached { get; private set; }
+
 	public Player Player { get; set; }
 	/// <summary>
 	/// Whether or not this corpse has been found by a player
@@ -29,12 +31,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	public PerkInfo[] Perks { get; private set; }
 	public Player[] KillList { get; private set; }
 	public bool HasCalledDetective { get; set; } = false;
-	public List<Particles> Ropes { get; private set; } = new();
-	public List<PhysicsJoint> RopeJoints { get; private set; } = new();
 
 	// We use this HashSet of NetworkIds to avoid sending kill information
 	// to players multiple times.
 	private readonly HashSet<int> _playersWithKillInfo = new();
+
+	private List<Particles> Ropes { get; set; } = new();
+	private List<PhysicsJoint> RopeJoints { get; set; } = new();
 
 	public Corpse() { }
 
@@ -276,6 +279,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Player.LastSeenPlayer = player;
 	}
 
+	public void AddRopeAttachment( PhysicsJoint joint, Particles ropeParticle )
+	{
+		RopeJoints.Add( joint );
+		Ropes.Add( ropeParticle );
+
+		IsAttached = true;
+	}
+
 	public void RemoveRopeAttachments()
 	{
 		foreach ( var rope in Ropes )
@@ -286,6 +297,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 		Ropes.Clear();
 		RopeJoints.Clear();
+
+		IsAttached = false;
 	}
 
 	protected override void OnDestroy()

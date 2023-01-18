@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Physics;
 
 namespace TTT;
 
@@ -13,6 +14,7 @@ public partial class MantisManipulator : Carriable
 	[Net, Local]
 	private Entity GrabbedEntity { get; set; }
 
+	public override string PrimaryAttackHint => GetPrimaryHint();
 	public override string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : "Pickup";
 
 	private const float MaxPickupMass = 205;
@@ -36,6 +38,9 @@ public partial class MantisManipulator : Carriable
 				Drop();
 			else
 				MoveEntity();
+
+			if ( Input.Pressed( InputButton.PrimaryAttack ) )
+				TryCorpseAttach();
 
 			return;
 		}
@@ -87,5 +92,54 @@ public partial class MantisManipulator : Carriable
 		Vector3.SmoothDamp( GrabbedEntity.Position, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance, ref velocity, 0.2f, Time.Delta );
 		GrabbedEntity.AngularVelocity = Angles.Zero;
 		GrabbedEntity.Velocity = velocity.ClampLength( GameManager.PsychoMantis ? float.MaxValue : 300f );
+	}
+
+	private void TryCorpseAttach()
+	{
+		if ( GrabbedEntity is not Corpse corpse )
+			return;
+
+		if ( corpse.IsAttached )
+		{
+			corpse.RemoveRopeAttachments();
+			return;
+		}
+
+		if ( !Owner.Role.CanAttachCorpses )
+			return;
+
+		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
+			.Ignore( Owner )
+			.Run();
+
+		if ( !trace.Hit || !trace.Entity.IsWorld )
+			return;
+
+		var worldLocalPos = trace.Body.Transform.PointToLocal( trace.EndPosition );
+		var spring = PhysicsJoint.CreateLength( corpse.PhysicsBody, trace.Body.LocalPoint( worldLocalPos ), 10 );
+		spring.SpringLinear = new( 5, 0.3f );
+		spring.Collisions = true;
+
+		// We need to turn off prediction in order for the particle to appear on the local client.
+		using ( Prediction.Off() )
+		{
+			var rope = Particles.Create( "particles/rope/rope.vpcf" );
+			rope.SetEntityBone( 0, GrabbedEntity, 0 );
+			rope.SetPosition( 1, worldLocalPos );
+			corpse.AddRopeAttachment( spring, rope );
+		}
+
+		Drop();
+	}
+
+	private string GetPrimaryHint()
+	{
+		if ( GrabbedEntity is not Corpse corpse )
+			return string.Empty;
+
+		if ( corpse.IsAttached )
+			return "Detatch";
+
+		return Owner.Role.CanAttachCorpses ? "Attach" : string.Empty;
 	}
 }

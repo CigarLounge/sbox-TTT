@@ -473,7 +473,7 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
-		if ( eventData.Other.Entity.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
+		if ( eventData.Other.Entity.Velocity.Length > 100f && eventData.Other.Entity.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
 			eventData.Other.Entity.Components.Remove( pickedUp );
 	}
 
