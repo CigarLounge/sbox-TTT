@@ -1,4 +1,3 @@
-using System.Linq;
 using Sandbox;
 
 namespace TTT;
@@ -54,7 +53,11 @@ public partial class MantisManipulator : Carriable
 
 	private bool CanPickup( Entity ent )
 	{
-		if ( !Input.Pressed( InputButton.SecondaryAttack ) || ent is not ModelEntity model )
+		if ( !Input.Pressed( InputButton.SecondaryAttack ) || ent is not ModelEntity model || !model.PhysicsEnabled )
+			return false;
+
+		var size = model.CollisionBounds.Size;
+		if ( model.PhysicsGroup.Mass > MaxPickupMass || size.x > _maxPickupSize.x || size.y > _maxPickupSize.y || size.y > _maxPickupSize.z )
 			return false;
 
 		// Make sure there is no player standing ontop of it.
@@ -62,11 +65,7 @@ public partial class MantisManipulator : Carriable
 			if ( entity is Player player && player.GroundEntity == ent )
 				return false;
 
-		var size = model.CollisionBounds.Size;
-		return model.PhysicsGroup.Mass < MaxPickupMass
-			&& size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z
-			&& model.PhysicsEnabled
-			&& model.Components.Get<PickedUp>() is null;
+		return model.Components.Get<PickedUp>() is null;
 	}
 
 	private bool ShouldDrop( TraceResult tr )
