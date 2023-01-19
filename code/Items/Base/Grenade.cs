@@ -5,7 +5,7 @@ namespace TTT;
 
 public abstract partial class Grenade : Carriable
 {
-	private enum Action
+	private enum ThrowType
 	{
 		None,
 		Overhand,
@@ -16,7 +16,7 @@ public abstract partial class Grenade : Carriable
 	private TimeUntil TimeUntilExplode { get; set; }
 
 	protected virtual float SecondsUntilExplode => 3f;
-	private Action _action = Action.None;
+	private ThrowType _throw = ThrowType.None;
 	private bool _isThrown = false;
 
 	public override bool CanCarry( Player carrier )
@@ -26,14 +26,14 @@ public abstract partial class Grenade : Carriable
 
 	public override void Simulate( IClient client )
 	{
-		if ( _action == Action.None )
+		if ( _throw == ThrowType.None )
 		{
 			if ( Input.Pressed( InputButton.PrimaryAttack ) )
-				_action = Action.Overhand;
+				_throw = ThrowType.Overhand;
 			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
-				_action = Action.Underhand;
+				_throw = ThrowType.Underhand;
 
-			if ( _action != Action.None )
+			if ( _throw != ThrowType.None )
 			{
 				ViewModelEntity?.SetAnimParameter( "fire", true );
 				TimeUntilExplode = SecondsUntilExplode;
@@ -57,12 +57,16 @@ public abstract partial class Grenade : Carriable
 		{
 			Owner.Inventory.DropActive();
 
-			var forwards = _action == Action.Overhand ? PreviousOwner.EyeRotation.Forward * 800.0f : PreviousOwner.EyeRotation.Forward * 200f;
-			var upwards = _action == Action.Overhand ? PreviousOwner.EyeRotation.Up * 200f : PreviousOwner.EyeRotation.Up * 10f;
+			var forwards = _throw == ThrowType.Overhand ? PreviousOwner.EyeRotation.Forward * 800.0f : PreviousOwner.EyeRotation.Forward * 300f;
+			var upwards = _throw == ThrowType.Overhand ? PreviousOwner.EyeRotation.Up * 200f : PreviousOwner.EyeRotation.Up * 150f;
 			Velocity = PreviousOwner.Velocity + forwards + upwards;
 			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f;
 
+			if ( _throw == ThrowType.Underhand )
+				Position += Vector3.Down * 20f;
+
 			_isThrown = true;
+
 			_ = ExplodeIn( TimeUntilExplode );
 		}
 	}
