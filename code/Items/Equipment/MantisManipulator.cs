@@ -4,20 +4,19 @@ using Sandbox.Physics;
 namespace TTT;
 
 // TODO: Give karma penalty for prop killing.
-// TODO: Ability to attach corpses for traitors.
 [ClassName( "ttt_equipment_mantis" )]
-[Title( "Mantis-Manipulator" )]
+[Title( "Mantis Manipulator" )]
 public partial class MantisManipulator : Carriable
 {
-	public class PickedUp : EntityComponent<Entity> { }
-
 	[Net, Local]
 	private Entity GrabbedEntity { get; set; }
+
+	public const string PickedUp = "pickedup";
 
 	public override string PrimaryAttackHint => GetPrimaryHint();
 	public override string SecondaryAttackHint => GrabbedEntity.IsValid() ? "Drop" : "Pickup";
 
-	private const float MaxPickupMass = 205;
+	private const float MaxPickupMass = 175;
 	private readonly Vector3 _maxPickupSize = new( 25, 25, 25 );
 
 	public override void Simulate( IClient client )
@@ -48,7 +47,7 @@ public partial class MantisManipulator : Carriable
 		if ( CanPickup( trace.Entity ) )
 		{
 			GrabbedEntity = trace.Entity;
-			GrabbedEntity.Components.GetOrCreate<PickedUp>();
+			GrabbedEntity.Tags.Add( PickedUp );
 		}
 	}
 
@@ -70,19 +69,19 @@ public partial class MantisManipulator : Carriable
 			if ( entity is Player player && player.GroundEntity == ent )
 				return false;
 
-		return model.Components.Get<PickedUp>() is null;
+		return !model.Tags.Has( PickedUp );
 	}
 
 	private bool ShouldDrop( TraceResult tr )
 	{
 		return Input.Pressed( InputButton.SecondaryAttack )
 		|| tr.EndPosition.Distance( GrabbedEntity.Position ) > 70f
-		|| GrabbedEntity.Components.Get<PickedUp>() is null;
+		|| !GrabbedEntity.Tags.Has( PickedUp );
 	}
 
 	private void Drop()
 	{
-		GrabbedEntity.Components.RemoveAny<PickedUp>();
+		GrabbedEntity.Tags.Remove( PickedUp );
 		GrabbedEntity = null;
 	}
 
@@ -138,7 +137,7 @@ public partial class MantisManipulator : Carriable
 			return string.Empty;
 
 		if ( corpse.IsAttached )
-			return "Detatch";
+			return "Detach";
 
 		return Owner.Role.CanAttachCorpses ? "Attach" : string.Empty;
 	}

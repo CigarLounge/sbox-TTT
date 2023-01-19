@@ -363,6 +363,7 @@ public partial class Player : AnimatedEntity
 	{
 		SetupPhysicsFromAABB( PhysicsMotionType.Keyframed, new Vector3( -16, -16, 0 ), new Vector3( 16, 16, 72 ) );
 		EnableHitboxes = true;
+		PhysicsBody.Mass = 300;
 	}
 
 	public override void StartTouch( Entity other )
@@ -473,8 +474,10 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
-		if ( eventData.Other.Entity.Velocity.Length > 100f && eventData.Other.Entity.Components.TryGet<MantisManipulator.PickedUp>( out var pickedUp ) )
-			eventData.Other.Entity.Components.Remove( pickedUp );
+		Log.Info( eventData.Other.Entity.Velocity.Length );
+
+		if ( GroundEntity == eventData.Other.Entity && eventData.Other.Entity.Tags.Has( MantisManipulator.PickedUp ) )
+			eventData.Other.Entity.Tags.Remove( MantisManipulator.PickedUp );
 	}
 
 	protected override void OnDestroy()
