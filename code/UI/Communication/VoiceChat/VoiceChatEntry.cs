@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 using System;
 
 namespace TTT.UI;
@@ -31,9 +30,6 @@ public partial class VoiceChatEntry : Panel
 	{
 		_timeSincePlayed = 0;
 		_targetVoiceLevel = level;
-
-		if ( _client.IsValid() )
-			SetClass( "dead", _client.Pawn is Player player && !player.IsAlive );
 	}
 
 	public override void Tick()
@@ -67,5 +63,11 @@ public partial class VoiceChatEntry : Panel
 		tx.Position += Vector3.Up * rolePlateOffset + (Vector3.Up * _voiceLevel);
 		tx.Rotation = Camera.Rotation.RotateAroundAxis( Vector3.Up, 180f );
 		_indicator.Transform = tx;
+	}
+
+	protected override int BuildHash()
+	{
+		var player = _client.Pawn as Player;
+		return HashCode.Combine( player?.IsAlive, player?.Role.GetHashCode() );
 	}
 }

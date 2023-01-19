@@ -1,9 +1,22 @@
 @namespace TTT.UI
 
-<root class="rounded opacity-heavy text-shadow background-color-gradient">
+<root class="rounded opacity-heavy text-shadow">
     <img src="avatar:@_client.SteamId" class="avatar" />
     <text class="name">@_client.Name</text>
 </root>
+
+@code {
+    private string BackgroundColor()
+    {
+        if (_client.Pawn is not TTT.Player player || !player.IsAlive)
+            return "#fcdb38";
+
+        if (player.Role is Detective)
+            return player.Role.Color.Hex;
+
+        return "#303030";
+    }
+}
 
 <style>
     VoiceChatEntry {
@@ -13,6 +26,7 @@
         align-items: center;
         overflow: hidden;
         transition: all 0.05s ease-out;
+        background-color: @BackgroundColor();
 
         &:intro {
             opacity: 0;
@@ -31,13 +45,8 @@
         }
 
         .name {
-            font-size: 16px;
-            margin-left: 10px;
-            font-weight: 500;
-        }
-
-        &.dead {
-            background: linear-gradient(#fcc82d, #c59813);
+            font-size: 18px;
+            margin-left: 5px;
         }
     }
 </style>
