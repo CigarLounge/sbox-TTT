@@ -474,9 +474,12 @@ public partial class Player : AnimatedEntity
 
 	protected override void OnPhysicsCollision( CollisionEventData eventData )
 	{
-		Log.Info( eventData.Other.Entity.Velocity.Length );
+		if ( !eventData.Other.Entity.Tags.Has( MantisManipulator.PickedUp ) )
+			return;
 
-		if ( GroundEntity == eventData.Other.Entity && eventData.Other.Entity.Tags.Has( MantisManipulator.PickedUp ) )
+		eventData.Other.Entity.Velocity = 0;
+
+		if ( eventData.Other.Entity == GroundEntity )
 			eventData.Other.Entity.Tags.Remove( MantisManipulator.PickedUp );
 	}
 
