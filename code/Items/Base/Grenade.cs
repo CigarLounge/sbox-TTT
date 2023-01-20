@@ -57,13 +57,14 @@ public abstract partial class Grenade : Carriable
 		{
 			Owner.Inventory.DropActive();
 
-			var forwards = _throw == ThrowType.Overhand ? PreviousOwner.EyeRotation.Forward * 800.0f : PreviousOwner.EyeRotation.Forward * 300f;
-			var upwards = _throw == ThrowType.Overhand ? PreviousOwner.EyeRotation.Up * 200f : PreviousOwner.EyeRotation.Up * 150f;
-			Velocity = PreviousOwner.Velocity + forwards + upwards;
-			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f;
+			var forwards = PreviousOwner.EyeRotation.Forward;
+			forwards *= _throw == ThrowType.Overhand ? 800f : 300f;
 
-			if ( _throw == ThrowType.Underhand )
-				Position += Vector3.Down * 20f;
+			var upwards = PreviousOwner.EyeRotation.Up;
+			upwards *= _throw == ThrowType.Overhand ? 200f : 150f;
+
+			Velocity = PreviousOwner.Velocity + forwards + upwards;
+			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f + Vector3.Down * 10f;
 
 			_isThrown = true;
 
