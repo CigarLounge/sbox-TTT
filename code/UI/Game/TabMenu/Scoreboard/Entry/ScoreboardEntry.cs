@@ -21,14 +21,11 @@ public partial class ScoreboardEntry : Panel
 	protected override int BuildHash()
 	{
 		return HashCode.Combine(
-			Player.SteamId,
-			Player.BaseKarma,
-			Player.Score,
-			Player.Client.Ping,
-			Player.TagGroup,
-			Player.IsLocalPawn,
+			_isExpanded,
+			Player.TagGroup.GetHashCode(),
 			Player.Role.GetHashCode(),
-			_isExpanded
+			Karma.Enabled,
+			HashCode.Combine( Player.BaseKarma, Player.SteamId, Player.Score, Player.Client.Ping, Player.IsLocalPawn )
 		);
 	}
 

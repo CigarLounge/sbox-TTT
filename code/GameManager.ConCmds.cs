@@ -85,7 +85,7 @@ public partial class GameManager
 		if ( !player.IsValid() )
 			return;
 
-		player.ActiveKarma = karma;
+		player.BaseKarma = karma;
 	}
 
 	[ConCmd.Admin( Name = "ttt_force_restart" )]
