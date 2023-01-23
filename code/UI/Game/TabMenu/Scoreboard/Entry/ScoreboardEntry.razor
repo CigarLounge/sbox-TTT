@@ -11,7 +11,10 @@
             <img src="avatar:@Player.SteamId" class="avatar rounded" />
             <text class="name">@Player.SteamName</text>
             <text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
-            <text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text>
+            @if (Karma.Enabled)
+            {
+                <text><text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text></text>
+            }
             <text class="stat">@Player.Score.ToString()</text>
             <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
         </div>

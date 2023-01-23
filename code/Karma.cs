@@ -16,7 +16,7 @@ public static class Karma
 	public static int StartValue { get; set; } = 1000;
 
 	[ConVar.Server( "ttt_karma_max", Help = "The maximum karma value a player can have.", Saved = true )]
-	public static int MaxValue { get; set; } = 1250;
+	public static int MaxValue { get; set; } = 1100;
 
 	[ConVar.Server( "ttt_karma_min", Help = "The minimum karma a player can have before they get kicked.", Saved = true )]
 	public static int MinValue { get; set; } = 500;
@@ -27,14 +27,28 @@ public static class Karma
 	public const float FallOff = 0.25f;
 	public const float RoundHeal = 5;
 
-	private static readonly ColorGroup[] _karmaGroupList = new ColorGroup[]
+	private static readonly List<ColorGroup> _karmaGroupList = new()
 	{
-		new ColorGroup("Liability", Color.FromBytes(255, 130, 0)),
-		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
-		new ColorGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
+		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255)),
 		new ColorGroup("Crude", Color.FromBytes(255, 240, 135)),
-		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255))
+		new ColorGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
+		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
+		new ColorGroup("Liability", Color.FromBytes(255, 130, 0))
 	};
+
+	public static ColorGroup GetKarmaGroup( Player player )
+	{
+		if ( player.BaseKarma > MaxValue * 0.89 )
+			return _karmaGroupList[0];
+		else if ( player.BaseKarma > MaxValue * 0.8 )
+			return _karmaGroupList[1];
+		else if ( player.BaseKarma > MaxValue * 0.65 )
+			return _karmaGroupList[2];
+		else if ( player.BaseKarma > MaxValue * 0.5 )
+			return _karmaGroupList[3];
+		else
+			return _karmaGroupList[4];
+	}
 
 	public static float GetHurtReward( float damage, float multiplier )
 	{
@@ -81,15 +95,6 @@ public static class Karma
 		var half = Math.Clamp( FallOff, 0.1f, 0.99f );
 
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
-	}
-
-	public static ColorGroup GetKarmaGroup( Player player )
-	{
-		if ( player.BaseKarma >= StartValue )
-			return _karmaGroupList[^1];
-
-		var index = (int)((player.BaseKarma - MinValue - 1) / ((StartValue - MinValue) / _karmaGroupList.Length));
-		return _karmaGroupList[index];
 	}
 
 	[GameEvent.Player.Spawned]

@@ -1,3 +1,4 @@
+@using System;
 @using System.Linq;
 
 @namespace TTT.UI
@@ -5,11 +6,19 @@
 <root class="text-shadow @Status.ToStringFast()">
     <div class="header opacity-medium rounded-top">
         <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast()</text>
-        <text class="stat">Karma</text>
+        @if (Karma.Enabled)
+        {
+            <text><text class="stat">Karma</text></text>
+        }
         <text class="stat">Score</text>
         <text class="stat">Ping</text>
     </div>
 </root>
+
+@code {
+    public PlayerStatus Status { get; set; }
+    protected override int BuildHash() => HashCode.Combine(Karma.Enabled);
+}
 
 <style>
     ScoreboardGroup {

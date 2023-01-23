@@ -82,25 +82,6 @@ public partial class Player
 	/// </summary>
 	public float ActiveKarma { get; set; }
 
-	private static readonly ColorGroup[] _healthGroupList = new ColorGroup[]
-	{
-		new ColorGroup("Near Death", Color.FromBytes(246, 6, 6)),
-		new ColorGroup("Badly Wounded", Color.FromBytes(234, 129, 4)),
-		new ColorGroup("Wounded", Color.FromBytes(213, 202, 4)),
-		new ColorGroup("Hurt", Color.FromBytes(171, 231, 3)),
-		new ColorGroup("Healthy", Color.FromBytes(44, 233, 44))
-	};
-
-	public ColorGroup GetHealthGroup( float health )
-	{
-		if ( Health > MaxHealth )
-			return _healthGroupList[^1];
-
-		var index = (int)((health - 1f) / (MaxHealth / _healthGroupList.Length));
-
-		return _healthGroupList[index];
-	}
-
 	public override void OnKilled()
 	{
 		Game.AssertServer();
