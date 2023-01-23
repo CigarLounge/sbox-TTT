@@ -5,18 +5,19 @@ namespace TTT;
 
 public abstract partial class Grenade : Carriable
 {
-	[Net, Predicted]
-	public TimeUntil TimeUntilExplode { get; protected set; }
-
-	protected virtual float Seconds => 3f;
-	private bool _isThrown = false;
-
-	public override void ActiveStart( Player player )
+	private enum ThrowType
 	{
-		base.ActiveStart( player );
-
-		TimeUntilExplode = Seconds;
+		None,
+		Overhand,
+		Underhand
 	}
+
+	[Net, Predicted]
+	private TimeUntil TimeUntilExplode { get; set; }
+
+	protected virtual float SecondsUntilExplode => 3f;
+	private ThrowType _throw = ThrowType.None;
+	private bool _isThrown = false;
 
 	public override bool CanCarry( Player carrier )
 	{
@@ -25,14 +26,24 @@ public abstract partial class Grenade : Carriable
 
 	public override void Simulate( IClient client )
 	{
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			ViewModelEntity?.SetAnimParameter( "fire", true );
+		if ( _throw == ThrowType.None )
+		{
+			if ( Input.Pressed( InputButton.PrimaryAttack ) )
+				_throw = ThrowType.Overhand;
+			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+				_throw = ThrowType.Underhand;
 
-		if ( Input.Released( InputButton.PrimaryAttack ) || TimeUntilExplode )
+			if ( _throw != ThrowType.None )
+			{
+				ViewModelEntity?.SetAnimParameter( "fire", true );
+				TimeUntilExplode = SecondsUntilExplode;
+			}
+
+			return;
+		}
+
+		if ( TimeUntilExplode || Input.Released( InputButton.PrimaryAttack ) || Input.Released( InputButton.SecondaryAttack ) )
 			Throw();
-
-		if ( !Input.Down( InputButton.PrimaryAttack ) )
-			TimeUntilExplode = Seconds;
 	}
 
 	protected virtual void OnExplode() { }
@@ -45,10 +56,18 @@ public abstract partial class Grenade : Carriable
 		using ( Prediction.Off() )
 		{
 			Owner.Inventory.DropActive();
-			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f;
-			PhysicsBody.Velocity = PreviousOwner.EyeRotation.Forward * 600.0f + PreviousOwner.EyeRotation.Up * 200.0f + PreviousOwner.Velocity;
+
+			var forwards = PreviousOwner.EyeRotation.Forward;
+			forwards *= _throw == ThrowType.Overhand ? 800f : 300f;
+
+			var upwards = PreviousOwner.EyeRotation.Up;
+			upwards *= _throw == ThrowType.Overhand ? 200f : 150f;
+
+			Velocity = PreviousOwner.Velocity + forwards + upwards;
+			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f + Vector3.Down * 10f;
 
 			_isThrown = true;
+
 			_ = ExplodeIn( TimeUntilExplode );
 		}
 	}
