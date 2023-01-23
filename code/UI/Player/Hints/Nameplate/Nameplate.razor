@@ -12,7 +12,7 @@
     <text class="name">@(_player.SteamName)</text>
 
     @{
-        var healthGroup = TTT.Player.GetHealthGroup( _player );
+        var healthGroup = GetHealthGroup( _player );
         <text>
             <text class="health-status" style="color: @(healthGroup.Color.Hex)">@healthGroup.Title</text>
         </text>
@@ -20,7 +20,7 @@
 
     @if (Karma.Enabled)
     {
-        var karmaGroup = Karma.GetKarmaGroup( _player );
+        var karmaGroup = GetKarmaGroup( _player );
         <text>
             <text class="karma-status" style="color: @(karmaGroup.Color.Hex)">@karmaGroup.Title</text>
         </text>
@@ -35,15 +35,6 @@
 
     <text class="tag" style="color: @_player.TagGroup.Color.Hex">@_player.TagGroup.Title</text>
 </root>
-
-@code {
-    public readonly TTT.Player _player;
-	public Nameplate( TTT.Player player ) => _player = player;
-	protected override int BuildHash() 
-    {
-        return HashCode.Combine( Karma.Enabled, _player.SteamName, _player.Health, _player.BaseKarma, _player.Role.GetHashCode(), _player.TagGroup.GetHashCode() );
-    }
-}
 
 <style>
     Nameplate {

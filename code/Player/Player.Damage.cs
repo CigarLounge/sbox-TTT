@@ -5,18 +5,6 @@ using System.Linq;
 
 namespace TTT;
 
-public struct ColorGroup
-{
-	public Color Color;
-	public string Title;
-
-	public ColorGroup( string title, Color color )
-	{
-		Title = title;
-		Color = color;
-	}
-}
-
 public partial class Player
 {
 	public const float MaxHealth = 100f;

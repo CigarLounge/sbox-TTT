@@ -34,7 +34,7 @@ public partial class Player
 	/// <summary>
 	/// Clientside only.
 	/// </summary>
-	public ColorGroup TagGroup { get; set; }
+	public UI.ColorGroup TagGroup { get; set; }
 
 	public bool CanHearSpectators => (!IsAlive || GameManager.Current.State is not InProgress) && MuteFilter != MuteFilter.Spectators && MuteFilter != MuteFilter.All;
 	public bool CanHearAlivePlayers => MuteFilter != MuteFilter.AlivePlayers && MuteFilter != MuteFilter.All;

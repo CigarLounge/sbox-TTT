@@ -7,7 +7,7 @@ namespace TTT;
 public static class TeamExtensions
 {
 	private static readonly Dictionary<Team, HashSet<IClient>> _clients = new();
-	private static readonly Dictionary<Team, ColorGroup> _properties = new();
+	private static readonly Dictionary<Team, UI.ColorGroup> _properties = new();
 
 	static TeamExtensions()
 	{
@@ -33,7 +33,7 @@ public static class TeamExtensions
 
 	public static void SetProperties( this Team team, string title, Color color )
 	{
-		_properties[team] = new ColorGroup
+		_properties[team] = new UI.ColorGroup
 		{
 			Title = title,
 			Color = color

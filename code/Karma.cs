@@ -27,29 +27,6 @@ public static class Karma
 	public const float FallOff = 0.25f;
 	public const float RoundHeal = 5;
 
-	private static readonly List<ColorGroup> _karmaGroupList = new()
-	{
-		new ColorGroup("Reputable", Color.FromBytes(255, 255, 255)),
-		new ColorGroup("Crude", Color.FromBytes(255, 240, 135)),
-		new ColorGroup("Trigger-happy", Color.FromBytes(245, 220, 60)),
-		new ColorGroup("Dangerous", Color.FromBytes(255, 180, 0)),
-		new ColorGroup("Liability", Color.FromBytes(255, 130, 0))
-	};
-
-	public static ColorGroup GetKarmaGroup( Player player )
-	{
-		if ( player.BaseKarma > MaxValue * 0.89 )
-			return _karmaGroupList[0];
-		else if ( player.BaseKarma > MaxValue * 0.8 )
-			return _karmaGroupList[1];
-		else if ( player.BaseKarma > MaxValue * 0.65 )
-			return _karmaGroupList[2];
-		else if ( player.BaseKarma > MaxValue * 0.5 )
-			return _karmaGroupList[3];
-		else
-			return _karmaGroupList[4];
-	}
-
 	public static float GetHurtReward( float damage, float multiplier )
 	{
 		return MaxValue * Math.Clamp( damage * multiplier, 0, 1 );
