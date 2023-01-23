@@ -173,7 +173,7 @@ public partial class Player : AnimatedEntity
 		}
 		else
 		{
-			CurrentChannel = Channel.All;
+			CurrentChannel = IsSpectator ? Channel.Spectator : Channel.All;
 			MuteFilter = MuteFilter.None;
 			ClearButtons();
 		}
