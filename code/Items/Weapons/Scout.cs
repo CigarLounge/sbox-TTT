@@ -42,7 +42,7 @@ public class Scout : Weapon
 		base.BuildInput();
 
 		if ( IsScoped )
-			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.1f );
+			Owner.ViewAngles = Angles.Lerp( Owner.OriginalViewAngles, Owner.ViewAngles, 0.2f );
 	}
 
 	protected override void CreateHudElements()
@@ -72,6 +72,6 @@ public class Scout : Weapon
 		ViewModelEntity.EnableDrawing = !IsScoped;
 		HandsModelEntity.EnableDrawing = !IsScoped;
 
-		Camera.FieldOfView = isScoped ? 10f : _defaultFOV;
+		Camera.FieldOfView = isScoped ? 20f : _defaultFOV;
 	}
 }
