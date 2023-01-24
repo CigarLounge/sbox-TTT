@@ -15,6 +15,9 @@ public abstract partial class Grenade : Carriable
 	[Net, Predicted]
 	private TimeUntil TimeUntilExplode { get; set; }
 
+	public override string PrimaryAttackHint => "Throw";
+	public override string SecondaryAttackHint => "Underhand";
+
 	protected virtual float SecondsUntilExplode => 3f;
 	private ThrowType _throw = ThrowType.None;
 	private bool _isThrown = false;
@@ -60,8 +63,7 @@ public abstract partial class Grenade : Carriable
 			var forwards = PreviousOwner.EyeRotation.Forward;
 			forwards *= _throw == ThrowType.Overhand ? 800f : 300f;
 
-			var upwards = PreviousOwner.EyeRotation.Up;
-			upwards *= _throw == ThrowType.Overhand ? 200f : 150f;
+			var upwards = PreviousOwner.EyeRotation.Up * 200f;
 
 			Velocity = PreviousOwner.Velocity + forwards + upwards;
 			Position = PreviousOwner.EyePosition + PreviousOwner.EyeRotation.Forward * 3.0f + Vector3.Down * 10f;
