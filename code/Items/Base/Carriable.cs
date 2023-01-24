@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TTT;
@@ -43,14 +44,9 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual string SlotText => string.Empty;
 
 	/// <summary>
-	/// Instructional text that will display next to a Primary Attack glyph.
+	/// TODO.
 	/// </summary>
-	public virtual string PrimaryAttackHint => string.Empty;
-
-	/// <summary>
-	/// Instructional text that will display next to a Secondary Attack glyph.
-	/// </summary>
-	public virtual string SecondaryAttackHint => string.Empty;
+	public virtual List<UI.BindingTip> BindingTips => new();
 
 	public bool IsActive => Owner?.ActiveCarriable == this;
 

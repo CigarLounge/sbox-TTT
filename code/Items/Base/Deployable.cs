@@ -1,5 +1,6 @@
 using Sandbox;
 using System;
+using System.Collections.Generic;
 
 namespace TTT;
 
@@ -7,8 +8,11 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
 	public GhostEntity GhostEntity { get; private set; }
 
-	public override string PrimaryAttackHint => CanDrop ? "Deploy" : string.Empty;
-	public override string SecondaryAttackHint => CanPlant ? "Plant" : string.Empty;
+	public override List<UI.BindingTip> BindingTips => new()
+	{
+		new( InputButton.PrimaryAttack, CanDrop ? "Deploy" : string.Empty ),
+		new( InputButton.SecondaryAttack, CanPlant ? "Plant" : string.Empty ),
+	};
 
 	protected virtual bool CanDrop => true;
 	protected virtual bool CanPlant => true;

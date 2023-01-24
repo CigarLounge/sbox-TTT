@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Editor;
 using Sandbox;
 
@@ -10,7 +11,11 @@ namespace TTT;
 [Title( "Cigar" )]
 public class Cigar : Carriable
 {
-	public override string PrimaryAttackHint => "Smoke";
+	public override List<UI.BindingTip> BindingTips => new()
+	{
+		new( InputButton.PrimaryAttack, "Smoke" )
+	};
+
 	private TimeUntil _timeUntilNextSmoke = 0;
 	private Particles _trailParticle;
 

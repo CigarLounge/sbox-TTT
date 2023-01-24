@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Sandbox;
 
 namespace TTT;
@@ -23,8 +24,11 @@ public partial class Teleporter : Carriable
 	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	public override string SlotText => Charges.ToString();
-	public override string PrimaryAttackHint => LocationIsSet ? "Teleport" : string.Empty;
-	public override string SecondaryAttackHint => "Set teleport location";
+	public override List<UI.BindingTip> BindingTips => new()
+	{
+		new( InputButton.PrimaryAttack, LocationIsSet ? "Teleport" : string.Empty ),
+		new( InputButton.SecondaryAttack, "Set Teleport Location" ),
+	};
 
 	private const float TeleportTime = 4f;
 	private bool _hasReachedLocation;
