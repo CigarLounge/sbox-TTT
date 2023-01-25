@@ -44,9 +44,11 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	public virtual string SlotText => string.Empty;
 
 	/// <summary>
-	/// TODO.
+	/// Prompt(s) that appear at the bottom of the user's screen.
+	/// An InputButton glyph and a piece of text.
+	/// If the given text string is null or empty, it will not be displayed.
 	/// </summary>
-	public virtual List<UI.BindingTip> BindingTips => new();
+	public virtual List<UI.BindingPrompt> BindingPrompt => new();
 
 	public bool IsActive => Owner?.ActiveCarriable == this;
 
