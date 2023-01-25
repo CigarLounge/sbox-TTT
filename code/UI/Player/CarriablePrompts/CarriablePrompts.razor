@@ -10,11 +10,11 @@
 
 <root>
     <div class="text-shadow">
-        @foreach(var binding in player.ActiveCarriable.BindingPrompt)
+        @foreach(var binding in player.ActiveCarriable.BindingPrompts)
         {
             @if (!binding.Text.IsNullOrEmpty()) 
             {
-                <div class="tip">
+                <div class="binding">
                     <inputglyph button=@binding.Button />
                     <text>@binding.Text</text>
                 </div>
@@ -27,7 +27,7 @@
     protected override int BuildHash()
     {
         var player = Game.LocalPawn as TTT.Player;
-        return HashCode.Combine(player?.ActiveCarriable?.BindingPrompt.HashCombine(b => HashCode.Combine(b.Button.GetHashCode(), b.Text.GetHashCode())));
+        return HashCode.Combine(player?.ActiveCarriable?.BindingPrompts.HashCombine(b => HashCode.Combine(b.Button.GetHashCode(), b.Text.GetHashCode())));
     }
 }
 
@@ -40,7 +40,7 @@
         font-size: 17px;
         font-weight: 500;
 
-        .tip {
+        .binding {
             margin: 5px;
             align-items: center;
         }

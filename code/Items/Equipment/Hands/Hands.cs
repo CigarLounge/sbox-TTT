@@ -23,7 +23,7 @@ public partial class Hands : Carriable
 	[Net, Local] private string CurrentPrimaryHint { get; set; }
 	[Net, Local] private string CurrentSecondaryHint { get; set; }
 
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, !CurrentPrimaryHint.IsNullOrEmpty() ? CurrentPrimaryHint : "Pickup" ),
 		new( InputButton.SecondaryAttack, !CurrentSecondaryHint.IsNullOrEmpty() ? CurrentSecondaryHint : "Push" ),

@@ -11,7 +11,7 @@ namespace TTT;
 [Title( "Cigar" )]
 public class Cigar : Carriable
 {
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, "Smoke" )
 	};

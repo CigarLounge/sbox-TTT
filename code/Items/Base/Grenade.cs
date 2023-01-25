@@ -16,7 +16,7 @@ public abstract partial class Grenade : Carriable
 	[Net, Predicted]
 	private TimeUntil TimeUntilExplode { get; set; }
 
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, "Throw" ),
 		new( InputButton.SecondaryAttack, "Underhand" ),

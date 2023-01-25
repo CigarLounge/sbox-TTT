@@ -24,7 +24,7 @@ public partial class Teleporter : Carriable
 	public TimeSince TimeSinceStartedTeleporting { get; private set; }
 
 	public override string SlotText => Charges.ToString();
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, LocationIsSet ? "Teleport" : string.Empty ),
 		new( InputButton.SecondaryAttack, "Set Teleport Location" ),

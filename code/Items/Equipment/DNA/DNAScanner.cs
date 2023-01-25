@@ -25,7 +25,7 @@ public partial class DNAScanner : Carriable
 	[Net, Local]
 	private float Charge { get; set; } = MaxCharge;
 
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, "Fetch DNA" ),
 		new( InputButton.SecondaryAttack, !AutoScan ? "Scan" : string.Empty ),

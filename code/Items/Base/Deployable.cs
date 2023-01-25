@@ -8,7 +8,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 {
 	public GhostEntity GhostEntity { get; private set; }
 
-	public override List<UI.BindingPrompt> BindingPrompt => new()
+	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
 		new( InputButton.PrimaryAttack, CanDrop ? "Deploy" : string.Empty ),
 		new( InputButton.SecondaryAttack, CanPlant ? "Plant" : string.Empty ),

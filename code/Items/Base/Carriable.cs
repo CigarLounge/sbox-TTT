@@ -48,7 +48,7 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 	/// An InputButton glyph and a piece of text.
 	/// If the given text string is null or empty, it will not be displayed.
 	/// </summary>
-	public virtual List<UI.BindingPrompt> BindingPrompt => new();
+	public virtual List<UI.BindingPrompt> BindingPrompts => new();
 
 	public bool IsActive => Owner?.ActiveCarriable == this;
 
