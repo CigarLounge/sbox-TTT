@@ -13,7 +13,7 @@ public partial class InfoFeed : Panel
 	public InfoFeed() => Instance = this;
 
 	private const int MaxMessagesDisplayed = 5;
-	private const float DisplayDuration = 5f;
+	private const float DisplayDuration = 2.5f;
 	private readonly Queue<InfoFeedEntry> _entryQueue = new();
 	private RealTimeUntil _timeUntilNextDisplay = 0f;
 	private RealTimeSince _timeSinceLastDisplayed = 0f;
