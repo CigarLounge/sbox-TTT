@@ -95,6 +95,9 @@ public abstract partial class Weapon : Carriable
 	{
 		base.BuildInput();
 
+		if ( Owner == null )
+			return;
+
 		var oldPitch = Owner.ViewAngles.pitch;
 		var oldYaw = Owner.ViewAngles.yaw;
 
