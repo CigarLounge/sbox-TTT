@@ -1,4 +1,5 @@
 using Sandbox;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TTT;
@@ -15,8 +16,11 @@ public abstract partial class Grenade : Carriable
 	[Net, Predicted]
 	private TimeUntil TimeUntilExplode { get; set; }
 
-	public override string PrimaryAttackHint => "Throw";
-	public override string SecondaryAttackHint => "Underhand";
+	public override List<UI.BindingPrompt> BindingPrompt => new()
+	{
+		new( InputButton.PrimaryAttack, "Throw" ),
+		new( InputButton.SecondaryAttack, "Underhand" ),
+	};
 
 	protected virtual float SecondsUntilExplode => 3f;
 	private ThrowType _throw = ThrowType.None;
