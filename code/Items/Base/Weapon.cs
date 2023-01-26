@@ -230,7 +230,7 @@ public abstract partial class Weapon : Carriable
 				if ( Camera.FirstPersonViewer != Owner && !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
-					tracer.SetPosition( 0, GetAttachment( "muzzle" )?.Position ?? trace.StartPosition );
+					tracer.SetPosition( 0, EffectEntity.Position );
 					tracer.SetPosition( 1, trace.EndPosition );
 				}
 
