@@ -16,13 +16,14 @@
 		PrimaryRate = 3
 		SecondaryRate = 0
 		ReserveAmmo = 0
+		IsSilenced = false
 		ReloadTime = 2.2
 		VerticalRecoil = 0
 		HorizontalRecoilRange = 0
 		RecoilRecoveryScale = 0
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
-		TracerParticle = resource:"particles/tracer/tracer.standard.vpcf"
+		TracerParticle = resource:"particles/tracer/tracer.newtonlauncher.vpcf"
 		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = true
