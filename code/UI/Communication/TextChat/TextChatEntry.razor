@@ -3,16 +3,21 @@
 @namespace TTT.UI
 
 <root class="background-color-primary opacity-heavy rounded">
-	<div class="avatar">
-		<img class="circle" src="avatar:@PlayerId" />
-	</div>
+	@if (PlayerId != default)
+	{
+		<div class="avatar">
+			<img class="circle" src="avatar:@PlayerId" />
+		</div>
+	}
 	<div class="header">
 		<text class="name" style="color: @Color.Hex;">@Name</text>
 	</div>
-
-	<div class="main">
-		<text class="msg">@Message</text>
-	</div>
+	@if (!Message.IsNullOrEmpty())
+	{
+		<div class="main">
+			<text class="msg">@Message</text>
+		</div>
+	}
 </root>
 
 @code
@@ -32,10 +37,10 @@
 		Color = color;
 	}
 
-	public TextChatEntry(string message, Color color)
+	public TextChatEntry(string message, Color? color = null)
 	{
-		Name = message;
-		Color = color;
+		Name = message; // Use the name field since it is in bold.
+		Color = color ?? Color.FromBytes( 253, 196, 24 );
 	}
 }
 
