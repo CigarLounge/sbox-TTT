@@ -42,6 +42,7 @@ public partial class TextChat : Panel
 		Canvas.PreferScrollToBottom = true;
 		Input.AcceptsFocus = true;
 		Input.AllowEmojiReplace = true;
+		Input.OnTabPressed += OnTabPressed;
 
 		Instance = this;
 	}
@@ -157,6 +158,15 @@ public partial class TextChat : Panel
 				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, _spectatorChatColor ) );
 				return;
 		}
+	}
+
+	private void OnTabPressed()
+	{
+		if ( Game.LocalPawn is not Player player || !player.IsAlive )
+			return;
+
+		if ( player.Role.CanTeamChat )
+			player.CurrentChannel = player.CurrentChannel == Channel.All ? Channel.Team : Channel.All;
 	}
 }
 
