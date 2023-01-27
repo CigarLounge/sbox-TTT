@@ -29,7 +29,7 @@ public partial class TextChat : Panel
 	private Panel Canvas { get; set; }
 	private TextEntry Input { get; set; }
 
-	private readonly Queue<ChatRow> _rows = new();
+	private readonly Queue<TextChatEntry> _entries = new();
 
 	protected override void OnAfterTreeRender( bool firstTime )
 	{
@@ -50,7 +50,7 @@ public partial class TextChat : Panel
 
 	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
 	{
-		var entry = Canvas.AddChild<ChatRow>();
+		var entry = Canvas.AddChild<TextChatEntry>();
 
 		var player = Game.LocalPawn;
 		if ( !player.IsValid() )
@@ -66,10 +66,10 @@ public partial class TextChat : Panel
 
 		Canvas.TryScrollToBottom();
 
-		_rows.Enqueue( entry );
+		_entries.Enqueue( entry );
 
-		if ( _rows.Count > MaxItems )
-			_rows.Dequeue().Delete();
+		if ( _entries.Count > MaxItems )
+			_entries.Dequeue().Delete();
 	}
 
 	private void Open()
