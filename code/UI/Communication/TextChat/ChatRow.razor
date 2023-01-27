@@ -4,13 +4,10 @@
 
 @namespace TTT.UI
 
-<root class="background-color-primary opacity-heavy">
-	@if ( PlayerId > 0 )
-	{
-		<div class="avatar">
-			<img src="avatar:@PlayerId" />
-		</div>
-	}
+<root class="background-color-primary opacity-heavy rounded">
+	<div class="avatar">
+		<img src="avatar:@PlayerId" />
+	</div>
 	<div class="header">
 		<label class="name">@Name</label>
 	</div>
@@ -27,3 +24,47 @@
 	public long PlayerId { get; set; }
 	public TimeSince Lifetime { get; init; } = 0;
 }
+
+<style>
+	ChatRow {
+		max-width: 100%;
+		flex-shrink: 0;
+		padding: 4px 10px;
+		transition: opacity 0.15s ease;
+		margin-bottom: 6px;
+
+		.header {
+			flex-shrink: 0;
+			flex-grow: 0;
+			padding-left: 4px;
+			margin-top: 3px;
+			font-weight: 700;
+			font-size: 16px;
+			color: white;
+			padding-right: 8px;
+		}
+
+		.msg {
+			margin-top: 3px;
+			font-size: 16px;
+		}
+
+		img {
+			flex-shrink: 0;
+			height: 30px;
+			width: 30px;
+			border-radius: 100px;
+		}
+
+		&.noname {
+			.name {
+				display: none;
+			}
+		}
+
+		&.stale {
+			transition: opacity 1s ease;
+			opacity: 0;
+		}
+	}
+</style>
