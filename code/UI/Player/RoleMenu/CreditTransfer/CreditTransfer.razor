@@ -3,20 +3,20 @@
 
 @namespace TTT.UI
 
-@if (Game.LocalPawn is not TTT.Player localPlayer) 
+@if (Game.LocalPawn is not TTT.Player localPlayer)
 {
     return;
 }
 
 <root class="text-shadow">
-    <div class="player-list rounded background-color-gradient box-shadow">
+    <div class="player-list rounded background-color-primary box-shadow">
         @{
             var eligiblePlayers = Utils.GetPlayersWhere(receivingPlayer => CanTransferCreditsTo(localPlayer, receivingPlayer));
             if (eligiblePlayers.Any())
             {
                 @foreach (var player in eligiblePlayers)
                 {
-                    <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "selected" : "")" @onclick=@(() => {_selectedPlayer = player;})>
+                    <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "background-color-secondary" : "")" @onclick=@(() => {_selectedPlayer = player;})>
                         <img src="avatar:@player.SteamId" class="avatar" />
                         <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
                     </div>
@@ -25,14 +25,12 @@
             else
             {
                 <text>
-                    <text class="empty">
-                        Nobody is available to receive credits from you, maybe this is for the better...
-                    </text>
+                <text class="empty">Nobody is available to receive credits from you, maybe this is for the better...</text>
                 </text>
             }
         }
     </div>
-    <div class="send rounded background-color-gradient box-shadow">
+    <div class="send rounded background-color-primary box-shadow">
         @{
             var canSendCredits = _selectedPlayer is not null && localPlayer.Credits >= CreditAmount;
             <button icon="outbox" class="credits-button @(!canSendCredits ? "inactive" : "")" @onclick=@(() => SendCredits(_selectedPlayer.SteamId.ToString(), CreditAmount))>Send Credits</button>
@@ -74,10 +72,6 @@
                     height: 45px;
                     border-radius: 4px;
                     margin-right: 4px;
-                }
-
-                &.selected {
-                    background-color: #1a1a1a;
                 }
 
                 &:hover {

@@ -3,8 +3,8 @@ $missing: #50754f;
 $dead: #c65b3a;
 $spectator: #fcdb38;
 
-$primary: #303030;
-$secondary: #1a1a1a;
+$primary: #1a1a1a;
+$secondary: #242424;
 $tertiary: #fdc418;
 
 $button-primary: #ffffff !default;
@@ -90,7 +90,7 @@ hud {
 }
 
 .box-shadow {
-    box-shadow: 3px 3px 10px $secondary;
+    box-shadow: 3px 3px 10px $primary;
 }
 
 .fullscreen {
@@ -105,14 +105,11 @@ hud {
     height: 100%;
     background-color: black;
     opacity: 0.75;
+    backdrop-filter-blur: 5px;
 }
 
 .text-color-tertiary {
     color: $tertiary;
-}
-
-.background-color-gradient {
-    background: linear-gradient($primary, $secondary);
 }
 
 .background-color-primary {

@@ -5,17 +5,19 @@
 
 <root>
     @foreach (var sound in _sounds)
+
     {
-        <button
-        @onclick=@(() => RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Game.Random.Int(0,sound.Value.Count - 1 )] ))
-        class="box-shadow background-color-gradient">
+            <button
+            @onclick=@(() => RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Game.Random.Int(0,sound.Value.Count - 1 )] ))
+            class="box-shadow background-color-primary">
             @sound.Key
-        </button>
+            </button>
     }
 </root>
 
 @code {
     // TODO: Let's hook up some of the other sounds like death, fire, explore, etc.
+
     private readonly Dictionary<string, List<string>> _sounds = new()
     {
         { "Pistol", new List<string>() { "p250_fire-1" } },
@@ -26,10 +28,16 @@
         { "Silenced", new List<string>() { "vertec_fire_silenced-1" } },
     };
 
+
+
     private RadioEntity FetchRadio()
+
     {
+
         var radioComponent = Game.LocalPawn.Components.Get<RadioComponent>();
+
         return radioComponent.Radio;
+
     }
 }
 

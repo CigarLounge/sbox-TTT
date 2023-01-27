@@ -17,8 +17,8 @@ public partial class MapSelectionMenu : Panel
 			if ( panel is FullScreenHintMenu )
 				continue;
 
-			if ( panel is not TextChat and not VoiceChatDisplay )
-				panel.Delete( true );
+			// if ( panel is not TextChat and not VoiceChatDisplay )
+			// 	panel.Delete( true );
 		}
 	}
 

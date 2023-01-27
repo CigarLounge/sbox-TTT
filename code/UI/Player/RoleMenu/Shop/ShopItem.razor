@@ -3,7 +3,7 @@
 @namespace TTT.UI
 
 <root class="text-shadow @(!CanPurchase ? "cannot-purchase" : "")">
-    <div class="background-color-gradient rounded box-shadow">
+    <div class="background-color-primary rounded box-shadow">
         <img src=@ItemInfo.IconPath class="icon" />
     </div>
     <div class="info">
@@ -14,7 +14,9 @@
 
 @code {
     public ItemInfo ItemInfo { get; set; }
+
     public bool CanPurchase { get; set; }
+
     protected override int BuildHash() => HashCode.Combine(CanPurchase);
 }
 

@@ -1,0 +1,250 @@
+@using Sandbox.UI;
+@using Sandbox;
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+
+@namespace TTT.UI
+
+<root>
+	<div class="canvas" @ref=Canvas />
+	<TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
+</root>
+
+@code
+{
+	public static Chat Current;
+
+	public Panel Canvas { get; protected set; }
+	public TextEntry Input { get; protected set; }
+
+	Queue<ChatRow> Rows = new();
+
+	protected int MaxItems => 100;
+	protected float MessageLifetime => 10f;
+
+	public bool IsOpen
+	{
+		get => HasClass( "open" );
+		set
+		{
+			SetClass( "open", value );
+			if ( value )
+			{
+				Input.Focus();
+				Input.Text = string.Empty;
+				Input.Label.SetCaretPosition( 0 );
+			}
+		}
+	}
+
+	protected override void OnAfterTreeRender( bool firstTime )
+	{
+		base.OnAfterTreeRender( firstTime );
+
+		Canvas.PreferScrollToBottom = true;
+		Input.AcceptsFocus = true;
+		Input.AllowEmojiReplace = true;
+
+		Current = this;
+	}
+
+	public override void Tick()
+	{
+		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
+			Open();
+
+		Input.Placeholder = string.IsNullOrEmpty( Input.Text ) ? "Enter your message..." : string.Empty;
+	}
+
+	void Open()
+	{
+		AddClass( "open" );
+		Input.Focus();
+		Canvas.TryScrollToBottom();
+	}
+
+	void Close()
+	{
+		RemoveClass( "open" );
+		Input.Blur();
+		Input.Text = string.Empty;
+		Input.Label.SetCaretPosition( 0 );
+	}
+
+	void Submit()
+	{
+		var msg = Input.Text.Trim();
+		Input.Text = "";
+
+		Close();
+
+		if ( string.IsNullOrWhiteSpace( msg ) ) return;
+
+		Say( msg );
+	}
+
+	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
+	{
+		var e = Canvas.AddChild<ChatRow>();
+
+		var player = Game.LocalPawn;
+		if ( !player.IsValid() ) return;
+
+		if ( playerId > 0 )
+			e.PlayerId = playerId;
+
+		e.Message = message;
+		e.Name = $"{name}";
+
+		e.SetClass( "noname", string.IsNullOrEmpty( name ) );
+		e.SetClass( "info", isInfo );
+		e.BindClass( "stale", () => e.Lifetime > MessageLifetime );
+
+		var cl = Game.Clients.FirstOrDefault( x => x.SteamId == playerId );
+		if ( cl.IsValid() )
+			e.SetClass( "friend", cl.IsFriend || Game.SteamId == playerId );
+
+		Canvas.TryScrollToBottom();
+
+		Rows.Enqueue( e );
+
+		// Kill an item if we need to
+		if ( Rows.Count > MaxItems )
+			Rows.Dequeue().Delete();
+	}
+}
+
+<style>
+iconpanel {
+    font-family: "Material Icons";
+}
+
+Chat {
+    position: absolute;
+    bottom: -16px;
+    left: 32px;
+    z-index: 1001;
+    flex-direction: column;
+    width: 505px;
+    max-height: 435px;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.1s ease, border 0s ease;
+    padding: 18px;
+
+    textentry {
+        transition: opacity 0.1s ease;
+        flex-shrink: 0;
+        min-height: 44px;
+        opacity: 0;
+        background-color: rgba( #090d10, 0.9 );
+        border-radius: 4px;
+        margin-bottom: 28px;
+    }
+
+    .placeholder {
+        color: #c0cee7;
+    }
+
+    .content-label {
+        margin-left: 16px;
+    }
+
+    .placeholder, .content-label {
+        color: darken( #c0cee7, 20% );
+        font-size: 14px;
+        font-weight: 400;
+        text-shadow: 2px 2px 1px rgba( black, 0.1 );
+        margin-top: 11px;
+    }
+
+    .canvas {
+        flex-direction: column;
+        align-items: flex-start;
+        overflow: scroll;
+
+        ChatRow {
+            max-width: 100%;
+            color: white;
+            opacity: 1;
+            flex-shrink: 0;
+            background-color: rgba( #090d10, 0.9 );
+            padding: 4px 10px;
+            border-radius: 4px;
+            transition: opacity 0.15s ease;
+            margin-bottom: 6px;
+
+            .header {
+                flex-shrink: 0;
+                flex-grow: 0;
+                padding-left: 4px;
+                margin-top: 3px;
+                font-weight: 700;
+                font-size: 16px;
+                color: white;
+                padding-right: 8px;
+                text-shadow: 2px 2px 1px rgba( black, 0.3 );
+            }
+
+            .msg {
+                margin-top: 3px;
+                color: #c0cee7;
+                font-size: 16px;
+                text-shadow: 2px 2px 1px rgba( black, 0.1 );
+            }
+
+            &.info {
+                .header, .msg {
+                    color: darken( #c0cee7, 20% );
+                }
+            }
+
+            img {
+                flex-shrink: 0;
+                height: 30px;
+                width: 30px;
+                border-radius: 100px;
+            }
+
+            &.noname {
+                .name {
+                    display: none;
+                }
+            }
+
+            &.is-lobby, &.friend {
+                .name {
+                    color: #849a74;
+                }
+            }
+
+            &.stale {
+                transition: opacity 1s ease;
+                opacity: 0;
+            }
+        }
+    }
+
+    &.open {
+        pointer-events: all;
+        backdrop-filter-blur: 20px;
+        background-image: linear-gradient( to top, rgba( #1b1b35, 0.9 ), rgba( #1c1c38, 0.85 ), rgba( #1c1c38, 0.8 ) 80%, rgba( #1c1c38, 0.5 ) );
+        bottom: 0;
+        border-radius: 4 4 0 0;
+
+        textentry {
+            opacity: 1;
+            width: 100%;
+            cursor: text;
+        }
+
+        .canvas {
+            ChatRow {
+                transition: opacity 0.1s ease;
+                opacity: 1;
+            }
+        }
+    }
+}
+</style>
