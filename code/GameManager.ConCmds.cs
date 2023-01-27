@@ -117,7 +117,7 @@ public partial class GameManager
 		client.SetValue( "!rtv", true );
 		GameManager.Current.RTVCount += 1;
 
-		// UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has rocked the vote! ({GameManager.Current.RTVCount}/{MathF.Round( Game.Clients.Count * GameManager.RTVThreshold )})" );
+		UI.TextChat.AddInfoEntry( To.Everyone, $"{client.Name} has rocked the vote! ({GameManager.Current.RTVCount}/{MathF.Round( Game.Clients.Count * GameManager.RTVThreshold )})" );
 	}
 
 	[ConCmd.Server( Name = "kill" )]

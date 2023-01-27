@@ -91,7 +91,7 @@ public partial class GameManager : Sandbox.GameManager
 
 		State.OnPlayerJoin( player );
 
-		// UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has joined" );
+		UI.TextChat.AddInfoEntry( To.Everyone, $"{client.Name} has joined" );
 	}
 
 	public override void ClientDisconnect( IClient client, NetworkDisconnectionReason reason )
@@ -99,7 +99,7 @@ public partial class GameManager : Sandbox.GameManager
 		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
 
-		// UI.TextChat.AddInfo( To.Everyone, $"{client.Name} has left ({reason})" );
+		UI.TextChat.AddInfoEntry( To.Everyone, $"{client.Name} has left ({reason})" );
 
 		// Only delete the pawn if they are alive.
 		// Keep the dead body otherwise on disconnect.

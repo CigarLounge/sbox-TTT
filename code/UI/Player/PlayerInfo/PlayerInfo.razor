@@ -11,11 +11,11 @@
 <root class="opacity-heavy text-shadow">
     @if (Hud.DisplayedPlayer.Role is not NoneRole)
     {
-            <div class="role-container" style="background-color: @Hud.DisplayedPlayer.Role.Color.Hex">
-                <text>
-                    <text>@Hud.DisplayedPlayer.Role.Title</text>
-                </text>
-            </div>
+        <div class="role-container" style="background-color: @Hud.DisplayedPlayer.Role.Color.Hex">
+            <text>
+                <text>@Hud.DisplayedPlayer.Role.Title</text>
+            </text>
+        </div>
     }
 
     <div class="health-container background-color-primary @(Hud.DisplayedPlayer.Role is not NoneRole ? "left-flat" : "")">

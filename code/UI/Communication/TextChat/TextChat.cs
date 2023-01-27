@@ -112,7 +112,7 @@ public partial class TextChat : Panel
 		SendChat( message );
 	}
 
-	[ConCmd.Server]
+	[ConCmd.Server( "ttt_say" )]
 	public static void SendChat( string message )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -142,7 +142,7 @@ public partial class TextChat : Panel
 		}
 	}
 
-	[ClientRpc]
+	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
 	public static void AddChatEntry( long playerId, string playerName, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
@@ -159,7 +159,7 @@ public partial class TextChat : Panel
 		}
 	}
 
-	[ConCmd.Client( "ttt_info" )]
+	[ConCmd.Client( "ttt_chat_info_add", CanBeCalledFromServer = true )]
 	public static void AddInfoEntry( string message )
 	{
 		Instance.AddEntry( new TextChatEntry( message ) );

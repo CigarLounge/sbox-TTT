@@ -14,9 +14,7 @@
 
 @code {
     public ItemInfo ItemInfo { get; set; }
-
     public bool CanPurchase { get; set; }
-
     protected override int BuildHash() => HashCode.Combine(CanPurchase);
 }
 
