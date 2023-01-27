@@ -4,9 +4,9 @@
 
 @namespace TTT.UI
 
-<root class="background-color-primary opacity-heavy rounded">
+<root class="background-color-primary opacity-heavy">
 	<div class="avatar">
-		<img src="avatar:@PlayerId" />
+		<img class="circle" src="avatar:@PlayerId" />
 	</div>
 	<div class="header">
 		<label class="name">@Name</label>
@@ -53,7 +53,6 @@
 			flex-shrink: 0;
 			height: 30px;
 			width: 30px;
-			border-radius: 100px;
 		}
 
 		&.noname {

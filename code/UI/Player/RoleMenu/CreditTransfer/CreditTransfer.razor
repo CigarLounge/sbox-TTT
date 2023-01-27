@@ -17,7 +17,7 @@
                 @foreach (var player in eligiblePlayers)
                 {
                     <div class="player rounded @(_selectedPlayer?.SteamId == player.SteamId ? "background-color-secondary" : "")" @onclick=@(() => {_selectedPlayer = player;})>
-                        <img src="avatar:@player.SteamId" class="avatar" />
+                        <img src="avatar:@player.SteamId" class="avatar circle" />
                         <text style="font-size: 25px; font-color: @player.Role.Color.Hex;">@player.SteamName</text>
                     </div>
                 }
@@ -70,7 +70,6 @@
                 .avatar {
                     width: 45px;
                     height: 45px;
-                    border-radius: 4px;
                     margin-right: 4px;
                 }
 
