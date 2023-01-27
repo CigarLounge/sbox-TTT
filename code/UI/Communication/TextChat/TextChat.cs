@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
@@ -6,7 +7,7 @@ namespace TTT.UI;
 
 public partial class TextChat : Panel
 {
-	public static TextChat Current;
+	public static TextChat Instance;
 
 	public bool IsOpen
 	{
@@ -22,6 +23,9 @@ public partial class TextChat : Panel
 			}
 		}
 	}
+
+	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
+	private static readonly Color _spectatorChatColor = PlayerStatus.Spectator.GetColor();
 
 	private const int MaxItems = 100;
 	private const float MessageLifetime = 10f;
@@ -39,13 +43,32 @@ public partial class TextChat : Panel
 		Input.AcceptsFocus = true;
 		Input.AllowEmojiReplace = true;
 
-		Current = this;
+		Instance = this;
 	}
 
 	public override void Tick()
 	{
+		if ( Game.LocalPawn is not Player player )
+			return;
+
 		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
 			Open();
+
+		if ( !IsOpen )
+			return;
+
+		switch ( player.CurrentChannel )
+		{
+			case Channel.All:
+				Input.Style.BorderColor = _allChatColor;
+				return;
+			case Channel.Spectator:
+				Input.Style.BorderColor = _spectatorChatColor;
+				return;
+			case Channel.Team:
+				Input.Style.BorderColor = player.Role.Color;
+				return;
+		}
 	}
 
 	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
@@ -102,13 +125,7 @@ public partial class TextChat : Panel
 	[ConCmd.Client( "chat_add", CanBeCalledFromServer = true )]
 	public static void AddChatEntry( string name, string message, string playerId = "0", bool isInfo = false )
 	{
-		Current?.AddEntry( name, message, long.Parse( playerId ), isInfo );
-
-		// Only log clientside if we're not the listen server host
-		if ( !Game.IsListenServer )
-		{
-			Log.Info( $"{name}: {message}" );
-		}
+		Instance?.AddEntry( name, message, long.Parse( playerId ), isInfo );
 	}
 
 	public static void AddChatEntry( To target, string name, string message, long playerId = 0, bool isInfo = false )
@@ -126,7 +143,22 @@ public partial class TextChat : Panel
 		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
 			return;
 
-		Log.Info( $"{ConsoleSystem.Caller}: {message}" );
 		AddChatEntry( To.Everyone, ConsoleSystem.Caller.Name, message, ConsoleSystem.Caller.SteamId );
+	}
+}
+
+public partial class TextEntry : Sandbox.UI.TextEntry
+{
+	public event Action OnTabPressed;
+
+	public override void OnButtonTyped( string button, KeyModifiers km )
+	{
+		if ( button == "tab" )
+		{
+			OnTabPressed?.Invoke();
+			return;
+		}
+
+		base.OnButtonTyped( button, km );
 	}
 }
