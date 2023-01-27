@@ -6,9 +6,9 @@
 
 @namespace TTT.UI
 
-<root>
+<root class="text-shadow">
 	<div class="canvas" @ref=Canvas />
-	<TextEntry @ref=Input onsubmit=@Submit onblur=@Close />
+	<TextEntry class="background-color-primary" @ref=Input onsubmit=@Submit onblur=@Close />
 </root>
 
 @code
@@ -116,31 +116,24 @@
 }
 
 <style>
-iconpanel {
-    font-family: "Material Icons";
-}
-
 Chat {
     position: absolute;
-    bottom: -16px;
-    left: 32px;
-    z-index: 1001;
+    bottom: 140px;
+    left: 25px;
+    z-index: 100;
     flex-direction: column;
     width: 505px;
     max-height: 435px;
     font-size: 16px;
     pointer-events: none;
     transition: all 0.1s ease, border 0s ease;
-    padding: 18px;
 
     textentry {
         transition: opacity 0.1s ease;
         flex-shrink: 0;
-        min-height: 44px;
         opacity: 0;
-        background-color: rgba( #090d10, 0.9 );
         border-radius: 4px;
-        margin-bottom: 28px;
+        padding: 0 10 10 0;
     }
 
     .placeholder {
@@ -167,9 +160,7 @@ Chat {
         ChatRow {
             max-width: 100%;
             color: white;
-            opacity: 1;
             flex-shrink: 0;
-            background-color: rgba( #090d10, 0.9 );
             padding: 4px 10px;
             border-radius: 4px;
             transition: opacity 0.15s ease;
@@ -228,13 +219,11 @@ Chat {
 
     &.open {
         pointer-events: all;
-        backdrop-filter-blur: 20px;
-        background-image: linear-gradient( to top, rgba( #1b1b35, 0.9 ), rgba( #1c1c38, 0.85 ), rgba( #1c1c38, 0.8 ) 80%, rgba( #1c1c38, 0.5 ) );
-        bottom: 0;
+        bottom: 130;
         border-radius: 4 4 0 0;
 
         textentry {
-            opacity: 1;
+            opacity: 0.9;
             width: 100%;
             cursor: text;
         }
@@ -242,7 +231,7 @@ Chat {
         .canvas {
             ChatRow {
                 transition: opacity 0.1s ease;
-                opacity: 1;
+                opacity: 0.9;
             }
         }
     }
