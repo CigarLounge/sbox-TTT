@@ -1,28 +1,42 @@
 @using Sandbox;
-@using Sandbox.UI;
-@using Sandbox.UI.Construct;
 
 @namespace TTT.UI
 
-<root class="background-color-primary opacity-heavy">
+<root class="background-color-primary opacity-heavy rounded">
 	<div class="avatar">
 		<img class="circle" src="avatar:@PlayerId" />
 	</div>
 	<div class="header">
-		<label class="name">@Name</label>
+		<text class="name" style="color: @Color.Hex;">@Name</text>
 	</div>
 
 	<div class="main">
-		<label class="msg">@Message</label>
+		<text class="msg">@Message</text>
 	</div>
 </root>
 
 @code
 {
-	public string Name { get; set; }
-	public string Message { get; set; }
-	public long PlayerId { get; set; }
+	private long PlayerId { get; set; }
+	private string Name { get; set; }
+	private string Message { get; set; }
+	private Color Color { get; set; }
+
 	public TimeSince Lifetime { get; init; } = 0;
+
+	public TextChatEntry(long playerId, string name, string message, Color color) 
+	{
+		PlayerId = playerId;
+		Name = name;
+		Message = message;
+		Color = color;
+	}
+
+	public TextChatEntry(string message, Color color)
+	{
+		Name = message;
+		Color = color;
+	}
 }
 
 <style>
@@ -53,12 +67,6 @@
 			flex-shrink: 0;
 			height: 30px;
 			width: 30px;
-		}
-
-		&.noname {
-			.name {
-				display: none;
-			}
 		}
 
 		&.stale {

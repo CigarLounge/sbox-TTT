@@ -1,6 +1,6 @@
 @namespace TTT.UI
 
-<root class="rounded opacity-heavy text-shadow">
+<root class="opacity-heavy text-shadow rounded">
     <img src="avatar:@_client.SteamId" class="avatar circle" />
     <text class="name">@_client.Name</text>
 </root>
@@ -14,7 +14,7 @@
         if (player.Role is Detective)
             return player.Role.Color.Hex;
 
-        return "#303030";
+        return "#1a1a1a";
     }
 }
 

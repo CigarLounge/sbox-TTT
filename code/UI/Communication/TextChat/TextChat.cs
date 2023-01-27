@@ -71,26 +71,14 @@ public partial class TextChat : Panel
 		}
 	}
 
-	public void AddEntry( string name, string message, long playerId = 0, bool isInfo = false )
+	private void AddEntry( TextChatEntry entry )
 	{
-		var entry = Canvas.AddChild<TextChatEntry>();
-
-		var player = Game.LocalPawn;
-		if ( !player.IsValid() )
-			return;
-
-		entry.Message = message;
-		entry.Name = $"{name}";
-		entry.PlayerId = playerId;
-
-		entry.SetClass( "noname", string.IsNullOrEmpty( name ) );
-		entry.SetClass( "info", isInfo );
-		entry.BindClass( "stale", () => entry.Lifetime > MessageLifetime );
-
+		Canvas.AddChild( entry );
 		Canvas.TryScrollToBottom();
 
-		_entries.Enqueue( entry );
+		entry.BindClass( "stale", () => entry.Lifetime > MessageLifetime );
 
+		_entries.Enqueue( entry );
 		if ( _entries.Count > MaxItems )
 			_entries.Dequeue().Delete();
 	}
@@ -112,38 +100,63 @@ public partial class TextChat : Panel
 
 	private void Submit()
 	{
-		var msg = Input.Text.Trim();
+		var message = Input.Text.Trim();
 		Input.Text = "";
 
 		Close();
 
-		if ( string.IsNullOrWhiteSpace( msg ) ) return;
-
-		Say( msg );
-	}
-
-	[ConCmd.Client( "chat_add", CanBeCalledFromServer = true )]
-	public static void AddChatEntry( string name, string message, string playerId = "0", bool isInfo = false )
-	{
-		Instance?.AddEntry( name, message, long.Parse( playerId ), isInfo );
-	}
-
-	public static void AddChatEntry( To target, string name, string message, long playerId = 0, bool isInfo = false )
-	{
-		// Can't use long on ConCmd :<
-		AddChatEntry( target, name, message, playerId.ToString(), isInfo );
-	}
-
-	[ConCmd.Server( "say" )]
-	public static void Say( string message )
-	{
-		if ( !ConsoleSystem.Caller.IsValid() ) return;
-
-		// todo - reject more stuff
-		if ( message.Contains( '\n' ) || message.Contains( '\r' ) )
+		if ( string.IsNullOrWhiteSpace( message ) )
 			return;
 
-		AddChatEntry( To.Everyone, ConsoleSystem.Caller.Name, message, ConsoleSystem.Caller.SteamId );
+		SendChat( message );
+	}
+
+	[ConCmd.Server]
+	public static void SendChat( string message )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
+			return;
+
+		if ( message == "!rtv" )
+		{
+			GameManager.RockTheVote();
+			return;
+		}
+
+		if ( !player.IsAlive )
+		{
+			var clients = GameManager.Current.State is InProgress ? Utils.GetClientsWhere( p => !p.IsAlive ) : Game.Clients;
+			AddChatEntry( To.Multiple( clients ), player.SteamId, player.SteamName, message, Channel.Spectator );
+			return;
+		}
+
+		if ( player.CurrentChannel == Channel.All )
+		{
+			player.LastWords = message;
+			AddChatEntry( To.Everyone, player.SteamId, player.SteamName, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
+		}
+		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
+		{
+			AddChatEntry( player.Team.ToClients(), player.SteamId, player.SteamName, message, player.CurrentChannel, player.Role.Info.ResourceId );
+		}
+	}
+
+	// TODO: Change.
+	[ClientRpc]
+	public static void AddChatEntry( long playerId, string playerName, string message, Channel channel, int roleId = -1 )
+	{
+		switch ( channel )
+		{
+			case Channel.All:
+				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, ResourceLibrary.Get<RoleInfo>( roleId )?.Color ?? _allChatColor ) );
+				return;
+			case Channel.Team:
+				Instance.AddEntry( new TextChatEntry( playerId, $"(TEAM) {playerName}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color ) );
+				return;
+			case Channel.Spectator:
+				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, _spectatorChatColor ) );
+				return;
+		}
 	}
 }
 
