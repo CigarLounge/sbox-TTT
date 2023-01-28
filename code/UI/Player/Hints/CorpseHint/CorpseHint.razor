@@ -2,14 +2,19 @@
 
 @namespace TTT.UI
 
+@if (Game.LocalPawn is not TTT.Player player)
+{
+    return;
+}
+
 <root class="centered-vertical-75 text-shadow">
-    <text class="header" style="color: @(_corpse.Player.IsValid() ? _corpse.Player.Role.Color.Hex : "#fdc418")">
+    <text class="header" style="color: @(_corpse.Player.IsValid() && _corpse.Player.IsConfirmedDead ? _corpse.Player.Role.Color.Hex : "#fdc418")">
         @(_corpse.Player?.SteamName ?? "Unidentified body")
     </text>
     @if (_corpse.CanSearch()) 
     {
         <div class="actions">
-            @if (Game.LocalPawn is TTT.Player player && player.Role.CanRetrieveCredits && player.IsAlive && _corpse.HasCredits) {
+            @if (player.IsAlive && player.Role.CanRetrieveCredits && _corpse.HasCredits) {
                 <text>
                     <text class="text-color-tertiary">Search to receive unspent credits.</text>
                 </text>
@@ -19,7 +24,7 @@
                 <inputglyph button="@Corpse.GetSearchButton()" />
                 <text>@(_corpse.Player.IsValid() ? _corpse.Player.IsConfirmedDead ? "to search." : "to confirm." : "to identify.")</text>
             </div>
-            @if (!_corpse.Player.IsValid() || !_corpse.Player.IsConfirmedDead) {
+            @if (player.IsAlive && (!_corpse.Player.IsValid() || !_corpse.Player.IsConfirmedDead)) {
                 <div class="covert-panel">
                     <text>Press</text>
                     <inputglyph button="Run" />
