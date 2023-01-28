@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Component;
 using System.Linq;
 
 namespace TTT;
@@ -12,6 +13,11 @@ public partial class Player
 	/// The entity we're currently looking at.
 	/// </summary>
 	public Entity HoveredEntity { get; private set; }
+
+	/// <summary>
+	/// What we last looked at.
+	/// </summary>
+	public Entity LastHoveredEntity { get; private set; }
 
 	public const float UseDistance = 80f;
 	private float _traceDistance;
@@ -51,7 +57,13 @@ public partial class Player
 
 	protected void PlayerUse()
 	{
+		LastHoveredEntity = HoveredEntity;
 		HoveredEntity = FindHovered();
+
+		if ( HoveredEntity == null || HoveredEntity != LastHoveredEntity )
+			SetGlow( LastHoveredEntity, false );
+		else
+			SetGlow( HoveredEntity, true );
 
 		using ( Prediction.Off() )
 		{
@@ -74,6 +86,18 @@ public partial class Player
 			if ( !CanContinueUsing( Using ) )
 				StopUsing();
 		}
+	}
+
+	private void SetGlow( Entity ent, bool desiredState )
+	{
+		if ( !ent.IsValid() || ent is not IUse usable )
+			return;
+
+		var canUse = CanUse( ent );
+		var glow = ent.Components.GetOrCreate<Glow>();
+		glow.Width = 0.25f;
+		glow.Color = canUse ? Role.Color : Color.Gray;
+		glow.Enabled = desiredState && canUse;
 	}
 
 	protected Entity FindHovered()
