@@ -215,7 +215,7 @@ public partial class Player
 		LastDamage = default;
 	}
 
-	private void CreateBloodSplatter( DamageInfo info, float maxDistance )
+	private void CreateBloodSplatter( DamageInfo info, float maxDistance = 225f )
 	{
 		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
 		var splatterTrace = Trace.Ray( new Ray( info.Position, info.Force.Normal ), maxDistance )
