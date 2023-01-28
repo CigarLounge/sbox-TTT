@@ -238,6 +238,7 @@ public partial class Player : AnimatedEntity
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
 		ActiveCarriable?.FrameSimulate( client );
+		DisplayEntityHints();
 	}
 
 	/// <summary>
@@ -264,7 +265,6 @@ public partial class Player : AnimatedEntity
 		viewAngles.roll = 0f;
 		ViewAngles = viewAngles.Normal;
 
-		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
 	}
 
