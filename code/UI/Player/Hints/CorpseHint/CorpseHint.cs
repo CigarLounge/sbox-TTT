@@ -15,7 +15,8 @@ public partial class CorpseHint : Panel
 		return HashCode.Combine(
 			_corpse,
 			_corpse.CanSearch(),
-			_corpse.Player.IsValid() ? _corpse.Player.IsConfirmedDead : _corpse.Player.IsValid(),
+			_corpse.Player?.IsConfirmedDead,
+			_corpse.Player?.SteamName,
 			player.Role.CanRetrieveCredits,
 			player.IsAlive
 		);
