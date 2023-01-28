@@ -140,7 +140,13 @@ public partial class Player
 		}
 
 		if ( info.HasTag( DamageTags.Bullet ) )
+		{
+			CreateBloodSplatter( info, 400f );
 			info.Damage *= GetBulletDamageMultipliers( info );
+		}
+
+		if ( info.HasTag( DamageTags.Slash ) )
+			CreateBloodSplatter( info, 128f );
 
 		if ( info.HasTag( DamageTags.Blast ) )
 			Deafen( To.Single( this ), info.Damage.LerpInverse( 0, 60 ) );
@@ -207,6 +213,20 @@ public partial class Player
 		LastAttackerWeapon = null;
 		LastAttackerWeaponInfo = null;
 		LastDamage = default;
+	}
+
+	private void CreateBloodSplatter( DamageInfo info, float maxDistance )
+	{
+		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
+		var splatterTrace = Trace.Ray( info.Position, info.Position + info.Force )
+			.Ignore( this )
+			.Ignore( ActiveCarriable )
+			.Run();
+
+		if ( !splatterTrace.Hit || splatterTrace.Distance > maxDistance )
+			return;
+
+		Decal.Place( To.Everyone, decal, null, 0, splatterTrace.EndPosition - splatterTrace.Direction * 1f, Rotation.LookAt( splatterTrace.Normal ), Color.White );
 	}
 
 	[ClientRpc]
