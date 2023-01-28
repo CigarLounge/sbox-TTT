@@ -203,6 +203,7 @@ public partial class Player : AnimatedEntity
 			Inventory.SetActive( carriable );
 
 		SimulateActiveCarriable();
+		PlayerUse();
 
 		if ( IsAlive )
 		{
@@ -210,6 +211,7 @@ public partial class Player : AnimatedEntity
 			Controller?.Simulate();
 			SimulateFlashlight();
 			SimulatePerks();
+
 		}
 
 		if ( Game.IsClient )
@@ -226,7 +228,6 @@ public partial class Player : AnimatedEntity
 				return;
 			}
 
-			PlayerUse();
 			CheckLastSeenPlayer();
 			CheckPlayerDropCarriable();
 		}

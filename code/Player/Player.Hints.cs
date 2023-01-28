@@ -10,12 +10,19 @@ public partial class Player
 
 	private static Panel _currentHintPanel;
 	private static IEntityHint _currentHint;
+	private static Glow _glow;
 
 	private void DisplayEntityHints()
 	{
-		var hint = FindHintableEntity();
+		var tr = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
+			.Ignore( UI.Hud.DisplayedPlayer )
+			.WithAnyTags( "solid", "interactable" )
+			.UseHitboxes()
+			.Run();
 
-		if ( hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
+		HoveredEntity = tr.Entity;
+
+		if ( HoveredEntity is not IEntityHint hint || tr.Distance > hint.HintDistance || hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
 			return;
@@ -24,6 +31,13 @@ public partial class Player
 		if ( hint == _currentHint )
 		{
 			hint.Tick( UI.Hud.DisplayedPlayer );
+			if ( _currentHint is Entity ee && _currentHint.ShowGlow )
+			{
+				_glow = ee.Components.GetOrCreate<Glow>();
+				_glow.Width = 0.25f;
+				_glow.Color = Role.Color;
+				_glow.Enabled = CanUse( ee );
+			}
 			return;
 		}
 
@@ -34,14 +48,6 @@ public partial class Player
 		_currentHintPanel.Enabled( true );
 
 		_currentHint = hint;
-
-		if ( _currentHint is Entity entity && _currentHint.ShowGlow )
-		{
-			var glow = entity.Components.GetOrCreate<Glow>();
-			glow.Width = 0.25f;
-			glow.Color = Role.Color;
-			glow.Enabled = true;
-		}
 	}
 
 	private static void DeleteHint()
@@ -56,22 +62,7 @@ public partial class Player
 				activeGlow.Enabled = false;
 		}
 
+		_glow = null;
 		_currentHint = null;
-	}
-
-	private IEntityHint FindHintableEntity()
-	{
-		var tr = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
-			.Ignore( UI.Hud.DisplayedPlayer )
-			.WithAnyTags( "solid", "interactable" )
-			.UseHitboxes()
-			.Run();
-
-		HoveredEntity = tr.Entity;
-
-		if ( HoveredEntity is IEntityHint hint && tr.Distance <= hint.HintDistance )
-			return hint;
-
-		return null;
 	}
 }
