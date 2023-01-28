@@ -1,20 +1,20 @@
 @namespace TTT.UI
 
-<root class="opacity-heavy text-shadow rounded">
+<root class="background-color-primary opacity-heavy text-shadow rounded">
     <img src="avatar:@_client.SteamId" class="avatar circle" />
     <text class="name">@_client.Name</text>
 </root>
 
 @code {
-    private string BackgroundColor()
+    private string BorderColor()
     {
         if (_client.Pawn is not TTT.Player player || !player.IsAlive)
-            return "#fcdb38";
+            return PlayerStatus.Spectator.GetColor().Hex;
 
         if (player.Role is Detective)
             return player.Role.Color.Hex;
 
-        return "#1a1a1a";
+        return PlayerStatus.Alive.GetColor().Hex;
     }
 }
 
@@ -25,7 +25,8 @@
         margin-bottom: 5px;
         align-items: center;
         transition: all 0.05s ease-out;
-        background-color: @BackgroundColor();
+        border-bottom: 3px;
+        border-color: @BorderColor();
 
         &:intro {
             opacity: 0;
