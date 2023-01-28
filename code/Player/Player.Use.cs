@@ -1,5 +1,4 @@
 using Sandbox;
-using System.Linq;
 
 namespace TTT;
 
@@ -78,9 +77,13 @@ public partial class Player
 
 	protected Entity FindHovered()
 	{
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
-			.Ignore( this )
+		var pos = Game.IsServer ? EyePosition : Camera.Position;
+		var forward = Game.IsServer ? EyePosition + EyeRotation.Forward * MaxHintDistance : Camera.Position + Camera.Rotation.Forward * MaxHintDistance;
+
+		var trace = Trace.Ray( pos, forward )
 			.WithAnyTags( "solid", "interactable" )
+			.UseHitboxes()
+			.Ignore( Game.IsServer ? this : UI.Hud.DisplayedPlayer )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )

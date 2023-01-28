@@ -29,6 +29,6 @@ public partial class VisualizerEntity : Prop, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return user is Player && (Owner is null || user == Owner);
+		return user is Player player && player.IsAlive && (Owner is null || user == Owner);
 	}
 }

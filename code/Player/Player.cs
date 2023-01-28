@@ -203,6 +203,7 @@ public partial class Player : AnimatedEntity
 			Inventory.SetActive( carriable );
 
 		SimulateActiveCarriable();
+		PlayerUse();
 
 		if ( IsAlive )
 		{
@@ -226,7 +227,6 @@ public partial class Player : AnimatedEntity
 				return;
 			}
 
-			PlayerUse();
 			CheckLastSeenPlayer();
 			CheckPlayerDropCarriable();
 		}
@@ -237,6 +237,7 @@ public partial class Player : AnimatedEntity
 		Controller?.SetActivePlayer( this );
 		Controller?.FrameSimulate();
 		ActiveCarriable?.FrameSimulate( client );
+		DisplayEntityHints();
 	}
 
 	/// <summary>
@@ -263,7 +264,6 @@ public partial class Player : AnimatedEntity
 		viewAngles.roll = 0f;
 		ViewAngles = viewAngles.Normal;
 
-		DisplayEntityHints();
 		ActiveCarriable?.BuildInput();
 	}
 

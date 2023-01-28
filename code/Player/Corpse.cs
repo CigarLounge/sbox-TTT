@@ -318,10 +318,19 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !Player.IsValid() || !player.IsLocalPawn || !Input.Down( GetSearchButton() ) || !CanSearch() )
-			UI.FullScreenHintMenu.Instance?.Close();
-		else if ( !Player.LastDamage.Equals( default( DamageInfo ) ) && !UI.FullScreenHintMenu.Instance.IsOpen )
-			UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
+		if ( Input.Down( GetSearchButton() ) && CanSearch() )
+		{
+			// Dead player wants to view the body, request a convert search.
+			if ( !player.IsAlive && !Player.IsValid() )
+				ConvertSearch( NetworkIdent );
+
+			if ( Player.IsValid() )
+				UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
+
+			return;
+		}
+
+		UI.FullScreenHintMenu.Instance?.Close();
 	}
 
 	bool IUse.OnUse( Entity user )
@@ -339,12 +348,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		Game.AssertClient();
 
-		var searchButton = GetSearchButton();
+		if ( Game.LocalPawn is not Player player )
+			return false;
 
-		if ( searchButton == InputButton.PrimaryAttack )
+		if ( GetSearchButton() == InputButton.PrimaryAttack )
 			return true;
 
-		return Position.Distance( Camera.Position ) <= Player.UseDistance;
+		return player.CanUse( this );
 	}
 
 	public static InputButton GetSearchButton()
@@ -360,5 +370,14 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			return InputButton.Use;
 
 		return InputButton.PrimaryAttack;
+	}
+
+	[ConCmd.Server]
+	private static void ConvertSearch( int networkIdent )
+	{
+		if ( ConsoleSystem.Caller.Pawn is not Player player || FindByIndex( networkIdent ) is not Corpse corpse )
+			return;
+
+		corpse.Search( player, true, false );
 	}
 }

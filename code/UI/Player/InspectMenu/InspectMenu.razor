@@ -20,7 +20,7 @@
                 {
                     <button 
                         @onclick=@CallDetective icon="search" 
-                        class="call-detective @(_corpse.HasCalledDetective ? "inactive" : "")">
+                        class="call-detective @(_corpse.HasCalledDetective || player.ActiveCarriable is Binoculars ? "inactive" : "")">
                         @("Call Detective")
                     </button>
                 }
