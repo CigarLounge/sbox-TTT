@@ -109,7 +109,7 @@ public partial class TextChat : Panel
 		if ( string.IsNullOrWhiteSpace( message ) )
 			return;
 
-		if ( Input.Text == "!rtv" && Game.LocalClient.HasRockedTheVote() )
+		if ( message == "!rtv" && Game.LocalClient.HasRockedTheVote() )
 		{
 			AddInfoEntry( "You have already rocked the vote!" );
 			return;
