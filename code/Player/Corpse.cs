@@ -320,7 +320,8 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( Input.Down( GetSearchButton() ) && CanSearch() )
 		{
-			if ( !Player.IsValid() )
+			// Dead player wants to view the body, request a convert search.
+			if ( !player.IsAlive && !Player.IsValid() )
 				ConvertSearch( NetworkIdent );
 
 			if ( Player.IsValid() )
