@@ -154,13 +154,13 @@ public partial class TextChat : Panel
 		switch ( channel )
 		{
 			case Channel.All:
-				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, ResourceLibrary.Get<RoleInfo>( roleId )?.Color ?? _allChatColor ) );
+				Instance?.AddEntry( new TextChatEntry( playerId, playerName, message, ResourceLibrary.Get<RoleInfo>( roleId )?.Color ?? _allChatColor ) );
 				return;
 			case Channel.Team:
-				Instance.AddEntry( new TextChatEntry( playerId, $"(TEAM) {playerName}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color ) );
+				Instance?.AddEntry( new TextChatEntry( playerId, $"(TEAM) {playerName}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color ) );
 				return;
 			case Channel.Spectator:
-				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, _spectatorChatColor ) );
+				Instance?.AddEntry( new TextChatEntry( playerId, playerName, message, _spectatorChatColor ) );
 				return;
 		}
 	}
@@ -168,7 +168,7 @@ public partial class TextChat : Panel
 	[ClientRpc]
 	public static void AddInfoEntry( string message )
 	{
-		Instance.AddEntry( new TextChatEntry( message, Color.FromBytes( 253, 196, 24 ) ) );
+		Instance?.AddEntry( new TextChatEntry( message, Color.FromBytes( 253, 196, 24 ) ) );
 	}
 
 	private void OnTabPressed()
