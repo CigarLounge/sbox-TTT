@@ -51,13 +51,13 @@ public partial class Player
 
 	protected void PlayerUse()
 	{
-		var prev = HoveredEntity;
+		var lastHoveredEntity = HoveredEntity;
 		HoveredEntity = FindHovered();
 
 		if ( Game.IsClient )
 		{
-			if ( HoveredEntity == null || HoveredEntity != prev )
-				SetGlow( prev, false );
+			if ( HoveredEntity == null || HoveredEntity != lastHoveredEntity )
+				SetGlow( lastHoveredEntity, false );
 			else
 				SetGlow( HoveredEntity, true );
 		}

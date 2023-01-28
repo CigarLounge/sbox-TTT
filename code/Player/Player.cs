@@ -211,7 +211,6 @@ public partial class Player : AnimatedEntity
 			Controller?.Simulate();
 			SimulateFlashlight();
 			SimulatePerks();
-
 		}
 
 		if ( Game.IsClient )
