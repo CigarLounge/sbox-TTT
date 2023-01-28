@@ -13,15 +13,7 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		var tr = Trace.Ray( Camera.Position, Camera.Position + Camera.Rotation.Forward * MaxHintDistance )
-			.Ignore( UI.Hud.DisplayedPlayer )
-			.WithAnyTags( "solid", "interactable" )
-			.UseHitboxes()
-			.Run();
-
-		HoveredEntity = tr.Entity;
-
-		if ( HoveredEntity is not IEntityHint hint || tr.Distance > hint.HintDistance || hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
+		if ( HoveredEntity is not IEntityHint hint || _traceDistance > hint.HintDistance || hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
 			return;
