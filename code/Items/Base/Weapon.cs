@@ -230,11 +230,11 @@ public abstract partial class Weapon : Carriable
 
 				var fullEndPosition = trace.EndPosition + trace.Direction * bulletSize;
 
-				if ( !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
+				if ( Camera.FirstPersonViewer != Owner && !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
-					tracer?.SetPosition( 0, trace.StartPosition );
-					tracer?.SetPosition( 1, trace.EndPosition );
+					tracer.SetPosition( 0, EffectEntity.Position );
+					tracer.SetPosition( 1, trace.EndPosition );
 				}
 
 				if ( !Game.IsServer )

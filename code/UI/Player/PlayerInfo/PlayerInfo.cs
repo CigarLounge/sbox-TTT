@@ -6,8 +6,6 @@ namespace TTT.UI;
 
 public partial class PlayerInfo : Panel
 {
-	private Panel HealthContainer { get; set; }
-
 	protected override int BuildHash()
 	{
 		return HashCode.Combine( Hud.DisplayedPlayer.IsAlive, Hud.DisplayedPlayer.SteamId, Hud.DisplayedPlayer.Role, Hud.DisplayedPlayer.Health );

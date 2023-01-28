@@ -54,8 +54,6 @@ public class DamageIndicator : Panel
 			pt.AddRotation( 0, 0, angle.RadianToDegree() );
 
 			Style.Transform = pt;
-			Style.Dirty();
-
 		}
 
 		async Task Lifetime()

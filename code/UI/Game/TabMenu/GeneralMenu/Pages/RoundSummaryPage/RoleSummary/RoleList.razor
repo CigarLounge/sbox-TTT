@@ -19,7 +19,7 @@
         @foreach (var player in Players)
         {
             <div class="player">
-                <img src="avatar:@player.SteamId" class="avatar" />
+                <img src="avatar:@player.SteamId" class="avatar circle" />
                 <text class="name">@player.SteamName</text>
                 <div style="flex-grow: 1;" />
                 <text class="karma">@(Math.Round(player.BaseKarma))</text>
@@ -70,7 +70,6 @@
             .avatar {
                 height: 25px;
                 width: 25px;
-                border-radius: 4px;
             }
 
             .name {

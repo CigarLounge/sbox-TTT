@@ -1,7 +1,7 @@
 @namespace TTT.UI
 
 <root class="text-shadow">
-    <div class="background-banner background-color-secondary opacity-heavy">
+    <div class="background-banner background-color-primary opacity-heavy">
         <div class="container">
             <text class="header" style="color: @WinningTeam.GetColor().Hex">
                 @(WinningTeam == Team.None ? "IT'S A TIE?" : $"THE {WinningTeam.GetTitle()} WIN!")

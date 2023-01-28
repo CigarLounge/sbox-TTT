@@ -3,7 +3,7 @@
 
 @namespace TTT.UI
 
-<root class="background-color-secondary @(Carriable.IsActive ? "active" : "")">
+<root class="background-color-primary @(Carriable.IsActive ? "active" : "")">
     <text class="slot-number" style="background-color: @(Hud.DisplayedPlayer.Role.Color.Hex)">
         <text>@((int)Carriable.Info.Slot + 1)</text>
     </text>

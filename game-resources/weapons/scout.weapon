@@ -16,13 +16,14 @@
 		PrimaryRate = 0.7
 		SecondaryRate = 0
 		ReserveAmmo = 0
+		IsSilenced = false
 		ReloadTime = 3.1
 		VerticalRecoil = 35
 		HorizontalRecoilRange = 2
 		RecoilRecoveryScale = 30
 		EjectParticle = resource:"particles/pistol_ejectbrass.vpcf"
 		MuzzleFlashParticle = resource:"particles/muzzle/flash_medium.vpcf"
-		TracerParticle = ""
+		TracerParticle = resource:"particles/tracer/tracer.standard.vpcf"
 		Slot = "Primary"
 		Spawnable = true
 		CanDrop = true

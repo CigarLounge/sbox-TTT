@@ -4,14 +4,14 @@
 @namespace TTT.UI
 
 <root class="text-shadow">
-    <div class="container background-color-gradient rounded">
+    <div class="container background-color-primary rounded">
         <text class="header">C4 Arm</text>
         <text class="timer text-color-tertiary">
             @TimeSpan.FromSeconds( @Timer ).ToString( "mm':'ss" )
         </text>
         <Slider min="45" max="600" Value:bind="@Timer" />
         <text class="wires">
-            @($"{C4Entity.GetBadWireCount( @Timer )} of the 6 wires will cause instant detonation during defusal")
+            @($"{C4Entity.GetBadWireCount(@Timer)} of the 6 wires will cause instant detonation during defusal")
         </text>
         <div style="justify-content: center;">
             <button @onclick=@Arm icon="touch_app">Arm</button>

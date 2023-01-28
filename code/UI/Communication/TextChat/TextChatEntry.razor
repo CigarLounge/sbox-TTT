@@ -1,33 +1,80 @@
+@using Sandbox;
+@using System;
+
 @namespace TTT.UI
 
-<root>
-    <text class="name" style="color: @(NameColor.GetValueOrDefault().Hex)">@Name</text>
-    <text class="message">@Message</text>
+<root class="background-color-primary opacity-heavy rounded">
+	<div style="flex-shrink: 0;">
+		@if (PlayerId != default)
+		{
+			<div>
+				<img class="circle" src="avatar:@PlayerId" />
+			</div>
+		}
+		<text class="name" style="color: @Color.Hex;">@Name</text>
+	</div>
+	@if (!Message.IsNullOrEmpty())
+	{
+		<div>
+			<text class="message">@Message</text>
+		</div>
+	}
 </root>
 
+@code
+{
+	private long PlayerId { get; set; }
+	private string Name { get; set; }
+	private string Message { get; set; }
+	private Color Color { get; set; }
+
+	public TimeSince Lifetime { get; init; } = 0;
+
+	public TextChatEntry(long playerId, string name, string message, Color color) 
+	{
+		PlayerId = playerId;
+		Name = name;
+		Message = message;
+		Color = color;
+	}
+
+	public TextChatEntry(string message, Color color)
+	{
+		Name = message; // Use Name field since it is bold & colored.
+		Color = color;
+	}
+}
+
 <style>
-    TextChatEntry {
-        border-radius: 4px;
-        flex-shrink: 0;
-        flex-grow: 0;
-        width: 100%;
-        transition: opacity .15s linear;
-        text-shadow: 1px 1px 1px black;
+	TextChatEntry {
+		max-width: 100%;
+		padding: 4px 10px;
+		transition: opacity 0.15s ease;
+		margin-bottom: 6px;
+		flex-shrink: 0;
 
-        &.faded {
-            opacity: 0;
-        }
+		img {
+			height: 30px;
+			width: 30px;
+			margin-right: 3px;
+		}
 
-        .name {
-            font-weight: bold;
-            margin-right: 10px;
-            letter-spacing: 1px;
-        }
+		.name {
+			font-weight: 700;
+			font-size: 16px;
+			margin-top: 3px;
+			margin-right: 4px;
+		}
 
-        .message {
-            align-items: center;
-            flex-grow: 1;
-            font-weight: 300;
-        }
-    }
+		.message {
+			font-size: 16px;
+			margin-top: 3px;
+			flex-shrink: 0;
+		}
+
+		&.stale {
+			transition: opacity 1s ease;
+			opacity: 0;
+		}
+	}
 </style>
