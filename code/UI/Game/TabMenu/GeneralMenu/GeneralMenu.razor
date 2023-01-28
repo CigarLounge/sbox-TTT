@@ -1,7 +1,7 @@
 @namespace TTT.UI
 
 <root>
-    <div class="background-panel background-color-gradient rounded">
+    <div class="background-panel background-color-primary rounded">
         <div style="min-height: 50px;">
             <button icon="arrow_back" @onclick=@PopPage @ref="BackButton"></button>
             <div style="padding: 5px"></div>
@@ -14,6 +14,7 @@
 <style>
     GeneralMenu {
         transition: bottom 0.2s ease-out;
+        backdrop-filter-blur: 5px;
 
         .background-panel {
             pointer-events: all;

@@ -8,7 +8,7 @@
     <root @onclick=@(() => {if (!Player.IsLocalPawn) _isExpanded = !_isExpanded; }) class="text-shadow @(Player.IsLocalPawn ? "local" : "")"
         style="background-color: @backgroundColor">
         <div class="entry">
-            <img src="avatar:@Player.SteamId" class="avatar rounded" />
+            <img src="avatar:@Player.SteamId" class="avatar circle" />
             <text class="name">@Player.SteamName</text>
             <text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
             @if (Karma.Enabled)

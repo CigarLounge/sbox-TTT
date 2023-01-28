@@ -18,8 +18,7 @@
         </div>
     }
 
-    <div @ref=HealthContainer
-         class="health-container background-color-gradient @(Hud.DisplayedPlayer.Role is not NoneRole ? "left-flat" : "")">
+    <div class="health-container background-color-primary @(Hud.DisplayedPlayer.Role is not NoneRole ? "left-flat" : "")">
         <text>✚ @Hud.DisplayedPlayer.Health.CeilToInt()</text>
     </div>
 </root>

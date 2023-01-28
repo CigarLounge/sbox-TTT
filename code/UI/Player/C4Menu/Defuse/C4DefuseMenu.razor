@@ -1,16 +1,16 @@
 @namespace TTT.UI
 
 <root class="text-shadow">
-    <div class="container background-color-gradient rounded">
+    <div class="container background-color-primary rounded">
         <text class="header">C4 Defuse</text>
         <text class="timer text-color-tertiary">@_timer</text>
         <div class="wires">
             @for (int i = 0; i < C4Entity.Wires.Count; i++)
             {
                 var wireNumber = i + 1;
-                <div>
-                    <Wire C4=@_c4 Number=@wireNumber Color=@C4Entity.Wires[i] />
-                </div>
+                    <div>
+                        <Wire C4=@_c4 Number=@wireNumber Color=@C4Entity.Wires[i] />
+                    </div>
             }
         </div>
         <div style="justify-content: center;">

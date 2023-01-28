@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 
@@ -6,13 +7,7 @@ namespace TTT.UI;
 
 public partial class TextChat : Panel
 {
-	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
-	private static readonly Color _spectatorChatColor = PlayerStatus.Spectator.GetColor();
-
-	public static TextChat Instance { get; private set; }
-
-	private Panel EntryCanvas { get; set; }
-	private TabTextEntry Input { get; set; }
+	public static TextChat Instance;
 
 	public bool IsOpen
 	{
@@ -29,18 +24,27 @@ public partial class TextChat : Panel
 		}
 	}
 
-	public TextChat() => Instance = this;
+	private static readonly Color _allChatColor = PlayerStatus.Alive.GetColor();
+	private static readonly Color _spectatorChatColor = PlayerStatus.Spectator.GetColor();
+
+	private const int MaxItems = 100;
+	private const float MessageLifetime = 10f;
+
+	private Panel Canvas { get; set; }
+	private TextEntry Input { get; set; }
+
+	private readonly Queue<TextChatEntry> _entries = new();
 
 	protected override void OnAfterTreeRender( bool firstTime )
 	{
-		if ( !firstTime )
-			return;
+		base.OnAfterTreeRender( firstTime );
 
-		Input.AddEventListener( "onsubmit", Submit );
-		Input.AddEventListener( "onblur", () => IsOpen = false );
+		Canvas.PreferScrollToBottom = true;
+		Input.AcceptsFocus = true;
+		Input.AllowEmojiReplace = true;
 		Input.OnTabPressed += OnTabPressed;
-		EntryCanvas.TryScrollToBottom();
-		EntryCanvas.PreferScrollToBottom = true;
+
+		Instance = this;
 	}
 
 	public override void Tick()
@@ -49,7 +53,7 @@ public partial class TextChat : Panel
 			return;
 
 		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
-			IsOpen = true;
+			Open();
 
 		if ( !IsOpen )
 			return;
@@ -66,37 +70,55 @@ public partial class TextChat : Panel
 				Input.Style.BorderColor = player.Role.Color;
 				return;
 		}
-
-		Input.Placeholder = string.Empty;
 	}
 
-	public void AddEntry( string name, string message, Color? color = null )
+	private void AddEntry( TextChatEntry entry )
 	{
-		var entry = new TextChatEntry() { Name = name, Message = message, NameColor = color ?? Color.FromBytes( 253, 196, 24 ) };
-		EntryCanvas.AddChild( entry );
+		Canvas.AddChild( entry );
+		Canvas.TryScrollToBottom();
+
+		entry.BindClass( "stale", () => entry.Lifetime > MessageLifetime );
+
+		_entries.Enqueue( entry );
+		if ( _entries.Count > MaxItems )
+			_entries.Dequeue().Delete();
+	}
+
+	private void Open()
+	{
+		AddClass( "open" );
+		Input.Focus();
+		Canvas.TryScrollToBottom();
+	}
+
+	private void Close()
+	{
+		RemoveClass( "open" );
+		Input.Blur();
+		Input.Text = string.Empty;
+		Input.Label.SetCaretPosition( 0 );
 	}
 
 	private void Submit()
 	{
-		if ( Input.Text.IsNullOrEmpty() )
+		var message = Input.Text.Trim();
+		Input.Text = "";
+
+		Close();
+
+		if ( string.IsNullOrWhiteSpace( message ) )
 			return;
 
-		if ( Input.Text.Contains( '\n' ) || Input.Text.Contains( '\r' ) )
-			return;
-
-		if ( Input.Text == "!rtv" )
+		if ( message == "!rtv" && Game.LocalClient.HasRockedTheVote() )
 		{
-			if ( Game.LocalClient.HasRockedTheVote() )
-			{
-				AddInfo( "You have already rocked the vote!" );
-				return;
-			}
+			AddInfoEntry( "You have already rocked the vote!" );
+			return;
 		}
 
-		SendChat( Input.Text );
+		SendChat( message );
 	}
 
-	[ConCmd.Server]
+	[ConCmd.Server( "ttt_say" )]
 	public static void SendChat( string message )
 	{
 		if ( ConsoleSystem.Caller.Pawn is not Player player )
@@ -111,42 +133,42 @@ public partial class TextChat : Panel
 		if ( !player.IsAlive )
 		{
 			var clients = GameManager.Current.State is InProgress ? Utils.GetClientsWhere( p => !p.IsAlive ) : Game.Clients;
-			AddChat( To.Multiple( clients ), player.Client.Name, message, Channel.Spectator );
+			AddChatEntry( To.Multiple( clients ), player.SteamId, player.SteamName, message, Channel.Spectator );
 			return;
 		}
 
 		if ( player.CurrentChannel == Channel.All )
 		{
 			player.LastWords = message;
-			AddChat( To.Everyone, player.Client.Name, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
+			AddChatEntry( To.Everyone, player.SteamId, player.SteamName, message, player.CurrentChannel, player.IsRoleKnown ? player.Role.Info.ResourceId : -1 );
 		}
 		else if ( player.CurrentChannel == Channel.Team && player.Role.CanTeamChat )
 		{
-			AddChat( player.Team.ToClients(), player.Client.Name, message, player.CurrentChannel, player.Role.Info.ResourceId );
+			AddChatEntry( player.Team.ToClients(), player.SteamId, player.SteamName, message, player.CurrentChannel, player.Role.Info.ResourceId );
 		}
 	}
 
-	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
-	public static void AddChat( string name, string message, Channel channel, int roleId = -1 )
+	[ClientRpc]
+	public static void AddChatEntry( long playerId, string playerName, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
 		{
 			case Channel.All:
-				Instance?.AddEntry( name, message, roleId != -1 ? ResourceLibrary.Get<RoleInfo>( roleId ).Color : _allChatColor );
+				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, ResourceLibrary.Get<RoleInfo>( roleId )?.Color ?? _allChatColor ) );
 				return;
 			case Channel.Team:
-				Instance?.AddEntry( $"(TEAM) {name}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color );
+				Instance.AddEntry( new TextChatEntry( playerId, $"(TEAM) {playerName}", message, ResourceLibrary.Get<RoleInfo>( roleId ).Color ) );
 				return;
 			case Channel.Spectator:
-				Instance?.AddEntry( name, message, _spectatorChatColor );
+				Instance.AddEntry( new TextChatEntry( playerId, playerName, message, _spectatorChatColor ) );
 				return;
 		}
 	}
 
-	[ConCmd.Client( "ttt_chat_add_info", CanBeCalledFromServer = true )]
-	public static void AddInfo( string message )
+	[ClientRpc]
+	public static void AddInfoEntry( string message )
 	{
-		Instance?.AddEntry( message, "" );
+		Instance.AddEntry( new TextChatEntry( message, Color.FromBytes( 253, 196, 24 ) ) );
 	}
 
 	private void OnTabPressed()
@@ -159,7 +181,7 @@ public partial class TextChat : Panel
 	}
 }
 
-public partial class TabTextEntry : TextEntry
+public partial class TextEntry : Sandbox.UI.TextEntry
 {
 	public event Action OnTabPressed;
 

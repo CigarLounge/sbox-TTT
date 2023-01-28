@@ -10,13 +10,13 @@
 }
 
 <root>
-    <div class="sample-container rounded background-color-gradient box-shadow">
+    <div class="sample-container rounded background-color-primary box-shadow">
         @if (_dnaScanner.DNACollected.Any())
         {
             foreach (var dna in _dnaScanner.DNACollected)
             {
                 var isSelected = _dnaScanner?.SelectedId == dna.Id;
-                <DNASample DNA=@dna class="@(isSelected ? "selected" : "")" />
+                <DNASample DNA=@dna class="@(isSelected ? "background-color-secondary" : "")" />
             }
         }
         else
@@ -26,7 +26,7 @@
             </div>
         }
     </div>
-    <div class="info-container rounded background-color-gradient box-shadow">
+    <div class="info-container rounded background-color-primary box-shadow">
         <text class="charge text-color-tertiary">@_dnaScanner.SlotText</text>
         <text class="charge-status">@(_dnaScanner.IsCharging ? "CHARGING" : "READY")</text>
         <Checkbox Value:bind=@AutoScan>Auto-scan</Checkbox>

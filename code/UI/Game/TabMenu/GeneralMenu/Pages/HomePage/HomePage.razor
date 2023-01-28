@@ -4,11 +4,11 @@
 @namespace TTT.UI
 
 <root>
-	<button icon="leaderboard" @onclick=@GoToRoundSummaryPage>Round Summary</button>
-	<button icon="videocam" @onclick=@ToggleForcedSpectating>Force Spectator Mode - @(Spectating.IsForced ? "Enabled" : "Disabled")</button>
-	<button icon="how_to_vote" @onclick=@RockTheVote class="@(Game.LocalClient.HasRockedTheVote() ? "inactive" : "")">Rock The Vote</button>
-	<button icon="adjust" @onclick=@GoToCrosshairPage>Crosshair Customization</button>
-	<button icon="keyboard" @onclick=@GoToKeyBindingsPage>Keybindings</button>
+	<button class="alt" icon="leaderboard" @onclick=@GoToRoundSummaryPage>Round Summary</button>
+	<button class="alt" icon="videocam" @onclick=@ToggleForcedSpectating>Force Spectator Mode - @(Spectating.IsForced ? "Enabled" : "Disabled")</button>
+	<button icon="how_to_vote" @onclick=@RockTheVote class="alt @(Game.LocalClient.HasRockedTheVote() ? "inactive" : "")">Rock The Vote</button>
+	<button class="alt" icon="adjust" @onclick=@GoToCrosshairPage>Crosshair Customization</button>
+	<button class="alt" icon="keyboard" @onclick=@GoToKeyBindingsPage>Keybindings</button>
 </root>
 
 @code

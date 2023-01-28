@@ -8,7 +8,7 @@
     {
         <button
         @onclick=@(() => RadioEntity.PlayRadio( FetchRadio().NetworkIdent, sound.Value[Game.Random.Int(0,sound.Value.Count - 1 )] ))
-        class="box-shadow background-color-gradient">
+        class="box-shadow background-color-primary">
             @sound.Key
         </button>
     }
@@ -28,8 +28,7 @@
 
     private RadioEntity FetchRadio()
     {
-        var radioComponent = Game.LocalPawn.Components.Get<RadioComponent>();
-        return radioComponent.Radio;
+        return Game.LocalPawn.Components.Get<RadioComponent>().Radio;
     }
 }
 
