@@ -22,9 +22,9 @@
             <div style="margin-bottom: 5px; align-items: center;">
                 <text>Press</text>
                 <inputglyph button="@Corpse.GetSearchButton()" />
-                <text>@(_corpse.Player.IsValid() ? _corpse.Player.IsConfirmedDead ? "to search." : "to confirm." : "to identify.")</text>
+                <text>@(_corpse.Player.IsValid() ? !player.IsAlive || _corpse.Player.IsConfirmedDead ? "to search." : "to confirm." : "to identify.")</text>
             </div>
-            @if (player.IsAlive && (!_corpse.Player.IsValid() || !_corpse.Player.IsConfirmedDead)) {
+            @if (player.IsAlive && !_corpse.IsFound) {
                 <div class="covert-panel">
                     <text>Press</text>
                     <inputglyph button="Run" />
