@@ -233,13 +233,13 @@ public abstract partial class Carriable : AnimatedEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		var player = (Player)user;
-		player.Inventory.OnUse( this );
+		if ( user is Player player )
+			player.Inventory.OnUse( this );
 
 		return false;
 	}
 
-	bool IUse.IsUsable( Entity user ) => Owner is null && user is Player;
+	bool IUse.IsUsable( Entity user ) => Owner is null && user is Player player && player.IsAlive;
 
 #if SANDBOX && DEBUG
 	[Event.Hotload]

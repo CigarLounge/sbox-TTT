@@ -332,7 +332,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.IsUsable( Entity user )
 	{
-		return GameManager.Current.State is InProgress || GameManager.Current.State is PostRound;
+		return user is Player player && player.IsAlive && (GameManager.Current.State is InProgress || GameManager.Current.State is PostRound);
 	}
 
 	public bool CanSearch()

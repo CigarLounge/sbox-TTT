@@ -1,5 +1,4 @@
 using Sandbox;
-using Sandbox.Component;
 
 namespace TTT;
 
@@ -51,16 +50,7 @@ public partial class Player
 
 	protected void PlayerUse()
 	{
-		var lastHoveredEntity = HoveredEntity;
 		HoveredEntity = FindHovered();
-
-		if ( Game.IsClient )
-		{
-			if ( HoveredEntity == null || HoveredEntity != lastHoveredEntity )
-				SetGlow( lastHoveredEntity, false );
-			else
-				SetGlow( HoveredEntity, true );
-		}
 
 		using ( Prediction.Off() )
 		{
@@ -85,26 +75,15 @@ public partial class Player
 		}
 	}
 
-	private void SetGlow( Entity ent, bool desiredState )
-	{
-		if ( Game.IsServer )
-			return;
-
-		if ( !ent.IsValid() || ent is not IUse )
-			return;
-
-		var canUse = CanUse( ent );
-		var glow = ent.Components.GetOrCreate<Glow>();
-		glow.Width = 0.25f;
-		glow.Color = canUse ? Role.Color : Color.Gray;
-		glow.Enabled = desiredState && canUse;
-	}
-
 	protected Entity FindHovered()
 	{
-		var trace = Trace.Ray( EyePosition, EyePosition + EyeRotation.Forward * MaxHintDistance )
-			.Ignore( this )
+		var pos = Game.IsServer ? EyePosition : Camera.Position;
+		var forward = Game.IsServer ? EyePosition + EyeRotation.Forward * MaxHintDistance : Camera.Position + Camera.Rotation.Forward * MaxHintDistance;
+
+		var trace = Trace.Ray( pos, forward )
 			.WithAnyTags( "solid", "interactable" )
+			.UseHitboxes()
+			.Ignore( Game.IsServer ? this : UI.Hud.DisplayedPlayer )
 			.Run();
 
 		if ( !trace.Entity.IsValid() )

@@ -1,5 +1,3 @@
-using Sandbox;
-using Sandbox.Component;
 using Sandbox.UI;
 
 namespace TTT;
@@ -13,7 +11,9 @@ public partial class Player
 
 	private void DisplayEntityHints()
 	{
-		if ( HoveredEntity is not IEntityHint hint || _traceDistance > hint.HintDistance || hint is null || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
+		HoveredEntity = FindHovered();
+
+		if ( HoveredEntity is not IEntityHint hint || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
 			return;

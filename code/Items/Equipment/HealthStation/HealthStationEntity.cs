@@ -104,7 +104,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		if ( StoredHealth <= 0 )
 			return false;
 
-		if ( user is not Player player || player.Health >= Player.MaxHealth )
+		if ( user is not Player player || !player.IsAlive || player.Health >= Player.MaxHealth )
 			return false;
 
 		return true;
