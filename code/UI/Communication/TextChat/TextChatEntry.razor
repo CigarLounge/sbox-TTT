@@ -37,10 +37,10 @@
 		Color = color;
 	}
 
-	public TextChatEntry(string message, Color? color = null)
+	public TextChatEntry(string message, Color color)
 	{
-		Name = message; // Use the name field since it is in bold.
-		Color = color ?? Color.FromBytes( 253, 196, 24 );
+		Name = message; // Use Name field since it is bold & colored.
+		Color = color;
 	}
 }
 

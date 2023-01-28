@@ -142,7 +142,7 @@ public partial class TextChat : Panel
 		}
 	}
 
-	[ConCmd.Client( "ttt_chat_add", CanBeCalledFromServer = true )]
+	[ClientRpc]
 	public static void AddChatEntry( long playerId, string playerName, string message, Channel channel, int roleId = -1 )
 	{
 		switch ( channel )
@@ -159,10 +159,10 @@ public partial class TextChat : Panel
 		}
 	}
 
-	[ConCmd.Client( "ttt_chat_info_add", CanBeCalledFromServer = true )]
+	[ClientRpc]
 	public static void AddInfoEntry( string message )
 	{
-		Instance.AddEntry( new TextChatEntry( message ) );
+		Instance.AddEntry( new TextChatEntry( message, Color.FromBytes( 253, 196, 24 ) ) );
 	}
 
 	private void OnTabPressed()
