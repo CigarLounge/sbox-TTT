@@ -13,7 +13,7 @@ public partial class DebugBot : Bot
 	public Player Pawn;
 
 	/// <summary>
-	/// The host Player.
+	/// The host Player who spawned this bot.
 	/// </summary>
 	public Player Target;
 
