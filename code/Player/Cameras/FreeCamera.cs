@@ -37,7 +37,6 @@ public class FreeCamera : CameraMode
 
 		_moveInput = Input.AnalogMove;
 		_lookAngles += Input.AnalogLook;
-		_lookAngles.roll = 0;
 	}
 
 	public override void FrameSimulate( IClient client )
