@@ -16,6 +16,7 @@
 		PrimaryRate = 1
 		SecondaryRate = 0
 		ReserveAmmo = 0
+		IsSilenced = false
 		ReloadTime = 2.2
 		VerticalRecoil = 0
 		HorizontalRecoilRange = 0
@@ -23,7 +24,7 @@
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
 		TracerParticle = resource:"particles/tracer/tracer.standard.vpcf"
-		Slot = "UtilityEquipment"
+		Slot = "OffensiveEquipment"
 		Spawnable = false
 		CanDrop = true
 		ViewModelPath = resource:"models/flaregun/v_flaregun.vmdl"

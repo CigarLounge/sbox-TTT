@@ -24,7 +24,7 @@
 		EjectParticle = ""
 		MuzzleFlashParticle = ""
 		TracerParticle = resource:"particles/tracer/tracer.newtonlauncher.vpcf"
-		Slot = "OffensiveEquipment"
+		Slot = "UtilityEquipment"
 		Spawnable = false
 		CanDrop = true
 		ViewModelPath = resource:"models/newton_launcher/v_newton_launcher.vmdl"
