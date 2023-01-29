@@ -19,25 +19,6 @@ public static class DamageInfoExtensions
 	/// teammate's C4, then no karma penalty will be given to the teammate.
 	/// </summary>
 	public static bool IsAvoidable( this DamageInfo info ) => info.HasTag( DamageTags.Avoidable );
-
-	/// <summary>
-	/// Creates a bloodsplatter effect in the world.
-	/// </summary>
-	/// <param name="info"></param>
-	/// <param name="player">The attacked player, their blood is getting splattered.</param>
-	/// <param name="maxDistance">How far we will check for a place to splatter.</param>
-	public static void CreateBloodSplatter( this DamageInfo info, Player player, float maxDistance )
-	{
-		var splatterTrace = Trace.Ray( new Ray( info.Position, info.Force.Normal ), maxDistance )
-			.Ignore( player )
-			.Run();
-
-		if ( !splatterTrace.Hit )
-			return;
-
-		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
-		Decal.Place( To.Everyone, decal, null, 0, splatterTrace.EndPosition - splatterTrace.Direction * 1f, Rotation.LookAt( splatterTrace.Normal ), Color.White );
-	}
 }
 
 public static class DamageTags
