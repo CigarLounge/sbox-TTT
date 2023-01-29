@@ -5,25 +5,21 @@
 @namespace TTT.UI
 
 <root class="background-color-primary rounded-top text-shadow">
-    <div class="terry-image"></div>
+    <img src="/ui/2.png" class="logo rounded" />
     <div class="server-information">
-        <text style="font-size: 25px; font-weight: bolder; bottom: -10px;">TTT</text>
-        <text style="font-weight: 500;">Contribute at github.com/CigarLounge/sbox-TTT</text>
+        <text class="title">TTT</text>
+        <text class="url">github.com/CigarLounge/sbox-TTT<text>
     </div>
     <div class="server-data">
+        <text style="font-weight: bold;">@Game.Server.MapIdent</text>
         <text>@($"{Game.Clients.Count} / {Game.Server.MaxPlayers} Players")</text>
-        <text>@Game.Server.MapIdent</text>
-        <text>
-            @{
-                var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
-                var suffix = roundsRemaining == 1 ? "round" : "rounds";
-                var timeLeft = TTT.GameManager.Current.TimeUntilMapSwitch.Relative;
-                var timer = timeLeft < 0 ? "00:00:00" : TimeSpan.FromSeconds( TTT.GameManager.Current.TimeUntilMapSwitch.Relative ).ToString( @"hh\:mm\:ss" );
-                <text>
-                    @($"Map will change in {roundsRemaining} {suffix} or in {timer}")
-                </text>
-            }
-        </text>
+        @{
+            var roundsRemaining = TTT.GameManager.RoundLimit - TTT.GameManager.Current.TotalRoundsPlayed;
+            var suffix = roundsRemaining == 1 ? "round" : "rounds";
+            var timeLeft = TTT.GameManager.Current.TimeUntilMapSwitch.Relative;
+            var timer = timeLeft < 0 ? "00:00:00" : TimeSpan.FromSeconds( TTT.GameManager.Current.TimeUntilMapSwitch.Relative ).ToString( @"hh\:mm\:ss" );
+            <text>@($"Map will change in {roundsRemaining} {suffix} or in {timer}")</text>
+        }
     </div>
 </root>
 
@@ -45,29 +41,40 @@
         flex-direction: row;
         max-height: 100px;
         justify-content: space-between;
-        padding: 30 16 0 16;
+        padding: 15;
         flex-shrink: 0;
+        align-items: center;
 
-        .terry-image {
-            position: absolute;
-            top: -54px;
-            background-image: url("/ui/scoreboard-terry.png");
+        .logo {
             background-repeat: no-repeat;
             background-size: cover;
-            width: 180px;
-            height: 150px;
+            width: 75px;
+            height: 75px;
         }
 
         .server-information {
             flex-grow: 1;
             flex-direction: column;
-            justify-content: flex-end;
+            padding: 5px;
+
+            .title {
+                font-size: 30px;
+                font-weight: bolder;
+                left: -5px;
+                bottom: -10px;
+            }
+
+            .url {
+                font-weight: 300;
+                font-size: 15px;
+            }
         }
 
         .server-data {
             flex-direction: column;
-            font-weight: 500;
             align-items: flex-end;
+            font-weight: 300;
+            font-size: 15px;
         }
     }
 </style>
