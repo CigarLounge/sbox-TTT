@@ -17,18 +17,11 @@ public partial class DebugBot : Bot
 	/// </summary>
 	public Player Target;
 
-	public static bool Aimbot;
 	public static bool Mimic;
 	public static bool Wander;
 
 	[ConVar.Replicated( "bot_debug" )]
 	public static bool DrawDebug { get; set; }
-
-	[ConCmd.Admin( "bot_aimbot", Help = "Locks the bot's aim to the player." )]
-	public static void ToggleBotAimbot()
-	{
-		Aimbot = !Aimbot;
-	}
 
 	[ConCmd.Admin( "bot_mimic", Help = "Makes the bot mimic the host client's inputs." )]
 	public static void ToggleMimicHost()
@@ -49,7 +42,6 @@ public partial class DebugBot : Bot
 	{
 		Wander = false;
 		Mimic = false;
-		Aimbot = false;
 	}
 
 	[ConCmd.Admin( "bot_kill", Help = "Kills bot by name if provided, else kills all bots." )]
