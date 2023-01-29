@@ -15,7 +15,7 @@ public partial class DebugBot : Bot
 	/// <summary>
 	/// The host Player who spawned this bot.
 	/// </summary>
-	public Player Target;
+	public Player Spawner;
 
 	public static bool Mimic;
 	public static bool Wander;
@@ -49,9 +49,9 @@ public partial class DebugBot : Bot
 	{
 		if ( string.IsNullOrEmpty( name ) )
 		{
-			foreach ( var b in All.ToArray() )
+			foreach ( var bot in Bot.All.ToArray() )
 			{
-				if ( b.Client.Pawn is Entity ent )
+				if ( bot.Client.Pawn is Entity ent )
 					ent.OnKilled();
 			}
 
@@ -59,9 +59,9 @@ public partial class DebugBot : Bot
 		}
 
 		var nameLower = name.ToLower();
-		foreach ( var b in All.ToArray() )
+		foreach ( var bot in Bot.All.ToArray() )
 		{
-			if ( b.Client.Name.ToLower() == nameLower && b.Client.Pawn is Entity ent )
+			if ( bot.Client.Name.ToLower() == nameLower && bot.Client.Pawn is Entity ent )
 				ent.OnKilled();
 		}
 	}
@@ -69,20 +69,20 @@ public partial class DebugBot : Bot
 	[ConCmd.Admin( "bot_kick", Help = "Kicks all bots." )]
 	public static void BotKick()
 	{
-		foreach ( var b in All.ToArray() )
-			b.Client.Kick();
+		foreach ( var bot in Bot.All.ToArray() )
+			bot.Client.Kick();
 	}
 
 	[ConCmd.Admin( "bot_add" )]
 	public static void AddBot()
 	{
 		var pawn = ConsoleSystem.Caller.Pawn;
-		if ( pawn is not Player ply )
+		if ( pawn is not Player player )
 			return;
 
-		var b = new DebugBot();
-		b.Target = ply;
-		b.Pawn = b.Client.Pawn as Player;
+		var bot = new DebugBot();
+		bot.Spawner = player;
+		bot.Pawn = bot.Client.Pawn as Player;
 	}
 
 	public override void BuildInput()
@@ -100,11 +100,11 @@ public partial class DebugBot : Bot
 
 		if ( Mimic )
 		{
-			Input.CopyLastInput( Target.Client );
+			Input.CopyLastInput( Spawner.Client );
 			foreach ( var item in from p in GlobalGameNamespace.TypeLibrary.GetPropertyDescriptions( Client.Pawn )
 								  where p.HasAttribute<ClientInputAttribute>()
 								  select p )
-				item.SetValue( Client.Pawn, item.GetValue( Target ) );
+				item.SetValue( Client.Pawn, item.GetValue( Spawner ) );
 		}
 	}
 }
