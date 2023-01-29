@@ -9,8 +9,8 @@ public enum SlotType
 	Primary,
 	Secondary,
 	Melee,
-	OffensiveEquipment,
-	UtilityEquipment,
+	OffensiveCarriable,
+	UtilityCarriable,
 	Grenade,
 }
 

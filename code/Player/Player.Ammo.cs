@@ -9,7 +9,15 @@ public partial class Player
 	[Net]
 	public IList<int> Ammo { get; set; }
 
-	private static readonly int[] _ammoCap = new int[] { 0, 60, 16, 20, 12, 60 };
+	private static readonly Dictionary<AmmoType, int> _maxAmmoCapacity = new()
+	{
+		{ AmmoType.None, 0 },
+		{ AmmoType.PistolSMG, 60 },
+		{ AmmoType.Shotgun, 16 },
+		{ AmmoType.Sniper, 20 },
+		{ AmmoType.Magnum, 12 },
+		{ AmmoType.Rifle, 60 },
+	};
 
 	public void ClearAmmo()
 	{
@@ -70,7 +78,7 @@ public partial class Player
 		if ( !Game.IsServer || Ammo is null )
 			return 0;
 
-		var ammoPickedUp = Math.Min( amount, _ammoCap[(int)type] - AmmoCount( type ) );
+		var ammoPickedUp = Math.Min( amount, _maxAmmoCapacity[type] - AmmoCount( type ) );
 		if ( ammoPickedUp > 0 )
 		{
 			SetAmmo( type, AmmoCount( type ) + ammoPickedUp );

@@ -20,8 +20,26 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public int Count => _list.Count;
 	private readonly List<Carriable> _list = new();
-	private readonly int[] _slotCapacity = new int[] { 1, 1, 1, 3, 3, 1 };
-	private readonly int[] _weaponsOfAmmoType = new int[] { 0, 0, 0, 0, 0, 0 };
+
+	private readonly Dictionary<SlotType, int> _slotCapacity = new()
+	{
+		{ SlotType.Primary, 1 },
+		{ SlotType.Secondary, 1 },
+		{ SlotType.Melee, 1 },
+		{ SlotType.OffensiveCarriable, 1 },
+		{ SlotType.UtilityCarriable, 2 },
+		{ SlotType.Grenade, 1 }
+	};
+
+	private readonly Dictionary<AmmoType, int> _ammoCount = new()
+	{
+		{ AmmoType.None, 0 },
+		{ AmmoType.PistolSMG, 0 },
+		{ AmmoType.Shotgun, 0 },
+		{ AmmoType.Sniper, 0 },
+		{ AmmoType.Magnum, 0 },
+		{ AmmoType.Rifle, 0 },
+	};
 
 	public Inventory( Player player ) => Owner = player;
 
@@ -73,12 +91,12 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 	public bool HasFreeSlot( SlotType slotType )
 	{
-		return _slotCapacity[(int)slotType] > 0;
+		return _slotCapacity[slotType] > 0;
 	}
 
 	public bool HasWeaponOfAmmoType( AmmoType ammoType )
 	{
-		return ammoType != AmmoType.None && _weaponsOfAmmoType[(int)ammoType] > 0;
+		return ammoType != AmmoType.None && _ammoCount[ammoType] > 0;
 	}
 
 	public void OnUse( Carriable carriable )
@@ -201,10 +219,10 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 		carriable.OnCarryStart( Owner );
 
-		_slotCapacity[(int)carriable.Info.Slot] -= 1;
+		_slotCapacity[carriable.Info.Slot] -= 1;
 
 		if ( carriable is Weapon weapon )
-			_weaponsOfAmmoType[(int)weapon.Info.AmmoType] += 1;
+			_ammoCount[weapon.Info.AmmoType] += 1;
 	}
 
 	public void OnChildRemoved( Carriable carriable )
@@ -214,10 +232,10 @@ public sealed class Inventory : IEnumerable<Carriable>
 
 		carriable.OnCarryDrop( Owner );
 
-		_slotCapacity[(int)carriable.Info.Slot] += 1;
+		_slotCapacity[carriable.Info.Slot] += 1;
 
 		if ( carriable is Weapon weapon )
-			_weaponsOfAmmoType[(int)weapon.Info.AmmoType] -= 1;
+			_ammoCount[weapon.Info.AmmoType] -= 1;
 	}
 
 	public T DropEntity<T>( Deployable<T> self ) where T : ModelEntity, new()
