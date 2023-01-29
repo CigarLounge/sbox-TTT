@@ -8,32 +8,34 @@ public static class DamageInfoExtensions
 	/// Is this damage a headshot?
 	/// </summary>
 	public static bool IsHeadshot( this DamageInfo info ) => info.Hitbox.HasTag( "head" );
+
 	/// <summary>
 	/// If this damage ends up being lethal, should the player scream when killed?
 	/// </summary>
 	public static bool IsSilent( this DamageInfo info ) => info.HasTag( DamageTags.Silent );
+
 	/// <summary>
 	/// If this damage was avoidable e.g. a traitor dying to a
 	/// teammate's C4, then no karma penalty will be given to the teammate.
 	/// </summary>
 	public static bool IsAvoidable( this DamageInfo info ) => info.HasTag( DamageTags.Avoidable );
+
 	/// <summary>
 	/// Creates a bloodsplatter effect in the world.
 	/// </summary>
 	/// <param name="info"></param>
 	/// <param name="player">The attacked player, their blood is getting splattered.</param>
 	/// <param name="maxDistance">How far we will check for a place to splatter.</param>
-	public static void CreateBloodSplatter( this DamageInfo info, Player player, float maxDistance = 225f )
+	public static void CreateBloodSplatter( this DamageInfo info, Player player, float maxDistance )
 	{
-		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
 		var splatterTrace = Trace.Ray( new Ray( info.Position, info.Force.Normal ), maxDistance )
 			.Ignore( player )
-			.Ignore( player.ActiveCarriable )
 			.Run();
 
 		if ( !splatterTrace.Hit )
 			return;
 
+		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
 		Decal.Place( To.Everyone, decal, null, 0, splatterTrace.EndPosition - splatterTrace.Direction * 1f, Rotation.LookAt( splatterTrace.Normal ), Color.White );
 	}
 }
