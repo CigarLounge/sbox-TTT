@@ -18,7 +18,7 @@ public partial class DebugBot : Bot
 	public Player Target;
 
 	public static bool Aimbot;
-	public static bool MimicHost;
+	public static bool Mimic;
 	public static bool Wander;
 
 	[ConVar.Replicated( "bot_debug" )]
@@ -33,7 +33,7 @@ public partial class DebugBot : Bot
 	[ConCmd.Admin( "bot_mimic", Help = "Makes the bot mimic the host client's inputs." )]
 	public static void ToggleMimicHost()
 	{
-		MimicHost = !MimicHost;
+		Mimic = !Mimic;
 		Wander = false;
 	}
 
@@ -41,14 +41,14 @@ public partial class DebugBot : Bot
 	public static void ToggleWander()
 	{
 		Wander = !Wander;
-		MimicHost = false;
+		Mimic = false;
 	}
 
 	[ConCmd.Admin( "bot_reset", Help = "Resets bot to default settings." )]
 	public static void BotReset()
 	{
 		Wander = false;
-		MimicHost = false;
+		Mimic = false;
 		Aimbot = false;
 	}
 
@@ -106,7 +106,7 @@ public partial class DebugBot : Bot
 		if ( Wander )
 			Pawn.InputDirection = Vector3.Random * 2f;
 
-		if ( MimicHost )
+		if ( Mimic )
 		{
 			Input.CopyLastInput( Target.Client );
 			foreach ( var item in from p in GlobalGameNamespace.TypeLibrary.GetPropertyDescriptions( Client.Pawn )
