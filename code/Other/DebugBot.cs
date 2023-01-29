@@ -45,7 +45,7 @@ public partial class DebugBot : Bot
 	}
 
 	[ConCmd.Admin( "bot_reset", Help = "Resets bot to default settings." )]
-	public static void DoBotReset()
+	public static void BotReset()
 	{
 		Wander = false;
 		MimicHost = false;
@@ -53,7 +53,7 @@ public partial class DebugBot : Bot
 	}
 
 	[ConCmd.Admin( "bot_kill", Help = "Kills bot by name if provided, else kills all bots." )]
-	public static void DoBotKill( string name = "" )
+	public static void BotKill( string name = "" )
 	{
 		if ( string.IsNullOrEmpty( name ) )
 		{
@@ -75,7 +75,7 @@ public partial class DebugBot : Bot
 	}
 
 	[ConCmd.Admin( "bot_kick", Help = "Kicks all bots." )]
-	public static void DoBotKick()
+	public static void BotKick()
 	{
 		foreach ( var b in All.ToArray() )
 			b.Client.Kick();
