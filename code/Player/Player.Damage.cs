@@ -188,15 +188,15 @@ public partial class Player
 
 	private void CreateBloodSplatter( DamageInfo info, float maxDistance )
 	{
-		var splatterTrace = Trace.Ray( new Ray( info.Position, info.Force.Normal ), maxDistance )
+		var trace = Trace.Ray( new Ray( info.Position, info.Force.Normal ), maxDistance )
 			.Ignore( this )
 			.Run();
 
-		if ( !splatterTrace.Hit )
+		if ( !trace.Hit )
 			return;
 
 		var decal = ResourceLibrary.Get<DecalDefinition>( "decals/blood_splatter.decal" );
-		Decal.Place( To.Everyone, decal, null, 0, splatterTrace.EndPosition - splatterTrace.Direction * 1f, Rotation.LookAt( splatterTrace.Normal ), Color.White );
+		Decal.Place( To.Everyone, decal, null, 0, trace.EndPosition - trace.Direction * 1f, Rotation.LookAt( trace.Normal ), Color.White );
 	}
 
 	private float GetBulletDamageMultipliers( DamageInfo info )
