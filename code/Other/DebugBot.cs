@@ -23,14 +23,14 @@ public partial class DebugBot : Bot
 	[ConVar.Replicated( "bot_debug" )]
 	public static bool DrawDebug { get; set; }
 
-	[ConCmd.Admin( "bot_mimic", Help = "Makes the bot mimic the host client's inputs." )]
+	[ConCmd.Admin( "bot_mimic", Help = "Make bots mimic your inputs." )]
 	public static void ToggleMimicHost()
 	{
 		Mimic = !Mimic;
 		Wander = false;
 	}
 
-	[ConCmd.Admin( "bot_wander", Help = "Makes the bot randomly press move buttons." )]
+	[ConCmd.Admin( "bot_wander", Help = "Make bots randomly press move buttons." )]
 	public static void ToggleWander()
 	{
 		Wander = !Wander;
@@ -44,7 +44,7 @@ public partial class DebugBot : Bot
 		Mimic = false;
 	}
 
-	[ConCmd.Admin( "bot_kill", Help = "Kills bot by name if provided, else kills all bots." )]
+	[ConCmd.Admin( "bot_kill", Help = "Kills a bot by name if provided, else kills all bots." )]
 	public static void BotKill( string name = "" )
 	{
 		if ( string.IsNullOrEmpty( name ) )
