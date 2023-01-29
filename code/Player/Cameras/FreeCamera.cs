@@ -44,6 +44,9 @@ public class FreeCamera : CameraMode
 	{
 		var mv = _moveInput.Normal * BaseMoveSpeed * RealTime.Delta * Camera.Rotation * _moveSpeed;
 
+		if ( Camera.Rotation.Roll() > 90f || Camera.Rotation.Roll() < -90f )
+			_lookAngles.pitch = _lookAngles.pitch.Clamp( -90f, 90f );
+
 		Camera.Position += mv;
 		Camera.Rotation = Rotation.From( _lookAngles );
 	}
