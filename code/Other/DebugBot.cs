@@ -7,45 +7,38 @@ namespace TTT;
 
 public partial class DebugBot : Bot
 {
-	/// <summary>
-	/// The Player pawn this bot controls.
-	/// </summary>
-	public Player Pawn;
+	private Player _pawn;
+	private Player _spawner;
 
-	/// <summary>
-	/// The host Player who spawned this bot.
-	/// </summary>
-	public Player Spawner;
-
-	public static bool Mimic;
-	public static bool Wander;
+	private static bool _mimic;
+	private static bool _wander;
 
 	[ConVar.Replicated( "bot_debug" )]
-	public static bool DrawDebug { get; set; }
+	private static bool DrawDebug { get; set; }
 
 	[ConCmd.Admin( "bot_mimic", Help = "Make bots mimic your inputs." )]
-	public static void ToggleMimicHost()
+	private static void ToggleMimicHost()
 	{
-		Mimic = !Mimic;
-		Wander = false;
+		_mimic = !_mimic;
+		_wander = false;
 	}
 
 	[ConCmd.Admin( "bot_wander", Help = "Make bots randomly press move buttons." )]
-	public static void ToggleWander()
+	private static void ToggleWander()
 	{
-		Wander = !Wander;
-		Mimic = false;
+		_wander = !_wander;
+		_mimic = false;
 	}
 
 	[ConCmd.Admin( "bot_reset", Help = "Resets bot to default settings." )]
-	public static void BotReset()
+	private static void BotReset()
 	{
-		Wander = false;
-		Mimic = false;
+		_wander = false;
+		_mimic = false;
 	}
 
 	[ConCmd.Admin( "bot_kill", Help = "Kills a bot by name if provided, else kills all bots." )]
-	public static void BotKill( string name = "" )
+	private static void BotKill( string name = "" )
 	{
 		if ( string.IsNullOrEmpty( name ) )
 		{
@@ -67,44 +60,43 @@ public partial class DebugBot : Bot
 	}
 
 	[ConCmd.Admin( "bot_kick", Help = "Kicks all bots." )]
-	public static void BotKick()
+	private static void BotKick()
 	{
 		foreach ( var bot in Bot.All.ToArray() )
 			bot.Client.Kick();
 	}
 
 	[ConCmd.Admin( "bot_add" )]
-	public static void AddBot()
+	private static void AddBot()
 	{
-		var pawn = ConsoleSystem.Caller.Pawn;
-		if ( pawn is not Player player )
+		if ( ConsoleSystem.Caller.Pawn is not Player player )
 			return;
 
 		var bot = new DebugBot();
-		bot.Spawner = player;
-		bot.Pawn = bot.Client.Pawn as Player;
+		bot._spawner = player;
+		bot._pawn = bot.Client.Pawn as Player;
 	}
 
 	public override void BuildInput()
 	{
-		Pawn.InputDirection = Vector3.Zero;
+		_pawn.InputDirection = Vector3.Zero;
 
 		if ( DrawDebug )
 		{
-			DebugOverlay.Axis( Pawn.EyePosition, Pawn.EyeRotation, 24 );
-			DebugOverlay.Axis( Pawn.Position, Pawn.Rotation, 32 );
+			DebugOverlay.Axis( _pawn.EyePosition, _pawn.EyeRotation, 24 );
+			DebugOverlay.Axis( _pawn.Position, _pawn.Rotation, 32 );
 		}
 
-		if ( Wander )
-			Pawn.InputDirection = Vector3.Random * 2f;
+		if ( _wander )
+			_pawn.InputDirection = Vector3.Random * 2f;
 
-		if ( Mimic )
+		if ( _mimic )
 		{
-			Input.CopyLastInput( Spawner.Client );
+			Input.CopyLastInput( _spawner.Client );
 			foreach ( var item in from p in GlobalGameNamespace.TypeLibrary.GetPropertyDescriptions( Client.Pawn )
 								  where p.HasAttribute<ClientInputAttribute>()
 								  select p )
-				item.SetValue( Client.Pawn, item.GetValue( Spawner ) );
+				item.SetValue( Client.Pawn, item.GetValue( _spawner ) );
 		}
 	}
 }
