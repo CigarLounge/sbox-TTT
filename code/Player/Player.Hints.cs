@@ -13,7 +13,7 @@ public partial class Player
 	{
 		HoveredEntity = FindHovered();
 
-		if ( HoveredEntity is not IEntityHint hint || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
+		if ( HoveredEntity is not IEntityHint hint || _traceDistance > hint.HintDistance || !hint.CanHint( UI.Hud.DisplayedPlayer ) )
 		{
 			DeleteHint();
 			return;
