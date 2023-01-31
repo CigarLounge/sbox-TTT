@@ -180,7 +180,7 @@ public partial class Player
 			LastDamage.Weapon,
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
-			LastDamage.Tags.ToArray(),
+			LastDamage.Tags?.ToArray(),
 			LastDamage.Position,
 			DistanceToAttacker
 		);
@@ -242,7 +242,7 @@ public partial class Player
 			.WithWeapon( w )
 			.WithPosition( p );
 
-		info.Tags = new HashSet<string>( tags );
+		info.Tags = new HashSet<string>( tags ?? Array.Empty<string>() );
 
 		DistanceToAttacker = dTA;
 		LastAttacker = a;
