@@ -3,32 +3,8 @@
 @namespace TTT.UI
 
 <root>
-    <div>
-        <button icon="info" class="@(_selectedTab == _roleSummary ? "selected" : "")" @onclick=@(() => _selectedTab =
-            _roleSummary)>@_roleSummary
-        </button>
-
-        <button icon="flag_circle" class="@(_selectedTab == _eventSummary ? "selected" : "")" @onclick=@(() =>
-            _selectedTab = _eventSummary)>@_eventSummary
-        </button>
-    </div>
-    <div>
-        @if (_selectedTab == _roleSummary)
-        {
-            <RoleSummary />
-        }
-        else if (_selectedTab == _eventSummary)
-        {
-            <EventSummary />
-        }
-    </div>
+    <RoleSummary />
 </root>
-
-@code {
-    private const string _roleSummary = "Summary";
-    private const string _eventSummary = "Events";
-    private string _selectedTab = _roleSummary;
-}
 
 <style>
     RoundSummaryPage {

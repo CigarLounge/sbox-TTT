@@ -16,6 +16,15 @@ public partial class RoleSummary : Panel
 
 	public RoleSummary() => Instance = this;
 
+	[GameEvent.Round.End]
+	private static void OnRoundEnd( Team winningTeam, WinType winType )
+	{
+		if ( !Game.IsServer )
+			return;
+
+		RoleSummary.SendData();
+	}
+
 	// TODO: Figure out if we can trigger this a different way. RoundEnd event doesn't get data in time.
 	[ClientRpc]
 	public static void SendData()
