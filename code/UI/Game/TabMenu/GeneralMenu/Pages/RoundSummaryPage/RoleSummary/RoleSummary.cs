@@ -25,7 +25,6 @@ public partial class RoleSummary : Panel
 		RoleSummary.SendData();
 	}
 
-	// TODO: Figure out if we can trigger this a different way. RoundEnd event doesn't get data in time.
 	[ClientRpc]
 	public static void SendData()
 	{
