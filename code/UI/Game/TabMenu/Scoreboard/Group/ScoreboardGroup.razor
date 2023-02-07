@@ -8,10 +8,10 @@
         <text style="font-size: 14px; flex-grow: 1;">@Status.ToStringFast()</text>
         @if (Karma.Enabled)
         {
-            <text><text class="stat">Karma</text></text>
+            <text><text class="stat" text="Karma"/></text>
         }
-        <text class="stat">Score</text>
-        <text class="stat">Ping</text>
+        <text class="stat" text="Score"/>
+        <text class="stat" text="Ping"/>
     </div>
 </root>
 
@@ -39,7 +39,7 @@
 
         .stat {
             width: 125px;
-            justify-content: center;
+            text-align: center;
         }
 
         &.alive {
