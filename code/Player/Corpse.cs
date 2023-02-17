@@ -320,11 +320,13 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 	{
 		if ( Input.Down( GetSearchButton() ) && CanSearch() )
 		{
+			var hasCorpseInfo = Player.IsValid() && !Player.LastDamage.Equals( default( DamageInfo ) );
+
 			// Dead player wants to view the body, request a convert search.
-			if ( !player.IsAlive && !Player.IsValid() )
+			if ( !player.IsAlive && !hasCorpseInfo )
 				ConvertSearch( NetworkIdent );
 
-			if ( Player.IsValid() )
+			if ( Player.IsValid() && hasCorpseInfo )
 				UI.FullScreenHintMenu.Instance?.Open( new UI.InspectMenu( this ) );
 
 			return;
