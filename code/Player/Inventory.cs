@@ -27,7 +27,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 		{ SlotType.Secondary, 1 },
 		{ SlotType.Melee, 1 },
 		{ SlotType.OffensiveEquipment, 1 },
-		{ SlotType.UtilityEquipment, 2 },
+		{ SlotType.UtilityEquipment, 3 },
 		{ SlotType.Grenade, 1 }
 	};
 
