@@ -25,15 +25,16 @@
             </text>
         </text>
         @{
-            var isTraitor = (Game.LocalPawn as TTT.Player).Team == Team.Traitors;
+            var player = Game.LocalPawn as TTT.Player;
+            var showRealTimer = player.Team == Team.Traitors || !player.IsAlive;
             var showSubTimer = TTT.GameManager.Current.State is InProgress inProgress &&
                                 (
-                                    (isTraitor && inProgress.TimeLeft != inProgress.FakeTime) ||
-                                    (!isTraitor && (int)inProgress.FakeTime < 0)
+                                    (showRealTimer && inProgress.TimeLeft != inProgress.FakeTime) ||
+                                    (!showRealTimer && (int)inProgress.FakeTime < 0)
                                 );
             <text>
                     <text class="sub-text text-color-tertiary @(showSubTimer ? "show" : "")">
-                    @(isTraitor ? @TTT.GameManager.Current.State.TimeLeftFormatted : "OVERTIME")
+                    @(showRealTimer ? @TTT.GameManager.Current.State.TimeLeftFormatted : "OVERTIME")
                     </text>
             </text>
         }
