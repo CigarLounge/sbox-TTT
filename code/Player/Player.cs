@@ -141,6 +141,11 @@ public partial class Player : AnimatedEntity
 
 			Controller = new WalkController();
 
+			// TODO: Facepunch issue, need to set the water level, unable to remove the component without getting a null ref.
+			// If the player respawns directly from water the water effect component doesn't get removed.
+			if ( Components.TryGet<Sandbox.Component.WaterEffectComponent>( out var waterComponent ) )
+				waterComponent.WaterLevel = 0;
+
 			CreateHull();
 			CreateFlashlight();
 			DressPlayer();
