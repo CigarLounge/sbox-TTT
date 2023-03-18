@@ -1,10 +1,10 @@
-#if DEBUG
 using Sandbox;
 using Sandbox.Internal;
 using System.Linq;
 
 namespace TTT;
 
+#if DEBUG
 public partial class DebugBot : Bot
 {
 	private Player _pawn;
