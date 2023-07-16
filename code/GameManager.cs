@@ -85,8 +85,6 @@ public partial class GameManager : Sandbox.GameManager
 
 	public override void ClientJoined( IClient client )
 	{
-		Event.Run( GameEvent.Client.Joined, client );
-
 		var player = new Player( client );
 
 		State.OnPlayerJoin( player );
@@ -96,7 +94,6 @@ public partial class GameManager : Sandbox.GameManager
 
 	public override void ClientDisconnect( IClient client, NetworkDisconnectionReason reason )
 	{
-		Event.Run( GameEvent.Client.Disconnected, client );
 		State.OnPlayerLeave( client.Pawn as Player );
 
 		UI.TextChat.AddInfoEntry( To.Everyone, $"{client.Name} has left ({reason})" );
@@ -143,7 +140,7 @@ public partial class GameManager : Sandbox.GameManager
 			FileSystem.Data.WriteJson( BanFilePath, BannedClients );
 	}
 
-	[Event.Tick]
+	[GameEvent.Tick]
 	private void Tick()
 	{
 		State?.OnTick();

@@ -25,8 +25,8 @@ public partial class Hands : Carriable
 
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, !CurrentPrimaryHint.IsNullOrEmpty() ? CurrentPrimaryHint : "Pickup" ),
-		new( InputButton.SecondaryAttack, !CurrentSecondaryHint.IsNullOrEmpty() ? CurrentSecondaryHint : "Push" ),
+		new( InputAction.PrimaryAttack, !CurrentPrimaryHint.IsNullOrEmpty() ? CurrentPrimaryHint : "Pickup" ),
+		new( InputAction.SecondaryAttack, !CurrentSecondaryHint.IsNullOrEmpty() ? CurrentSecondaryHint : "Push" ),
 	};
 
 	public Entity GrabPoint { get; private set; }
@@ -45,14 +45,14 @@ public partial class Hands : Carriable
 		if ( !Game.IsServer )
 			return;
 
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Input.Pressed( InputAction.PrimaryAttack ) )
 		{
 			if ( IsHoldingEntity )
 				_grabbedEntity.SecondaryAction();
 			else
 				TryGrabEntity();
 		}
-		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		else if ( Input.Pressed( InputAction.SecondaryAttack ) )
 		{
 			if ( IsHoldingEntity )
 				_grabbedEntity.Drop();
@@ -101,7 +101,7 @@ public partial class Hands : Carriable
 			.UseHitboxes()
 			.Ignore( Owner )
 			.WithAnyTags( "solid", "interactable" )
-			.EntitiesOnly()
+			.DynamicOnly()
 			.Run();
 
 		if ( !trace.Hit || !trace.Entity.IsValid() || !trace.Body.IsValid() || trace.Body.BodyType != PhysicsBodyType.Dynamic )
@@ -184,7 +184,7 @@ public partial class Hands : Carriable
 		return size.x < _maxPickupSize.x && size.y < _maxPickupSize.y && size.y < _maxPickupSize.z;
 	}
 
-	[Event.Entity.PreCleanup]
+	[GameEvent.Entity.PreCleanup]
 	private void OnPreCleanup()
 	{
 		_grabbedEntity?.Drop();

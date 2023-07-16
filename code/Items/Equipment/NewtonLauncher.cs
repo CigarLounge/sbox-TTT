@@ -39,7 +39,7 @@ public partial class NewtonLauncher : Weapon
 		if ( TimeSincePrimaryAttack < Info.PrimaryRate )
 			return;
 
-		if ( Input.Down( InputButton.PrimaryAttack ) )
+		if ( Input.Down( InputAction.PrimaryAttack ) )
 		{
 			Charge = Math.Min( MaxCharge, Charge + ChargePerSecond * Time.Delta );
 
@@ -49,7 +49,7 @@ public partial class NewtonLauncher : Weapon
 			ChargeStart();
 			IsCharging = true;
 		}
-		else if ( Input.Released( InputButton.PrimaryAttack ) )
+		else if ( Input.Released( InputAction.PrimaryAttack ) )
 		{
 			ChargeFinished();
 			IsCharging = false;

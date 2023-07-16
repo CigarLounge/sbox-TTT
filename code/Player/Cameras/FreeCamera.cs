@@ -19,20 +19,20 @@ public class FreeCamera : CameraMode
 	{
 		_moveSpeed = 1f;
 
-		if ( Input.Down( InputButton.Run ) )
+		if ( Input.Down( InputAction.Run ) )
 			_moveSpeed = 5f;
 
-		if ( Input.Down( InputButton.Duck ) )
+		if ( Input.Down( InputAction.Duck ) )
 			_moveSpeed = 0.2f;
 
-		if ( Input.Pressed( InputButton.Jump ) )
+		if ( Input.Pressed( InputAction.Jump ) )
 		{
 			var alivePlayer = Game.Random.FromList( Utils.GetPlayersWhere( p => p.IsAlive ) );
 			if ( alivePlayer.IsValid() )
 				Current = new FollowEntityCamera( alivePlayer );
 		}
 
-		if ( Input.Pressed( InputButton.Use ) )
+		if ( Input.Pressed( InputAction.Use ) )
 			FindSpectateTarget( (Player)Game.LocalPawn );
 
 		_moveInput = Input.AnalogMove;

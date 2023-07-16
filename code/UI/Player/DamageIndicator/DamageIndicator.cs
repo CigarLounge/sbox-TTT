@@ -15,7 +15,7 @@ public class DamageIndicator : Panel
 		StyleSheet.Load( "/UI/Player/DamageIndicator/DamageIndicator.scss" );
 	}
 
-	[GameEvent.Player.TookDamage]
+	[TTTEvent.Player.TookDamage]
 	private void OnHit( Player player )
 	{
 		var info = player.LastDamage;

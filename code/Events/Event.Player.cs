@@ -2,7 +2,7 @@ using Sandbox;
 
 namespace TTT;
 
-public static partial class GameEvent
+public static partial class TTTEvent
 {
 	public static class Player
 	{

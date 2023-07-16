@@ -70,7 +70,7 @@ public partial class InProgress : BaseState
 
 	protected override void OnStart()
 	{
-		Event.Run( GameEvent.Round.Start );
+		Event.Run( TTTEvent.Round.Start );
 
 		if ( !Game.IsServer )
 			return;

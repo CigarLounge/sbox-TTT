@@ -11,7 +11,7 @@ public partial class PlayerInfo : Panel
 		return HashCode.Combine( Hud.DisplayedPlayer.IsAlive, Hud.DisplayedPlayer.SteamId, Hud.DisplayedPlayer.Role, Hud.DisplayedPlayer.Health );
 	}
 
-	[GameEvent.Player.TookDamage]
+	[TTTEvent.Player.TookDamage]
 	private async void OnHit( Player _ )
 	{
 		if ( !this.IsEnabled() )

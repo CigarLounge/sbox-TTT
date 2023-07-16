@@ -27,7 +27,7 @@ public partial class IgnoreDamage : EntityComponent<ModelEntity>
 		_entity.Tags.Remove( DamageTags.IgnoreDamage );
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void OnServerTick()
 	{
 		if ( !_entity.IsValid() )

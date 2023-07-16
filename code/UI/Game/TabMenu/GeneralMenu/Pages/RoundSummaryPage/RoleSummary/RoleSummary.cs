@@ -16,7 +16,7 @@ public partial class RoleSummary : Panel
 
 	public RoleSummary() => Instance = this;
 
-	[GameEvent.Round.End]
+	[TTTEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Game.IsServer )

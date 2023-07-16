@@ -42,7 +42,7 @@ public partial class Player
 	{
 		Game.AssertClient();
 
-		if ( FocusedButton is null || !Input.Pressed( InputButton.Use ) )
+		if ( FocusedButton is null || !Input.Pressed( InputAction.Use ) )
 			return;
 
 		ActivateRoleButton( FocusedButton.NetworkIdent );

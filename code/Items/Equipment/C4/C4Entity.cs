@@ -153,7 +153,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	void IEntityHint.Tick( Player player )
 	{
-		if ( !player.IsLocalPawn || !player.IsAlive || !Input.Down( InputButton.Use ) )
+		if ( !player.IsLocalPawn || !player.IsAlive || !Input.Down( InputAction.Use ) )
 		{
 			UI.FullScreenHintMenu.Instance?.Close();
 			return;
@@ -170,7 +170,7 @@ public partial class C4Entity : Prop, IEntityHint
 
 	Panel IEntityHint.DisplayHint( Player player ) => new UI.C4Hint( this );
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void ServerTick()
 	{
 		if ( !IsArmed )

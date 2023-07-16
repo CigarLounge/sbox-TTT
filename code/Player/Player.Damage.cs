@@ -96,7 +96,7 @@ public partial class Player
 		if ( !LastDamage.IsSilent() )
 			PlaySound( "player_death" );
 
-		Event.Run( GameEvent.Player.Killed, this );
+		Event.Run( TTTEvent.Player.Killed, this );
 		GameManager.Current.State.OnPlayerKilled( this );
 
 		ClientOnKilled( this );
@@ -117,7 +117,7 @@ public partial class Player
 		}
 
 		DeleteFlashlight();
-		Event.Run( GameEvent.Player.Killed, this );
+		Event.Run( TTTEvent.Player.Killed, this );
 	}
 
 	public override void TakeDamage( DamageInfo info )
@@ -159,7 +159,7 @@ public partial class Player
 		LastDamage = info;
 
 		Health -= info.Damage;
-		Event.Run( GameEvent.Player.TookDamage, this );
+		Event.Run( TTTEvent.Player.TookDamage, this );
 
 		SendDamageInfo( To.Single( this ) );
 
@@ -251,7 +251,7 @@ public partial class Player
 		LastDamage = info;
 
 		if ( IsLocalPawn )
-			Event.Run( GameEvent.Player.TookDamage, this );
+			Event.Run( TTTEvent.Player.TookDamage, this );
 	}
 
 	[ClientRpc]

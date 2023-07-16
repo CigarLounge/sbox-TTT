@@ -10,8 +10,8 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, CanDrop ? "Deploy" : string.Empty ),
-		new( InputButton.SecondaryAttack, CanPlant ? "Plant" : string.Empty ),
+		new( InputAction.PrimaryAttack, CanDrop ? "Deploy" : string.Empty ),
+		new( InputAction.SecondaryAttack, CanPlant ? "Plant" : string.Empty ),
 	};
 
 	protected virtual bool CanDrop => true;
@@ -42,17 +42,17 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 		if ( !Game.IsServer )
 			return;
 
-		if ( CanDrop && Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( CanDrop && Input.Pressed( InputAction.PrimaryAttack ) )
 		{
 			OnDeploy( Owner.Inventory.DropEntity( this ) );
 			return;
 		}
 
-		if ( !CanPlant || !Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( !CanPlant || !Input.Pressed( InputAction.SecondaryAttack ) )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-			.WorldOnly()
+			.StaticOnly()
 			.Run();
 
 		if ( !trace.Hit )
@@ -93,7 +93,7 @@ public abstract class Deployable<T> : Carriable where T : ModelEntity, new()
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
-			.WorldOnly()
+			.StaticOnly()
 			.Run();
 
 		if ( !trace.Hit )

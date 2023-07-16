@@ -55,7 +55,7 @@ public static class TeamExtensions
 		return To.Multiple( _clients[team].Where( x => x.Pawn is Player player && player.IsAlive ) );
 	}
 
-	[GameEvent.Player.RoleChanged]
+	[TTTEvent.Player.RoleChanged]
 	private static void OnPlayerRoleChanged( Player player, Role oldRole )
 	{
 		if ( oldRole is not null )

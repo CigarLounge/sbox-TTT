@@ -15,7 +15,7 @@ public partial class WalkController
 
 		if ( _isTouchingLadder )
 		{
-			if ( Input.Pressed( InputButton.Jump ) )
+			if ( Input.Pressed( InputAction.Jump ) )
 			{
 				Player.Velocity = _ladderNormal * 100.0f;
 				_isTouchingLadder = false;

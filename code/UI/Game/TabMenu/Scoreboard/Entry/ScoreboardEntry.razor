@@ -10,10 +10,10 @@
         <div class="entry">
             <img src="avatar:@Player.SteamId" class="avatar circle" />
             <text class="name">@Player.SteamName</text>
-            <text style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
+            <text class="tag" style="font-color: @(Player.TagGroup.Color.Hex)">@Player.TagGroup.Title</text>
             @if (Karma.Enabled)
             {
-                <text><text class="stat">@MathF.Round( Player.BaseKarma ).ToString()</text></text>
+                <label class="stat">@MathF.Round( Player.BaseKarma ).ToString()</label>
             }
             <text class="stat">@Player.Score.ToString()</text>
             <text class="stat">@(Player.Client.IsBot ? "BOT" : Player.Client.Ping.ToString())</text>
@@ -60,7 +60,7 @@
             .stat {
                 width: 125px;
                 font-weight: 700;
-                justify-content: center;
+                text-align: center;
             }
 
             &:last-child {

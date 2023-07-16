@@ -54,13 +54,13 @@ public partial class Player
 
 		using ( Prediction.Off() )
 		{
-			if ( Input.Pressed( InputButton.Use ) )
+			if ( Input.Pressed( InputAction.Use ) )
 			{
 				if ( CanUse( HoveredEntity ) )
 					StartUsing( HoveredEntity );
 			}
 
-			if ( !Input.Down( InputButton.Use ) )
+			if ( !Input.Down( InputAction.Use ) )
 			{
 				StopUsing();
 				return;

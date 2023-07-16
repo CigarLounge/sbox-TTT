@@ -18,7 +18,7 @@ public partial class PoltergeistEntity : ModelEntity
 		SetupPhysicsFromModel( PhysicsMotionType.Dynamic );
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void OnServerTick()
 	{
 		if ( _bounces >= MaxBounces )

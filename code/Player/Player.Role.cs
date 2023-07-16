@@ -29,7 +29,7 @@ public partial class Player
 
 			_role.OnSelect( this );
 
-			Event.Run( GameEvent.Player.RoleChanged, this, oldRole );
+			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
 		}
 	}
 

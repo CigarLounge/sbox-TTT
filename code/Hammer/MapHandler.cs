@@ -6,7 +6,7 @@ public static class MapHandler
 {
 	public static int WeaponCount = 0;
 
-	[Event.Entity.PostSpawn]
+	[GameEvent.Entity.PostSpawn]
 	public static void EntityPostSpawn()
 	{
 		if ( Game.IsClient )

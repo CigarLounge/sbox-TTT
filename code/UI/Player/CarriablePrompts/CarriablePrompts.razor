@@ -15,7 +15,7 @@
             @if (!binding.Text.IsNullOrEmpty()) 
             {
                 <div class="binding">
-                    <inputglyph button=@binding.Button />
+                    <inputglyph action=@binding.Action />
                     <text>@binding.Text</text>
                 </div>
             }
@@ -27,7 +27,7 @@
     protected override int BuildHash()
     {
         var player = Game.LocalPawn as TTT.Player;
-        return HashCode.Combine(player?.ActiveCarriable?.BindingPrompts.HashCombine(b => HashCode.Combine(b.Button.GetHashCode(), b.Text.GetHashCode())));
+        return HashCode.Combine(player?.ActiveCarriable?.BindingPrompts.HashCombine(b => HashCode.Combine(b.Action.GetHashCode(), b.Text.GetHashCode())));
     }
 }
 

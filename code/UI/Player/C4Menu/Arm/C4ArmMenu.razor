@@ -9,7 +9,7 @@
         <text class="timer text-color-tertiary">
             @TimeSpan.FromSeconds( @Timer ).ToString( "mm':'ss" )
         </text>
-        <Slider min="45" max="600" Value:bind="@Timer" />
+        <Slider2D min="45" max="600" Value:bind="@Timer" />
         <text class="wires">
             @($"{C4Entity.GetBadWireCount(@Timer)} of the 6 wires will cause instant detonation during defusal")
         </text>

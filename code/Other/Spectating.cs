@@ -50,7 +50,7 @@ public static class Spectating
 		Player = alivePlayers[_spectatedPlayerIndex];
 	}
 
-	[GameEvent.Player.Killed]
+	[TTTEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( player == Player )

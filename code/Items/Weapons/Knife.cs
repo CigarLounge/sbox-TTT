@@ -29,7 +29,7 @@ public partial class Knife : Carriable
 		if ( TimeSinceStab < 1f )
 			return;
 
-		if ( Input.Down( InputButton.PrimaryAttack ) )
+		if ( Input.Down( InputAction.PrimaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{
@@ -37,7 +37,7 @@ public partial class Knife : Carriable
 				StabAttack( 35f, 8f );
 			}
 		}
-		else if ( Input.Released( InputButton.SecondaryAttack ) )
+		else if ( Input.Released( InputAction.SecondaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{
@@ -143,7 +143,7 @@ public partial class Knife : Carriable
 		ViewModelEntity?.SetAnimParameter( "fire", true );
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void ServerTick()
 	{
 		if ( !_isThrown )

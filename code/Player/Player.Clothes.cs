@@ -23,8 +23,8 @@ public partial class Player
 		ClothingContainer.DressEntity( this );
 	}
 
-	[Event.Entity.PostSpawn]
-	[Event.Entity.PostCleanup]
+	[GameEvent.Entity.PostSpawn]
+	[GameEvent.Entity.PostCleanup]
 	private static void ChangeClothingPreset()
 	{
 		_currentPreset = Game.Random.FromList( ClothingPresets );

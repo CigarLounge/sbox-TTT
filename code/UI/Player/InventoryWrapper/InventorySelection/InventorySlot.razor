@@ -1,12 +1,11 @@
 @using System;
-@using TTT;
 
 @namespace TTT.UI
 
 <root class="background-color-primary @(Carriable.IsActive ? "active" : "")">
-    <text class="slot-number" style="background-color: @(Hud.DisplayedPlayer.Role.Color.Hex)">
+    <div class="slot-number" style="background-color: @(Hud.DisplayedPlayer.Role.Color.Hex)">
         <text>@((int)Carriable.Info.Slot + 1)</text>
-    </text>
+    </div>
     <text>@Carriable.Info.Title</text>
     <text class="slot-text">@Carriable.SlotText</text>
 </root>

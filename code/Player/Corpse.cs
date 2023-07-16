@@ -187,7 +187,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 			{
 				IsFound = true;
 				Finder = searcher;
-				Event.Run( GameEvent.Player.CorpseFound, Player );
+				Event.Run( TTTEvent.Player.CorpseFound, Player );
 				ClientCorpseFound( searcher );
 			}
 		}
@@ -227,7 +227,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Finder = finder;
 
 		if ( Finder.IsValid() && !wasPreviouslyFound )
-			Event.Run( GameEvent.Player.CorpseFound, Player );
+			Event.Run( TTTEvent.Player.CorpseFound, Player );
 	}
 
 	[ClientRpc]
@@ -337,7 +337,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 
 	bool IUse.OnUse( Entity user )
 	{
-		Search( user as Player, Input.Down( InputButton.Run ) );
+		Search( user as Player, Input.Down( InputAction.Run ) );
 		return false;
 	}
 
@@ -353,25 +353,25 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		if ( Game.LocalPawn is not Player player )
 			return false;
 
-		if ( GetSearchButton() == InputButton.PrimaryAttack )
+		if ( GetSearchButton() == InputAction.PrimaryAttack )
 			return true;
 
 		return player.CanUse( this );
 	}
 
-	public static InputButton GetSearchButton()
+	public static string GetSearchButton()
 	{
 		Game.AssertClient();
 
 		var player = Game.LocalPawn as Player;
 
 		if ( player.ActiveCarriable is not Binoculars binoculars )
-			return InputButton.Use;
+			return InputAction.Use;
 
 		if ( !binoculars.IsZoomed )
-			return InputButton.Use;
+			return InputAction.Use;
 
-		return InputButton.PrimaryAttack;
+		return InputAction.PrimaryAttack;
 	}
 
 	[ConCmd.Server]

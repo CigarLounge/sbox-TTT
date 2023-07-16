@@ -18,8 +18,8 @@ public abstract partial class Grenade : Carriable
 
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, "Throw" ),
-		new( InputButton.SecondaryAttack, "Underhand" ),
+		new( InputAction.PrimaryAttack, "Throw" ),
+		new( InputAction.SecondaryAttack, "Underhand" ),
 	};
 
 	protected virtual float SecondsUntilExplode => 3f;
@@ -35,9 +35,9 @@ public abstract partial class Grenade : Carriable
 	{
 		if ( _throw == ThrowType.None )
 		{
-			if ( Input.Pressed( InputButton.PrimaryAttack ) )
+			if ( Input.Pressed( InputAction.PrimaryAttack ) )
 				_throw = ThrowType.Overhand;
-			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+			else if ( Input.Pressed( InputAction.SecondaryAttack ) )
 				_throw = ThrowType.Underhand;
 
 			if ( _throw != ThrowType.None )
@@ -49,7 +49,7 @@ public abstract partial class Grenade : Carriable
 			return;
 		}
 
-		if ( TimeUntilExplode || Input.Released( InputButton.PrimaryAttack ) || Input.Released( InputButton.SecondaryAttack ) )
+		if ( TimeUntilExplode || Input.Released( InputAction.PrimaryAttack ) || Input.Released( InputAction.SecondaryAttack ) )
 			Throw();
 	}
 

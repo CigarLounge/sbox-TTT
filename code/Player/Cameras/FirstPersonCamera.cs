@@ -15,16 +15,16 @@ public class FirstPersonCamera : CameraMode
 		if ( Game.LocalPawn is not Player player || player.Status == PlayerStatus.Alive )
 			return;
 
-		if ( !Spectating.Player.IsValid() || Input.Pressed( InputButton.Jump ) )
+		if ( !Spectating.Player.IsValid() || Input.Pressed( InputAction.Jump ) )
 		{
 			Current = new FreeCamera();
 			return;
 		}
 
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Input.Pressed( InputAction.PrimaryAttack ) )
 			Spectating.FindPlayer( false );
 
-		if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Input.Pressed( InputAction.SecondaryAttack ) )
 			Spectating.FindPlayer( true );
 	}
 

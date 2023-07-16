@@ -48,7 +48,7 @@ public partial class MapSelectionState : BaseState
 		state.Votes[player.Client] = map;
 	}
 
-	[Event.Entity.PostSpawn]
+	[GameEvent.Entity.PostSpawn]
 	private static async void OnFinishedLoading()
 	{
 		var maps = await GetLocalMapIdents();

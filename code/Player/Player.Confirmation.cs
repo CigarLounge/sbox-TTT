@@ -68,7 +68,7 @@ public partial class Player
 			var oldStatus = _status;
 			_status = value;
 
-			Event.Run( GameEvent.Player.StatusChanged, this, oldStatus );
+			Event.Run( TTTEvent.Player.StatusChanged, this, oldStatus );
 		}
 	}
 
@@ -157,21 +157,21 @@ public partial class Player
 		Status = status;
 	}
 
-	[GameEvent.Client.Joined]
-	private void SyncClient( IClient client )
+	[GameEvent.Server.ClientJoined]
+	private void SyncClient( ClientJoinedEvent e )
 	{
 		if ( IsRoleKnown )
-			ClientSetRole( To.Single( client ), Role.Info );
+			ClientSetRole( To.Single( e.Client ), Role.Info );
 
 		if ( IsSpectator )
-			UpdateStatus( To.Single( client ) );
+			UpdateStatus( To.Single( e.Client ) );
 		else if ( IsConfirmedDead )
-			ClientConfirmDeath( To.Single( client ), Confirmer );
+			ClientConfirmDeath( To.Single( e.Client ), Confirmer );
 
 		if ( Corpse.IsValid() && Corpse.IsFound )
 		{
-			Corpse.SendPlayer( To.Single( client ) );
-			Corpse.ClientCorpseFound( To.Single( client ), Corpse.Finder, true );
+			Corpse.SendPlayer( To.Single( e.Client ) );
+			Corpse.ClientCorpseFound( To.Single( e.Client ), Corpse.Finder, true );
 		}
 	}
 }

@@ -72,7 +72,7 @@ public class Discombobulator : Grenade
 
 			var trace = Trace.Ray( Position, targetPos )
 				.Ignore( this )
-				.WorldOnly()
+				.StaticOnly()
 				.Run();
 
 			if ( trace.Fraction < 0.98f )

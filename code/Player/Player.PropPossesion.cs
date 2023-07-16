@@ -9,17 +9,17 @@ public partial class Player
 
 	public void SimulatePossession()
 	{
-		if ( Input.Pressed( InputButton.Duck ) )
+		if ( Input.Pressed( InputAction.Duck ) )
 		{
 			CancelPossession();
 			return;
 		}
 
-		if ( Input.Pressed( InputButton.Jump ) || InputDirection.x != 0f || InputDirection.y != 0f )
+		if ( Input.Pressed( InputAction.Jump ) || InputDirection.x != 0f || InputDirection.y != 0f )
 			Prop.Components.Get<PropPossession>().Punch();
 	}
 
-	[Event.Entity.PreCleanup]
+	[GameEvent.Entity.PreCleanup]
 	public void CancelPossession()
 	{
 		if ( !Game.IsServer )

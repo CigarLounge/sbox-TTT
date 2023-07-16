@@ -151,7 +151,7 @@ public partial class Player : AnimatedEntity
 			DressPlayer();
 			ResetInterpolation();
 
-			Event.Run( GameEvent.Player.Spawned, this );
+			Event.Run( TTTEvent.Player.Spawned, this );
 			GameManager.Current.State.OnPlayerSpawned( this );
 		}
 		else
@@ -191,14 +191,14 @@ public partial class Player : AnimatedEntity
 
 		CreateFlashlight();
 
-		Event.Run( GameEvent.Player.Spawned, this );
+		Event.Run( TTTEvent.Player.Spawned, this );
 	}
 
 	public override void Simulate( IClient client )
 	{
 		SimulateAnimation( Controller );
 
-		if ( Input.Pressed( InputButton.Menu ) )
+		if ( Input.Pressed( InputAction.Menu ) )
 		{
 			if ( ActiveCarriable.IsValid() && _lastKnownCarriable.IsValid() )
 				(ActiveCarriable, _lastKnownCarriable) = (_lastKnownCarriable, ActiveCarriable);
@@ -438,7 +438,7 @@ public partial class Player : AnimatedEntity
 
 	private void CheckPlayerDropCarriable()
 	{
-		if ( Input.Pressed( InputButton.Drop ) && !Input.Down( InputButton.Run ) )
+		if ( Input.Pressed( InputAction.Drop ) && !Input.Down( InputAction.Run ) )
 		{
 			var droppedEntity = Inventory.DropActive();
 			if ( droppedEntity is not null )

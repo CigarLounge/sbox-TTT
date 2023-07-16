@@ -9,13 +9,13 @@ public class Defuser : Carriable
 {
 	public override void Simulate( IClient client )
 	{
-		if ( !Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( !Input.Pressed( InputAction.PrimaryAttack ) )
 			return;
 
 		var trace = Trace.Ray( Owner.EyePosition, Owner.EyePosition + Owner.EyeRotation.Forward * Player.UseDistance )
 			.Ignore( this )
 			.Ignore( Owner )
-			.EntitiesOnly()
+			.DynamicOnly()
 			.Run();
 
 		if ( trace.Entity is not C4Entity c4 )

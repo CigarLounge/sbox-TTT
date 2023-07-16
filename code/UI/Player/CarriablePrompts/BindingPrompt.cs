@@ -1,15 +1,13 @@
-using Sandbox;
-
 namespace TTT.UI;
 
 public class BindingPrompt
 {
-	public InputButton Button { get; private set; }
+	public string Action { get; private set; }
 	public string Text { get; private set; }
 
-	public BindingPrompt( InputButton button, string text )
+	public BindingPrompt( string action, string text )
 	{
-		Button = button;
+		Action = action;
 		Text = text;
 	}
 }

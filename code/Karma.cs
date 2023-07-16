@@ -74,7 +74,7 @@ public static class Karma
 		return MathF.Exp( -0.69314718f / (baseDiff * half) * plyDiff );
 	}
 
-	[GameEvent.Player.Spawned]
+	[TTTEvent.Player.Spawned]
 	private static void Apply( Player player )
 	{
 		if ( GameManager.Current.State is not PreRound )
@@ -95,7 +95,7 @@ public static class Karma
 	}
 
 
-	[GameEvent.Player.TookDamage]
+	[TTTEvent.Player.TookDamage]
 	private static void OnPlayerTookDamage( Player player )
 	{
 		if ( !Game.IsServer )
@@ -132,7 +132,7 @@ public static class Karma
 		}
 	}
 
-	[GameEvent.Player.Killed]
+	[TTTEvent.Player.Killed]
 	private static void OnPlayerKilled( Player player )
 	{
 		if ( !Game.IsServer )
@@ -185,7 +185,7 @@ public static class Karma
 		return LowAutoKick && player.BaseKarma < MinValue;
 	}
 
-	[GameEvent.Round.End]
+	[TTTEvent.Round.End]
 	private static void OnRoundEnd( Team winningTeam, WinType winType )
 	{
 		if ( !Game.IsServer )
@@ -208,9 +208,9 @@ public static class Karma
 		player.BaseKarma = player.ActiveKarma;
 	}
 
-	[GameEvent.Client.Disconnected]
-	private static void SaveKarma( IClient client )
+	[GameEvent.Server.ClientDisconnect]
+	private static void SaveKarma( ClientDisconnectEvent e )
 	{
-		SavedPlayerValues[client.SteamId] = (client.Pawn as Player).ActiveKarma;
+		SavedPlayerValues[e.Client.SteamId] = (e.Client.Pawn as Player).ActiveKarma;
 	}
 }

@@ -1,6 +1,5 @@
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
 
 namespace TTT.UI;
 
@@ -83,7 +82,7 @@ public class ColorEditor : Panel
 	public void SwitchRGBA()
 	{
 		Canvas.DeleteChildren( true );
-
+	/*
 		var h = Canvas.Add.Slider( 0, 359, 1 );
 		h.AddClass( "hue" );
 		h.Bind( "value", this, "Hue" );
@@ -92,6 +91,7 @@ public class ColorEditor : Panel
 		a.AddClass( "alpha_slider" );
 		a.Bind( "value", this, "AlphaValue" );
 		AlphaValue = 1;
+	*/
 	}
 
 

@@ -52,7 +52,7 @@ public partial class TextChat : Panel
 		if ( Game.LocalPawn is not Player player )
 			return;
 
-		if ( Sandbox.Input.Pressed( InputButton.Chat ) )
+		if ( Sandbox.Input.Pressed( InputAction.Chat ) )
 			Open();
 
 		if ( !IsOpen )
@@ -185,14 +185,14 @@ public partial class TextEntry : Sandbox.UI.TextEntry
 {
 	public event Action OnTabPressed;
 
-	public override void OnButtonTyped( string button, KeyModifiers km )
+	public override void OnButtonTyped( ButtonEvent e )
 	{
-		if ( button == "tab" )
+		if ( e.Button == "tab" )
 		{
 			OnTabPressed?.Invoke();
 			return;
 		}
 
-		base.OnButtonTyped( button, km );
+		base.OnButtonTyped( e );
 	}
 }

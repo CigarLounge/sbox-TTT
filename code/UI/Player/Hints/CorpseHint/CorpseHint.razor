@@ -21,15 +21,15 @@
             }
             <div style="margin-bottom: 5px; align-items: center;">
                 <text>Press</text>
-                <inputglyph button="@Corpse.GetSearchButton()" />
+                <inputglyph action="@Corpse.GetSearchButton()" />
                 <text>@(_corpse.Player.IsValid() ? !player.IsAlive || _corpse.Player.IsConfirmedDead ? "to search." : "to confirm." : "to identify.")</text>
             </div>
             @if (player.IsAlive && !_corpse.IsFound) {
                 <div class="covert-panel">
                     <text>Press</text>
-                    <inputglyph button="Run" />
+                    <inputglyph action="run" />
                     <text>+</text>
-                    <inputglyph button="@Corpse.GetSearchButton()" />
+                    <inputglyph action="@Corpse.GetSearchButton()" />
                     <text>to search covertly.</text>
                 </div>
             }

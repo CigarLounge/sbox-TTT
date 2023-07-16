@@ -25,7 +25,7 @@ public class Scout : Weapon
 
 	public override void Simulate( IClient client )
 	{
-		if ( Game.IsClient && Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Game.IsClient && Input.Pressed( InputAction.SecondaryAttack ) )
 		{
 			if ( Prediction.FirstTime )
 			{

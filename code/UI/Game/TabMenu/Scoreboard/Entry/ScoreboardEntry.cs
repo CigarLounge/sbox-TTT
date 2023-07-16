@@ -46,7 +46,7 @@ public partial class ScoreboardEntry : Panel
 			Player.TagGroup = default;
 	}
 
-	[Event.Entity.PostCleanup]
+	[GameEvent.Entity.PostCleanup]
 	private void OnRoundStart()
 	{
 		ResetTag();

@@ -37,7 +37,7 @@ public partial class PropPossession : EntityComponent<Prop>
 
 		_timeUntilNextPunch = 0.15f;
 
-		if ( Input.Pressed( InputButton.Jump ) )
+		if ( Input.Pressed( InputAction.Jump ) )
 		{
 			physicsBody.ApplyForceAt( physicsBody.MassCenter, new Vector3( 0, 0, mf ) );
 			_timeUntilNextPunch = 0.2f;
@@ -93,7 +93,7 @@ public partial class PropPossession : EntityComponent<Prop>
 	// The player currently possessing this prop has spawned, we need to
 	// cancel the current prop possession.
 	// (Note "static" since we need to remove the current instance of this component)
-	[GameEvent.Player.Spawned]
+	[TTTEvent.Player.Spawned]
 	private static void OnPlayerSpawned( Player player )
 	{
 		player.CancelPossession();
@@ -101,21 +101,21 @@ public partial class PropPossession : EntityComponent<Prop>
 
 	// Another player has spawned and needs the nameplate of this current
 	// prop possession removed (since they are alive now).
-	[GameEvent.Player.Spawned]
+	[TTTEvent.Player.Spawned]
 	private void DeleteNameplate( Player player )
 	{
 		if ( player.IsLocalPawn )
 			_nameplate?.Delete( true );
 	}
 
-	[GameEvent.Player.Killed]
+	[TTTEvent.Player.Killed]
 	private void CreateNameplate( Player player )
 	{
 		if ( player.IsLocalPawn )
 			_nameplate = new( Entity );
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void RechargePunches()
 	{
 		if ( !_timeUntilRecharge )

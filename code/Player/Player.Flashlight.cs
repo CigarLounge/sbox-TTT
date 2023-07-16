@@ -22,7 +22,7 @@ public partial class Player
 
 	public void SimulateFlashlight()
 	{
-		var toggle = Input.Pressed( InputButton.Flashlight );
+		var toggle = Input.Pressed( InputAction.Flashlight );
 
 		if ( _worldLight.IsValid() )
 		{
@@ -70,7 +70,7 @@ public partial class Player
 		_viewLight = null;
 	}
 
-	[Event.Client.Frame]
+	[GameEvent.Client.Frame]
 	private void FrameUpdate()
 	{
 		if ( !_viewLight.IsValid() )

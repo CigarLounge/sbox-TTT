@@ -73,7 +73,7 @@ public partial class InfoFeed : Panel
 		Instance.AddToFeed( new InfoFeedEntry( left, right, message, suffix ) );
 	}
 
-	[GameEvent.Player.CorpseFound]
+	[TTTEvent.Player.CorpseFound]
 	private void OnCorpseFound( Player player )
 	{
 		AddPlayerToPlayerEntry
@@ -85,7 +85,7 @@ public partial class InfoFeed : Panel
 		);
 	}
 
-	[GameEvent.Round.Start]
+	[TTTEvent.Round.Start]
 	private void OnRoundStart()
 	{
 		this.Enabled( true );
@@ -108,7 +108,7 @@ public partial class InfoFeed : Panel
 		AddEntry( damageFactor );
 	}
 
-	[GameEvent.Round.End]
+	[TTTEvent.Round.End]
 	private void OnRoundEnd( Team _, WinType _1 )
 	{
 		this.Enabled( false );

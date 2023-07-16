@@ -25,7 +25,7 @@ public class FollowEntityCamera : CameraMode
 			return;
 		}
 
-		if ( _followedEntity is Corpse && Input.Pressed( InputButton.Jump ) )
+		if ( _followedEntity is Corpse && Input.Pressed( InputAction.Jump ) )
 		{
 			Current = new FreeCamera();
 			return;
@@ -33,15 +33,15 @@ public class FollowEntityCamera : CameraMode
 
 		if ( Spectating.Player.IsValid() )
 		{
-			if ( Input.Pressed( InputButton.Jump ) )
+			if ( Input.Pressed( InputAction.Jump ) )
 			{
 				Current = new FirstPersonCamera( Spectating.Player );
 				return;
 			}
 
-			if ( Input.Pressed( InputButton.PrimaryAttack ) )
+			if ( Input.Pressed( InputAction.PrimaryAttack ) )
 				Spectating.FindPlayer( false );
-			else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+			else if ( Input.Pressed( InputAction.SecondaryAttack ) )
 				Spectating.FindPlayer( true );
 
 			_followedEntity = Spectating.Player;
@@ -56,7 +56,7 @@ public class FollowEntityCamera : CameraMode
 		_focusPoint = Vector3.Lerp( _focusPoint, _followedEntity.WorldSpaceBounds.Center, Time.Delta * 5.0f );
 
 		var tr = Trace.Ray( _focusPoint, _focusPoint + player.ViewAngles.ToRotation().Forward * -130 )
-			.WorldOnly()
+			.StaticOnly()
 			.Run();
 
 		Camera.Rotation = player.ViewAngles.ToRotation();

@@ -26,8 +26,8 @@ public partial class Teleporter : Carriable
 	public override string SlotText => Charges.ToString();
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, LocationIsSet ? "Teleport" : string.Empty ),
-		new( InputButton.SecondaryAttack, "Set Teleport Location" ),
+		new( InputAction.PrimaryAttack, LocationIsSet ? "Teleport" : string.Empty ),
+		new( InputAction.SecondaryAttack, "Set Teleport Location" ),
 	};
 
 	private const float TeleportTime = 4f;
@@ -78,11 +78,11 @@ public partial class Teleporter : Carriable
 		if ( Owner.GroundEntity is not WorldEntity )
 			return;
 
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Input.Pressed( InputAction.PrimaryAttack ) )
 		{
 			StartTeleport();
 		}
-		else if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		else if ( Input.Pressed( InputAction.SecondaryAttack ) )
 		{
 			using ( LagCompensation() )
 			{
@@ -100,14 +100,14 @@ public partial class Teleporter : Carriable
 
 		Owner.ActiveCarriable = this;
 		Owner.InputDirection = 0;
-		Input.ClearButton( InputButton.Jump );
-		Input.ClearButton( InputButton.Drop );
+		Input.Clear( InputAction.Jump );
+		Input.Clear( InputAction.Drop );
 	}
 
 	private void SetLocation()
 	{
 		var trace = Trace.Ray( Owner.Position, Owner.Position )
-			.WorldOnly()
+			.StaticOnly()
 			.Run();
 
 		LocationIsSet = true;

@@ -45,7 +45,7 @@ public partial class QuickChat : Panel
 		if ( Game.LocalPawn is not Player player )
 			return;
 
-		if ( Input.Pressed( InputButton.Zoom ) )
+		if ( Input.Pressed( InputAction.Zoom ) )
 			_isShowing = !_isShowing;
 
 		this.Enabled( player.IsAlive && _isShowing );
@@ -109,13 +109,14 @@ public partial class QuickChat : Panel
 		return target == NoTarget || target == "an unidentified body" || target == "someone in disguise";
 	}
 
-	[Event.Client.BuildInput]
+	[GameEvent.Client.BuildInput]
 	private void BuildInput()
 	{
 		if ( !this.IsEnabled() )
 			return;
 
 		var keyboardIndexPressed = InventorySelection.GetKeyboardNumberPressed();
+
 		if ( keyboardIndexPressed <= 0 ) // Only accept keyboard numbers 1-9
 			return;
 

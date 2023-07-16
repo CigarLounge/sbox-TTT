@@ -32,10 +32,10 @@ public partial class Binoculars : Carriable
 
 	public override void Simulate( IClient client )
 	{
-		if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Input.Pressed( InputAction.SecondaryAttack ) )
 			ChangeZoomLevel();
 
-		if ( Input.Pressed( InputButton.Reload ) )
+		if ( Input.Pressed( InputAction.Reload ) )
 		{
 			// Reset zoom.
 			ZoomLevel = 4;
@@ -56,8 +56,8 @@ public partial class Binoculars : Carriable
 		if ( !Game.IsServer || !_corpse.IsValid() )
 			return;
 
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
-			_corpse.Search( Owner, Input.Down( InputButton.Run ), false );
+		if ( Input.Pressed( InputAction.PrimaryAttack ) )
+			_corpse.Search( Owner, Input.Down( InputAction.Run ), false );
 	}
 
 	public override void BuildInput()

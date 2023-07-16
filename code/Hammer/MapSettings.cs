@@ -27,10 +27,10 @@ public partial class MapSettings : Entity
 	/// </summary>
 	public void FireSettingsSpawn() => _ = SettingsSpawned.Fire( this );
 
-	[GameEvent.Round.Start]
+	[TTTEvent.Round.Start]
 	private void RoundStart() => _ = OnRoundStart.Fire( this );
 
 
-	[GameEvent.Round.End]
+	[TTTEvent.Round.End]
 	private void RoundEnd( Team winningTeam, WinType winType ) => _ = OnRoundEnd.Fire( this, winningTeam );
 }

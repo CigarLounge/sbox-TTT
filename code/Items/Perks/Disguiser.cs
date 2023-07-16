@@ -17,7 +17,7 @@ public partial class Disguiser : Perk
 
 	public override void Simulate( IClient client )
 	{
-		if ( Input.Down( InputButton.Grenade ) && !_isLocked )
+		if ( Input.Down( InputAction.Grenade ) && !_isLocked )
 		{
 			if ( Game.IsServer )
 			{

@@ -13,7 +13,7 @@ public class Cigar : Carriable
 {
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, "Smoke" )
+		new( InputAction.PrimaryAttack, "Smoke" )
 	};
 
 	private TimeUntil _timeUntilNextSmoke = 0;
@@ -28,7 +28,7 @@ public class Cigar : Carriable
 
 	public override void Simulate( IClient client )
 	{
-		if ( Input.Pressed( InputButton.PrimaryAttack ) && _timeUntilNextSmoke )
+		if ( Input.Pressed( InputAction.PrimaryAttack ) && _timeUntilNextSmoke )
 			Smoke();
 	}
 

@@ -27,9 +27,9 @@ public partial class DNAScanner : Carriable
 
 	public override List<UI.BindingPrompt> BindingPrompts => new()
 	{
-		new( InputButton.PrimaryAttack, "Fetch DNA" ),
-		new( InputButton.SecondaryAttack, !AutoScan ? "Scan" : string.Empty ),
-		new( InputButton.View, "DNA Menu" )
+		new( InputAction.PrimaryAttack, "Fetch DNA" ),
+		new( InputAction.SecondaryAttack, !AutoScan ? "Scan" : string.Empty ),
+		new( InputAction.View, "DNA Menu" )
 	};
 	public override string SlotText => $"{(int)Charge}%";
 	public bool IsCharging => Charge < MaxCharge;
@@ -40,10 +40,10 @@ public partial class DNAScanner : Carriable
 
 	public override void Simulate( IClient client )
 	{
-		if ( Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Input.Pressed( InputAction.PrimaryAttack ) )
 			FetchDNA();
 
-		if ( Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( Input.Pressed( InputAction.SecondaryAttack ) )
 			Scan();
 	}
 
@@ -148,7 +148,7 @@ public partial class DNAScanner : Carriable
 		return null;
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void ServerTick()
 	{
 		if ( Owner is null )
@@ -240,7 +240,7 @@ public partial class DNA : EntityComponent
 		return TargetPlayer.IsAlive ? TargetPlayer : TargetPlayer.Corpse;
 	}
 
-	[GameEvent.Round.Start]
+	[TTTEvent.Round.Start]
 	private void OnRolesAssigned()
 	{
 		_internalId = Game.Random.Int( 0, 500 );

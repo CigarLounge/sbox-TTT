@@ -5,7 +5,7 @@ namespace TTT.UI;
 
 public class InputGlyph : Panel
 {
-	private InputButton _inputButton;
+	private string _inputAction;
 	private InputGlyphSize _inputGlyphSize;
 	private GlyphStyle _glyphStyle;
 
@@ -14,12 +14,12 @@ public class InputGlyph : Panel
 		StyleSheet.Load( "/UI/Components/InputGlyph/InputGlyph.scss" );
 	}
 
-	public void SetButton( InputButton inputButton )
+	public void SetButton( string inputButton )
 	{
-		if ( _inputButton == inputButton )
+		if ( _inputAction == inputButton )
 			return;
 
-		_inputButton = inputButton;
+		_inputAction = inputButton;
 		Update();
 	}
 
@@ -27,10 +27,10 @@ public class InputGlyph : Panel
 	{
 		switch ( name )
 		{
-			case "button":
+			case "action":
 			{
-				InputButton.TryParse( value, true, out _inputButton );
-				SetButton( _inputButton );
+				
+				SetButton( _inputAction );
 				Update();
 
 				break;
@@ -62,7 +62,7 @@ public class InputGlyph : Panel
 
 	private void Update()
 	{
-		var texture = Input.GetGlyph( _inputButton, _inputGlyphSize, _glyphStyle );
+		var texture = Input.GetGlyph( _inputAction, _inputGlyphSize, _glyphStyle );
 		Style.BackgroundImage = texture;
 		Style.Width = texture.Width;
 		Style.Height = texture.Height;

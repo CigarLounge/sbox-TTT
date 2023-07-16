@@ -117,7 +117,7 @@ public partial class WalkController : BaseNetworkable
 		if ( ws >= 0 )
 			return ws;
 
-		if ( Input.Down( InputButton.Run ) )
+		if ( Input.Down( InputAction.Run ) )
 			return WalkSpeed;
 
 		return DefaultSpeed;
@@ -310,7 +310,7 @@ public partial class WalkController : BaseNetworkable
 	{
 		var wishvel = WishVelocity;
 
-		if ( Input.Down( InputButton.Jump ) )
+		if ( Input.Down( InputAction.Jump ) )
 		{
 			wishvel[2] += DefaultSpeed;
 		}
@@ -442,7 +442,7 @@ public partial class WalkController : BaseNetworkable
 			Player.BaseVelocity = Player.BaseVelocity.WithZ( 0 );
 		}
 
-		if ( AutoJump ? Input.Down( InputButton.Jump ) : Input.Pressed( InputButton.Jump ) )
+		if ( AutoJump ? Input.Down( InputAction.Jump ) : Input.Pressed( InputAction.Jump ) )
 			CheckJumpButton();
 
 		var bStartOnGround = Player.GroundEntity != null;
@@ -563,7 +563,7 @@ public partial class WalkController : BaseNetworkable
 
 	private void CheckWaterJump()
 	{
-		if ( !Input.Down( InputButton.Jump ) )
+		if ( !Input.Down( InputAction.Jump ) )
 			return;
 
 		if ( TimeSinceWaterJump < 2f )

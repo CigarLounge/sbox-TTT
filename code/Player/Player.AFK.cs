@@ -7,7 +7,6 @@ namespace TTT;
 
 public partial class Player
 {
-	private static readonly List<InputButton> _buttons = Enum.GetValues( typeof( InputButton ) ).Cast<InputButton>().ToList();
 	private TimeSince _timeSinceLastAction = 0f;
 
 	private void CheckAFK()
@@ -21,7 +20,11 @@ public partial class Player
 			return;
 		}
 
-		var isAnyKeyPressed = _buttons.Any( Input.Down );
+		var isAnyKeyPressed = false;
+
+		foreach ( var action in InputAction.All )
+			isAnyKeyPressed |= Input.Down( action );
+
 		var isMouseMoving = Input.MouseDelta != Vector2.Zero;
 
 		if ( isAnyKeyPressed || isMouseMoving )

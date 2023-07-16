@@ -45,11 +45,12 @@ public partial class RoleMenu : Panel
 		return false;
 	}
 
-	public override void Tick() => SetClass( "fade-in", Input.Down( InputButton.View ) && HasTabAccess() );
+	public override void Tick() => SetClass( "fade-in", Input.Down( InputAction.View ) && HasTabAccess() );
 
 	protected override int BuildHash()
 	{
 		var player = Game.LocalPawn as Player;
+
 		return HashCode.Combine( player.IsAlive, player.Role, player.Credits, _access.HashCombine( a => a.Value.Invoke().GetHashCode() ), _currentTab );
 	}
 }

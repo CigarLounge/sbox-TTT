@@ -8,18 +8,18 @@ namespace TTT.UI;
 
 public partial class InventorySelection : Panel
 {
-	private static readonly InputButton[] _slotInputButtons = new[]
+	private static readonly string[] _slotInputButtons = new[]
 	{
-			InputButton.Slot0,
-			InputButton.Slot1,
-			InputButton.Slot2,
-			InputButton.Slot3,
-			InputButton.Slot4,
-			InputButton.Slot5,
-			InputButton.Slot6,
-			InputButton.Slot7,
-			InputButton.Slot8,
-			InputButton.Slot9
+			InputAction.Slot0,
+			InputAction.Slot1,
+			InputAction.Slot2,
+			InputAction.Slot3,
+			InputAction.Slot4,
+			InputAction.Slot5,
+			InputAction.Slot6,
+			InputAction.Slot7,
+			InputAction.Slot8,
+			InputAction.Slot9
 	};
 
 	public static int GetKeyboardNumberPressed()
@@ -31,7 +31,7 @@ public partial class InventorySelection : Panel
 		return -1;
 	}
 
-	[Event.Client.BuildInput]
+	[GameEvent.Client.BuildInput]
 	private void BuildInput()
 	{
 		if ( Game.LocalPawn is not Player player || !player.IsAlive )

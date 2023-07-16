@@ -60,7 +60,7 @@ public partial class HealthStationEntity : Prop, IEntityHint, IUse
 		base.OnDestroy();
 	}
 
-	[Event.Tick.Server]
+	[GameEvent.Tick.Server]
 	private void ServerTick()
 	{
 		_usageLight.SetLightEnabled( _timeSinceLastUsage < TimeUntilNextHeal * 2 );

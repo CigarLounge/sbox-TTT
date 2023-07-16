@@ -84,7 +84,7 @@ public abstract partial class Weapon : Carriable
 				}
 			}
 
-			if ( Input.Down( InputButton.Run ) && Input.Pressed( InputButton.Drop ) )
+			if ( Input.Down( InputAction.Run ) && Input.Pressed( InputAction.Drop ) )
 				DropAmmo();
 		}
 		else if ( TimeSinceReload > Info.ReloadTime )
@@ -114,9 +114,9 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual bool CanPrimaryAttack()
 	{
-		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputButton.PrimaryAttack ) )
+		if ( Info.FireMode == FireMode.Semi && !Input.Pressed( InputAction.PrimaryAttack ) )
 			return false;
-		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputButton.PrimaryAttack ) )
+		else if ( Info.FireMode != FireMode.Semi && !Input.Down( InputAction.PrimaryAttack ) )
 			return false;
 
 		var rate = Info.PrimaryRate;
@@ -128,7 +128,7 @@ public abstract partial class Weapon : Carriable
 
 	protected virtual bool CanSecondaryAttack()
 	{
-		if ( !Input.Pressed( InputButton.SecondaryAttack ) )
+		if ( !Input.Pressed( InputAction.SecondaryAttack ) )
 			return false;
 
 		var rate = Info.SecondaryRate;
@@ -164,7 +164,7 @@ public abstract partial class Weapon : Carriable
 		if ( IsReloading )
 			return false;
 
-		if ( !Input.Pressed( InputButton.Reload ) )
+		if ( !Input.Pressed( InputAction.Reload ) )
 			return false;
 
 		if ( AmmoClip >= Info.ClipSize || (Owner.AmmoCount( Info.AmmoType ) <= 0 && ReserveAmmo <= 0) )
