@@ -155,7 +155,7 @@ public partial class GameManager : Sandbox.GameManager
 		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hair/eyebrows/eyebrows_black.clothing" ) );
 		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/jacket/longsleeve/longsleeve.clothing" ) );
 		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/gloves/tactical_gloves/tactical_gloves.clothing" ) );
-		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/smarttrousers/trousers.smart.clothing" ) );
+		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/jeans/jeans_black.clothing" ) );
 		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing" ) );
 		Player.ClothingPresets[0].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shoes/trainers/trainers.clothing" ) );
 
@@ -167,6 +167,16 @@ public partial class GameManager : Sandbox.GameManager
 		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/cargopants/cargo_pants_army.clothing" ) );
 		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/vest/tactical_vest/models/tactical_vest.clothing" ) );
 		Player.ClothingPresets[1].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shoes/trainers/trainers.clothing" ) );
+
+		Player.ClothingPresets.Add( new List<Clothing>() );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hat/beanie/beanie_red.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hair/eyebrows/eyebrows_black.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/hair/goatee/goatee_black.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/gloves/tactical_gloves/army_gloves.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/trousers/cargopants/cargo_pants_army.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/makeup/face_tattoos/face_tattoos.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen_clothes/shoes/boots/army_boots.clothing" ) );
+		Player.ClothingPresets[2].Add( ResourceLibrary.Get<Clothing>( "models/citizen/skin/muscley/muscley_02.clothing" ) );
 	}
 
 	private void OnStateChanged( BaseState oldState, BaseState newState )
