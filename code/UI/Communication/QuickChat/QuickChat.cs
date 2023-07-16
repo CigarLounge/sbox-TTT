@@ -36,11 +36,19 @@ public partial class QuickChat : Panel
 		if ( !firstTime )
 			return;
 
+		_labels.Clear();
 		var i = 0;
-		var children = Children.ToList();
 
-		foreach ( Label label in children )
-			_labels.Add( label.Add.Label( _messages[i++], "message" ) );	
+		foreach ( var child in Children )
+		{
+			var label = (Label)child.GetChild( 1 );
+
+			if ( !label.HasClass( "message" ) )
+				continue;
+
+			_labels.Add( label );
+			label.Text = _messages[i++];
+		}
 	}
 
 	public override void Tick()
