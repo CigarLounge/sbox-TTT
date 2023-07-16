@@ -2,6 +2,7 @@ using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TTT.UI;
 
@@ -36,8 +37,10 @@ public partial class QuickChat : Panel
 			return;
 
 		var i = 0;
-		foreach ( Label label in Children )
-			_labels.Add( label.Add.Label( _messages[i++], "message" ) );
+		var children = Children.ToList();
+
+		foreach ( Label label in children )
+			_labels.Add( label.Add.Label( _messages[i++], "message" ) );	
 	}
 
 	public override void Tick()
