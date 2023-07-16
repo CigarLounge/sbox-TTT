@@ -25,6 +25,7 @@ public static class InputAction
 	public static string Jump = "jump";
 	public static string Duck = "duck";
 	public static string Chat = "chat";
+	public static string Voice = "voice";
 	public static string Zoom = "zoom";
 	public static string Menu = "menu";
 	public static string Score = "score";
