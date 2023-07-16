@@ -16,7 +16,7 @@ public partial class Player
 			if ( _role == value )
 				return;
 
-			_role?.OnDeselect( this );
+			_role?.Deselect( this );
 			var oldRole = _role;
 			_role = value;
 
@@ -27,7 +27,7 @@ public partial class Player
 			if ( Game.IsServer )
 				SendRole( To.Single( this ) );
 
-			_role.OnSelect( this );
+			_role.Select( this );
 
 			Event.Run( TTTEvent.Player.RoleChanged, this, oldRole );
 		}

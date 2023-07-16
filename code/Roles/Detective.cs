@@ -9,7 +9,7 @@ public class Detective : Role
 {
 	public static Clothing Hat;
 
-	public override void OnSelect( Player player )
+	protected override void OnSelect( Player player )
 	{
 		base.OnSelect( player );
 

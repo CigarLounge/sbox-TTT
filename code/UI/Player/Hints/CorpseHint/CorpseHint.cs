@@ -17,7 +17,7 @@ public partial class CorpseHint : Panel
 			_corpse.CanSearch(),
 			_corpse.Player?.IsConfirmedDead,
 			_corpse.Player?.SteamName,
-			player.Role.CanRetrieveCredits,
+			player.Role.CanUseShop,
 			player.IsAlive
 		);
 	}

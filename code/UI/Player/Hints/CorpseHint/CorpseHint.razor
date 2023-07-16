@@ -14,7 +14,7 @@
     @if (_corpse.CanSearch()) 
     {
         <div class="actions">
-            @if (player.IsAlive && player.Role.CanRetrieveCredits && _corpse.HasCredits) {
+            @if (player.IsAlive && player.Role.CanUseShop && _corpse.HasCredits) {
                 <text>
                     <text class="text-color-tertiary">Search to receive unspent credits.</text>
                 </text>

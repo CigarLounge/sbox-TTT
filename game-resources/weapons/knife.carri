@@ -1,19 +1,18 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	data = 
-	{
-		Slot = "OffensiveEquipment"
-		Spawnable = false
-		CanDrop = true
-		ViewModelPath = resource:"models/weapons/v_knife.vmdl"
-		HandsModelPath = resource:"models/weapons/v_arms_ter.vmdl"
-		HoldType = "Punch"
-		WorldModelPath = resource:"models/weapons/w_knife.vmdl"
-		DeployTime = 0.6
-		IsLimited = true
-		Price = 100
-		IconPath = resource:"ui/weapons/knife.png"
-		Description = "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire."
-		ClassName = "ttt_weapon_knife"
-	}
+  "Slot": "OffensiveEquipment",
+  "Spawnable": false,
+  "CanDrop": true,
+  "ViewModelPath": "models/weapons/v_knife.vmdl",
+  "HandsModelPath": "models/weapons/v_arms_ter.vmdl",
+  "HoldType": "Punch",
+  "WorldModelPath": "models/weapons/w_knife.vmdl",
+  "DeployTime": 0.6,
+  "IsLimited": true,
+  "Price": 100,
+  "PurchasableBy": [
+    "Traitors"
+  ],
+  "IconPath": "ui/weapons/knife.png",
+  "Description": "Kills wounded targets instantly and silently, but only has a single use. Can be thrown using alternate fire.",
+  "ClassName": "ttt_weapon_knife"
 }

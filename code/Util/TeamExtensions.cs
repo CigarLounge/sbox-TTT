@@ -8,6 +8,7 @@ public static class TeamExtensions
 {
 	private static readonly Dictionary<Team, HashSet<IClient>> _clients = new();
 	private static readonly Dictionary<Team, UI.ColorGroup> _properties = new();
+	internal static readonly Dictionary<Team, List<ItemInfo>> _shopItems = new();	
 
 	static TeamExtensions()
 	{
@@ -19,6 +20,10 @@ public static class TeamExtensions
 		_clients.Add( Team.None, new HashSet<IClient>() );
 		_clients.Add( Team.Innocents, new HashSet<IClient>() );
 		_clients.Add( Team.Traitors, new HashSet<IClient>() );
+
+		_shopItems.Add( Team.None, new List<ItemInfo>() );
+		_shopItems.Add( Team.Innocents, new List<ItemInfo>() );
+		_shopItems.Add( Team.Traitors, new List<ItemInfo>() );
 	}
 
 	public static string GetTitle( this Team team )
@@ -29,6 +34,11 @@ public static class TeamExtensions
 	public static Color GetColor( this Team team )
 	{
 		return _properties[team].Color;
+	}
+
+	public static List<ItemInfo> GetShopItems( this Team team )
+	{
+		return _shopItems[team];
 	}
 
 	public static void SetProperties( this Team team, string title, Color color )

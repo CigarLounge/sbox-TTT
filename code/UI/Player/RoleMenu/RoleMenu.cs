@@ -19,10 +19,10 @@ public partial class RoleMenu : Panel
 	// Tab => Condition that allows access to the tab.
 	private readonly Dictionary<Tab, Func<bool>> _access = new()
 	{
-		{Tab.Shop, () => (Game.LocalPawn as Player).Role.ShopItems.Any()},
+		{Tab.Shop, () => (Game.LocalPawn as Player).Role.CanUseShop},
 		{Tab.DNA, () => (Game.LocalPawn as Player).Inventory.Find<DNAScanner>() is not null},
 		{Tab.Radio, () => (Game.LocalPawn as Player).Components.Get<RadioComponent>() is not null},
-		{Tab.CreditTransfer, () => (Game.LocalPawn as Player).Role.ShopItems.Any()}
+		{Tab.CreditTransfer, () => (Game.LocalPawn as Player).Role.CanUseShop}
 	};
 	private Tab _currentTab;
 

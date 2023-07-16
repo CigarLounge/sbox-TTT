@@ -136,7 +136,7 @@ public partial class Corpse : ModelEntity, IEntityHint, IUse
 		Assert.NotNull( searcher );
 
 		var creditsRetrieved = 0;
-		retrieveCredits &= searcher.Role.CanRetrieveCredits & searcher.IsAlive;
+		retrieveCredits &= searcher.Role.CanUseShop & searcher.IsAlive;
 
 		if ( retrieveCredits && HasCredits )
 		{
