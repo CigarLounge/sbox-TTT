@@ -27,6 +27,6 @@ public abstract class ItemInfo : GameResource
 			return;
 
 		foreach ( var team in PurchasableBy )
-			TeamExtensions._shopItems[team].Add( this );
+			team.GetShopItems()?.Add( this );	
 	}
 }

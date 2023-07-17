@@ -8,7 +8,7 @@ public static class TeamExtensions
 {
 	private static readonly Dictionary<Team, HashSet<IClient>> _clients = new();
 	private static readonly Dictionary<Team, UI.ColorGroup> _properties = new();
-	internal static readonly Dictionary<Team, List<ItemInfo>> _shopItems = new();	
+	private static readonly Dictionary<Team, List<ItemInfo>> _shopItems = new();	
 
 	static TeamExtensions()
 	{
@@ -42,7 +42,7 @@ public static class TeamExtensions
 
 	public static List<ItemInfo> GetShopItems( this Team team )
 	{
-		return _shopItems[team];
+		return _shopItems.TryGetValue(team, out var list) ? list : null;
 	}
 
 	public static int GetCount( this Team team )
