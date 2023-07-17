@@ -70,9 +70,6 @@ public partial class Player : AnimatedEntity
 		SteamName = client.Name;
 		BaseKarma = Karma.SavedPlayerValues.TryGetValue( client.SteamId, out var value ) ? value : Karma.StartValue;
 		ActiveKarma = BaseKarma;
-
-		ClothingContainer.LoadFromClient( client );
-		_avatarClothes = new( ClothingContainer.Clothing );
 	}
 
 	public Player()

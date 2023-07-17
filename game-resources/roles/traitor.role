@@ -1,49 +1,23 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	data = 
-	{
-		Team = "Traitors"
-		Color = "0.87451,0.15294,0.2,1"
-		IconPath = resource:"ui/traitor-icon.png"
-		DefaultCredits = 200
-		Weapons = 
-		[
-			resource:"game-resources/weapons/silencedpistol.weapon",
-			resource:"game-resources/equipment/flaregun.weapon",
-			resource:"game-resources/equipment/newtonlauncher.weapon",
-		]
-		Carriables = 
-		[
-			resource:"game-resources/equipment/c4.carri",
-			resource:"game-resources/weapons/knife.carri",
-			resource:"game-resources/equipment/teleporter.carri",
-			resource:"game-resources/equipment/decoy.carri",
-			resource:"game-resources/equipment/radio.carri",
-		]
-		Perks = 
-		[
-			resource:"game-resources/perks/armor.perk",
-			resource:"game-resources/perks/disguiser.perk",
-			resource:"game-resources/perks/radar.perk",
-		]
-		CanRetrieveCredits = true
-		CanTeamChat = true
-		CanAttachCorpses = true
-		RequiredKarma = 0
-		Karma = 
-		{
-			AttackerKillRewardMultiplier = 0.012
-			TeamKillPenaltyMultiplier = 0.015
-			AttackerHurtRewardMultiplier = 0.0003
-			TeamHurtPenaltyMultiplier = 0.001
-		}
-		Scoring = 
-		{
-			AttackerKillReward = 5
-			TeamKillPenalty = 16
-			SurviveBonus = 1
-			SuicidePenalty = 1
-		}
-		ClassName = "ttt_role_traitor"
-	}
+  "Team": "Traitors",
+  "Color": "0.87451,0.15294,0.2,1",
+  "IconPath": "ui/traitor-icon.png",
+  "CanUseShop": true,
+  "DefaultCredits": 200,
+  "CanTeamChat": true,
+  "CanAttachCorpses": true,
+  "RequiredKarma": 0,
+  "Karma": {
+    "AttackerKillRewardMultiplier": 0.012,
+    "TeamKillPenaltyMultiplier": 0.015,
+    "AttackerHurtRewardMultiplier": 0.0003,
+    "TeamHurtPenaltyMultiplier": 0.001
+  },
+  "Scoring": {
+    "AttackerKillReward": 5,
+    "TeamKillPenalty": 16,
+    "SurviveBonus": 1,
+    "SuicidePenalty": 1
+  },
+  "ClassName": "ttt_role_traitor"
 }

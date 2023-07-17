@@ -1,44 +1,22 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	data = 
-	{
-		Team = "Innocents"
-		Color = "0.09804,0.4,1,1"
-		IconPath = resource:"ui/detective-icon.png"
-		DefaultCredits = 100
-		Weapons = 
-		[
-			resource:"game-resources/weapons/p90.weapon",
-		]
-		Carriables = 
-		[
-			resource:"game-resources/equipment/healthstation.carri",
-			resource:"game-resources/equipment/teleporter.carri",
-			resource:"game-resources/equipment/binoculars.carri",
-			resource:"game-resources/equipment/defuser.carri",
-			resource:"game-resources/equipment/cigar.carri",
-		]
-		Perks = 
-		[
-			resource:"game-resources/perks/radar.perk",
-		]
-		CanRetrieveCredits = true
-		CanTeamChat = true
-		CanAttachCorpses = false
-		RequiredKarma = 600
-		Karma = 
-		{
-			TeamKillPenaltyMultiplier = 0.015
-			TeamHurtPenaltyMultiplier = 0.001
-		}
-		Scoring = 
-		{
-			CorpseFoundReward = 3
-			AttackerKillReward = 1
-			TeamKillPenalty = 8
-			SurviveBonus = 1
-			SuicidePenalty = 1
-		}
-		ClassName = "ttt_role_detective"
-	}
+  "Team": "Innocents",
+  "Color": "0.09804,0.4,1,1",
+  "IconPath": "ui/detective-icon.png",
+  "CanUseShop": true,
+  "DefaultCredits": 100,
+  "CanTeamChat": true,
+  "CanAttachCorpses": false,
+  "RequiredKarma": 600,
+  "Karma": {
+    "TeamKillPenaltyMultiplier": 0.015,
+    "TeamHurtPenaltyMultiplier": 0.001
+  },
+  "Scoring": {
+    "CorpseFoundReward": 3,
+    "AttackerKillReward": 1,
+    "TeamKillPenalty": 8,
+    "SurviveBonus": 1,
+    "SuicidePenalty": 1
+  },
+  "ClassName": "ttt_role_detective"
 }

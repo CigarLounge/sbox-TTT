@@ -1,7 +1,4 @@
 using Sandbox;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json.Serialization;
 
 namespace TTT;
 
@@ -16,20 +13,14 @@ public class RoleInfo : GameResource
 	[Title( "Icon" ), Category( "UI" ), ResourceType( "png" )]
 	public string IconPath { get; set; } = "ui/none.png";
 
+	[Category("Shop")]
+	[Description( "Whether or not this role is allowed to use the team shop." )]
+	public bool CanUseShop { get; set; }
+
 	[Category( "Shop" )]
 	[Description( "The amount of credits the player spawns with." )]
+	[ShowIf("CanUseShop", true)]
 	public int DefaultCredits { get; set; }
-
-	[Category( "Shop" )]
-	public HashSet<WeaponInfo> Weapons { get; set; } = new();
-
-	[Category( "Shop" )]
-	public HashSet<CarriableInfo> Carriables { get; set; } = new();
-
-	[Category( "Shop" )]
-	public HashSet<PerkInfo> Perks { get; set; } = new();
-
-	public bool CanRetrieveCredits { get; set; }
 
 	[Description( "This includes sending messages and voice chat." )]
 	public bool CanTeamChat { get; set; }
@@ -42,22 +33,6 @@ public class RoleInfo : GameResource
 	public KarmaConfig Karma { get; set; }
 
 	public ScoringConfig Scoring { get; set; }
-
-	[HideInEditor]
-	[JsonIgnore]
-	public HashSet<ItemInfo> ShopItems { get; private set; } = new();
-
-	protected override void PostLoad()
-	{
-		base.PostLoad();
-
-		if ( ResourceLibrary is null )
-			return;
-
-		ShopItems.UnionWith( Weapons );
-		ShopItems.UnionWith( Carriables );
-		ShopItems.UnionWith( Perks );
-	}
 
 	public struct KarmaConfig
 	{

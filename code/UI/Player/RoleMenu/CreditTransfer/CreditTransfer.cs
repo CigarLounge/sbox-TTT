@@ -1,7 +1,7 @@
-using System;
-using System.Linq;
 using Sandbox;
 using Sandbox.UI;
+using System;
+using System.Linq;
 
 namespace TTT.UI;
 
@@ -28,7 +28,7 @@ public partial class CreditTransfer : Panel
 
 	private bool CanTransferCreditsTo( Player sendingPlayer, Player receivingPlayer )
 	{
-		return sendingPlayer != receivingPlayer && receivingPlayer.IsAlive && sendingPlayer.Team == receivingPlayer.Team && receivingPlayer.Role.ShopItems.Any();
+		return sendingPlayer != receivingPlayer && receivingPlayer.IsAlive && sendingPlayer.Team == receivingPlayer.Team && receivingPlayer.Role.CanUseShop;
 	}
 
 	protected override int BuildHash()

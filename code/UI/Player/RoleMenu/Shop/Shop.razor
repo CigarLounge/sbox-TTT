@@ -10,7 +10,7 @@
 
 <root class="text-shadow">
     <div class="item-container">
-        @foreach (var itemInfo in (player.Role.ShopItems))
+        @foreach (var itemInfo in (player.Team.GetShopItems()))
         {
             var canPurchase = player.CanPurchase(itemInfo);
             <ShopItem
@@ -32,7 +32,7 @@
     {
         var player = Game.LocalPawn as TTT.Player;
         return HashCode.Combine(
-            player.Role.ShopItems.HashCombine(itemInfo => HashCode.Combine(player.CanPurchase(itemInfo), itemInfo.GetHashCode())), 
+            player.Team.GetShopItems().HashCombine(itemInfo => HashCode.Combine(player.CanPurchase(itemInfo), itemInfo.GetHashCode())), 
             _selectedItem
         );
     }

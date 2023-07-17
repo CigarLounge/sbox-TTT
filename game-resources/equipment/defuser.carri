@@ -1,19 +1,18 @@
-<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:generic:version{7412167c-06e9-4698-aff2-e63eb59037e7} -->
 {
-	data = 
-	{
-		Slot = "UtilityEquipment"
-		Spawnable = false
-		CanDrop = true
-		ViewModelPath = ""
-		HandsModelPath = ""
-		HoldType = "None"
-		WorldModelPath = resource:"models/defuser/defuser.vmdl"
-		DeployTime = 0
-		IsLimited = true
-		Price = 100
-		IconPath = resource:"ui/equipment/defuser.png"
-		Description = "Instantly defuse a C4 explosive, unlimited uses."
-		ClassName = "ttt_equipment_defuser"
-	}
+  "Slot": "UtilityEquipment",
+  "Spawnable": false,
+  "CanDrop": true,
+  "ViewModelPath": "",
+  "HandsModelPath": "",
+  "HoldType": "None",
+  "WorldModelPath": "models/defuser/defuser.vmdl",
+  "DeployTime": 0,
+  "IsLimited": true,
+  "Price": 100,
+  "PurchasableBy": [
+    "Innocents"
+  ],
+  "IconPath": "ui/equipment/defuser.png",
+  "Description": "Instantly defuse a C4 explosive, unlimited uses.",
+  "ClassName": "ttt_equipment_defuser"
 }

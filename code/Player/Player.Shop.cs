@@ -13,10 +13,13 @@ public partial class Player
 
 	public bool CanPurchase( ItemInfo item )
 	{
+		if ( !Role.CanUseShop )
+			return false;
+
 		if ( Credits < item.Price )
 			return false;
 
-		if ( !Role.ShopItems.Contains( item ) )
+		if ( !Team.GetShopItems().Contains( item ) )
 			return false;
 
 		if ( item.IsLimited && PurchasedLimitedShopItems.Contains( item ) )

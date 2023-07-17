@@ -10,12 +10,17 @@ namespace TTT;
 [Title( "Traitor" )]
 public class Traitor : Role
 {
-	public override void OnSelect( Player player )
+	protected override void OnSelect( Player player )
 	{
 		base.OnSelect( player );
 
 		if ( !Game.IsServer )
+		{
+			if(((Player)Game.LocalPawn).Team == Team)
+				player.Components.Create<UI.RolePlate>();
+
 			return;
+		}
 
 		foreach ( var client in Game.Clients )
 		{
@@ -33,12 +38,5 @@ public class Traitor : Role
 			if ( otherPlayer.IsMissingInAction )
 				otherPlayer.UpdateStatus( To.Single( player ) );
 		}
-	}
-
-	protected override bool ShouldCreateRolePlate( Player player )
-	{
-		var local = Game.LocalPawn as Player;
-
-		return local.Team == Team;
 	}
 }

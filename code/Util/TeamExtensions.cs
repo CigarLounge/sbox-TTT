@@ -8,17 +8,26 @@ public static class TeamExtensions
 {
 	private static readonly Dictionary<Team, HashSet<IClient>> _clients = new();
 	private static readonly Dictionary<Team, UI.ColorGroup> _properties = new();
+	private static readonly Dictionary<Team, List<ItemInfo>> _shopItems = new();	
 
 	static TeamExtensions()
 	{
 		// Default teams.
-		Team.None.SetProperties( "Nones", Color.Transparent );
-		Team.Innocents.SetProperties( "Innocents", Color.FromBytes( 26, 196, 77 ) );
-		Team.Traitors.SetProperties( "Traitors", Color.FromBytes( 223, 40, 52 ) );
+		Team.None.Initialize( "Nones", Color.Transparent );
+		Team.Innocents.Initialize( "Innocents", Color.FromBytes( 26, 196, 77 ) );
+		Team.Traitors.Initialize( "Traitors", Color.FromBytes( 223, 40, 52 ) );
+	}
 
-		_clients.Add( Team.None, new HashSet<IClient>() );
-		_clients.Add( Team.Innocents, new HashSet<IClient>() );
-		_clients.Add( Team.Traitors, new HashSet<IClient>() );
+	public static void Initialize(this Team team, string title, Color color )
+	{
+		_properties[team] = new UI.ColorGroup
+		{
+			Title = title,
+			Color = color
+		};
+
+		_clients.Add( team, new HashSet<IClient>() );
+		_shopItems.Add( team, new List<ItemInfo>() );
 	}
 
 	public static string GetTitle( this Team team )
@@ -31,13 +40,9 @@ public static class TeamExtensions
 		return _properties[team].Color;
 	}
 
-	public static void SetProperties( this Team team, string title, Color color )
+	public static List<ItemInfo> GetShopItems( this Team team )
 	{
-		_properties[team] = new UI.ColorGroup
-		{
-			Title = title,
-			Color = color
-		};
+		return _shopItems.TryGetValue(team, out var list) ? list : null;
 	}
 
 	public static int GetCount( this Team team )

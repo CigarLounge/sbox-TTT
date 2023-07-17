@@ -11,8 +11,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 	public RoleInfo Info { get; private set; }
 	public Team Team => Info.Team;
 	public Color Color => Info.Color;
-	public HashSet<ItemInfo> ShopItems => Info.ShopItems;
-	public bool CanRetrieveCredits => Info.CanRetrieveCredits;
+	public bool CanUseShop => Info.CanUseShop;
 	public bool CanTeamChat => Info.CanTeamChat;
 	public bool CanAttachCorpses => Info.CanAttachCorpses;
 	public string Title => Info.Title;
@@ -24,7 +23,7 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 		Info = GameResource.GetInfo<RoleInfo>( GetType() );
 	}
 
-	public virtual void OnSelect( Player player )
+	public void Select( Player player )
 	{
 		if ( player.IsLocalPawn )
 		{
@@ -35,30 +34,26 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 			return;
 		}
-		else if ( !Game.IsServer )
-		{
-			if ( ShouldCreateRolePlate( player ) )
-				player.Components.Create<UI.RolePlate>();
-
-			return;
-		}
 
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
+
+		OnSelect( player );
 	}
 
-	public virtual void OnDeselect( Player player )
+	public void Deselect( Player player )
 	{
 		if ( player.IsLocalPawn )
 			player.ClearButtons();
 		else if ( !Game.IsServer )
 			player.Components.RemoveAny<UI.RolePlate>();
+
+		OnDeselect( player );
 	}
 
-	protected virtual bool ShouldCreateRolePlate( Player player )
-	{
-		return false;
-	}
+	protected virtual void OnSelect( Player player ) { }
+
+	protected virtual void OnDeselect(Player player ) { }
 
 	protected List<RoleButton> GetRoleButtons()
 	{
