@@ -11,14 +11,10 @@ public partial class Player
 	/// The current preset from <see cref="ClothingPresets"/>.
 	/// </summary>
 	private static List<Clothing> _currentPreset;
-	/// <summary>
-	/// Cached clothes from the client owner to avoid calling <see cref="ClothingContainer.LoadFromClient(IClient)"/> again.
-	/// </summary>
-	private readonly List<Clothing> _avatarClothes;
 
 	public void DressPlayer()
 	{
-		ClothingContainer.Clothing = GameManager.AvatarClothing ? _avatarClothes : _currentPreset;
+		ClothingContainer.Clothing = _currentPreset;
 
 		ClothingContainer.DressEntity( this );
 	}
@@ -27,6 +23,6 @@ public partial class Player
 	[GameEvent.Entity.PostCleanup]
 	private static void ChangeClothingPreset()
 	{
-		_currentPreset = Game.Random.FromList( ClothingPresets );
+		_currentPreset = new( Game.Random.FromList( ClothingPresets ) );
 	}
 }
