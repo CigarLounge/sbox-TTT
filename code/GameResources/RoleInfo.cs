@@ -1,15 +1,6 @@
 using Sandbox;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace TTT;
-
-public enum RolePlateType
-{
-	None,
-	TeamOnly,
-	Everyone
-}
 
 [GameResource( "Role", "role", "TTT role template.", Icon = "🎭" )]
 public class RoleInfo : GameResource

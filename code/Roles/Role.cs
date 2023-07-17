@@ -34,15 +34,11 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 
 			return;
 		}
-		else if ( !Game.IsServer )
-		{
-
-
-			return;
-		}
 
 		player.Credits = Math.Max( Info.DefaultCredits, player.Credits );
 		player.PurchasedLimitedShopItems.Clear();
+
+		OnSelect( player );
 	}
 
 	public void Deselect( Player player )
@@ -51,6 +47,8 @@ public abstract class Role : IEquatable<Role>, IEquatable<string>
 			player.ClearButtons();
 		else if ( !Game.IsServer )
 			player.Components.RemoveAny<UI.RolePlate>();
+
+		OnDeselect( player );
 	}
 
 	protected virtual void OnSelect( Player player ) { }

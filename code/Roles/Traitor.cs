@@ -15,7 +15,12 @@ public class Traitor : Role
 		base.OnSelect( player );
 
 		if ( !Game.IsServer )
+		{
+			if(((Player)Game.LocalPawn).Team == Team)
+				player.Components.Create<UI.RolePlate>();
+
 			return;
+		}
 
 		foreach ( var client in Game.Clients )
 		{
