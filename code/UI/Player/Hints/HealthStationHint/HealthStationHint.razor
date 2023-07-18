@@ -1,13 +1,13 @@
 @namespace TTT.UI
 
 <root class="centered-vertical-75 text-shadow">
-    <text class="text-color-tertiary" style="font-weight: 600; justify-content: center;">
+    <div class="text-color-tertiary" style="font-weight: 600; justify-content: center;">
         <text>@((int)_healthStation.StoredHealth)</text>
-        <text>Charges Remaining</text>
-    </text>
+        <text style="margin-left: 5px;">Charges Remaining</text>
+    </div>
     <div>
         <text>Hold</text>
-        <inputglyph button="Use" />
+        <inputglyph action=@TTT.InputAction.Use />
         <text>to receive health.</text>
     </div>
 </root>

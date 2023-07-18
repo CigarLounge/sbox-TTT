@@ -1,6 +1,3 @@
-@using Sandbox;
-@using TTT;
-
 @namespace TTT.UI
 
 <root class="centered-vertical-75 text-shadow">
@@ -8,7 +5,7 @@
     <div class="actions">
         <div style="margin-bottom: 5px; align-items: center;">
             <text>Press</text>
-            <inputglyph button="Use" />
+            <inputglyph action=@InputAction.Use/>
             <text>@(_c4.IsArmed ? "to attempt defuse." : "to arm.")</text>
         </div>
 
@@ -16,7 +13,7 @@
         {
             <div style="align-items: center;">
                 <text>Press</text>
-                <inputglyph button="PrimaryAttack" />
+                <inputglyph action=@InputAction.PrimaryAttack/>
                 <text>to defuse.</text>
             </div>
         }

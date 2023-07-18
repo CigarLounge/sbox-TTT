@@ -19,7 +19,7 @@
     }
 
     <div class="health-container background-color-primary @(Hud.DisplayedPlayer.Role is not NoneRole ? "left-flat" : "")">
-        <text>✚ @Hud.DisplayedPlayer.Health.CeilToInt()</text>
+        ✚ <text>@Hud.DisplayedPlayer.Health.CeilToInt()</text>
     </div>
 </root>
 
@@ -38,10 +38,10 @@
         }
 
         .health-container {
-            width: 115px;
+            width: 108px;
             padding: 2px 10px;
             border-radius: 4px;
-            justify-content: center;
+            justify-content: space-between;
             font-size: 30px;
             font-weight: bold;
 

@@ -1,6 +1,5 @@
-@using System;
 @using Sandbox;
-@using TTT;
+@using System;
 
 @namespace TTT.UI
 
@@ -18,9 +17,9 @@
 				  style="color: @Hud.DisplayedPlayer?.Role?.Color.Hex">@Hud.DisplayedPlayer?.Client?.Name</text>
 				<div style="align-items: center;">
 					<text>Press</text>
-					<inputglyph button="PrimaryAttack" />
+					<InputGlyph action=@TTT.InputAction.PrimaryAttack />
 					<text>or</text>
-					<inputglyph button="SecondaryAttack" />
+					<InputGlyph action=@TTT.InputAction.SecondaryAttack />
 					<text>to swap active player</text>
 				</div>
 			</div>
@@ -30,14 +29,14 @@
 		{
 			<div style="align-items: center;">
 				<text>Press</text>
-				<inputglyph button="Use" />
+				<InputGlyph action=@TTT.InputAction.Use />
 				<text>to spectate a player or possess a prop</text>
 			</div>
 		}
 
 		<div style="align-items: center;">
 			<text>Press</text>
-			<inputglyph button="@(player.Prop.IsValid() ? "Duck" : "Jump")" />
+			<InputGlyph action=@(player.Prop.IsValid() ? @TTT.InputAction.Duck : @TTT.InputAction.Jump) />
 			<text>@(player.Prop.IsValid() ? "to no longer possess the prop" : "to change spectating camera mode")</text>
 		</div>
 	</div>
