@@ -1,0 +1,38 @@
+@using Sandbox;
+@using Sandbox.MenuSystem;
+@using Sandbox.UI;
+@using System;
+
+@namespace TTT.UI.GameMenu
+
+<root style="flex-direction: column;">
+
+    <div class="navbar">
+        <div class="left">
+            <a class="button" href="/"> Home </a>
+            <span class="block">&gt;</span>
+            <span class="block">Servers</span>
+        </div>
+        <div class="right">
+        </div>
+    </div>
+
+    <section class="inset" style="flex-direction: column; flex-grow: 1; flex-shrink: 1;">
+        <ServerListPanel @ref="ServerList" ShowGame=@false FilterByGame=@Game.Menu.Package.FullIdent></ServerListPanel>
+    </section>
+
+    <div class="navbar">
+        <div class="left">
+        </div>
+        <div class="right">
+            <div class="button" onclick="@(() => ServerList.Refresh())"> Refresh </div>
+        </div>
+    </div>
+
+</root>
+
+
+@code
+{
+    ServerListPanel ServerList;
+}

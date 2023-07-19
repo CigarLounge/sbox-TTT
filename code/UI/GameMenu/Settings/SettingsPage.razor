@@ -1,0 +1,93 @@
+@using Sandbox;
+@using Sandbox.MenuSystem;
+@using Sandbox.UI.GameMenu;
+@using Sandbox.UI;
+@using System;
+@using System.Collections.Generic;
+@using System.Linq;
+
+@namespace TTT.UI.GameMenu
+
+@attribute [StyleSheet]
+@inherits Panel
+
+<root style="flex-direction: column;">
+
+    <div class="navbar">
+        <div class="left">
+            <a class="button" href="/"> Home </a>
+            <span class="block">&gt;</span>
+            <span class="block">Settings</span>
+        </div>
+        <div class="right">
+            
+        </div>
+    </div>
+
+    <section class="scroll">
+
+        @foreach ( var group in Game.Menu.InputSettings.Actions.GroupBy( x => x.GroupName ) )
+        {
+            <h2>@group.Key</h2>
+
+            <div class="form">
+            @foreach ( InputAction action in group )
+            {
+                <FormGroup>
+                    <Label>@action.Name</Label>
+                    <Control>
+                        <KeyBind Game="@Game.Menu" Action=@action class="glass with-padding with-grow with-click"></KeyBind>
+                    </Control>
+                </FormGroup>
+            }
+            </div>
+        }
+
+
+    </section>
+    
+    <div class="navbar">
+    
+        <div class="left">
+            <span class="button primary" onclick="@RestoreDefaults">Restore Defaults</span>
+        </div>
+
+        <div class="right">
+            
+            <span class="button primary" onclick="@SaveChanges">Save Changes</span>
+        </div>
+
+    </div>
+
+</root>
+
+@code
+{
+    [CascadingParameter]
+    public Package GamePackage { get; set; }   
+
+
+    public void CancelChanges()
+    {
+        foreach (var kb in Descendants.OfType<KeyBind>())
+        {
+            kb.Cancel();
+        }
+    }
+
+    public void RestoreDefaults()
+    {
+        Game.Menu.ResetBinds();
+    }
+
+    public void SaveChanges()
+    {
+        foreach (var kb in Descendants.OfType<KeyBind>())
+        {
+            kb.Apply();
+        }
+
+        Game.Menu.SaveBinds();
+    }
+
+}

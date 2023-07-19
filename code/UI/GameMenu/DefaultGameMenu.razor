@@ -1,0 +1,59 @@
+@using System
+@using Sandbox;
+@using Sandbox.MenuSystem;
+@using Sandbox.UI;
+
+@namespace TTT.UI.GameMenu
+
+@attribute [StyleSheet]
+@inherits NavHostPanel
+@implements Sandbox.Menu.IGameMenuPanel
+
+
+<root class="gamemainmenu">
+
+    <div class="navigator-canvas" slot="navigator-canvas"></div>
+
+</root>
+
+@code
+{
+    public DefaultGameMenu()
+    {
+        DefaultUrl = "/";
+
+        AddDestination("/", typeof(FrontPage));
+        AddDestination("/create", typeof(CreateGamePage));
+        AddDestination("/active", typeof(ActivePage));
+        AddDestination("/servers", typeof(ServerListPage));
+        AddDestination("/settings", typeof(SettingsPage));
+
+        if (Game.InGame) Navigate("/active");
+
+        BindClass( "ingame", () => Game.InGame );
+        BindClass( "inlobby", () => Game.Menu?.Lobby != null);
+    }
+
+	protected override void OnEvent( PanelEvent e )
+	{
+		if ( e.Name == "package.changed" )
+		{
+			StateHasChanged();
+			return;
+		}
+
+		base.OnEvent( e );
+	}
+
+    [GameEvent.Menu.ServerJoined]
+    public void OnServerJoined() => Navigate("/active");
+
+    [GameEvent.Menu.LobbyJoined]
+    public void OnLobbyJoined() => Navigate("/lobby");
+
+    [GameEvent.Menu.LobbyLeave]
+    public void OnLobbyLeave() => Navigate("/");
+
+    [GameEvent.Menu.ServerLeave]
+    public void OnServerLeave() => Navigate("/");
+}

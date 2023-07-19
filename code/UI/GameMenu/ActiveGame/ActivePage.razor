@@ -1,0 +1,138 @@
+@using Sandbox;
+@using Sandbox.MenuSystem;
+@using Sandbox.UI;
+@using System;
+@using System.Linq;
+
+@namespace TTT.UI.GameMenu
+
+@if ( !Game.InGame )
+{
+    <div>No game. Error. We shouldn't be here.</div>
+    return;
+}
+
+<root style="flex-direction: column;">
+
+    <div class="navbar">
+        <div class="left">
+            <a class="button" href="/"> Home </a>
+            <span class="block">&gt;</span>
+            <span class="block">Current Game</span>
+        </div>
+        <div class="right">
+            
+        </div>
+    </div>
+
+    <section class="inset" style="flex-direction: row;">
+
+        <div style="flex-grow: 1; flex-shrink: 0; flex-direction: column;">
+
+            <h2>Server Information</h2>
+
+            <div style="flex-direction: column; margin: 30px 30px;">
+
+                <div>
+                    Server: @Game.Server.ServerTitle
+                </div>
+
+                <div>
+                    Players: @Game.Clients.Count() / @Game.Server.MaxPlayers
+                </div>
+
+                <div>
+                    Map: @Game.Server.MapIdent
+                </div>
+
+                <div>
+                    Is Listen Server: @Game.IsListenServer
+                </div>
+
+            </div>
+
+            <h2>Current Players</h2>
+
+            <div style="flex-direction: column; margin: 30px 30px;">
+                @foreach ( var player in Game.Clients )
+                {
+                    <div>
+                        @player.Name - @player.SteamId
+                    </div>
+                }
+            </div>
+
+        </div>
+
+        <div style="flex-shrink: 0;">
+            @if (ShowMapOption)
+            {
+                <section class="nogrow">
+                    <h2>Map</h2>
+                    <MapButton MapIdent=@Game.Server.MapIdent OnClicked="@OnMapClicked"></MapButton>
+                </section>
+            }
+        </div>
+
+    </section>
+    
+    <div class="navbar">
+    
+        <div class="left">
+            <span class="button" onclick=@( () => Game.Menu.LeaveServer( "Leaving" ) )>Leave Server</span>
+        </div>
+
+        <div class="right">
+            
+            <span class="button primary" onclick=@ReturnToGame>Return To Game</span>
+        </div>
+
+    </div>
+
+</root>
+
+@code
+{
+    public string Tab { get; set; } = "map";
+
+    bool ShowMapOption = true;
+
+    protected override void OnParametersSet()
+    {
+        ShowMapOption = Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Hidden;
+        ShowMapOption = ShowMapOption && Game.Menu.Package.MapSelectionMode != Sandbox.DataModel.Game.MapSelect.Empty;
+    }
+
+    public void ReturnToGame()
+    {
+        Game.Menu.HideMenu();
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( Game.Clients.Count(), Game.Server.MapIdent );
+    }
+
+    public override void Tick()
+    {
+        base.Tick();
+
+        if (!IsVisible)
+            return;
+
+        if ( !Game.InGame )
+        {
+            this.Navigate( "/" );
+        }
+    }
+
+    void OnMapClicked()
+    {
+        Game.Overlay.ShowPackageSelector( "type:map sort:popular", OnMapSelected );
+    }
+
+    void OnMapSelected( Package map )
+    {
+        Game.Menu.ChangeServerMap( map.FullIdent );
+    }
+}
