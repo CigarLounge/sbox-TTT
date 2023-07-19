@@ -344,6 +344,18 @@
           "GroupName": "Other"
         }
       ]
-    }
+    },
+    "LaunchConfigs": [
+      {
+        "Name": "My New Config",
+        "GameIdent": "matt.ttt#local",
+        "MapName": "facepunch.square",
+        "MaxPlayers": 1,
+        "GameSettings": {},
+        "Addons": "",
+        "PreLaunchCommand": "",
+        "PostLaunchCommand": ""
+      }
+    ]
   }
 }
