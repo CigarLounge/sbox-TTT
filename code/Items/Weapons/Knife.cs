@@ -80,8 +80,6 @@ public partial class Knife : Carriable
 
 		if ( trace.Entity is Player player )
 		{
-			player.DistanceToAttacker = 0;
-
 			PlaySound( FleshHit );
 
 			if ( Backstabs && IsBehindAndFacingTarget( player ) )

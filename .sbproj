@@ -347,14 +347,14 @@
     },
     "LaunchConfigs": [
       {
-        "Name": "My New Config",
+        "Name": "Test",
         "GameIdent": "matt.ttt#local",
-        "MapName": "facepunch.square",
-        "MaxPlayers": 1,
+        "MapName": "facepunch.flatgrass",
+        "MaxPlayers": 64,
         "GameSettings": {},
         "Addons": "",
         "PreLaunchCommand": "",
-        "PostLaunchCommand": ""
+        "PostLaunchCommand": "ttt_preround_time 1; ttt_postround_time 1;"
       }
     ]
   }

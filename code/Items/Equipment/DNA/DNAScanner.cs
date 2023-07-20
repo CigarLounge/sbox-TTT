@@ -2,6 +2,7 @@ using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static TTT.TTTEvent;
 
 namespace TTT;
 
@@ -212,8 +213,9 @@ public partial class DNA : EntityComponent
 		{
 			case Corpse corpse:
 			{
+				var distance = Vector3.DistanceBetween( corpse.Player.Position, corpse.Player.LastAttacker.Position ).SourceUnitsToMeters();
 				SourceName = $"{corpse.Player.SteamName}'s corpse";
-				TimeUntilDecayed = MathF.Pow( 0.74803f * corpse.Player.DistanceToAttacker, 2 ) + 100;
+				TimeUntilDecayed = MathF.Pow( 0.74803f * distance, 2 ) + 100;
 
 				break;
 			}

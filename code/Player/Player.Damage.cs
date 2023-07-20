@@ -12,8 +12,6 @@ public partial class Player
 	[Net]
 	public TimeSince TimeSinceDeath { get; private set; }
 
-	public float DistanceToAttacker { get; set; }
-
 	/// <summary>
 	/// It's always better to use this than <see cref="Entity.LastAttackerWeapon"/>
 	/// because the weapon may be invalid.
@@ -181,8 +179,7 @@ public partial class Player
 			LastAttackerWeaponInfo,
 			LastDamage.Damage,
 			LastDamage.Tags?.ToArray(),
-			LastDamage.Position,
-			DistanceToAttacker
+			LastDamage.Position
 		);
 	}
 
@@ -221,7 +218,6 @@ public partial class Player
 
 	private void ResetDamageData()
 	{
-		DistanceToAttacker = 0;
 		LastAttacker = null;
 		LastAttackerWeapon = null;
 		LastAttackerWeaponInfo = null;
@@ -235,7 +231,7 @@ public partial class Player
 	}
 
 	[ClientRpc]
-	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p, float dTA )
+	private void SendDamageInfo( Entity a, Entity w, CarriableInfo wI, float d, string[] tags, Vector3 p)
 	{
 		var info = DamageInfo.Generic( 100f )
 			.WithAttacker( a )
@@ -244,7 +240,6 @@ public partial class Player
 
 		info.Tags = new HashSet<string>( tags ?? Array.Empty<string>() );
 
-		DistanceToAttacker = dTA;
 		LastAttacker = a;
 		LastAttackerWeapon = w;
 		LastAttackerWeaponInfo = wI;

@@ -255,13 +255,8 @@ public abstract partial class Weapon : Carriable
 						.WithAttacker( Owner )
 						.WithWeapon( this );
 
-					if ( trace.Entity is Player player )
-					{
-						player.DistanceToAttacker = Vector3.DistanceBetween( Owner.Position, player.Position ).SourceUnitsToMeters();
-
-						if ( Info.IsSilenced || damageInfo.IsHeadshot() )
-							damageInfo.Tags.Add( "silent" );
-					}
+					if ( trace.Entity is Player && (Info.IsSilenced || damageInfo.IsHeadshot()) )
+						damageInfo.Tags.Add( "silent" );
 
 					trace.Entity.TakeDamage( damageInfo );
 				}

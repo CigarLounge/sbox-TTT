@@ -39,6 +39,6 @@ public partial class DNAMenu : Panel
 
 	protected override int BuildHash()
 	{
-		return HashCode.Combine( _dnaScanner?.IsCharging, _dnaScanner?.SlotText, _dnaScanner?.DNACollected?.HashCombine( d => d.Id ), _dnaScanner.SelectedId );
+		return HashCode.Combine( _dnaScanner?.IsCharging, _dnaScanner?.SlotText, _dnaScanner?.DNACollected?.HashCombine( d => d.Id ), _dnaScanner?.SelectedId );
 	}
 }
