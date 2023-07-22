@@ -3,6 +3,7 @@
 @using Sandbox.UI;
 @using System;
 @using System.Linq;
+@using System.Threading.Tasks;
 
 @namespace TTT.UI.GameMenu
 
@@ -19,12 +20,12 @@
         @if ( Game.InGame )
         {
             <a class="button" href="/active">Current Game</a>
-            <a class="button" onclick=@LeaveGame>Leave Game</a>
+            <button text="Leave Game" onclick=@LeaveGame></button>
             <span style="height: 20px;"></span>
         }
         else
         {
-            <a class="button" href="/create">Create Game</a>
+            <button text="Create Game "onclick=@OnClickCreateGame></button>
         }
 
         <a class="button" href="/servers">Find a Game</a>
@@ -40,6 +41,18 @@
 
 @code
 {
+    public async Task OnClickCreateGame()
+    {
+        if (Game.Menu.Lobby is null)
+        {
+            var maxPlayers = Game.Menu.Package.GetMeta<int>("MaxPlayers", 1); ;
+            await Game.Menu.CreateLobbyAsync(maxPlayers);
+            Game.Menu.Lobby.Map = "thieves.dolls";
+        }
+
+        this.Navigate("/create");
+    }
+
     void LeaveGame()
     {
         Game.Menu.LeaveServer("Leaving");

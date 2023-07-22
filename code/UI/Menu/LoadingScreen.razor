@@ -1,15 +1,15 @@
-@using System
 @using Sandbox;
 @using Sandbox.UI;
 @using Sandbox.Menu;
+@using System;
 
 @namespace TTT.UI.GameMenu
 
 @attribute [StyleSheet]
 @inherits RootPanel
-@implements Sandbox.Menu.ILoadingScreenPanel
+@implements ILoadingScreenPanel
 
-<root class="loadingpanel">
+<root class="loadingscreen">
 
     <div class="title">LOADING</div>
     <div class="subtitle">@Progress.Title</div>
@@ -24,7 +24,7 @@
     }
 
     <div class="controls">
-        <div class="button" onclick="@Game.Menu.CancelLoading">
+        <div class="button" onclick=@Game.Menu.CancelLoading>
             Cancel
         </div>
     </div>

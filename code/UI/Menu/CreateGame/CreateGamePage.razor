@@ -1,0 +1,121 @@
+@using Sandbox;
+@using Sandbox.MenuSystem;
+@using Sandbox.UI;
+@using System;
+@using System.Collections.Generic;
+
+@namespace TTT.UI.GameMenu
+
+@attribute [StyleSheet]
+@inherits Panel
+
+<root class="creategamepage layout">
+
+	<div class="navbar">
+
+		<div class="left">
+			<a class="button" href="/"> Home </a>
+			<span class="block">&gt;</span>
+			<span class="block">Create A Game</span>
+		</div>
+
+		<div class="right">
+		</div>
+	</div>
+
+	<div class="body columned">
+
+		<div class="form settings scroll">
+
+			<div class="form-group">
+				<label class="setting-name">Server Name</label>
+				<TextEntry Value:bind=@Game.Menu.Lobby.Title Tooltip="Server Title"> </TextEntry>
+			</div>
+
+			<div class="form-group">
+				<label class="setting-name">Max Players</label>
+				<SliderControl ShowTextEntry="@true" ShowRange="@true" Min=@(1.0f) Max=@(64) Value:bind="@Game.Menu.Lobby.MaxMembers"></SliderControl>
+			</div>
+
+			<div class="form-group">
+				<div>
+					<label class="setting-name">Addons</label>
+					<button text="+" onclick=@OnAddonClicked style="left: 90px; bottom:5px; position: absolute;"></button>
+				</div>
+				<div class="addons scroll">
+					@if (!Game.Menu.Lobby.Addons.IsEmpty)
+					{
+						foreach (var addon in Addons)
+						{
+							<PackageCard Package=@addon class="addon"></PackageCard>
+						}
+					}
+				</div>
+
+			</div>
+		</div>
+		<div class="right">
+			<h2>Map</h2>
+			<MapButton MapIdent=@Game.Menu.Lobby.Map OnClicked="@OnMapClicked"></MapButton>
+		</div>
+	</div>
+
+	<div class="navbar">
+
+		<div class="left"></div>
+
+		<div class="right">
+			<a class="button" href="/"> Cancel </a>
+			<span class="button" onclick=@StartGame>Start Game</span>
+		</div>
+
+	</div>
+
+</root>
+
+@code
+{
+	public List<Package> Addons { get; set; } = new();
+
+	public void StartGame()
+	{
+		_ = Game.Menu.Lobby.LaunchGameAsync();
+		Addons.Clear();
+		this.Navigate("/active");
+	}
+
+	void OnMapClicked()
+	{
+		Game.Overlay.ShowPackageSelector("type:map game:thieves.terrortown sort:popular", OnMapSelected);
+	}
+
+	void OnMapSelected(Package map)
+	{
+		Game.Menu.Lobby.Map = map.FullIdent;
+		StateHasChanged();
+	}
+
+	void OnAddonClicked()
+	{
+		Game.Overlay.ShowPackageSelector("type:addon game:matt.ttt sort:popular", OnAddonSelected);
+	}
+
+	void OnAddonSelected(Package addon)
+	{
+		if (!Game.Menu.Lobby.Addons.Contains(addon.FullIdent))
+		{
+			Addons.Add(addon);
+			Game.Menu.Lobby.Addons = Game.Menu.Lobby.Addons.Add(addon.FullIdent);
+		}
+
+		StateHasChanged();
+	}
+
+	public override void Tick()
+	{
+		base.Tick();
+
+		if (!IsVisible)
+			return;
+	}
+}
