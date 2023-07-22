@@ -124,6 +124,13 @@ public partial class GameManager : Sandbox.GameManager
 		return true;
 	}
 
+	public override void DoPlayerDevCam( IClient client )
+	{
+#if DEBUG
+		base.DoPlayerDevCam( client );
+#endif
+	}
+
 	public override void OnVoicePlayed( IClient client )
 	{
 		UI.VoiceChatDisplay.Instance?.OnVoicePlayed( client );

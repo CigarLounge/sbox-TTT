@@ -233,8 +233,12 @@ public abstract partial class Weapon : Carriable
 				if ( !Info.TracerParticle.IsNullOrEmpty() && trace.Distance > 200 )
 				{
 					var tracer = Particles.Create( Info.TracerParticle );
-					tracer.SetPosition( 0, EffectEntity.Position );
-					tracer.SetPosition( 1, trace.EndPosition );
+
+					if ( tracer is not null )
+					{
+						tracer.SetPosition( 0, EffectEntity.Position );
+						tracer.SetPosition( 1, trace.EndPosition );
+					}
 				}
 
 				if ( !Game.IsServer )

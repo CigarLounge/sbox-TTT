@@ -177,6 +177,7 @@ public sealed class Inventory : IEnumerable<Carriable>
 		{
 			var active = Active;
 			Active = null;
+
 			return active;
 		}
 

@@ -23,6 +23,7 @@ public partial class Player
 	[GameEvent.Entity.PostCleanup]
 	private static void ChangeClothingPreset()
 	{
-		_currentPreset = new( Game.Random.FromList( ClothingPresets ) );
+		if ( Game.IsServer )
+			_currentPreset = Game.Random.FromList( ClothingPresets );
 	}
 }
